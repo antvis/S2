@@ -76,6 +76,7 @@ import type {
   S2CellType,
   ScrollChangeParams,
   ScrollOffsetConfig,
+  SimpleData,
   ViewMeta,
 } from '../common/interface';
 import type {
@@ -2288,5 +2289,17 @@ export abstract class BaseFacet {
 
   public clearInitColLeafNodes() {
     this.spreadsheet.store.set('initColLeafNodes', undefined);
+  }
+
+  /**
+   * @tip 和 this.spreadsheet.measureTextWidth() 的区别在于:
+   * 1. 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全, 出现省略号
+   * 2. 测量时, 文本宽度向上取整, 避免子像素的不一致性
+   */
+  protected measureTextWidth(text: SimpleData, font: unknown): number {
+    const EXTRA_PIXEL = 1;
+    const defaultWidth = this.spreadsheet.measureTextWidth(text, font);
+
+    return Math.ceil(defaultWidth) + EXTRA_PIXEL;
   }
 }

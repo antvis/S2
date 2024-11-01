@@ -47,7 +47,7 @@ Object {
       "colResizeType": "current",
       "cornerCellHorizontal": true,
       "minCellHeight": 20,
-      "minCellWidth": 20,
+      "minCellWidth": 40,
       "rowCellVertical": true,
       "rowResizeType": "current",
     },

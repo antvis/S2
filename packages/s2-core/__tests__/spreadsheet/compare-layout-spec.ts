@@ -60,8 +60,8 @@ describe('Compare Layout Tests', () => {
 
     const colLeafNodes = s2.facet.getColLeafNodes();
 
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(189);
-    expect(Math.floor(colLeafNodes[1].width)).toEqual(90);
+    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(191);
+    expect(Math.floor(colLeafNodes[1].width)).toEqual(92);
     expectTextOverflowing(s2);
   });
 
@@ -91,12 +91,12 @@ describe('Compare Layout Tests', () => {
 
     const colLeafNodes = s2.facet.getColLeafNodes();
 
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(182);
+    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(183);
     expectTextOverflowing(s2);
     const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
 
-    expect(dataCellWidthList.every((width) => width === 182)).toBeTruthy();
-    expect(colLeafNodeWidthList).toEqual([182]);
+    expect(dataCellWidthList.every((width) => width === 183)).toBeTruthy();
+    expect(colLeafNodeWidthList).toEqual([183]);
   });
 
   test.each([
@@ -137,11 +137,11 @@ describe('Compare Layout Tests', () => {
 
       expect(dataCellWidthList).toEqual(
         options.showDefaultHeaderActionIcon
-          ? [207, 207, 207, 207, 108, 108, 108, 108, 83, 83, 83, 83]
-          : [207, 207, 207, 207, 108, 108, 108, 108, 67, 67, 67, 67],
+          ? [209, 209, 209, 209, 110, 110, 110, 110, 85, 85, 85, 85]
+          : [209, 209, 209, 209, 110, 110, 110, 110, 69, 69, 69, 69],
       );
       expect(colLeafNodeWidthList).toEqual(
-        options.showDefaultHeaderActionIcon ? [207, 108, 83] : [207, 108, 67],
+        options.showDefaultHeaderActionIcon ? [209, 110, 85] : [209, 110, 69],
       );
     },
   );

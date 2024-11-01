@@ -72,7 +72,7 @@ interface ScrollSpeedRatio {
 | colResizeType        | 用于控制列宽 resize 时的生效范围 <br/> 1. `all`: 对所有单元格生效（会覆盖默认的列宽配置），2. `current`: 对当前单元格生效，3. `selected`: 对当前单元格生效，如果单元格是多选状态，调整任意选中单元格，对所有选中的生效。| `all`\| `current` \| `selected` | `current`  |       |
 | disable        | 用于控制行高 resize 是否生效。[查看示例](/examples/interaction/advanced/#resize-disable) | (resizeInfo: [S2CellType](/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
 | visible        | 自定义当前单元格是否显示 resize 热区 | (cell: [S2CellType](/docs/api/basic-class/base-cell)) => boolean |   |       |
-| minCellWidth  | 单元格可拖拽最小宽度            | `number`|  20       |      |
+| minCellWidth  | 单元格可拖拽最小宽度            | `number`|  40       |      |
 | minCellHeight  | 单元格可拖拽最小高度        | `number` | 20        |      |
 
 ### BrushSelection

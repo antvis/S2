@@ -827,10 +827,12 @@ export class RootInteraction {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;
 
-        this.interactions.set(
-          customInteraction.key,
-          new CustomInteractionClass(this.spreadsheet),
-        );
+        if (CustomInteractionClass) {
+          this.interactions.set(
+            customInteraction.key,
+            new CustomInteractionClass(this.spreadsheet),
+          );
+        }
       });
     }
   }

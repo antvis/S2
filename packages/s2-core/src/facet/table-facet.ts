@@ -10,7 +10,7 @@ import {
   set,
 } from 'lodash';
 import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
-import { i18n } from '../common';
+import { LAYOUT_SAMPLE_COUNT, i18n } from '../common';
 import {
   EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_EMPTY_PLACEHOLDER,
@@ -117,7 +117,7 @@ export class TableFacet extends FrozenFacet {
     const iconX = viewportWidth / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
     const text = empty?.description ?? i18n('暂无数据');
-    const descWidth = this.spreadsheet.measureTextWidth(text, description);
+    const descWidth = this.measureTextWidth(text, description);
     const descX = viewportWidth / 2 - descWidth / 2;
     const descY = iconY + icon.height + icon.margin.bottom;
 
@@ -522,14 +522,49 @@ export class TableFacet extends FrozenFacet {
     }
   }
 
+  private getCompactColNodeWidth(colNode: Node) {
+    const { theme, dataSet } = this.spreadsheet;
+    const { bolderText: colCellTextStyle } = theme.colCell!;
+    const { text: dataCellTextStyle, cell: cellStyle } = theme.dataCell!;
+    const data = dataSet.getDisplayDataSet();
+    const formatter = dataSet.getFieldFormatter(colNode.field);
+
+    // 采样前 50，找出表身最长的数据
+    const maxLabel = maxBy(
+      data
+        ?.slice(0, LAYOUT_SAMPLE_COUNT)
+        .map(
+          (data) =>
+            `${formatter?.(data[colNode.field]) ?? data[colNode.field]}`,
+        ),
+      (label) => this.measureTextWidth(label, dataCellTextStyle),
+    );
+
+    DebuggerUtil.getInstance().logger(
+      'Max Label In Col:',
+      colNode.field,
+      maxLabel,
+    );
+
+    const maxLabelWidth =
+      this.measureTextWidth(maxLabel, dataCellTextStyle) +
+      cellStyle!.padding!.left! +
+      cellStyle!.padding!.right!;
+
+    // 计算表头 label+icon 占用的空间
+    const colHeaderNodeWidth =
+      this.measureTextWidth(colNode.value, colCellTextStyle) +
+      getOccupiedWidthForTableCol(this.spreadsheet, colNode, theme.colCell!);
+
+    return Math.max(colHeaderNodeWidth, maxLabelWidth);
+  }
+
   private getColLeafNodesWidth(
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
-    const { spreadsheet } = this;
-    const { dataSet } = spreadsheet;
-    const { colCell } = spreadsheet.options.style!;
-    const layoutWidthType = spreadsheet.getLayoutWidthType();
+    const { colCell } = this.spreadsheet.options.style!;
+    const layoutWidthType = this.spreadsheet.getLayoutWidthType();
     const cellDraggedWidth = this.getColCellDraggedWidth(colNode);
 
     // 1. 拖拽后的宽度优先级最高
@@ -544,60 +579,18 @@ export class TableFacet extends FrozenFacet {
       return cellCustomWidth;
     }
 
-    let colWidth: number;
-
-    if (layoutWidthType === LayoutWidthType.Compact) {
-      const data = dataSet.getDisplayDataSet();
-      const formatter = dataSet.getFieldFormatter(colNode.field);
-
-      // 采样前50，找出表身最长的数据
-      const maxLabel = maxBy(
-        data
-          ?.slice(0, 50)
-          .map(
-            (data) =>
-              `${formatter?.(data[colNode.field]) ?? data[colNode.field]}`,
-          ),
-        (label) => spreadsheet.measureTextWidthRoughly(label),
-      );
-
-      DebuggerUtil.getInstance().logger(
-        'Max Label In Col:',
-        colNode.field,
-        maxLabel,
-      );
-
-      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell!;
-      const { text: dataCellTextStyle, cell: cellStyle } =
-        spreadsheet.theme.dataCell!;
-
-      // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
-      const EXTRA_PIXEL = 1;
-      const maxLabelWidth =
-        spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
-        cellStyle!.padding!.left! +
-        cellStyle!.padding!.right! +
-        EXTRA_PIXEL;
-
-      // 计算表头 label+icon 占用的空间
-      const colHeaderNodeWidth =
-        spreadsheet.measureTextWidth(colNode.value, colCellTextStyle) +
-        getOccupiedWidthForTableCol(
-          this.spreadsheet,
-          colNode,
-          spreadsheet.theme.colCell!,
-        );
-
-      colWidth = Math.max(colHeaderNodeWidth, maxLabelWidth);
-    } else {
-      colWidth = adaptiveColWidth;
-    }
-
+    // 3. 序号列, 使用配置宽度
     if (colNode.field === SERIES_NUMBER_FIELD) {
-      colWidth = this.getSeriesNumberWidth();
+      return this.getSeriesNumberWidth();
     }
 
-    return colWidth;
+    // 4. 紧凑模式
+    if (layoutWidthType === LayoutWidthType.Compact) {
+      return this.getCompactColNodeWidth(colNode);
+    }
+
+    // 5. 默认自适应列宽
+    return adaptiveColWidth;
   }
 
   public getViewCellHeights() {
@@ -614,7 +607,6 @@ export class TableFacet extends FrozenFacet {
           this.spreadsheet.dataSet.getDisplayDataSet().length
         );
       },
-
       getCellOffsetY: (offset: number) => {
         if (offset <= 0) {
           return 0;
@@ -626,9 +618,7 @@ export class TableFacet extends FrozenFacet {
 
         return offset * defaultCellHeight;
       },
-
       getTotalLength: () => this.spreadsheet.dataSet.getDisplayDataSet().length,
-
       getIndexRange: (minHeight: number, maxHeight: number) => {
         if (this.rowOffsets) {
           return getIndexRangeWithOffsets(

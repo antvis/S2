@@ -422,12 +422,7 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {
-    dataCell: {
-      width: 200,
-      height: 200,
-    },
-  },
+  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {
@@ -443,7 +438,7 @@ export const sliderOptions: SliderSingleProps = {
 };
 
 export const s2ThemeConfig: ThemeCfg = {
-  name: 'colorful',
+  name: 'default',
   theme: {},
 };
 

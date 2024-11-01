@@ -1,7 +1,7 @@
 export const RESIZE_START_GUIDE_LINE_ID = 'RESIZE_START_GUIDE_LINE';
 export const RESIZE_END_GUIDE_LINE_ID = 'RESIZE_END_GUIDE_LINE';
 export const RESIZE_MASK_ID = 'RESIZE_MASK';
-export const RESIZE_MIN_CELL_WIDTH = 20;
+export const RESIZE_MIN_CELL_WIDTH = 40;
 export const RESIZE_MIN_CELL_HEIGHT = 20;
 
 // resize 时鼠标移动方向类型
