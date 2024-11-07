@@ -209,7 +209,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
   protected getTreeIconWidth() {
     const { size, margin } = this.getStyle()!.icon!;
 
-    return this.showTreeIcon() ? size! + margin!.right! : 0;
+    return this.spreadsheet.isHierarchyTreeType() ? size! + margin!.right! : 0;
   }
 
   public getMaxTextWidth(): number {

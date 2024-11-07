@@ -400,4 +400,23 @@ describe('PivotSheet Corner Tests', () => {
 
     expect(cornerCell.getActualText()).toEqual(cornerExtraFieldText);
   });
+
+  test('should keep vertical alignment for tree mode when text align is left', async () => {
+    s2.setOptions({
+      hierarchyType: 'tree',
+    });
+    s2.setTheme({
+      cornerCell: {
+        bolderText: {
+          textAlign: 'left',
+        },
+      },
+    });
+    await s2.render();
+
+    s2.facet.getCornerNodes().forEach((node) => {
+      expect(node.x).toEqual(0);
+      expect(node.width).toEqual(120);
+    });
+  });
 });
