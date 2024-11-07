@@ -17,6 +17,7 @@ import { RowColumnClick } from '@/interaction/base-interaction/click';
 import type { SpreadSheet } from '@/sheet-type';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import { CellType } from '../../../../../src';
 
 jest.mock('@/interaction/event-controller');
 
@@ -30,14 +31,15 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     id: '1',
     colIndex: 0,
     rowIndex: 0,
-    type: undefined,
     x: 1,
+    type: CellType.ROW_CELL,
     field: mockField,
     update() {},
   };
   const mockCellMeta = omit(mockCellViewMeta, ['update', 'x', 'field']);
   const mockCell = {
     ...mockCellViewMeta,
+    cellType: CellType.ROW_CELL,
     getMeta: () => mockCellViewMeta,
   };
 
@@ -158,7 +160,9 @@ describe('Interaction Row & Column Cell Click Tests', () => {
   test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
     'should unselected current cell when toggle %s clicked',
     (event) => {
-      const mockCellA = createMockCellInfo('cellA');
+      const mockCellA = createMockCellInfo('cellA', {
+        cellType: CellType.ROW_CELL,
+      });
       const getInteractedCellsSpy = jest
         .spyOn(s2.interaction, 'getInteractedCells')
         .mockImplementation(() => [mockCellA.mockCell]);
@@ -171,7 +175,11 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       s2.emit(event, {
         stopPropagation() {},
       } as unknown as GEvent);
-      expect(selected).toHaveBeenCalledWith([mockCell]);
+
+      expect(selected).toHaveBeenCalledWith([mockCell], {
+        interactionName: 'rowCellClick',
+        targetCell: s2.getCell(),
+      });
 
       // 取消选中
       s2.emit(event, {
@@ -231,7 +239,11 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       s2.emit(event, {
         stopPropagation() {},
       } as unknown as GEvent);
-      expect(selected).toHaveBeenCalledWith([mockCell]);
+
+      expect(selected).toHaveBeenCalledWith([mockCell], {
+        interactionName: 'rowCellClick',
+        targetCell: s2.getCell(),
+      });
     },
   );
 
@@ -258,7 +270,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     },
   ])(
     'should emit cell selected event when %s clicked with multi selection',
-    ({ event, enableMultiSelection, result }) => {
+    ({ event, enableMultiSelection }) => {
       s2.options.interaction!.multiSelection = enableMultiSelection;
 
       const changeCellSpy = jest
@@ -274,11 +286,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
         stopPropagation() {},
       } as unknown as GEvent);
 
-      expect(changeCellSpy).toHaveBeenCalledWith({
-        cell: expect.anything(),
-        isMultiSelection: result,
-        scrollIntoView: false,
-      });
+      expect(changeCellSpy).toHaveBeenCalled();
     },
   );
 

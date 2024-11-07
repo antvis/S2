@@ -41,6 +41,8 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onRowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) }) => void; |  |  |
 | onRowCellAllCollapsed | 节点全部展开/收起的事件回调 | (isCollapsed: boolean ) => void; |  |  |
 | onRowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| onRowCellRender | 行头单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| onRowCellSelected | 行头单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | onColCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellDoubleClick | 列头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -50,6 +52,8 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onColCellMouseMove | 列头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (expandedNode: [Node](/docs/api/basic-class/node)) => void; |  |  |
 | onColCellHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ( data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo); hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[]} ) => void; |  |  |
+| onColCellRender | 列头单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| onColCellSelected | 列头单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | onDataCellHover | 数值单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellClick | 数值单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellDoubleClick | 数值单元格双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -61,6 +65,8 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
 | onDataCellEditStart | 数值单元格编辑开始（暂只支持编辑表） | (meta: [ViewMeta](/docs/api/basic-class/node), cell: [S2CellType](/docs/api/basic-class/base-cell)) => void |  |  |
 | onDataCellEditEnd | 数值单元格编辑完成（暂只支持编辑表） | (meta: [ViewMeta](/docs/api/basic-class/node), cell: [S2CellType](/docs/api/basic-class/base-cell)) => void |  |  |
+| onDataCellRender | 数值单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| onDataCellSelected | 数值单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -68,6 +74,8 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onCornerCellMouseUp | 角头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellMouseUp | 角头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellMouseMove | 角头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onCornerCellRender | 角头单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| onCornerCellSelected | 角头单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | onMergedCellsHover | 合并单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsClick | 合并单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsDoubleClick | 合并单元格鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -75,6 +83,8 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onMergedCellsMouseDown | 合并单元格按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsMouseUp | 合并单元格松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsMouseMove | 合并单元格移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onMergedCellsRender | 合并单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| onSeriesNumberCellRender | 序号单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
 | onRangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | onRangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) ) => void; |  |  |
 | onRangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
@@ -109,7 +119,7 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onContextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | onMouseHover | 表格鼠标悬停事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | onMouseUp | 表格鼠标松开事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
-| onSelected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| onSelected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void |  |  |
@@ -173,6 +183,8 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | rowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | rowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) }) => void; |  |  |
 | rowCellAllCollapsed | 节点全部展开/收起的事件回调 | (isCollapsed: boolean ) => void; |  |  |
+| rowCellRender | 行头单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| rowCellSelected | 行头单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | colCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellDoubleClick | 列头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -182,6 +194,8 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | colCellMouseMove | 列头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (expandedNode: [Node](/docs/api/basic-class/node)) => void |  |  |
 | colCellHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | (data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo); hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[] } ) => void; |  |  |
+| colCellRender | 列头单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| colCellSelected | 列头单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | dataCellHover | 数值单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellClick | 数值单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellDoubleClick | 数值单元格双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -191,6 +205,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | dataCellScroll | 数值单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| dataCellSelected | 数值单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -198,6 +213,8 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | cornerCellMouseUp | 角头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellMouseUp | 角头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellMouseMove | 角头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| cornerCellRender | 角头单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| cornerCellSelected | 角头单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | mergedCellsHover | 合并单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsClick | 合并单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsDoubleClick | 合并单元格鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -205,6 +222,8 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | mergedCellsMouseDown | 合并单元格按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsMouseUp | 合并单元格松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsMouseMove | 合并单元格移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| mergedCellsRender | 合并单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
+| seriesNumberCellRender | 序号单元格渲染事件 | ( cell: [Cell](/docs/api/basic-class/base-cell) ) => void |  |  |
 | rangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) ) => void; |  |  |
 | rangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
@@ -236,7 +255,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | contextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | mouseHover | 表格鼠标悬停事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | mouseUp | 表格鼠标松开事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
-| selected | 单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| selected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
@@ -342,3 +361,4 @@ type SheetComponentOptions = S2Options<
 | reBuildHiddenColumnsDetail | 是否重新生成列头隐藏信息 | `boolean` |  |  |
 
 <embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/docs/common/interaction.zh.md"></embed>

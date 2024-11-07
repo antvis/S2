@@ -25,7 +25,6 @@ export const useSheetUpdate = (
       updateFlag.rerender = true;
 
       if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
-        // 自定义树目录需要重新构建 CustomTreePivotDataSet
         updateFlag.reloadData = true;
         updateFlag.rebuildDataset = true;
       }

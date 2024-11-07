@@ -5,7 +5,7 @@ order: 5
 
 ## 简介
 
-小计总计属于表的透视功能，可以给行头和列头分别配置小计总计。
+小计总计属于表的透视功能，可以给行头和列头分别配置汇总能力，展示小计总计，开启 [自定义行列头](/manual/advanced/custom/custom-header) 时，对应行列头的汇总能力无效。
 
 ### 小计
 
@@ -81,53 +81,7 @@ order: 5
 
 配置 [S2Options](/docs/api/general/S2Options#total) 的 `totals` 属性来实现是否展示行列小计总计以及显示位置，类型如下：
 
-#### Totals
-
-功能描述： 行/列小计总计配置
-
-| 参数 | 说明   | 类型                                          | 默认值 | 必选 |
-| ---- | ------ | --------------------------------------------- | ------ | ---- |
-| row  | 列总计 | [Total](/docs/api/general/S2Options#total) |  -     |      |
-| col  | 行总计 | [Total](/docs/api/general/S2Options#total) | -     |      |
-
-#### Total
-
-功能描述：小计总计算配置
-
-| 参数                | 说明                     | 类型         | 默认值 | 必选 |
-| ------------------- | ------------------------ | ------------ | ------ | ---- |
-| showGrandTotals     | 是否显示总计             | `boolean`    | false  |     |
-| showSubTotals       | 是否显示小计。配置为对象时，`always` 用于控制当子维度小于 2 个时是否始终展示小计，默认展示  | `boolean \| { always: boolean }`    | false  |     |
-| subTotalsDimensions | 小计的汇总维度           | `string[]`   | []     |     |
-| reverseGrandTotalsLayout       | 总计布局位置，默认下或右 | `boolean`    | false  |     |
-| reverseSubTotalsLayout    | 小计布局位置，默认下或右 | `boolean`    | false  |     |
-| grandTotalsLabel               | 总计别名                 | `string`     |   `总计`     |      |
-| subTotalsLabel            | 小计别名                 | `string`     |   `小计`     |      |
-| calcGrandTotals          | 计算总计                 | `CalcTotals` |        |      |
-| calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
-
-```ts
-const s2Options = {
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseGrandTotalsLayout: true,
-      reverseSubTotalsLayout: true,
-      subTotalsDimensions: ['province'],
-      grandTotalsGroupDimensions: ['city'],
-      subTotalsGroupDimensions: ['type', 'sub_type'],
-    },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseGrandTotalsLayout: true,
-      reverseSubTotalsLayout: true,
-      subTotalsDimensions: ['type'],
-    },
-  },
-};
-```
+<embed src="@/docs/common/totals.zh.md"></embed>
 
 ### 2. 数据
 
@@ -269,11 +223,12 @@ const s2Options = {
 
 注意：`data` 为明细数据，如需获取包含汇总的数据
 
-```ts
+```ts | pure
 import { QueryDataType } from '@antv/s2';
 
 const calcFunc = (query, data, spreadsheet) => {
-  const allData = spreadsheet.dataSet.getMultiData(query, {
+  const allData = spreadsheet.dataSet.getCellMultiData({
+    query,
     queryType: QueryDataType.All,
   });
 

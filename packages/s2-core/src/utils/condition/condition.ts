@@ -1,4 +1,4 @@
-import { clamp, findLast } from 'lodash';
+import { clamp, compact, findLast } from 'lodash';
 import type { Condition, IconCondition } from '../../common/interface';
 import { parseNumberWithPrecision } from '../formatter';
 
@@ -60,7 +60,7 @@ export const findFieldCondition = <T extends Condition>(
   conditions: T[] = [],
   field: string,
 ): T | undefined => {
-  return findLast(conditions, (item) => {
+  return findLast(compact(conditions), (item) => {
     return item.field instanceof RegExp
       ? item.field.test(field)
       : item.field === field;

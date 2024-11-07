@@ -267,7 +267,7 @@ export const createMockCellInfo = (
     rowIndex,
     colId,
     level,
-    type: undefined,
+    type: cellType,
     cornerType,
     x: 0,
     y: 0,

@@ -29,7 +29,6 @@ import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import type { Canvas } from '@antv/g';
-import { get } from 'lodash';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import type { PivotFacet } from '../../../src/facet';
 
@@ -587,17 +586,14 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should get correctly default interaction size', () => {
-    expect(defaultInteractionSize).toEqual(13);
+    expect(defaultInteractionSize).toEqual(18);
   });
 
   test('should register default interaction', () => {
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    expect(rootInteraction.interactions.size).toEqual(defaultInteractionSize);
-    Object.keys(InteractionName).forEach((key) => {
-      expect(
-        rootInteraction.interactions.has(get(InteractionName, key)),
-      ).toBeTruthy();
-    });
+
+    expect(rootInteraction.interactions.size).toEqual(13);
+    expect(rootInteraction.interactions.keys()).toMatchSnapshot();
   });
 
   test.each`
@@ -638,9 +634,7 @@ describe('RootInteraction Tests', () => {
     ];
 
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    expect(rootInteraction.interactions.size).toEqual(
-      defaultInteractionSize + 1,
-    );
+    expect(rootInteraction.interactions.size).toEqual(14);
     expect(
       rootInteraction.interactions.has(customInteraction.key),
     ).toBeTruthy();
@@ -667,9 +661,7 @@ describe('RootInteraction Tests', () => {
 
       rootInteraction = new RootInteraction(mockSpreadSheetInstance);
 
-      expect(rootInteraction.interactions.size).toEqual(
-        defaultInteractionSize - 1,
-      );
+      expect(rootInteraction.interactions.size).toEqual(12);
       expect(rootInteraction.interactions.has(name)).toBeFalsy();
       [...rootInteraction.interactions.values()].forEach((interaction) => {
         expect(interaction).not.toBeInstanceOf(expected);
@@ -687,9 +679,7 @@ describe('RootInteraction Tests', () => {
 
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
 
-    expect(rootInteraction.interactions.size).toEqual(
-      defaultInteractionSize - 3,
-    );
+    expect(rootInteraction.interactions.size).toEqual(10);
     expect(
       rootInteraction.interactions.has(
         InteractionName.DATA_CELL_BRUSH_SELECTION,

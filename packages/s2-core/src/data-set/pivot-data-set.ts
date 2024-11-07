@@ -54,6 +54,7 @@ import {
   getDataPathPrefix,
   getExistValues,
   getFlattenDimensionValues,
+  getIndexFields,
   getSatisfiedPivotMetaValues,
   isMultiValue,
   transformDimensionsValues,
@@ -104,22 +105,21 @@ export class PivotDataSet extends BaseDataSet {
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
     this.dimensionValuesCache = new Map();
-    this.transformIndexesData(this.originData, rows as string[]);
+    this.transformIndexesData(this.originData, rows);
     this.handleDimensionValuesSort();
   }
 
   public transformIndexesData(
     data: RawData[],
-    rows: string[],
+    rows?: CustomHeaderFields,
   ): TransformResult {
     const { columns, values, valueInCols } = this.fields;
-
     let result!: TransformResult;
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       result = transformIndexesData({
-        rows: rows as string[],
-        columns: columns as string[],
+        rows: getIndexFields(rows),
+        columns: getIndexFields(columns),
         values: values!,
         valueInCols: valueInCols!,
         data,
@@ -349,14 +349,14 @@ export class PivotDataSet extends BaseDataSet {
 
     if (rows.includes(field)) {
       return {
-        dimensions: rows as string[],
+        dimensions: getIndexFields(rows),
         pivotMeta: this.rowPivotMeta,
       };
     }
 
     if (columns.includes(field)) {
       return {
-        dimensions: columns as string[],
+        dimensions: getIndexFields(columns),
         pivotMeta: this.colPivotMeta,
       };
     }
@@ -444,7 +444,7 @@ export class PivotDataSet extends BaseDataSet {
     const { query = {}, rowNode, isTotals = false, totalStatus } = params || {};
 
     const { rows: originRows, columns } = this.fields;
-    let rows = originRows as string[];
+    let rows = originRows;
     const drillDownIdPathMap =
       this.spreadsheet?.store.get('drillDownIdPathMap');
 
@@ -458,23 +458,23 @@ export class PivotDataSet extends BaseDataSet {
 
     // 如果是下钻结点，行维度在 originRows 中并不存在
     if (rowNode && isDrillDown) {
-      rows =
-        Node.getFieldPath(rowNode, isDrillDown) ?? (originRows as string[]);
+      rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
 
-    const rowDimensionValues = transformDimensionsValues(query, rows);
-    const colDimensionValues = transformDimensionsValues(
-      query,
-      columns as string[],
-    );
+    const indexRows = getIndexFields(rows);
+    const indexColumns = getIndexFields(columns);
+
+    const rowDimensionValues = transformDimensionsValues(query, indexRows);
+    const colDimensionValues = transformDimensionsValues(query, indexColumns);
+
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
-      rowFields: rows as string[],
-      colFields: columns as string[],
-      prefix: getDataPathPrefix(rows as string[], columns as string[]),
+      rowFields: indexRows,
+      colFields: indexColumns,
+      prefix: getDataPathPrefix(indexRows, indexColumns),
     });
 
     const rawData = get(this.indexesData, path as PropertyPath);
@@ -491,21 +491,27 @@ export class PivotDataSet extends BaseDataSet {
 
   public getTotalStatus = (query: Query): TotalStatus => {
     const { columns, rows } = this.fields;
-    const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
+    const isTotals = (
+      dimensions?: CustomHeaderFields,
+      isSubTotal?: boolean,
+    ) => {
       if (isSubTotal) {
-        const firstDimension = find(dimensions, (item) => !has(query, item));
+        const firstDimension = find(
+          dimensions,
+          (item) => !has(query, item as string),
+        );
 
         return !!(firstDimension && firstDimension !== first(dimensions));
       }
 
-      return every(dimensions, (item) => !has(query, item));
+      return every(dimensions, (item) => !has(query, item as string));
     };
 
     return {
-      isRowGrandTotal: isTotals(filterExtraDimension(rows as string[])),
-      isRowSubTotal: isTotals(rows as string[], true),
-      isColGrandTotal: isTotals(filterExtraDimension(columns as string[])),
-      isColSubTotal: isTotals(columns as string[], true),
+      isRowGrandTotal: isTotals(filterExtraDimension(rows)),
+      isRowSubTotal: isTotals(rows, true),
+      isColGrandTotal: isTotals(filterExtraDimension(columns)),
+      isColSubTotal: isTotals(columns, true),
     };
   };
 
@@ -536,18 +542,21 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     const { rows, columns } = this.fields;
-    const totalRows: string[] = !isEmpty(drillDownFields)
-      ? (rows as string[]).concat(drillDownFields!)
-      : (rows as string[]);
+    const totalRows = !isEmpty(drillDownFields)
+      ? rows!.concat(drillDownFields!)
+      : rows!;
+
+    const indexRows = getIndexFields(totalRows);
+    const indexColumns = getIndexFields(columns);
 
     const rowDimensionValues = transformDimensionsValues(
       query,
-      totalRows,
+      indexRows,
       MULTI_VALUE,
     );
     const colDimensionValues = transformDimensionsValues(
       query,
-      columns as string[],
+      indexColumns,
       MULTI_VALUE,
     );
 
@@ -556,13 +565,13 @@ export class PivotDataSet extends BaseDataSet {
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
-      rowFields: totalRows,
-      colFields: columns as string[],
+      rowFields: indexRows,
+      colFields: indexColumns,
       sortedDimensionValues: this.sortedDimensionValues,
       queryType,
     });
 
-    const prefix = getDataPathPrefix(totalRows, columns as string[]);
+    const prefix = getDataPathPrefix(indexRows, indexColumns);
     const all: RawData[] = [];
 
     for (const rowQuery of rowQueries) {
@@ -572,8 +581,8 @@ export class PivotDataSet extends BaseDataSet {
           colDimensionValues: colQuery,
           rowPivotMeta: this.rowPivotMeta,
           colPivotMeta: this.colPivotMeta,
-          rowFields: totalRows,
-          colFields: columns as string[],
+          rowFields: indexRows,
+          colFields: indexColumns,
           prefix,
         });
 

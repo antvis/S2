@@ -1589,6 +1589,15 @@ function MainLayout() {
                           onColCellHidden={logHandler('onColCellHidden')}
                           onColCellExpanded={logHandler('onColCellExpanded')}
                           onSelected={logHandler('onSelected')}
+                          onCornerCellSelected={logHandler(
+                            'onCornerCellSelected',
+                          )}
+                          onRowCellSelected={logHandler('onRowCellSelected')}
+                          onColCellSelected={logHandler('onColCellSelected')}
+                          onDataCellSelected={logHandler('onDataCellSelected')}
+                          onDataCellSelectMove={logHandler(
+                            'onDataCellSelectMove',
+                          )}
                           onScroll={logHandler('onScroll')}
                           onRowCellScroll={logHandler('onRowCellScroll')}
                           onLinkFieldJump={logHandler('onLinkFieldJump', () => {

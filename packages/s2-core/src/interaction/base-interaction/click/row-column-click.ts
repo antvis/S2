@@ -3,6 +3,7 @@ import { difference, findLast } from 'lodash';
 import { SeriesNumberCell } from '../../../cell';
 import {
   CellType,
+  InteractionName,
   InterceptType,
   S2Event,
   getTooltipOperatorHiddenColumnsMenu,
@@ -106,10 +107,22 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const { multiSelection: enableMultiSelection } = options.interaction!;
     // 关闭了多选就算按下了 Ctrl/Commend, 行/列也按单选处理
     const isMultiSelection = !!(enableMultiSelection && this.isMultiSelection);
+    const multiSelectionName =
+      cell.cellType === CellType.ROW_CELL
+        ? InteractionName.ROW_CELL_MULTI_SELECTION
+        : InteractionName.COL_CELL_MULTI_SELECTION;
+
+    const defaultSelectionName =
+      cell.cellType === CellType.ROW_CELL
+        ? InteractionName.ROW_CELL_CLICK
+        : InteractionName.COL_CELL_CLICK;
 
     const success = interaction.changeCell({
       cell,
       isMultiSelection,
+      interactionName: isMultiSelection
+        ? multiSelectionName
+        : defaultSelectionName,
       // 能主动触发点击一定是在可视范围内, 无需额外触发滚动
       scrollIntoView: false,
     });
