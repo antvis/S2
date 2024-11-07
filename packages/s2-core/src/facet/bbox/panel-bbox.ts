@@ -17,7 +17,6 @@ export class PanelBBox extends BaseBBox {
     this.x = cornerPosition.x + Frame.getVerticalBorderWidth(this.spreadsheet);
     this.y =
       cornerPosition.y + Frame.getHorizontalBorderWidth(this.spreadsheet);
-
     this.minX = this.x;
     this.minY = this.y;
 

@@ -734,6 +734,10 @@ export class TableFacet extends FrozenFacet {
     const { getTotalHeight } = this.getViewCellHeights();
     const { colsHierarchy } = this.layoutResult;
 
-    return getTotalHeight() + colsHierarchy.height;
+    return (
+      getTotalHeight() +
+      colsHierarchy.height +
+      Frame.getHorizontalBorderWidth(this.spreadsheet)
+    );
   }
 }

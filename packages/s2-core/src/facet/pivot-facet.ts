@@ -1048,12 +1048,20 @@ export class PivotFacet extends FrozenFacet {
   public getContentWidth(): number {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
-    return rowsHierarchy.width + colsHierarchy.width;
+    return (
+      rowsHierarchy.width +
+      colsHierarchy.width +
+      Frame.getVerticalBorderWidth(this.spreadsheet)
+    );
   }
 
   public getContentHeight(): number {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
-    return rowsHierarchy.height + colsHierarchy.height;
+    return (
+      rowsHierarchy.height +
+      colsHierarchy.height +
+      Frame.getHorizontalBorderWidth(this.spreadsheet)
+    );
   }
 }
