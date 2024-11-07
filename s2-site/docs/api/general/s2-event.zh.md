@@ -1,8 +1,7 @@
 ---
 title: S2Event
 order: 4
-redirect_from:
-  - /zh/docs/api
+tag: Updated
 ---
 
 表格事件列表，可以根据实际需要，监听所需事件，实现自定义业务。[查看全部事件定义](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/constant/events/basic.ts), [文档](/manual/advanced/interaction/basic) 和 [示例](/examples/interaction/basic/#event)

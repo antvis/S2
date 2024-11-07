@@ -88,7 +88,7 @@ ReactDOM.render(
 
 ### S2DataConfig configuration
 
-* Data source: [MultiData](/zh/docs/api/general/S2DataConfig#multidata) configuration item, one cell corresponds to multiple pieces of data, divided into raw data and formatted data
+* Data source: [MultiData](/zh/docs/api/general/s2-data-config#multidata) configuration item, one cell corresponds to multiple pieces of data, divided into raw data and formatted data
 
 ```ts
 const data = {

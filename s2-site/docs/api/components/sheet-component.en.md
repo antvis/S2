@@ -14,12 +14,12 @@ Function description: The props parameter of the React SheetComponent component
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
 | sheetType | Form type:<br/> 1. `pivot`: pivot table<br/> 2. `table`: detail table<br> 3. `gridAnalysis`: grid analysis table<br/> 4. `strategy`: trend analysis table | `pivot \| table \| gridAnalysis \| strategy` \| `pivot` | |
-| spreadsheet | custom table | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/ docs/api/basic-class/spreadsheet) | | |
-| dataCfg | Pivot table data mapping related configuration items | [S2DataConfig](/docs/api/general/S2DataConfig) | | ✓ |
+| spreadsheet | custom table | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/docs/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/ docs/api/basic-class/spreadsheet) | | |
+| dataCfg | Pivot table data mapping related configuration items | [S2DataConfig](/docs/api/general/s2-data-config) | | ✓ |
 | options | pivot table property configuration item | [SheetComponentOptions](#sheetcomponentoptions) | | ✓ |
 | partDrillDown | Attributes related to dimension drilldown | [PartDrillDown](/docs/api/components/drill-down) | | |
 | adaptive | Whether to adapt to the window size | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
-| themeCfg | Custom pivot table theme styles | [ThemeCfg](/docs/api/general/S2Theme) | | |
+| themeCfg | Custom pivot table theme styles | [ThemeCfg](/docs/api/general/s2-theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
 | header | header configuration items | [HeaderCfgProps](/docs/api/components/header) | | |
 | onRangeSort | Callback event triggered when sorting within a group | (params: [SortParam[]](#sortparam) ) => void; | | |
@@ -65,7 +65,7 @@ Function description: The props parameter of the React SheetComponent component
 | onRangeFilter | Trigger callback event when filtering | (data: { filterKey: string; filteredValues: string[] } ) => void; | | |
 | onRangeFiltered | Trigger callback event after filtering | (data: DataType[] ) => void; | | |
 | onLayoutCellRender | The header layout cell mount completed event | cell: S2CellType | | |
-| onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; | | |
+| onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/zh/docs/api/general/s2-options/#layoutresult) ) => void; | | |
 | onLayoutPagination | pagination event | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | onLayoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onLayoutAfterCollapseRows | Event callback after collapsing row headers in tree mode | ({collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; | | |
@@ -93,14 +93,14 @@ Function description: The props parameter of the React SheetComponent component
 | onMouseUp | table mouse release event | (event: CanvasEvent) => void | | |
 | onSelected | cell selected event | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void | | |
 | onReset | Interactive state reset event | (event: KeyboardEvent) => void | | |
-| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void | | |
+| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/s2-data-config#data) }) => void | | |
 | onScroll | cell scroll event (including row header and value cells) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onColCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; | | |
 | onRowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; | | |
 
 ## SheetComponentOptions
 
-The `options` of React components are inherited from [S2Options](/docs/api/general/S2Options), there are two differences
+The `options` of React components are inherited from [S2Options](/docs/api/general/s2-options), there are two differences
 
 - The content of tooltip has changed from `Element | string` to `ReactNode`, which can be any `jsx` element
 - The paging configuration has changed from the paging configuration of S2 to the paging configuration of `antd`, that is, the api transparent transmission of the `antd` paging component is supported
@@ -128,11 +128,11 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
 | sheetType | Form type:<br/> 1. `pivot`: pivot table <br/> 2. `table`: detailed table | `pivot | table` | `pivot` | |
-| dataCfg | pivot table data mapping configuration item | [S2DataConfig](/docs/api/general/S2DataConfig) | | ✓ |
+| dataCfg | pivot table data mapping configuration item | [S2DataConfig](/docs/api/general/s2-data-config) | | ✓ |
 | options | pivot table property configuration item | [SheetComponentOptions](#sheetcomponentoptions-1) | | ✓ |
 | adaptive | Whether to adapt to the window size | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
 | showPagination | whether to show the default pagination | boolean | | |
-| themeCfg | Custom pivot table theme styles | [ThemeCfg](/docs/api/general/S2Theme) | | |
+| themeCfg | Custom pivot table theme styles | [ThemeCfg](/docs/api/general/s2-theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
 | header | header configuration items | [HeaderCfgProps](/docs/api/components/header) | | |
 | onRangeSort | Callback event triggered when sorting within a group | (params: [SortParam[]](#sortparam) ) => void; | | |
@@ -178,7 +178,7 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onRangeFilter | Trigger callback event when filtering | (data: { filterKey: string; filteredValues: string[] } ) => void; | | |
 | onRangeFiltered | Trigger callback event after filtering | (data: DataType[] ) => void; | | |
 | onLayoutCellRender | The header layout cell mount completed event | cell: S2CellType | | |
-| onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; | | |
+| onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/zh/docs/api/general/s2-options/#layoutresult) ) => void; | | |
 | onLayoutPagination | pagination event | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | onLayoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onLayoutAfterCollapseRows | Event callback after collapsing row headers in tree mode | ({collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; | | |
@@ -206,14 +206,14 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onMouseUp | table mouse release event | (event: CanvasEvent) => void | | |
 | onSelected | cell selected event | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void | | |
 | onReset | Interactive state reset event | (event: KeyboardEvent) => void | | |
-| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void | | |
+| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/s2-data-config#data) }) => void | | |
 | onScroll | cell scroll event (including row header and value cells) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onColCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; | | |
 | onRowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; | | |
 
 ## SheetComponentOptions
 
-The `options` of React components are inherited from [S2Options](/docs/api/general/S2Options), there are two differences
+The `options` of React components are inherited from [S2Options](/docs/api/general/s2-options), there are two differences
 
 - The content of tooltip has changed from `Element | string` to `ReactNode`, which can be any `jsx` element
 - The paging configuration has changed from the paging configuration of S2 to the paging configuration of `antd`, that is, the api transparent transmission of the `antd` paging component is supported
@@ -241,11 +241,11 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
 | sheetType | Form type:<br/> 1. `pivot`: pivot table <br/> 2. `table`: detailed table | `pivot | table` | `pivot` | |
-| dataCfg | pivot table data mapping configuration item | [S2DataConfig](/docs/api/general/S2DataConfig) | | ✓ |
+| dataCfg | pivot table data mapping configuration item | [S2DataConfig](/docs/api/general/s2-data-config) | | ✓ |
 | options | pivot table property configuration item | [SheetComponentOptions](#sheetcomponentoptions-1) | | ✓ |
 | adaptive | Whether to adapt to the window size | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
 | showPagination | Whether to display the default pagination<br> (only if the `pagination` attribute is configured in `options`) | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,< br>onChange?: (current: number) => void <br>} | `false` | |
-| themeCfg | custom table theme style | [ThemeCfg](/docs/api/general/S2Theme) | | |
+| themeCfg | custom table theme style | [ThemeCfg](/docs/api/general/s2-theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
 
 ## events
@@ -254,7 +254,7 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
-| spreadsheet | custom table | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet] (/docs/api/basic-class/spreadsheet) | | |
+| spreadsheet | custom table | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/docs/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet] (/docs/api/basic-class/spreadsheet) | | |
 | rangeSort | Callback event triggered when sorting within a group | (params: [SortParam[]](#sortparam) ) => void; | | |
 | rowCellClick | row head mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | rowCellHover | row header mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -299,7 +299,7 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 | rangeSorted | A callback event is triggered when the sorting in the group ends (for now, only pivot tables are supported) | (event: CanvasEvent ) => void; | | |
 | rangeFilter | trigger callback event when filtering | (data: { filterKey: string; filteredValues: string[] } ) => void; | | |
 | rangeFiltered | Trigger callback event after filtering | (data: DataType[] ) => void; | | |
-| layoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/docs/api/general/S2Options/#layoutresult) ) => void; | | |
+| layoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/docs/api/general/s2-options/#layoutresult) ) => void; | | |
 | layoutPagination | pagination event | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | layoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | beforeRender | event before start render | () => void; | | |
@@ -326,14 +326,14 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 | mouseUp | table mouse up event | (event: CanvasEvent) => void | | |
 | selected | cell selected event | ( cells: ([Cell](/docs/api/basic-class/base-cell)[] ) => void | | |
 | reset | interaction state reset event | (event: KeyboardEvent) => void | | |
-| linkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void | | |
+| linkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/s2-data-config#data) }) => void | | |
 | scroll | cell scroll event (including row header and value cells) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | colCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: ColCell[]) => void; | | |
 | rowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, a prompt mask for the brush selection range will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: RowCell[]) => void; | | |
 
 ## SheetComponentOptions
 
-The `options` of Vue components are inherited from [S2Options](/docs/api/general/S2Options), there is a little difference
+The `options` of Vue components are inherited from [S2Options](/docs/api/general/s2-options), there is a little difference
 
 - The paging configuration has changed from the paging configuration of S2 to the paging configuration of `antd-vue`, that is, the api transparent transmission of the `antd-vue` paging component is supported
 
@@ -386,7 +386,7 @@ Function description: table resize (drag to change cell row height and column wi
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
 | info | resize configuration information | [ResizeInfo](#resizeinfo) | | |
-| style | style-related configuration in options | [style](/docs/api/general/S2Options#style) | | |
+| style | style-related configuration in options | [style](/docs/api/general/s2-options#style) | | |
 
 ## ResizeInfo
 
@@ -394,7 +394,7 @@ Function description: Table resize (drag to change cell row height and column wi
 
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
-| theme | resize hotspot configuration | [ResizeArea](/docs/api/general/S2Theme#resizearea) | | |
+| theme | resize hotspot configuration | [ResizeArea](/docs/api/general/s2-theme#resizearea) | | |
 | type | resize direction | `Horizontal` \| `Vertical` | | |
 | offsetX | horizontal offset | `number` | | |
 | offsetY | vertical offset | `number` | | |

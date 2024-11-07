@@ -36,14 +36,14 @@ If you are using the `React` version `@antv/s2-react` , or `Vue3` version `@antv
 <link rel="stylesheet" href="./dist/style.min.css"/>
 ```
 
-You can also use `CDN` directly (recommended), such as [UNPKG](https://unpkg.com/@antv/s2@next) or [![preview](https://data.jsdelivr.com/v1/package/npm/@antv/s2/badge)](https://www.jsdelivr.com/package/npm/@antv/s2)
+You can also use `CDN` directly (recommended), such as [UNPKG](https://unpkg.com/@antv/s2) or [![preview](https://data.jsdelivr.com/v1/package/npm/@antv/s2/badge)](https://www.jsdelivr.com/package/npm/@antv/s2)
 
 ```js
-<script src="https://unpkg.com/@antv/s2@next/dist/s2.min.js"></script>
+<script src="https://unpkg.com/@antv/s2/dist/s2.min.js"></script>
 
 // React 需额外引入样式：
-<link rel="stylesheet" href="https://unpkg.com/@antv/s2-react@next/dist/s2-react.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/@antv/s2-react/dist/s2-react.min.css"/>
 
 // Vue3 版本 需额外引入样式：
-<link rel="stylesheet" href="https://unpkg.com/@antv/s2-vue@next/dist/s2-vue.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/@antv/s2-vue/dist/s2-vue.min.css"/>
 ```

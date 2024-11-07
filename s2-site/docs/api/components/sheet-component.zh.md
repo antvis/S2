@@ -22,12 +22,12 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot \| table \| gridAnalysis \| strategy` | `pivot` |  |
-| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
-| dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/docs/api/general/S2DataConfig) |  | ✓ |
+| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/docs/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
+| dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/docs/api/general/s2-data-config) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
 | adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
-| themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
+| themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/s2-theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/docs/api/components/header) |  |  |
 | onRangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
@@ -90,7 +90,7 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onRangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | onRangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
 | onLayoutCellRender | 单个单元格布局渲染完成事件 | cell: [S2CellType](/docs/api/basic-class/base-cell) |  |  |
-| onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
+| onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/s2-options/#layoutresult) ) => void; |  |  |
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | onLayoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({ collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) }) => void; |  |  |
@@ -121,7 +121,7 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onMouseUp | 表格鼠标松开事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | onSelected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
-| onLinkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
+| onLinkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/s2-data-config#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void |  |  |
 | onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 | onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
@@ -130,7 +130,7 @@ import '@antv/s2-react/dist/s2-react.min.css';
 
 :::warning{title="注意"}
 
-`@antv/s2-react` 组件的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同：
+`@antv/s2-react` 组件的 `options` 继承于 [S2Options](/docs/api/general/s2-options) , 有两点不同：
 
 - 类型由 `S2Options` 变更为 `SheetComponentOptions`.
 - tooltip 的 content 从 `Element | string` 变为了 `ReactNode`, 即可以是任意的 `jsx` 元素。
@@ -156,11 +156,11 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 | `pivot \| table` | `pivot` |  |
-| dataCfg | 透视表数据映射配置项 | [S2DataConfig](/docs/api/general/S2DataConfig) |  | ✓ |
+| dataCfg | 透视表数据映射配置项 | [S2DataConfig](/docs/api/general/s2-data-config) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions-1) |  | ✓ |
 | adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
 | showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` |  |
-| themeCfg | 自定义表格主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
+| themeCfg | 自定义表格主题样式 | [ThemeCfg](/docs/api/general/s2-theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 
 ### events
@@ -169,7 +169,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
-| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
 | rangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -228,7 +228,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | rangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) ) => void; |  |  |
 | rangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | rangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
-| layoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
+| layoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/docs/api/general/s2-options/#layoutresult) ) => void; |  |  |
 | layoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | layoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | beforeRender | 开始 render 前的事件 | () => void; |  |  |
@@ -257,7 +257,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | mouseUp | 表格鼠标松开事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | selected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[], detail: [CellSelectedDetail](#cellselecteddetail) ) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
-| linkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
+| linkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/s2-data-config#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | colCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 | (cells: ColCell[]) => void; |  |  |
 | rowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: RowCell[]) => void; |  |  |
@@ -266,7 +266,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 
 :::warning{title="注意"}
 
-`@antv/s2-vue` 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同：
+`@antv/s2-vue` 组件 的 `options` 继承于 [S2Options](/docs/api/general/s2-options) , 有两点不同：
 
 - 类型由 `S2Options` 变更为 `SheetComponentOptions`.
 - 分页配置从 S2 的分页配置 **变为了 `antd-design-vue` 的分页配置**，即支持对 `antd-vue` 分页组件 的 api 透传。
@@ -328,7 +328,7 @@ type SheetComponentOptions = S2Options<
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
 | info | resize 配置信息 | [ResizeInfo](#resizeinfo) |  |  |
-| style | options 中样式相关配置 | [style](/docs/api/general/S2Options#style) |  |  |
+| style | options 中样式相关配置 | [style](/docs/api/general/s2-options#style) |  |  |
 
 ### ResizeInfo
 
@@ -336,7 +336,7 @@ type SheetComponentOptions = S2Options<
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
-| theme | resize 热区配置 | [ResizeArea](/docs/api/general/S2Theme#resizearea) |  |  |
+| theme | resize 热区配置 | [ResizeArea](/docs/api/general/s2-theme#resizearea) |  |  |
 | type | resize 方向 | `Horizontal` \| `Vertical` |  |  |
 | offsetX | 横向偏移量 | `number` |  |  |
 | offsetY | 纵向偏移量 | `number` |  |  |

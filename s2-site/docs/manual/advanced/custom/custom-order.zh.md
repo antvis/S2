@@ -67,7 +67,7 @@ const s2Options = {
 
 ## 自定义 Tooltip
 
-相关章节：[headerActionIcons 配置说明](/api/general/S2Options#headeractionicon)
+相关章节：[headerActionIcons 配置说明](/api/general/s2-options#headeractionicon)
 
 ### 配置
 

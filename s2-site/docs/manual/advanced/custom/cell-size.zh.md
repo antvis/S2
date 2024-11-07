@@ -6,7 +6,7 @@ tag: Updated
 
 S2 可以手动拖拽动态改变单元格的宽高，同时内置了 `行列等宽`, `列等宽` 和 `行列紧凑布局` 三种布局 ([查看示例](/examples/layout/basic/#compact))
 
-我们可以通过 [主题](/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/docs/api/general/S2Options#style) 配置来实现
+我们可以通过 [主题](/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/docs/api/general/s2-options#style) 配置来实现
 
 <Playground path='layout/custom/demo/custom-pivot-size.ts' rid='custom-pivot-size' height='400'></playground>
 

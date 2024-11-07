@@ -42,7 +42,7 @@ import "@antv/s2-vue/dist/s2-vue.min.css";
 
 ## 使用
 
-在 `s2Options` 中配置 [tooltip](/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格。
+在 `s2Options` 中配置 [tooltip](/docs/api/general/s2-options#tooltip) 字段，默认作用于**所有**单元格。
 
 ```ts
 const s2Options = {

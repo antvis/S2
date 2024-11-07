@@ -19,26 +19,15 @@ tag: New
 
 > 什么是 [dist-tag](https://docs.npmjs.com/adding-dist-tags-to-packages/) ?
 
-:::warning{title="注意"}
+[`S2 2.0`](https://s2.antv.antgroup.com) 正式版已发布，现在 `npm` 的 [`latest` dist-tag](https://docs.npmjs.com/cli/v10/commands/npm-dist-tag) 默认对应 `2.x` 版本，即：
 
-`S2 2.0` 版本目前处于**内测阶段**, 部分 API 可能会根据合理性随时改动。
+- `@antv/s2@latest` => `@antv/s2@2.x.x`
 
-`npm` 的 [`dist-tag`](https://docs.npmjs.com/cli/v10/commands/npm-dist-tag) 对应关系如下：
+**如通过此类未指定具体版本的方式安装，请注意不要意外安装到 `2.0` 新版本。**
 
-- `@antv/s2@next` 对应 `2.x` 版本。
-- `@antv/s2@latest` 对应 `1.x` 版本。
+## 🗓️ v1 版本已停止维护
 
-:::
-
-## 📅 正式版本发布时间
-
-目前 `next` 版本会持续内测一段时间，<https://s2.antv.antgroup.com> 会作为相应的文档网站。
-
-在此期间，会持续根据用户的反馈进行 Bug fix 和代码调整，在 `@antv/s2@next` 版本稳定后，会发布正式版本（时间待定），`latest` 将默认指向 `2.x` 版本，去除 `next` 标识。
-
-## 🗓️ v1 版本维护期
-
-目前 `v1` 版本会继续维护，针对 `BUG` 发布 `Patch` 版本修复，但不再接收新的 `Feature Request` 和 `Feature Pull Request`，欢迎 `Bug Fix Pull Request`, 截止日期为 `2024 年` 年底。
+`1.x` 版本已停止维护，请根据 [升级指南](/manual/migration-v2) 尽快升级到 `2.x` 版本。
 
 ## 📦 安装
 
@@ -109,6 +98,7 @@ tag: New
 ```tsx
 const s2Options = {
   transformCanvasConfig(renderer) {
+    renderer.setConfig({ enableDirtyCheck: true })
     renderer.registerPlugin(new PluginA11y({ enableExtractingText: true }));
 
     return {
@@ -189,6 +179,22 @@ const s2Options = {
 }
 ```
 
+3. API 方式调用的配置变更
+
+`enterable` 属性移除，`showSingleTips` 变更为 `onlyShowCellText`, `onlyMenu` 变更为 `onlyShowOperator`
+
+```diff
+s2.showTooltip({
+  options: {
+-   enterable: true,
+-   showSingleTips: true,
++   onlyShowCellText: true,
+-   onlyMenu: true,
++   onlyShowOperator: true
+  },
+});
+```
+
 具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
 
 #### 复制导出调整
@@ -212,7 +218,7 @@ const s2Options = {
 }
 ```
 
-2. 废弃 `copyData`, 新增 `asyncGetAllData/asyncGetAllPlainData/asyncGetAllHtmlData`, 支持异步获取数据。
+2. 废弃 `copyData`, 新增 `asyncGetAllData`, `asyncGetAllPlainData`, `asyncGetAllHtmlData` 等 API, 支持异步获取数据。
 
 ```diff
 - const data = copyData(spreadsheet, '\t', false)
@@ -680,7 +686,7 @@ const s2Options = {
 
 #### 数据集处理逻辑变更
 
-对于多个 `values` 的数据，S2 期望一个数据项中就包含所有的 `values` 信息。
+对于多个 `values` 的数据，现在期望一个数据项中就包含所有的 `values` 信息。
 
 ```js
 {
@@ -752,6 +758,19 @@ const s2Options = {
 ```
 
 具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
+
+#### S2DataConfig.totalData 配置移除
+
+`totalData` 和 `data` 合并，不再需要 `totalData` 配置。
+
+```diff
+{
+-  data: [...],
+-  totalData: [...],
+
++  data: [...data, ...totalData],
+}
+```
 
 #### 透视表数值单元格元数据数据结构变更
 
@@ -1008,7 +1027,21 @@ import { ConfigProvider } from 'antd'
 
 ##### 组件内部的 Spin 组件移除
 
-`<SheetComponent />` 内部会包裹 antd 的 `<Spin />` 组件移除，不再有 `loading` 效果，新增 `onLoading`, 可以自行在外层嵌套相关组件，组合使用。
+```diff
+import { Spin } from 'antd'
+
+<SheetComponent>
+-  <Spin />
+</SheetComponent>
+
++ <Spin>
++  <SheetComponent />
++ </Spin>
+```
+
+`1.x` 的 `<SheetComponent />` 内部会包裹 antd 的 `<Spin />` 组件。现已移除，不再有 `loading` 效果，新增 `onLoading`, 可以自行在外层嵌套相关组件，组合使用。
+
+**通常来说，onLoading 的效果感知不强，推荐根据业务侧 API 请求状态，控制 `loading` 效果**。
 
 ```tsx | pure
 import { Spin } from 'antd'
@@ -1187,9 +1220,27 @@ antd 的 `Input.TextArea` 组件替换为 原生的 `textarea`.
 - <textarea />
 ```
 
-##### Tooltip 操作项菜单组件移除
+##### Tooltip 操作项默认菜单组件移除
 
-1. 配置和 API 参数调整
+1. 内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props) , 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
+
+```tsx | pure
+import { Menu } from 'antd'
+
+const s2Options = {
+  tooltip: {
+    operation: {
+      menu: {
+        render: (props) => {
+          return <Menu {...props} />;
+        },
+      }
+    }
+  }
+}
+```
+
+2. 配置和 API 参数调整
 
 菜单项调整到 `menu` 下
 
@@ -1244,24 +1295,6 @@ s2.showTooltip({
 });
 ```
 
-1. 内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props) , 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
-
-```tsx | pure
-import { Menu } from 'antd'
-
-const s2Options = {
-  tooltip: {
-    operation: {
-      menu: {
-        render: (props) => {
-          return <Menu {...props} />;
-        },
-      }
-    }
-  }
-}
-```
-
 具体请查看 [Tooltip](/manual/basic/tooltip) 和 [组内排序](/manual/basic/sort/group) 相关文档。
 
 #### 支持 React 18
@@ -1272,7 +1305,7 @@ React 19 已发布 [RC 版本](https://react.dev/blog/2024/04/25/react-19), 后�
 
 `@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`.
 
-#### Ant Design 多版本共存
+#### Ant Design 多版本共存 （不推荐）
 
 由于 `antd@4.x` 已经 [停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn), 分析组件 `@antv/s2-react-components` 默认基于 `antd@5.x` 开发，虽然使用的都是基础组件，但是是否完全兼容 `antv@4.x` 取决于两个版本的差异性。
 
@@ -1359,7 +1392,7 @@ class AntdV5AliasPlugin {
 
 ### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge>
 
-`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
+由于精力有限，`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
 
 ## ✍️ API 调整
 

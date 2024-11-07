@@ -17,7 +17,7 @@ order: 5
 
 ```json
 "peerDependencies": {
-  "@antv/s2": "^2.0.0-next.1",
+  "@antv/s2": "^2.0.0",
   "react": ">=16.9.0",
   "react-dom": ">=16.9.0"
 }
@@ -29,7 +29,7 @@ order: 5
 
 ```json
 "peerDependencies": {
-  "@antv/s2": "^2.0.0-next.1",
+  "@antv/s2": "^2.0.0",
   "ant-design-vue": "^3.2.0",
   "vue": ">=3.x"
 }

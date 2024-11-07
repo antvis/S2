@@ -24,9 +24,9 @@
 ## 📦 安装
 
 ```bash
-$ pnpm add @antv/s2-vue@next
-# yarn add @antv/s2-vue@next
-# npm install @antv/s2-vue@next --save
+$ pnpm add @antv/s2-vue
+# yarn add @antv/s2-vue
+# npm install @antv/s2-vue --save
 ```
 
 ## 🔨 使用

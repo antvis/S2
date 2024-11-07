@@ -59,35 +59,35 @@ Please refer to issue [#808](https://github.com/antvis/S2/issues/808) [#990](htt
 const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
 ```
 
-Update options: [optional](/docs/api/general/S2Options) , will be merged with the last data
+Update options: [optional](/docs/api/general/s2-options) , will be merged with the last data
 
 ```ts
 pivotSheet.setOptions({ ... })
 pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-Reset options: [optional, use the incoming options](/docs/api/general/S2Options) directly, and will not merge with the last data
+Reset options: [optional, use the incoming options](/docs/api/general/s2-options) directly, and will not merge with the last data
 
 ```ts
 pivotSheet.setOptions({ ... }, true)
 pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-Update dataCfg: [optional](/docs/api/general/S2DataConfig) , it will be merged with the last data
+Update dataCfg: [optional](/docs/api/general/s2-data-config) , it will be merged with the last data
 
 ```ts
 pivotSheet.setDataCfg({ ... })
 pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-Reset dataCfg: [optional](/docs/api/general/S2DataConfig) , use the incoming dataCfg directly without merging with the last data
+Reset dataCfg: [optional](/docs/api/general/s2-data-config) , use the incoming dataCfg directly without merging with the last data
 
 ```ts
 pivotSheet.setDataCfg({ ... }, true)
 pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-update theme: [optional](/docs/api/general/S2Theme)
+update theme: [optional](/docs/api/general/s2-theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })

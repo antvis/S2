@@ -1,8 +1,6 @@
 ---
 title: 绘图属性
 order: 3
-redirect_from:
-  - /zh/docs/api
 ---
 
 :::warning{title="注意"}
@@ -20,9 +18,9 @@ S2 使用 `Canvas` , 底层基于 [AntV/G](https://g.antv.antgroup.com/guide/get
 
 | 属性名        | 类型            |    功能描述                                                                                                      |
 | ------------- | --------------- | ------------------------------------------------------------------------------------------------------------ |
-| fill          | `string`          | 图形背景的填充颜色，支持 [渐变色配置](#配置渐变) 和 [纹理配置](#配置纹理)                                                                                               |
+| fill          | `string`          | 图形背景的填充颜色，支持 [渐变色配置](#配置渐变） 和 [纹理配置](#配置纹理)                                                                                               |
 | fillOpacity   | `number`          | 图形背景的填充透明度                                                                                             |
-| stroke        | `string`          | 图形描边，支持 [渐变色配置](#配置渐变色) 和 [纹理配置](#配置纹理)                                                  |
+| stroke        | `string`          | 图形描边，支持 [渐变色配置](#配置渐变色） 和 [纹理配置](#配置纹理)                                                  |
 | lineWidth     | `number`          | 图形描边宽度                                                                                               |
 | lineDash      | `[number,number]` | 图形描边的虚线配置，第一个值为虚线每个分段的长度，第二个值为分段间隔的距离 |
 | lineOpacity   | `number`          | 图形描边描边透明度                                                                                                   |
@@ -37,7 +35,7 @@ S2 使用 `Canvas` , 底层基于 [AntV/G](https://g.antv.antgroup.com/guide/get
 
 | 属性名        | 类型              | 功能描述                                                                                                   |
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------------------ |
-| stroke        | `string`          | 线段颜色，支持 [渐变色配置](#配置渐变色) ，[纹理配置](#配置纹理)                                                |
+| stroke        | `string`          | 线段颜色，支持 [渐变色配置](#配置渐变色） ，[纹理配置](#配置纹理)                                                |
 | lineWidth     | `number`          | 线段宽度                                                                                                   |
 | lineDash      | `[number,number]` | 线段虚线配置，第一个值为虚线每个分段的长度，第二个值为分段间隔的距离|
 | opacity       | `number`          | 线段透明度                                                                                                 |
@@ -59,9 +57,9 @@ S2 使用 `Canvas` , 底层基于 [AntV/G](https://g.antv.antgroup.com/guide/get
 | lineHeight    | `number`          | 文字的行高                                                                                                   |
 | textAlign     | `center` \| `left` \| `right` \| `start` \| `end`          | 设置文本内容的对齐方式 |
 | textBaseline  | `top` \| `middle` \| `bottom` \| `alphabetic` \| `hanging`          | 设置在绘制文本时使用的当前文本基线|
-| fill          | `string`          | 文字填充颜色，支持 [渐变色配置](#配置渐变色)，[纹理配置](#配置纹理)                                                                             |
+| fill          | `string`          | 文字填充颜色，支持 [渐变色配置](#配置渐变色），[纹理配置](#配置纹理)                                                                             |
 | fillOpacity   | `number`          | 文字填充透明度                                                                                             |
-| stroke        | `string`          | 文字描边，支持 [渐变色配置](#配置渐变色) ，[纹理配置](#配置纹理)                                                                            |
+| stroke        | `string`          | 文字描边，支持 [渐变色配置](#配置渐变色） ，[纹理配置](#配置纹理)                                                                            |
 | lineWidth     | `number`          | 文字描边宽度                                                                                               |
 | lineDash      | `[number,number]` | 描边的虚线配置，第一个值为虚线每个分段的长度，第二个值为分段间隔的距离 |
 | lineOpacity   | `number`          | 描边透明度                                                                                                   |

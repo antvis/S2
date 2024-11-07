@@ -1,8 +1,6 @@
 ---
 title: S2DataConfig
 order: 0
-redirect_from:
-  - /zh/docs/api
 ---
 
 表格数据配置

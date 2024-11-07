@@ -30,7 +30,7 @@ s2.facet.getRealWidth()
 | centerFrame | 框架 |  [Group](https://g.antv.antgroup.com/api/basic/group) |
 | gridInfo | 网格信息 |  [GridInfo](#gridinfo) |
 | getViewCellHeights | 获取单元格高度信息 | () => [ViewCellHeights](#viewcellheights) |
-| scrollBarTheme | 滚动条主题 | [ScrollBarTheme](/docs/api/general/S2Theme/#scrollbartheme) |
+| scrollBarTheme | 滚动条主题 | [ScrollBarTheme](/docs/api/general/s2-theme/#scrollbartheme) |
 | scrollBarSize | 滚动条大小 | `number` |
 | hideScrollBar | 隐藏滚动条 | () => void |
 | delayHideScrollBar | 延迟隐藏滚动条 (1s 后） | () => void |

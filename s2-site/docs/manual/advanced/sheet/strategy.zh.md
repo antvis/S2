@@ -98,7 +98,7 @@ const App = () => {
 
 ### S2DataConfig 配置
 
-#### 1. 数据源：[MultiData](/zh/docs/api/general/S2DataConfig#multidata) 配置项，一个单元格对应多条数据，分为原始数据和格式化数据
+#### 1. 数据源：[MultiData](/zh/docs/api/general/s2-data-config#multidata) 配置项，一个单元格对应多条数据，分为原始数据和格式化数据
 
 ```ts
 const data = {

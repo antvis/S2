@@ -3,7 +3,7 @@ import type { TextAlignPanelOptions } from './interface';
 
 /**
  * 生成表格文本对齐方式主题配置
- * @see https://s2.antv.antgroup.com/zh/docs/api/general/S2Theme
+ * @see https://s2.antv.antgroup.com/zh/docs/api/general/s2-theme
  */
 export function generateCellTextAlignTheme(
   options: TextAlignPanelOptions,

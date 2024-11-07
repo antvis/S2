@@ -61,35 +61,35 @@ await s2.render(false)
 const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
 ```
 
-更新 options: [可选项](/docs/api/general/S2Options)，会与上次的数据进行合并
+更新 options: [可选项](/docs/api/general/s2-options)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... })
 await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-重置 options: [可选项](/docs/api/general/S2Options)，直接使用传入的 option，不会与上次的数据进行合并
+重置 options: [可选项](/docs/api/general/s2-options)，直接使用传入的 option，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... }, true)
 await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-更新 dataCfg: [可选项](/docs/api/general/S2DataConfig)，会与上次的数据进行合并
+更新 dataCfg: [可选项](/docs/api/general/s2-data-config)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... })
 await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-重置 dataCfg: [可选项](/docs/api/general/S2DataConfig)，直接使用传入的 dataCfg，不会与上次的数据进行合并
+重置 dataCfg: [可选项](/docs/api/general/s2-data-config)，直接使用传入的 dataCfg，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... }, true)
 await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-更新 theme: [可选项](/docs/api/general/S2Theme)
+更新 theme: [可选项](/docs/api/general/s2-theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })

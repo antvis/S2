@@ -30,7 +30,7 @@ import "@antv/s2/dist/s2.min.css";
 
 ## use
 
-Configure the [tooltip](/docs/api/general/S2Options#tooltip) field in `s2Options`, which works on **all** cells by default
+Configure the [tooltip](/docs/api/general/s2-options#tooltip) field in `s2Options`, which works on **all** cells by default
 
 ```ts
 const s2Options = {
@@ -74,7 +74,7 @@ const s2Options = {
 
 ### Operation configuration items
 
-Add [operation item](/docs/api/general/S2Options#tooltipoperation) on `Tooltip` by configuring `operation` field, support [custom](#custom-tooltip-operation item).
+Add [operation item](/docs/api/general/s2-options#tooltipoperation) on `Tooltip` by configuring `operation` field, support [custom](#custom-tooltip-operation item).
 
 ```ts
 const s2Options = {

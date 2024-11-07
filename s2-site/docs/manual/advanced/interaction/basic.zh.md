@@ -39,7 +39,7 @@ tag: Updated
 
 ## 交互事件
 
-[查看完整事件列表](/docs/api/general/S2Event)
+[查看完整事件列表](/docs/api/general/s2-event)
 
 - `global:xx`: 全局图表事件
 - `layout:xx`: 布局改变事件

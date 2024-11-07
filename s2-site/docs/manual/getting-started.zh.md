@@ -177,7 +177,7 @@ bootstrap();
 
 ```json
 "peerDependencies": {
-  "@antv/s2": "^2.0.0-next.1",
+  "@antv/s2": "^2.0.0",
   "react": ">=16.9.0",
   "react-dom": ">=16.9.0"
 }
@@ -211,7 +211,7 @@ const App = () => {
 ```json
 "peerDependencies": {
   "@ant-design/icons": ">=4.7.0",
-  "@antv/s2": "^2.0.0-next.1",
+  "@antv/s2": "^2.0.0",
   "antd": ">=4.16.13",
   "react": ">=16.9.0",
   "react-dom": ">=16.9.0"
@@ -236,8 +236,8 @@ const App = () => {
 
 ### `Vue3` 版本 <Badge type="success">@antv/s2-vue</Badge> <Badge type="error">停止维护</Badge>
 
-:::warning
-`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
+:::warning{title="注意"}
+由于精力有限，`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
 :::
 
 `S2` 同时也提供了开箱即用的 `Vue3` 版本表格组件，帮助开发者快速满足业务看数分析需求。
@@ -246,7 +246,7 @@ const App = () => {
 
 ```json
 "peerDependencies": {
-  "@antv/s2": "^2.0.0-next.1",
+  "@antv/s2": "^2.0.0",
   "ant-design-vue": "^3.2.0",
   "vue": ">=3.x"
 }

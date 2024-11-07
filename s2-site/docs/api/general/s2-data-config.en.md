@@ -1,8 +1,6 @@
 ---
 title: S2DataConfig
 order: 0
-redirect_from:
-  - /en/docs/api
 ---
 
 Tabular data configuration

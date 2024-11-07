@@ -4,30 +4,34 @@
 
 ```bash
 # npm
-$ npm install @antv/s2@next --save
+$ npm install @antv/s2 --save
 
 # yarn
-$ yarn add @antv/s2@next
+$ yarn add @antv/s2
 
 # pnpm
-$ pnpm add @antv/s2@next
+$ pnpm add @antv/s2
 ```
 
 ### 使用 React 版本 <Badge>@antv/s2-react</Badge>
 
 ```bash
-npm install @antv/s2@next @antv/s2-react@next --save
+npm install @antv/s2 @antv/s2-react --save
 
 ```
 
 ### 使用 React 版本分析组件 <Badge>@antv/s2-react-components</Badge>
 
 ```bash
-npm install @antv/s2@next @antv/s2-react-components@next antd @ant-design/icons --save
+npm install @antv/s2 @antv/s2-react-components antd @ant-design/icons --save
 
 ```
 
 ### 使用 Vue3 版本 <Badge type="success">@antv/s2-vue</Badge> <Badge type="error">停止维护</Badge>
 
+:::warning{title="注意"}
+由于精力有限，`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
+:::
+
 ```bash
-npm install @antv/s2@next @antv/s2-vue@next ant-design-vue@3.x --save
+npm install @antv/s2 @antv/s2-vue ant-design-vue@3.x --save

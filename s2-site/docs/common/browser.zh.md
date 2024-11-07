@@ -37,14 +37,14 @@ order: 5
 <link rel="stylesheet" href="./dist/s2-vue.min.css"/>
 ```
 
-也可以直接使用 `CDN` （推荐）, 比如 [UNPKG](https://unpkg.com/@antv/s2@next) 或者 [![preview](https://data.jsdelivr.com/v1/package/npm/@antv/s2/badge)](https://www.jsdelivr.com/package/npm/@antv/s2)
+也可以直接使用 `CDN` （推荐）, 比如 [UNPKG](https://unpkg.com/@antv/s2) 或者 [![preview](https://data.jsdelivr.com/v1/package/npm/@antv/s2/badge)](https://www.jsdelivr.com/package/npm/@antv/s2)
 
 ```js
-<script src="https://unpkg.com/@antv/s2@next/dist/s2.min.js"></script>
+<script src="https://unpkg.com/@antv/s2/dist/s2.min.js"></script>
 
 // React 需额外引入样式：
-<link rel="stylesheet" href="https://unpkg.com/@antv/s2-react@next/dist/s2-react.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/@antv/s2-react/dist/s2-react.min.css"/>
 
 // Vue3 版本 需额外引入样式：
-<link rel="stylesheet" href="https://unpkg.com/@antv/s2-vue@next/dist/s2-vue.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/@antv/s2-vue/dist/s2-vue.min.css"/>
 ```

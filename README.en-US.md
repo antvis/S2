@@ -30,7 +30,7 @@ A practical visualization library for tabular analysis.
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
@@ -77,9 +77,9 @@ demo components and expansion capabilities, it allows developers to use it quick
 ## 📦 Installation
 
 ```bash
-$ npm install @antv/s2@next --save
-# yarn add @antv/s2@next
-# pnpm add @antv/s2@next
+$ npm install @antv/s2 --save
+# yarn add @antv/s2
+# pnpm add @antv/s2
 ```
 
 ## 🔨 Getting Started
