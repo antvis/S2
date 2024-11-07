@@ -90,13 +90,10 @@ export class Frame extends Group {
   private addCornerRightBorder() {
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       this.cfg;
-    const {
-      verticalBorderColor,
-      verticalBorderColorOpacity,
-      horizontalBorderWidth,
-    } = spreadsheet.theme?.splitLine!;
-
+    const { verticalBorderColor, verticalBorderColorOpacity } =
+      spreadsheet.theme?.splitLine!;
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
+    const frameHorizontalWidth = Frame.getHorizontalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
     // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
@@ -104,36 +101,62 @@ export class Frame extends Group {
     const {
       verticalBorderColor: headerVerticalBorderColor,
       verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
-    } =
-      spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
-        ? spreadsheet.theme.cornerCell!.cell!
-        : spreadsheet.theme.colCell!.cell!;
+      backgroundColor,
+      backgroundColorOpacity,
+    } = spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
+      ? spreadsheet.theme.cornerCell!.cell!
+      : spreadsheet.theme.colCell!.cell!;
 
-    renderLine(this, {
-      x1: x,
-      y1: position.y,
-      x2: x,
-      y2: position.y + cornerHeight,
-      stroke: verticalBorderColor || headerVerticalBorderColor,
-      lineWidth: frameVerticalWidth,
-      strokeOpacity:
-        verticalBorderColorOpacity || headerVerticalBorderColorOpacity,
+    /**
+     * G 6.0 颜色混合模式有调整, 相同颜色的 Line 在不同背景色绘制, 实际渲染的颜色会不一致
+     * 在绘制分割线前, 先填充一个和单元格相同的底色, 保证分割线和单元格边框表现一致
+     */
+    [
+      { stroke: backgroundColor, strokeOpacity: backgroundColorOpacity },
+      {
+        stroke: verticalBorderColor || headerVerticalBorderColor,
+        strokeOpacity:
+          verticalBorderColorOpacity || headerVerticalBorderColorOpacity,
+      },
+    ].forEach(({ stroke, strokeOpacity }) => {
+      renderLine(this, {
+        x1: x,
+        y1: position.y,
+        x2: x,
+        y2: position.y + cornerHeight,
+        lineWidth: frameVerticalWidth,
+        stroke,
+        strokeOpacity,
+      });
     });
 
     const {
       verticalBorderColor: cellVerticalBorderColor,
       verticalBorderColorOpacity: cellVerticalBorderColorOpacity,
+      backgroundColor: cellBackgroundColor,
+      backgroundColorOpacity: cellBackgroundColorOpacity,
     } = spreadsheet.theme.dataCell!.cell!;
 
-    renderLine(this, {
-      x1: x,
-      y1: position.y + cornerHeight + horizontalBorderWidth!,
-      x2: x,
-      y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
-      stroke: verticalBorderColor || cellVerticalBorderColor,
-      lineWidth: frameVerticalWidth,
-      strokeOpacity:
-        verticalBorderColorOpacity || cellVerticalBorderColorOpacity,
+    [
+      {
+        stroke: cellBackgroundColor,
+        strokeOpacity: cellBackgroundColorOpacity,
+      },
+      {
+        stroke: verticalBorderColor || cellVerticalBorderColor,
+        strokeOpacity:
+          verticalBorderColorOpacity || cellVerticalBorderColorOpacity,
+      },
+    ].forEach(({ stroke, strokeOpacity }) => {
+      renderLine(this, {
+        x1: x,
+        y1: position.y + cornerHeight + frameHorizontalWidth!,
+        x2: x,
+        y2: position.y + cornerHeight + frameHorizontalWidth! + viewportHeight,
+        lineWidth: frameVerticalWidth,
+        stroke,
+        strokeOpacity,
+      });
     });
   }
 

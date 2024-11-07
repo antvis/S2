@@ -497,7 +497,11 @@ export const getTheme = (
     },
     // ------------- split line -----------------
     splitLine: {
+      horizontalBorderColor: basicColors[12],
+      horizontalBorderColorOpacity: 0.2,
       horizontalBorderWidth: 2,
+      verticalBorderColor: basicColors[11],
+      verticalBorderColorOpacity: 0.25,
       verticalBorderWidth: 2,
       showShadow: true,
       shadowWidth: 8,
