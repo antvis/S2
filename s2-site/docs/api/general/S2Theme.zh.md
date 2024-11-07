@@ -113,11 +113,11 @@ s2.setTheme({
 
 | 参数                         | 说明                                                      | 类型                                   | 默认值                                                   | 必选 |
 | ---------------------------- | --------------------------------------------------------- | -------------------------------------- | -------------------------------------------------------- | ---- |
-| horizontalBorderColor        | 水平分割线颜色                                            | `string`                               | -                                                        |      |
-| horizontalBorderColorOpacity | 水平分割线颜色透明度                                      | `number`                               |  -                                                      |      |
+| horizontalBorderColor        | 水平分割线颜色                                            | `string`                               | `basicColors[12]`                                                        |      |
+| horizontalBorderColorOpacity | 水平分割线颜色透明度                                      | `number`                               |  0.2                                                      |      |
 | horizontalBorderWidth        | 水平分割线宽度                                            | `number`                               | 2                                                        |      |
-| verticalBorderColor          | 垂直分割线颜色                                            | `string`                               | -                                                        |      |
-| verticalBorderColorOpacity   | 垂直分割线颜色透明度                                      | `number`                               | -                                                    |      |
+| verticalBorderColor          | 垂直分割线颜色                                            | `string`                               | `basicColors[11]`                                                        |      |
+| verticalBorderColorOpacity   | 垂直分割线颜色透明度                                      | `number`                               | 0.25                                                    |      |
 | verticalBorderWidth          | 垂直分割线宽度                                            | `number`                               | 2                                                        |      |
 | showShadow                   | 分割线是否显示外阴影（行列冻结情况下）                    | `boolean`                              | `true`                                                   |      |
 | shadowWidth                  | 阴影宽度                                                  | `number`                               | 8                                                       |      |

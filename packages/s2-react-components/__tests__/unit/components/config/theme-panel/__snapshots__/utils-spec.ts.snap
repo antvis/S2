@@ -563,6 +563,7 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
+    "horizontalBorderColor": "#5184F6",
     "horizontalBorderColorOpacity": 1,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
@@ -571,6 +572,7 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
+    "verticalBorderColor": "#5184F6",
     "verticalBorderColorOpacity": 1,
     "verticalBorderWidth": 2,
   },
@@ -1140,6 +1142,8 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
+    "horizontalBorderColor": "#326EF4",
+    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -1147,6 +1151,8 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
+    "verticalBorderColor": "#5184F6",
+    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -1715,6 +1721,8 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
+    "horizontalBorderColor": "#396",
+    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -1722,6 +1730,8 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
+    "verticalBorderColor": "#52A87D",
+    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -2290,6 +2300,8 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
+    "horizontalBorderColor": "#326EF4",
+    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -2297,6 +2309,8 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
+    "verticalBorderColor": "#326EF4",
+    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -2865,6 +2879,8 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
+    "horizontalBorderColor": "#326EF4",
+    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -2872,6 +2888,8 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
+    "verticalBorderColor": "#5184F6",
+    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -3440,6 +3458,8 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
+    "horizontalBorderColor": "#B6C0D7",
+    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -3447,6 +3467,8 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
+    "verticalBorderColor": "#B6C0D7",
+    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -4016,6 +4038,8 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
+    "horizontalBorderColor": "#326EF4",
+    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 0,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -4023,6 +4047,8 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
+    "verticalBorderColor": "#5184F6",
+    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 0,
   },
 }
