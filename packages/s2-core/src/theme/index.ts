@@ -1,6 +1,15 @@
 /* eslint-disable max-lines-per-function */
-import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
-import type { DefaultCellTheme, S2Theme, ThemeCfg } from '../common/interface';
+import {
+  CELL_PADDING,
+  FONT_FAMILY,
+  INTERVAL_BAR_HEIGHT,
+} from '../common/constant';
+import type {
+  DefaultCellTheme,
+  Padding,
+  S2Theme,
+  ThemeCfg,
+} from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -20,6 +29,12 @@ export const getTheme = (
 
   const isTable = themeCfg?.spreadsheet?.isTableMode();
   const boldTextDefaultFontWeight = isWindows() ? 'bold' : 700;
+  const cellPadding: Padding = {
+    top: CELL_PADDING,
+    right: CELL_PADDING,
+    bottom: CELL_PADDING,
+    left: CELL_PADDING,
+  };
 
   const getDataCell = (): DefaultCellTheme => ({
     bolderText: {
@@ -56,12 +71,7 @@ export const getTheme = (
       horizontalBorderWidth: 1,
       verticalBorderWidth: 1,
       // -------------- layout -----------------
-      padding: {
-        top: 8,
-        right: 8,
-        bottom: 8,
-        left: 8,
-      },
+      padding: cellPadding,
 
       /* ---------- interaction state ----------- */
       interactionState: {
@@ -200,12 +210,7 @@ export const getTheme = (
         // -------------- border dash -----------------
         borderDash: [],
         // -------------- layout -----------------
-        padding: {
-          top: 4,
-          right: 8,
-          bottom: 4,
-          left: 8,
-        },
+        padding: cellPadding,
 
         /* ---------- interaction state ----------- */
         interactionState: {
@@ -309,12 +314,7 @@ export const getTheme = (
         // -------------- border dash -----------------
         borderDash: [],
         // -------------- layout -----------------
-        padding: {
-          top: 4,
-          right: 8,
-          bottom: 4,
-          left: 8,
-        },
+        padding: cellPadding,
 
         /* ---------- interaction state ----------- */
         interactionState: {
@@ -409,12 +409,7 @@ export const getTheme = (
         // -------------- border dash -----------------
         borderDash: [],
         // -------------- layout -----------------
-        padding: {
-          top: 4,
-          right: 8,
-          bottom: 4,
-          left: 8,
-        },
+        padding: cellPadding,
 
         /* ---------- interaction state ----------- */
         interactionState: {

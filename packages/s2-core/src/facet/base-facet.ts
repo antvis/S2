@@ -456,6 +456,7 @@ export abstract class BaseFacet {
     const { padding } = cell.getStyle().cell;
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
+
     const height =
       cell.isMultiLineText() && textHeight >= defaultHeight
         ? adaptiveHeight
