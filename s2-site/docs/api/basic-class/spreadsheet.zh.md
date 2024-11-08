@@ -14,7 +14,7 @@ s2.isPivotMode()
 
 | 参数 | 说明                                                                                                                     | 类型 | 版本 |
 | --- |------------------------------------------------------------------------------------------------------------------------| --- |----|
-| dom | 挂载的容器节点                                                                                                                | `string` \| `HTMLElement`   |  |
+| themeName | 主题名                                                                                                                | [ThemeName](/api/general/s2-theme#themename)  |  |
 | theme | 主题配置                                                                                                                   | [S2Theme](/docs/api/general/S2Theme) |    |
 | store | 存储的一些信息                                                                                                                | [Store](/docs/api/basic-class/store) |    |
 | dataCfg | 数据配置                                                                                                                   | [S2DataConfig](/docs/api/general/S2DataConfig) |    |
@@ -24,11 +24,15 @@ s2.isPivotMode()
 | tooltip | 提示信息                                                                                                                | [BaseTooltip](/docs/api/basic-class/base-tooltip) |    |
 | container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.antgroup.com/api/renderer/canvas) |    |
 | interaction | 交互                                                                                                                     |  [Interaction](/zh/docs/api/basic-class/interaction) |    |
-| hd | 开启高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
+| hdAdapter | 高清适配器                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
+| destroyed | 表格是否已销毁                                                                                                                   | `boolean` |    |
 | on | 事件订阅                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), listener: () => void) => void |    |
 | emit | 事件发布                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), ...args: any[]) => void |    |
 | getDataSet | 获取数据集                                                                                                                  | (options: [S2Options](/docs/api/general/S2Options)) => [BaseDataSet](/docs/api/basic-class/base-data-set) |    |
 | isPivotMode | 是否是透视表                                                                                                                 | `() => boolean` |    |
+| isCustomRowFields | 是否是自定义行头维值                                                                                                                 | `() => boolean` |    |
+| isCustomColumnFields | 是否是自定义列头维值                                                                                                                 | `() => boolean` |    |
+| isCustomHeaderFields | 是否是自定义表头维值                                                                                                                 | `() => boolean` |    |
 | isHierarchyTreeType | 是否是树状结构                                                                                                                | `() => boolean` |    |
 | isFrozenRowHeader | 是否是冻结行头状态                                                                                                              | `() => boolean` |    |
 | isTableMode | 是否是明细表                                                                                                                 | `() => boolean` |    |
@@ -48,7 +52,7 @@ s2.isPivotMode()
 | setThemeCfg | 更新主题配置 （含主题 schema, 色板，主题名）                                                                                            | (themeCfg: [ThemeCfg](/docs/api/general/S2Theme/#themecfg)) => void |    |
 | setTheme | 更新主题 （只包含主题 scheme)                                                                                                    | (theme: [S2Theme](/docs/api/general/S2Theme/#s2theme)) => void |    |
 | getTheme | 获取主题 （只包含主题 scheme)                                                                                                    | ( ) => [S2Theme](/docs/api/general/S2Theme/#s2theme) |    |
-| getThemeName | 获取主题名                                                                                                    | ( ) => `default \| colorful \| gray \| dark` |    |
+| getThemeName | 获取主题名                                                                                                    | () => [ThemeName](/api/general/s2-theme#themename) |    |
 | updatePagination | 更新分页                                                                                                                   | (pagination: [Pagination](/docs/api/general/S2Options#pagination)) => void |    |
 | changeSheetSize  | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|    |
