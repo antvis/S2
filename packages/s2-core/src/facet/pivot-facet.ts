@@ -205,10 +205,10 @@ export class PivotFacet extends FrozenFacet {
     this.calculateColLeafNodesWidth(layoutResult);
     // 2. 根据叶子节点宽度计算所有父级节点宽度和 x 坐标, 便于计算自动换行后节点的真实高度
     this.calculateColNodeWidthAndX(colLeafNodes);
-    // 3. 计算每一层级的采样节点
-    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
-    // 4. 计算所有节点的高度
+    // 3. 计算所有节点的高度
     this.calculateColNodesHeight(colsHierarchy);
+    // 4. 计算每一层级的采样节点
+    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
     // 5. 如果存在自定义多级列头, 还需要更新某一层级的采样
     this.updateCustomFieldsSampleNodes(colsHierarchy);
     // 6. 补齐自定义列头节点缺失的高度
