@@ -489,8 +489,8 @@ export class TableFacet extends FrozenFacet {
     // 先计算宽度, 再计算高度, 确保计算多行文本时能获取到正确的最大文本宽度
     this.calculateColLeafNodesWidth(colLeafNodes, colsHierarchy);
     this.calculateColNodeWidthAndX(colLeafNodes);
-    this.calculateColNodesHeight(colsHierarchy);
     this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
+    this.calculateColNodesHeight(colsHierarchy);
     this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustCustomColLeafNodesHeight({
       leafNodes: colLeafNodes,
