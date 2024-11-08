@@ -28,17 +28,28 @@ s2.setTheme({
 
 功能描述：表格主题配置项。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/default/#colorful)
 
-| 参数    | 参数        | 类型                              | 默认值    | 必选 |
+| 参数    | 说明        | 类型                              | 默认值    | 必选 |
 | ------- | ----------- | --------------------------------- | --------- | ---- |
 | theme   | 主题 schema | [S2Theme](#s2theme)               | -         |      |
 | palette | 色板        | [Palette](#palette)               | -         |      |
-| name    | 主题名      | `default` \| `colorful` \| `gray` | `default` |      |
+| name    | 主题名      | [ThemeName](#themename) | `default` |      |
+
+### ThemeName
+
+功能描述：表格主题名称。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/default/#colorful)
+
+| 参数 | 说明           | 类型                   | 默认值 | 必选 |
+| ---- | -------------- | ---------------------- | ------ | ---- |
+| default | 默认      | `string` | -      |     |
+| colorful | 多彩蓝     | `string` | -      |     |
+| gray | 简约灰       | `string` | -      |     |
+| dark | 暗黑       | `string` | -      |     |
 
 ### Palette
 
 功能描述：表主题色板。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/custom/#custom-palette)
 
-| 参数                | 参数                                                | 类型                                                             | 默认值 | 必选 |
+| 参数                | 说明                                                | 类型                                                             | 默认值 | 必选 |
 | ------------------- | --------------------------------------------------- | ---------------------------------------------------------------- | ------ | ---- |
 | brandColor          | 色板主题色                                          | `string`                                                         | -      | ✓    |
 | basicColors         | 基础颜色                                            | `string[]`                                                       | -      | ✓    |
@@ -50,7 +61,7 @@ s2.setTheme({
 
 功能描述：表格主题 `Schema`. 查看 [文档](/manual/basic/theme#%E4%B8%BB%E9%A2%98-schema) 和 [示例](/examples/theme/custom/#custom-palette)
 
-| 参数              | 参数                                   | 类型                                            | 默认值 | 必选 |
+| 参数              | 说明                                   | 类型                                            | 默认值 | 必选 |
 | ----------------- | -------------------------------------- | ----------------------------------------------- | ------ | ---- |
 | cornerCell        | 角头单元格主题                         | [DefaultCellTheme](#defaultcelltheme)           |        |      |
 | rowCell           | 行头单元格主题                         | [DefaultCellTheme](#defaultcelltheme)           |        |      |
