@@ -21,7 +21,7 @@ export class HdAdapter {
 
   private zoomOffsetLeft: number | undefined;
 
-  private destroyed: boolean = false
+  private destroyed: boolean = false;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -33,7 +33,7 @@ export class HdAdapter {
   };
 
   public destroy = () => {
-    this.destroyed = true
+    this.destroyed = true;
     this.removeDevicePixelRatioListener();
     this.removeDeviceZoomListener();
   };
@@ -113,6 +113,10 @@ export class HdAdapter {
   private renderByDevicePixelRatio = async (
     ratio = window.devicePixelRatio,
   ) => {
+    if (this.destroyed) {
+      return;
+    }
+
     const {
       container,
       options: { width, height },
@@ -121,7 +125,7 @@ export class HdAdapter {
     const currentRatio = Math.ceil(ratio);
     const lastRatio = container.getConfig().devicePixelRatio ?? 1;
 
-    if (this.destroyed || lastRatio === currentRatio || !canvas) {
+    if (lastRatio === currentRatio || !canvas) {
       return;
     }
 
@@ -134,8 +138,9 @@ export class HdAdapter {
 
   private renderByZoomScale = debounce(async (event: Event) => {
     if (this.destroyed) {
-      return
+      return;
     }
+
     const target = event.target as VisualViewport;
     const ratio = Math.ceil(target?.scale);
 
