@@ -26,9 +26,9 @@ fetch(
           displayCondition: (meta) => meta.level > 0,
           onClick: (options) => {
             console.log(options);
-            const { meta, event } = options;
-
-            meta.spreadsheet.handleGroupSort(event, meta);
+          },
+          onHover: (options) => {
+            console.log(options);
           },
         },
         {
@@ -38,7 +38,7 @@ fetch(
           onClick: (options) => {
             const { meta, event } = options;
 
-            meta.spreadsheet.tooltip.show({
+            meta.spreadsheet.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: `<div>ColTooltip</div>`,
             });
@@ -51,7 +51,7 @@ fetch(
           onClick: (options) => {
             const { meta, event } = options;
 
-            meta.spreadsheet.tooltip.show({
+            meta.spreadsheet.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: `<div>CornerTooltip</div>`,
             });
@@ -66,7 +66,7 @@ fetch(
               onClick: (options) => {
                 const { meta, event } = options;
 
-                meta.spreadsheet.tooltip.show({
+                meta.spreadsheet.showTooltip({
                   position: { x: event.clientX, y: event.clientY },
                   content: `<div>RowTooltip</div>`,
                 });
@@ -83,7 +83,7 @@ fetch(
 
                 content.innerHTML = '我是 RowTooltip 自定义内容';
 
-                meta.spreadsheet.tooltip.show({
+                meta.spreadsheet.showTooltip({
                   position: { x: event.clientX, y: event.clientY },
                   content,
                 });
