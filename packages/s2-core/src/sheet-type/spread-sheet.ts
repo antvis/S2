@@ -98,7 +98,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * 表格是否已销毁
    */
-  private destroyed = false;
+  public destroyed = false;
 
   protected abstract bindEvents(): void;
 
