@@ -23,6 +23,29 @@ export const customColSimpleColumns: CustomTreeNode[] = [
   },
 ];
 
+export const customColSimpleMultipleTextColumns: CustomTreeNode[] = [
+  {
+    field: 'area',
+    title: '地区'.repeat(50),
+    children: [
+      { field: 'province', title: '省份' },
+      { field: 'city', title: '城市' },
+    ],
+  },
+  {
+    field: 'type',
+    title: '类型',
+  },
+  {
+    field: 'money',
+    title: '金额'.repeat(20),
+    children: [
+      { field: 'price', title: '价格', description: '价格描述' },
+      { field: 'number', title: '数量'.repeat(30) },
+    ],
+  },
+];
+
 export const customColMultipleColumns: CustomTreeNode[] = [
   {
     field: 'a-1',
