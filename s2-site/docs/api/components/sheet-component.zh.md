@@ -354,7 +354,7 @@ type SheetComponentOptions = S2Options<
 | -- | -- | -- | -- | --- |
 | reloadData | 是否重新加载数据 | `boolean` |  |  |
 | rebuildDataSet | 是否重新生成数据集 | `boolean` |  |  |
-| reBuildHiddenColumnsDetail | 是否重新生成列头隐藏信息 | `boolean` |  |  |
+| rebuildHiddenColumnsDetail | 是否重新生成列头隐藏信息 | `boolean` |  |  |
 
 <embed src="@/docs/common/view-meta.zh.md"></embed>
 <embed src="@/docs/common/interaction.zh.md"></embed>

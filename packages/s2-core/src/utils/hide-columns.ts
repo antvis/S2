@@ -131,7 +131,7 @@ export const hideColumns = async (
     spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
     await spreadsheet.render({
       reloadData: false,
-      reBuildHiddenColumnsDetail: false,
+      rebuildHiddenColumnsDetail: false,
     });
   };
 
