@@ -129,10 +129,10 @@ export function useSpreadSheet(props: SheetComponentProps) {
         if (!isEqual(prevOptions?.hierarchyType, options?.hierarchyType)) {
           rebuildDataSet = true;
           reloadData = true;
-          rerender = true;
           s2Ref.current?.setDataCfg(dataCfg);
         }
 
+        rerender = true;
         s2Ref.current?.setOptions(options as S2Options);
         s2Ref.current?.changeSheetSize(options!.width, options!.height);
       }

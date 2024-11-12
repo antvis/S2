@@ -23,6 +23,7 @@ describe('useSpreadSheet tests', () => {
     fields: S2DataConfig['fields'] = mockDataConfig.fields,
   ): SheetComponentProps => {
     return {
+      sheetType: 'pivot' as const,
       spreadsheet: () =>
         new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options),
       options: s2Options,
@@ -35,9 +36,7 @@ describe('useSpreadSheet tests', () => {
 
   test('should build spreadSheet', async () => {
     const props = getConfig();
-    const { result } = renderHook(() =>
-      useSpreadSheet({ ...props, sheetType: 'pivot' }),
-    );
+    const { result } = renderHook(() => useSpreadSheet({ ...props }));
 
     await waitFor(() => {
       expect(result.current.s2Ref).toBeDefined();
@@ -47,7 +46,6 @@ describe('useSpreadSheet tests', () => {
   test('should cannot change table size when width or height updated and disable adaptive', async () => {
     const props = {
       ...getConfig(),
-      sheetType: 'pivot' as const,
       adaptive: false,
     };
     const { result } = renderHook(() => useSpreadSheet(props));
@@ -126,7 +124,6 @@ describe('useSpreadSheet tests', () => {
 
     const props = {
       ...getConfig(),
-      sheetType: 'pivot' as const,
       onDestroy: onDestroyFromProps,
     };
     const { result, unmount } = renderHook(() => useSpreadSheet(props));
@@ -160,7 +157,6 @@ describe('useSpreadSheet tests', () => {
 
     const props = {
       ...getConfig(),
-      sheetType: 'pivot' as const,
       onMounted,
     };
     const { result } = renderHook(() => useSpreadSheet(props));
@@ -173,40 +169,67 @@ describe('useSpreadSheet tests', () => {
     });
   });
 
-  test('should call onUpdate and onUpdateAfterRender when sheet updated', async () => {
-    const onUpdate = jest.fn();
-    const onUpdateAfterRender = jest.fn();
-
-    const props = {
-      ...getConfig(),
-      sheetType: 'pivot' as const,
-      onUpdate,
-      onUpdateAfterRender,
-    };
-    const { rerender } = renderHook(
-      (innerProps) => useSpreadSheet(innerProps),
-      {
-        initialProps: props,
+  test.each([
+    {
+      updatedProps: {
+        options: { width: 200 },
       },
-    );
-
-    await waitFor(() => {
-      expect(onUpdate).toHaveBeenCalledTimes(0);
-      expect(onUpdateAfterRender).toHaveBeenCalledTimes(0);
-    });
-
-    act(() => {
-      rerender({ ...props, options: { width: 200 } });
-    });
-
-    await waitFor(() => {
-      expect(onUpdate).toHaveBeenCalledWith({
+      updateOptions: {
         rebuildDataSet: false,
         reloadData: false,
+      },
+    },
+    {
+      updatedProps: {
+        themeCfg: { name: 'dark' },
+      },
+      updateOptions: {
+        rebuildDataSet: false,
+        reloadData: false,
+      },
+    },
+    {
+      updatedProps: {
+        dataCfg: { fields: ['test'] },
+      },
+      updateOptions: {
+        rebuildDataSet: false,
+        reloadData: true,
+      },
+    },
+  ])(
+    'should call onUpdate and onUpdateAfterRender when sheet %o updated',
+    async ({ updatedProps, updateOptions }) => {
+      const onUpdate = jest.fn();
+      const onUpdateAfterRender = jest.fn();
+
+      const props = {
+        ...getConfig(),
+        onUpdate,
+        onUpdateAfterRender,
+      };
+      const { rerender } = renderHook(
+        (innerProps) => useSpreadSheet(innerProps),
+        {
+          initialProps: props,
+        },
+      );
+
+      await waitFor(() => {
+        expect(onUpdate).toHaveBeenCalledTimes(0);
+        expect(onUpdateAfterRender).toHaveBeenCalledTimes(0);
       });
-      expect(onUpdateAfterRender).toHaveBeenCalledTimes(1);
-    });
-  });
+
+      act(() => {
+        rerender({ ...props, ...updatedProps });
+      });
+
+      await waitFor(() => {
+        expect(onUpdate).toHaveBeenCalledWith(updateOptions);
+        expect(onUpdateAfterRender).toHaveBeenCalledTimes(1);
+      });
+    },
+  );
 
   test('should use custom render mode by onUpdate', async () => {
     const onUpdate = jest.fn((options) => ({ ...options, reloadData: true }));
@@ -214,7 +237,6 @@ describe('useSpreadSheet tests', () => {
 
     const props = {
       ...getConfig(),
-      sheetType: 'pivot' as const,
       onUpdate,
       onUpdateAfterRender,
     };
@@ -226,7 +248,7 @@ describe('useSpreadSheet tests', () => {
     );
 
     act(() => {
-      rerender({ ...props, options: { width: 200 } });
+      rerender({ ...props, options: { width: 300 } });
     });
 
     await waitFor(() => {
