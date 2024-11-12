@@ -215,7 +215,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具家具家...",
     "actualTextHeight": 64,
-    "actualTextWidth": 290,
+    "actualTextWidth": 289,
     "height": 72,
     "multiLineActualTexts": Array [
       "家具家具家具",
@@ -229,7 +229,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 64,
-    "actualTextWidth": 290,
+    "actualTextWidth": 289,
     "height": 72,
     "multiLineActualTexts": Array [
       "桌子桌子桌子",
@@ -323,7 +323,7 @@ Array [
   Object {
     "actualText": "浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙...",
     "actualTextHeight": 64,
-    "actualTextWidth": 290,
+    "actualTextWidth": 289,
     "height": 72,
     "multiLineActualTexts": Array [
       "浙江浙江浙江",
@@ -404,7 +404,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 64,
-    "actualTextWidth": 290,
+    "actualTextWidth": 289,
     "height": 72,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -418,7 +418,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 64,
-    "actualTextWidth": 288,
+    "actualTextWidth": 289,
     "height": 72,
     "multiLineActualTexts": Array [
       "杭州市杭州市",
@@ -878,7 +878,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 72,
     "multiLineActualTexts": Array [
       "77897789778",
@@ -1182,7 +1182,7 @@ Array [
   Object {
     "actualText": "城市城市城...",
     "actualTextHeight": 16,
-    "actualTextWidth": 71,
+    "actualTextWidth": 70,
     "height": 30,
     "multiLineActualTexts": Array [
       "城市城市城...",
@@ -1280,7 +1280,7 @@ Array [
   Object {
     "actualText": "数量数量数...",
     "actualTextHeight": 16,
-    "actualTextWidth": 69,
+    "actualTextWidth": 70,
     "height": 30,
     "multiLineActualTexts": Array [
       "数量数量数...",
@@ -1302,7 +1302,7 @@ Array [
   Object {
     "actualText": "数量数量数...",
     "actualTextHeight": 16,
-    "actualTextWidth": 69,
+    "actualTextWidth": 70,
     "height": 30,
     "multiLineActualTexts": Array [
       "数量数量数...",
@@ -1329,7 +1329,7 @@ Array [
   Object {
     "actualText": "浙江省浙江...",
     "actualTextHeight": 16,
-    "actualTextWidth": 71,
+    "actualTextWidth": 70,
     "height": 30,
     "multiLineActualTexts": Array [
       "浙江省浙江...",
@@ -1570,7 +1570,7 @@ Array [
   Object {
     "actualText": "province",
     "actualTextHeight": 16,
-    "actualTextWidth": 53,
+    "actualTextWidth": 54,
     "height": 20,
     "multiLineActualTexts": Array [
       "province",
@@ -1581,7 +1581,7 @@ Array [
   Object {
     "actualText": "city",
     "actualTextHeight": 16,
-    "actualTextWidth": 22,
+    "actualTextWidth": 23,
     "height": 20,
     "multiLineActualTexts": Array [
       "city",
@@ -1592,7 +1592,7 @@ Array [
   Object {
     "actualText": "type",
     "actualTextHeight": 16,
-    "actualTextWidth": 27,
+    "actualTextWidth": 28,
     "height": 20,
     "multiLineActualTexts": Array [
       "type",
@@ -1603,7 +1603,7 @@ Array [
   Object {
     "actualText": "sub_type",
     "actualTextHeight": 16,
-    "actualTextWidth": 54,
+    "actualTextWidth": 55,
     "height": 20,
     "multiLineActualTexts": Array [
       "sub_type",
@@ -2255,7 +2255,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -2355,7 +2355,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -2379,7 +2379,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -2392,7 +2392,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -2405,7 +2405,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -2418,7 +2418,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -2453,7 +2453,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -2477,7 +2477,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -2550,7 +2550,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -2563,7 +2563,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -2879,7 +2879,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 20,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -3161,7 +3161,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -3260,7 +3260,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -3283,7 +3283,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -3311,7 +3311,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -3565,7 +3565,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -3664,7 +3664,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -3687,7 +3687,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -3715,7 +3715,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -3969,7 +3969,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -4068,7 +4068,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -4091,7 +4091,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -4119,7 +4119,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -4373,7 +4373,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -4472,7 +4472,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -4495,7 +4495,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -4523,7 +4523,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -4777,7 +4777,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -4876,7 +4876,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -4899,7 +4899,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -4927,7 +4927,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 20,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -5181,7 +5181,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 70,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -5220,7 +5220,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 70,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -5232,7 +5232,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 70,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -5490,7 +5490,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 64,
-    "actualTextWidth": 290,
+    "actualTextWidth": 289,
     "height": 72,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -5647,7 +5647,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -5746,7 +5746,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -5769,7 +5769,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -5797,7 +5797,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 35,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -6156,7 +6156,7 @@ Array [
   Object {
     "actualText": "浙江省浙江...",
     "actualTextHeight": 16,
-    "actualTextWidth": 71,
+    "actualTextWidth": 70,
     "height": 30,
     "multiLineActualTexts": Array [
       "浙江省浙江...",
@@ -6807,7 +6807,7 @@ Array [
   Object {
     "actualText": "城市城@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 74,
+    "actualTextWidth": 73,
     "height": 30,
     "multiLineActualTexts": Array [
       "城市城@@@",
@@ -6905,7 +6905,7 @@ Array [
   Object {
     "actualText": "数量数@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 74,
+    "actualTextWidth": 73,
     "height": 30,
     "multiLineActualTexts": Array [
       "数量数@@@",
@@ -6927,7 +6927,7 @@ Array [
   Object {
     "actualText": "数量数@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 74,
+    "actualTextWidth": 73,
     "height": 30,
     "multiLineActualTexts": Array [
       "数量数@@@",
@@ -6954,7 +6954,7 @@ Array [
   Object {
     "actualText": "浙江省@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 74,
+    "actualTextWidth": 73,
     "height": 30,
     "multiLineActualTexts": Array [
       "浙江省@@@",
@@ -6981,7 +6981,7 @@ Array [
   Object {
     "actualText": "236723@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 80,
+    "actualTextWidth": 79,
     "height": 30,
     "multiLineActualTexts": Array [
       "236723@@@",
@@ -7206,7 +7206,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城...",
     "actualTextHeight": 48,
-    "actualTextWidth": 217,
+    "actualTextWidth": 216,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -7306,7 +7306,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数...",
     "actualTextHeight": 48,
-    "actualTextWidth": 215,
+    "actualTextWidth": 216,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -7330,7 +7330,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数...",
     "actualTextHeight": 48,
-    "actualTextWidth": 215,
+    "actualTextWidth": 216,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -7359,7 +7359,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 217,
+    "actualTextWidth": 216,
     "height": 56,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -7557,14 +7557,14 @@ Array [
     "width": 80,
   },
   Object {
-    "actualText": "省份/城市城市城市城市城市城市...",
+    "actualText": "省份/城市城市城市城市城市城市城...",
     "actualTextHeight": 48,
-    "actualTextWidth": 186,
+    "actualTextWidth": 198,
     "height": 56,
     "multiLineActualTexts": Array [
       "省份/城市城",
       "市城市城市",
-      "城市城市...",
+      "城市城市城...",
     ],
     "originalText": "省份/城市城市城市城市城市城市城市城市城市城市城市城市",
     "width": 100,
@@ -7672,7 +7672,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -7707,7 +7707,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -7731,7 +7731,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -7744,7 +7744,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -7757,7 +7757,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -7770,7 +7770,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -7805,7 +7805,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -7829,7 +7829,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -7845,14 +7845,14 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines for tree mode 4`] = `
 Array [
   Object {
-    "actualText": "浙江浙江浙江浙江浙江浙江浙江...",
+    "actualText": "浙江浙江浙江浙江浙江浙江浙江浙...",
     "actualTextHeight": 48,
-    "actualTextWidth": 181,
+    "actualTextWidth": 192,
     "height": 56,
     "multiLineActualTexts": Array [
       "浙江浙江浙",
       "江浙江浙江",
-      "浙江浙江...",
+      "浙江浙江浙...",
     ],
     "originalText": "浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江",
     "width": 100,
@@ -7925,14 +7925,14 @@ Array [
     "width": 100,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江...",
+    "actualText": "浙江省浙江省浙江省浙江省浙江省...",
     "actualTextHeight": 48,
-    "actualTextWidth": 181,
+    "actualTextWidth": 192,
     "height": 56,
     "multiLineActualTexts": Array [
       "浙江省浙江",
       "省浙江省浙",
-      "江省浙江...",
+      "江省浙江省...",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 100,
@@ -7940,7 +7940,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 191,
+    "actualTextWidth": 192,
     "height": 56,
     "multiLineActualTexts": Array [
       "杭州市杭州",
@@ -8402,7 +8402,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 56,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -8688,7 +8688,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市",
@@ -8787,7 +8787,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -8810,7 +8810,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 142,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量",
@@ -8838,7 +8838,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江...",
     "actualTextHeight": 32,
-    "actualTextWidth": 144,
+    "actualTextWidth": 143,
     "height": 40,
     "multiLineActualTexts": Array [
       "浙江省浙江省",
@@ -9729,7 +9729,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 88,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -10109,7 +10109,7 @@ Array [
   Object {
     "actualText": "省份省份省份省份省份省份省份省份省份省份省份省份省份省...",
     "actualTextHeight": 64,
-    "actualTextWidth": 338,
+    "actualTextWidth": 337,
     "height": 72,
     "multiLineActualTexts": Array [
       "省份省份省份省",
@@ -10123,7 +10123,7 @@ Array [
   Object {
     "actualText": "city",
     "actualTextHeight": 16,
-    "actualTextWidth": 22,
+    "actualTextWidth": 23,
     "height": 72,
     "multiLineActualTexts": Array [
       "city",
@@ -10134,7 +10134,7 @@ Array [
   Object {
     "actualText": "type",
     "actualTextHeight": 16,
-    "actualTextWidth": 27,
+    "actualTextWidth": 28,
     "height": 72,
     "multiLineActualTexts": Array [
       "type",
@@ -10145,7 +10145,7 @@ Array [
   Object {
     "actualText": "sub_type",
     "actualTextHeight": 16,
-    "actualTextWidth": 54,
+    "actualTextWidth": 55,
     "height": 72,
     "multiLineActualTexts": Array [
       "sub_type",
@@ -10156,7 +10156,7 @@ Array [
   Object {
     "actualText": "number",
     "actualTextHeight": 16,
-    "actualTextWidth": 48,
+    "actualTextWidth": 49,
     "height": 72,
     "multiLineActualTexts": Array [
       "number",
@@ -10273,7 +10273,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -10364,7 +10364,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -10546,7 +10546,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -10638,7 +10638,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 80,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -11012,7 +11012,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -11103,7 +11103,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -11285,7 +11285,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -11377,7 +11377,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 80,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -11843,7 +11843,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -11868,7 +11868,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -11918,7 +11918,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -11944,7 +11944,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 80,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -13253,7 +13253,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 32,
-    "actualTextWidth": 199,
+    "actualTextWidth": 198,
     "height": 64,
     "multiLineActualTexts": Array [
       "778977897789778977",
@@ -13610,7 +13610,7 @@ Array [
   Object {
     "actualText": "城市城市城市...",
     "actualTextHeight": 16,
-    "actualTextWidth": 83,
+    "actualTextWidth": 82,
     "height": 30,
     "multiLineActualTexts": Array [
       "城市城市城市...",
@@ -13621,7 +13621,7 @@ Array [
   Object {
     "actualText": "类别类别类别...",
     "actualTextHeight": 16,
-    "actualTextWidth": 83,
+    "actualTextWidth": 82,
     "height": 30,
     "multiLineActualTexts": Array [
       "类别类别类别...",
@@ -13643,7 +13643,7 @@ Array [
   Object {
     "actualText": "数量数量数量...",
     "actualTextHeight": 16,
-    "actualTextWidth": 83,
+    "actualTextWidth": 82,
     "height": 30,
     "multiLineActualTexts": Array [
       "数量数量数量...",
@@ -13815,7 +13815,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省...",
     "actualTextHeight": 16,
-    "actualTextWidth": 81,
+    "actualTextWidth": 82,
     "height": 30,
     "multiLineActualTexts": Array [
       "浙江省浙江省...",
@@ -13958,7 +13958,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市...",
     "actualTextHeight": 16,
-    "actualTextWidth": 81,
+    "actualTextWidth": 82,
     "height": 30,
     "multiLineActualTexts": Array [
       "杭州市杭州市...",
@@ -14101,7 +14101,7 @@ Array [
   Object {
     "actualText": "家具家具家具...",
     "actualTextHeight": 16,
-    "actualTextWidth": 81,
+    "actualTextWidth": 82,
     "height": 30,
     "multiLineActualTexts": Array [
       "家具家具家具...",
@@ -14244,7 +14244,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子...",
     "actualTextHeight": 16,
-    "actualTextWidth": 81,
+    "actualTextWidth": 82,
     "height": 30,
     "multiLineActualTexts": Array [
       "桌子桌子桌子...",
@@ -14677,7 +14677,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -14714,7 +14714,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -14855,7 +14855,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -14967,7 +14967,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -15079,7 +15079,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -15191,7 +15191,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -15304,7 +15304,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 64,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -15564,7 +15564,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -15601,7 +15601,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -15742,7 +15742,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -15854,7 +15854,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -15966,7 +15966,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -16078,7 +16078,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -16191,7 +16191,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 64,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -16451,7 +16451,7 @@ Array [
   Object {
     "actualText": "province",
     "actualTextHeight": 16,
-    "actualTextWidth": 53,
+    "actualTextWidth": 54,
     "height": 20,
     "multiLineActualTexts": Array [
       "province",
@@ -16462,7 +16462,7 @@ Array [
   Object {
     "actualText": "city",
     "actualTextHeight": 16,
-    "actualTextWidth": 22,
+    "actualTextWidth": 23,
     "height": 20,
     "multiLineActualTexts": Array [
       "city",
@@ -16473,7 +16473,7 @@ Array [
   Object {
     "actualText": "type",
     "actualTextHeight": 16,
-    "actualTextWidth": 27,
+    "actualTextWidth": 28,
     "height": 20,
     "multiLineActualTexts": Array [
       "type",
@@ -16484,7 +16484,7 @@ Array [
   Object {
     "actualText": "sub_type",
     "actualTextHeight": 16,
-    "actualTextWidth": 54,
+    "actualTextWidth": 55,
     "height": 20,
     "multiLineActualTexts": Array [
       "sub_type",
@@ -16495,7 +16495,7 @@ Array [
   Object {
     "actualText": "number",
     "actualTextHeight": 16,
-    "actualTextWidth": 48,
+    "actualTextWidth": 49,
     "height": 20,
     "multiLineActualTexts": Array [
       "number",
@@ -17364,7 +17364,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 70,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -17401,7 +17401,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 70,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -17509,7 +17509,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -17588,7 +17588,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -17667,7 +17667,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -17746,7 +17746,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -17826,7 +17826,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 100,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -17922,7 +17922,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 70,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -17934,7 +17934,7 @@ Array [
   Object {
     "actualText": "类别类别类别类别类别类别类...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 70,
     "multiLineActualTexts": Array [
       "类别类别类别类",
@@ -17957,7 +17957,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 70,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -18263,7 +18263,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -18354,7 +18354,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -18536,7 +18536,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 64,
-    "actualTextWidth": 336,
+    "actualTextWidth": 337,
     "height": 80,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -18628,7 +18628,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 80,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -18954,7 +18954,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -18966,7 +18966,7 @@ Array [
   Object {
     "actualText": "类别类别类别类别类别类别类...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "类别类别类别类",
@@ -18989,7 +18989,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -19217,7 +19217,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 20,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -19416,7 +19416,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 20,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -19615,7 +19615,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 20,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -19814,7 +19814,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 20,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -20295,7 +20295,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -20307,7 +20307,7 @@ Array [
   Object {
     "actualText": "类别类别类别类别类别类别类...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "类别类别类别类",
@@ -20330,7 +20330,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -20404,7 +20404,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -20449,7 +20449,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -20494,7 +20494,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -20539,7 +20539,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -20789,7 +20789,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 20,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -20801,7 +20801,7 @@ Array [
   Object {
     "actualText": "类别类别类别类别类别类别类...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 20,
     "multiLineActualTexts": Array [
       "类别类别类别类",
@@ -20824,7 +20824,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 20,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -20975,7 +20975,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -21097,7 +21097,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -21219,7 +21219,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -21341,7 +21341,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -21822,7 +21822,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -21859,7 +21859,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -22088,7 +22088,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -22288,7 +22288,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -22488,7 +22488,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -22688,7 +22688,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -22889,7 +22889,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 20,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -23226,7 +23226,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -23263,7 +23263,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -23393,7 +23393,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -23494,7 +23494,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -23595,7 +23595,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -23696,7 +23696,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 20,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -23798,7 +23798,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 20,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -23981,7 +23981,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -24018,7 +24018,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -24093,7 +24093,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -24139,7 +24139,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -24185,7 +24185,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -24231,7 +24231,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -24278,7 +24278,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 100,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -24439,7 +24439,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -24476,7 +24476,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -24584,7 +24584,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -24663,7 +24663,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -24742,7 +24742,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -24821,7 +24821,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -24901,7 +24901,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 100,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -25938,7 +25938,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 16,
-    "actualTextWidth": 198,
+    "actualTextWidth": 197,
     "height": 30,
     "multiLineActualTexts": Array [
       "7789778977897789778977897789",
@@ -26261,7 +26261,7 @@ Array [
   Object {
     "actualText": "城市城市@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 86,
+    "actualTextWidth": 85,
     "height": 30,
     "multiLineActualTexts": Array [
       "城市城市@@@",
@@ -26272,7 +26272,7 @@ Array [
   Object {
     "actualText": "类别类别@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 86,
+    "actualTextWidth": 85,
     "height": 30,
     "multiLineActualTexts": Array [
       "类别类别@@@",
@@ -26294,7 +26294,7 @@ Array [
   Object {
     "actualText": "数量数量@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 86,
+    "actualTextWidth": 85,
     "height": 30,
     "multiLineActualTexts": Array [
       "数量数量@@@",
@@ -26466,7 +26466,7 @@ Array [
   Object {
     "actualText": "浙江省浙@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 86,
+    "actualTextWidth": 85,
     "height": 30,
     "multiLineActualTexts": Array [
       "浙江省浙@@@",
@@ -26609,7 +26609,7 @@ Array [
   Object {
     "actualText": "杭州市杭@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 86,
+    "actualTextWidth": 85,
     "height": 30,
     "multiLineActualTexts": Array [
       "杭州市杭@@@",
@@ -26752,7 +26752,7 @@ Array [
   Object {
     "actualText": "家具家具@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 86,
+    "actualTextWidth": 85,
     "height": 30,
     "multiLineActualTexts": Array [
       "家具家具@@@",
@@ -26895,7 +26895,7 @@ Array [
   Object {
     "actualText": "桌子桌子@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 86,
+    "actualTextWidth": 85,
     "height": 30,
     "multiLineActualTexts": Array [
       "桌子桌子@@@",
@@ -27027,7 +27027,7 @@ Array [
   Object {
     "actualText": "2367236@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 87,
+    "actualTextWidth": 86,
     "height": 30,
     "multiLineActualTexts": Array [
       "2367236@@@",
@@ -27038,7 +27038,7 @@ Array [
   Object {
     "actualText": "7789778@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 87,
+    "actualTextWidth": 86,
     "height": 30,
     "multiLineActualTexts": Array [
       "7789778@@@",
@@ -27049,7 +27049,7 @@ Array [
   Object {
     "actualText": "2367236@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 87,
+    "actualTextWidth": 86,
     "height": 30,
     "multiLineActualTexts": Array [
       "2367236@@@",
@@ -27328,7 +27328,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -27365,7 +27365,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
+    "actualTextWidth": 252,
     "height": 56,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -27506,7 +27506,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -27618,7 +27618,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -27730,7 +27730,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -27842,7 +27842,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
-    "actualTextWidth": 251,
+    "actualTextWidth": 252,
     "height": 64,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -27955,7 +27955,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 48,
-    "actualTextWidth": 200,
+    "actualTextWidth": 199,
     "height": 64,
     "multiLineActualTexts": Array [
       "778977897789",
@@ -28226,7 +28226,7 @@ Array [
   Object {
     "actualText": "城市城市城市城市城市城市城...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "城市城市城市城",
@@ -28238,7 +28238,7 @@ Array [
   Object {
     "actualText": "类别类别类别类别类别类别类...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "类别类别类别类",
@@ -28261,7 +28261,7 @@ Array [
   Object {
     "actualText": "数量数量数量数量数量数量数...",
     "actualTextHeight": 32,
-    "actualTextWidth": 168,
+    "actualTextWidth": 167,
     "height": 40,
     "multiLineActualTexts": Array [
       "数量数量数量数",
@@ -28412,7 +28412,7 @@ Array [
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
@@ -28534,7 +28534,7 @@ Array [
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
@@ -28656,7 +28656,7 @@ Array [
   Object {
     "actualText": "家具家具家具家具家具家具家...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "家具家具家具家",
@@ -28778,7 +28778,7 @@ Array [
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌...",
     "actualTextHeight": 32,
-    "actualTextWidth": 166,
+    "actualTextWidth": 167,
     "height": 48,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
@@ -30258,7 +30258,7 @@ Array [
   Object {
     "actualText": "7789778977897789778977897789",
     "actualTextHeight": 32,
-    "actualTextWidth": 199,
+    "actualTextWidth": 198,
     "height": 64,
     "multiLineActualTexts": Array [
       "778977897789778977",
@@ -30464,8 +30464,8 @@ exports[`SpreadSheet Multi Line Text Tests TableSheet should use actual text hei
 Array [
   Object {
     "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "1",
@@ -30475,8 +30475,8 @@ Array [
   },
   Object {
     "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "2",
@@ -30486,8 +30486,8 @@ Array [
   },
   Object {
     "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "3",
@@ -30607,8 +30607,8 @@ exports[`SpreadSheet Multi Line Text Tests TableSheet should use actual text hei
 Array [
   Object {
     "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "1",
@@ -30618,8 +30618,8 @@ Array [
   },
   Object {
     "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "2",
@@ -30629,8 +30629,8 @@ Array [
   },
   Object {
     "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "3",
@@ -30640,7 +30640,7 @@ Array [
   },
   Object {
     "actualText": "浙江",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 25,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30651,7 +30651,7 @@ Array [
   },
   Object {
     "actualText": "浙江",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 25,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30662,7 +30662,7 @@ Array [
   },
   Object {
     "actualText": "浙江",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 25,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30673,7 +30673,7 @@ Array [
   },
   Object {
     "actualText": "义乌",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 25,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30684,7 +30684,7 @@ Array [
   },
   Object {
     "actualText": "义乌",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 25,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30695,7 +30695,7 @@ Array [
   },
   Object {
     "actualText": "杭州",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 25,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30706,7 +30706,7 @@ Array [
   },
   Object {
     "actualText": "笔",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 13,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30717,7 +30717,7 @@ Array [
   },
   Object {
     "actualText": "笔",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 13,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30728,7 +30728,7 @@ Array [
   },
   Object {
     "actualText": "笔",
-    "actualTextHeight": 15,
+    "actualTextHeight": 16,
     "actualTextWidth": 13,
     "height": 30,
     "multiLineActualTexts": Array [
@@ -30739,8 +30739,8 @@ Array [
   },
   Object {
     "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "1",
@@ -30750,8 +30750,8 @@ Array [
   },
   Object {
     "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "1",
@@ -30761,8 +30761,8 @@ Array [
   },
   Object {
     "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
+    "actualTextHeight": 16,
+    "actualTextWidth": 8,
     "height": 30,
     "multiLineActualTexts": Array [
       "1",
@@ -30772,8 +30772,8 @@ Array [
   },
   Object {
     "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
+    "actualTextHeight": 16,
+    "actualTextWidth": 6,
     "height": 30,
     "multiLineActualTexts": Array [
       "-",
@@ -30783,8 +30783,8 @@ Array [
   },
   Object {
     "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
+    "actualTextHeight": 16,
+    "actualTextWidth": 6,
     "height": 30,
     "multiLineActualTexts": Array [
       "-",
@@ -30794,8 +30794,8 @@ Array [
   },
   Object {
     "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
+    "actualTextHeight": 16,
+    "actualTextWidth": 6,
     "height": 30,
     "multiLineActualTexts": Array [
       "-",

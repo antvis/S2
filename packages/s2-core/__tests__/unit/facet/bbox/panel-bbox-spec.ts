@@ -94,7 +94,7 @@ describe('PanelBBox Tests', () => {
     expect(bbox.viewportWidth).toBe(578);
     expect(bbox.viewportHeight).toBe(578);
     expect(bbox.maxX).toBe(600);
-    expect(bbox.maxY).toBe(595);
+    expect(bbox.maxY).toBe(600);
     expect(bbox.originalHeight).toBe(2000);
     expect(bbox.originalWidth).toBe(2000);
   });
