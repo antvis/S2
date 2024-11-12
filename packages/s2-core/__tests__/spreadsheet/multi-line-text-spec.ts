@@ -13,6 +13,7 @@ import type {
   S2CellType,
   S2Options,
 } from '../../src/common';
+import { customColSimpleMultipleTextColumns } from '../data/custom-table-col-fields';
 import {
   PivotSheetMultiLineTextDataCfg,
   TableSheetMultiLineTextDataCfg,
@@ -972,6 +973,29 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       matchCellStyleSnapshot();
       expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(56);
+    });
+
+    // https://github.com/antvis/S2/issues/2955
+    test('should use actual text height for large max line by custom col group', async () => {
+      updateStyle(20);
+
+      s2.setDataCfg(
+        {
+          ...SimpleDataCfg,
+          fields: {
+            rows: [],
+            columns: customColSimpleMultipleTextColumns,
+            values: [],
+          },
+        },
+        true,
+      );
+
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(192);
     });
 
     test.each(range(1, 11))(

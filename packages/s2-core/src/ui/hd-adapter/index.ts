@@ -110,6 +110,10 @@ export class HdAdapter {
   private renderByDevicePixelRatio = async (
     ratio = window.devicePixelRatio,
   ) => {
+    if (this.spreadsheet.destroyed) {
+      return;
+    }
+
     const {
       container,
       options: { width, height },
@@ -130,6 +134,10 @@ export class HdAdapter {
   };
 
   private renderByZoomScale = debounce(async (event: Event) => {
+    if (this.spreadsheet.destroyed) {
+      return;
+    }
+
     const target = event.target as VisualViewport;
     const ratio = Math.ceil(target?.scale);
 

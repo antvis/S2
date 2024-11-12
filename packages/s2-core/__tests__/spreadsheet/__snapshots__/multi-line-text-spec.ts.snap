@@ -30434,3 +30434,374 @@ Array [
   },
 ]
 `;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should use actual text height for large max line by custom col group 1`] = `
+Array [
+  Object {
+    "actualText": "序号",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 104,
+    "multiLineActualTexts": Array [
+      "序号",
+    ],
+    "originalText": "序号",
+    "width": 80,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 88,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 0,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should use actual text height for large max line by custom col group 2`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": 1,
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": 2,
+    "width": 80,
+  },
+  Object {
+    "actualText": "3",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "3",
+    ],
+    "originalText": 3,
+    "width": 80,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should use actual text height for large max line by custom col group 3`] = `
+Array [
+  Object {
+    "actualText": "序号",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 192,
+    "multiLineActualTexts": Array [
+      "序号",
+    ],
+    "originalText": "序号",
+    "width": 80,
+  },
+  Object {
+    "actualText": "地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区",
+    "actualTextHeight": 80,
+    "actualTextWidth": 1205,
+    "height": 88,
+    "multiLineActualTexts": Array [
+      "地区地区地区地区地区地区地区地区地区地区地区",
+      "地区地区地区地区地区地区地区地区地区地区地区",
+      "地区地区地区地区地区地区地区地区地区地区地区",
+      "地区地区地区地区地区地区地区地区地区地区地区",
+      "地区地区地区地区地区地区",
+    ],
+    "originalText": "地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区",
+    "width": 287.6,
+  },
+  Object {
+    "actualText": "省份",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 104,
+    "multiLineActualTexts": Array [
+      "省份",
+    ],
+    "originalText": "省份",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "城市",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 104,
+    "multiLineActualTexts": Array [
+      "城市",
+    ],
+    "originalText": "城市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "类型",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 192,
+    "multiLineActualTexts": Array [
+      "类型",
+    ],
+    "originalText": "类型",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额",
+    "actualTextHeight": 32,
+    "actualTextWidth": 482,
+    "height": 88,
+    "multiLineActualTexts": Array [
+      "金额金额金额金额金额金额金额金额金额金额金额",
+      "金额金额金额金额金额金额金额金额金额",
+    ],
+    "originalText": "金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额",
+    "width": 287.6,
+  },
+  Object {
+    "actualText": "价格",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 104,
+    "multiLineActualTexts": Array [
+      "价格",
+    ],
+    "originalText": "价格",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量",
+    "actualTextHeight": 96,
+    "actualTextWidth": 726,
+    "height": 104,
+    "multiLineActualTexts": Array [
+      "数量数量数量数量数量",
+      "数量数量数量数量数量",
+      "数量数量数量数量数量",
+      "数量数量数量数量数量",
+      "数量数量数量数量数量",
+      "数量数量数量数量数量",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 143.8,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should use actual text height for large max line by custom col group 4`] = `Array []`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should use actual text height for large max line by custom col group 5`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": 1,
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": 2,
+    "width": 80,
+  },
+  Object {
+    "actualText": "3",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "3",
+    ],
+    "originalText": 3,
+    "width": 80,
+  },
+  Object {
+    "actualText": "浙江",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江",
+    ],
+    "originalText": "浙江",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江",
+    ],
+    "originalText": "浙江",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江",
+    ],
+    "originalText": "浙江",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "义乌",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "义乌",
+    ],
+    "originalText": "义乌",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "义乌",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "义乌",
+    ],
+    "originalText": "义乌",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "杭州",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州",
+    ],
+    "originalText": "杭州",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": 1,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": 1,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": 1,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 143.8,
+  },
+]
+`;
