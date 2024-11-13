@@ -43,25 +43,54 @@ describe('Compare Layout Tests', () => {
   test.each([
     { showDefaultHeaderActionIcon: true },
     { showDefaultHeaderActionIcon: false },
+  ])(
+    'should get max col width for pivot sheet and same font size by %o',
+    async (options) => {
+      const s2 = new PivotSheet(getContainer(), mockDataConfig, {
+        ...s2Options,
+        ...options,
+      });
+
+      await s2.render();
+
+      const colLeafNodes = s2.facet.getColLeafNodes();
+
+      expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(122);
+      expect(Math.floor(colLeafNodes[1].width)).toEqual(95);
+      expectTextOverflowing(s2);
+    },
+  );
+
+  // 覆盖 (数值/中文/英文) 三种场景
+  test.each([
+    { showDefaultHeaderActionIcon: true, fontSize: 20 },
+    { showDefaultHeaderActionIcon: true, fontSize: 12 },
+    { showDefaultHeaderActionIcon: false, fontSize: 20 },
+    { showDefaultHeaderActionIcon: false, fontSize: 12 },
   ])('should get max col width for pivot sheet by %o', async (options) => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
-      ...options,
+      showDefaultHeaderActionIcon: options.showDefaultHeaderActionIcon,
     });
 
     s2.setTheme({
       dataCell: {
         text: {
-          fontSize: 20,
+          fontSize: options.fontSize,
         },
       },
     });
     await s2.render();
 
+    const isLargeFontSize = options.fontSize === 20;
     const colLeafNodes = s2.facet.getColLeafNodes();
 
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(191);
-    expect(Math.floor(colLeafNodes[1].width)).toEqual(92);
+    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(
+      isLargeFontSize ? 191 : 122,
+    );
+    expect(Math.floor(colLeafNodes[1].width)).toEqual(
+      isLargeFontSize ? 145 : 95,
+    );
     expectTextOverflowing(s2);
   });
 
@@ -90,13 +119,15 @@ describe('Compare Layout Tests', () => {
     await s2.render();
 
     const colLeafNodes = s2.facet.getColLeafNodes();
-
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(183);
-    expectTextOverflowing(s2);
     const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
+    const expectWidth = 183;
 
-    expect(dataCellWidthList.every((width) => width === 183)).toBeTruthy();
-    expect(colLeafNodeWidthList).toEqual([183]);
+    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(expectWidth);
+    expect(
+      dataCellWidthList.every((width) => width === expectWidth),
+    ).toBeTruthy();
+    expect(colLeafNodeWidthList).toEqual([expectWidth]);
+    expectTextOverflowing(s2);
   });
 
   test.each([
@@ -137,12 +168,13 @@ describe('Compare Layout Tests', () => {
 
       expect(dataCellWidthList).toEqual(
         options.showDefaultHeaderActionIcon
-          ? [209, 209, 209, 209, 110, 110, 110, 110, 85, 85, 85, 85]
-          : [209, 209, 209, 209, 110, 110, 110, 110, 69, 69, 69, 69],
+          ? [209, 209, 209, 209, 163, 163, 163, 163, 85, 85, 85, 85]
+          : [209, 209, 209, 209, 163, 163, 163, 163, 69, 69, 69, 69],
       );
       expect(colLeafNodeWidthList).toEqual(
-        options.showDefaultHeaderActionIcon ? [209, 110, 85] : [209, 110, 69],
+        options.showDefaultHeaderActionIcon ? [209, 163, 85] : [209, 163, 69],
       );
+      expectTextOverflowing(s2);
     },
   );
 });

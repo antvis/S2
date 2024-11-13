@@ -214,6 +214,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         // wordWrap 关闭时, 不会渲染省略号
         cells.forEach((cell) => {
           expect(cell.getActualText()).not.toContain('...');
+          expect(cell.isTextOverflowing()).toBeFalsy();
         });
       });
       expectColHierarchyHeight(90);
@@ -629,6 +630,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         // wordWrap 关闭时, 不会渲染省略号
         cells.forEach((cell) => {
           expect(cell.getActualText()).not.toContain('...');
+          expect(cell.isTextOverflowing()).toBeFalsy();
         });
       });
     });
