@@ -55,13 +55,15 @@ describe('Compare Layout Tests', () => {
 
       const colLeafNodes = s2.facet.getColLeafNodes();
 
-      expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(122);
-      expect(Math.floor(colLeafNodes[1].width)).toEqual(95);
+      expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(133);
+      expect(Math.floor(colLeafNodes[1].width)).toEqual(
+        options.showDefaultHeaderActionIcon ? 71 : 66,
+      );
       expectTextOverflowing(s2);
     },
   );
 
-  // 覆盖 (数值/中文/英文) 三种场景
+  // 覆盖 (数值/中文) 等场景
   test.each([
     { showDefaultHeaderActionIcon: true, fontSize: 20 },
     { showDefaultHeaderActionIcon: true, fontSize: 12 },
@@ -82,14 +84,15 @@ describe('Compare Layout Tests', () => {
     });
     await s2.render();
 
+    const expectWidth = options.showDefaultHeaderActionIcon ? 71 : 66;
     const isLargeFontSize = options.fontSize === 20;
     const colLeafNodes = s2.facet.getColLeafNodes();
 
     expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(
-      isLargeFontSize ? 191 : 122,
+      isLargeFontSize ? 209 : 133,
     );
     expect(Math.floor(colLeafNodes[1].width)).toEqual(
-      isLargeFontSize ? 145 : 95,
+      isLargeFontSize ? 97 : expectWidth,
     );
     expectTextOverflowing(s2);
   });
@@ -120,7 +123,7 @@ describe('Compare Layout Tests', () => {
 
     const colLeafNodes = s2.facet.getColLeafNodes();
     const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
-    const expectWidth = 183;
+    const expectWidth = 207;
 
     expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(expectWidth);
     expect(
@@ -168,11 +171,11 @@ describe('Compare Layout Tests', () => {
 
       expect(dataCellWidthList).toEqual(
         options.showDefaultHeaderActionIcon
-          ? [209, 209, 209, 209, 163, 163, 163, 163, 85, 85, 85, 85]
-          : [209, 209, 209, 209, 163, 163, 163, 163, 69, 69, 69, 69],
+          ? [227, 227, 227, 227, 115, 115, 115, 115, 93, 93, 93, 93]
+          : [227, 227, 227, 227, 115, 115, 115, 115, 71, 71, 71, 71],
       );
       expect(colLeafNodeWidthList).toEqual(
-        options.showDefaultHeaderActionIcon ? [209, 163, 85] : [209, 163, 69],
+        options.showDefaultHeaderActionIcon ? [227, 115, 93] : [227, 115, 71],
       );
       expectTextOverflowing(s2);
     },
