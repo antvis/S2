@@ -29606,7 +29606,7 @@ Array [
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 104,
+    "height": 112,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -29617,7 +29617,7 @@ Array [
     "actualText": undefined,
     "actualTextHeight": 0,
     "actualTextWidth": 0,
-    "height": 88,
+    "height": 96,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
     "width": 0,
@@ -29669,7 +29669,7 @@ Array [
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 192,
+    "height": 208,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -29680,7 +29680,7 @@ Array [
     "actualText": "地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区地区",
     "actualTextHeight": 80,
     "actualTextWidth": 1205,
-    "height": 88,
+    "height": 96,
     "multiLineActualTexts": Array [
       "地区地区地区地区地区地区地区地区地区地区地区",
       "地区地区地区地区地区地区地区地区地区地区地区",
@@ -29695,7 +29695,7 @@ Array [
     "actualText": "省份",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 104,
+    "height": 112,
     "multiLineActualTexts": Array [
       "省份",
     ],
@@ -29706,7 +29706,7 @@ Array [
     "actualText": "城市",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 104,
+    "height": 112,
     "multiLineActualTexts": Array [
       "城市",
     ],
@@ -29717,7 +29717,7 @@ Array [
     "actualText": "类型",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 192,
+    "height": 208,
     "multiLineActualTexts": Array [
       "类型",
     ],
@@ -29728,7 +29728,7 @@ Array [
     "actualText": "金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额",
     "actualTextHeight": 32,
     "actualTextWidth": 482,
-    "height": 88,
+    "height": 96,
     "multiLineActualTexts": Array [
       "金额金额金额金额金额金额金额金额金额金额金额",
       "金额金额金额金额金额金额金额金额金额",
@@ -29740,7 +29740,7 @@ Array [
     "actualText": "价格",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 104,
+    "height": 112,
     "multiLineActualTexts": Array [
       "价格",
     ],
@@ -29751,7 +29751,7 @@ Array [
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量",
     "actualTextHeight": 96,
     "actualTextWidth": 726,
-    "height": 104,
+    "height": 112,
     "multiLineActualTexts": Array [
       "数量数量数量数量数量",
       "数量数量数量数量数量",

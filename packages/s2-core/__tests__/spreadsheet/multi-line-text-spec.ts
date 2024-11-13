@@ -995,7 +995,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render();
 
       matchCellStyleSnapshot();
-      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(192);
+      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(208);
     });
 
     test.each(range(1, 11))(
