@@ -957,6 +957,19 @@ splitLine: {
 }
 ```
 
+#### 单元格默认 padding 变更
+
+`paddingTop` 和 `paddingBottom` 调整为 `8px`
+
+```diff
+{
+-  top: 4,
++  top: 8,
+-  bottom: 4,
++  bottom: 8
+}
+```
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
