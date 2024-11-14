@@ -21,13 +21,28 @@ tag: New
 
 [`S2 2.0`](https://s2.antv.antgroup.com) 正式版已发布，现在 `npm` 的 [`latest` dist-tag](https://docs.npmjs.com/cli/v10/commands/npm-dist-tag) 默认对应 `2.x` 版本，即：
 
+- ~~`@antv/s2@latest` => `@antv/s2@1.x.x`~~
+
 - `@antv/s2@latest` => `@antv/s2@2.x.x`
 
+:::warning{title="注意"}
 **如通过此类未指定具体版本的方式安装，请注意不要意外安装到 `2.0` 新版本。**
+:::
 
-## 🗓️ v1 版本已停止维护
+## ⏰ 已停止维护的包和版本
 
-`1.x` 版本已停止维护，请根据 [升级指南](/manual/migration-v2) 尽快升级到 `2.x` 版本。
+- `1.x` 版本现已停止维护，不再继续更新，不再修复 bug，不再支持新特性。
+- `@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发社区版本。
+
+请根据 [升级指南](/manual/migration-v2) 尽快升级到 `2.x` 版本。
+
+## 🛺 从 2.0.0-next.x 到 2.0.0 正式版
+
+如果你使用的是内测版本 `2.0.0-next.x`, 升级到 `2.0` 正式版时额外需要注意以下几点不兼容改动：
+
+- [构建产物调整](#-构建产物调整)
+- [移除 Ant Design 组件库依赖](#移除-ant-design-组件库依赖)
+- [Tooltip 操作项默认菜单组件移除](#tooltip-操作项默认菜单组件移除)
 
 ## 📦 安装
 
@@ -95,7 +110,7 @@ tag: New
 - 移除 `devicePixelRatio` 和 `supportsCSSTransform (supportCSSTransform)`.
 - 新增 `transformCanvasConfig` 支持透传 `G` 的配置，以及注册插件，具体请查阅 [注册 AntV/G 插件](/manual/advanced/g-plugins) 相关文档。
 
-```tsx
+```tsx | pure
 const s2Options = {
   transformCanvasConfig(renderer) {
     renderer.setConfig({ enableDirtyCheck: true })
@@ -990,12 +1005,12 @@ splitLine: {
 #### 移除 Ant Design 组件库依赖
 
 :::info
-`2.x` 版本中移除了 `antd` 的依赖，组件内部更轻量，不再受项目 `antd` 的版本限制，升级更平滑，推荐自行组合使用。
+`2.0` 正式版本中移除了 `antd` 的依赖，组件内部更轻量，不再受项目 `antd` 的版本限制，升级更平滑，推荐自行组合使用。
 :::
 
 ##### 表头组件移除
 
-`header` 属性移除，相关配置 (`switcher`, `export`, `advancedSort`) 等对应的组件迁移至 `@antv/s2-react-components` 中，可以单独按需引入。
+`header` 属性移除，相关配置 (`switcher`, `export`, `advancedSort`) 等对应的组件迁移至 `@antv/s2-react-components` 中，可以**单独按需引入**。
 
 ```diff
 <SheetComponent
@@ -1390,7 +1405,7 @@ class AntdV5AliasPlugin {
 + interface SheetComponentProps {}
 ```
 
-### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge>
+### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge> <Badge type="error">停止维护</Badge>
 
 由于精力有限，`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
 

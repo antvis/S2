@@ -237,7 +237,7 @@ const App = () => {
 ### `Vue3` 版本 <Badge type="success">@antv/s2-vue</Badge> <Badge type="error">停止维护</Badge>
 
 :::warning{title="注意"}
-由于精力有限，`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
+`@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发社区版本。
 :::
 
 `S2` 同时也提供了开箱即用的 `Vue3` 版本表格组件，帮助开发者快速满足业务看数分析需求。

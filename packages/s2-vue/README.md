@@ -4,6 +4,8 @@
 
 数据驱动的多维分析表格 (Vue3 版本）
 
+> `@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发社区版本。
+
 <p>
  <a href="https://www.npmjs.com/package/@antv/s2-vue" title="npm">
     <img src="https://img.shields.io/npm/dm/@antv/s2-vue.svg" alt="npm"/>
