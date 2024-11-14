@@ -422,21 +422,6 @@ importers:
       '@ant-design/icons':
         specifier: ^5.3.7
         version: 5.3.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@antv/event-emitter':
-        specifier: ^0.1.3
-        version: 0.1.3
-      '@antv/g':
-        specifier: ^6.0.12
-        version: 6.0.12
-      '@antv/g-plugin-a11y':
-        specifier: ^1.0.9
-        version: 1.0.9
-      '@antv/g-plugin-rough-canvas-renderer':
-        specifier: ^2.0.11
-        version: 2.0.11
-      '@antv/g2':
-        specifier: ^5.1.20
-        version: 5.1.21
       '@antv/s2':
         specifier: workspace:*
         version: link:../s2-core
@@ -449,9 +434,6 @@ importers:
       '@testing-library/react-hooks':
         specifier: ^8.0.1
         version: 8.0.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/d3-dsv':
-        specifier: ^3.0.7
-        version: 3.0.7
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
@@ -470,9 +452,6 @@ importers:
       antd:
         specifier: ^5.17.4
         version: 5.18.0(date-fns@2.30.0)(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      d3-dsv:
-        specifier: ^1.1.1
-        version: 1.2.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -786,9 +765,6 @@ packages:
   '@antv/event-emitter@0.1.3':
     resolution: {integrity: sha512-4ddpsiHN9Pd4UIlWuKVK1C4IiZIdbwQvy9i7DUSI3xNJ89FPUFt8lxDYj8GzzfdllV0NkJTRxnG+FvLk0llidg==}
 
-  '@antv/g-camera-api@2.0.11':
-    resolution: {integrity: sha512-wgF0zLixf9mDZvFXItnX9VLTxLM0mDSJvMRQ0pPPhFbMCDyewECLskBfU8a7tdQuIMjKEHiJmsrFVoheZTUZxQ==}
-
   '@antv/g-camera-api@2.0.17':
     resolution: {integrity: sha512-+zxJ2As2Ypl3+uHJrym7GUHzbWIGWhF9+Z+5FL60j6aDTGqC2050sNAcPvuCQmMUsl7qdhjaR1aQKtW3jb/n4A==}
 
@@ -801,9 +777,6 @@ packages:
   '@antv/g-dom-mutation-observer-api@2.0.14':
     resolution: {integrity: sha512-iuUoGrQd39BlFD/m5KF7EK8sVD9FVyPTxH8mltwNA/qm/eMRPezrsbyCRe0Xg8n9VfUYKwoGtzL6MKMJBZ34Fw==}
 
-  '@antv/g-dom-mutation-observer-api@2.0.8':
-    resolution: {integrity: sha512-SeQ3CtdtUMWrQD4HgQH+o8ayP30yeZwBMFnplsiEzJxYAqt9Clh8EXJtUAVP7sjznKiYmLvFZW53uu2bUlPyTw==}
-
   '@antv/g-lite@2.0.5':
     resolution: {integrity: sha512-IeD7L10MOofNg302Zrru09zjNczCyOAC6mFLjHQlkYCQRtcU04zn32pTxCDy7xRkLHlhAK1mlymBqzeRMkmrRg==}
 
@@ -815,9 +788,6 @@ packages:
 
   '@antv/g-math@3.0.0':
     resolution: {integrity: sha512-AkmiNIEL1vgqTPeGY2wtsMdBBqKFwF7SKSgs+D1iOS/rqYMsXdhp/HvtuQ5tx/HdawE/ZzTiicIYopc520ADZw==}
-
-  '@antv/g-plugin-a11y@1.0.9':
-    resolution: {integrity: sha512-sgSjPj5/RSf2J2xWClkEgIwpDdlkLm3ThBeQgOk5z0/FArmGXMImQWkUr6d2JyTRkxOYBIzUu1mZ38qIJqKNjA==}
 
   '@antv/g-plugin-a11y@1.1.3':
     resolution: {integrity: sha512-QkQlX7XGxecozn0qbo5ihdxkvH3EMUyfR7qWkr29CiUViD5SAl+HLmBMd+v6DlRB06ZgCqnY8+g6ihy2hMmyTA==}
@@ -867,17 +837,11 @@ packages:
   '@antv/g-plugin-rough-canvas-renderer@2.0.19':
     resolution: {integrity: sha512-Brw6e0n0Qc84pXD6gKT1+Fs26um6/bIEzpSigSNl5CdsKgI2LTRfyVW8GV+WcSLAV9Fwq8tyFGAx6PvnjDEpJg==}
 
-  '@antv/g-web-animations-api@2.0.9':
-    resolution: {integrity: sha512-ekAB/OVaIBegNjtjydR9cmCZF67SK0w38aOj6n39G8EeOnCD2vOdV3grAIPWkjYU0oixoQ6IYQUXc+3nMZ0Txg==}
-
   '@antv/g-web-animations-api@2.1.3':
     resolution: {integrity: sha512-MycCtPi8HdCQsdrmTEKtqAMlEX8JtgkYgzeCY9l1oHYVgwSwaXuMMg/r4UXs5zo0ZWEiyHv/CqZHyc6rXB7xVg==}
 
   '@antv/g2@5.1.21':
     resolution: {integrity: sha512-7HRWuiGN7sPK4K8ljl2/x0i3sphWNMymYFuR1BT9qo4wmMqQUgM+K+ISKMb3dXOg55eHmFje0OH80sZ53qhqPg==}
-
-  '@antv/g@6.0.12':
-    resolution: {integrity: sha512-7FEYxc8rR79Wi3VdCHqf/MY0a+6X3N5y8D0FiGc3XBtt8WnmJYWO/wcN8rQRvIV//ecMSeq9V/9En1TqyOnaEA==}
 
   '@antv/g@6.1.3':
     resolution: {integrity: sha512-Qgm5ljJ5/cY4GgpQMToDVdSTbKU9uoNxVoTpkx9WyAYfJNG//V3QU7SC3OE4FSTf9M7O6LnIKTAHGnnJ9oQz6g==}
@@ -13869,13 +13833,6 @@ snapshots:
 
   '@antv/event-emitter@0.1.3': {}
 
-  '@antv/g-camera-api@2.0.11':
-    dependencies:
-      '@antv/g-lite': 2.0.8
-      '@antv/util': 3.3.7
-      gl-matrix: 3.4.3
-      tslib: 2.6.3
-
   '@antv/g-camera-api@2.0.17':
     dependencies:
       '@antv/g-lite': 2.1.3
@@ -13914,10 +13871,6 @@ snapshots:
       '@antv/g-lite': 2.1.3
       '@babel/runtime': 7.25.6
 
-  '@antv/g-dom-mutation-observer-api@2.0.8':
-    dependencies:
-      '@antv/g-lite': 2.0.8
-
   '@antv/g-lite@2.0.5':
     dependencies:
       '@antv/g-math': 3.0.0
@@ -13953,11 +13906,6 @@ snapshots:
     dependencies:
       '@antv/util': 3.3.7
       gl-matrix: 3.4.3
-      tslib: 2.6.3
-
-  '@antv/g-plugin-a11y@1.0.9':
-    dependencies:
-      '@antv/g-lite': 2.0.8
       tslib: 2.6.3
 
   '@antv/g-plugin-a11y@1.1.3':
@@ -14087,12 +14035,6 @@ snapshots:
       roughjs: 4.6.6
       tslib: 2.6.3
 
-  '@antv/g-web-animations-api@2.0.9':
-    dependencies:
-      '@antv/g-lite': 2.0.8
-      '@antv/util': 3.3.7
-      tslib: 2.6.3
-
   '@antv/g-web-animations-api@2.1.3':
     dependencies:
       '@antv/g-lite': 2.1.3
@@ -14124,13 +14066,6 @@ snapshots:
       flru: 1.0.2
       fmin: 0.0.2
       pdfast: 0.2.0
-
-  '@antv/g@6.0.12':
-    dependencies:
-      '@antv/g-camera-api': 2.0.11
-      '@antv/g-dom-mutation-observer-api': 2.0.8
-      '@antv/g-lite': 2.0.8
-      '@antv/g-web-animations-api': 2.0.9
 
   '@antv/g@6.1.3':
     dependencies:
