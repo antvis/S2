@@ -828,14 +828,14 @@ export abstract class BaseFacet {
       const child = children[i];
 
       if (child instanceof Group) {
-        child.destroyChildren();
+        child.removeChildren();
       } else {
-        child.destroy();
+        children[i].remove();
       }
     }
 
-    this.foregroundGroup.destroyChildren();
-    this.backgroundGroup.destroyChildren();
+    this.foregroundGroup.removeChildren();
+    this.backgroundGroup.removeChildren();
   }
 
   scrollWithAnimation = (
@@ -1527,7 +1527,7 @@ export abstract class BaseFacet {
           (cell) => cell.name === `${i}-${j}`,
         );
 
-        mountedDataCell?.destroy();
+        mountedDataCell?.remove();
       });
 
       DebuggerUtil.getInstance().logger(
