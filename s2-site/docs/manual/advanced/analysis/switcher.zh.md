@@ -56,7 +56,7 @@ const App = () => {
 ### 维度配置
 
 :::info{title="提示"}
-Switcher 可接收三种类型的维度配置，分别是 `rows`，`columns` 和 `values`, 它们的类型皆为 [SwitcherField](/docs/api/components/switcher#switcherfield)。
+Switcher 可接收三种类型的维度配置，分别是 `rows`，`columns` 和 `values`, 它们的类型皆为 [SwitcherField](/api/components/switcher#switcherfield)。
 
 其中 `rows` 和 `columns` 两个维度可以相互拖拽到彼此的配置框中，而 `values` 只能在自己的配置框中更改字段顺序。
 
@@ -133,7 +133,7 @@ const field = {
 
 ### 提交修改
 
-`Switcher` 组件在弹窗关闭后会触发 `onSubmit` 回调，且此回调会接收一个 [SwitcherResult](/docs/api/components/switcher#switcherresult) 类型的参数，你可以通过该回调拿到修改后的结果。
+`Switcher` 组件在弹窗关闭后会触发 `onSubmit` 回调，且此回调会接收一个 [SwitcherResult](/api/components/switcher#switcherresult) 类型的参数，你可以通过该回调拿到修改后的结果。
 
 所有结果会**按维度**分组，并且每一组字段会**扁平化后**按按顺序排序，你可以通过以下示例查看详细的结果数据类型。
 
@@ -169,7 +169,7 @@ import { SwapOutlined } from '@ant-design/icons';
 <Switcher popover={{ arrowPointAtCenter: true }} />
 ```
 
-🎨 `Switcher` 组件详细的配置参考 [Switcher Props](/docs/api/components/switcher) 文档。
+🎨 `Switcher` 组件详细的配置参考 [Switcher Props](/api/components/switcher) 文档。
 
 ## 示例
 

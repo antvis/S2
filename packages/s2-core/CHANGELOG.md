@@ -1,3 +1,14 @@
+# [@antv/s2-v2.0.0-next.32](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.31...@antv/s2-v2.0.0-next.32) (2024-11-08)
+
+
+### Bug Fixes
+
+* 修复分割线在深色背景下颜色渲染异常 & 内容宽高未包含分割线的问题 ([#2961](https://github.com/antvis/S2/issues/2961)) ([e759891](https://github.com/antvis/S2/commit/e759891865eee0940d0f5c92345d5490e10eb57c))
+* 修复开启自定义指标层级后, 角头数值文本未对齐 close [#2957](https://github.com/antvis/S2/issues/2957) ([#2966](https://github.com/antvis/S2/issues/2966)) ([6558a0d](https://github.com/antvis/S2/commit/6558a0df55dc324e1810e2f2a5d314de7389e2b1))
+* 修复文本设为左对齐时, 角头文本没有垂直对齐的问题 ([#2960](https://github.com/antvis/S2/issues/2960)) ([af8c968](https://github.com/antvis/S2/commit/af8c96809fd0e52f1da81e2a1c082a5f5b0b122a))
+* 修复明细表自定义列头时开启文本换行, 单元格高度错误的问题 close [#2955](https://github.com/antvis/S2/issues/2955) ([#2968](https://github.com/antvis/S2/issues/2968)) ([ca1f7e8](https://github.com/antvis/S2/commit/ca1f7e8a614dc5b36a6bc270df4ea8338e670444))
+* 修复表格卸载后, 高清适配逻辑还会触发的问题 ([#2965](https://github.com/antvis/S2/issues/2965)) ([c837efe](https://github.com/antvis/S2/commit/c837efe29f2ff02ea8957bcaf62be57d2467f160)), closes [L#116](https://github.com/L/issues/116)
+
 # [@antv/s2-v2.0.0-next.31](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.30...@antv/s2-v2.0.0-next.31) (2024-11-01)
 
 

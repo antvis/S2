@@ -456,6 +456,7 @@ export abstract class BaseFacet {
     const { padding } = cell.getStyle().cell;
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
+
     const height =
       cell.isMultiLineText() && textHeight >= defaultHeight
         ? adaptiveHeight
@@ -827,14 +828,14 @@ export abstract class BaseFacet {
       const child = children[i];
 
       if (child instanceof Group) {
-        child.removeChildren();
+        child.destroyChildren();
       } else {
-        children[i].remove();
+        child.destroy();
       }
     }
 
-    this.foregroundGroup.removeChildren();
-    this.backgroundGroup.removeChildren();
+    this.foregroundGroup.destroyChildren();
+    this.backgroundGroup.destroyChildren();
   }
 
   scrollWithAnimation = (
@@ -1526,7 +1527,7 @@ export abstract class BaseFacet {
           (cell) => cell.name === `${i}-${j}`,
         );
 
-        mountedDataCell?.remove();
+        mountedDataCell?.destroy();
       });
 
       DebuggerUtil.getInstance().logger(
@@ -2294,12 +2295,25 @@ export abstract class BaseFacet {
   /**
    * @tip 和 this.spreadsheet.measureTextWidth() 的区别在于:
    * 1. 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全, 出现省略号
-   * 2. 测量时, 文本宽度向上取整, 避免子像素的不一致性
+   * 2. 测量时, 文本宽度取整, 避免子像素的不一致性
+   * 3. TODO: 由于 G 测量文本是一个一个字符进行计算, 在数字/英文等场景会有较大误差, 这里为了防止紧凑模式出现省略号, 暂时保持一样的策略
    */
-  protected measureTextWidth(text: SimpleData, font: unknown): number {
+  protected measureTextWidth(
+    text: SimpleData,
+    font: unknown,
+    roughly = true,
+  ): number {
     const EXTRA_PIXEL = 1;
-    const defaultWidth = this.spreadsheet.measureTextWidth(text, font);
 
-    return Math.ceil(defaultWidth) + EXTRA_PIXEL;
+    if (roughly) {
+      return (
+        Math.ceil(this.spreadsheet.measureTextWidthRoughly(text, font)) +
+        EXTRA_PIXEL
+      );
+    }
+
+    return (
+      Math.ceil(this.spreadsheet.measureTextWidth(text, font)) + EXTRA_PIXEL
+    );
   }
 }

@@ -42,7 +42,7 @@ import "@antv/s2-vue/dist/s2-vue.min.css";
 
 ## 使用
 
-在 `s2Options` 中配置 [tooltip](/docs/api/general/s2-options#tooltip) 字段，默认作用于**所有**单元格。
+在 `s2Options` 中配置 [tooltip](/api/general/s2-options#tooltip) 字段，默认作用于**所有**单元格。
 
 ```ts
 const s2Options = {
@@ -201,7 +201,7 @@ const s2Options = {
 };
 ```
 
-同时 `content` 还支持回调的方式，可以根据 [当前单元格信息](/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
+同时 `content` 还支持回调的方式，可以根据 [当前单元格信息](/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
 
 ```ts
 const TooltipContent = (props) => <div>...</div>
@@ -291,7 +291,7 @@ s2.showTooltip({
 #### 自定义 Tooltip 操作项 <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
 除了默认提供的操作项，还可以配置 `operation.menu` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到当前 `tooltip`
-对应的菜单项信息以及 [单元格信息](/docs/api/basic-class/base-cell).
+对应的菜单项信息以及 [单元格信息](/api/basic-class/base-cell).
 
 :::info{title="注意"}
 在 `@antv/s2-react` 中，默认提供菜单配置 (props), 需要通过 `render` 显示的指定操作项菜单组件，如：Ant Design [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api), 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
@@ -363,7 +363,7 @@ const s2Options = {
 };
 ```
 
-还可以通过 `visible` 参数控制当前操作项是否显示，支持传入一个回调，可以根据当前 [单元格信息](/docs/api/basic-class/base-cell) 动态显示
+还可以通过 `visible` 参数控制当前操作项是否显示，支持传入一个回调，可以根据当前 [单元格信息](/api/basic-class/base-cell) 动态显示
 
 ```ts
 const s2Options = {
@@ -546,8 +546,8 @@ const s2Options = {
 - 行列头**点击**时显示 `tooltip`, 单元格文字**被省略**时悬停显示 `tooltip`
 - 数值单元格悬停超过 **800ms** 显示 `tooltip`
 
-比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/docs/manual/advanced/interaction/custom),
-监听行头单元格的 [交互事件](/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
+比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/manual/advanced/interaction/custom),
+监听行头单元格的 [交互事件](/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
 . [示例](/examples/interaction/custom#row-col-hover-tooltip)
 
 ```ts
@@ -580,7 +580,7 @@ const s2Options = {
 
 ```
 
-如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/docs/api/components/sheet-component)
+如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/api/components/sheet-component)
 来进行自定义。[示例](/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx

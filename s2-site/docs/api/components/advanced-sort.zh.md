@@ -19,16 +19,16 @@ import '@antv/s2-react-components/dist/s2-react-components.min.css'
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
 | -- | -- | -- | -- | -- |
-| sheetInstance | 表格实例 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | ✓ |  |
+| sheetInstance | 表格实例 | [SpreadSheet](/api/basic-class/spreadsheet) | ✓ |  |
 | className | class 类名称 | `string` |  |  |
 | icon | 排序按钮图标 | `React.ReactNode` |  |  |
 | text | 排序按钮名称 | `string` |  |  |
 | ruleText | 规则描述 | `string` |  |  |
 | dimensions | 可选字段列表 | [Dimension](#dimension)[] |  |  |
 | ruleOptions | 规则配置列表 | [RuleOption](#ruleoption)[] |  |  |
-| sortParams | 默认已有 sort 规则 | [SortParams](/docs/api/general/s2-data-config#sortparams) |  |  |
+| sortParams | 默认已有 sort 规则 | [SortParams](/api/general/s2-data-config#sortparams) |  |  |
 | onSortOpen | 打开排序弹窗的回调 | `() => void` |  |  |
-| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/docs/api/general/s2-data-config#sortparams)`) => void` |  |  |
+| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/api/general/s2-data-config#sortparams)`) => void` |  |  |
 
 ### AdvancedSortCfgProps
 
@@ -42,9 +42,9 @@ import '@antv/s2-react-components/dist/s2-react-components.min.css'
 | ruleText | 规则描述 | `string` |  |  |
 | dimensions | 可选字段列表 | [Dimension](#dimension)[] |  |  |
 | ruleOptions | 规则配置列表 | [RuleOption](#ruleoption)[] |  |  |
-| sortParams | 默认已有 sort 规则 | [SortParams](/docs/api/general/s2-data-config#sortparams) |  |  |
+| sortParams | 默认已有 sort 规则 | [SortParams](/api/general/s2-data-config#sortparams) |  |  |
 | onSortOpen | 打开排序弹窗的回调 | `() => void` |  |  |
-| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/docs/api/general/s2-data-config#sortparams)`) => void` |  |  |
+| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/api/general/s2-data-config#sortparams)`) => void` |  |  |
 
 ### Dimension
 

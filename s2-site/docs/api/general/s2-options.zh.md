@@ -90,8 +90,8 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 
 | 参数        | 说明                     | 类型                                             | 默认值 | 必选 |
 | ----------- | ------------------------ | ------------------------------------------------ | ------ | ---- |
-| node        | 当前渲染的 node 节点     | [Node](/docs/api/basic-class/node)               | -      | ✓    |
-| spreadsheet | 表格实例                 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | -      | ✓    |
+| node        | 当前渲染的 node 节点     | [Node](/api/basic-class/node)               | -      | ✓    |
+| spreadsheet | 表格实例                 | [SpreadSheet](/api/basic-class/spreadsheet) | -      | ✓    |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]`                                      | -      |      |
 
 ## MergedCellCallback
@@ -113,7 +113,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | 参数        | 说明                     | 类型                                             | 默认值 | 必选 |
 | ----------- | ------------------------ | ------------------------------------------------ | ------ | ---- |
 | parent      | 父级单元格               | [S2CellType](#s2celltype)                        | -      | ✓    |
-| spreadsheet | 表格实例                 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | -      | ✓    |
+| spreadsheet | 表格实例                 | [SpreadSheet](/api/basic-class/spreadsheet) | -      | ✓    |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]`                                      | -      |      |
 
 <embed src="@/docs/common/custom/layoutHierarchy.zh.md"></embed>
@@ -146,14 +146,14 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 | 参数              | 说明                                             | 类型                                 | 默认值 | 必选 |
 | ----------------- | ------------------------------------------------ | ------------------------------------ | ------ | ---- |
-| colNodes          | 列头节点，对应 ColCell （含可视范围外）          | [Node[]](/docs/api/basic-class/node) |        |      |
-| colLeafNodes      | 列头叶子节点，对应 ColCell （含可视范围外）      | [Node[]](/docs/api/basic-class/node) |        |      |
+| colNodes          | 列头节点，对应 ColCell （含可视范围外）          | [Node[]](/api/basic-class/node) |        |      |
+| colLeafNodes      | 列头叶子节点，对应 ColCell （含可视范围外）      | [Node[]](/api/basic-class/node) |        |      |
 | colsHierarchy     | 列头节点层级结构 （含可视范围外）                | [Hierarchy](#hierarchy)              |        |      |
 | rowNodes          | 行头节点，对应 RowCell （含可视范围外）          | [Node[]](#node)                      |        |      |
-| rowLeafNodes      | 行头叶子节点，对应 RowCell （含可视范围外）      | [Node[]](/docs/api/basic-class/node) |        |      |
+| rowLeafNodes      | 行头叶子节点，对应 RowCell （含可视范围外）      | [Node[]](/api/basic-class/node) |        |      |
 | rowsHierarchy     | 行头节点层级结构 （含可视范围外）                | [Hierarchy](#hierarchy)              |        | ✓    |
-| seriesNumberNodes | 序号节点，对应 SeriesNumberCell （含可视范围外） | [Node[]](/docs/api/basic-class/node) |        |      |
-| cornerNodes       | 角头节点，对应 CornerCell （含可视范围外）       | [Node[]](/docs/api/basic-class/node) |        |      |
+| seriesNumberNodes | 序号节点，对应 SeriesNumberCell （含可视范围外） | [Node[]](/api/basic-class/node) |        |      |
+| cornerNodes       | 角头节点，对应 CornerCell （含可视范围外）       | [Node[]](/api/basic-class/node) |        |      |
 
 ## DataSet
 

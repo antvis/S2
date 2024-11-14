@@ -259,7 +259,7 @@ download(data, 'filename') // filename.csv
 
 | 参数          | 说明      | 类型              | 默认值           | 必选 |
 | ------------|-----------------|---------------|---------------| --- |
-| sheetInstance | s2 实例    | [SpreadSheet](/docs/api/basic-class/spreadsheet)     |      | ✓    |
+| sheetInstance | s2 实例    | [SpreadSheet](/api/basic-class/spreadsheet)     |      | ✓    |
 | split       | 分隔符    | `string`       |     | ✓    |
 | formatOptions  | 是否使用 [S2DataConfig.Meta](/api/general/s2-data-config#meta) 进行格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `true`  |      |
 | customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => [`Partial<Transformer>`](#transformer)      |  |      |

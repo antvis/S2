@@ -110,5 +110,5 @@ order: 5
 | label     | `ReactNode \| string`   |       |        | 名称           |
 | icon     | `ReactNode \| Element \| string`   |       |        | 自定义图标     |
 | visible  | `boolean \| (cell: S2CellType) => boolean`                           |      |   `true`      | 操作项是否显示，可传入一个函数根据当前单元格信息动态显示     |
-| onClick  | (`info`: `{ key: string, [key: string]: unknown; }` , `cell`: [S2CellType](/docs/api/basic-class/base-cell)) => void                           |       |        | 点击事件回调  (`info` 为当前点击的菜单项，`cell` 为当前 tooltip 对应的单元格）   |
+| onClick  | (`info`: `{ key: string, [key: string]: unknown; }` , `cell`: [S2CellType](/api/basic-class/base-cell)) => void                           |       |        | 点击事件回调  (`info` 为当前点击的菜单项，`cell` 为当前 tooltip 对应的单元格）   |
 | children | [TooltipOperatorMenuItem[]](#tooltipoperatormenuitem) |       |        | 子菜单列表     |

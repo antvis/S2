@@ -117,7 +117,7 @@ export class TableFacet extends FrozenFacet {
     const iconX = viewportWidth / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
     const text = empty?.description ?? i18n('暂无数据');
-    const descWidth = this.measureTextWidth(text, description);
+    const descWidth = this.measureTextWidth(text, description, false);
     const descX = viewportWidth / 2 - descWidth / 2;
     const descY = iconY + icon.height + icon.margin.bottom;
 
@@ -486,10 +486,11 @@ export class TableFacet extends FrozenFacet {
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
+    // 先计算宽度, 再计算高度, 确保计算多行文本时能获取到正确的最大文本宽度
     this.calculateColLeafNodesWidth(colLeafNodes, colsHierarchy);
+    this.calculateColNodeWidthAndX(colLeafNodes);
     this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
     this.calculateColNodesHeight(colsHierarchy);
-    this.calculateColNodeWidthAndX(colLeafNodes);
     this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustCustomColLeafNodesHeight({
       leafNodes: colLeafNodes,

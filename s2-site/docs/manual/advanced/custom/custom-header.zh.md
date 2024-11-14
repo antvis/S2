@@ -261,4 +261,4 @@ const s2DataConfig: S2DataConfig = {
 
 ## 4. 更多应用
 
-基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](/docs/manual/basic/analysis/strategy/).
+基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](/manual/basic/analysis/strategy/).

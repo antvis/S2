@@ -28,17 +28,28 @@ s2.setTheme({
 
 功能描述：表格主题配置项。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/default/#colorful)
 
-| 参数    | 参数        | 类型                              | 默认值    | 必选 |
+| 参数    | 说明        | 类型                              | 默认值    | 必选 |
 | ------- | ----------- | --------------------------------- | --------- | ---- |
 | theme   | 主题 schema | [S2Theme](#s2theme)               | -         |      |
 | palette | 色板        | [Palette](#palette)               | -         |      |
-| name    | 主题名      | `default` \| `colorful` \| `gray` | `default` |      |
+| name    | 主题名      | [ThemeName](#themename) | `default` |      |
+
+### ThemeName
+
+功能描述：表格主题名称。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/default/#colorful)
+
+| 参数 | 说明           | 类型                   | 默认值 | 必选 |
+| ---- | -------------- | ---------------------- | ------ | ---- |
+| default | 默认      | `string` | -      |     |
+| colorful | 多彩蓝     | `string` | -      |     |
+| gray | 简约灰       | `string` | -      |     |
+| dark | 暗黑       | `string` | -      |     |
 
 ### Palette
 
 功能描述：表主题色板。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/custom/#custom-palette)
 
-| 参数                | 参数                                                | 类型                                                             | 默认值 | 必选 |
+| 参数                | 说明                                                | 类型                                                             | 默认值 | 必选 |
 | ------------------- | --------------------------------------------------- | ---------------------------------------------------------------- | ------ | ---- |
 | brandColor          | 色板主题色                                          | `string`                                                         | -      | ✓    |
 | basicColors         | 基础颜色                                            | `string[]`                                                       | -      | ✓    |
@@ -50,7 +61,7 @@ s2.setTheme({
 
 功能描述：表格主题 `Schema`. 查看 [文档](/manual/basic/theme#%E4%B8%BB%E9%A2%98-schema) 和 [示例](/examples/theme/custom/#custom-palette)
 
-| 参数              | 参数                                   | 类型                                            | 默认值 | 必选 |
+| 参数              | 说明                                   | 类型                                            | 默认值 | 必选 |
 | ----------------- | -------------------------------------- | ----------------------------------------------- | ------ | ---- |
 | cornerCell        | 角头单元格主题                         | [DefaultCellTheme](#defaultcelltheme)           |        |      |
 | rowCell           | 行头单元格主题                         | [DefaultCellTheme](#defaultcelltheme)           |        |      |
@@ -73,7 +84,7 @@ s2.setTheme({
 | bolderText        | 加粗文本样式（如：总计，小计，行列头非叶子节点文本）[了解更多](/manual/advanced/custom/cell-align#%E8%A1%8C%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)   | [TextTheme](#texttheme)           | -      |      |
 | text              | 文本样式（如：数值，行列头叶子节点文本）[了解更多](/manual/advanced/custom/cell-align#%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83%E6%A0%BC%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)      | [TextTheme](#texttheme)           | -      |      |
 | seriesText        | 序号文本样式   | [TextTheme](#texttheme)           | -      |      |
-| measureText       | 度量值文本样式（如：数值挂行/列头时，行列头所对应的虚拟数值单元格文本）[了解更多](/manual/advanced/custom/cell-align#%E5%88%97%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)  | [TextTheme](#texttheme)           | -      |      |
+| measureText       | 度量值文本样式（如：数值挂行/列头时，行头/列头/角头所对应的虚拟数值单元格文本）[了解更多](/manual/advanced/custom/cell-align#%E5%88%97%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)  | [TextTheme](#texttheme)           | -      |      |
 | cell              | 单元格样式     | [CellTheme](#celltheme)           | -      |      |
 | icon              | 图标样式       | [IconTheme](#icontheme)           | -      |      |
 | seriesNumberWidth | 序号列宽       | `number`                          | 80     |      |

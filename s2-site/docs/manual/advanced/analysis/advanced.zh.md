@@ -16,7 +16,7 @@ tag: Updated
 
 ## 使用
 
-结合 `@antv/s2-react` 的 `SheetComponent` 组件使用，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
+结合 `@antv/s2-react` 的 `SheetComponent` 组件使用，配置具体信息可查看 [AdvancedSortCfgProps](/api/components/advanced-sort#advancedsortcfgprops)
 
 ```tsx
 import React from 'react';

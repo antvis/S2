@@ -5,7 +5,6 @@ import { paletteGray } from '../../theme/palette/gray';
 import type { ThemeName } from '../interface';
 import { S2_PREFIX_CLS } from './classnames';
 
-// Map of the theme
 export const PALETTE_MAP = {
   default: paletteDefault,
   colorful: paletteColorful,
@@ -39,3 +38,5 @@ export const G2_THEME_TYPE: Record<ThemeName, string> = {
   gray: 'light',
   dark: 'dark',
 };
+
+export const CELL_PADDING = 8;

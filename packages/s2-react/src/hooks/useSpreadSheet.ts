@@ -7,7 +7,7 @@ import type {
 } from '@antv/s2';
 import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
-import { identity } from 'lodash';
+import { identity, isEqual } from 'lodash';
 import React from 'react';
 import type { SheetComponentOptions, SheetComponentProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
@@ -118,6 +118,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
 
       updatePrevDepsRef.current = [dataCfg, options!, themeCfg!];
 
+      let rerender = false;
       let reloadData = false;
       let rebuildDataSet = false;
 
@@ -131,22 +132,31 @@ export function useSpreadSheet(props: SheetComponentProps) {
         }
 
         reloadData = true;
+        rerender = true;
         s2Ref.current?.setDataCfg(dataCfg);
       }
 
-      if (!Object.is(prevOptions, options)) {
-        if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
+      if (!isEqual(prevOptions, options)) {
+        if (prevOptions?.hierarchyType !== options?.hierarchyType) {
           rebuildDataSet = true;
           reloadData = true;
           s2Ref.current?.setDataCfg(dataCfg);
         }
 
+        rerender = true;
         s2Ref.current?.setOptions(options as S2Options);
         s2Ref.current?.changeSheetSize(options!.width, options!.height);
       }
 
-      if (!Object.is(prevThemeCfg, themeCfg)) {
+      if (!isEqual(prevThemeCfg, themeCfg)) {
+        rerender = true;
         s2Ref.current?.setThemeCfg(themeCfg);
+      }
+
+      if (!rerender) {
+        setLoading(false);
+
+        return;
       }
 
       /**

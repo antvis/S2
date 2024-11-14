@@ -651,17 +651,20 @@ render 函数的参数从 `boolean` 扩展为 `boolean | object`, 当为 `boolea
 + s2.render({ reloadData: false }) // 等价于 s2.render(false)
 + s2.render({
 +   reloadData: false,
-+   reBuildHiddenColumnsDetail: false,
++   rebuildHiddenColumnsDetail: false,
 + });
 ```
 
 `reBuildDataSet` 重命名为 `rebuildDataSet`:
+`reBuildHiddenColumnsDetail` 重命名为 `rebuildHiddenColumnsDetail`:
 
 ```diff
-+ s2.render({
--   reBuildDataSet: false,
-+   rebuildDataSet: false,
-+ });
+s2.render({
+-  reBuildDataSet: false,
++  rebuildDataSet: false,
+-  reBuildHiddenColumnsDetail: false,
++  rebuildHiddenColumnsDetail: false,
+});
 ```
 
 #### 小计总计配置参数变更
@@ -997,6 +1000,19 @@ splitLine: {
 -  horizontalBorderColorOpacity: 0.2,
 -  verticalBorderColor: basicColors[12],
 -  verticalBorderColorOpacity: 0.25,
+}
+```
+
+#### 单元格默认 padding 变更
+
+`paddingTop` 和 `paddingBottom` 调整为 `8px`.
+
+```diff
+{
+-  top: 4,
++  top: 8,
+-  bottom: 4,
++  bottom: 8
 }
 ```
 

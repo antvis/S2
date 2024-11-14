@@ -10,7 +10,7 @@ S2 支持对表格数据进行多种形式的排序，如行/列头维值根据�
 
 ## 使用
 
-通过在 [s2DataConfig](/docs/api/general/s2-data-config) 中传入 [sortParams](/docs/api/general/s2-data-config#sortparams) 启用排序
+通过在 [s2DataConfig](/api/general/s2-data-config) 中传入 [sortParams](/api/general/s2-data-config#sortparams) 启用排序
 
 ### sortParams
 
@@ -92,7 +92,7 @@ const s2DataConfig = {
 > 在 S2 中怎么开启总计/小计？
 >
 > 1. 使用 data 数据中的聚合数据。
-> 2. 使用 S2 中提供的聚合计算。​📊 查看文档 [小计总计配置](/docs/api/general/s2-options#totals)
+> 2. 使用 S2 中提供的聚合计算。​📊 查看文档 [小计总计配置](/api/general/s2-options#totals)
 
 - `sortByMeasure` 取 `TOTAL_VALUE`
 - `sortFieldId` 可以取任意维度字段（非末级的 `province` 或末级的 `city`）

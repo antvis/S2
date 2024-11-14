@@ -15,15 +15,15 @@ tag: Updated
 - 点击数据单元格，获取当前单元格数据，或者整行数据。
 - 自定义 `tooltip` 内容，需要根据当前单元格信息来渲染不同的操作项，或者显示不同的提示信息。
 
-`S2` 的表格使用 `Canvas` 绘制，所以只会有一个 `dom` 元素，所有单元格对应的一组**数据结构**，里面存储了每个单元格的坐标，文本信息，交互状态等 [信息](/docs/api/basic-class/base-cell)
+`S2` 的表格使用 `Canvas` 绘制，所以只会有一个 `dom` 元素，所有单元格对应的一组**数据结构**，里面存储了每个单元格的坐标，文本信息，交互状态等 [信息](/api/basic-class/base-cell)
 
-`S2` 提供了一系列获取数据的 [API](/docs/api/basic-class/spreadsheet), 下面介绍一些常用的场景：
+`S2` 提供了一系列获取数据的 [API](/api/basic-class/spreadsheet), 下面介绍一些常用的场景：
 
 <Playground path="analysis/get-data/demo/get-cell-data.ts" rid='get-cell-data' height='300'></playground>
 
 ### 获取指定区域单元格节点
 
-在渲染完成后，访问 `s2.facet.getLayoutResult()` 获取到当前所有（**含不在可视范围的**）[单元格节点](/docs/api/basic-class/node)。
+在渲染完成后，访问 `s2.facet.getLayoutResult()` 获取到当前所有（**含不在可视范围的**）[单元格节点](/api/basic-class/node)。
 
 一个节点 (Node) 对应一个 单元格 (Cell), 当节点在可视范围内时，会被实例化为单元格 (Cell), 可通过 `node.belongsCell` 获取
 
@@ -59,7 +59,7 @@ s2.on(S2Event.LAYOUT_AFTER_RENDER, () => {
 
 :::
 
-[查看更多](/docs/api/basic-class/base-facet)
+[查看更多](/api/basic-class/base-facet)
 
 :::warning{title="注意"}
 由于虚拟滚动的特性，获取到为不含可视区域外的单元格。
@@ -99,7 +99,7 @@ s2.facet.getSeriesNumberCells()
 
 ### 获取数值单元格
 
-更多请查看 [interaction API](/docs/api/basic-class/interaction)
+更多请查看 [interaction API](/api/basic-class/interaction)
 
 ```ts
 // 当前可视范围内的数值单元格
@@ -175,7 +175,7 @@ s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/GO7xii%26LQ/13b44f81-271c-4771-b7b3-45789761eab2.png" width="600" alt="preview"/>
 
-也可以调用 [交互方法](/docs/manual/advanced/interaction/basic#%E8%B0%83%E7%94%A8%E4%BA%A4%E4%BA%92%E6%96%B9%E6%B3%95), 手动的获取
+也可以调用 [交互方法](/manual/advanced/interaction/basic#%E8%B0%83%E7%94%A8%E4%BA%A4%E4%BA%92%E6%96%B9%E6%B3%95), 手动的获取
 
 ```ts
 // 获取所有激活的单元格 （包含不在可视范围内的）
@@ -250,9 +250,9 @@ s2.dataSet.getCellMultiData({
 
 ### 获取行/列数据
 
-表格初始化时，会将用户声明的数据配置 (s2DataConfig) 转换成内部所需要的数据集 (dataSet), 具体请查看 [数据流处理](/docs/manual/advanced/data-process/pivot)
+表格初始化时，会将用户声明的数据配置 (s2DataConfig) 转换成内部所需要的数据集 (dataSet), 具体请查看 [数据流处理](/manual/advanced/data-process/pivot)
 
-数据集的 [实例](/docs/api/basic-class/base-data-set) 挂载在 `s2.dataSet` 命名空间下，可访问它获取你需要的：
+数据集的 [实例](/api/basic-class/base-data-set) 挂载在 `s2.dataSet` 命名空间下，可访问它获取你需要的：
 
 - 原生数据
 - 汇总数据
@@ -391,4 +391,4 @@ s2.facet.getCellMeta(rowIndex, colIndex)
 
 ### 获取隐藏列数据
 
-[查看隐藏列头章节](/docs/manual/advanced/interaction/hide-columns/#%E8%8E%B7%E5%8F%96%E9%9A%90%E8%97%8F%E5%88%97%E5%A4%B4%E6%95%B0%E6%8D%AE)
+[查看隐藏列头章节](/manual/advanced/interaction/hide-columns/#%E8%8E%B7%E5%8F%96%E9%9A%90%E8%97%8F%E5%88%97%E5%A4%B4%E6%95%B0%E6%8D%AE)

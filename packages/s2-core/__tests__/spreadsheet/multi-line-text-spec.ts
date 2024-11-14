@@ -13,6 +13,7 @@ import type {
   S2CellType,
   S2Options,
 } from '../../src/common';
+import { customColSimpleMultipleTextColumns } from '../data/custom-table-col-fields';
 import {
   PivotSheetMultiLineTextDataCfg,
   TableSheetMultiLineTextDataCfg,
@@ -160,7 +161,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render(false);
 
       matchCellStyleSnapshot();
-      expectColHierarchyHeight(118, 80, 38);
+      expectColHierarchyHeight(142, 96, 46);
     });
 
     test('should render three max text lines', async () => {
@@ -168,7 +169,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render(false);
 
       matchCellStyleSnapshot();
-      expectColHierarchyHeight(165, 112, 53);
+      expectColHierarchyHeight(189, 128, 61);
     });
 
     test('should render custom text overflow text', async () => {
@@ -213,6 +214,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         // wordWrap 关闭时, 不会渲染省略号
         cells.forEach((cell) => {
           expect(cell.getActualText()).not.toContain('...');
+          expect(cell.isTextOverflowing()).toBeFalsy();
         });
       });
       expectColHierarchyHeight(90);
@@ -335,7 +337,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render(false);
 
       matchCellStyleSnapshot();
-      expectColHierarchyHeight(118, 80, 38);
+      expectColHierarchyHeight(142, 96, 46);
     });
 
     test('should not adaptive adjust cell height if custom cell style more than actual text height', async () => {
@@ -386,7 +388,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(3);
       await s2.render(false);
 
-      expectColHierarchyHeight(149, 96, 53);
+      expectColHierarchyHeight(173, 112, 61);
     });
 
     test('should render correctly layout if only enable grand totals', async () => {
@@ -442,8 +444,8 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       matchCellStyleSnapshot();
 
       // 省份 4行文本, 叶子节点 (城市) 3行文本, 省份应该和城市高度一致, 才能展示所有文本 (maxLines: 4)
-      expectRowHierarchyHeight(384, 0, 72);
-      expectColHierarchyHeight(212, 144, 68);
+      expectRowHierarchyHeight(400, 0, 80);
+      expectColHierarchyHeight(236, 160, 76);
     });
 
     test('should render three max text lines for tree mode', async () => {
@@ -473,7 +475,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render();
 
       matchCellStyleSnapshot();
-      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(524);
+      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(556);
     });
 
     // https://github.com/antvis/S2/issues/2678
@@ -528,7 +530,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render();
 
       matchCellStyleSnapshot();
-      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(328);
+      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(336);
     });
 
     test.each(range(1, 11))(
@@ -579,7 +581,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render(false);
 
       matchCellStyleSnapshot();
-      expectColHierarchyHeight(40, 0, 40, 1);
+      expectColHierarchyHeight(48, 0, 48, 1);
     });
 
     test('should render three max text lines', async () => {
@@ -588,7 +590,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       matchCellStyleSnapshot();
 
-      expectColHierarchyHeight(56, 0, 56, 1);
+      expectColHierarchyHeight(64, 0, 64, 1);
     });
 
     test('should render custom text overflow text', async () => {
@@ -628,6 +630,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         // wordWrap 关闭时, 不会渲染省略号
         cells.forEach((cell) => {
           expect(cell.getActualText()).not.toContain('...');
+          expect(cell.isTextOverflowing()).toBeFalsy();
         });
       });
     });
@@ -687,7 +690,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render();
 
       matchCellStyleSnapshot();
-      expectColHierarchyHeight(72, 0, 72, 1);
+      expectColHierarchyHeight(80, 0, 80, 1);
     });
 
     // https://github.com/antvis/S2/issues/2594
@@ -971,7 +974,30 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render();
 
       matchCellStyleSnapshot();
-      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(56);
+      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(64);
+    });
+
+    // https://github.com/antvis/S2/issues/2955
+    test('should use actual text height for large max line by custom col group', async () => {
+      updateStyle(20);
+
+      s2.setDataCfg(
+        {
+          ...SimpleDataCfg,
+          fields: {
+            rows: [],
+            columns: customColSimpleMultipleTextColumns,
+            values: [],
+          },
+        },
+        true,
+      );
+
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(208);
     });
 
     test.each(range(1, 11))(

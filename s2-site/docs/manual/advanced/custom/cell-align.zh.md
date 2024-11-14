@@ -6,7 +6,7 @@ tag: Updated
 ---
 
 :::warning{title='提示'}
-在阅读本节内容前，请确保你已经阅读 [主题配置](/docs/manual/basic/theme) 文档
+在阅读本节内容前，请确保你已经阅读 [主题配置](/manual/basic/theme) 文档
 :::
 
 为方便用户查看数据，S2 交叉表会在滑动过程中，保证行头和列头的最大可见性。因此，S2 在行头、列头对齐方式所对应的的范围是当前格子的可视区域，而角头，数据单元格所对应的范围是当前格子的实际尺寸区域。
@@ -15,8 +15,8 @@ tag: Updated
 
 ## 角头对齐方式
 
-* 行头单元格（红色部分）对齐方式受 [text](/docs/api/general/s2-theme#defaultcelltheme) 控制
-* 列头单元格（蓝色部分）对齐方式受 [bolderText](/docs/api/general/s2-theme#defaultcelltheme) 控制
+* 行头单元格（红色部分）对齐方式受 [text](/api/general/s2-theme#defaultcelltheme) 控制
+* 列头单元格（蓝色部分）对齐方式受 [bolderText](/api/general/s2-theme#defaultcelltheme) 控制
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/6wPCHImDZ/b36ca38e-aa8e-4ef6-a903-b9d605204de0.png)
 
@@ -90,10 +90,10 @@ cornerCell: {
 
 ## 行头对齐方式
 
-* 非叶子节点和小计总计单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/s2-theme#defaultcelltheme) 控制
-* 叶子节点单元格（蓝色部分）对齐方式受 [text](/docs/api/general/s2-theme#defaultcelltheme) 控制
-* 序号单元格（黄色部分）可单独控制，默认和行头对齐，对齐方式受 [seriesText](/docs/api/general/s2-theme#defaultcelltheme) 控制
-* 数值单元格（当数值置于行头时）可单独控制，默认和行头对齐，对齐方式受 [measureText](/docs/api/general/s2-theme#defaultcelltheme) 控制
+* 非叶子节点和小计总计单元格（红色部分）对齐方式受 [bolderText](/api/general/s2-theme#defaultcelltheme) 控制
+* 叶子节点单元格（蓝色部分）对齐方式受 [text](/api/general/s2-theme#defaultcelltheme) 控制
+* 序号单元格（黄色部分）可单独控制，默认和行头对齐，对齐方式受 [seriesText](/api/general/s2-theme#defaultcelltheme) 控制
+* 数值单元格（当数值置于行头时）可单独控制，默认和行头对齐，对齐方式受 [measureText](/api/general/s2-theme#defaultcelltheme) 控制
 
 ![img](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*JgZxT7sNnTgAAAAAAAAAAAAADmJ7AQ/original)
 
@@ -159,9 +159,9 @@ rowCell: {
 
 ## 列头对齐方式
 
-* 其他非叶子维度单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/s2-theme#defaultcelltheme) 控制 （默认和数据单元格对齐）
-* 数值单元格（蓝色部分，当数值置于列头时）对齐方式受 [measureText](/docs/api/general/s2-theme#defaultcelltheme) 控制
-* 叶子维度单元格（黄色部分，当数值置于行头时，或者在列头但隐藏数值列时的最后一个维度）对齐方式受 [text](/docs/api/general/s2-theme#defaultcelltheme) 控制
+* 其他非叶子维度单元格（红色部分）对齐方式受 [bolderText](/api/general/s2-theme#defaultcelltheme) 控制 （默认和数据单元格对齐）
+* 数值单元格（蓝色部分，当数值置于列头时）对齐方式受 [measureText](/api/general/s2-theme#defaultcelltheme) 控制
+* 叶子维度单元格（黄色部分，当数值置于行头时，或者在列头但隐藏数值列时的最后一个维度）对齐方式受 [text](/api/general/s2-theme#defaultcelltheme) 控制
 
 > 列头的滚动对齐只针对于非叶子维度节点，叶子维度节点对齐对应的范围是当前格子的实际尺寸区域。
 
@@ -230,8 +230,8 @@ colCell: {
 
 ## 数据单元格对齐方式
 
-* 小计总计单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/s2-theme#defaultcelltheme) 控制
-* 其他节点单元格（蓝色部分）对齐方式受 [text](/docs/api/general/s2-theme#defaultcelltheme) 控制
+* 小计总计单元格（红色部分）对齐方式受 [bolderText](/api/general/s2-theme#defaultcelltheme) 控制
+* 其他节点单元格（蓝色部分）对齐方式受 [text](/api/general/s2-theme#defaultcelltheme) 控制
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/WHa%26eKOrP/00951ab0-b25c-4512-a056-541efff7c9dc.png)
 

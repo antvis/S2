@@ -8,7 +8,7 @@ tag: Updated
 
 为了满足更多的分析场景，S2 提供开箱即用的场景表组件 —— 趋势分析表。借助它，你可以非常方便的实现单元格内展示多指标的场景表格。
 
-如图所示，该类表格的表形态特点在于可以在**同一个数据单元格**和**列头单元格内**展示多个指标数据，用于需要**关注时间趋势下的数据指标**，**查看同环比**等场景。行头可以 [自定义层级结构](/docs/manual/advanced/custom/custom-tree)。因此有此类分析需求时，可以直接使用该组件。
+如图所示，该类表格的表形态特点在于可以在**同一个数据单元格**和**列头单元格内**展示多个指标数据，用于需要**关注时间趋势下的数据指标**，**查看同环比**等场景。行头可以 [自定义层级结构](/manual/advanced/custom/custom-tree)。因此有此类分析需求时，可以直接使用该组件。
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png" width="600"  alt="preview" />
 
@@ -16,9 +16,9 @@ tag: Updated
 
 **趋势分析表组件**使用了 S2 提供的各种能力进行融合，所以建议在阅读本章前，请确保你已经阅读过以下章节：
 
-- [基本概念](/docs/manual/basic/base-concept)
-- [字段标记](/docs/manual/basic/conditions/)
-- [自定义行列头](/docs/manual/advanced/custom/custom-tree)
+- [基本概念](/manual/basic/base-concept)
+- [字段标记](/manual/basic/conditions/)
+- [自定义行列头](/manual/advanced/custom/custom-tree)
 
 :::
 
@@ -184,7 +184,7 @@ const s2DataConfig = {
 
 :::info{title="提示"}
 
-趋势分析表的 `Tooltip`, 使用 `S2` 提供的 [自定义能力](/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) 分别对 `行头 (rowCell)`, `列头 (colCell)`, `数值 (dataCell)` 进行了 [定制](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105).
+趋势分析表的 `Tooltip`, 使用 `S2` 提供的 [自定义能力](/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) 分别对 `行头 (rowCell)`, `列头 (colCell)`, `数值 (dataCell)` 进行了 [定制](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105).
 
 :::
 
