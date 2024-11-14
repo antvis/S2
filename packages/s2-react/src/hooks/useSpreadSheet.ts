@@ -111,7 +111,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
       let reloadData = false;
       let rebuildDataSet = false;
 
-      if (!isEqual(prevDataCfg, dataCfg)) {
+      if (!Object.is(prevDataCfg, dataCfg)) {
         // 列头变化需要重新计算初始叶子节点
         if (
           prevDataCfg?.fields?.columns?.length !==
@@ -126,7 +126,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
       }
 
       if (!isEqual(prevOptions, options)) {
-        if (!isEqual(prevOptions?.hierarchyType, options?.hierarchyType)) {
+        if (prevOptions?.hierarchyType !== options?.hierarchyType) {
           rebuildDataSet = true;
           reloadData = true;
           s2Ref.current?.setDataCfg(dataCfg);
