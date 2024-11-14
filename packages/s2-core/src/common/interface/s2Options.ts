@@ -386,5 +386,5 @@ export interface S2RenderOptions {
   /**
    * 是否重新生成列头隐藏信息
    */
-  reBuildHiddenColumnsDetail?: boolean;
+  rebuildHiddenColumnsDetail?: boolean;
 }

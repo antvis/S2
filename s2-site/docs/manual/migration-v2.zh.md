@@ -621,17 +621,20 @@ render 函数的参数从 `boolean` 扩展为 `boolean | object`, 当为 `boolea
 + s2.render({ reloadData: false }) // 等价于 s2.render(false)
 + s2.render({
 +   reloadData: false,
-+   reBuildHiddenColumnsDetail: false,
++   rebuildHiddenColumnsDetail: false,
 + });
 ```
 
 `reBuildDataSet` 重命名为 `rebuildDataSet`:
+`reBuildHiddenColumnsDetail` 重命名为 `rebuildHiddenColumnsDetail`:
 
 ```diff
-+ s2.render({
--   reBuildDataSet: false,
-+   rebuildDataSet: false,
-+ });
+s2.render({
+-  reBuildDataSet: false,
++  rebuildDataSet: false,
+-  reBuildHiddenColumnsDetail: false,
++  rebuildHiddenColumnsDetail: false,
+});
 ```
 
 #### 小计总计配置参数变更

@@ -423,7 +423,7 @@ export abstract class SpreadSheet extends EE {
     const {
       reloadData = true,
       rebuildDataSet = false,
-      reBuildHiddenColumnsDetail = true,
+      rebuildHiddenColumnsDetail = true,
     } = options || {};
 
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
@@ -439,7 +439,7 @@ export abstract class SpreadSheet extends EE {
 
     this.buildFacet();
 
-    if (reBuildHiddenColumnsDetail) {
+    if (rebuildHiddenColumnsDetail) {
       await this.initHiddenColumnsDetail();
     }
 
@@ -456,7 +456,7 @@ export abstract class SpreadSheet extends EE {
       s2.render({
         reloadData: true;
         rebuildDataSet: true;
-        reBuildHiddenColumnsDetail: true;
+        rebuildHiddenColumnsDetail: true;
       })
    */
   public async render(options?: S2RenderOptions | boolean): Promise<void> {
