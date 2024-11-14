@@ -175,7 +175,7 @@ describe('merge test', () => {
     expect(setupOptions(null)).toMatchSnapshot();
   });
 
-  test('should setup correctly compact layout width type style', () => {
+  test('should not setup correctly compact layout width type style', () => {
     expect(
       setupOptions({
         style: {

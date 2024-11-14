@@ -817,7 +817,10 @@ export abstract class SpreadSheet extends EE {
    * @param font 文本 css 样式
    * @returns 文本宽度
    */
-  public measureTextWidthRoughly = (text: any, font: any = {}): number => {
+  public measureTextWidthRoughly = (
+    text: SimpleData,
+    font: unknown,
+  ): number => {
     const alphaWidth = this.measureTextWidth('a', font);
     const chineseWidth = this.measureTextWidth('蚂', font);
 
@@ -828,7 +831,7 @@ export abstract class SpreadSheet extends EE {
     }
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const char of text) {
+    for (const char of String(text)) {
       const code = char.charCodeAt(0);
 
       // /[\u0000-\u00ff]/
