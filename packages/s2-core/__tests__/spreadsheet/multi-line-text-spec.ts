@@ -547,6 +547,27 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         expectRowHierarchyHeight(60, 0, 30, 2);
       },
     );
+
+    test('should render by maxLines if actual text contains "\\n"', async () => {
+      updateStyle(1);
+      s2.changeSheetSize(800, 600);
+      s2.setDataCfg({
+        data: [
+          {
+            province: '浙江\n浙江',
+            city: '杭州\n杭州\n杭州',
+            type: '纸张\n纸张',
+            price: 12,
+            cost: 20,
+          },
+          ...s2.dataCfg.data,
+        ],
+      });
+
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
   });
 
   describe('TableSheet', () => {
@@ -1021,5 +1042,26 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         expectColHierarchyHeight(30, 0, 30, 1);
       },
     );
+
+    test('should render by maxLines if actual text contains "\\n"', async () => {
+      updateStyle(1);
+      s2.changeSheetSize(800, 600);
+      s2.setDataCfg({
+        data: [
+          {
+            province: '浙江\n浙江',
+            city: '杭州\n杭州\n杭州',
+            type: '纸张\n纸张',
+            price: 12,
+            cost: 20,
+          },
+          ...s2.dataCfg.data,
+        ],
+      });
+
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
   });
 });
