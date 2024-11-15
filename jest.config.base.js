@@ -5,7 +5,6 @@ module.exports = {
   testEnvironment: 'jest-electron/environment',
   setupFilesAfterEnv: ['jest-extended', './__tests__/setup.js'],
   clearMocks: true,
-  forceExit: true,
   collectCoverage: false,
   collectCoverageFrom: [
     'src/**/*.{ts,tsx,js,vue}',
