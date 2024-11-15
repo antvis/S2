@@ -1,3 +1,16 @@
+# [@antv/s2-react-components-v2.0.0-next.1](https://github.com/antvis/S2/compare/@antv/s2-react-components-v1.0.1-next.1...@antv/s2-react-components-v2.0.0-next.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* 修复分割线在深色背景下颜色渲染异常 & 内容宽高未包含分割线的问题 ([#2961](https://github.com/antvis/S2/issues/2961)) ([e759891](https://github.com/antvis/S2/commit/e759891865eee0940d0f5c92345d5490e10eb57c))
+* 修复开启自定义指标层级后, 角头数值文本未对齐 close [#2957](https://github.com/antvis/S2/issues/2957) ([#2966](https://github.com/antvis/S2/issues/2966)) ([6558a0d](https://github.com/antvis/S2/commit/6558a0df55dc324e1810e2f2a5d314de7389e2b1))
+
+
+### Features
+
+* 调整单元格默认 padding, 优化多行文本时的展示效果 ([#2970](https://github.com/antvis/S2/issues/2970)) ([599d7a4](https://github.com/antvis/S2/commit/599d7a4e76d2b606bdb0509eb684f47870a9e69d))
+
 # [@antv/s2-react-components-v2.0.0-next.1](https://github.com/antvis/S2/compare/@antv/s2-react-components-v1.0.1-next.1...@antv/s2-react-components-v2.0.0-next.1) (2024-11-08)
 
 
