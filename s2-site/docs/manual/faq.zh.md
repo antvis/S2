@@ -61,35 +61,35 @@ await s2.render(false)
 const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
 ```
 
-更新 options: [可选项](/docs/api/general/S2Options)，会与上次的数据进行合并
+更新 options: [可选项](/api/general/s2-options)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... })
 await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-重置 options: [可选项](/docs/api/general/S2Options)，直接使用传入的 option，不会与上次的数据进行合并
+重置 options: [可选项](/api/general/s2-options)，直接使用传入的 option，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... }, true)
 await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-更新 dataCfg: [可选项](/docs/api/general/S2DataConfig)，会与上次的数据进行合并
+更新 dataCfg: [可选项](/api/general/s2-data-config)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... })
 await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-重置 dataCfg: [可选项](/docs/api/general/S2DataConfig)，直接使用传入的 dataCfg，不会与上次的数据进行合并
+重置 dataCfg: [可选项](/api/general/s2-data-config)，直接使用传入的 dataCfg，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... }, true)
 await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-更新 theme: [可选项](/docs/api/general/S2Theme)
+更新 theme: [可选项](/api/general/s2-theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })
@@ -128,19 +128,19 @@ await s2.render(false)
 
 ### 表格可以根据外部容器的宽高自动撑满吗？
 
-可以，请查看 [这篇文章](/docs/manual/advanced/adaptive)
+可以，请查看 [这篇文章](/manual/advanced/adaptive)
 
 ### 如何获取单元格数据？
 
-请查看 [这篇文章](/docs/manual/advanced/get-cell-data) 和 [示例](/examples/analysis/get-data/#get-cell-data)
+请查看 [这篇文章](/manual/advanced/get-cell-data) 和 [示例](/examples/analysis/get-data/#get-cell-data)
 
 ### 为什么 Tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
 
-请查看 [Tooltip 注意事项](/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
+请查看 [Tooltip 注意事项](/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
 
 ### 如果在 `@antv/s2` 中使用 tooltip ?
 
-请查看 [Tooltip 文档](/docs/manual/basic/tooltip) 和 [示例](/examples/react-component/tooltip/#custom-content-base)
+请查看 [Tooltip 文档](/manual/basic/tooltip) 和 [示例](/examples/react-component/tooltip/#custom-content-base)
 
 ### 如何在点击或悬停单元格的时候自定义 Tooltip?
 
@@ -202,11 +202,11 @@ s2.showTooltip({ ... })
 
 ### 如何在 Vue 中自定义 Tooltip?
 
-可直接使用 S2 的 Vue3 版本 `@antv/s2-vue`, 或查看 [在 Vue3 中自定义](/docs/manual/basic/tooltip/#在-vue3-中自定义)
+可直接使用 S2 的 Vue3 版本 `@antv/s2-vue`, 或查看 [在 Vue3 中自定义](/manual/basic/tooltip/#在-vue3-中自定义)
 
 ### 表格支持导出 `Excel` 吗？
 
-支持，请查看 [这篇文章](/docs/manual/basic/analysis/export), 或者 [示例](/examples/react-component/export#export)
+支持，请查看 [这篇文章](/manual/basic/analysis/export), 或者 [示例](/examples/react-component/export#export)
 
 ### 表格导出乱码怎么办？
 
@@ -228,11 +228,11 @@ s2.showTooltip({ ... })
 
 ### 如何自定义文字的大小和对齐方式？
 
-可以配置自定义主题，查看 [使用文档](/docs/manual/basic/theme) 和 [示例](/examples/theme/custom#custom-manual-palette)
+可以配置自定义主题，查看 [使用文档](/manual/basic/theme) 和 [示例](/examples/theme/custom#custom-manual-palette)
 
 ### 如何自定义单元格宽高？
 
-请查看 [使用文档](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/examples/gallery#category-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98)
+请查看 [使用文档](/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/examples/gallery#category-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98)
 
 ### 如何关闭 hover 单元格出现的黑色边框？
 
@@ -430,11 +430,11 @@ class CustomColCell extends ColCell {
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
-配套的 [分析组件](/docs/manual/basic/analysis/editable-mode)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+配套的 [分析组件](/manual/basic/analysis/editable-mode)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
 ### 如何贡献代码？
 
-请查看 [贡献指南](/docs/manual/contribution)
+请查看 [贡献指南](/manual/contribution)
 
 ### 为什么在小程序上面表格无法显示？
 
@@ -466,7 +466,7 @@ class CustomColCell extends ColCell {
 
 - 尽量抹去一些带有你自己业务语义的一些名词和描述
 
-在提出问题前，请确保你已经阅读过 [官方文档](/docs/manual/introduction) 和 [常见问题](/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed).
+在提出问题前，请确保你已经阅读过 [官方文档](/manual/introduction) 和 [常见问题](/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed).
 
 强烈建议阅读：
 

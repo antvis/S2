@@ -24,7 +24,7 @@ The following is an example of using **#0A78F4** and **#FF5500** different theme
 
 ### Swatch Palette
 
-The swatch is defined as [Palette](/docs/api/general/S2Theme#palette) , from which the color will be taken when the theme schema is generated, and its color comes from the standard swatch. The key properties of Palette are:
+The swatch is defined as [Palette](/docs/api/general/s2-theme#palette) , from which the color will be taken when the theme schema is generated, and its color comes from the standard swatch. The key properties of Palette are:
 
 * basicColors: the basic color, with a total of 15 color bits, which essentially determines the color scheme of the table. When generating the theme schema, the color will be selected from the fixed index of basicColors. If the background color of the row header is fixed, the color of `basicColors[1]` will be taken
 * basicColorRelations: the corresponding relationship between basicColors and standard swatches. For example, in the built-in colorful theme, `basicColors[1]` is the color of index 0 in the standard swatches.
@@ -33,7 +33,7 @@ Thus S2 guarantees that all the colors used in drawing come from the theme color
 
 ### ThemeSchema
 
-The theme schema is defined as [S2Theme](/docs/api/general/S2Theme#s2theme) , which describes the theme style of cells and interactions in detail, and its attributes include color, line thickness, text size, text alignment, etc. Throughout the schema, all colors will be taken from the [Palette](/docs/api/general/S2Theme#palette) :
+The theme schema is defined as [S2Theme](/docs/api/general/s2-theme#s2theme) , which describes the theme style of cells and interactions in detail, and its attributes include color, line thickness, text size, text alignment, etc. Throughout the schema, all colors will be taken from the [Palette](/docs/api/general/s2-theme#palette) :
 
 * basicColors: Basic colors, such as corner/column/row header background, font/icon color
 * semanticColors: Semantic colors, such as the color values ​​referred to by red and green
@@ -52,7 +52,7 @@ s2.render(false);
 
 ## custom theme
 
-The `setThemeCfg` method on the s2 instance is the entry point for all theme configurations. This method receives a parameter of type [ThemeCfg](/docs/api/general/S2Theme#themecfg) . You can:
+The `setThemeCfg` method on the s2 instance is the entry point for all theme configurations. This method receives a parameter of type [ThemeCfg](/docs/api/general/s2-theme#themecfg) . You can:
 
 * Use a preset theme via ThemeCfg.name
 * Generate a theme by customizing the swatches of ThemeCfg.palette
@@ -80,7 +80,7 @@ S2 has 3 built-in theme effects:
 
 If the built-in themes do not meet your requirements, you can override specific configurations by customizing the `schema` .
 
-At this point you can call `s2.setTheme` or `s2.setThemeCfg()` to configure the `theme` object. [View the complete schema configuration](/docs/api/general/S2Theme#s2theme) :
+At this point you can call `s2.setTheme` or `s2.setThemeCfg()` to configure the `theme` object. [View the complete schema configuration](/docs/api/general/s2-theme#s2theme) :
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -145,7 +145,7 @@ s2.setTheme({
 
 ### custom swatches
 
-Although the custom `schema` is flexible, it has a heavy mental burden and requires a more detailed understanding of the `schema` structure. Therefore, we also provide a custom color palette function. At this time, you need to configure the `palette` object for `setThemeCfg` . [View full swatch configuration](/docs/api/general/S2Theme#palette) :
+Although the custom `schema` is flexible, it has a heavy mental burden and requires a more detailed understanding of the `schema` structure. Therefore, we also provide a custom color palette function. At this time, you need to configure the `palette` object for `setThemeCfg` . [View full swatch configuration](/docs/api/general/s2-theme#palette) :
 
 #### Optional swatch color
 

@@ -21,7 +21,7 @@ s2.store.set('key', value) // 存储
 | drillItemsNum            | Control the number of drill-down data                               | `number`                                                      |
 | interactionStateInfo     | Current Interaction Status Information                              | `number`                                                      |
 | drillDownFieldInLevel    | Drill down to node level information                                | [PartDrillDownInfo\[\]](#partdrilldowninfo)                   |
-| originalDataCfg          | Raw Data Configuration                                              | [S2DataConfig](/docs/api/general/S2DataConfig)                |
+| originalDataCfg          | Raw Data Configuration                                              | [S2DataConfig](/docs/api/general/s2-data-config)                |
 | panelBBox                | Visual area wrapping box model                                      | [BBox](/docs/api/basic-class/spreadsheet/#bbox)               |
 | activeResizeArea         | current resizing region group                                       | [Group](https://g.antv.vision/zh/docs/api/group)              |
 | valueRanges              | conditional format value range                                      | [ValueRanges](#valueranges)                                   |

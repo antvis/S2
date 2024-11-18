@@ -13,8 +13,8 @@ Therefore, S2 has certain restrictions on the alignment of cells. The alignment 
 
 ## Corner Alignment
 
-* The alignment of row header cells (red part) is controlled by [bolderText](/docs/api/general/S2Theme#defaultcelltheme)
-* The alignment of the column header cell (blue part) is controlled by [text](/docs/api/general/S2Theme#defaultcelltheme)
+* The alignment of row header cells (red part) is controlled by [bolderText](/docs/api/general/s2-theme#defaultcelltheme)
+* The alignment of the column header cell (blue part) is controlled by [text](/docs/api/general/s2-theme#defaultcelltheme)
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/6wPCHImDZ/b36ca38e-aa8e-4ef6-a903-b9d605204de0.png)
 
@@ -51,9 +51,9 @@ cornerCell: {
 
 ## line header alignment
 
-* The alignment of non-leaf nodes and subtotal cells (red parts) is controlled by [bolderText](/docs/api/general/S2Theme#defaultcelltheme)
-* The alignment of leaf node cells (blue part) is controlled by [text](/docs/api/general/S2Theme#defaultcelltheme)
-* The serial number cell can be controlled separately, and it is aligned with the row header by default, and the alignment is controlled by [seriesText](/docs/api/general/S2Theme#defaultcelltheme)
+* The alignment of non-leaf nodes and subtotal cells (red parts) is controlled by [bolderText](/docs/api/general/s2-theme#defaultcelltheme)
+* The alignment of leaf node cells (blue part) is controlled by [text](/docs/api/general/s2-theme#defaultcelltheme)
+* The serial number cell can be controlled separately, and it is aligned with the row header by default, and the alignment is controlled by [seriesText](/docs/api/general/s2-theme#defaultcelltheme)
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/GPEd6w4pj/f2bb3ba9-e4a4-4304-a7b6-a1b9e59e768a.png)
 
@@ -92,8 +92,8 @@ Due to the feature of sliding and centering, the `textBaseline` of the line head
 
 In order to ensure the maximum visibility under sliding, the `textBaseline` of the non-leaf node cells in the column head is internally specified as `middle` , and the `textAlign` is unlimited and can be customized as needed.
 
-* The alignment of the indicator cell (red part) is controlled by [bolderText](/docs/api/general/S2Theme#defaultcelltheme)
-* The alignment of other dimension cells (blue part) is controlled by [measureText](/docs/api/general/S2Theme#defaultcelltheme) (by default, it is aligned with the data cell)
+* The alignment of the indicator cell (red part) is controlled by [bolderText](/docs/api/general/s2-theme#defaultcelltheme)
+* The alignment of other dimension cells (blue part) is controlled by [measureText](/docs/api/general/s2-theme#defaultcelltheme) (by default, it is aligned with the data cell)
 
 <img alt="col cell align desc" src="https://gw.alipayobjects.com/zos/antfincdn/Jr7Gv9LQ9/1969f010-2bae-4b38-b06f-2935b2c69d1d.png" width="400">
 
@@ -130,8 +130,8 @@ colCell: {
 
 ## Data Cell Alignment
 
-* The alignment of subtotal total cell (red part) is controlled by [bolderText](/docs/api/general/S2Theme#defaultcelltheme)
-* The alignment of other node cells (blue parts) is controlled by [text](/docs/api/general/S2Theme#defaultcelltheme)
+* The alignment of subtotal total cell (red part) is controlled by [bolderText](/docs/api/general/s2-theme#defaultcelltheme)
+* The alignment of other node cells (blue parts) is controlled by [text](/docs/api/general/s2-theme#defaultcelltheme)
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/WHa%26eKOrP/00951ab0-b25c-4512-a056-541efff7c9dc.png)
 

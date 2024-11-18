@@ -1,3 +1,11 @@
+# [@antv/s2-react-v2.0.0-next.31](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.30...@antv/s2-react-v2.0.0-next.31) (2024-11-15)
+
+
+### Bug Fixes
+
+* 修复文本存在换行符时, 未显示省略号的问题 ([#2978](https://github.com/antvis/S2/issues/2978)) ([08dbf0d](https://github.com/antvis/S2/commit/08dbf0d9c63f1c64989fe242c9645df06e6b04e5))
+* 减少开启 ReactDOM.unstable_batchedUpdates 后的重渲染次数 ([#2971](https://github.com/antvis/S2/issues/2971)) ([9007e8e](https://github.com/antvis/S2/commit/9007e8ecf41b6d7434db312398f3996018ef0ecf))
+
 # [@antv/s2-react-v2.0.0-next.30](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.29...@antv/s2-react-v2.0.0-next.30) (2024-11-01)
 
 

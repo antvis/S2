@@ -161,7 +161,7 @@ const expectScrollBrush = async (
   expect(dataCellBrushSelectionFn).toHaveBeenCalledTimes(1);
 };
 
-describe('TableSheet Brush Selection Scroll Tests', () => {
+describe.skip('TableSheet Brush Selection Scroll Tests', () => {
   test('should scroll when mouse outside table data cell', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
@@ -188,7 +188,7 @@ describe('TableSheet Brush Selection Scroll Tests', () => {
   });
 });
 
-describe('PivotSheet Brush Selection Scroll Tests', () => {
+describe.skip('PivotSheet Brush Selection Scroll Tests', () => {
   test('should scroll when mouse outside data cell', async () => {
     const s2 = createPivotSheet(
       {

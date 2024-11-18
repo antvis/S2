@@ -1,5 +1,5 @@
 import { escape, map, max } from 'lodash';
-import type { DataItem, SimpleData } from '../../../common';
+import type { CellMeta, DataItem, SimpleData } from '../../../common';
 import { LINE_SEPARATOR, ROOT_NODE_ID, TAB_SEPARATOR } from '../../../common';
 import {
   CopyMIMEType,
@@ -13,6 +13,7 @@ import {
   type Transformer,
 } from '../../../common/interface/export';
 import type { Node } from '../../../facet/layout/node';
+import type { SpreadSheet } from '../../../sheet-type/spread-sheet';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
 export const matrixPlainTextTransformer = (
@@ -227,4 +228,14 @@ export const getNodeFormatData = (leafNode: Node) => {
   getNodeFormatterLabel(leafNode);
 
   return line;
+};
+
+export const getHeaderNodeFromMeta = (
+  meta: CellMeta,
+  spreadsheet: SpreadSheet,
+) => {
+  const { rowIndex, colIndex } = meta;
+  const { facet } = spreadsheet;
+
+  return [facet.getRowNodeByIndex(rowIndex), facet.getColNodeByIndex(colIndex)];
 };

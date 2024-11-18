@@ -231,6 +231,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.getTotalsConfig = jest.fn();
   s2.getLayoutWidthType = jest.fn();
   s2.measureTextWidth = jest.fn();
+  s2.measureTextWidthRoughly = jest.fn();
   s2.isFrozenRowHeader = jest.fn();
   s2.getSeriesNumberText = jest.fn(() => getDefaultSeriesNumberText());
   s2.theme = getTheme({
@@ -256,6 +257,8 @@ export const createMockCellInfo = (
     level = 0,
     cornerType = '',
     cellType = undefined,
+    children = [],
+    isLeaf = false,
   }: Partial<ViewMeta> = {},
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
@@ -269,6 +272,8 @@ export const createMockCellInfo = (
     cornerType,
     x: 0,
     y: 0,
+    children,
+    isLeaf,
     spreadsheet: {
       dataCfg: {
         meta: null,
@@ -296,6 +301,8 @@ export const createMockCellInfo = (
     'colId',
     'field',
     'cornerType',
+    'children',
+    'isLeaf',
   ]);
   const mockCell = {
     ...mockCellViewMeta,

@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdvancedSort Component Tests should render component 1`] = `
+<DocumentFragment>
+  <div
+    class="antv-s2-advanced-sort"
+  >
+    <button
+      class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+      type="button"
+    >
+      <span
+        class="ant-btn-icon"
+      >
+        <span
+          aria-label="ordered-list"
+          class="anticon anticon-ordered-list"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="ordered-list"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M920 760H336c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0-568H336c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H336c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM216 712H100c-2.2 0-4 1.8-4 4v34c0 2.2 1.8 4 4 4h72.4v20.5h-35.7c-2.2 0-4 1.8-4 4v34c0 2.2 1.8 4 4 4h35.7V838H100c-2.2 0-4 1.8-4 4v34c0 2.2 1.8 4 4 4h116c2.2 0 4-1.8 4-4V716c0-2.2-1.8-4-4-4zM100 188h38v120c0 2.2 1.8 4 4 4h40c2.2 0 4-1.8 4-4V152c0-4.4-3.6-8-8-8h-78c-2.2 0-4 1.8-4 4v36c0 2.2 1.8 4 4 4zm116 240H100c-2.2 0-4 1.8-4 4v36c0 2.2 1.8 4 4 4h68.4l-70.3 77.7a8.3 8.3 0 00-2.1 5.4V592c0 2.2 1.8 4 4 4h116c2.2 0 4-1.8 4-4v-36c0-2.2-1.8-4-4-4h-68.4l70.3-77.7a8.3 8.3 0 002.1-5.4V432c0-2.2-1.8-4-4-4z"
+            />
+          </svg>
+        </span>
+      </span>
+      <span>
+        高级排序
+      </span>
+    </button>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`AdvancedSort Component Tests should render custom icon and text 1`] = `
+<DocumentFragment>
+  <div
+    class="antv-s2-advanced-sort test"
+  >
+    <button
+      class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+      type="button"
+    >
+      <span
+        class="ant-btn-icon"
+      >
+        <span
+          aria-label="step-forward"
+          class="anticon anticon-step-forward"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            data-icon="step-forward"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="0 0 1024 1024"
+            width="1em"
+          >
+            <path
+              d="M676.4 528.95L293.2 829.97c-14.25 11.2-35.2 1.1-35.2-16.95V210.97c0-18.05 20.95-28.14 35.2-16.94l383.2 301.02a21.53 21.53 0 010 33.9M694 864h64a8 8 0 008-8V168a8 8 0 00-8-8h-64a8 8 0 00-8 8v688a8 8 0 008 8"
+            />
+          </svg>
+        </span>
+      </span>
+      <span>
+        自定义
+      </span>
+    </button>
+  </div>
+</DocumentFragment>
+`;

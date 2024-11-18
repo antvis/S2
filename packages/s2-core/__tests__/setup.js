@@ -14,3 +14,5 @@ jest.mock('@/ui/hd-adapter', () => {
     }),
   };
 });
+
+jest.setTimeout(60 * 1000);

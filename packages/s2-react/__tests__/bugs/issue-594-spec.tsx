@@ -5,8 +5,7 @@
  */
 import { SheetComponent } from '@/components/sheets';
 import type { SheetComponentProps } from '@/components/sheets/interface';
-import { S2Event, SpreadSheet, TableSheet } from '@antv/s2';
-import type { SheetType } from '@antv/s2-shared';
+import { S2Event, SpreadSheet, TableSheet, type SheetType } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React, { type MutableRefObject } from 'react';
 import { act } from 'react-dom/test-utils';

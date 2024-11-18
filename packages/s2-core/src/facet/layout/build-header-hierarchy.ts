@@ -5,17 +5,17 @@ import {
   type CustomTreeNode,
 } from '../../common';
 import type { PivotDataSet } from '../../data-set';
-import { buildGridHierarchy } from '../layout/build-gird-hierarchy';
-import { buildCustomTreeHierarchy } from '../layout/build-row-custom-tree-hierarchy';
-import { buildRowTreeHierarchy } from '../layout/build-row-tree-hierarchy';
-import { buildTableHierarchy } from '../layout/build-table-hierarchy';
-import { Hierarchy } from '../layout/hierarchy';
+import { buildGridHierarchy } from './build-gird-hierarchy';
+import { buildCustomTreeHierarchy } from './build-row-custom-tree-hierarchy';
+import { buildRowTreeHierarchy } from './build-row-tree-hierarchy';
+import { buildTableHierarchy } from './build-table-hierarchy';
+import { Hierarchy } from './hierarchy';
 import type {
   BuildHeaderParams,
   BuildHeaderResult,
   HeaderParams,
-} from '../layout/interface';
-import { Node } from '../layout/node';
+} from './interface';
+import { Node } from './node';
 
 const handleCustomTreeHierarchy = (params: HeaderParams) => {
   const { rootNode, hierarchy, fields, spreadsheet, isRowHeader } = params;

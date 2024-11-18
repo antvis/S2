@@ -9,6 +9,7 @@ import {
   SpreadSheet,
   type TooltipOperatorOptions,
 } from '@antv/s2';
+import { Menu } from 'antd';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
@@ -22,6 +23,11 @@ const s2Options: SheetComponentOptions = {
   hd: false,
   tooltip: {
     enable: true,
+    operation: {
+      menu: {
+        render: (props) => <Menu {...props} />,
+      },
+    },
   },
 };
 

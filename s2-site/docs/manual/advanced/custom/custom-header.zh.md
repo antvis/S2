@@ -171,7 +171,7 @@ const s2Options = {
 
 #### 1.3.1 平铺模式
 
-对于平铺模式，角头显示的文本默认对应**行头每一列的第一个单元格**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，此时 `field` 对应 [CustomTreeNode](#customtreenode) 的 `field` 值
+对于平铺模式，角头显示的文本默认对应**行头每一列的第一个单元格**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/s2-data-config#meta) 来对单元格文本进行格式化，此时 `field` 对应 [CustomTreeNode](#customtreenode) 的 `field` 值
 
 ```ts
 const meta = [
@@ -194,7 +194,7 @@ const meta = [
 
 #### 1.3.2 树状模式
 
-对于树状模式，角头默认显示的文本对应**所有的一级节点和数值**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，也可以配置 [s2Options.cornerText](/zh/docs/api/general/S2Options) 来自定义角头文本
+对于树状模式，角头默认显示的文本对应**所有的一级节点和数值**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/s2-data-config#meta) 来对单元格文本进行格式化，也可以配置 [s2Options.cornerText](/zh/docs/api/general/s2-options) 来自定义角头文本
 
 ```ts
 const meta = [
@@ -261,4 +261,4 @@ const s2DataConfig: S2DataConfig = {
 
 ## 4. 更多应用
 
-基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](/docs/manual/basic/analysis/strategy/).
+基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](/manual/basic/analysis/strategy/).

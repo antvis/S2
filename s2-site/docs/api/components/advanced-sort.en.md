@@ -19,9 +19,9 @@ The `props` of the `AdvancedSort` component
 | ruleText      | Rule description                                                       | `string`                                                                                                                       |          |          |
 | dimensions    | list of optional fields                                                | [Dimension](#dimension) \[]                                                                                                    |          |          |
 | ruleOptions   | Rule configuration list                                                | [RuleOption](#ruleoption) \[]                                                                                                  |          |          |
-| sortParams    | There are already sort rules by default                                | [SortParams](/docs/api/general/S2DataConfig#sortparams)                                                                        |          |          |
+| sortParams    | There are already sort rules by default                                | [SortParams](/docs/api/general/s2-data-config#sortparams)                                                                        |          |          |
 | onSortOpen    | Callback for opening sort popup                                        | `() => void`                                                                                                                   |          |          |
-| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
+| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/s2-data-config#sortparams) `) => void` |          |          |
 
 ### AdvancedSortCfgProps
 
@@ -36,9 +36,9 @@ Configure the `props` of `advancedSort` in the `header`
 | ruleText      | Rule description                                                       | `string`                                                                                                                       |          |          |
 | dimensions    | list of optional fields                                                | [Dimension](#dimension) \[]                                                                                                    |          |          |
 | ruleOptions   | Rule configuration list                                                | [RuleOption](#ruleoption) \[]                                                                                                  |          |          |
-| sortParams    | There are already sort rules by default                                | [SortParams](/docs/api/general/S2DataConfig#sortparams)                                                                        |          |          |
+| sortParams    | There are already sort rules by default                                | [SortParams](/docs/api/general/s2-data-config#sortparams)                                                                        |          |          |
 | onSortOpen    | Callback for opening sort popup                                        | `() => void`                                                                                                                   |          |          |
-| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
+| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/s2-data-config#sortparams) `) => void` |          |          |
 
 ### Dimension
 

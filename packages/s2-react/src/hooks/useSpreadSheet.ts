@@ -1,7 +1,13 @@
-import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
+/* eslint-disable max-lines-per-function */
+import type {
+  S2DataConfig,
+  S2Options,
+  S2RenderOptions,
+  ThemeCfg,
+} from '@antv/s2';
 import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
-import { identity } from 'lodash';
+import { identity, isEqual } from 'lodash';
 import React from 'react';
 import type { SheetComponentOptions, SheetComponentProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
@@ -15,7 +21,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
   const s2Ref = React.useRef<SpreadSheet | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const wrapperRef = React.useRef<HTMLDivElement | null>(null);
-  const shouldInit = React.useRef(true);
+  const shouldInit = React.useRef<boolean>(true);
 
   const isDevMode = React.useMemo(() => {
     try {
@@ -33,6 +39,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
     sheetType,
     onUpdate = identity,
     onUpdateAfterRender,
+    onLoading,
   } = props;
 
   /** 保存重渲 effect 的 deps */
@@ -41,7 +48,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
   >([dataCfg, options!, themeCfg!]);
 
   const { loading, setLoading } = useLoading(s2Ref.current!, props.loading);
-  const pagination = usePagination(s2Ref.current!, props);
+  const pagination = usePagination(s2Ref.current!, props.options!);
 
   useEvents(props, s2Ref.current!);
 
@@ -81,6 +88,11 @@ export function useSpreadSheet(props: SheetComponentProps) {
     props.onMounted?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 
+  // 适用于监听 loading 状态, 组件外部使用 <Spin /> 等场景
+  React.useEffect(() => {
+    onLoading?.(loading);
+  }, [loading]);
+
   React.useEffect(() => {
     // 兼容 React 18 StrictMode 开发环境下渲染两次
     if (isDevMode && !shouldInit.current) {
@@ -94,7 +106,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
       setLoading(false);
       s2Ref.current?.destroy?.();
     };
-  }, []);
+  }, [isDevMode]);
 
   // 重渲 effect：dataCfg, options or theme changed
   useUpdateEffect(() => {
@@ -106,6 +118,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
 
       updatePrevDepsRef.current = [dataCfg, options!, themeCfg!];
 
+      let rerender = false;
       let reloadData = false;
       let rebuildDataSet = false;
 
@@ -119,32 +132,43 @@ export function useSpreadSheet(props: SheetComponentProps) {
         }
 
         reloadData = true;
+        rerender = true;
         s2Ref.current?.setDataCfg(dataCfg);
       }
 
-      if (!Object.is(prevOptions, options)) {
-        if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
+      if (!isEqual(prevOptions, options)) {
+        if (prevOptions?.hierarchyType !== options?.hierarchyType) {
           rebuildDataSet = true;
           reloadData = true;
           s2Ref.current?.setDataCfg(dataCfg);
         }
 
+        rerender = true;
         s2Ref.current?.setOptions(options as S2Options);
         s2Ref.current?.changeSheetSize(options!.width, options!.height);
       }
 
-      if (!Object.is(prevThemeCfg, themeCfg)) {
+      if (!isEqual(prevThemeCfg, themeCfg)) {
+        rerender = true;
         s2Ref.current?.setThemeCfg(themeCfg);
+      }
+
+      if (!rerender) {
+        setLoading(false);
+
+        return;
       }
 
       /**
        * onUpdate 交出控制权
        * 由传入方决定最终的 render 模式
        */
-      const renderOptions = onUpdate?.({
+      const defaultRenderOptions: S2RenderOptions = {
         reloadData,
         rebuildDataSet,
-      });
+      };
+      const renderOptions =
+        onUpdate?.(defaultRenderOptions) || defaultRenderOptions;
 
       await s2Ref.current?.render(renderOptions!);
 

@@ -66,7 +66,7 @@ const s2Options = {
 
 ## custom tooltip
 
-Related chapters: [headerActionIcons configuration instructions](/docs/api/general/S2Options#headeractionicon)
+Related chapters: [headerActionIcons configuration instructions](/docs/api/general/s2-options#headeractionicon)
 
 ### configuration
 

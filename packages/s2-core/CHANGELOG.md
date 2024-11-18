@@ -1,3 +1,17 @@
+# [@antv/s2-v2.0.0-next.33](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.32...@antv/s2-v2.0.0-next.33) (2024-11-15)
+
+
+### Bug Fixes
+
+* 修复文本存在换行符时, 未显示省略号的问题 ([#2978](https://github.com/antvis/S2/issues/2978)) ([08dbf0d](https://github.com/antvis/S2/commit/08dbf0d9c63f1c64989fe242c9645df06e6b04e5))
+* 修复紧凑模式下, 文本带有 '\n' 换行符时 maxLines 配置未生效和文本溢出的问题 closes [#2963](https://github.com/antvis/S2/issues/2963) [#2900](https://github.com/antvis/S2/issues/2900) ([#2972](https://github.com/antvis/S2/issues/2972)) ([8d45f07](https://github.com/antvis/S2/commit/8d45f07ae86b24d088b609401817d535be2b43bc))
+* 减少开启 ReactDOM.unstable_batchedUpdates 后的重渲染次数 ([#2971](https://github.com/antvis/S2/issues/2971)) ([9007e8e](https://github.com/antvis/S2/commit/9007e8ecf41b6d7434db312398f3996018ef0ecf))
+
+
+### Features
+
+* 调整单元格默认 padding, 优化多行文本时的展示效果 ([#2970](https://github.com/antvis/S2/issues/2970)) ([599d7a4](https://github.com/antvis/S2/commit/599d7a4e76d2b606bdb0509eb684f47870a9e69d))
+
 # [@antv/s2-v2.0.0-next.32](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.31...@antv/s2-v2.0.0-next.32) (2024-11-08)
 
 

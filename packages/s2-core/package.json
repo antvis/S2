@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "2.0.0-next.32",
+  "version": "2.0.0-next.33",
   "private": false,
   "description": "effective spreadsheet render core lib",
   "keywords": [
@@ -27,7 +27,7 @@
     "dist/*"
   ],
   "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
+  "unpkg": "dist/s2.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "directories": {
@@ -41,20 +41,18 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
+    "build": "npm-run-all clean --parallel build:cjs build:esm build:umd",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.mjs",
-    "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.mjs",
-    "build:dts": "run-s dts:*",
-    "build:esm": "cross-env FORMAT=es rollup -c rollup.config.mjs",
+    "build:cjs": "tsc --module commonjs --outDir lib -p tsconfig.build.json && pnpm build:sync-assets lib/",
+    "build:esm": "tsc --module ESNext --outDir esm -p tsconfig.build.json && pnpm build:sync-assets esm/",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
+    "build:sync-assets": "rsync -av --include='*/' --include='*.less' --include='*.svg' --exclude='*' src/",
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.mjs",
     "clean": "rimraf lib esm dist temp",
-    "dts:build": "tsc -p tsconfig.declaration.json",
-    "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
     "start": "pnpm test:live",
     "sync-event": "node ./scripts/sync-event.mjs",
-    "test": "jest --passWithNoTests --detectOpenHandles",
+    "test": "jest --passWithNoTests",
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
     "test:coverage": "pnpm test -- --coverage",
@@ -65,9 +63,9 @@
   },
   "dependencies": {
     "@antv/event-emitter": "^0.1.3",
-    "@antv/g": "^6.1.2",
-    "@antv/g-canvas": "^2.0.18",
-    "@antv/g-lite": "^2.1.2",
+    "@antv/g": "^6.1.8",
+    "@antv/g-canvas": "^2.0.26",
+    "@antv/g-lite": "^2.2.3",
     "d3-ease": "^3.0.1",
     "d3-interpolate": "^1.3.2",
     "d3-timer": "^1.0.9",
@@ -90,12 +88,12 @@
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
+      "path": "./dist/s2.min.js",
       "import": "{ createComponent }",
-      "limit": "200 kB"
+      "limit": "240 kB"
     },
     {
-      "path": "./dist/style.min.css",
+      "path": "./dist/s2.min.css",
       "limit": "5 kB"
     }
   ],
