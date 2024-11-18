@@ -49,7 +49,6 @@ module.exports = {
     '^@antv/s2$': path.join(__dirname, 'packages/s2-core/src'),
     '^@antv/s2/esm/(.*)$': path.join(__dirname, 'packages/s2-core/src/$1'),
     '^@antv/s2/extends$': path.join(__dirname, 'packages/s2-core/src/extends'),
-    '^@antv/s2-shared$': path.join(__dirname, 'packages/s2-shared/src'),
     '^@antv/s2-react$': path.join(__dirname, 'packages/s2-react/src'),
     '^@antv/s2-react-components$': path.join(
       __dirname,

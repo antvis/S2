@@ -27,6 +27,7 @@ const output = {
   exports: 'named',
   name: 'S2',
   sourcemap: true,
+  dir: outDir,
 };
 
 const plugins = [
@@ -85,29 +86,25 @@ if (enableAnalysis) {
 }
 
 if (isUmdFormat) {
-  // output.dir = outDir;
-  // output.globals = {
-  //   '@antv/s2': 'S2',
-  // };
-
-  output.file = 'dist/s2.min.js';
+  output.globals = {
+    '@antv/s2': 'S2',
+  };
+  output.entryFileNames = '[name].min.js';
   plugins.push(terser());
-} else {
-  output.dir = outDir;
 }
 
 // eslint-disable-next-line import/no-default-export
 export default [
   {
     input: {
-      index: 'src/index.ts',
+      s2: 'src/index.ts',
     },
     output,
     plugins,
   },
   {
     input: {
-      extends: 'src/extends/index.ts',
+      's2-extends': 'src/extends/index.ts',
     },
     output: {
       ...output,

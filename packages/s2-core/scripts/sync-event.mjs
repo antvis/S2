@@ -82,7 +82,6 @@ const readListLine = (question) => {
 const VUE_USE_EVENTS_PATH = 'packages/s2-vue/src/hooks/useEvents.ts';
 const REACT_USE_EVENTS_PATH = 'packages/s2-react/src/hooks/useEvents.ts';
 const VUE_INTERFACE_PATH = 'packages/s2-vue/src/utils/initPropAndEmits.ts';
-const COMMON_INTERFACE_PATH = 'packages/s2-shared/src/interface.ts';
 
 function insertVueUseEvent(eventName, eventHookName) {
   const vueStr = vueEventTemplate(eventName, eventHookName);
@@ -105,17 +104,6 @@ function insertVueInterface(eventName) {
   insertEventIntoFile(vuePath, `'${vueEventName}',`);
 }
 
-function insertCommonInterface(eventName, eventHookName) {
-  const commonEventName = getReactEventName(eventName);
-  const commonInterfaceTemplate = getCommonInterfaceTemplate(
-    eventHookName,
-    commonEventName,
-  );
-  const reactPath = resolve(process.cwd(), `../../${COMMON_INTERFACE_PATH}`);
-
-  insertEventIntoFile(reactPath, `${commonInterfaceTemplate}`);
-}
-
 const syncEvent = async () => {
   const { eventName } = await readInputLine('请输入事件名称：');
   const { eventHookName } = await readListLine(
@@ -126,7 +114,6 @@ const syncEvent = async () => {
   insertVueUseEvent(eventName, eventHookName);
   insertVueInterface(eventName);
   insertReactUseEvent(eventName, eventHookName);
-  insertCommonInterface(eventName, eventHookName);
 
   // eslint-disable-next-line no-console
   console.warn(`✅${eventName}插入完成!  ⚠️ 注意自己检查生成结果和格式化一下`);

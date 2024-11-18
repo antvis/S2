@@ -6,7 +6,10 @@ import path from 'path';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
 
-export const getBaseConfig = () => {
+export const getBaseConfig = ({
+  aliasReact = false,
+  aliasReactComponents = false,
+} = {}) => {
   const entry = './src/index.ts';
 
   const OUT_DIR_NAME_MAP = {
@@ -47,9 +50,20 @@ export const getBaseConfig = () => {
         },
         {
           find: /^@antv\/s2\/extends$/,
-          replacement: path.join(__dirname, '../s2-core/src/extends'),
+          replacement: path.join(__dirname, './packages/s2-core/src/extends'),
         },
-      ],
+        aliasReact && {
+          find: /^@antv\/s2-react$/,
+          replacement: path.join(__dirname, './packages/s2-react/src'),
+        },
+        aliasReactComponents && {
+          find: /^@antv\/s2-react-components$/,
+          replacement: path.join(
+            __dirname,
+            './packages/s2-react-components/src',
+          ),
+        },
+      ].filter(Boolean),
     );
   }
 
