@@ -38,10 +38,6 @@ export const PivotChartSheet = React.forwardRef<
       options={options}
       ref={ref}
       adaptive={true}
-      header={{
-        title: 'S2 & G2',
-        description: '透视组合图',
-      }}
     />
   );
 });
