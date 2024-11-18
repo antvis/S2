@@ -4,7 +4,8 @@ import {
   SpreadSheet,
   type S2DataConfig,
 } from '@antv/s2';
-import { Switch } from 'antd';
+import { StrategyExport } from '@antv/s2-react-components';
+import { Space, Switch } from 'antd';
 import { get, isNil } from 'lodash';
 import React from 'react';
 import {
@@ -86,52 +87,53 @@ export const StrategySheet = React.forwardRef<
   };
 
   return (
-    <SheetComponent
-      {...props}
-      {...context}
-      ref={ref}
-      sheetType="strategy"
-      dataCfg={strategyDataCfg}
-      options={{
-        ...StrategyOptions,
-        conditions: showConditions ? conditions : null,
-      }}
-      adaptive
-      header={{
-        title: '趋势分析表',
-        description: '支持子弹图,折线图,柱状图等简易 mini 图形绘制',
-        switcher: { open: true },
-        export: { open: true },
-        extra: (
-          <>
-            <Switch
-              checkedChildren="开启字段标记"
-              unCheckedChildren="关闭字段标记"
-              checked={showConditions}
-              onChange={(checked) => {
-                setShowConditions(checked);
-              }}
-            />
-            <Switch
-              checkedChildren="单列头"
-              unCheckedChildren="多列头"
-              checked={strategyDataCfg.fields.columns?.length === 1}
-              onChange={(checked) => {
-                setStrategyDataCfg(
-                  customMerge(StrategySheetDataConfig, {
-                    fields: {
-                      columns: StrategySheetDataConfig.fields.columns?.slice(
-                        0,
-                        checked ? 1 : 2,
-                      ),
-                    },
-                  }),
-                );
-              }}
-            />
-          </>
-        ),
-      }}
-    />
+    <>
+      <Space
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: 8,
+        }}
+      >
+        <Switch
+          checkedChildren="开启字段标记"
+          unCheckedChildren="关闭字段标记"
+          checked={showConditions}
+          onChange={(checked) => {
+            setShowConditions(checked);
+          }}
+        />
+        <Switch
+          checkedChildren="单列头"
+          unCheckedChildren="多列头"
+          checked={strategyDataCfg.fields.columns?.length === 1}
+          onChange={(checked) => {
+            setStrategyDataCfg(
+              customMerge(StrategySheetDataConfig, {
+                fields: {
+                  columns: StrategySheetDataConfig.fields.columns?.slice(
+                    0,
+                    checked ? 1 : 2,
+                  ),
+                },
+              }),
+            );
+          }}
+        />
+        <StrategyExport sheetInstance={context.ref!.current!} />
+      </Space>
+      <SheetComponent
+        {...props}
+        {...context}
+        ref={ref}
+        sheetType="strategy"
+        dataCfg={strategyDataCfg}
+        options={{
+          ...StrategyOptions,
+          conditions: showConditions ? conditions : null,
+        }}
+        adaptive
+      />
+    </>
   );
 });

@@ -14,8 +14,8 @@ cell.getActualText()
 | --- | --- | --- |
 | getMeta | 获取单元格元数据 | () => [`ViewMeta`](#viewmeta) |
 | setMeta | 设置单元格元数据 | (vieMeta: [`Partial<ViewMeta>`](#viewmeta)) => void |
-| getIconStyle | 获取单元格图标样式 | () => [`IconTheme`](/docs/api/general/S2Theme#icontheme) |
-| getStyle | 获取单元格样式 | (name?: string) => [`DefaultCellTheme`](/docs/api/general/S2Theme#defaultcelltheme) |
+| getIconStyle | 获取单元格图标样式 | () => [`IconTheme`](/api/general/s2-theme#icontheme) |
+| getStyle | 获取单元格样式 | (name?: string) => [`DefaultCellTheme`](/api/general/s2-theme#defaultcelltheme) |
 | getTextAndIconPosition | 获取单元格文本和图标的位置 | (iconCount: `number`) => [`TextAndIconPosition`](#textandiconposition) |
 | cellType | 单元格类型 | [`CellType`](#celltype) |
 | initCell | 初始化单元格 | `() => void` |

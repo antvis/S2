@@ -79,7 +79,7 @@ order: 5
 
 ### 1. 显示配置
 
-配置 [S2Options](/docs/api/general/S2Options#total) 的 `totals` 属性来实现是否展示行列小计总计以及显示位置，类型如下：
+配置 [S2Options](/api/general/s2-options#total) 的 `totals` 属性来实现是否展示行列小计总计以及显示位置，类型如下：
 
 <embed src="@/docs/common/totals.zh.md"></embed>
 

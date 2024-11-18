@@ -1,5 +1,10 @@
-import { ORIGIN_FIELD, type PivotDataSet, type RawData } from '@antv/s2';
-import type { PartDrillDownInfo } from '@antv/s2-shared';
+import {
+  ORIGIN_FIELD,
+  PivotDataSet,
+  type PartDrillDownInfo,
+  type RawData,
+} from '@antv/s2';
+import { DrillDown } from '@antv/s2-react-components';
 import { forEach, random } from 'lodash';
 import React from 'react';
 import type { PartDrillDown } from '../src/components/sheets/interface';
@@ -10,7 +15,13 @@ const DrillDownFieldMap: Record<string, string[]> = {
 };
 
 export const partDrillDown: PartDrillDown = {
+  render(props) {
+    return <DrillDown {...props} />;
+  },
   drillConfig: {
+    title: '下钻',
+    clearText: '还原',
+    searchText: '搜素',
     dataSet: [
       {
         name: '销售渠道',

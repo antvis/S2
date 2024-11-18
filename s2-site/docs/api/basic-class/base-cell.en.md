@@ -14,8 +14,8 @@ cell.getActualText()
 | ---------------------- | -------------------------------------- | --------------------------------------------------------------------- |
 | getMeta                | Get cell metadata                      | () => [ViewMeta](#viewmeta)                                           |
 | setMeta                | Set cell metadata                      | (vieMeta: [ViewMeta](#viewmeta) ) => void                             |
-| getIconStyle           | Get cell icon style                    | () => [IconTheme](/docs/api/general/S2Theme#icontheme)                |
-| getStyle               | get cell style                         | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme)  |
+| getIconStyle           | Get cell icon style                    | () => [IconTheme](/docs/api/general/s2-theme#icontheme)                |
+| getStyle               | get cell style                         | () => [DefaultCellTheme](/docs/api/general/s2-theme#defaultcelltheme)  |
 | getTextAndIconPosition | Get the position of cell text and icon | (iconCount: `number` ) => [TextAndIconPosition](#textandiconposition) |
 | getActualText          | get the drawn text                     | `() => string`                                                        |
 | cellType               | cell type                              | [CellType](#celltypes)                                               |

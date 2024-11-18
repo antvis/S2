@@ -8,9 +8,6 @@ import {
   RootInteraction,
   SpreadSheet,
   Store,
-  type S2Options,
-} from '@antv/s2';
-import {
   buildDrillDownOptions,
   getDrillDownCache,
   handleActionIconClick,
@@ -18,7 +15,8 @@ import {
   type DrillDownParams,
   type PartDrillDown,
   type PartDrillDownInfo,
-} from '@antv/s2-shared';
+  type S2Options,
+} from '@antv/s2';
 import { data as originData } from '../../data/mock-dataset.json';
 import {
   HZDrillDownData,

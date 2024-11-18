@@ -3,10 +3,10 @@ import {
   getTooltipOperatorSortMenus,
   type S2CellType,
   type TooltipDetailListItem,
-  type TooltipOperatorMenuItem,
   type TooltipSummaryOptions,
 } from '@antv/s2';
 import { render, screen } from '@testing-library/react';
+import { Menu } from 'antd';
 import React from 'react';
 import { TooltipComponent } from '../../../../src';
 import { TooltipDetail } from '../../../../src/components/tooltip/components/detail';
@@ -29,6 +29,7 @@ describe('Tooltip Component Tests', () => {
                 items:
                   getTooltipOperatorSortMenus() as TooltipOperatorMenuItems,
                 selectedKeys: [key],
+                render: (props) => <Menu {...props} />,
               },
             },
           }}
@@ -69,6 +70,7 @@ describe('Tooltip Common Components Tests', () => {
           items: menus,
           onClick: mockMenuClick,
           selectedKeys: [menus[0].key],
+          render: (props) => <Menu {...props} />,
         }}
         key={'tooltipOperator'}
         cell={mockCell as unknown as S2CellType}
@@ -82,10 +84,7 @@ describe('Tooltip Common Components Tests', () => {
   });
 
   test('render hide icon: TooltipOperator', () => {
-    const hiddenMenus: TooltipOperatorMenuItem<
-      React.ReactNode,
-      React.ReactNode
-    >[] = [
+    const hiddenMenus: TooltipOperatorMenuItems = [
       {
         key: 'hiddenColumns',
         label: '隐藏',
@@ -99,6 +98,7 @@ describe('Tooltip Common Components Tests', () => {
         onlyShowOperator={false}
         menu={{
           items: hiddenMenus,
+          render: (props) => <Menu {...props} />,
         }}
         cell={jest.fn() as unknown as S2CellType}
       />,
@@ -126,6 +126,7 @@ describe('Tooltip Common Components Tests', () => {
         onlyShowOperator={false}
         menu={{
           items: hiddenMenus,
+          render: (props) => <Menu {...props} />,
         }}
         cell={jest.fn() as unknown as S2CellType}
       />,

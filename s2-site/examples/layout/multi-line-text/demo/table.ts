@@ -4,7 +4,7 @@ import {
   S2Options,
   TableSheet,
 } from '@antv/s2';
-import '@antv/s2/dist/style.min.css';
+import '@antv/s2/dist/s2.min.css';
 
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())

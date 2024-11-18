@@ -76,6 +76,8 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
     level: index,
     parentNode,
     query,
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    handler: buildGridHierarchy,
   });
 };
 
@@ -130,18 +132,18 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
     level: index,
     parentNode,
     query,
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    handler: buildGridHierarchy,
   });
 };
 
 /**
  * Build grid hierarchy in rows or columns
- *
- * @param params
  */
-export const buildGridHierarchy = (params: GridHeaderParams) => {
+export function buildGridHierarchy(params: GridHeaderParams) {
   if (params.parentNode.isTotals) {
     buildTotalGridHierarchy(params);
   } else {
     buildNormalGridHierarchy(params);
   }
-};
+}

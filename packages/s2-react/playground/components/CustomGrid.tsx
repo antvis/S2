@@ -222,11 +222,6 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
         <SheetComponent
           {...props}
           {...context}
-          header={{
-            export: {
-              open: true,
-            },
-          }}
           sheetType={sheetType}
           dataCfg={dataCfg}
           options={options}

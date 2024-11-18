@@ -1,14 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { execSync } from 'child_process';
-import ora from 'ora';
 import { glob } from 'glob';
 import { default as inquirer } from 'inquirer';
 import { default as autoCompletePrompt } from 'inquirer-autocomplete-prompt';
+import ora from 'ora';
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt);
 
 function run(path) {
-  const command = `cross-env DEBUG_MODE=1 npx jest ${path} --passWithNoTests --detectOpenHandles`;
+  const command = `cross-env DEBUG_MODE=1 npx jest ${path} --passWithNoTests`;
   const jestSpinner = ora(`[测试运行中]: ${command}`).start();
 
   try {

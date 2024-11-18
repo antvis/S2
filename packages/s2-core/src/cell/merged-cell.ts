@@ -2,12 +2,12 @@ import { isEmpty } from 'lodash';
 import { CellType } from '../common/constant';
 import { CellBorderPosition, type ViewMeta } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
-import { getBorderPositionAndStyle } from '../utils';
-import { renderLine, renderPolygon } from '../utils/g-renders';
+import { getBorderPositionAndStyle } from '../utils/cell/cell';
 import {
   getPolygonPoints,
   getRightAndBottomCells,
-} from '../utils/interaction/merge-cell';
+} from '../utils/cell/merged-cell';
+import { renderLine, renderPolygon } from '../utils/g-renders';
 import { drawCustomContent } from '../utils/text';
 import { DataCell } from './data-cell';
 
