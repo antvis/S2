@@ -505,7 +505,7 @@ describe('Pivot Chart Tests', () => {
       const colLeafNodeWidths = colLeafNodes.map((node) => node.width);
 
       // 只有一个维度时，会被拆分到 axisRow 中
-      expect(rowSampleNodeWidths).toEqual([53]);
+      expect(rowSampleNodeWidths).toEqual([54]);
       expect(colLeafNodeWidths).toEqual([200, 200, 200, 200]);
       expect(axisRowsHierarchy!.width).toEqual(100);
       expect(axisColsHierarchy!.height).toEqual(50);
@@ -535,7 +535,7 @@ describe('Pivot Chart Tests', () => {
       const colLeafNodeWidths = colLeafNodes.map((node) => node.width);
 
       // 只有一个维度时，会被拆分到 axisRow 中
-      expect(rowSampleNodeWidths).toEqual([53]);
+      expect(rowSampleNodeWidths).toEqual([54]);
       expect(colLeafNodeWidths).toEqual([200, 200, 200, 200]);
       expect(axisRowsHierarchy!.width).toEqual(100);
       expect(axisColsHierarchy!.height).toEqual(50);

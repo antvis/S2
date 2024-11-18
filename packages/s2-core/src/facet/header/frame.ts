@@ -98,13 +98,11 @@ export class Frame extends Group {
     return { y, height };
   }
 
-  protected addCornerRightBorder() {
-    const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
-      this.cfg;
+  protected addCornerRightHeadBorder() {
+    const { cornerWidth, cornerHeight, position, spreadsheet } = this.cfg;
     const { verticalBorderColor, verticalBorderColorOpacity } =
       spreadsheet.theme?.splitLine!;
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
-    const frameHorizontalWidth = Frame.getHorizontalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
     // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
@@ -140,6 +138,20 @@ export class Frame extends Group {
         strokeOpacity,
       });
     });
+  }
+
+  protected addCornerRightBorder() {
+    const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
+      this.cfg;
+    const { verticalBorderColor, verticalBorderColorOpacity } =
+      spreadsheet.theme?.splitLine!;
+    const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
+    const frameHorizontalWidth = Frame.getHorizontalBorderWidth(spreadsheet);
+    const x = position.x + cornerWidth + frameVerticalWidth! / 2;
+
+    // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
+    // 分两条线绘制, 默认和分割线所在区域对应的单元格边框颜色保持一致
+    this.addCornerRightHeadBorder();
 
     const {
       verticalBorderColor: cellVerticalBorderColor,
