@@ -43,6 +43,15 @@ export const getCornerCellTheme = (
       textAlign: isTable ? 'center' : 'right',
       textBaseline: 'middle',
     },
+    measureText: {
+      fontFamily: FONT_FAMILY,
+      fontSize: 12,
+      fontWeight: boldTextDefaultFontWeight,
+      fill: basicColors[0],
+      opacity: 1,
+      textAlign: 'left',
+      textBaseline: 'middle',
+    },
     cell: {
       // ----------- background color -----------
       backgroundColor: basicColors[3],
@@ -64,6 +73,7 @@ export const getCornerCellTheme = (
         bottom: CELL_PADDING,
         left: CELL_PADDING,
       },
+
       /* ---------- interaction state ----------- */
       interactionState: {
         // -------------- hover -------------------
@@ -183,7 +193,6 @@ export const getRowCellTheme = (
         bottom: CELL_PADDING,
         left: CELL_PADDING,
       },
-
       /* ---------- interaction state ----------- */
       interactionState: {
         // -------------- hover -------------------

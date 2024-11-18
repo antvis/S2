@@ -156,7 +156,6 @@ Object {
 exports[`Interaction Row Column Resize Tests should not effect default resize style by field for selected resize type 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": 50,
