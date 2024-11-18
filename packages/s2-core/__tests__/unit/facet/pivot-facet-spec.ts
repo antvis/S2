@@ -88,6 +88,7 @@ jest.mock('@/sheet-type', () => {
           getCellRange: jest.fn().mockReturnValue({ start: 0, end: 100 }),
           cornerBBox: {},
           getHeaderNodes: jest.fn().mockReturnValue([]),
+          measureTextWidth: jest.fn(),
         },
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -98,6 +99,8 @@ jest.mock('@/sheet-type', () => {
         },
         measureTextWidth:
           jest.fn() as unknown as SpreadSheet['measureTextWidth'],
+        measureTextWidthRoughly:
+          jest.fn() as unknown as SpreadSheet['measureTextWidthRoughly'],
         getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
       };
     }),

@@ -1,6 +1,7 @@
 ---
 title: 维度下钻
 order: 2
+tag: Updated
 ---
 
 :::warning{title="注意"}
@@ -11,11 +12,14 @@ order: 2
 
 :::
 
-## React 下钻组件 <Badge>@antv/s2-react</Badge>
+## React 下钻组件 <Badge>@antv/s2-react</Badge> <Badge>@antv/s2-react-components</Badge>
 
 [​查看示例](/examples/react-component/drill-dwon#for-pivot)
 
-```jsx
+```tsx | pure
+import { DrillDown } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/s2-react-components.min.css'
+
 const s2Options = {
   width: 600,
   height: 480,
@@ -23,9 +27,12 @@ const s2Options = {
 };
 
 <SheetComponent
-  options={s2Options}
-  partDrillDown={PartDrillDown}
   sheetType="pivot"
+  options={s2Options}
+  partDrillDown={{
+    render: (props) => <DrillDown {...props} />,
+    ...PartDrillDown
+  }}
 />
 ```
 
@@ -93,9 +100,9 @@ const s2Options = {
 | --- |---------------------------------------| --- | --- | --- | ---  |
 | dataSet | 下钻数据源配置                               | [DataSet[]](#dataset) |  | ✓ |  |
 | className | 透传样式名                                 | `string` |  |  |  |
-| titleText | 标题                                    | `string` |  |  |  |
+| title | 标题                                    | `React.ReactNode` |  |  |  |
 | searchText | 搜索框文案                                 | `string` |  |  |  |
-| clearButtonText | 重置按钮文案                                | `string` |  |  |  |
+| clearText | 重置按钮文案                                | `React.ReactNode` |  |  |  |
 | disabledFields | 不允许下钻的维度                              | `string[]` |  |  |  |
 | getDrillFields | 内部获取当前下钻维度的回调                         | `Function` |  |  |  |
 | setDrillFields | 内部设置当前下钻维度的回调                         | `Function` |  |  |  |

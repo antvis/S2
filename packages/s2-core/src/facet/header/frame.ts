@@ -20,11 +20,11 @@ export class Frame extends Group {
   }
 
   public layout() {
-    // corner底部的横线条
+    // corner 底部的横线条
     this.addCornerBottomBorder();
-    // corner右边的竖线条
+    // corner 右边的竖线条
     this.addCornerRightBorder();
-    // 一级纵向分割线两侧的shadow
+    // 一级纵向分割线两侧的 shadow
     this.addSplitLineShadow();
   }
 
@@ -43,7 +43,6 @@ export class Frame extends Group {
   }
 
   public static getVerticalBorderWidth(spreadsheet: SpreadSheet): number {
-    // 交叉表一条竖线拉通即可
     const { splitLine, cornerCell, colCell, dataCell } = spreadsheet.theme;
 
     if (spreadsheet.isPivotMode()) {
@@ -100,66 +99,75 @@ export class Frame extends Group {
   }
 
   protected addCornerRightBorder() {
-    // 交叉表一条竖线拉通即可
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       this.cfg;
-    const {
-      verticalBorderColor,
-      verticalBorderColorOpacity,
-      horizontalBorderWidth,
-    } = spreadsheet.theme?.splitLine!;
-
+    const { verticalBorderColor, verticalBorderColorOpacity } =
+      spreadsheet.theme?.splitLine!;
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
+    const frameHorizontalWidth = Frame.getHorizontalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
-    if (spreadsheet.isPivotMode()) {
-      const { y, height } = this.getCornerRightBorderSizeForPivotMode();
-      const y2 = y + height;
-
-      this.cornerRightBorder = renderLine(this, {
-        x1: x,
-        y1: y,
-        x2: x,
-        y2,
-        stroke: verticalBorderColor,
-        lineWidth: frameVerticalWidth,
-        strokeOpacity: verticalBorderColorOpacity,
-      });
-
-      return;
-    }
-
-    // 明细表需要区分头部的边框和明细格子的边框
+    // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
+    // 分两条线绘制, 默认和分割线所在区域对应的单元格边框颜色保持一致
     const {
       verticalBorderColor: headerVerticalBorderColor,
       verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
-    } = spreadsheet.options.seriesNumber?.enable
+      backgroundColor,
+      backgroundColorOpacity,
+    } = spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
       ? spreadsheet.theme.cornerCell!.cell!
       : spreadsheet.theme.colCell!.cell!;
 
-    renderLine(this, {
-      x1: x,
-      y1: position.y,
-      x2: x,
-      y2: position.y + cornerHeight,
-      stroke: headerVerticalBorderColor,
-      lineWidth: frameVerticalWidth,
-      strokeOpacity: headerVerticalBorderColorOpacity,
+    /**
+     * G 6.0 颜色混合模式有调整, 相同颜色的 Line 在不同背景色绘制, 实际渲染的颜色会不一致
+     * 在绘制分割线前, 先填充一个和单元格相同的底色, 保证分割线和单元格边框表现一致
+     */
+    [
+      { stroke: backgroundColor, strokeOpacity: backgroundColorOpacity },
+      {
+        stroke: verticalBorderColor || headerVerticalBorderColor,
+        strokeOpacity:
+          verticalBorderColorOpacity || headerVerticalBorderColorOpacity,
+      },
+    ].forEach(({ stroke, strokeOpacity }) => {
+      renderLine(this, {
+        x1: x,
+        y1: position.y,
+        x2: x,
+        y2: position.y + cornerHeight,
+        lineWidth: frameVerticalWidth,
+        stroke,
+        strokeOpacity,
+      });
     });
 
     const {
       verticalBorderColor: cellVerticalBorderColor,
       verticalBorderColorOpacity: cellVerticalBorderColorOpacity,
+      backgroundColor: cellBackgroundColor,
+      backgroundColorOpacity: cellBackgroundColorOpacity,
     } = spreadsheet.theme.dataCell!.cell!;
 
-    renderLine(this, {
-      x1: x,
-      y1: position.y + cornerHeight + horizontalBorderWidth!,
-      x2: x,
-      y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
-      stroke: cellVerticalBorderColor,
-      lineWidth: frameVerticalWidth,
-      strokeOpacity: cellVerticalBorderColorOpacity,
+    [
+      {
+        stroke: cellBackgroundColor,
+        strokeOpacity: cellBackgroundColorOpacity,
+      },
+      {
+        stroke: verticalBorderColor || cellVerticalBorderColor,
+        strokeOpacity:
+          verticalBorderColorOpacity || cellVerticalBorderColorOpacity,
+      },
+    ].forEach(({ stroke, strokeOpacity }) => {
+      renderLine(this, {
+        x1: x,
+        y1: position.y + cornerHeight + frameHorizontalWidth!,
+        x2: x,
+        y2: position.y + cornerHeight + frameHorizontalWidth! + viewportHeight,
+        lineWidth: frameVerticalWidth,
+        stroke,
+        strokeOpacity,
+      });
     });
   }
 
@@ -178,6 +186,15 @@ export class Frame extends Group {
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
     } = spreadsheet.theme?.splitLine!;
+
+    const {
+      horizontalBorderColor: headerHorizontalBorderColor,
+      horizontalBorderColorOpacity: headerHorizontalBorderColorOpacity,
+    } =
+      spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
+        ? spreadsheet.theme.cornerCell!.cell!
+        : spreadsheet.theme.colCell!.cell!;
+
     const x1 = position.x;
     const x2 =
       x1 +
@@ -192,9 +209,10 @@ export class Frame extends Group {
       y1: y,
       x2,
       y2: y,
-      stroke: horizontalBorderColor,
+      stroke: horizontalBorderColor || headerHorizontalBorderColor,
       lineWidth: horizontalBorderWidth,
-      opacity: horizontalBorderColorOpacity,
+      opacity:
+        horizontalBorderColorOpacity || headerHorizontalBorderColorOpacity,
     });
   }
 
@@ -211,7 +229,6 @@ export class Frame extends Group {
       return;
     }
 
-    // do render...
     this.addSplitLineLeftShadow();
     this.addSplitLineRightShadow();
   }

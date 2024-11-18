@@ -12,7 +12,7 @@ s2.interaction.reset()
 
 | 参数 | 说明                                               | 类型 |
 | --- |--------------------------------------------------| --- |
-| spreadsheet | 表格实例                                             | [SpreadSheet](/docs/api/basic-class/spreadsheet) |
+| spreadsheet | 表格实例                                             | [SpreadSheet](/api/basic-class/spreadsheet) |
 | interactions | 当前已注册的交互                                         | `Map<string, BaseEvent>` |
 | intercepts | 当前拦截的交互，防止不同交互之间冲突 ([查看示例](/examples/interaction/advanced/#intercepts))                              | `Set<Intercept>` |
 | eventController | 事件控制器                              | [EventController](#eventcontroller) |
@@ -51,9 +51,9 @@ s2.interaction.reset()
 | addIntercepts | 新增交互拦截                                           | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | hasIntercepts | 是否有指定拦截的交互                                       | (interceptTypes: [InterceptType](#intercepttype)[]) => boolean |
 | removeIntercepts | 移除指定交互拦截                                         | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
-| highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/docs/api/basic-class/node)[]) => void |
+| highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/api/basic-class/node)[]) => void |
 | scrollTo | 滚动至指定位置   | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |    |
-| scrollToNode | 滚动至指定单元格节点   | (node: [Node](/docs/api/basic-class/node), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToNode | 滚动至指定单元格节点   | (node: [Node](/api/basic-class/node), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToCell | 滚动至指定单元格   | (cell: [S2CellType](#s2celltype), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToCellById | 滚动至指定单元格 id 对应的位置，如果不在可视化范围内，则会自动滚动   | (id: string, options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToTop | 滚动至顶部  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
@@ -166,20 +166,6 @@ export abstract class BaseEvent {
 }
 ```
 
-### InterceptType
-
-```ts
-enum InterceptType {
-  HOVER = 'hover',
-  CLICK = 'click',
-  DATA_CELL_BRUSH_SELECTION = 'dataCellBrushSelection',
-  ROW_CELL_BRUSH_SELECTION = 'rowCellBrushSelection',
-  COL_CELL_BRUSH_SELECTION = 'colCellBrushSelection',
-  MULTI_SELECTION = 'multiSelection',
-  RESIZE = 'resize',
-}
-```
-
 ### S2CellType
 
 ```ts
@@ -217,6 +203,11 @@ interface ChangeCellOptions {
   stateName?: InteractionStateName;
 
   /**
+   * 交互名
+   */
+  interactionName?: `${InteractionName}`;
+
+  /**
    * 如果单元格不在可视范围，是否自动滚动
    */
   scrollIntoView?: boolean;
@@ -233,19 +224,6 @@ interface MergedCellInfo {
 }
 ```
 
-### CellType
-
-```ts
-enum CellType {
-  DATA_CELL = 'dataCell',
-  ROW_CELL = 'rowCell',
-  COL_CELL = 'colCell',
-  SERIES_NUMBER_CELL = 'seriesNumberCell',
-  CORNER_CELL = 'cornerCell',
-  MERGED_CELL = 'mergedCell',
-}
-```
-
 ### CellMeta
 
 ```ts
@@ -256,24 +234,6 @@ interface CellMeta {
   type: CellType;
   rowQuery?: Record<string, any>;
   [key: string]: unknown;
-}
-```
-
-### InteractionStateName
-
-```ts
-enum InteractionStateName {
-  ALL_SELECTED = 'allSelected',
-  SELECTED = 'selected',
-  ROW_CELL_BRUSH_SELECTED = 'rowCellBrushSelected',
-  COL_CELL_BRUSH_SELECTED = 'colCellBrushSelected',
-  DATA_CELL_BRUSH_SELECTED = 'dataCellBrushSelected',
-  UNSELECTED = 'unselected',
-  HOVER = 'hover',
-  HOVER_FOCUS = 'hoverFocus',
-  HIGHLIGHT = 'highlight',
-  SEARCH_RESULT = 'searchResult',
-  PREPARE_SELECT = 'prepareSelect',
 }
 ```
 
@@ -293,7 +253,7 @@ interface InteractionStateInfo {
 
 | 参数 | 说明    | 类型 |
 | --- |--------| --- |
-| spreadsheet | 表格实例 | [SpreadSheet](/docs/api/basic-class/spreadsheet) |
+| spreadsheet | 表格实例 | [SpreadSheet](/api/basic-class/spreadsheet) |
 | canvasEventHandlers | 当前已注册的交互            | [EventHandler](#eventhandler)[] |
 | s2EventHandlers | 当前已注册的交互            | [S2EventHandler](#s2eventhandler)[] |
 | domEventListeners | 当前已注册的交互            | [EventHandler](#eventhandler)[] |

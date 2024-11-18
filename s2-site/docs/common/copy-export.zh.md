@@ -62,11 +62,7 @@ copyToClipboard(data)
 组件层的复制，导出等功能，基于核心层 `@antv/s2` 透出的一系列工具方法封装，也可以根据实际业务，基于工具方法自行封装。
 :::
 
-开启表头，可以直接复制/下载数据，具体请查看 [分析组件-导出](/manual/advanced/analysis/export) 章节。
-
-```ts | pure
-<SheetComponent header={{ export: { open: true } }} />
-```
+具体请查看 [分析组件-导出](/manual/advanced/analysis/export) 章节。
 
 ##### 1.2.1 原始数据全量复制
 
@@ -263,7 +259,7 @@ download(data, 'filename') // filename.csv
 
 | 参数          | 说明      | 类型              | 默认值           | 必选 |
 | ------------|-----------------|---------------|---------------| --- |
-| sheetInstance | s2 实例    | [SpreadSheet](/docs/api/basic-class/spreadsheet)     |      | ✓    |
+| sheetInstance | s2 实例    | [SpreadSheet](/api/basic-class/spreadsheet)     |      | ✓    |
 | split       | 分隔符    | `string`       |     | ✓    |
 | formatOptions  | 是否使用 [S2DataConfig.Meta](/api/general/s2-data-config#meta) 进行格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `true`  |      |
 | customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => [`Partial<Transformer>`](#transformer)      |  |      |

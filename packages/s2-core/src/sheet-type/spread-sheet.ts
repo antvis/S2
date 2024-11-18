@@ -101,7 +101,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * 表格是否已销毁
    */
-  private destroyed = false;
+  public destroyed = false;
 
   protected abstract bindEvents(): void;
 
@@ -434,7 +434,7 @@ export abstract class SpreadSheet extends EE {
     const {
       reloadData = true,
       rebuildDataSet = false,
-      reBuildHiddenColumnsDetail = true,
+      rebuildHiddenColumnsDetail = true,
     } = options || {};
 
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
@@ -450,7 +450,7 @@ export abstract class SpreadSheet extends EE {
 
     this.buildFacet();
 
-    if (reBuildHiddenColumnsDetail) {
+    if (rebuildHiddenColumnsDetail) {
       await this.initHiddenColumnsDetail();
     }
 
@@ -467,7 +467,7 @@ export abstract class SpreadSheet extends EE {
       s2.render({
         reloadData: true;
         rebuildDataSet: true;
-        reBuildHiddenColumnsDetail: true;
+        rebuildHiddenColumnsDetail: true;
       })
    */
   public async render(options?: S2RenderOptions | boolean): Promise<void> {
@@ -499,6 +499,7 @@ export abstract class SpreadSheet extends EE {
     const canvas = this.getCanvasElement();
 
     if (canvas) {
+      // @ts-ignore
       // eslint-disable-next-line no-underscore-dangle
       delete canvas.__s2_instance__;
     }
@@ -719,7 +720,7 @@ export abstract class SpreadSheet extends EE {
   protected initContainer(dom: S2MountContainer) {
     const { width, height, device, transformCanvasConfig } = this.options;
 
-    const renderer = new Renderer() as unknown as CanvasConfig['renderer'];
+    const renderer = new Renderer();
     const canvasConfig = transformCanvasConfig?.(renderer, this);
     /**
      * https://github.com/antvis/S2/issues/2857
@@ -838,7 +839,10 @@ export abstract class SpreadSheet extends EE {
    * @param font 文本 css 样式
    * @returns 文本宽度
    */
-  public measureTextWidthRoughly = (text: any, font: any = {}): number => {
+  public measureTextWidthRoughly = (
+    text: SimpleData,
+    font: unknown,
+  ): number => {
     const alphaWidth = this.measureTextWidth('a', font);
     const chineseWidth = this.measureTextWidth('蚂', font);
 
@@ -849,7 +853,7 @@ export abstract class SpreadSheet extends EE {
     }
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const char of text) {
+    for (const char of String(text)) {
       const code = char.charCodeAt(0);
 
       // /[\u0000-\u00ff]/

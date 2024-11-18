@@ -1,5 +1,5 @@
-import { PivotSheet, BaseEvent, S2Event, S2Options } from '@antv/s2';
-import '@antv/s2/dist/style.min.css';
+import { BaseEvent, PivotSheet, S2Event, S2Options } from '@antv/s2';
+import '@antv/s2/dist/s2.min.css';
 
 class RowColumnHoverTooltipInteraction extends BaseEvent {
   bindEvents() {

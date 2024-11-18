@@ -1,0 +1,69 @@
+@import '@antv/s2/esm/shared/styles/variables.less';
+
+@normal-span: 8px;
+@font-size: 12px;
+
+@gray-color: rgba(0, 0, 0, 0.15);
+@highlight-gray-color: rgba(0, 0, 0, 0.25);
+
+.@{switcher-cls-prefix}-dimension {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+
+  &.long-dimension {
+    grid-row: span 2;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: @normal-span;
+    justify-content: space-between;
+
+    .title {
+      span {
+        margin-left: @normal-span;
+      }
+
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .expand-option {
+      font-size: 12px;
+
+      .description {
+        margin-left: 4px;
+      }
+    }
+  }
+
+  &-items {
+    flex: 1;
+    min-height: 120px;
+    padding: @normal-span;
+    border: 1px solid @gray-color;
+    border-radius: 4px;
+    overflow-y: auto;
+    background: var(~'@{css-var-prefix}-block-background');
+
+    &-highlight {
+      border: 1px solid #6b9cff;
+      box-shadow: 0 0 2px 1px rgba(46, 91, 217, 0.2);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: @gray-color;
+
+      &:hover {
+        background-color: @highlight-gray-color;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+  }
+}

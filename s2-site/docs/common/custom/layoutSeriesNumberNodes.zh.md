@@ -15,6 +15,6 @@ LayoutSeriesNumberNodes = (rowsHierarchy: Hierarchy, seriesNumberWidth: number, 
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | ---  | --- | --- |
-| rowsHierarchy | [Hierarchy](/docs/api/basic-class/hierarchy) |  |    | 行头层级结构 |
+| rowsHierarchy | [Hierarchy](/api/basic-class/hierarchy) |  |    | 行头层级结构 |
 | seriesNumberWidth | `number` |  |    | 表格实例 |
-| spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |    | 表格实例 |
+| spreadsheet | [SpreadSheet](/api/basic-class/spreadsheet) |  |    | 表格实例 |

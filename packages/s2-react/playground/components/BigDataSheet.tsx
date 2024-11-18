@@ -8,13 +8,17 @@ import {
 import { usePlaygroundContext } from '../context/playground.context';
 
 const s2Options: SheetComponentOptions = {
-  width: 1600,
   height: 480,
   interaction: {
     scrollSpeedRatio: {
-      vertical: 10,
-      horizontal: 10,
+      vertical: 1,
+      horizontal: 1,
     },
+  },
+  transformCanvasConfig(renderer) {
+    renderer.setConfig({
+      enableCulling: true,
+    });
   },
 };
 
@@ -71,6 +75,7 @@ export const BigDataSheet = React.forwardRef<SpreadSheet, CustomGridProps>(
         dataCfg={s2DataConfig}
         options={s2Options}
         ref={ref}
+        adaptive
       />
     );
   },

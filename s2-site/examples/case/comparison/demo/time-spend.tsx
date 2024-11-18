@@ -4,7 +4,7 @@ import React from 'react';
 import { Circle, Line } from '@antv/g';
 import { DataCell, Frame, ResizeType, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import insertCSS from 'insert-css';
 
 const paletteLegendMap = [

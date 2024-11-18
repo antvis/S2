@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import {
-  TableSheet,
+  S2CellType,
+  S2DataConfig,
   S2Event,
   S2Options,
-  S2DataConfig,
   SpreadSheet,
-  S2CellType,
+  TableSheet,
   TooltipShowOptions,
 } from '@antv/s2';
-import '@antv/s2/dist/style.min.css';
+import '@antv/s2/dist/s2.min.css';
 
 function hideSelectedColumns(s2: SpreadSheet) {
   // 兼容多选

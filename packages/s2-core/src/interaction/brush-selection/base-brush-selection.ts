@@ -23,6 +23,7 @@ import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
+  CellSelectedDetail,
   OnUpdateCells,
   S2CellType,
   ScrollOffsetConfig,
@@ -664,6 +665,8 @@ export class BaseBrushSelection
   };
 
   protected mouseDown(event: CanvasEvent) {
+    event?.preventDefault?.();
+
     if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
       return;
     }
@@ -783,9 +786,14 @@ export class BaseBrushSelection
   public emitBrushSelectionEvent(
     event: S2Event,
     scrollBrushRangeCells: S2CellType[],
+    detail: CellSelectedDetail,
   ) {
-    this.spreadsheet.emit(event, scrollBrushRangeCells);
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
+    this.spreadsheet.emit(event, scrollBrushRangeCells, detail);
+    this.spreadsheet.emit(
+      S2Event.GLOBAL_SELECTED,
+      scrollBrushRangeCells,
+      detail,
+    );
 
     // 未刷选到有效单元格, 允许 hover
     if (isEmpty(scrollBrushRangeCells)) {

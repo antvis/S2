@@ -15,17 +15,17 @@ s2.store.set('key', value) // 存储
 | scrollX | 水平滚动偏移 | `number` |
 | scrollY | 垂直滚动偏移 | `number` |
 | rowHeaderScrollX | 行头水平滚动偏移 | `number` |
-| sortParam | 列头排序配置 | [SortParam](/docs/api/components/sheet-component/#sortparams) |
+| sortParam | 列头排序配置 | [SortParam](/api/components/sheet-component/#sortparams) |
 | drillDownIdPathMap | 下钻节点 id 和对应生成的 path 寻址路径 | `Map<string, number[][]>` |
-| drillDownNode | 当前下钻节点 | [Node](/docs/api/basic-class/node) |
+| drillDownNode | 当前下钻节点 | [Node](/api/basic-class/node) |
 | drillItemsNum | 下钻数据的个数控制 | `number` |
 | interactionStateInfo | 当前交互状态信息 | `number` |
 | drillDownFieldInLevel | 下钻节点层级信息 | [PartDrillDownInfo[]](#partdrilldowninfo) |
-| originalDataCfg | 原始数据配置 | [S2DataConfig](/docs/api/general/S2DataConfig)|
-| panelBBox | 可视区域包裹盒模型 | [BBox](/docs/api/basic-class/base-bbox) |
+| originalDataCfg | 原始数据配置 | [S2DataConfig](/api/general/s2-data-config)|
+| panelBBox | 可视区域包裹盒模型 | [BBox](/api/basic-class/base-bbox) |
 | activeResizeArea | 当前调整大小区域 group | [Group](https://g.antv.antgroup.com/api/basic/group) |
 | valueRanges | 条件格式值区间 | [ValueRanges](#valueranges) |
-| initColLeafNodes | 初次渲染时的列头叶子节点 | [Node[]](/docs/api/basic-class/node)|
+| initColLeafNodes | 初次渲染时的列头叶子节点 | [Node[]](/api/basic-class/node)|
 | hiddenColumnsDetail | 隐藏的列头详情 | [HiddenColumnsInfo[]](#hiddencolumnsinfo) |
 | lastRenderedColumnFields | 上一次渲染的列头配置 | `string[]` |
 | resized | 是否手动调整过宽高 | `boolean` |

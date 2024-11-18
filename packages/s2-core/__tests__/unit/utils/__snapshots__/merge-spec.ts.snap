@@ -47,7 +47,7 @@ Object {
       "colResizeType": "current",
       "cornerCellHorizontal": true,
       "minCellHeight": 20,
-      "minCellWidth": 20,
+      "minCellWidth": 40,
       "rowCellVertical": true,
       "rowResizeType": "current",
     },
@@ -117,7 +117,7 @@ Object {
 }
 `;
 
-exports[`merge test should setup correctly compact layout width type style 1`] = `
+exports[`merge test should not setup correctly compact layout width type style 1`] = `
 Object {
   "colCell": Object {
     "height": 30,
@@ -135,7 +135,7 @@ Object {
     "maxLines": 1,
     "textOverflow": "ellipsis",
     "width": 96,
-    "wordWrap": false,
+    "wordWrap": true,
   },
   "layoutWidthType": "compact",
   "rowCell": Object {

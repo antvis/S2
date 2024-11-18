@@ -1,11 +1,6 @@
 import { groupBy, map, mapValues, reduce, uniqBy } from 'lodash';
 import { HeaderCell, TableSeriesNumberCell } from '../../cell';
-import {
-  CellType,
-  InteractionKeyboardKey,
-  InteractionStateName,
-  S2Event,
-} from '../../common/constant';
+import { CellType, InteractionKeyboardKey } from '../../common/constant';
 import type {
   CellMeta,
   OnUpdateCells,
@@ -45,15 +40,15 @@ export const getCellMeta = (cell: S2CellType): CellMeta => {
   };
 };
 
-export const selectCells = (spreadsheet: SpreadSheet, cells: CellMeta[]) => {
-  const { interaction } = spreadsheet;
+// export const selectCells = (spreadsheet: SpreadSheet, cells: CellMeta[]) => {
+//   const { interaction } = spreadsheet;
 
-  interaction.changeState({
-    stateName: InteractionStateName.SELECTED,
-    cells,
-  });
-  spreadsheet.emit(S2Event.GLOBAL_SELECTED, interaction.getActiveCells());
-};
+//   interaction.changeState({
+//     stateName: InteractionStateName.SELECTED,
+//     cells,
+//   });
+//   spreadsheet.emit(S2Event.GLOBAL_SELECTED, interaction.getActiveCells());
+// };
 
 export function getRangeIndex<T extends CellMeta | ViewMeta | Node>(
   start: T,

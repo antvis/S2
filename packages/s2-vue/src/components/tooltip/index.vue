@@ -77,6 +77,5 @@ export default defineComponent({
 </template>
 
 <style lang="less">
-@import '@antv/s2/src/ui/tooltip/index.less';
-@import '@antv/s2-shared/src/styles/tooltip/index.less';
+@import '@antv/s2/esm/shared/styles/tooltip/index.less';
 </style>

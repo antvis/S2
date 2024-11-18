@@ -6,7 +6,7 @@ tag: Updated
 
 S2 can manually drag and drop to dynamically change the width and height of cells. At the same time, there are three built-in layouts: row and column`行列等宽`,`列等宽`and`行列紧凑布局`layout ( [see examples](/examples/layout/basic/#compact) )
 
-We can modify the background color, font size and other configurations of the cell through the [theme](/docs/manual/basic/theme/) . If you want to customize the width and height of the cell, you can use the [style](/docs/api/general/S2Options#style) configuration of `s2Options` to achieve it
+We can modify the background color, font size and other configurations of the cell through the [theme](/docs/manual/basic/theme/) . If you want to customize the width and height of the cell, you can use the [style](/docs/api/general/s2-options#style) configuration of `s2Options` to achieve it
 
 <Playground path="layout/custom/demo/custom-pivot-size.ts" rid="container" height="400"></Playground>
 

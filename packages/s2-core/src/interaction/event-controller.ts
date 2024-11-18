@@ -6,7 +6,7 @@ import {
   type PointLike,
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isFunction, isNil } from 'lodash';
-import { GuiIcon } from '../common';
+import { GuiIcon, InteractionName } from '../common';
 import {
   CellType,
   InteractionKeyboardKey,
@@ -198,6 +198,10 @@ export class EventController {
     this.spreadsheet.emit(
       S2Event.GLOBAL_SELECTED,
       interaction.getActiveCells(),
+      {
+        targetCell: null,
+        interactionName: InteractionName.GLOBAL_RESET,
+      },
     );
   }
 
@@ -242,6 +246,11 @@ export class EventController {
 
       if (!canvas) {
         return false;
+      }
+
+      // 开启 CSS transform 时, 降级处理, 不做 canvas 内的空白检测: https://github.com/antvis/S2/issues/2879
+      if (this.spreadsheet.container.getConfig().supportsCSSTransform) {
+        return this.isMatchElement(event);
       }
 
       return this.isMatchElement(event) && this.isMatchPoint(event);

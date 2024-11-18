@@ -1,6 +1,8 @@
 export enum InteractionName {
   CORNER_CELL_CLICK = 'cornerCellClick',
   DATA_CELL_CLICK = 'dataCellClick',
+  ROW_CELL_CLICK = 'rowCellClick',
+  COL_CELL_CLICK = 'colCellClick',
   MERGED_CELLS_CLICK = 'mergedCellsClick',
   ROW_COLUMN_CLICK = 'rowColumnClick',
   HEADER_CELL_LINK_CLICK = 'headerCellLinkClick',
@@ -10,8 +12,11 @@ export enum InteractionName {
   COL_CELL_BRUSH_SELECTION = 'colCellBrushSelection',
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
+  ROW_CELL_MULTI_SELECTION = 'rowCellMultiSelection',
+  COL_CELL_MULTI_SELECTION = 'colCellMultiSelection',
   RANGE_SELECTION = 'rangeSelection',
   SELECTED_CELL_MOVE = 'selectedCellMove',
+  GLOBAL_RESET = 'globalReset',
 }
 
 export enum InteractionStateName {

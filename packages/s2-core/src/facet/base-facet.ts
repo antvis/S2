@@ -42,6 +42,7 @@ import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
   DEFAULT_STYLE,
+  EXTRA_FIELD,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   InterceptType,
   KEY_GROUP_BACK_GROUND,
@@ -77,6 +78,7 @@ import type {
   S2CellType,
   ScrollChangeParams,
   ScrollOffsetConfig,
+  SimpleData,
   ViewMeta,
 } from '../common/interface';
 import type {
@@ -344,17 +346,23 @@ export abstract class BaseFacet {
   protected getColCellDraggedWidth(node: Node): number | undefined {
     const { colCell } = this.spreadsheet.options.style!;
 
+    // 指标的 field 是 $$extra$$, 对用户来说其实是 s2DataConfig.fields.values 里面的 field
+    // 此时应该按 $$extra$$ 对应的 value field 匹配
     return (
-      colCell?.widthByField?.[node?.id] ?? colCell?.widthByField?.[node?.field]
+      colCell?.widthByField?.[node?.id] ??
+      colCell?.widthByField?.[node?.field] ??
+      colCell?.widthByField?.[node?.query?.[EXTRA_FIELD]]
     );
   }
 
   protected getColCellDraggedHeight(node: Node): number | undefined {
     const { colCell } = this.spreadsheet.options.style!;
 
+    // 高度同理
     return (
       colCell?.heightByField?.[node?.id] ??
-      colCell?.heightByField?.[node?.field]
+      colCell?.heightByField?.[node?.field] ??
+      colCell?.heightByField?.[node?.query?.[EXTRA_FIELD]]
     );
   }
 
@@ -451,6 +459,7 @@ export abstract class BaseFacet {
     const { padding } = cell.getStyle().cell;
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
+
     const height =
       cell.isMultiLineText() && textHeight >= defaultHeight
         ? adaptiveHeight
@@ -1321,7 +1330,7 @@ export abstract class BaseFacet {
       event?.preventDefault?.();
     }
 
-    // 移动端的 prevent 存在于 originalEvent上
+    // 移动端的 prevent 存在于 originalEvent 上
     const mobileEvent = (event as unknown as GraphEvent)?.originalEvent;
 
     if (mobileEvent?.cancelable) {
@@ -2309,5 +2318,30 @@ export abstract class BaseFacet {
 
   public clearInitColLeafNodes() {
     this.spreadsheet.store.set('initColLeafNodes', undefined);
+  }
+
+  /**
+   * @tip 和 this.spreadsheet.measureTextWidth() 的区别在于:
+   * 1. 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全, 出现省略号
+   * 2. 测量时, 文本宽度取整, 避免子像素的不一致性
+   * 3. TODO: 由于 G 测量文本是一个一个字符进行计算, 在数字/英文等场景会有较大误差, 这里为了防止紧凑模式出现省略号, 暂时保持一样的策略
+   */
+  protected measureTextWidth(
+    text: SimpleData,
+    font: unknown,
+    roughly = true,
+  ): number {
+    const EXTRA_PIXEL = 1;
+
+    if (roughly) {
+      return (
+        Math.ceil(this.spreadsheet.measureTextWidthRoughly(text, font)) +
+        EXTRA_PIXEL
+      );
+    }
+
+    return (
+      Math.ceil(this.spreadsheet.measureTextWidth(text, font)) + EXTRA_PIXEL
+    );
   }
 }

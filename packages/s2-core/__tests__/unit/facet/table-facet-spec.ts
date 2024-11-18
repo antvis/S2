@@ -61,6 +61,7 @@ jest.mock('@/sheet-type', () => {
           getColNodeHeight: jest.fn(),
           getHeaderNodes: jest.fn().mockReturnValue([]),
           getCellMeta: jest.fn().mockRejectedValue({}),
+          measureTextWidth: jest.fn(),
         },
         dataSet: {
           isEmpty: jest.fn(),
@@ -281,16 +282,16 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     );
 
     test('col hierarchy coordinate with compact layout', () => {
-      const COMPACT_WIDTH = [73, 73, 73, 73, 73];
+      const COMPACT_WIDTH = 74;
 
       let lastX = 0;
 
-      facet.getColLeafNodes().forEach((node, index) => {
+      facet.getColLeafNodes().forEach((node) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
-        expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
+        expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH);
         expect(node.height).toBe(s2.options!.style!.colCell!.height);
-        lastX += COMPACT_WIDTH[index];
+        lastX += COMPACT_WIDTH;
       });
     });
   });
@@ -334,7 +335,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with compact layout with seriesNumber', () => {
-      const COMPACT_WIDTH = [80, 73, 73, 73, 73, 73];
+      const COMPACT_WIDTH = [80, 74, 74, 74, 74, 74];
 
       let lastX = 0;
 

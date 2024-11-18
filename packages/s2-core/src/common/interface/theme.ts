@@ -283,6 +283,7 @@ export interface SplitLine {
     /** 线性变化右侧颜色 */
     right: string;
   };
+
   /** 分割线虚线 */
   borderDash?: LineStyleProps['lineDash'];
 }

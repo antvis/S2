@@ -43,7 +43,12 @@ module.exports = {
         tabWidth: 2,
         trailingComma: 'all',
         printWidth: 80,
+        arrowParens: 'always',
         proseWrap: 'never',
+        htmlWhitespaceSensitivity: 'css',
+        embeddedLanguageFormatting: 'auto',
+        singleAttributePerLine: false,
+        bracketSpacing: true,
         overrides: [
           { files: '.eslintrc', options: { parser: 'json' } },
           { files: '.prettierrc', options: { parser: 'json' } },
@@ -57,7 +62,7 @@ module.exports = {
     ],
     'import/no-duplicates': [2, { considerQueryString: true }],
     'import/no-deprecated': 1,
-    'import/no-cycle': 1,
+    'import/no-cycle': 2,
     'import/order': [
       2,
       {

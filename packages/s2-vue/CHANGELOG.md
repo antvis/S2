@@ -1,3 +1,11 @@
+# [@antv/s2-vue-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.15...@antv/s2-vue-v2.0.0-next.16) (2024-11-01)
+
+
+### Features
+
+* 增加不同类型单元格的选中事件 & 支持识别事件来源 ([#2956](https://github.com/antvis/S2/issues/2956)) ([69f6479](https://github.com/antvis/S2/commit/69f6479b43055c12d0295a7c77709b990a069ee3))
+* 增加对自定义行列头总计、小计节点和组内排序的支持，修复明细表自定义列头 icon 问题 icon closes [#2898](https://github.com/antvis/S2/issues/2898) [#2893](https://github.com/antvis/S2/issues/2893) ([#2934](https://github.com/antvis/S2/issues/2934)) ([a4ae432](https://github.com/antvis/S2/commit/a4ae432d2ddff8a3b44fdfb7abd96d6a2369c81b))
+
 # [@antv/s2-vue-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.14...@antv/s2-vue-v2.0.0-next.15) (2024-06-21)
 
 

@@ -35,43 +35,62 @@ describe('usePagination tests', () => {
   });
 
   test('should be defined', () => {
-    const { result } = renderHook(() => usePagination(s2, props));
+    const { result } = renderHook(() => usePagination(s2, props.options));
 
     expect(result.current).toBeDefined();
   });
 
   test('should get default pagination', () => {
     const { result } = renderHook(() =>
-      usePagination(null as unknown as SpreadSheet, propsWithoutPagination),
+      usePagination(
+        null as unknown as SpreadSheet,
+        propsWithoutPagination.options,
+      ),
     );
 
-    expect(result.current.pagination).toEqual({
+    expect(result.current).toEqual({
       total: 0,
       current: 1,
       pageSize: 10,
+      onChange: expect.any(Function),
+      onShowSizeChange: expect.any(Function),
     });
   });
 
-  test('should update pagination', () => {
-    const { result } = renderHook(() => usePagination(s2, props));
+  test('should update pagination for page size change', () => {
+    const { result } = renderHook(() => usePagination(s2, props.options));
 
-    expect(result.current.pagination.current).toEqual(1);
-    expect(result.current.pagination.pageSize).toEqual(5);
+    expect(result.current.current).toEqual(1);
+    expect(result.current.pageSize).toEqual(5);
 
     act(() => {
       result.current.onChange(2, 15);
     });
-    expect(result.current.pagination.current).toEqual(2);
-    expect(result.current.pagination.pageSize).toEqual(15);
+    expect(result.current.current).toEqual(2);
+    expect(result.current.pageSize).toEqual(15);
+  });
+
+  test('should update pagination for show size change', () => {
+    const { result } = renderHook(() => usePagination(s2, props.options));
+
+    expect(result.current.current).toEqual(1);
+    expect(result.current.pageSize).toEqual(5);
+
+    act(() => {
+      result.current.onShowSizeChange(2, 15);
+    });
+
+    expect(result.current.current).toEqual(2);
+    expect(result.current.pageSize).toEqual(15);
   });
 
   test('should update total after render with new data', async () => {
     let s2Instance = s2;
     const { result, rerender } = renderHook(() =>
-      usePagination(s2Instance, props),
+      usePagination(s2Instance, props.options),
     );
 
-    expect(result.current.pagination.total).toBe(0);
+    expect(result.current.total).toBe(2);
 
     await act(async () => {
       // 触发内部更新
@@ -80,7 +99,8 @@ describe('usePagination tests', () => {
 
       rerender();
     });
-    expect(result.current.pagination.total).toBe(2);
+
+    expect(result.current.total).toBe(2);
 
     await act(async () => {
       const newData = [
@@ -99,6 +119,7 @@ describe('usePagination tests', () => {
       });
       await s2Instance.render();
     });
-    expect(result.current.pagination.total).toBe(3);
+
+    expect(result.current.total).toBe(3);
   });
 });

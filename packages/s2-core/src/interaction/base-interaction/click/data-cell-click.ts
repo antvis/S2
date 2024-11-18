@@ -1,6 +1,7 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type { DataCell } from '../../../cell/data-cell';
 import {
+  InteractionName,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -55,14 +56,18 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       if (interaction.isSelectedCell(cell)) {
         // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用 detail 属性来判断是否是双击，双击时不触发选择态 reset
-        if ((event.originalEvent as UIEvent)?.detail === 1) {
+        if (
+          event.detail === 1 ||
+          event.nativeEvent?.detail === 1 ||
+          event.originalEvent?.detail === 1
+        ) {
           interaction.reset();
 
           // https://github.com/antvis/S2/issues/2447
-          this.spreadsheet.emit(
-            S2Event.GLOBAL_SELECTED,
-            interaction.getActiveCells(),
-          );
+          interaction.emitSelectEvent({
+            targetCell: cell,
+            interactionName: InteractionName.DATA_CELL_CLICK,
+          });
         }
 
         return;
@@ -73,7 +78,11 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.SELECTED,
         onUpdateCells: afterSelectDataCells,
       });
-      this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
+      interaction.emitSelectEvent({
+        targetCell: cell,
+        interactionName: InteractionName.DATA_CELL_CLICK,
+        cells: [cell],
+      });
       this.showTooltip(event, meta);
 
       // 点击单元格，高亮对应的行头、列头

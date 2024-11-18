@@ -22,6 +22,7 @@ import type {
   BrushSelectionOptions,
   CellMeta,
   CellScrollToOptions,
+  CellSelectedDetail,
   ChangeCellOptions,
   CustomInteraction,
   InteractionCellHighlightOptions,
@@ -582,6 +583,7 @@ export class RootInteraction {
     const {
       cell,
       stateName = InteractionStateName.SELECTED,
+      interactionName,
       scrollIntoView = true,
       animate = true,
       skipScrollEvent = true,
@@ -625,7 +627,10 @@ export class RootInteraction {
 
     if (isEmpty(selectedCells)) {
       this.reset();
-      this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
+      this.emitSelectEvent({
+        targetCell: cell,
+        interactionName,
+      });
 
       return;
     }
@@ -664,7 +669,10 @@ export class RootInteraction {
 
     // 由于绘制的顺序问题, 交互背景图层展示后, 会遮挡边框, 需要让边框展示在前面.
     this.spreadsheet.facet.centerFrame?.toFront();
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
+    this.emitSelectEvent({
+      targetCell: cell,
+      interactionName,
+    });
 
     return true;
   }
@@ -826,10 +834,12 @@ export class RootInteraction {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;
 
-        this.interactions.set(
-          customInteraction.key,
-          new CustomInteractionClass(this.spreadsheet),
-        );
+        if (CustomInteractionClass) {
+          this.interactions.set(
+            customInteraction.key,
+            new CustomInteractionClass(this.spreadsheet),
+          );
+        }
       });
     }
   }
@@ -1100,5 +1110,37 @@ export class RootInteraction {
     if (colHeader && colId) {
       updateAllHeaderCellState(colId, facet.getColCells(), stateName);
     }
+  }
+
+  public emitSelectEvent(
+    options: CellSelectedDetail & { cells?: S2CellType[] },
+  ) {
+    const { interaction } = this.spreadsheet;
+    const { cells, ...defaultCellSelectedDetail } = options;
+    const activeCells = cells || interaction.getActiveCells();
+    const targetCell = defaultCellSelectedDetail?.targetCell || activeCells[0];
+    const cellSelectedDetail = {
+      ...defaultCellSelectedDetail,
+      targetCell,
+    };
+    const cellType = targetCell?.cellType as string;
+
+    const eventName = {
+      [CellType.CORNER_CELL]: S2Event.CORNER_CELL_SELECTED,
+      [CellType.ROW_CELL]: S2Event.ROW_CELL_SELECTED,
+      [CellType.COL_CELL]: S2Event.COL_CELL_SELECTED,
+      [CellType.DATA_CELL]: S2Event.DATA_CELL_SELECTED,
+    }[cellType];
+
+    if (!eventName) {
+      return;
+    }
+
+    this.spreadsheet.emit(eventName, activeCells, cellSelectedDetail);
+    this.spreadsheet.emit(
+      S2Event.GLOBAL_SELECTED,
+      activeCells,
+      cellSelectedDetail,
+    );
   }
 }

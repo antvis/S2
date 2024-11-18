@@ -1,6 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { merge } from 'lodash';
-import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
+import {
+  CELL_PADDING,
+  FONT_FAMILY,
+  INTERVAL_BAR_HEIGHT,
+} from '../common/constant';
 import type {
   DefaultCellTheme,
   S2Theme,
@@ -55,10 +59,10 @@ export const getCornerCellTheme = (
       borderDash: [],
       // -------------- layout -----------------
       padding: {
-        top: 4,
-        right: 8,
-        bottom: 4,
-        left: 8,
+        top: CELL_PADDING,
+        right: CELL_PADDING,
+        bottom: CELL_PADDING,
+        left: CELL_PADDING,
       },
       /* ---------- interaction state ----------- */
       interactionState: {
@@ -174,10 +178,10 @@ export const getRowCellTheme = (
       borderDash: [],
       // -------------- layout -----------------
       padding: {
-        top: 4,
-        right: 8,
-        bottom: 4,
-        left: 8,
+        top: CELL_PADDING,
+        right: CELL_PADDING,
+        bottom: CELL_PADDING,
+        left: CELL_PADDING,
       },
 
       /* ---------- interaction state ----------- */
@@ -281,10 +285,10 @@ export const getColCellTheme = (palette: SimplePalette): DefaultCellTheme => {
       borderDash: [],
       // -------------- layout -----------------
       padding: {
-        top: 4,
-        right: 8,
-        bottom: 4,
-        left: 8,
+        top: CELL_PADDING,
+        right: CELL_PADDING,
+        bottom: CELL_PADDING,
+        left: CELL_PADDING,
       },
 
       /* ---------- interaction state ----------- */
@@ -377,12 +381,11 @@ export const getDataCellTheme = (palette: SimplePalette): DefaultCellTheme => {
       verticalBorderWidth: 1,
       // -------------- layout -----------------
       padding: {
-        top: 8,
-        right: 8,
-        bottom: 8,
-        left: 8,
+        top: CELL_PADDING,
+        right: CELL_PADDING,
+        bottom: CELL_PADDING,
+        left: CELL_PADDING,
       },
-
       /* ---------- interaction state ----------- */
       interactionState: {
         // -------------- hover -------------------

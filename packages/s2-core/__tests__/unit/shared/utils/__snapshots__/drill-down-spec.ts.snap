@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`drill-down test #buildDrillDownOptions() 1`] = `
+Object {
+  "headerActionIcons": Array [],
+}
+`;
+
+exports[`drill-down test #buildDrillDownOptions() 2`] = `
+Object {
+  "headerActionIcons": Array [
+    Object {
+      "belongsCell": "rowCell",
+      "defaultHide": true,
+      "displayCondition": [Function],
+      "icons": Array [
+        Object {
+          "name": "DrillDownIcon",
+          "onClick": [Function],
+          "position": "right",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`drill-down test #getDrillDownCache() 1`] = `
+Object {
+  "drillDownCurrentCache": undefined,
+  "drillDownDataCache": Array [],
+}
+`;
+
+exports[`drill-down test #getDrillDownCache() 2`] = `
+Object {
+  "drillDownCurrentCache": Object {
+    "rowId": "test",
+  },
+  "drillDownDataCache": Array [
+    Object {
+      "rowId": "test",
+    },
+  ],
+}
+`;

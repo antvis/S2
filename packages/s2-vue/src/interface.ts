@@ -1,9 +1,11 @@
-import type { Pagination, S2Options, TooltipContentType } from '@antv/s2';
 import type {
   BaseDrillDownComponentProps,
   BaseSheetComponentProps,
+  Pagination,
   PartDrillDown,
-} from '@antv/s2-shared';
+  S2Options,
+  TooltipContentType,
+} from '@antv/s2';
 import type { UnionToIntersection } from '@vue/shared';
 import type { PaginationProps } from 'ant-design-vue';
 import type { PropType } from 'vue';
@@ -87,9 +89,16 @@ export type SheetComponentOptions = S2Options<
 >;
 export type SheetComponentProps = BaseSheetComponentProps<
   PartDrillDown,
-  unknown,
   SheetComponentOptions
->;
+> & {
+  showPagination?:
+    | boolean
+    | {
+        onShowSizeChange?: (pageSize: number) => void;
+        onChange?: (current: number) => void;
+      };
+};
+
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
 export type BaseSheetInitProps = GetInitProps<SheetComponentProps>;

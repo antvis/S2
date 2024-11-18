@@ -12,6 +12,7 @@ export enum S2Event {
   ROW_CELL_COLLAPSED = 'row-cell:collapsed',
   ROW_CELL_ALL_COLLAPSED = 'row-cell:all-collapsed',
   ROW_CELL_RENDER = 'row-cell:render',
+  ROW_CELL_SELECTED = 'row-cell:selected',
 
   // 内部用来通信的 event
   ROW_CELL_COLLAPSED__PRIVATE = 'row-cell:collapsed__private',
@@ -31,6 +32,7 @@ export enum S2Event {
   COL_CELL_EXPANDED = 'col-cell:expanded',
   COL_CELL_HIDDEN = 'col-cell:hidden',
   COL_CELL_RENDER = 'col-cell:render',
+  COL_CELL_SELECTED = 'col-cell:selected',
 
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',
@@ -43,6 +45,7 @@ export enum S2Event {
   DATA_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
   DATA_CELL_SELECT_MOVE = 'data-cell:select-move',
   DATA_CELL_RENDER = 'data-cell:render',
+  DATA_CELL_SELECTED = 'data-cell:selected',
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_HOVER = 'corner-cell:hover',
@@ -53,6 +56,7 @@ export enum S2Event {
   CORNER_CELL_MOUSE_UP = 'corner-cell:mouse-up',
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
   CORNER_CELL_RENDER = 'corner-cell:render',
+  CORNER_CELL_SELECTED = 'corner-cell:selected',
 
   /** ================ Merged Cells ================  */
   MERGED_CELLS_HOVER = 'merged-cells:hover',

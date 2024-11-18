@@ -25,7 +25,6 @@ export const useSheetUpdate = (
       updateFlag.rerender = true;
 
       if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
-        // 自定义树目录需要重新构建 CustomTreePivotDataSet
         updateFlag.reloadData = true;
         updateFlag.rebuildDataset = true;
       }
@@ -71,10 +70,12 @@ export const useSheetUpdate = (
 
     hooks?.before?.();
 
-    const renderOptions = props?.onUpdate?.({
+    const defaultRenderOptions = {
       reloadData: flag.reloadData,
       rebuildDataSet: flag.rebuildDataset,
-    });
+    };
+    const renderOptions =
+      props?.onUpdate?.(defaultRenderOptions) || defaultRenderOptions;
 
     await s2Ref.value?.render(renderOptions);
 

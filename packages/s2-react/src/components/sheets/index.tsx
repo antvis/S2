@@ -1,7 +1,6 @@
 import type { SpreadSheet } from '@antv/s2';
 import React from 'react';
 import { SpreadSheetContext } from '../../context/SpreadSheetContext';
-import { ConfigProvider } from '../config-provider';
 import { ChartSheet } from './chart-sheet';
 import { EditableSheet } from './editable-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
@@ -13,7 +12,7 @@ import { TableSheet } from './table-sheet';
 
 const Sheet = React.forwardRef<SpreadSheet, SheetComponentProps>(
   (props, ref) => {
-    const { sheetType, themeCfg } = props;
+    const { sheetType } = props;
 
     const [s2Instance, setS2Instance] = React.useState<SpreadSheet | null>(
       null,
@@ -53,9 +52,7 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentProps>(
 
     return (
       <SpreadSheetContext.Provider value={s2Instance!}>
-        <ConfigProvider themeName={themeCfg?.name}>
-          {CurrentSheet}
-        </ConfigProvider>
+        {CurrentSheet}
       </SpreadSheetContext.Provider>
     );
   },

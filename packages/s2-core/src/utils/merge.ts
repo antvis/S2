@@ -1,6 +1,6 @@
 import { isArray, isEmpty, isEqual, isString, mergeWith, uniq } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
-import { DEFAULT_OPTIONS, LayoutWidthType } from '../common/constant/options';
+import { DEFAULT_OPTIONS } from '../common/constant/options';
 import type {
   CustomHeaderFields,
   Fields,
@@ -68,14 +68,5 @@ export const setupDataConfig = (
 export const setupOptions = (
   ...options: (Partial<S2Options> | null | undefined)[]
 ): S2Options => {
-  const mergedOptions = customMerge<S2Options>(DEFAULT_OPTIONS, ...options);
-
-  if (
-    mergedOptions.style?.layoutWidthType === LayoutWidthType.Compact &&
-    mergedOptions.style?.dataCell!.maxLines! <= 1
-  ) {
-    mergedOptions.style.dataCell!.wordWrap = false;
-  }
-
-  return mergedOptions;
+  return customMerge<S2Options>(DEFAULT_OPTIONS, ...options);
 };

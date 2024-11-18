@@ -9,28 +9,27 @@ import {
   customMerge,
   generatePalette,
   getDefaultSeriesNumberText,
-  getLang,
   getPalette,
   safeJsonParse,
+  type Adaptive,
   type CustomHeaderFields,
   type HeaderActionIconProps,
   type InteractionCellHighlightOptions,
   type InteractionOptions,
   type S2DataConfig,
+  type SheetType,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
-import type { Adaptive, SheetType } from '@antv/s2-shared';
-import corePkg from '@antv/s2/package.json';
 import { useUpdateEffect } from 'ahooks';
 import {
-  version as AntdVersion,
   Button,
   Collapse,
   DatePicker,
   Divider,
   Input,
+  Pagination,
   Popover,
   Radio,
   Select,
@@ -38,24 +37,23 @@ import {
   Space,
   Switch,
   Tabs,
-  Tag,
   Tooltip,
   type RadioChangeEvent,
 } from 'antd';
 import { debounce, isEmpty, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
-import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
-import { ConfigProvider } from '../src/components/config-provider';
 import { reactRender } from '../src/utils/reactRender';
 import { BigDataSheet } from './components/BigDataSheet';
 import { ChartSheet } from './components/ChartSheet';
+import { PlaygroundSheetConfigProvider } from './components/ConfigProvider';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
 import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
+import { PlaygroundSheetHeader } from './components/Header';
 import { LinkGroup } from './components/LinkGroup';
 import { PivotChartSheet } from './components/PivotChartSheet';
 import { PluginsSheet } from './components/Plugins';
@@ -304,8 +302,8 @@ function MainLayout() {
   const mergedOptions: SheetComponentOptions = customMerge(
     {
       pagination: showPagination && {
-        pageSize: 10,
         current: 1,
+        pageSize: 4,
       },
       tooltip: {
         content: showCustomTooltip ? <CustomTooltip /> : null,
@@ -383,7 +381,7 @@ function MainLayout() {
   );
 
   return (
-    <ConfigProvider themeName={themeCfg?.name}>
+    <PlaygroundSheetConfigProvider themeName={themeCfg?.name}>
       <PlaygroundContext.Provider
         value={{
           ref: s2Ref,
@@ -833,25 +831,6 @@ function MainLayout() {
                                   checked={showCustomTooltip}
                                   onChange={setShowCustomTooltip}
                                 />
-                                <Tooltip title="操作项菜单类型, 透传 https://ant-design.antgroup.com/components/menu-cn#api">
-                                  <Switch
-                                    checkedChildren="操作项-水平展示"
-                                    unCheckedChildren="操作项-垂直展示"
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        tooltip: {
-                                          operation: {
-                                            menu: {
-                                              mode: checked
-                                                ? 'horizontal'
-                                                : 'vertical',
-                                            },
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
                                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
                                   <Select
                                     defaultValue={
@@ -1570,6 +1549,7 @@ function MainLayout() {
                     />
                     {render && (
                       <React.StrictMode>
+                        <PlaygroundSheetHeader />
                         <SheetComponent
                           dataCfg={dataCfg as S2DataConfig}
                           options={mergedOptions}
@@ -1578,38 +1558,6 @@ function MainLayout() {
                           ref={s2Ref}
                           themeCfg={themeCfg}
                           partDrillDown={partDrillDown}
-                          showPagination={showPagination}
-                          header={{
-                            title: (
-                              <a href="https://github.com/antvis/S2">
-                                {reactPkg.name} playground
-                              </a>
-                            ),
-                            description: (
-                              <Space>
-                                <span>
-                                  {reactPkg.name}: <Tag>{reactPkg.version}</Tag>
-                                </span>
-                                <span>
-                                  {corePkg.name}: <Tag>{corePkg.version}</Tag>
-                                </span>
-                                <span>
-                                  antd: <Tag>{AntdVersion}</Tag>
-                                </span>
-                                <span>
-                                  react: <Tag>{React.version}</Tag>
-                                </span>
-                                <span>
-                                  lang: <Tag>{getLang()}</Tag>
-                                </span>
-                              </Space>
-                            ),
-                            switcher: { open: true },
-                            export: { open: true },
-                            advancedSort: {
-                              open: true,
-                            },
-                          }}
                           onAfterRender={logHandler('onAfterRender')}
                           onRangeSort={logHandler('onRangeSort')}
                           onRangeSorted={logHandler('onRangeSorted')}
@@ -1642,6 +1590,15 @@ function MainLayout() {
                           onColCellHidden={logHandler('onColCellHidden')}
                           onColCellExpanded={logHandler('onColCellExpanded')}
                           onSelected={logHandler('onSelected')}
+                          onCornerCellSelected={logHandler(
+                            'onCornerCellSelected',
+                          )}
+                          onRowCellSelected={logHandler('onRowCellSelected')}
+                          onColCellSelected={logHandler('onColCellSelected')}
+                          onDataCellSelected={logHandler('onDataCellSelected')}
+                          onDataCellSelectMove={logHandler(
+                            'onDataCellSelectMove',
+                          )}
                           onScroll={logHandler('onScroll')}
                           onRowCellScroll={logHandler('onRowCellScroll')}
                           onLinkFieldJump={logHandler('onLinkFieldJump', () => {
@@ -1667,7 +1624,17 @@ function MainLayout() {
                             'onDataCellContextMenu',
                           )}
                           onDoubleClick={logHandler('onDoubleClick')}
-                        />
+                        >
+                          {({ pagination }) =>
+                            showPagination && (
+                              <Pagination
+                                size="small"
+                                showSizeChanger
+                                {...pagination}
+                              />
+                            )
+                          }
+                        </SheetComponent>
                       </React.StrictMode>
                     )}
                   </>
@@ -1689,6 +1656,7 @@ function MainLayout() {
                 children: (
                   <StrategySheet
                     onRowCellClick={logHandler('onRowCellClick')}
+                    ref={s2Ref}
                   />
                 ),
               },
@@ -1730,7 +1698,7 @@ function MainLayout() {
           />
         </div>
       </PlaygroundContext.Provider>
-    </ConfigProvider>
+    </PlaygroundSheetConfigProvider>
   );
 }
 

@@ -655,7 +655,7 @@ describe('Data Cell Tests', () => {
         (cell: S2CellType) => cell.cellType === CellType.COL_CELL,
       );
 
-      expect(interactedCells.length).toBe(8);
+      expect(interactedCells.length).toBe(7);
       expect(firstColCell!.getMeta().id).toBe(mockCell.getMeta().id);
     });
 

@@ -12,6 +12,6 @@ LayoutCoordinate = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => v
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | ---  | --- | --- |
-| spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) | ✓ |    | 表格实例 |
-| rowNode | [Node](/docs/api/basic-class/node) | ✓ |    | 行头节点 |
-| colNode | [Node](/docs/api/basic-class/node) | ✓ |    | 列头节点 |
+| spreadsheet | [SpreadSheet](/api/basic-class/spreadsheet) | ✓ |    | 表格实例 |
+| rowNode | [Node](/api/basic-class/node) | ✓ |    | 行头节点 |
+| colNode | [Node](/api/basic-class/node) | ✓ |    | 列头节点 |

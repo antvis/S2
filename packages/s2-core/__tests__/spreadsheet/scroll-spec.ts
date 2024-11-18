@@ -462,7 +462,7 @@ describe('Scroll Tests', () => {
     expect((sheet.facet as any).emitScrollEvent).not.toHaveBeenCalled();
   });
 
-  test('should render correct scroll position', async () => {
+  test('should render correct scroll position for compact mode', async () => {
     s2.setOptions({
       interaction: {
         scrollbarPosition: ScrollbarPositionType.CONTENT,
@@ -480,7 +480,7 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     await s2.render(false);
 
-    expect(Math.floor(s2.facet.vScrollBar.getBBox().x)).toEqual(195);
+    expect(Math.floor(s2.facet.vScrollBar.getBBox().x)).toEqual(213);
 
     s2.setOptions({
       interaction: {

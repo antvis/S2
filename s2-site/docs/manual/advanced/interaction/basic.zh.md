@@ -30,7 +30,7 @@ tag: Updated
 | 行头刷选       | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表）          |
 | 列头刷选       | `S2Event.COL_CELL_BRUSH_SELECTION`  `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息              |
 | 区间快捷多选     | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                           |
-| 悬停         | `S2Event.GLOBAL_HOVER`                                        | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/docs/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
+| 悬停         | `S2Event.GLOBAL_HOVER`                                        | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
 | 复制         | `S2Event.GLOBAL_COPIED`                                       | 复制选中的单元格数据                                                                                                            |
 | 隐藏列头       | `S2Event.COL_CELL_EXPANDED` `S2Event.COL_CELL_HIDDEN`   | 隐藏/展开 列头                                                                                                              |
 | 链接跳转       | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | 行头/列头/数值 链接跳转                                                                                                            |
@@ -39,7 +39,7 @@ tag: Updated
 
 ## 交互事件
 
-[查看完整事件列表](/docs/api/general/S2Event)
+[查看完整事件列表](/api/general/s2-event)
 
 - `global:xx`: 全局图表事件
 - `layout:xx`: 布局改变事件
@@ -74,7 +74,7 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 })
 ```
 
-如果使用的是 `@antv/s2-react` 或 `@antv/s2-vue`, 可以拿到 [S2 表格实例](/docs/manual/advanced/get-instance/) 后对所需事件进行监听，和 `@antv/s2` **使用方式完全一致** .
+如果使用的是 `@antv/s2-react` 或 `@antv/s2-vue`, 可以拿到 [S2 表格实例](/manual/advanced/get-instance/) 后对所需事件进行监听，和 `@antv/s2` **使用方式完全一致** .
 
 ```ts
 import { S2Event, SpreadSheet } from '@antv/s2'
@@ -94,7 +94,7 @@ function App() {
 
 ```
 
-同时 `React`, `Vue3` 版本提供了事件的隐射，也可以方便的使用更符合使用习惯的 `onDataCellClick`, `@dataCellClick` 的方式 ([查看所有 API](/docs/api/components/sheet-component))
+同时 `React`, `Vue3` 版本提供了事件的隐射，也可以方便的使用更符合使用习惯的 `onDataCellClick`, `@dataCellClick` 的方式 ([查看所有 API](/api/components/sheet-component))
 
 > React
 
@@ -137,7 +137,7 @@ window.addEventListener('mouseup', () => {}, true)
 
 ## 交互相关配置
 
-[查看具体 API 配置详情](/docs/api/basic-class/interaction#interaction)
+[查看具体 API 配置详情](/api/basic-class/interaction#interaction)
 
 ```ts
 const s2Options = {
@@ -149,7 +149,7 @@ const s2Options = {
 
 ## 内置交互
 
-> 如何修改交互默认样式？请查看 [主题配置](/docs/manual/basic/theme) 章节
+> 如何修改交互默认样式？请查看 [主题配置](/manual/basic/theme) 章节
 
 ### 单选高亮
 
@@ -349,7 +349,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600" />
 
-同时支持透视表，和明细表，点击叶子节点的列头后，显示隐藏列头按钮，点击隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. 查看 [详情](/docs/manual/advanced/interaction/hide-columns/) 或 [示例](/examples/interaction/advanced#pivot-hide-columns)
+同时支持透视表，和明细表，点击叶子节点的列头后，显示隐藏列头按钮，点击隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. 查看 [详情](/manual/advanced/interaction/hide-columns/) 或 [示例](/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
 const s2DataConfig = {
@@ -378,27 +378,27 @@ const s2Options = {
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*WdvmQ5pd4BwAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 
-查看 [文档](/docs/manual/advanced/interaction/resize) 和 [示例](/examples/interaction/advanced#merge-cell)
+查看 [文档](/manual/advanced/interaction/resize) 和 [示例](/examples/interaction/advanced#merge-cell)
 
 ### 合并单元格
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600" />
 
-查看 [文档](/docs/manual/advanced/interaction/merge-cell) 和 [示例](/examples/interaction/advanced#merge-cell)
+查看 [文档](/manual/advanced/interaction/merge-cell) 和 [示例](/examples/interaction/advanced#merge-cell)
 
 ### 链接跳转
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600" />
 
-查看 [文档](/docs/manual/advanced/interaction/link-jump) 和 [示例](/examples/interaction/advanced#pivot-link-jump)
+查看 [文档](/manual/advanced/interaction/link-jump) 和 [示例](/examples/interaction/advanced#pivot-link-jump)
 
 ### 滚动
 
-查看 [文档](/docs/manual/advanced/interaction/scroll)
+查看 [文档](/manual/advanced/interaction/scroll)
 
 ### 复制与导出
 
-查看 [文档](/docs/manual/advanced/interaction/copy)
+查看 [文档](/manual/advanced/interaction/copy)
 
 ### 重置交互
 
@@ -474,7 +474,7 @@ s2.interaction.removeIntercepts([InterceptType.HOVER, InterceptType.CLICK]);
 
 ## 调用 API
 
-`S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/docs/api/basic-class/interaction) 和 [示例](/examples/interaction/basic/#event)
+`S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/api/basic-class/interaction) 和 [示例](/examples/interaction/basic/#event)
 
 ```ts
 const s2 = new PivotSheet()

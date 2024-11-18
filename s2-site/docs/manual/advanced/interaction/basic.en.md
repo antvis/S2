@@ -37,7 +37,7 @@ Through these events, permutations and combinations, to achieve commonly used in
 
 ## interaction event
 
-[View full event list](/docs/api/general/S2Event)
+[View full event list](/docs/api/general/s2-event)
 
 * `global:xx` : global chart events
 * `layout:xx` : layout change event
