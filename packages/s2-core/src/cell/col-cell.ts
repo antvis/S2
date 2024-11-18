@@ -294,6 +294,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       width: resizeAreaWidth,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
@@ -395,6 +396,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(

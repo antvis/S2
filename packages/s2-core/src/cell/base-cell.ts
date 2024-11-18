@@ -300,6 +300,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
+   * 获取文本包围盒
+   */
+  public getTextLineHeight() {
+    return this.textShape?.parsedStyle?.metrics?.lineHeight;
+  }
+
+  /**
    * 获取单元格空值占位符
    */
   public getEmptyPlaceholder() {

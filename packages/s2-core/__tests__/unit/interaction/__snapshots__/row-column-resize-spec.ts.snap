@@ -122,6 +122,33 @@ Object {
 }
 `;
 
+exports[`Interaction Row Column Resize Tests should get vertical custom filed resize style 1`] = `
+Object {
+  "height": 30,
+  "heightByField": Object {
+    "test-a": 2,
+    "test-b": 2,
+  },
+  "maxLines": 1,
+  "textOverflow": "ellipsis",
+  "widthByField": null,
+  "wordWrap": true,
+}
+`;
+
+exports[`Interaction Row Column Resize Tests should get vertical filed resize style 1`] = `
+Object {
+  "height": 30,
+  "heightByField": Object {
+    "testField": 2,
+  },
+  "maxLines": 1,
+  "textOverflow": "ellipsis",
+  "widthByField": null,
+  "wordWrap": true,
+}
+`;
+
 exports[`Interaction Row Column Resize Tests should get vertical filed resize style by field for current resize type 1`] = `
 Object {
   "height": undefined,

@@ -548,6 +548,13 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       },
     );
 
+    test('should render by infinity maxLines', async () => {
+      updateStyle(Infinity);
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
     test('should render by maxLines if actual text contains "\\n"', async () => {
       updateStyle(1);
       s2.changeSheetSize(800, 600);
@@ -1046,6 +1053,34 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     test('should render by maxLines if actual text contains "\\n"', async () => {
       updateStyle(1);
       s2.changeSheetSize(800, 600);
+      s2.setDataCfg({
+        data: [
+          {
+            province: '浙江\n浙江',
+            city: '杭州\n杭州\n杭州',
+            type: '纸张\n纸张',
+            price: 12,
+            cost: 20,
+          },
+          ...s2.dataCfg.data,
+        ],
+      });
+
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should render by infinity maxLines', async () => {
+      updateStyle(Infinity);
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should render by infinity maxLines if actual text contains "\\n"', async () => {
+      updateStyle(Infinity);
+
       s2.setDataCfg({
         data: [
           {

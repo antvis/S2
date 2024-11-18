@@ -47,6 +47,7 @@ cell.getActualText()
 | isMultiLineText | 是否是多行文本 | `() => boolean` |
 | getEmptyPlaceholder | 获取单元格空值占位符 | `() => string` |
 | getTextLineBoundingRects | 获取文本包围盒 | `() => string` |
+| getTextLineHeight | 获取文本行高 | `() => number` |
 | getFieldValue | 获取单元格展示的数值 | `() => string` |
 
 <embed src="@/docs/common/view-meta.zh.md"></embed>

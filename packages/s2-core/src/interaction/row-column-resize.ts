@@ -7,6 +7,7 @@ import {
 } from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
+  DefaultCellTheme,
   ResizeInteractionOptions,
   ResizeParams,
   RowCellStyle,
@@ -254,6 +255,23 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const displayWidth = isDisabled ? originalWidth : resizedWidth;
     const displayHeight = isDisabled ? originalHeight : resizedHeight;
 
+    // 高度调整时, 根据行高计算最大可展示的文本行数, 覆盖原本的 maxLines 配置
+    if (resizeInfo.type === ResizeDirectionType.Vertical) {
+      const { cell } = resizeInfo?.cell?.getStyle() as DefaultCellTheme;
+      const padding = cell!.padding!.top! + cell!.padding!.bottom!;
+      const lineHeight = resizeInfo?.cell?.getTextLineHeight()!;
+      const maxLines = !isDisabled
+        ? Math.max(1, Math.floor((displayHeight - padding) / lineHeight))
+        : undefined;
+
+      return {
+        displayWidth,
+        displayHeight,
+        isDisabled,
+        maxLines,
+      };
+    }
+
     return {
       displayWidth,
       displayHeight,
@@ -381,14 +399,16 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private getResizeHeightDetail(): ResizeDetail | null {
     const resizeInfo = this.getResizeInfo();
-    const { displayHeight } = this.getDisAllowResizeInfo();
+    const { displayHeight, maxLines } = this.getDisAllowResizeInfo();
 
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
           style: {
+            cornerCell: { maxLines },
             colCell: {
+              maxLines,
               heightByField: this.getHeightByField(resizeInfo, displayHeight!),
             },
           },
@@ -398,7 +418,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
+            dataCell: { maxLines },
             rowCell: {
+              maxLines,
               height: !this.isEffectRowOf(ResizeType.ALL)
                 ? undefined
                 : displayHeight,

@@ -288,6 +288,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(

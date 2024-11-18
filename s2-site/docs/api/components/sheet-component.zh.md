@@ -346,7 +346,8 @@ type SheetComponentOptions = S2Options<
 | effect | 拖拽更改影响的区域 | `Field` \| `Cell` \| `Tree` \| `Series` |  |  |
 | isResizeArea | 是否属于 resize 热区 | `boolean` |  |  |
 | id | 字段 id | `string` |  |  |
-| meta | resize 热区对应单元格节点信息 | [Node](/api/basic-class/node) |  |  |
+| cell | resize 热区对应单元格信息 | [Node](/api/basic-class/base-cell) |  |  |
+| meta | resize 热区对应单元格元数据 | [Node](/api/basic-class/node) |  |  |
 | resizedWidth | 拖拽后的宽度 | `number` |  |  |
 | resizedHeight | 拖拽后的高度 | `number` |  |  |
 

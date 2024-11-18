@@ -41,6 +41,8 @@ const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;
 
 describe('Interaction Row Column Resize Tests', () => {
+  const mockCell = createMockCellInfo('test').mockCell;
+
   let rowColumnResizeInstance: RowColumnResize;
   let s2: SpreadSheet;
   let mockRootInteraction: RootInteraction;
@@ -92,8 +94,16 @@ describe('Interaction Row Column Resize Tests', () => {
   const emitResize = (
     directionType: ResizeDirectionType,
     effect: ResizeAreaEffect,
-    meta?: Partial<ViewMeta>,
+    defaultMeta?: Partial<ViewMeta>,
   ) => {
+    const meta = {
+      ...defaultMeta,
+      rowId: '0',
+      rowIndex: 0,
+      field: 'testField',
+      id: 'testFieldId',
+    } as ResizeInfo['meta'];
+
     const resizeInfo: ResizeInfo = {
       theme: {},
       type: directionType,
@@ -104,13 +114,8 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect,
       size: 3,
-      meta: {
-        ...meta,
-        rowId: '0',
-        rowIndex: 0,
-        field: 'testField',
-        id: 'testFieldId',
-      } as ResizeInfo['meta'],
+      meta,
+      cell: mockCell,
     };
 
     emitResizeEvent(
@@ -243,6 +248,7 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       size: 3,
+      cell: mockCell,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -294,6 +300,7 @@ describe('Interaction Row Column Resize Tests', () => {
         field: 'testField',
         id: 'testFieldId',
       } as ResizeInfo['meta'],
+      cell: mockCell,
     };
 
     emitResizeEvent(
@@ -369,6 +376,7 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       size: 3,
+      cell: mockCell,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -400,6 +408,14 @@ describe('Interaction Row Column Resize Tests', () => {
     const resize = jest.fn();
     const rowWidthResize = jest.fn();
 
+    s2.setOptions({
+      rowCell: {
+        maxLines: 3,
+      },
+      dataCell: {
+        maxLines: Infinity,
+      },
+    });
     s2.on(S2Event.LAYOUT_RESIZE, resize);
     s2.on(S2Event.LAYOUT_RESIZE_ROW_HEIGHT, rowWidthResize);
 
@@ -418,6 +434,7 @@ describe('Interaction Row Column Resize Tests', () => {
       meta: {
         field: 'testField',
       } as Node,
+      cell: mockCell,
     };
 
     emitResizeEvent(
@@ -445,11 +462,15 @@ describe('Interaction Row Column Resize Tests', () => {
     const resizeDetail: ResizeParams = {
       info: resizeInfo,
       style: {
+        dataCell: {
+          maxLines: 1,
+        },
         rowCell: {
           height: 2,
           heightByField: {
             [resizeInfo.meta.field!]: 2,
           },
+          maxLines: 1,
         },
       },
     };
@@ -592,17 +613,24 @@ describe('Interaction Row Column Resize Tests', () => {
   });
 
   test('should get vertical filed resize style', () => {
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Vertical,
-      ResizeAreaEffect.Field,
-    );
-
-    expect(s2.options.style!.colCell!.heightByField).toEqual({
-      [resizeInfo.meta.field!]: resizeInfo.height,
+    s2.setOptions({
+      colCell: {
+        maxLines: 3,
+      },
     });
+
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Field);
+
+    expect(s2.options.style!.colCell).toMatchSnapshot();
   });
 
   test('should get vertical custom filed resize style', () => {
+    s2.setOptions({
+      colCell: {
+        maxLines: Infinity,
+      },
+    });
+
     jest.spyOn(s2, 'isCustomColumnFields').mockImplementationOnce(() => true);
     jest
       .spyOn(s2.facet, 'getColNodes')
@@ -612,17 +640,12 @@ describe('Interaction Row Column Resize Tests', () => {
         createMockCellInfo('test-c', { level: 1 }).getNode(),
       ]);
 
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Vertical,
-      ResizeAreaEffect.Field,
-      { level: 0 },
-    );
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Field, {
+      level: 0,
+    });
 
     // 获取同 level 的 style
-    expect(s2.options.style!.colCell!.heightByField).toEqual({
-      'test-a': resizeInfo.height,
-      'test-b': resizeInfo.height,
-    });
+    expect(s2.options.style!.colCell).toMatchSnapshot();
   });
 
   test('should not reset interaction and hidden tooltip when resize start', () => {
@@ -720,6 +743,7 @@ describe('Interaction Row Column Resize Tests', () => {
       resizedHeight: 0,
       resizedWidth: 0,
       size: 3,
+      cell: mockCell,
     } as ResizeInfo;
 
     emitResizeEvent(

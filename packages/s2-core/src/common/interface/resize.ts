@@ -66,6 +66,7 @@ export interface ResizeInfo {
 
   /** 当前拖拽热区对应的节点信息 */
   meta: Node | ViewMeta;
+  cell: S2CellType;
 
   /** 拖拽后的宽度 */
   resizedWidth?: number;

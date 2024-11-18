@@ -181,6 +181,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
