@@ -64,7 +64,7 @@ export interface ResizeInfo {
   isResizeArea?: boolean;
   isResizeMask?: boolean;
 
-  /** 当前拖拽热区对应的节点信息 */
+  /** 当前拖拽热区对应的单元格/节点信息 */
   meta: Node | ViewMeta;
   cell: S2CellType;
 

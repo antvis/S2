@@ -7,6 +7,7 @@ import {
 } from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
+  CellTextWordWrapStyle,
   DefaultCellTheme,
   ResizeInteractionOptions,
   ResizeParams,
@@ -254,23 +255,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const displayWidth = isDisabled ? originalWidth : resizedWidth;
     const displayHeight = isDisabled ? originalHeight : resizedHeight;
 
-    // // 高度调整时, 根据行高计算最大可展示的文本行数, 覆盖原本的 maxLines 配置
-    // if (resizeInfo.type === ResizeDirectionType.Vertical) {
-    //   const { cell } = resizeInfo?.cell?.getStyle() as DefaultCellTheme;
-    //   const padding = cell!.padding!.top! + cell!.padding!.bottom!;
-    //   const lineHeight = resizeInfo?.cell?.getTextLineHeight()!;
-    //   const maxLines = !isDisabled
-    //     ? Math.max(1, Math.floor((displayHeight - padding) / lineHeight))
-    //     : undefined;
-
-    //   return {
-    //     displayWidth,
-    //     displayHeight,
-    //     isDisabled,
-    //     maxLines,
-    //   };
-    // }
-
     return {
       displayWidth,
       displayHeight,
@@ -397,6 +381,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeHeightDetail(): ResizeDetail | null {
+    const { style } = this.spreadsheet.options;
     const resizeInfo = this.getResizeInfo();
     const { displayHeight } = this.getDisAllowResizeInfo();
 
@@ -405,8 +390,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
           style: {
-            colCell: this.transform(
+            colCell: this.getResizedCellStyleByField(
               this.getColCellHeightByField(resizeInfo, displayHeight!),
+              style?.colCell!,
               displayHeight,
             ),
           },
@@ -417,8 +403,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
             rowCell: {
-              ...this.transform(
+              ...this.getResizedCellStyleByField(
                 this.getCellStyleByField(displayHeight),
+                style?.rowCell!,
                 displayHeight,
               ),
               height: !this.isEffectRowOf(ResizeType.ALL)
@@ -433,13 +420,24 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
   }
 
-  private transform(
+  private getResizedCellStyleByField(
     heightByField: Record<string, number>,
+    cellStyle: CellTextWordWrapStyle,
     displayHeight: number,
   ) {
+    const isEnableHeightAdaptive =
+      cellStyle?.maxLines! > 1 && cellStyle?.wordWrap;
+
+    if (isEnableHeightAdaptive) {
+      return {
+        heightByField,
+      };
+    }
+
+    // 如果开启了换行, 高度拖拽后动态计算 maxLines 的值, 已保证展示合理性.
     const { cell } = this.getResizeInfo();
-    const { cell: cellStyle } = cell?.getStyle() as DefaultCellTheme;
-    const padding = cellStyle!.padding!.top! + cellStyle!.padding!.bottom!;
+    const { cell: cellTheme } = cell?.getStyle() as DefaultCellTheme;
+    const padding = cellTheme!.padding!.top! + cellTheme!.padding!.bottom!;
     const lineHeight = cell?.getTextLineHeight()!;
 
     const maxLines = Math.max(

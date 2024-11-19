@@ -583,7 +583,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
   }
 
-  protected getTextDraggedMaxLines() {
+  protected getResizedTextMaxLines() {
     const { colCell } = this.spreadsheet.options.style!;
 
     return (

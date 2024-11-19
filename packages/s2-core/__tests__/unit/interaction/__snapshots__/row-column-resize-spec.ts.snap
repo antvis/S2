@@ -133,7 +133,6 @@ Object {
     "test-b": 1,
   },
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -149,7 +148,6 @@ Object {
     "testField": 1,
   },
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;

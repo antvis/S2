@@ -509,7 +509,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
   }
 
-  protected getTextDraggedMaxLines() {
+  protected getResizedTextMaxLines() {
     const { rowCell } = this.spreadsheet.options.style!;
 
     // 数值和行高保持一致, 同时兼容明细表
