@@ -1,8 +1,8 @@
 import { customMerge, type ThemeCfg } from '@antv/s2';
+import { ChartDataCell } from '@antv/s2/extends';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentProps } from '../interface';
-import { ChartSheetDataCell } from './custom-cell';
 
 export const ChartSheet: React.FC<SheetComponentProps> = React.memo((props) => {
   const {
@@ -14,7 +14,7 @@ export const ChartSheet: React.FC<SheetComponentProps> = React.memo((props) => {
   const s2Options = React.useMemo<SheetComponentOptions>(() => {
     const options: SheetComponentOptions = {
       dataCell: (viewMeta, spreadsheet) =>
-        new ChartSheetDataCell(viewMeta, spreadsheet),
+        new ChartDataCell(viewMeta, spreadsheet),
       showDefaultHeaderActionIcon: false,
       interaction: {
         hoverFocus: false,

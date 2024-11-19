@@ -22,6 +22,9 @@ describe('cornerBBox test', () => {
       getLayoutResult() {
         return layoutResult;
       },
+      getCellCustomSize() {
+        return 20;
+      },
       getSeriesNumberWidth() {
         return 80;
       },
@@ -40,6 +43,7 @@ describe('cornerBBox test', () => {
             },
           },
         },
+        facet: mockFacet,
       },
     } as unknown as BaseFacet;
   });

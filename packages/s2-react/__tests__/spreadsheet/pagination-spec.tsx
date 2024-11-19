@@ -1,4 +1,4 @@
-import { SpreadSheet, type S2DataConfig } from '@antv/s2';
+import { type S2DataConfig, type SpreadSheet } from '@antv/s2';
 import { render, waitFor } from '@testing-library/react';
 import { Pagination } from 'antd';
 import React from 'react';

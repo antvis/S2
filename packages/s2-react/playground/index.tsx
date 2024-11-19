@@ -55,6 +55,7 @@ import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
 import { PlaygroundSheetHeader } from './components/Header';
 import { LinkGroup } from './components/LinkGroup';
+import { PivotChartSheet } from './components/PivotChartSheet';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
@@ -1677,6 +1678,11 @@ function MainLayout() {
                 key: 'plugins',
                 label: 'AntV/G 插件系统',
                 children: <PluginsSheet />,
+              },
+              {
+                key: 'pivotChart',
+                label: '绘制透视组合图',
+                children: <PivotChartSheet />,
               },
               {
                 key: 'chart',

@@ -66,7 +66,7 @@ export const setupDataConfig = (
 };
 
 export const setupOptions = (
-  options: Partial<S2Options> | null | undefined,
+  ...options: (Partial<S2Options> | null | undefined)[]
 ): S2Options => {
-  return customMerge<S2Options>(DEFAULT_OPTIONS, options);
+  return customMerge<S2Options>(DEFAULT_OPTIONS, ...options);
 };
