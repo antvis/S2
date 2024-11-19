@@ -32,8 +32,8 @@
       "require": "./lib/index.js"
     },
     "./extends": {
-      "import": "./esm/extends.js",
-      "require": "./lib/extends.js"
+      "import": "./esm/extends/index.js",
+      "require": "./lib/extends/index.js"
     },
     "./*": "./*"
   },
