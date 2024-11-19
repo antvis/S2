@@ -43,7 +43,7 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { floor } from '../utils/math';
 import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
-import { Frame } from './header';
+import { CornerHeader, Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
@@ -83,7 +83,7 @@ export class PivotFacet extends FrozenFacet {
     };
   }
 
-  private buildAllHeaderHierarchy() {
+  protected buildAllHeaderHierarchy() {
     const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
       buildHeaderHierarchy({
         isRowHeader: true,
@@ -185,7 +185,7 @@ export class PivotFacet extends FrozenFacet {
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
   }
 
-  private getPreLevelSampleNode(colNode: Node, colsHierarchy: Hierarchy) {
+  protected getPreLevelSampleNode(colNode: Node, colsHierarchy: Hierarchy) {
     // 之前是采样每一级第一个节点, 现在 sampleNodesForAllLevels 是采样每一级高度最大的节点
     // 但是初始化布局时只有第一个节点有值, 所以这里需要适配下
     return colsHierarchy
@@ -193,12 +193,12 @@ export class PivotFacet extends FrozenFacet {
       .find((node) => !node.isTotals);
   }
 
-  private calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
+  protected calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
     this.calculateRowNodesCoordinate(layoutResult);
     this.calculateColNodesCoordinate(layoutResult);
   }
 
-  private calculateColNodesCoordinate(layoutResult: LayoutResult) {
+  protected calculateColNodesCoordinate(layoutResult: LayoutResult) {
     const { colLeafNodes, colsHierarchy } = layoutResult;
 
     // 1. 计算叶子节点宽度
@@ -222,7 +222,7 @@ export class PivotFacet extends FrozenFacet {
 
   protected calculateRowOffsets(): void {}
 
-  private adjustColTotalNodesCoordinate(colsHierarchy: Hierarchy) {
+  protected adjustColTotalNodesCoordinate(colsHierarchy: Hierarchy) {
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
       this.adjustTotalNodesCoordinate({
         hierarchy: colsHierarchy,
@@ -237,7 +237,7 @@ export class PivotFacet extends FrozenFacet {
     }
   }
 
-  private calculateColLeafNodesWidth(layoutResult: LayoutResult) {
+  protected calculateColLeafNodesWidth(layoutResult: LayoutResult) {
     const { rowLeafNodes, colLeafNodes, rowsHierarchy, colsHierarchy } =
       layoutResult;
     let preLeafNode = Node.blankNode();
@@ -245,7 +245,7 @@ export class PivotFacet extends FrozenFacet {
 
     colsHierarchy.getLeaves().forEach((currentNode) => {
       currentNode.colIndex = currentColIndex;
-      currentColIndex += 1;
+      currentColIndex++;
       currentNode.x = preLeafNode.x + preLeafNode.width;
       currentNode.width = this.getColLeafNodesWidth(
         currentNode,
@@ -258,7 +258,7 @@ export class PivotFacet extends FrozenFacet {
     });
   }
 
-  private calculateColNodesHeight(colsHierarchy: Hierarchy) {
+  protected calculateColNodesHeight(colsHierarchy: Hierarchy) {
     const colNodes = colsHierarchy.getNodes();
 
     colNodes.forEach((currentNode) => {
@@ -292,7 +292,7 @@ export class PivotFacet extends FrozenFacet {
   }
 
   // please read README-adjustTotalNodesCoordinate.md to understand this function
-  private getMultipleMap(
+  protected getMultipleMap(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
     isSubTotal?: boolean,
@@ -313,7 +313,7 @@ export class PivotFacet extends FrozenFacet {
 
     for (let level = maxLevel; level > 0; level--) {
       const currentField = fields![level] as string;
-      // 若不符合【分组维度包含此维度】或【者指标维度下非单指标维度】，此表头单元格为空，将宽高合并到上级单元格
+      // 若不符合【分组维度包含此维度】或者【指标维度下多指标维度】，此表头单元格为空，将宽高合并到上级单元格
       const existValueField = currentField === EXTRA_FIELD && moreThanOneValue;
 
       if (!(dimensionGroup.includes(currentField) || existValueField)) {
@@ -326,7 +326,7 @@ export class PivotFacet extends FrozenFacet {
   }
 
   // please read README-adjustTotalNodesCoordinate.md to understand this function
-  private adjustTotalNodesCoordinate(params: {
+  protected adjustTotalNodesCoordinate(params: {
     hierarchy: Hierarchy;
     isRowHeader?: boolean;
     isSubTotal?: boolean;
@@ -371,7 +371,7 @@ export class PivotFacet extends FrozenFacet {
    * Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
-  private calculateColNodeWidthAndX(colLeafNodes: Node[]) {
+  protected calculateColNodeWidthAndX(colLeafNodes: Node[]) {
     let prevColParent: Node | null = null;
     let i = 0;
 
@@ -400,7 +400,7 @@ export class PivotFacet extends FrozenFacet {
     }
   }
 
-  private getColLeafNodesWidth(
+  protected getColLeafNodesWidth(
     colNode: Node,
     colLeafNodes: Node[],
     rowLeafNodes: Node[],
@@ -436,10 +436,10 @@ export class PivotFacet extends FrozenFacet {
     }
 
     // 4.2 网格自定义
-    return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
+    return this.getAdaptGridColWidth(colLeafNodes, colNode, rowHeaderWidth);
   }
 
-  private getRowNodeHeight(rowNode: Node): number {
+  protected getRowNodeHeight(rowNode: Node): number {
     if (!rowNode) {
       return 0;
     }
@@ -468,7 +468,7 @@ export class PivotFacet extends FrozenFacet {
    * @param iconStyle 图标样式
    * @returns 宽度
    */
-  private getExpectedCellIconWidth(
+  protected getExpectedCellIconWidth(
     cellType: CellType,
     useDefaultIcon: boolean,
     iconStyle: IconTheme,
@@ -505,7 +505,7 @@ export class PivotFacet extends FrozenFacet {
       : 0;
   }
 
-  private calculateRowNodesAllLevelSampleNodes(layoutResult: LayoutResult) {
+  protected calculateRowNodesAllLevelSampleNodes(layoutResult: LayoutResult) {
     const { rowsHierarchy, colLeafNodes } = layoutResult;
     const isTree = this.spreadsheet.isHierarchyTreeType();
 
@@ -528,16 +528,39 @@ export class PivotFacet extends FrozenFacet {
         levelSample.x = preLevelSample?.x + preLevelSample?.width;
       });
     }
+
+    rowsHierarchy.rootNode.width = rowsHierarchy.width;
   }
 
-  private calculateRowNodesBBox(rowsHierarchy: Hierarchy) {
+  protected getRowLeafNodeHeight(rowLeafNode: Node) {
+    const { rowCell: rowCellStyle } = this.spreadsheet.options.style!;
+    const isEnableHeightAdaptive =
+      rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap;
+
+    const currentBranchNodeHeights = isEnableHeightAdaptive
+      ? Node.getBranchNodes(rowLeafNode).map((rowNode) =>
+          this.getRowNodeHeight(rowNode),
+        )
+      : [];
+
+    const defaultHeight = this.getRowNodeHeight(rowLeafNode);
+    // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准: https://github.com/antvis/S2/issues/2678
+    // 自定义高度除外: https://github.com/antvis/S2/issues/2594
+    const nodeHeight = this.isCustomRowCellHeight(rowLeafNode)
+      ? defaultHeight
+      : max(currentBranchNodeHeights) ?? defaultHeight;
+
+    return nodeHeight;
+  }
+
+  protected calculateRowNodesBBox(rowsHierarchy: Hierarchy) {
     const isTree = this.spreadsheet.isHierarchyTreeType();
     const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels || [];
 
     let preLeafNode = Node.blankNode();
     const rowNodes = rowsHierarchy.getNodes();
 
-    rowNodes.forEach((currentNode, i) => {
+    rowNodes.forEach((currentNode) => {
       // 树状模式都按叶子处理节点
       const isLeaf = isTree || (!isTree && currentNode.isLeaf);
 
@@ -554,21 +577,11 @@ export class PivotFacet extends FrozenFacet {
       if (isLeaf) {
         // 2.1. 普通树状结构, 叶子节点各占一行, 2.2. 自定义树状结构 (平铺模式)
         const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
-        const currentBranchNodeHeights = Node.getBranchNodes(currentNode).map(
-          (rowNode) => this.getRowNodeHeight(rowNode),
-        );
-
-        const defaultHeight = this.getRowNodeHeight(currentNode);
-        // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准: https://github.com/antvis/S2/issues/2678
-        // 自定义高度除外: https://github.com/antvis/S2/issues/2594
-        const nodeHeight = this.isCustomRowCellHeight(currentNode)
-          ? defaultHeight
-          : max(currentBranchNodeHeights) ?? defaultHeight;
+        // 文本超过 1 行时再自适应单元格高度, 不然会频繁触发 GC, 导致性能降低: https://github.com/antvis/S2/issues/2693
 
         currentNode.rowIndex ??= rowIndex;
-        currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
-        currentNode.height = nodeHeight;
+        currentNode.height = this.getRowLeafNodeHeight(currentNode);
         preLeafNode = currentNode;
         // mark row hierarchy's height
         rowsHierarchy.height += currentNode.height;
@@ -586,7 +599,7 @@ export class PivotFacet extends FrozenFacet {
     });
   }
 
-  private calculateRowNodesCoordinate(layoutResult: LayoutResult) {
+  protected calculateRowNodesCoordinate(layoutResult: LayoutResult) {
     const { rowsHierarchy, rowLeafNodes } = layoutResult;
     const isTree = this.spreadsheet.isHierarchyTreeType();
 
@@ -609,7 +622,7 @@ export class PivotFacet extends FrozenFacet {
     }
   }
 
-  private adjustRowTotalNodesCoordinate(rowsHierarchy: Hierarchy) {
+  protected adjustRowTotalNodesCoordinate(rowsHierarchy: Hierarchy) {
     if (!isEmpty(this.spreadsheet.options.totals?.row)) {
       this.adjustTotalNodesCoordinate({
         hierarchy: rowsHierarchy,
@@ -628,7 +641,7 @@ export class PivotFacet extends FrozenFacet {
    * @description Auto calculate row no-leaf node's height and y coordinate
    * @param rowLeafNodes
    */
-  private calculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
+  protected calculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
     // 3、in grid type, all no-leaf node's height, y are auto calculated
     let prevRowParent: Node | null = null;
     let i = 0;
@@ -652,7 +665,7 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 计算 grid 模式下 node 宽度
    */
-  private getGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
+  protected getGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
     const { rowCell } = this.spreadsheet.options.style!;
 
     const cellDraggedWidth = this.getRowCellDraggedWidth(node);
@@ -679,7 +692,7 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 计算树状模式等宽条件下的列宽
    */
-  private getAdaptTreeColWidth(
+  protected getAdaptTreeColWidth(
     col: Node,
     colLeafNodes: Node[],
     rowLeafNodes: Node[],
@@ -704,7 +717,7 @@ export class PivotFacet extends FrozenFacet {
     );
   }
 
-  private getColLabelLength(col: Node, rowLeafNodes: Node[]) {
+  protected getColLabelLength(col: Node, rowLeafNodes: Node[]) {
     // 如果 label 字段形如 "["xx","xxx"]"，直接获取其长度
     const labels = safeJsonParse<string[]>(col?.value);
 
@@ -756,7 +769,12 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 计算平铺模式等宽条件下的列宽
    */
-  private getAdaptGridColWidth(colLeafNodes: Node[], rowHeaderWidth?: number) {
+  protected getAdaptGridColWidth(
+    colLeafNodes: Node[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    colNode?: Node,
+    rowHeaderWidth?: number,
+  ) {
     const { rows = [] } = this.spreadsheet.dataSet.fields;
     const { dataCell } = this.spreadsheet.options.style!;
     const rowHeaderColSize = rows.length;
@@ -782,9 +800,8 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 计算树状结构行头宽度
    */
-  private getTreeRowHeaderWidth(): number {
+  protected getTreeRowHeaderWidth(): number {
     const { rowCell } = this.spreadsheet.options.style!;
-    const { rows = [] } = this.spreadsheet.dataSet.fields;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
     const customRowCellWidth = this.getCellCustomSize(null, rowCell?.width!);
@@ -794,9 +811,7 @@ export class PivotFacet extends FrozenFacet {
     }
 
     // 2. 然后是计算 (+ icon province/city/level)
-    const treeHeaderLabel = rows
-      .map((field) => this.spreadsheet.dataSet.getFieldName(field))
-      .join('/');
+    const treeHeaderLabel = CornerHeader.getTreeCornerText(this.spreadsheet);
 
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell!;
@@ -830,7 +845,7 @@ export class PivotFacet extends FrozenFacet {
    * | label - icon  |
    * | label - icon  |
    */
-  private getCompactGridRowNodeWidth(node: Node): number {
+  protected getCompactGridRowNodeWidth(node: Node): number {
     const {
       bolderText: rowTextStyle,
       icon: rowIconStyle,
@@ -889,7 +904,7 @@ export class PivotFacet extends FrozenFacet {
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 
-  private getCompactGridColNodeWidth(colNode: Node, rowLeafNodes: Node[]) {
+  protected getCompactGridColNodeWidth(colNode: Node, rowLeafNodes: Node[]) {
     const {
       bolderText: colCellTextStyle,
       cell: colCellStyle,

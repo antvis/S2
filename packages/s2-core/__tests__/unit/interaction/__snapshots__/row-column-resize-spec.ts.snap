@@ -3,7 +3,6 @@
 exports[`Interaction Row Column Resize Tests should get horizontal filed resize style by field for all resize type and table mode 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": 5,
@@ -17,7 +16,6 @@ Object {
 exports[`Interaction Row Column Resize Tests should get horizontal filed resize style by field for current resize type 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": undefined,
@@ -31,7 +29,6 @@ Object {
 exports[`Interaction Row Column Resize Tests should get horizontal filed resize style by field for current resize type and table mode 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": undefined,
@@ -45,7 +42,6 @@ Object {
 exports[`Interaction Row Column Resize Tests should get horizontal filed resize style by field for selected resize type 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": undefined,
@@ -60,7 +56,6 @@ Object {
 exports[`Interaction Row Column Resize Tests should get multiple horizontal filed resize style by field for selected resize type 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": undefined,
@@ -86,7 +81,6 @@ Object {
   },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -103,7 +97,6 @@ Object {
   },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -111,10 +104,8 @@ Object {
 exports[`Interaction Row Column Resize Tests should get vertical cell resize style 2`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -175,7 +166,6 @@ Object {
   },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -194,7 +184,6 @@ Object {
   },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -211,7 +200,6 @@ Object {
   },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -219,7 +207,6 @@ Object {
 exports[`Interaction Row Column Resize Tests should not effect default resize style by field for selected resize type 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": 50,
@@ -233,7 +220,6 @@ Object {
 exports[`Interaction Row Column Resize Tests should rerender by resize col cell 1`] = `
 Object {
   "height": 30,
-  "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
   "width": 40,
@@ -256,7 +242,6 @@ Object {
   },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
-  "widthByField": null,
   "wordWrap": true,
 }
 `;

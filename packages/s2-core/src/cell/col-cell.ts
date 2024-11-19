@@ -121,7 +121,6 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       viewportWidth,
       cornerWidth = 0,
       scrollX = 0,
-      position,
     } = this.getHeaderConfig();
 
     const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
@@ -138,18 +137,13 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       };
     }
 
-    const scrollXUntilColStickToLeft = frozenColGroupWidth
-      ? cornerWidth
-      : position.x;
-
     return {
-      start:
-        frozenColGroupWidth + Math.max(0, scrollX - scrollXUntilColStickToLeft),
+      start: frozenColGroupWidth + Math.max(0, scrollX - cornerWidth),
       size:
         viewportWidth -
         frozenColGroupWidth -
         frozenTrailingColGroupWidth +
-        Math.min(scrollX, scrollXUntilColStickToLeft),
+        Math.min(scrollX, cornerWidth),
     };
   }
 
@@ -265,6 +259,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     }
 
     const { y, height } = this.meta;
+    const { position } = this.getHeaderConfig();
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
@@ -282,6 +277,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       return;
     }
 
+    const offsetY = position.y + y;
     const resizeAreaWidth = this.getResizeAreaWidth();
 
     // 列高调整热区
@@ -290,7 +286,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       type: ResizeDirectionType.Vertical,
       effect: ResizeAreaEffect.Field,
       offsetX: 0,
-      offsetY: y,
+      offsetY,
       width: resizeAreaWidth,
       height,
       meta: this.meta,
@@ -304,7 +300,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
           style: {
             ...attrs.style,
             x: 0,
-            y: y + height - resizeStyle.size!,
+            y: offsetY + height - resizeStyle.size!,
             width: resizeAreaWidth,
           },
         },
@@ -323,16 +319,19 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   }
 
   protected shouldAddVerticalResizeArea() {
+    if (this.getMeta().isFrozen) {
+      return true;
+    }
+
     const { x, y, width, height } = this.meta;
     const {
-      scrollX,
+      scrollX = 0,
       scrollY,
       cornerWidth = 0,
       height: headerHeight,
       width: headerWidth,
     } = this.getHeaderConfig();
 
-    const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox: SimpleBBox = {
@@ -342,12 +341,29 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       height,
     };
 
-    const resizeClipAreaBBox: SimpleBBox = {
-      x: scrollContainsRowHeader ? -cornerWidth : 0,
-      y: 0,
-      width: scrollContainsRowHeader ? cornerWidth + headerWidth : headerWidth,
-      height: headerHeight,
-    };
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const colWidth = frozenGroupAreas[FrozenGroupArea.Col].width;
+    const trailingColWidth =
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
+
+    let resizeClipAreaBBox: SimpleBBox;
+
+    if (this.spreadsheet.isFrozenRowHeader()) {
+      resizeClipAreaBBox = {
+        x: colWidth,
+        y: 0,
+        width: headerWidth - colWidth - trailingColWidth,
+        height: headerHeight,
+      };
+    } else {
+      resizeClipAreaBBox = {
+        x: colWidth - cornerWidth,
+        y: 0,
+        width: headerWidth - colWidth - trailingColWidth + cornerWidth,
+        height: headerHeight,
+      };
+    }
 
     return shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
       scrollX,
@@ -357,10 +373,41 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.getHeaderConfig();
+    const {
+      scrollX = 0,
+      position,
+      cornerWidth = 0,
+      viewportWidth,
+    } = this.getHeaderConfig();
+
+    const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
+
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+
+    const frozenColGroup = frozenGroupAreas[FrozenGroupArea.Col];
+    const frozenTrailingColGroup =
+      frozenGroupAreas[FrozenGroupArea.TrailingCol];
+
+    let offsetX = position?.x;
+
+    if (this.getMeta().isFrozenHead) {
+      offsetX +=
+        x -
+        frozenColGroup.x -
+        (isFrozenRowHeader ? 0 : Math.min(scrollX, cornerWidth));
+    } else if (this.getMeta().isFrozenTrailing) {
+      offsetX +=
+        x -
+        frozenTrailingColGroup.x +
+        viewportWidth -
+        frozenTrailingColGroup.width;
+    } else {
+      offsetX += x - scrollX;
+    }
 
     return {
-      x: position?.x + x - scrollX,
+      x: offsetX,
       y: position?.y + y,
     };
   }
@@ -368,6 +415,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   protected drawVerticalResizeArea() {
     if (
       !this.meta.isLeaf ||
+      this.meta.hideColCellHorizontalResize ||
       !this.shouldDrawResizeAreaByType('colCellHorizontal', this)
     ) {
       return;

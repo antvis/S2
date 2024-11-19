@@ -212,9 +212,17 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     return (!isLeaf && level === 0) || isTotals;
   }
 
+  protected getResizesArea() {
+    return getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+  }
+
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
+      this.meta.hideRowCellVerticalResize ||
       !this.shouldDrawResizeAreaByType('rowCellVertical', this)
     ) {
       return;
@@ -222,10 +230,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
-    const resizeArea = getOrCreateResizeAreaGroupById(
-      this.spreadsheet,
-      KEY_GROUP_ROW_RESIZE_AREA,
-    );
+    const resizeArea = this.getResizesArea();
 
     if (!resizeArea) {
       return;

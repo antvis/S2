@@ -1,24 +1,5 @@
-import {
-  PivotSheet,
-  DataCell,
-  S2DataConfig,
-  S2Event,
-  S2Options,
-} from '@antv/s2';
-import { renderToMountedElement, stdlib } from '@antv/g2';
-
-// 自定义 `DataCell`, 如果是图表数据, 则不渲染默认的文本
-
-class ChartSheetDataCell extends DataCell {
-  drawTextShape(options) {
-    if (this.isMultiData()) {
-      return null;
-    }
-
-    super.drawTextShape(options);
-  }
-}
-
+import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
+import { ChartDataCell } from '@antv/s2/extends';
 const s2Options: S2Options = {
   width: 1000,
   height: 900,
@@ -35,8 +16,7 @@ const s2Options: S2Options = {
       height: 400,
     },
   },
-  dataCell: (viewMeta, spreadsheet) =>
-    new ChartSheetDataCell(viewMeta, spreadsheet),
+  dataCell: (viewMeta, spreadsheet) => new ChartDataCell(viewMeta, spreadsheet),
 };
 
 const s2DataConfig: S2DataConfig = {
@@ -215,24 +195,6 @@ const container = document.getElementById('container');
 
 async function bootstrap() {
   const s2 = new PivotSheet(container, s2DataConfig, s2Options);
-
-  // 监听数值单元格渲染完成后, 使用 `G2` 提供的 `renderToMountedElement` 将图表挂载在 `S2` 单元格实例上
-  s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
-    // 普通数值单元格正常展示
-    if (!cell.isChartData()) {
-      return;
-    }
-
-    // 获取 G2 渲染到 S2 单元格内所需配置
-    const chartOptions = cell.getRenderChartOptions();
-
-    renderToMountedElement(chartOptions, {
-      // 指定渲染容器为当前单元格
-      group: cell,
-      // 根据渲染的图表, 自行选择 G2 library: https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
-      library: stdlib(),
-    });
-  });
 
   await s2.render();
 }
