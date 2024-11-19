@@ -141,7 +141,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getBorderPositions(): CellBorderPosition[];
 
-  protected abstract getTextStyle(): TextTheme;
+  protected abstract getTextStyle(): TextTheme & CellTextWordWrapStyle;
 
   protected abstract getFormattedFieldValue(): FormatResult;
 
@@ -188,6 +188,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleRestOptions(...options: unknown[]) {}
+
+  protected getTextDraggedMaxLines(): number | void {}
 
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
@@ -484,6 +486,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号: https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
     const maxTextWidth = Math.max(this.getMaxTextWidth(), 0) + EXTRA_PIXEL;
     const textStyle = this.getTextStyle();
+    const maxLines = this.getTextDraggedMaxLines() || textStyle?.maxLines;
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
     this.renderTextShape({
@@ -492,6 +495,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       y: 0,
       text: this.getFieldValue()!,
       wordWrapWidth: maxTextWidth,
+      maxLines,
     });
 
     if (this.isShallowRender()) {

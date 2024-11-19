@@ -548,4 +548,14 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
   }
+
+  protected getTextDraggedMaxLines() {
+    const { rowCell } = this.spreadsheet.options.style!;
+
+    // 数值和行高保持一致, 同时兼容明细表
+    return (
+      rowCell?.maxLinesByField?.[this.meta.id] ??
+      rowCell?.maxLinesByField?.[this.meta.rowId!]
+    );
+  }
 }

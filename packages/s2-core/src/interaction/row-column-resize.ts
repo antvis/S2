@@ -10,7 +10,6 @@ import type {
   DefaultCellTheme,
   ResizeInteractionOptions,
   ResizeParams,
-  RowCellStyle,
 } from '../common';
 import {
   InterceptType,
@@ -255,22 +254,22 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const displayWidth = isDisabled ? originalWidth : resizedWidth;
     const displayHeight = isDisabled ? originalHeight : resizedHeight;
 
-    // 高度调整时, 根据行高计算最大可展示的文本行数, 覆盖原本的 maxLines 配置
-    if (resizeInfo.type === ResizeDirectionType.Vertical) {
-      const { cell } = resizeInfo?.cell?.getStyle() as DefaultCellTheme;
-      const padding = cell!.padding!.top! + cell!.padding!.bottom!;
-      const lineHeight = resizeInfo?.cell?.getTextLineHeight()!;
-      const maxLines = !isDisabled
-        ? Math.max(1, Math.floor((displayHeight - padding) / lineHeight))
-        : undefined;
+    // // 高度调整时, 根据行高计算最大可展示的文本行数, 覆盖原本的 maxLines 配置
+    // if (resizeInfo.type === ResizeDirectionType.Vertical) {
+    //   const { cell } = resizeInfo?.cell?.getStyle() as DefaultCellTheme;
+    //   const padding = cell!.padding!.top! + cell!.padding!.bottom!;
+    //   const lineHeight = resizeInfo?.cell?.getTextLineHeight()!;
+    //   const maxLines = !isDisabled
+    //     ? Math.max(1, Math.floor((displayHeight - padding) / lineHeight))
+    //     : undefined;
 
-      return {
-        displayWidth,
-        displayHeight,
-        isDisabled,
-        maxLines,
-      };
-    }
+    //   return {
+    //     displayWidth,
+    //     displayHeight,
+    //     isDisabled,
+    //     maxLines,
+    //   };
+    // }
 
     return {
       displayWidth,
@@ -399,18 +398,17 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private getResizeHeightDetail(): ResizeDetail | null {
     const resizeInfo = this.getResizeInfo();
-    const { displayHeight, maxLines } = this.getDisAllowResizeInfo();
+    const { displayHeight } = this.getDisAllowResizeInfo();
 
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
           style: {
-            cornerCell: { maxLines },
-            colCell: {
-              maxLines,
-              heightByField: this.getHeightByField(resizeInfo, displayHeight!),
-            },
+            colCell: this.transform(
+              this.getColCellHeightByField(resizeInfo, displayHeight!),
+              displayHeight,
+            ),
           },
         };
 
@@ -418,13 +416,14 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
-            dataCell: { maxLines },
             rowCell: {
-              maxLines,
+              ...this.transform(
+                this.getCellStyleByField(displayHeight),
+                displayHeight,
+              ),
               height: !this.isEffectRowOf(ResizeType.ALL)
                 ? undefined
                 : displayHeight,
-              heightByField: this.getCellStyleByField(displayHeight),
             },
           },
         };
@@ -434,10 +433,38 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
   }
 
-  private getHeightByField(
+  private transform(
+    heightByField: Record<string, number>,
+    displayHeight: number,
+  ) {
+    const { cell } = this.getResizeInfo();
+    const { cell: cellStyle } = cell?.getStyle() as DefaultCellTheme;
+    const padding = cellStyle!.padding!.top! + cellStyle!.padding!.bottom!;
+    const lineHeight = cell?.getTextLineHeight()!;
+
+    const maxLines = Math.max(
+      1,
+      Math.floor((displayHeight - padding) / lineHeight),
+    );
+
+    const maxLinesByField = Object.keys(heightByField).reduce<
+      Record<string, number>
+    >((result, field) => {
+      result![field] = maxLines;
+
+      return result;
+    }, {});
+
+    return {
+      heightByField,
+      maxLinesByField,
+    };
+  }
+
+  private getColCellHeightByField(
     resizeInfo: ResizeInfo,
     displayHeight: number,
-  ): RowCellStyle['heightByField'] {
+  ): Record<string, number> {
     // 1. 自定义列头: 给同一层级且同高度的单元格设置高度. 2. 明细表: 列高一致
     if (
       this.spreadsheet.isCustomColumnFields() ||
@@ -450,7 +477,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
             node.level === resizeInfo.meta?.level &&
             node.height === resizeInfo.meta?.height,
         )
-        .reduce<RowCellStyle['heightByField']>((result, node) => {
+        .reduce<Record<string, number>>((result, node) => {
           result![node.field] = displayHeight;
 
           return result;

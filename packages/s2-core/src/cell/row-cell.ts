@@ -486,4 +486,13 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     return { x: textX, y: textStart };
   }
+
+  protected getTextDraggedMaxLines() {
+    const { rowCell } = this.spreadsheet.options.style!;
+
+    return (
+      rowCell?.maxLinesByField?.[this.meta.id] ??
+      rowCell?.maxLinesByField?.[this.meta.field]
+    );
+  }
 }

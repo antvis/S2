@@ -80,6 +80,10 @@ Object {
     "test-cell-b": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "test-cell-a": 1,
+    "test-cell-b": 1,
+  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "widthByField": null,
@@ -94,6 +98,9 @@ Object {
     "testField": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "testField": 1,
+  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "widthByField": null,
@@ -130,6 +137,10 @@ Object {
     "test-b": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "test-a": 1,
+    "test-b": 1,
+  },
   "textOverflow": "ellipsis",
   "widthByField": null,
   "wordWrap": true,
@@ -143,6 +154,9 @@ Object {
     "testField": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "testField": 1,
+  },
   "textOverflow": "ellipsis",
   "widthByField": null,
   "wordWrap": true,
@@ -156,6 +170,9 @@ Object {
     "testFieldId": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "testFieldId": 1,
+  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "widthByField": null,
@@ -171,6 +188,10 @@ Object {
     "test-cell-b": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "test-cell-a": 1,
+    "test-cell-b": 1,
+  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "widthByField": null,
@@ -185,6 +206,9 @@ Object {
     "0": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "0": 1,
+  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "widthByField": null,
@@ -227,6 +251,9 @@ Object {
     "testField": 2,
   },
   "maxLines": 1,
+  "maxLinesByField": Object {
+    "testField": 1,
+  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "widthByField": null,

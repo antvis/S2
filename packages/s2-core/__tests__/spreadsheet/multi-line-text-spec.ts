@@ -575,6 +575,33 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       matchCellStyleSnapshot();
     });
+
+    test('should render by maxLinesByField', async () => {
+      s2.changeSheetSize(800, 600);
+
+      updateStyle(Infinity);
+      await s2.render(false);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            maxLinesByField: {
+              city: 3,
+            },
+          },
+          colCell: {
+            maxLinesByField: {
+              type: 2,
+              sub_type: 3,
+              [EXTRA_FIELD]: 4,
+            },
+          },
+        },
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
   });
 
   describe('TableSheet', () => {
@@ -1095,6 +1122,33 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       });
 
       await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should render by maxLinesByField', async () => {
+      s2.changeSheetSize(800, 600);
+
+      updateStyle(Infinity);
+      await s2.render(false);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            maxLinesByField: {
+              // 行索引
+              '1': 2,
+            },
+          },
+          colCell: {
+            maxLinesByField: {
+              type: 2,
+              sub_type: 3,
+            },
+          },
+        },
+      });
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });

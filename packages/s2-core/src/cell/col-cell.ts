@@ -534,4 +534,13 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
     return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
   }
+
+  protected getTextDraggedMaxLines() {
+    const { colCell } = this.spreadsheet.options.style!;
+
+    return (
+      colCell?.maxLinesByField?.[this.meta.id] ??
+      colCell?.maxLinesByField?.[this.meta.field]
+    );
+  }
 }

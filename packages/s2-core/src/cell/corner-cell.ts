@@ -272,4 +272,14 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       this.spreadsheet.dataSet.getFieldName(this.meta.field),
     );
   }
+
+  protected getTextDraggedMaxLines() {
+    // 角头和列头高度一致
+    const { colCell } = this.spreadsheet.options.style!;
+
+    return (
+      colCell?.maxLinesByField?.[this.meta.id] ??
+      colCell?.maxLinesByField?.[this.meta.field]
+    );
+  }
 }

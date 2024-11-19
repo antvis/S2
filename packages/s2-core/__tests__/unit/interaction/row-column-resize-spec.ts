@@ -462,15 +462,14 @@ describe('Interaction Row Column Resize Tests', () => {
     const resizeDetail: ResizeParams = {
       info: resizeInfo,
       style: {
-        dataCell: {
-          maxLines: 1,
-        },
         rowCell: {
           height: 2,
           heightByField: {
             [resizeInfo.meta.field!]: 2,
           },
-          maxLines: 1,
+          maxLinesByField: {
+            [resizeInfo.meta.field!]: 1,
+          },
         },
       },
     };
