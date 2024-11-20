@@ -293,6 +293,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
@@ -489,5 +490,14 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     };
 
     return { x: textX, y: textStart };
+  }
+
+  protected getResizedTextMaxLines() {
+    const { rowCell } = this.spreadsheet.options.style!;
+
+    return (
+      rowCell?.maxLinesByField?.[this.meta.id] ??
+      rowCell?.maxLinesByField?.[this.meta.field]
+    );
   }
 }

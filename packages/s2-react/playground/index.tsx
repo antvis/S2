@@ -196,10 +196,6 @@ function MainLayout() {
     });
   };
 
-  const onSheetTypeChange = (e: RadioChangeEvent) => {
-    setSheetType(e.target.value);
-  };
-
   const logHandler =
     (name: string, callback?: (...args: any[]) => void) =>
     (...args: any[]) => {
@@ -236,10 +232,12 @@ function MainLayout() {
     [dataCfg.fields?.columns],
   );
 
-  //  ================== Hooks ========================
+  const onSheetTypeChange = (e: RadioChangeEvent) => {
+    const selectedSheetType = e.target.value;
 
-  useUpdateEffect(() => {
-    switch (sheetType) {
+    setSheetType(e.target.value);
+
+    switch (selectedSheetType) {
       case 'table':
         setDataCfg(tableSheetDataCfg);
         updateOptions(defaultOptions);
@@ -250,8 +248,9 @@ function MainLayout() {
         break;
     }
     setColumnOptions(getColumnOptions(sheetType));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheetType]);
+  };
+
+  //  ================== Hooks ========================
 
   React.useEffect(() => {
     console.log('env:', process.env);

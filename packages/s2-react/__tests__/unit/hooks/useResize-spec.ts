@@ -15,11 +15,11 @@ describe('useResize tests', () => {
   let container: HTMLDivElement;
   let wrapper: HTMLDivElement;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     container = getContainer();
     wrapper = getContainer();
     s2 = new PivotSheet(container, mockDataConfig, s2Options);
-    s2.render();
+    await s2.render();
     jest.spyOn(s2, 'buildFacet' as any).mockImplementation(() => {});
   });
 

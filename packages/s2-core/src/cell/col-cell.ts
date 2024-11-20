@@ -290,6 +290,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       width: resizeAreaWidth,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
@@ -443,6 +444,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
@@ -579,5 +581,14 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     );
 
     return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
+  }
+
+  protected getResizedTextMaxLines() {
+    const { colCell } = this.spreadsheet.options.style!;
+
+    return (
+      colCell?.maxLinesByField?.[this.meta.id] ??
+      colCell?.maxLinesByField?.[this.meta.field]
+    );
   }
 }

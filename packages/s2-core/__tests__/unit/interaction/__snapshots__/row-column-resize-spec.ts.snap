@@ -113,6 +113,35 @@ Object {
 }
 `;
 
+exports[`Interaction Row Column Resize Tests should get vertical custom filed resize style 1`] = `
+Object {
+  "height": 30,
+  "heightByField": Object {
+    "test-a": 2,
+    "test-b": 2,
+  },
+  "maxLines": Infinity,
+  "maxLinesByField": Object {
+    "test-a": 1,
+    "test-b": 1,
+  },
+  "textOverflow": "ellipsis",
+  "wordWrap": true,
+}
+`;
+
+exports[`Interaction Row Column Resize Tests should get vertical filed resize style 1`] = `
+Object {
+  "height": 30,
+  "heightByField": Object {
+    "testField": 2,
+  },
+  "maxLines": 1,
+  "textOverflow": "ellipsis",
+  "wordWrap": true,
+}
+`;
+
 exports[`Interaction Row Column Resize Tests should get vertical filed resize style by field for current resize type 1`] = `
 Object {
   "height": undefined,
@@ -153,6 +182,21 @@ Object {
 }
 `;
 
+exports[`Interaction Row Column Resize Tests should get vertical filed resize style for height adaptive 1`] = `
+Object {
+  "height": 30,
+  "heightByField": Object {
+    "testField": 2,
+  },
+  "maxLines": 3,
+  "maxLinesByField": Object {
+    "testField": 1,
+  },
+  "textOverflow": "ellipsis",
+  "wordWrap": true,
+}
+`;
+
 exports[`Interaction Row Column Resize Tests should not effect default resize style by field for selected resize type 1`] = `
 Object {
   "height": 30,
@@ -185,7 +229,10 @@ Object {
   "heightByField": Object {
     "testField": 2,
   },
-  "maxLines": 1,
+  "maxLines": 3,
+  "maxLinesByField": Object {
+    "testField": 1,
+  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "wordWrap": true,
@@ -195,7 +242,7 @@ Object {
 exports[`Interaction Row Column Resize Tests should rerender by resize row cell 2`] = `
 Object {
   "height": 30,
-  "maxLines": 1,
+  "maxLines": Infinity,
   "textOverflow": "ellipsis",
   "width": 96,
   "wordWrap": true,
