@@ -77,7 +77,7 @@ const s2Options = {
 - `S2Event.GLOBAL_SCROLL`: 单元格滚动，数值/行头单元格滚动时都会触发
 - `S2Event.ROW_CELL_SCROLL`: 行头单元格滚动
 
-同时：对于 `s2-react` 和 `s2-vue` 版本，也提供了事件的隐射，具体请查看 [API 文档](/docs/api/components/sheet-component)
+同时：对于 `s2-react` 和 `s2-vue` 版本，也提供了事件的隐射，具体请查看 [API 文档](/api/components/sheet-component)
 
 需要注意的是：行头单元格只会在**固定行头时**才会显示滚动条，且只会有**水平滚动条**, 所以拿到的 `scrollY` 永远都是 `0`
 

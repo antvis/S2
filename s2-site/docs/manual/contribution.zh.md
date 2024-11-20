@@ -10,7 +10,11 @@ tag: Updated
 
 "我代码水平不行", "会不会受到鄙视？", "会不会不太好？", 放心，不存在的！
 
-我们欢迎任何形式的贡献，不管是一个**错别字的修改**，还是**一次友好的建议**，不管是通过提交 [Issue](https://github.com/antvis/S2/issues/new/choose), 还是一个帅气 [pull request](https://github.com/antvis/S2/pulls), 亦或是一次钉钉群的讨论，参与 [discussions](https://github.com/antvis/S2/discussions) 的讨论，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
+我们欢迎任何形式的贡献，不管是一个**错别字的修改**，还是**一次友好的建议**，不管是通过提交 [Issue](https://github.com/antvis/S2/issues/new/choose), 还是一个帅气 [pull request](https://github.com/antvis/S2/pulls), 亦或是参与 [discussions](https://github.com/antvis/S2/discussions) 的讨论。
+
+这是一个开源项目，我们也有繁忙的业务要做，是用自己的业余时间在维护，为爱发电，精力有限，所以有时候 issue 响应速度不是那么及时。
+
+如果你遇到了问题，或者对 Issues 和 Discussions 列表的问题感兴趣，可以直接认领并尝试修复，帮助 S2 变得更好，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
 
 ## ✍️ 分支管理
 
@@ -57,7 +61,7 @@ tag: Updated
 
 ### 调试功能
 
-根目录运行 `pnpm react:playground` 来运行 `S2`, 可用于调试 `@antv/s2` 和 `@antv/s2-react`, 提供了一些常用的图表场景和配置。
+根目录运行 `pnpm react:playground`（如果是首次运行，需要先执行一次 `pnpm core:build-esm`) 来运行 `S2`, 可用于调试 `@antv/s2` 和 `@antv/s2-react`, 提供了一些常用的图表场景和配置。
 
 <img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6t8RRbg5x_kAAAAAAAAAAAAADmJ7AQ/original" />
 

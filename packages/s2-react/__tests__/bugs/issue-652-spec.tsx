@@ -6,7 +6,7 @@
  */
 import { SheetComponent } from '@/components/sheets';
 import type { SheetComponentProps } from '@/components/sheets/interface';
-import type { SheetType } from '@antv/s2-shared';
+import type { SheetType } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import * as mockDataConfig from 'tests/data/simple-data.json';

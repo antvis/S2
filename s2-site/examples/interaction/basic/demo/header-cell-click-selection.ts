@@ -21,9 +21,17 @@ fetch(
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
+    s2.on(S2Event.ROW_CELL_SELECTED, (cells, detail) => {
+      console.log('row cell selected:', cells, detail);
+    });
+
+    s2.on(S2Event.COL_CELL_SELECTED, (cells, detail) => {
+      console.log('col cell selected:', cells, detail);
+    });
+
     // 也可以监听全局的选中事件
-    s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
-      console.log('selected', cells);
+    s2.on(S2Event.GLOBAL_SELECTED, (cells, detail) => {
+      console.log('selected', cells, detail);
     });
 
     await s2.render();

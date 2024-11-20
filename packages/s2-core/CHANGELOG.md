@@ -1,3 +1,91 @@
+# [@antv/s2-v2.0.0-next.33](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.32...@antv/s2-v2.0.0-next.33) (2024-11-15)
+
+
+### Bug Fixes
+
+* 修复文本存在换行符时, 未显示省略号的问题 ([#2978](https://github.com/antvis/S2/issues/2978)) ([08dbf0d](https://github.com/antvis/S2/commit/08dbf0d9c63f1c64989fe242c9645df06e6b04e5))
+* 修复紧凑模式下, 文本带有 '\n' 换行符时 maxLines 配置未生效和文本溢出的问题 closes [#2963](https://github.com/antvis/S2/issues/2963) [#2900](https://github.com/antvis/S2/issues/2900) ([#2972](https://github.com/antvis/S2/issues/2972)) ([8d45f07](https://github.com/antvis/S2/commit/8d45f07ae86b24d088b609401817d535be2b43bc))
+* 减少开启 ReactDOM.unstable_batchedUpdates 后的重渲染次数 ([#2971](https://github.com/antvis/S2/issues/2971)) ([9007e8e](https://github.com/antvis/S2/commit/9007e8ecf41b6d7434db312398f3996018ef0ecf))
+
+
+### Features
+
+* 调整单元格默认 padding, 优化多行文本时的展示效果 ([#2970](https://github.com/antvis/S2/issues/2970)) ([599d7a4](https://github.com/antvis/S2/commit/599d7a4e76d2b606bdb0509eb684f47870a9e69d))
+
+# [@antv/s2-v2.0.0-next.32](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.31...@antv/s2-v2.0.0-next.32) (2024-11-08)
+
+
+### Bug Fixes
+
+* 修复分割线在深色背景下颜色渲染异常 & 内容宽高未包含分割线的问题 ([#2961](https://github.com/antvis/S2/issues/2961)) ([e759891](https://github.com/antvis/S2/commit/e759891865eee0940d0f5c92345d5490e10eb57c))
+* 修复开启自定义指标层级后, 角头数值文本未对齐 close [#2957](https://github.com/antvis/S2/issues/2957) ([#2966](https://github.com/antvis/S2/issues/2966)) ([6558a0d](https://github.com/antvis/S2/commit/6558a0df55dc324e1810e2f2a5d314de7389e2b1))
+* 修复文本设为左对齐时, 角头文本没有垂直对齐的问题 ([#2960](https://github.com/antvis/S2/issues/2960)) ([af8c968](https://github.com/antvis/S2/commit/af8c96809fd0e52f1da81e2a1c082a5f5b0b122a))
+* 修复明细表自定义列头时开启文本换行, 单元格高度错误的问题 close [#2955](https://github.com/antvis/S2/issues/2955) ([#2968](https://github.com/antvis/S2/issues/2968)) ([ca1f7e8](https://github.com/antvis/S2/commit/ca1f7e8a614dc5b36a6bc270df4ea8338e670444))
+* 修复表格卸载后, 高清适配逻辑还会触发的问题 ([#2965](https://github.com/antvis/S2/issues/2965)) ([c837efe](https://github.com/antvis/S2/commit/c837efe29f2ff02ea8957bcaf62be57d2467f160)), closes [L#116](https://github.com/L/issues/116)
+
+# [@antv/s2-v2.0.0-next.31](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.30...@antv/s2-v2.0.0-next.31) (2024-11-01)
+
+
+### Bug Fixes
+
+* 修复开启 supportsCSSTransform 后 hover 在表格上时报错 ([#2947](https://github.com/antvis/S2/issues/2947)) ([d328598](https://github.com/antvis/S2/commit/d328598f080ff5ce8336f8cd98c200a5052d348c))
+* 修复自定义菜单项不触发 click 事件的问题 ([#2946](https://github.com/antvis/S2/issues/2946)) ([82dbb61](https://github.com/antvis/S2/commit/82dbb617440ba3d81e7ade96ee98747a7a5ecf5a))
+
+
+### Features
+
+* 优化紧凑模式下的单元格宽度计算方式 ([#2953](https://github.com/antvis/S2/issues/2953)) ([68ed225](https://github.com/antvis/S2/commit/68ed2258305eca6f92be7c238cd29c21407bcdd7))
+* 增加不同类型单元格的选中事件 & 支持识别事件来源 ([#2956](https://github.com/antvis/S2/issues/2956)) ([69f6479](https://github.com/antvis/S2/commit/69f6479b43055c12d0295a7c77709b990a069ee3))
+* 增加对自定义行列头总计、小计节点和组内排序的支持，修复明细表自定义列头 icon 问题 icon closes [#2898](https://github.com/antvis/S2/issues/2898) [#2893](https://github.com/antvis/S2/issues/2893) ([#2934](https://github.com/antvis/S2/issues/2934)) ([a4ae432](https://github.com/antvis/S2/commit/a4ae432d2ddff8a3b44fdfb7abd96d6a2369c81b))
+
+# [@antv/s2-v2.0.0-next.30](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.29...@antv/s2-v2.0.0-next.30) (2024-10-25)
+
+
+### Bug Fixes
+
+* **type:** 修复 g renderer 的错误类型定义 ([#2939](https://github.com/antvis/S2/issues/2939)) ([523b2cc](https://github.com/antvis/S2/commit/523b2ccb8884933060000854f28d9a6d8b2806f5))
+* 修复字段标记 mapping 函数部分场景缺失第三个参数 & 调整参数类型 ([#2927](https://github.com/antvis/S2/issues/2927)) ([676c1f6](https://github.com/antvis/S2/commit/676c1f68101a9191b48d23ce1ec15f852bcebc5d))
+* 修复数值单元格 tooltip 内的指标名展示错误 ([#2941](https://github.com/antvis/S2/issues/2941)) ([a426a46](https://github.com/antvis/S2/commit/a426a468d8cc1fe7ec0fd1db0e04938884ec0f46))
+* 修复父容器存在 transform 时, 在 canvas 内点击也会重置交互的问题 close [#2879](https://github.com/antvis/S2/issues/2879) ([#2942](https://github.com/antvis/S2/issues/2942)) ([010ed05](https://github.com/antvis/S2/commit/010ed050214568ea1902e4a426d6638afd3ae2f9))
+* 修复自定义计算总计时, 复制的数据不正确 close [#2928](https://github.com/antvis/S2/issues/2928) ([#2937](https://github.com/antvis/S2/issues/2937)) ([f82de36](https://github.com/antvis/S2/commit/f82de36d6bb92a2ae51577dbc40e16ced0b1792c))
+* 增加单元格单双击的判断范围 ([#2924](https://github.com/antvis/S2/issues/2924)) ([c40bbf9](https://github.com/antvis/S2/commit/c40bbf9a4bf29459a0cb6ac32e3a7c52068c4eb1))
+
+
+### Features
+
+* 优化 ViewMeta 类型定义和相关文档 ([#2935](https://github.com/antvis/S2/issues/2935)) ([55b6f55](https://github.com/antvis/S2/commit/55b6f551148672c1edd6442632ff9ffddc83aa72))
+
+# [@antv/s2-v2.0.0-next.29](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.28...@antv/s2-v2.0.0-next.29) (2024-10-12)
+
+
+### Bug Fixes
+
+* 修复存在字段标记的 icon 时, 紧凑模式列宽计算错误出现省略号的问题 ([#2920](https://github.com/antvis/S2/issues/2920)) ([75acbfe](https://github.com/antvis/S2/commit/75acbfe4540bf8dc702a3a068c214c9217239261))
+* 修复拖拽列宽后, 默认的自定义列宽失效 close [#2910](https://github.com/antvis/S2/issues/2910) ([#2915](https://github.com/antvis/S2/issues/2915)) ([8302fe4](https://github.com/antvis/S2/commit/8302fe40bc475baecf72ba463ac948d33a391a3f))
+* 修复自定义列宽对虚拟数值列不生效 ([#2921](https://github.com/antvis/S2/issues/2921)) ([c53cea4](https://github.com/antvis/S2/commit/c53cea4a2fa2d7b18939abfb984629a94eab936d))
+* 调整分割线的颜色绘制逻辑, 优化和单元格边框颜色不一致的问题 ([#2919](https://github.com/antvis/S2/issues/2919)) ([3f766d0](https://github.com/antvis/S2/commit/3f766d02b14bf6d6ebac34b302a0232a58afe500))
+
+# [@antv/s2-v2.0.0-next.28](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.27...@antv/s2-v2.0.0-next.28) (2024-09-18)
+
+
+### Bug Fixes
+
+* 修复 expandDepth 在自定义行头场景下不生效 ([#2895](https://github.com/antvis/S2/issues/2895)) ([d83a816](https://github.com/antvis/S2/commit/d83a81674e587eab129630c0d3bc4f87b6550471))
+* 修复浏览器窗口多次放大后表格渲染模糊 close [#2884](https://github.com/antvis/S2/issues/2884) ([#2897](https://github.com/antvis/S2/issues/2897)) ([97e2905](https://github.com/antvis/S2/commit/97e2905d6b42a20728950cd51ddabd3bcdd14f1e))
+* 移动端关闭 supportsPointerEvents, 避免禁用 touchAction close [#2857](https://github.com/antvis/S2/issues/2857) ([#2891](https://github.com/antvis/S2/issues/2891)) ([14c55aa](https://github.com/antvis/S2/commit/14c55aa7aae2e1fab63e612f7ecdaa00e7e7b567))
+
+
+### Features
+
+* 新增 s2.facet.getContentWidth() API ([#2883](https://github.com/antvis/S2/issues/2883)) ([395db7e](https://github.com/antvis/S2/commit/395db7e313fd1de6e42ee5dd4d6c475c517609d4))
+
+
+### BREAKING CHANGES
+
+* 移除 s2.getContentHeight() API
+
+* docs: 补充迁移文档
+
 # [@antv/s2-v2.0.0-next.27](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.26...@antv/s2-v2.0.0-next.27) (2024-08-23)
 
 

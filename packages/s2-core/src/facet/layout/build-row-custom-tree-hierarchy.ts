@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 import type { CustomTreeNode } from '../../common';
 import { EXTRA_FIELD } from '../../common/constant';
 import { generateId } from '../../utils/layout/generate-id';
@@ -24,7 +24,8 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     spreadsheet,
     isRowHeader,
   } = params;
-  const { collapseFields, collapseAll } = spreadsheet.options.style?.rowCell!;
+  const { collapseFields, collapseAll, expandDepth } =
+    spreadsheet.options.style?.rowCell!;
 
   const hiddenColumnsDetail =
     spreadsheet.store.get('hiddenColumnsDetail') || [];
@@ -48,10 +49,14 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     const defaultCollapsed = collapsed ?? false;
     const isDefaultCollapsed =
       collapseFields?.[nodeId] ?? collapseFields?.[field];
-    const isCollapsed = isDefaultCollapsed ?? (collapseAll || defaultCollapsed);
+    // 如果 level 大于 rowExpandDepth 或者没有配置层级展开配置时，返回 null，保证能正确降级到 collapseAll
+    const isLevelCollapsed = isNumber(expandDepth) ? level > expandDepth : null;
+    const isCollapsed =
+      isDefaultCollapsed ??
+      isLevelCollapsed ??
+      (collapseAll || defaultCollapsed);
 
-    // TODO: 平铺模式支持 折叠/展开
-    // https://github.com/antvis/S2/issues/2019
+    // TODO: 平铺模式支持 折叠/展开: https://github.com/antvis/S2/issues/2019
     const isCollapsedNode =
       spreadsheet.isHierarchyTreeType() && isRowHeader && isCollapsed;
     const isLeaf = isEmpty(children);

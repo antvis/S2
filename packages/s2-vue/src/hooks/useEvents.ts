@@ -24,8 +24,9 @@ const useS2Event = (
   eventName: S2Event,
   emitName: keyof BaseSheetInitEmits,
 ) => {
-  const handler = (params: any) => {
-    emit(emitName as any, params);
+  const handler = (...params: any[]) => {
+    // @ts-ignore
+    emit(emitName, ...params);
   };
 
   s2Ref.value?.on(eventName, handler);
@@ -66,6 +67,8 @@ export const useEvents = (
       'rowCellAllCollapsed',
     );
     useS2Event(s2Ref, emit, S2Event.ROW_CELL_SCROLL, 'rowCellScroll');
+    useS2Event(s2Ref, emit, S2Event.ROW_CELL_RENDER, 'rowCellRender');
+    useS2Event(s2Ref, emit, S2Event.ROW_CELL_SELECTED, 'rowCellSelected');
 
     // ============== Col Cell ====================
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_HOVER, 'colCellHover');
@@ -87,6 +90,8 @@ export const useEvents = (
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_MOUSE_MOVE, 'colCellMouseMove');
     useS2Event(s2Ref, emit, S2Event.COL_CELL_EXPANDED, 'colCellExpanded');
     useS2Event(s2Ref, emit, S2Event.COL_CELL_HIDDEN, 'colCellHidden');
+    useS2Event(s2Ref, emit, S2Event.COL_CELL_RENDER, 'colCellRender');
+    useS2Event(s2Ref, emit, S2Event.COL_CELL_SELECTED, 'colCellSelected');
 
     // ============== Data Cell ====================
     useCellEvent(s2Ref, emit, S2Event.DATA_CELL_HOVER, 'dataCellHover');
@@ -128,6 +133,8 @@ export const useEvents = (
       S2Event.DATA_CELL_SELECT_MOVE,
       'dataCellSelectMove',
     );
+    useS2Event(s2Ref, emit, S2Event.DATA_CELL_RENDER, 'dataCellRender');
+    useS2Event(s2Ref, emit, S2Event.DATA_CELL_SELECTED, 'dataCellSelected');
 
     // ============== Corner Cell ====================
     useCellEvent(s2Ref, emit, S2Event.CORNER_CELL_HOVER, 'cornerCellHover');
@@ -162,6 +169,8 @@ export const useEvents = (
       S2Event.CORNER_CELL_MOUSE_MOVE,
       'cornerCellMouseMove',
     );
+    useS2Event(s2Ref, emit, S2Event.CORNER_CELL_RENDER, 'cornerCellRender');
+    useS2Event(s2Ref, emit, S2Event.CORNER_CELL_SELECTED, 'cornerCellSelected');
 
     // ============== Merged Cells ====================
     useCellEvent(s2Ref, emit, S2Event.MERGED_CELLS_HOVER, 'mergedCellsHover');
@@ -195,6 +204,15 @@ export const useEvents = (
       emit,
       S2Event.MERGED_CELLS_MOUSE_MOVE,
       'mergedCellsMouseMove',
+    );
+    useS2Event(s2Ref, emit, S2Event.MERGED_CELLS_RENDER, 'mergedCellsRender');
+
+    /** ================ SeriesNumber Cell ================  */
+    useS2Event(
+      s2Ref,
+      emit,
+      S2Event.SERIES_NUMBER_CELL_RENDER,
+      'seriesNumberCellRender',
     );
 
     // ============== Sort ====================

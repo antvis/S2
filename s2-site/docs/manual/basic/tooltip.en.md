@@ -25,12 +25,12 @@ and the `Vue3` version [concrete implementation](https://github.com/antvis/S2/bl
 - Don't forget to import styles
 
 ```ts
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 ```
 
 ## use
 
-Configure the [tooltip](/docs/api/general/S2Options#tooltip) field in `s2Options`, which works on **all** cells by default
+Configure the [tooltip](/docs/api/general/s2-options#tooltip) field in `s2Options`, which works on **all** cells by default
 
 ```ts
 const s2Options = {
@@ -74,7 +74,7 @@ const s2Options = {
 
 ### Operation configuration items
 
-Add [operation item](/docs/api/general/S2Options#tooltipoperation) on `Tooltip` by configuring `operation` field, support [custom](#custom-tooltip-operation item).
+Add [operation item](/docs/api/general/s2-options#tooltipoperation) on `Tooltip` by configuring `operation` field, support [custom](#custom-tooltip-operation item).
 
 ```ts
 const s2Options = {
@@ -396,7 +396,7 @@ You can also override the `renderContent` method to render any component you enc
 ```ts
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
 // import `tooltip` style file
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 
 export class CustomTooltip extends BaseTooltip {
    constructor(spreadsheet: SpreadSheet) {
@@ -519,9 +519,7 @@ content </div>
 </p>
 </template>
 
-< script
-lang = "ts"
-setup >
+<script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -536,7 +534,7 @@ export default defineComponent({
 import { defineCustomElement, render, createVNode } from "vue";
 import { BaseTooltip, PivotSheet } from "@antv/s2";
 import TooltipContent from "./TooltipContent.vue";
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 
 class CustomTooltip extends BaseTooltip {
    constructor(spreadsheet) {

@@ -30,7 +30,7 @@ redirect_from:
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
@@ -70,11 +70,7 @@ redirect_from:
 
 ## 📦 安装
 
-```bash
-$ npm install @antv/s2@next --save
-# yarn add @antv/s2@next
-# pnpm add @antv/s2@next
-```
+<embed src="@/docs/common/install.zh.md"></embed>
 
 ## 🔨 使用
 

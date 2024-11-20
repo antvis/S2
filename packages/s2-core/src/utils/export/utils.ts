@@ -1,11 +1,9 @@
 import { concat, get } from 'lodash';
 import {
   CopyMIMEType,
-  type CopyAllDataParams,
   type Copyable,
   type CopyableItem,
 } from '../../common/interface/export';
-import { asyncProcessAllSelected } from './copy/core';
 
 /**
  * 同步复制
@@ -113,51 +111,4 @@ export const download = (dataString: string, fileName: string) => {
     // eslint-disable-next-line no-console
     console.error(error);
   }
-};
-
-/**
- * 异步获取文本数据 (text/plain)
- * @example
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: '\t',
-      formatOptions: true,
-    });
- */
-export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
-  const result = await asyncProcessAllSelected(params);
-
-  return result[0].content;
-};
-
-/**
- * 异步获取富文本数据 (text/html)
- * @example
-    const data = await asyncGetAllHtmlData({
-      sheetInstance: s2,
-      split: '\t',
-      formatOptions: true,
-    });
- */
-export const asyncGetAllHtmlData = async (params: CopyAllDataParams) => {
-  const result = await asyncProcessAllSelected(params);
-
-  return result[1].content;
-};
-
-/**
- * 异步获取数据
- * - 文本 (text/plain)
- * - 富文本 (text/html)
- * @example
-    const data = await asyncGetAllData({
-      sheetInstance: s2,
-      split: '\t',
-      formatOptions: true,
-    });
- */
-export const asyncGetAllData = async (params: CopyAllDataParams) => {
-  const result = await asyncProcessAllSelected(params);
-
-  return result;
 };

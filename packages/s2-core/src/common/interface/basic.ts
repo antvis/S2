@@ -117,7 +117,7 @@ export interface Fields extends BaseFields {
   /**
    * 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始
    */
-  customValueOrder?: number;
+  customValueOrder?: number | null;
 }
 
 export enum Aggregation {
@@ -442,7 +442,7 @@ export interface ViewMeta {
   height: number;
 
   /** 单元格数据 */
-  data: ViewMetaData | SimpleData | undefined;
+  data: ViewMetaData | undefined;
 
   /** 行索引 */
   rowIndex: number;

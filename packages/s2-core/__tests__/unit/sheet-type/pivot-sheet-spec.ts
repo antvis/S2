@@ -25,7 +25,7 @@ import { cloneDeep, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
 import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
-import {
+import type {
   BaseEvent,
   BaseTooltipOperatorMenuOptions,
   CornerCell,
@@ -629,7 +629,11 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should get content height', () => {
-    expect(s2.getContentHeight()).toEqual(120);
+    expect(s2.facet.getContentHeight()).toEqual(122);
+  });
+
+  test('should get content width', () => {
+    expect(s2.facet.getContentWidth()).toEqual(386);
   });
 
   test('should get layout width type', () => {
@@ -769,7 +773,7 @@ describe('PivotSheet Tests', () => {
 
   test('should rebuild hidden columns detail by status', async () => {
     // 重新更新, 但是没有隐藏列信息
-    await s2.render({ reloadData: false, reBuildHiddenColumnsDetail: true });
+    await s2.render({ reloadData: false, rebuildHiddenColumnsDetail: true });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
 
@@ -777,16 +781,16 @@ describe('PivotSheet Tests', () => {
       null,
     ] as unknown as HiddenColumnsInfo[]);
 
-    // 重新更新, 有隐藏列信息, 但是 reBuildHiddenColumnsDetail 为 false
+    // 重新更新, 有隐藏列信息, 但是 rebuildHiddenColumnsDetail 为 false
     await s2.render({
       reloadData: false,
-      reBuildHiddenColumnsDetail: false,
+      rebuildHiddenColumnsDetail: false,
     });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
 
-    // 重新更新, 有隐藏列信息, 且 reBuildHiddenColumnsDetail 为 true
-    await s2.render({ reloadData: false, reBuildHiddenColumnsDetail: true });
+    // 重新更新, 有隐藏列信息, 且 rebuildHiddenColumnsDetail 为 true
+    await s2.render({ reloadData: false, rebuildHiddenColumnsDetail: true });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(1);
   });

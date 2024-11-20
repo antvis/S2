@@ -155,7 +155,7 @@ describe('SpreadSheet Tests', () => {
       expect(s2.facet.hScrollBar.current()).toEqual(0);
 
       s2.interaction.scrollTo({
-        offsetX: { value: 30 },
+        offsetX: { value: 30, animate: false },
       });
       await sleep(500);
 
@@ -182,7 +182,7 @@ describe('SpreadSheet Tests', () => {
       await s2.render();
 
       s2.interaction.scrollTo({
-        offsetY: { value: 20 },
+        offsetY: { value: 20, animate: false },
       });
 
       await sleep(500);
@@ -219,7 +219,7 @@ describe('SpreadSheet Tests', () => {
       `);
 
       s2.interaction.scrollTo({
-        rowHeaderOffsetX: { value: 30 },
+        rowHeaderOffsetX: { value: 30, animate: false },
       });
 
       await sleep(500);
@@ -249,9 +249,9 @@ describe('SpreadSheet Tests', () => {
       await s2.render();
 
       s2.interaction.scrollTo({
-        offsetY: { value: 20 },
-        offsetX: { value: 30 },
-        rowHeaderOffsetX: { value: 40 },
+        offsetY: { value: 20, animate: false },
+        offsetX: { value: 30, animate: false },
+        rowHeaderOffsetX: { value: 40, animate: false },
       });
 
       await sleep(500);
@@ -307,6 +307,22 @@ describe('SpreadSheet Tests', () => {
         await expect(render()).resolves.toBe(undefined);
       },
     );
+
+    // https://github.com/antvis/S2/issues/2857
+    test('should enable touch action on mobile device', async () => {
+      const s2 = createPivotSheet({
+        ...s2Options,
+        device: 'mobile',
+      });
+
+      await s2.render();
+
+      const { supportsPointerEvents } = s2.container.getConfig();
+      const canvas = s2.getCanvasElement();
+
+      expect(supportsPointerEvents).toBeFalsy();
+      expect(canvas.style.touchAction).not.toEqual('none');
+    });
   });
 
   describe('Destroy Sheet Tests', () => {

@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*", "./typings.d.ts", "../../global.d.ts"],
+  "compilerOptions": {
+    "paths": {}
+  }
+}

@@ -144,10 +144,10 @@ export class PivotSheet extends SpreadSheet {
     const { rows, columns } = this.dataCfg.fields;
     const { hideValue } = this.options.style!.colCell!;
     const sortField = this.isValueInCols() ? last(rows) : last(columns);
-    const { query, value } = meta;
+    const { query, field, value, extra } = meta;
     const sortQuery = clone(query);
 
-    let sortValue = value;
+    let sortValue = extra?.isCustomNode ? field : value;
 
     // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的 query, 所以多指标时请不要这么用……
     if (hideValue && this.isValueInCols()) {

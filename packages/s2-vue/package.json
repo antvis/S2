@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-vue",
-  "version": "2.0.0-next.15",
+  "version": "2.0.0-next.16",
   "private": false,
   "description": "use S2 with vue",
   "keywords": [
@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "https://github.com/orgs/antvis/people",
   "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
+  "unpkg": "dist/s2-vue.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "directories": {
@@ -37,19 +37,17 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
+    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
-    "build:cjs": "cross-env FORMAT=cjs vite build",
-    "build:dts": "run-s dts:*",
-    "build:esm": "cross-env FORMAT=es vite build",
+    "build:cjs": "vue-tsc --module commonjs --outDir lib -p tsconfig.build.json && pnpm build:sync-assets lib/",
+    "build:esm": "vue-tsc --module ESNext --outDir esm -p tsconfig.build.json && pnpm build:sync-assets esm/",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
+    "build:sync-assets": "rsync -av --include='*/' --include='*.less' --include='*.svg' --exclude='*' src/",
     "build:umd": "cross-env FORMAT=umd vite build",
     "clean": "rimraf lib esm dist temp",
-    "dts:build": "vue-tsc -p tsconfig.declaration.json",
-    "dts:extract": "cross-env LIB=s2-vue node ../../scripts/dts.js",
     "start": "cross-env PLAYGROUND=true vite",
-    "test": "jest --passWithNoTests --detectOpenHandles",
+    "test": "jest --passWithNoTests",
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
     "test:coverage": "pnpm test -- --coverage",
@@ -62,14 +60,13 @@
   },
   "devDependencies": {
     "@antv/s2": "workspace:*",
-    "@antv/s2-shared": "workspace:*",
     "@testing-library/vue": "^7.0.0",
     "@vue/shared": "^3.3.4",
     "@vue/tsconfig": "^0.4.0",
     "ant-design-vue": "^3.2.20",
     "vite-svg-loader": "^3.6.0",
     "vue": "^3.3.4",
-    "vue-tsc": "^1.8.19"
+    "vue-tsc": "^2.1.6"
   },
   "peerDependencies": {
     "@antv/s2": "^2.0.0-next.1",
@@ -81,12 +78,17 @@
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
+      "path": "./dist/s2-vue.min.js",
       "import": "{ createComponent }",
-      "limit": "20 kB"
+      "limit": "35 kB",
+      "ignore": [
+        "S2",
+        "Vue",
+        "antd"
+      ]
     },
     {
-      "path": "./dist/style.min.css",
+      "path": "./dist/s2-vue.min.css",
       "limit": "5 kB"
     }
   ],

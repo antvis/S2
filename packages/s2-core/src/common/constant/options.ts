@@ -43,14 +43,10 @@ export const DEFAULT_STYLE: S2Style = {
   rowCell: {
     ...DEFAULT_CELL_TEXT_WORD_WRAP_STYLE,
     showTreeLeafNodeAlignDot: false,
-    widthByField: null,
-    heightByField: null,
   },
   colCell: {
     ...DEFAULT_CELL_TEXT_WORD_WRAP_STYLE,
     height: 30,
-    widthByField: null,
-    heightByField: null,
   },
   dataCell: {
     ...DEFAULT_CELL_TEXT_WORD_WRAP_STYLE,

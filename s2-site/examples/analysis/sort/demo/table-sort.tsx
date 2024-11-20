@@ -5,7 +5,7 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Button } from 'antd';
 import insertCSS from 'insert-css';
 import { orderBy } from 'lodash';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())

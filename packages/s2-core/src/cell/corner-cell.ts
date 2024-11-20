@@ -181,6 +181,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
@@ -209,7 +210,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
   protected getTreeIconWidth() {
     const { size, margin } = this.getStyle()!.icon!;
 
-    return this.showTreeIcon() ? size! + margin!.right! : 0;
+    return this.spreadsheet.isHierarchyTreeType() ? size! + margin!.right! : 0;
   }
 
   public getMaxTextWidth(): number {
@@ -269,6 +270,16 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     return formattedFieldValue(
       this.meta,
       this.spreadsheet.dataSet.getFieldName(this.meta.field),
+    );
+  }
+
+  protected getResizedTextMaxLines() {
+    // 角头和列头高度一致
+    const { colCell } = this.spreadsheet.options.style!;
+
+    return (
+      colCell?.maxLinesByField?.[this.meta.id] ??
+      colCell?.maxLinesByField?.[this.meta.field]
     );
   }
 }

@@ -12,7 +12,6 @@ export enum OriginEventType {
   KEY_UP = 'keyup',
   CLICK = 'click',
   HOVER = 'hover',
-  DOUBLE_CLICK = 'dblclick',
   CONTEXT_MENU = 'contextmenu',
   POINTER_DOWN = 'pointerdown',
   POINTER_MOVE = 'pointermove',

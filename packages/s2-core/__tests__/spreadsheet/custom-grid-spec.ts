@@ -5,7 +5,11 @@ import { pick } from 'lodash';
 import { CustomGridData } from 'tests/data/data-custom-grid';
 import { waitForRender } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
+import {
+  KEY_GROUP_COL_RESIZE_AREA,
+  VALUE_FIELD,
+} from '../../src/common/constant';
+import { Aggregation } from '../../src/common/interface/basic';
 import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
 import {
   customColGridSimpleFields,
@@ -538,5 +542,51 @@ describe('SpreadSheet Custom Grid Tests', () => {
         s2.facet.getColNodes().some((node) => node.isCollapsed),
       ).toBeFalsy();
     });
+
+    // https://github.com/antvis/S2/issues/2893
+    test.each(['tree', 'grid'])(
+      'should render correct total node for %s mode',
+      async (hierarchyType) => {
+        s2.setOptions({
+          hierarchyType,
+          totals: {
+            row: {
+              showGrandTotals: true,
+              showSubTotals: true,
+              reverseGrandTotalsLayout: true,
+              reverseSubTotalsLayout: true,
+              subTotalsDimensions: ['type'],
+              calcGrandTotals: {
+                aggregation: Aggregation.SUM,
+              },
+              calcSubTotals: {
+                aggregation: Aggregation.SUM,
+              },
+            },
+            col: {
+              showGrandTotals: true,
+              showSubTotals: true,
+              reverseGrandTotalsLayout: true,
+              reverseSubTotalsLayout: true,
+              subTotalsDimensions: ['type'],
+              calcGrandTotals: {
+                aggregation: Aggregation.SUM,
+              },
+              calcSubTotals: {
+                aggregation: Aggregation.SUM,
+              },
+            },
+          },
+        });
+
+        await s2.render(false);
+
+        expect(s2.facet.getRowGrandTotalsNodes()).toHaveLength(1);
+        expect(s2.facet.getColGrandTotalsNodes()).toHaveLength(0);
+
+        expect(s2.facet.getCellMeta(0, 0).data[VALUE_FIELD]).toEqual(24);
+        expect(s2.facet.getCellMeta(0, 1).data[VALUE_FIELD]).toEqual(10);
+      },
+    );
   });
 });

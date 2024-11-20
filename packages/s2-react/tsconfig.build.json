@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*", "./typings.d.ts", "../../global.d.ts"],
+  "compilerOptions": {
+    "paths": {
+      "@antv/s2": ["s2-react/node_modules/@antv/s2/esm/index.d.ts"],
+      "@antv/s2/*": ["s2-react/node_modules/@antv/s2/esm/*"]
+    }
+  }
+}

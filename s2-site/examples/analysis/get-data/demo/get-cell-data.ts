@@ -102,8 +102,8 @@ function logEvent(s2: SpreadSheet) {
     console.log('当前数值单元格信息:', cell, meta);
   });
 
-  s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
-    console.log('选中的单元格', cells);
+  s2.on(S2Event.GLOBAL_SELECTED, (cells, detail) => {
+    console.log('选中的单元格', cells, detail);
   });
 }
 

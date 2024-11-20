@@ -21,8 +21,16 @@ fetch(
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
-      console.log('selected', cells);
+    s2.on(S2Event.DATA_CELL_CLICK, (event) => {
+      console.log('data cell click:', event);
+    });
+
+    s2.on(S2Event.DATA_CELL_SELECTED, (cells, detail) => {
+      console.log('data cell selected:', cells, detail);
+    });
+
+    s2.on(S2Event.GLOBAL_SELECTED, (cells, detail) => {
+      console.log('selected', cells, detail);
     });
 
     await s2.render();

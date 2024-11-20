@@ -103,7 +103,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
      */
     const isDefaultCollapsed =
       collapseFields?.[nodeId] ?? collapseFields?.[currentField];
-    // 如果 level 大于 rowExpandDepth或者没有配置层级展开配置时，返回 null，保证能正确降级到 collapseAll
+    // 如果 level 大于 rowExpandDepth 或者没有配置层级展开配置时，返回 null，保证能正确降级到 collapseAll
     const isLevelCollapsed = isNumber(expandDepth) ? level > expandDepth : null;
     const isCollapsed = isDefaultCollapsed ?? isLevelCollapsed ?? collapseAll;
 

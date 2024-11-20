@@ -45,6 +45,7 @@ import type {
   S2RenderOptions,
   S2Theme,
   SimpleData,
+  SimplePalette,
   SortMethod,
   ThemeCfg,
   ThemeName,
@@ -67,9 +68,12 @@ import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
+import { isMobile } from '../utils/is-mobile';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import type { PivotSheet } from './pivot-sheet';
+import type { TableSheet } from './table-sheet';
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -97,21 +101,21 @@ export abstract class SpreadSheet extends EE {
   /**
    * 表格是否已销毁
    */
-  private destroyed = false;
+  public destroyed = false;
 
   protected abstract bindEvents(): void;
 
   public abstract getDataSet(): BaseDataSet;
 
-  public abstract isPivotMode(): boolean;
+  public abstract isPivotMode(): this is PivotSheet;
+
+  public abstract isTableMode(): this is TableSheet;
 
   public abstract isCustomRowFields(): boolean;
 
   public abstract isHierarchyTreeType(): boolean;
 
   public abstract isFrozenRowHeader(): boolean;
-
-  public abstract isTableMode(): boolean;
 
   public abstract isValueInCols(): boolean;
 
@@ -133,8 +137,8 @@ export abstract class SpreadSheet extends EE {
     options: S2Options | null,
   ) {
     super();
-    this.dataCfg = setupDataConfig(dataCfg);
-    this.options = setupOptions(options);
+    this.setupDataConfig(dataCfg);
+    this.setupOptions(options);
     this.dataSet = this.getDataSet();
     this.setDebug();
     this.initTooltip();
@@ -146,6 +150,14 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
     this.setOverscrollBehavior();
     this.mountSheetInstance();
+  }
+
+  protected setupDataConfig(dataCfg: S2DataConfig) {
+    this.dataCfg = setupDataConfig(dataCfg);
+  }
+
+  protected setupOptions(options: S2Options | null | undefined) {
+    this.options = setupOptions(options);
   }
 
   public isCustomHeaderFields(
@@ -196,7 +208,7 @@ export abstract class SpreadSheet extends EE {
     DebuggerUtil.getInstance().setDebug(this.options.debug!);
   }
 
-  private initTheme() {
+  protected initTheme() {
     // When calling spreadsheet directly, there is no theme and initialization is required
     this.setThemeCfg({
       name: 'default',
@@ -220,7 +232,7 @@ export abstract class SpreadSheet extends EE {
     }
   }
 
-  private initInteraction() {
+  protected initInteraction() {
     this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }
@@ -375,7 +387,7 @@ export abstract class SpreadSheet extends EE {
     this.hideTooltip();
 
     if (reset) {
-      this.options = setupOptions(options);
+      this.setupOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }
@@ -422,7 +434,7 @@ export abstract class SpreadSheet extends EE {
     const {
       reloadData = true,
       rebuildDataSet = false,
-      reBuildHiddenColumnsDetail = true,
+      rebuildHiddenColumnsDetail = true,
     } = options || {};
 
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
@@ -438,7 +450,7 @@ export abstract class SpreadSheet extends EE {
 
     this.buildFacet();
 
-    if (reBuildHiddenColumnsDetail) {
+    if (rebuildHiddenColumnsDetail) {
       await this.initHiddenColumnsDetail();
     }
 
@@ -455,7 +467,7 @@ export abstract class SpreadSheet extends EE {
       s2.render({
         reloadData: true;
         rebuildDataSet: true;
-        reBuildHiddenColumnsDetail: true;
+        rebuildHiddenColumnsDetail: true;
       })
    */
   public async render(options?: S2RenderOptions | boolean): Promise<void> {
@@ -487,6 +499,7 @@ export abstract class SpreadSheet extends EE {
     const canvas = this.getCanvasElement();
 
     if (canvas) {
+      // @ts-ignore
       // eslint-disable-next-line no-underscore-dangle
       delete canvas.__s2_instance__;
     }
@@ -515,13 +528,23 @@ export abstract class SpreadSheet extends EE {
     removeOffscreenCanvas();
   }
 
-  private setThemeName(name: ThemeName) {
+  protected setThemeName(name: ThemeName) {
     this.themeName = name;
   }
 
-  public setThemeCfg(themeCfg: ThemeCfg = {}) {
+  public setThemeCfg(
+    themeCfg: ThemeCfg = {},
+    getCustomTheme?: (
+      palette: SimplePalette,
+      spreadsheet?: SpreadSheet,
+    ) => S2Theme,
+  ) {
     const theme = themeCfg?.theme || {};
-    const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
+    const newTheme = getTheme({
+      ...themeCfg,
+      spreadsheet: this,
+      getCustomTheme,
+    });
 
     this.theme = customMerge(newTheme, theme);
     this.setThemeName(themeCfg?.name!);
@@ -541,8 +564,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * Update pagination config which store in {@see options}
-   * @param pagination
+   * 更新分页配置
    */
   public updatePagination(pagination: Pagination) {
     this.options = customMerge(this.options, {
@@ -551,13 +573,6 @@ export abstract class SpreadSheet extends EE {
 
     // 清空滚动进度
     this.facet.resetScrollOffset();
-  }
-
-  /**
-   * 获取当前表格实际内容高度
-   */
-  public getContentHeight(): number {
-    return this.facet.getContentHeight();
   }
 
   /**
@@ -703,16 +718,22 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initContainer(dom: S2MountContainer) {
-    const { width, height, transformCanvasConfig } = this.options;
+    const { width, height, device, transformCanvasConfig } = this.options;
 
-    const renderer = new Renderer() as unknown as CanvasConfig['renderer'];
+    const renderer = new Renderer();
     const canvasConfig = transformCanvasConfig?.(renderer, this);
+    /**
+     * https://github.com/antvis/S2/issues/2857
+     * 开启 supportsPointerEvents 后, G Canvas 会禁用 `touchAction`: https://github.com/antvis/G/blob/910c58e9bcba48cfa7bb0585064d27d3ae0bff4c/packages/g-plugin-dom-interaction/src/DOMInteractionPlugin.ts#L135
+     */
+    const supportsPointerEvents = !isMobile(device);
 
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
       renderer,
+      supportsPointerEvents,
       ...canvasConfig,
     });
 
@@ -818,7 +839,10 @@ export abstract class SpreadSheet extends EE {
    * @param font 文本 css 样式
    * @returns 文本宽度
    */
-  public measureTextWidthRoughly = (text: any, font: any = {}): number => {
+  public measureTextWidthRoughly = (
+    text: SimpleData,
+    font: unknown,
+  ): number => {
     const alphaWidth = this.measureTextWidth('a', font);
     const chineseWidth = this.measureTextWidth('蚂', font);
 
@@ -829,7 +853,7 @@ export abstract class SpreadSheet extends EE {
     }
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const char of text) {
+    for (const char of String(text)) {
       const code = char.charCodeAt(0);
 
       // /[\u0000-\u00ff]/
@@ -893,5 +917,9 @@ export abstract class SpreadSheet extends EE {
     }
 
     return text ?? getDefaultSeriesNumberText();
+  }
+
+  public enableAsyncExport(): Error | true {
+    return true;
   }
 }

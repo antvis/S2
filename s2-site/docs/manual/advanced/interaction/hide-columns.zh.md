@@ -4,6 +4,10 @@ order: 2
 tag: Updated
 ---
 
+:::warning{title="注意"}
+阅读本章前，请确保已经阅读过 [基础交互](/manual/advanced/interaction/basic)，[Tooltip 注意事项](/manual/basic/tooltip#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) 等章节。
+:::
+
 当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有三种方式隐藏列头。
 
 <Playground path='interaction/advanced/demo/pivot-hide-columns.ts' rid='pivot-hide-columns' height='400'></playground>
@@ -84,7 +88,7 @@ const s2Options = {
 
 ### 2. 透视表
 
-透视表存在多列头，需要指定列头对应的 [节点 id](/docs/api/basic-class/node), 如果是 [自定义列头](/manual/advanced/custom/custom-header#12-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) , 那么和明细表相同，指定 `field` 字段即可，这里不再赘述。
+透视表存在多列头，需要指定列头对应的 [节点 id](/api/basic-class/node), 如果是 [自定义列头](/manual/advanced/custom/custom-header#12-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) , 那么和明细表相同，指定 `field` 字段即可，这里不再赘述。
 
 <details>
   <summary>如何获取列头 ID?</summary>
@@ -145,13 +149,13 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/LYrMG8bf5/660aa34c-5fce-4f62-b422-ee6d3b5478d1.png)
 
-还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/docs/manual/basic/analysis/switcher/)
+还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/manual/basic/analysis/switcher/)
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview" />
 
 ## 3. 手动隐藏 - 通过实例方法
 
-[查看所有 API](/docs/api/basic-class/interaction)
+[查看所有 API](/api/basic-class/interaction)
 
 ```ts
 const s2 = new PivotSheet(...)
@@ -181,7 +185,7 @@ s2.on(
 );
 ```
 
-也可以访问存储在 [`store`](/docs/api/basic-class/store) 的 `hiddenColumnsDetail` 主动获取
+也可以访问存储在 [`store`](/api/basic-class/store) 的 `hiddenColumnsDetail` 主动获取
 
 ```ts
 const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail')

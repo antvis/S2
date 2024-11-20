@@ -92,6 +92,7 @@ export interface CustomTreeNode {
   title?: string;
   /**
    * 是否收起（默认都展开）
+   * @description 优先级 `collapseFields` > `expandDepth` > `collapseAll` > `collapsed`
    */
   collapsed?: boolean;
   /**

@@ -27,13 +27,13 @@ const output = {
   exports: 'named',
   name: 'S2',
   sourcemap: true,
+  dir: outDir,
 };
 
 const plugins = [
   peerDepsExternal(),
   alias({
     entries: [
-      { find: 'lodash', replacement: 'lodash-es' },
       {
         find: /^(?<name>.*).less\?inline$/,
         replacement: '$1.less',
@@ -52,6 +52,10 @@ const plugins = [
     tsconfigOverride: {
       outDir,
       include: ['src', '../../global.d.ts'],
+      compilerOptions: {
+        declaration: false,
+        useDefineForClassFields: false,
+      },
     },
   }),
   postcss({
@@ -62,7 +66,7 @@ const plugins = [
       stylus: null,
       less: { javascriptEnabled: true },
     },
-    extract: `style${isUmdFormat ? '.min' : ''}.css`,
+    extract: `s2${isUmdFormat ? '.min' : ''}.css`,
   }),
   /** 主题变量 less 不需要 extract&inject */
   postcss({
@@ -82,15 +86,32 @@ if (enableAnalysis) {
 }
 
 if (isUmdFormat) {
-  output.file = 'dist/index.min.js';
+  output.globals = {
+    '@antv/s2': 'S2',
+  };
+  output.entryFileNames = '[name].min.js';
   plugins.push(terser());
-} else {
-  output.dir = outDir;
 }
 
 // eslint-disable-next-line import/no-default-export
-export default {
-  input: 'src/index.ts',
-  output,
-  plugins,
-};
+export default [
+  {
+    input: {
+      s2: 'src/index.ts',
+    },
+    output,
+    plugins,
+  },
+  {
+    input: {
+      's2-extends': 'src/extends/index.ts',
+    },
+    output: {
+      ...output,
+      name: 'S2Extends',
+    },
+    plugins,
+
+    external: ['@antv/s2'],
+  },
+];

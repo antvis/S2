@@ -22,6 +22,7 @@ import type {
   BrushSelectionOptions,
   CellMeta,
   CellScrollToOptions,
+  CellSelectedDetail,
   ChangeCellOptions,
   CustomInteraction,
   InteractionCellHighlightOptions,
@@ -38,12 +39,13 @@ import { customMerge } from '../utils';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import {
   getActiveHoverHeaderCells,
-  updateAllColHeaderCellState,
+  updateAllHeaderCellState,
 } from '../utils/interaction/hover-event';
 import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
 import {
   getCellMeta,
   getRowCellForSelectedCell,
+  groupSelectedCells,
 } from '../utils/interaction/select-event';
 import { clearState, setState } from '../utils/interaction/state-controller';
 import { isMobile } from '../utils/is-mobile';
@@ -268,8 +270,15 @@ export class RootInteraction {
    * @example s2.interaction.isActiveCell(cell)
    */
   public isActiveCell(cell: S2CellType): boolean {
-    return !!this.getCells().find((meta) => cell.getMeta().id === meta.id);
+    return !!this.getCells().find(
+      (meta) => cell.getMeta().id === meta.id && cell.cellType === meta.type,
+    );
   }
+
+  public shouldForbidHeaderCellSelected = (selectedCells: CellMeta[]) => {
+    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义
+    return unionBy(selectedCells, 'type').length > 1;
+  };
 
   /**
    * 是否是选中的单元格
@@ -574,6 +583,7 @@ export class RootInteraction {
     const {
       cell,
       stateName = InteractionStateName.SELECTED,
+      interactionName,
       scrollIntoView = true,
       animate = true,
       skipScrollEvent = true,
@@ -617,13 +627,15 @@ export class RootInteraction {
 
     if (isEmpty(selectedCells)) {
       this.reset();
-      this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
+      this.emitSelectEvent({
+        targetCell: cell,
+        interactionName,
+      });
 
       return;
     }
 
-    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义.
-    if (unionBy(selectedCells, 'type').length > 1) {
+    if (this.shouldForbidHeaderCellSelected(selectedCells)) {
       return;
     }
 
@@ -638,7 +650,7 @@ export class RootInteraction {
       stateName,
     });
 
-    const selectedCellIds = selectedCells.map(({ id }) => id);
+    const selectedCellIds = groupSelectedCells(selectedCells);
 
     this.updateCells(this.spreadsheet.facet.getHeaderCells(selectedCellIds));
 
@@ -657,7 +669,10 @@ export class RootInteraction {
 
     // 由于绘制的顺序问题, 交互背景图层展示后, 会遮挡边框, 需要让边框展示在前面.
     this.spreadsheet.facet.centerFrame?.toFront();
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
+    this.emitSelectEvent({
+      targetCell: cell,
+      interactionName,
+    });
 
     return true;
   }
@@ -819,10 +834,12 @@ export class RootInteraction {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;
 
-        this.interactions.set(
-          customInteraction.key,
-          new CustomInteractionClass(this.spreadsheet),
-        );
+        if (CustomInteractionClass) {
+          this.interactions.set(
+            customInteraction.key,
+            new CustomInteractionClass(this.spreadsheet),
+          );
+        }
       });
     }
   }
@@ -1091,7 +1108,39 @@ export class RootInteraction {
         : interaction.getSelectedCellHighlight();
 
     if (colHeader && colId) {
-      updateAllColHeaderCellState(colId, facet.getColCells(), stateName);
+      updateAllHeaderCellState(colId, facet.getColCells(), stateName);
     }
+  }
+
+  public emitSelectEvent(
+    options: CellSelectedDetail & { cells?: S2CellType[] },
+  ) {
+    const { interaction } = this.spreadsheet;
+    const { cells, ...defaultCellSelectedDetail } = options;
+    const activeCells = cells || interaction.getActiveCells();
+    const targetCell = defaultCellSelectedDetail?.targetCell || activeCells[0];
+    const cellSelectedDetail = {
+      ...defaultCellSelectedDetail,
+      targetCell,
+    };
+    const cellType = targetCell?.cellType as string;
+
+    const eventName = {
+      [CellType.CORNER_CELL]: S2Event.CORNER_CELL_SELECTED,
+      [CellType.ROW_CELL]: S2Event.ROW_CELL_SELECTED,
+      [CellType.COL_CELL]: S2Event.COL_CELL_SELECTED,
+      [CellType.DATA_CELL]: S2Event.DATA_CELL_SELECTED,
+    }[cellType];
+
+    if (!eventName) {
+      return;
+    }
+
+    this.spreadsheet.emit(eventName, activeCells, cellSelectedDetail);
+    this.spreadsheet.emit(
+      S2Event.GLOBAL_SELECTED,
+      activeCells,
+      cellSelectedDetail,
+    );
   }
 }
