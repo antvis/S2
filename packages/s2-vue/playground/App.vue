@@ -1,15 +1,8 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type {
-  PartDrillDown,
-  PartDrillDownInfo,
-  SheetType,
+import {
   CellType,
   type RawData,
-  type S2DataConfig,
-  type S2Options,
-} from '@antv/s2-shared';
-  RawData,
   type S2DataConfig,
   type S2Options,
   type PartDrillDown,
