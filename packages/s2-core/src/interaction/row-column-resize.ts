@@ -428,7 +428,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const isEnableHeightAdaptive =
       cellStyle?.maxLines! > 1 && cellStyle?.wordWrap;
 
-    if (isEnableHeightAdaptive) {
+    if (!isEnableHeightAdaptive) {
       return {
         heightByField,
       };

@@ -409,11 +409,13 @@ describe('Interaction Row Column Resize Tests', () => {
     const rowWidthResize = jest.fn();
 
     s2.setOptions({
-      rowCell: {
-        maxLines: 3,
-      },
-      dataCell: {
-        maxLines: Infinity,
+      style: {
+        rowCell: {
+          maxLines: 3,
+        },
+        dataCell: {
+          maxLines: Infinity,
+        },
       },
     });
     s2.on(S2Event.LAYOUT_RESIZE, resize);
@@ -612,9 +614,17 @@ describe('Interaction Row Column Resize Tests', () => {
   });
 
   test('should get vertical filed resize style', () => {
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Field);
+
+    expect(s2.options.style!.colCell).toMatchSnapshot();
+  });
+
+  test('should get vertical filed resize style for height adaptive', () => {
     s2.setOptions({
-      colCell: {
-        maxLines: 3,
+      style: {
+        colCell: {
+          maxLines: 3,
+        },
       },
     });
 
@@ -625,8 +635,10 @@ describe('Interaction Row Column Resize Tests', () => {
 
   test('should get vertical custom filed resize style', () => {
     s2.setOptions({
-      colCell: {
-        maxLines: Infinity,
+      style: {
+        colCell: {
+          maxLines: Infinity,
+        },
       },
     });
 

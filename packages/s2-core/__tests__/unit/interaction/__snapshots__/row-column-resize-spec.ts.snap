@@ -75,10 +75,6 @@ Object {
     "test-cell-b": 2,
   },
   "maxLines": 1,
-  "maxLinesByField": Object {
-    "test-cell-a": 1,
-    "test-cell-b": 1,
-  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "wordWrap": true,
@@ -92,9 +88,6 @@ Object {
     "testField": 2,
   },
   "maxLines": 1,
-  "maxLinesByField": Object {
-    "testField": 1,
-  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "wordWrap": true,
@@ -127,7 +120,7 @@ Object {
     "test-a": 2,
     "test-b": 2,
   },
-  "maxLines": 1,
+  "maxLines": Infinity,
   "maxLinesByField": Object {
     "test-a": 1,
     "test-b": 1,
@@ -144,9 +137,6 @@ Object {
     "testField": 2,
   },
   "maxLines": 1,
-  "maxLinesByField": Object {
-    "testField": 1,
-  },
   "textOverflow": "ellipsis",
   "wordWrap": true,
 }
@@ -159,9 +149,6 @@ Object {
     "testFieldId": 2,
   },
   "maxLines": 1,
-  "maxLinesByField": Object {
-    "testFieldId": 1,
-  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "wordWrap": true,
@@ -176,10 +163,6 @@ Object {
     "test-cell-b": 2,
   },
   "maxLines": 1,
-  "maxLinesByField": Object {
-    "test-cell-a": 1,
-    "test-cell-b": 1,
-  },
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "wordWrap": true,
@@ -193,10 +176,22 @@ Object {
     "0": 2,
   },
   "maxLines": 1,
-  "maxLinesByField": Object {
-    "0": 1,
-  },
   "showTreeLeafNodeAlignDot": false,
+  "textOverflow": "ellipsis",
+  "wordWrap": true,
+}
+`;
+
+exports[`Interaction Row Column Resize Tests should get vertical filed resize style for height adaptive 1`] = `
+Object {
+  "height": 30,
+  "heightByField": Object {
+    "testField": 2,
+  },
+  "maxLines": 3,
+  "maxLinesByField": Object {
+    "testField": 1,
+  },
   "textOverflow": "ellipsis",
   "wordWrap": true,
 }
@@ -234,7 +229,7 @@ Object {
   "heightByField": Object {
     "testField": 2,
   },
-  "maxLines": 1,
+  "maxLines": 3,
   "maxLinesByField": Object {
     "testField": 1,
   },
@@ -247,7 +242,7 @@ Object {
 exports[`Interaction Row Column Resize Tests should rerender by resize row cell 2`] = `
 Object {
   "height": 30,
-  "maxLines": 1,
+  "maxLines": Infinity,
   "textOverflow": "ellipsis",
   "width": 96,
   "wordWrap": true,
