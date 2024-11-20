@@ -5,6 +5,7 @@ import { Input } from 'ant-design-vue';
 import { isNil, pick } from 'lodash';
 import type { TargetCellInfo, S2Options, S2CellType } from '@antv/s2';
 import { useExpose } from '../../hooks/useExpose';
+import type { BaseSheetInitEmits } from '../../interface';
 import { initBaseSheetProps } from '../../utils/initPropAndEmits';
 import BaseSheet from './base-sheet.vue';
 
@@ -15,7 +16,7 @@ function buildEditProps(option: S2Options): S2Options {
 export default defineComponent({
   name: 'EditableSheet',
   props: initBaseSheetProps(),
-  emits: [],
+  emits: [] as unknown as BaseSheetInitEmits,
   setup(props, ctx) {
     const s2Ref = useExpose(ctx.expose);
     const { options: originOptions } = toRefs(props);
@@ -131,7 +132,7 @@ export default defineComponent({
   components: {
     BaseSheet,
   },
-});
+}) as unknown;
 </script>
 <template>
   <BaseSheet
