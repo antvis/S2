@@ -20,7 +20,7 @@ cell.getActualText()
 | cellType | 单元格类型 | [`CellType`](#celltype) |
 | initCell | 初始化单元格 | `() => void` |
 | update | 更新单元格 | `() => void` |
-| getTextStyle | 获取文本样式 | `() => void` |
+| getTextStyle | 获取文本样式 | () => [TextTheme](/api/general/s2-theme#s2theme) & [CellTextWordWrapStyle](/api/general/s2-options#celltextwordwrapstyle) |
 | getCellTextWordWrapStyle | 获取文本换行配置 | `() => { wordWrap: boolean, maxLines: number, textOverflow: string \| boolean }` |
 | getFormattedFieldValue | 获取格式化后的字段值 | `() => { formattedValue: string, value: string }` |
 | getMaxTextWidth | 获取文本最大宽度 | `() => number` |
