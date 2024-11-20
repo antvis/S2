@@ -772,7 +772,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
 describe('total group dimension sort test', () => {
   let sheet: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     const currentOptions = {
       totals: {
         col: {
@@ -805,12 +805,13 @@ describe('total group dimension sort test', () => {
     };
 
     sheet = new PivotSheet(getContainer(), dataConfig, currentOptions);
-    sheet.render();
+    await sheet.render();
   });
 
   afterEach(() => {
     sheet.destroy();
   });
+
   test('should sort by col total with group', () => {
     // 根据列（类别）的总和排序
     const sortParam: SortParam = {

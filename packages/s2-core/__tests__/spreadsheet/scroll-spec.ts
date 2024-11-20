@@ -536,9 +536,11 @@ describe('Scroll Tests', () => {
     s2.interaction.scrollTo({
       offsetX: {
         value: 999,
+        animate: false,
       },
       offsetY: {
         value: 999,
+        animate: false,
       },
     });
 
@@ -977,7 +979,9 @@ describe('Scroll Tests', () => {
   });
 
   test('should scroll to cell by id', async () => {
-    s2.interaction.scrollToCellById('root[&]浙江[&]杭州-root[&]笔[&]price');
+    s2.interaction.scrollToCellById('root[&]浙江[&]杭州-root[&]笔[&]price', {
+      animate: false,
+    });
 
     await sleep(500);
 
@@ -986,7 +990,7 @@ describe('Scroll Tests', () => {
   });
 
   test('should scroll to cell by id when cell outside of viewport', async () => {
-    s2.interaction.scrollToCellById('root[&]浙江[&]杭州');
+    s2.interaction.scrollToCellById('root[&]浙江[&]杭州', { animate: false });
 
     await sleep(500);
 
@@ -996,7 +1000,7 @@ describe('Scroll Tests', () => {
   test('should scroll to cell', async () => {
     const dataCell = last(s2.facet.getDataCells());
 
-    s2.interaction.scrollToCell(dataCell!);
+    s2.interaction.scrollToCell(dataCell!, { animate: false });
 
     await sleep(500);
 
@@ -1007,7 +1011,7 @@ describe('Scroll Tests', () => {
   test('should scroll to node', async () => {
     const rowNode = last(s2.facet.getRowNodes());
 
-    s2.interaction.scrollToNode(rowNode!);
+    s2.interaction.scrollToNode(rowNode!, { animate: false });
 
     await sleep(500);
 
@@ -1016,27 +1020,27 @@ describe('Scroll Tests', () => {
   });
 
   test('should scroll to top', async () => {
-    s2.interaction.scrollTo({ offsetY: { value: 10 } });
+    s2.interaction.scrollTo({ offsetY: { value: 10, animate: false } });
     await sleep(100);
 
-    s2.interaction.scrollToTop();
+    s2.interaction.scrollToTop({ animate: false });
     await sleep(500);
     expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
     expect(s2.facet.vScrollBar.thumbOffset).toBeCloseTo(0);
   });
 
   test('should scroll to left', async () => {
-    s2.interaction.scrollTo({ offsetX: { value: 10 } });
+    s2.interaction.scrollTo({ offsetX: { value: 10, animate: false } });
     await sleep(100);
 
-    s2.interaction.scrollToLeft();
+    s2.interaction.scrollToLeft({ animate: false });
     await sleep(500);
     expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
     expect(s2.facet.vScrollBar.thumbOffset).toBeCloseTo(0);
   });
 
   test('should scroll to bottom', async () => {
-    s2.interaction.scrollToBottom(false);
+    s2.interaction.scrollToBottom({ animate: false });
 
     await sleep(500);
 
@@ -1045,7 +1049,7 @@ describe('Scroll Tests', () => {
   });
 
   test('should scroll to right', async () => {
-    s2.interaction.scrollToRight(false);
+    s2.interaction.scrollToRight({ animate: false });
 
     await sleep(500);
 
@@ -1059,22 +1063,22 @@ describe('Scroll Tests', () => {
     expectScroll();
   });
 
-  test('should not trigger scroll event when options changed', () => {
+  test('should not trigger scroll event when options changed', async () => {
     const expectScroll = getScrollExpect();
 
     s2.setOptions({
       hierarchyType: 'tree',
     });
-    s2.render();
+    await s2.render(false);
 
     expectScroll();
   });
 
-  test('should not trigger scroll event when data config changed', () => {
+  test('should not trigger scroll event when data config changed', async () => {
     const expectScroll = getScrollExpect();
 
     s2.setDataCfg(cloneDeep(mockDataConfig));
-    s2.render();
+    await s2.render(false);
 
     expectScroll();
   });
@@ -1092,26 +1096,33 @@ describe('Scroll Tests', () => {
       skipScrollEvent: true,
       rowHeaderOffsetX: {
         value: 999,
+        animate: false,
       },
       offsetX: {
         value: 999,
+        animate: false,
       },
       offsetY: {
         value: 999,
+        animate: false,
       },
     });
 
     s2.interaction.scrollToLeft({
       skipScrollEvent: true,
+      animate: false,
     });
     s2.interaction.scrollToTop({
       skipScrollEvent: true,
+      animate: false,
     });
     s2.interaction.scrollToRight({
       skipScrollEvent: true,
+      animate: false,
     });
     s2.interaction.scrollToBottom({
       skipScrollEvent: true,
+      animate: false,
     });
 
     await sleep(500);
