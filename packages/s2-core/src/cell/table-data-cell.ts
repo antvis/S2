@@ -134,6 +134,7 @@ export class TableDataCell extends DataCell {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(

@@ -9,11 +9,11 @@ import {
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
 import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import { isEmpty } from 'lodash';
-import LocationIcon from '@antv/s2/esm/shared/icons/location-icon.svg?component';
-import TextIcon from '@antv/s2/esm/shared/icons/text-icon.svg?component';
-import CalendarIcon from '@antv/s2/esm/shared/icons/calendar-icon.svg?component';
 import type { Key } from 'ant-design-vue/lib/_util/type';
 import type { ChangeEvent } from 'ant-design-vue/lib/_util/EventInterface';
+import LocationIcon from '../../svg/location-icon.svg?component';
+import TextIcon from '../../svg/text-icon.svg?component';
+import CalendarIcon from '../../svg/calendar-icon.svg?component';
 import {
   initDrillDownEmits,
   initDrillDownProps,

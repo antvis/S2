@@ -39,7 +39,12 @@ export interface BaseCellStyle {
 }
 
 export interface CellTextWordWrapStyle
-  extends Pick<TextStyleProps, 'wordWrap' | 'maxLines' | 'textOverflow'> {}
+  extends Pick<TextStyleProps, 'wordWrap' | 'maxLines' | 'textOverflow'> {
+  /**
+   * @private 内部使用
+   */
+  maxLinesByField?: Record<string, number> | null;
+}
 
 export interface DataCellStyle extends CellTextWordWrapStyle {
   /**

@@ -21,6 +21,15 @@
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*psedTKQWiWUAAAAAAAAAAAAADmJ7AQ/original",
       "new": true
+    },
+    {
+      "filename": "line-break.ts",
+      "title": {
+        "zh": "根据换行符换行",
+        "en": "Line Break Multi Line Text"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*G8cwQ7BC3VAAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }

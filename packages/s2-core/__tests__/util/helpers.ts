@@ -23,6 +23,7 @@ import * as dataConfig from 'tests/data/mock-dataset.json';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import { assembleDataCfg, assembleOptions } from '.';
 import {
+  CELL_PADDING,
   DEFAULT_FROZEN_COUNTS,
   EventController,
   FrozenGroupArea,
@@ -312,10 +313,20 @@ export const createMockCellInfo = (
     getActualText: jest.fn(),
     getFieldValue: jest.fn(),
     getBBoxByType: jest.fn(() => {}),
-    getStyle: jest.fn(() => {}),
+    getStyle: jest.fn(() => ({
+      cell: {
+        padding: {
+          top: CELL_PADDING,
+          right: CELL_PADDING,
+          bottom: CELL_PADDING,
+          left: CELL_PADDING,
+        },
+      },
+    })),
     hideInteractionShape: jest.fn(),
     updateByState: jest.fn(),
     isTextOverflowing: jest.fn(),
+    getTextLineHeight: jest.fn(() => 16),
   } as unknown as S2CellType;
 
   const getNode = () => mockCellViewMeta as unknown as Node;

@@ -21,7 +21,7 @@ import '@antv/s2-react/dist/s2-react.min.css';
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
-| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot \| table \| gridAnalysis \| strategy` | `pivot` |  |
+| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 <br/> 5. `editable`: 编辑表 | `pivot \| table \| gridAnalysis \| strategy \| editable` | `pivot` |  |
 | spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/api/general/s2-data-config) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
@@ -147,6 +147,10 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 
 ## Vue 表组件 <Badge type="success">@antv/s2-vue</Badge>
 
+:::warning{title="注意"}
+`@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发社区版本。
+:::
+
 基于 `@antv/s2` 层封装的 `Vue 3.0` 版开箱即用的组件 `<SheetComponent />`
 
 ### props
@@ -155,7 +159,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
-| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 | `pivot \| table` | `pivot` |  |
+| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br/> 3. `editable`: 编辑表 | `pivot \| table \| editable` | `pivot` |  |
 | dataCfg | 透视表数据映射配置项 | [S2DataConfig](/api/general/s2-data-config) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions-1) |  | ✓ |
 | adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
@@ -346,7 +350,8 @@ type SheetComponentOptions = S2Options<
 | effect | 拖拽更改影响的区域 | `Field` \| `Cell` \| `Tree` \| `Series` |  |  |
 | isResizeArea | 是否属于 resize 热区 | `boolean` |  |  |
 | id | 字段 id | `string` |  |  |
-| meta | resize 热区对应单元格节点信息 | [Node](/api/basic-class/node) |  |  |
+| cell | resize 热区对应单元格信息 | [Node](/api/basic-class/base-cell) |  |  |
+| meta | resize 热区对应单元格元数据 | [Node](/api/basic-class/node) |  |  |
 | resizedWidth | 拖拽后的宽度 | `number` |  |  |
 | resizedHeight | 拖拽后的高度 | `number` |  |  |
 

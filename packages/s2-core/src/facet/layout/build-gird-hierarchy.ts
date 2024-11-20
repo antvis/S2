@@ -107,7 +107,6 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
   fieldValues.push(...((arrangedValues as FieldValue[]) || []));
 
   // add skeleton for empty data
-
   if (isEmpty(fieldValues) && currentField) {
     if (currentField === EXTRA_FIELD) {
       fieldValues.push(...values);

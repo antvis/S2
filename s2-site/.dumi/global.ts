@@ -16,8 +16,12 @@ if (window) {
   (
     window as any
   ).gPluginRoughCanvasRenderer = require('@antv/g-plugin-rough-canvas-renderer');
+  
   (window as any).g2 = require('@antv/g2');
+  
   (window as any).s2 = require('@antv/s2');
+  (window as any)._extends = require('@antv/s2/extends');
+
   (window as any).s2React = require('@antv/s2-react');
   (window as any).s2ReactComponents = require('@antv/s2-react-components');
 

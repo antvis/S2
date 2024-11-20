@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import type { DisplayObject } from '@antv/g';
-import { renderToMountedElement, stdlib } from '@antv/g2';
-import { type SpreadSheet, type ThemeCfg } from '@antv/s2';
+// import { renderToMountedElement, stdlib } from '@antv/g2';
+import { type SpreadSheet } from '@antv/s2';
 import React from 'react';
 import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 import {
@@ -31,25 +30,6 @@ const options: SheetComponentOptions = {
   style: {},
 };
 
-const theme: ThemeCfg['theme'] = {
-  dataCell: {},
-};
-
-const onDataCellRender: SheetComponentProps['onDataCellRender'] = (cell) => {
-  // 普通数值单元格正常展示
-  if (!cell.isChartData()) {
-    return;
-  }
-
-  const chartOptions = cell.getRenderChartOptions();
-
-  // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
-  renderToMountedElement(chartOptions, {
-    group: cell as unknown as DisplayObject,
-    library: stdlib(),
-  });
-};
-
 export const ChartSheet = React.forwardRef<
   SpreadSheet,
   Partial<SheetComponentProps>
@@ -61,12 +41,10 @@ export const ChartSheet = React.forwardRef<
       {...props}
       {...context}
       sheetType="chart"
-      themeCfg={{ theme }}
       dataCfg={ChartDataConfig}
       options={options}
       ref={ref}
       adaptive={true}
-      onDataCellRender={onDataCellRender}
     />
   );
 });

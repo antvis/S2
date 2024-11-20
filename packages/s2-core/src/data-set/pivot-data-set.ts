@@ -670,7 +670,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   // 是否开启自定义度量组位置值
-  private isCustomMeasuresPosition(customValueOrder?: number) {
+  private isCustomMeasuresPosition(customValueOrder?: number | null) {
     return isNumber(customValueOrder);
   }
 

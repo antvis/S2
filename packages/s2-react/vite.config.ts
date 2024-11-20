@@ -8,7 +8,9 @@ import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 import { getBaseConfig } from '../../build.config.base.mjs';
 
-const { getViteConfig, isDevMode } = getBaseConfig();
+const { getViteConfig, isDevMode } = getBaseConfig({
+  aliasReactComponents: true,
+});
 
 const root = path.join(__dirname, isDevMode ? 'playground' : '');
 

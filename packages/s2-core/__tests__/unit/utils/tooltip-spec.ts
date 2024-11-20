@@ -972,7 +972,7 @@ describe('Tooltip Utils Tests', () => {
     });
 
     describe('Tooltip Get Data Tests For TableSheet', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         s2 = createTableSheet(
           {
             seriesNumber: {
@@ -981,7 +981,7 @@ describe('Tooltip Utils Tests', () => {
           },
           { useSimpleData: false },
         );
-        s2.render();
+        await s2.render();
       });
 
       afterEach(() => {
