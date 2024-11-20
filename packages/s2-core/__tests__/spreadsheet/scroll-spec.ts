@@ -480,7 +480,7 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     await s2.render(false);
 
-    expect(Math.floor(s2.facet.vScrollBar.getBBox().x)).toEqual(213);
+    expect(Math.floor(s2.facet.vScrollBar.getBBox().x)).toEqual(218);
 
     s2.setOptions({
       interaction: {
@@ -942,7 +942,7 @@ describe('Scroll Tests', () => {
         new MouseEvent('click', {
           // 右下角滑道点击
           clientX: x + maxX - 2,
-          clientY: y + maxY + 2,
+          clientY: y + maxY - scrollbar!.theme!.size! + 2,
         } as MouseEventInit),
       );
 
@@ -974,7 +974,7 @@ describe('Scroll Tests', () => {
     await sleep(500);
 
     expect(Math.floor(s2.facet.hScrollBar.thumbOffset)).toBeCloseTo(9);
-    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(14);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(15);
     expect(Math.floor(s2.facet.hRowScrollBar.thumbOffset)).toBeCloseTo(10);
   });
 
@@ -986,7 +986,7 @@ describe('Scroll Tests', () => {
     await sleep(500);
 
     expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
-    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(17);
   });
 
   test('should scroll to cell by id when cell outside of viewport', async () => {
@@ -1005,7 +1005,7 @@ describe('Scroll Tests', () => {
     await sleep(500);
 
     expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
-    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(17);
   });
 
   test('should scroll to node', async () => {
@@ -1016,7 +1016,7 @@ describe('Scroll Tests', () => {
     await sleep(500);
 
     expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(49);
-    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(17);
   });
 
   test('should scroll to top', async () => {
@@ -1045,7 +1045,7 @@ describe('Scroll Tests', () => {
     await sleep(500);
 
     expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
-    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(17);
   });
 
   test('should scroll to right', async () => {

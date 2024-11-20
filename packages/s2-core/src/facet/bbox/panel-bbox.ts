@@ -54,9 +54,8 @@ export class PanelBBox extends BaseBBox {
   }
 
   protected getPanelHeight() {
-    const scrollBarSize = this.spreadsheet.theme.scrollBar!.size;
     const { height: canvasHeight } = this.spreadsheet.options;
-    const panelHeight = Math.max(0, canvasHeight! - this.y - scrollBarSize!);
+    const panelHeight = Math.max(0, canvasHeight! - this.y);
 
     return panelHeight;
   }
