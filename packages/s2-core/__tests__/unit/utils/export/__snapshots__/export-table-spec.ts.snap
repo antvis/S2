@@ -249,6 +249,16 @@ Array [
 ]
 `;
 
+exports[`TableSheet Export Test should export correct data with no series number 1`] = `
+Array [
+  "序号	province	city	产品类型	sub_type	number",
+  "1	浙江省	杭州市	家具	桌子	7789",
+  "2	浙江省	绍兴市	家具	桌子	2367",
+  "3	浙江省	宁波市	家具	桌子	3877",
+  "4	浙江省	舟山市	家具	桌子	4342",
+]
+`;
+
 exports[`TableSheet Export Test should export correct data with series number 1`] = `
 Array [
   "序号	province	city	产品类型	sub_type	number",
