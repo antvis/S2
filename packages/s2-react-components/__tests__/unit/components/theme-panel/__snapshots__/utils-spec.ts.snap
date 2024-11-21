@@ -4082,7 +4082,7 @@ Object {
       "fill": "#1D2129",
       "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
-      "fontWeight": 700,
+      "fontWeight": "bold",
       "linkTextFill": "#2B5ECF",
       "opacity": 1,
       "textAlign": "left",
