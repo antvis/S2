@@ -103,6 +103,7 @@ export class Frame extends Group {
     const { verticalBorderColor, verticalBorderColorOpacity } =
       spreadsheet.theme?.splitLine!;
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
+    const frameHorizontalWidth = Frame.getHorizontalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
     // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
@@ -132,7 +133,7 @@ export class Frame extends Group {
         x1: x,
         y1: position.y,
         x2: x,
-        y2: position.y + cornerHeight,
+        y2: position.y + cornerHeight + frameHorizontalWidth,
         lineWidth: frameVerticalWidth,
         stroke,
         strokeOpacity,

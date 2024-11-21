@@ -14,9 +14,6 @@ redirect_from:
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img src="https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm" alt="latest version">
   </a>
-  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img  src="https://img.shields.io/npm/v/@antv/s2/next.svg?logo=npm" alt="next version">
-  </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
@@ -254,7 +251,9 @@ bootstrap();
 
 ## 🙋‍♂️ 问题反馈
 
-有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose), 在这之前强烈建议阅读 [《⚠️ 提 Issue 前必读》](https://github.com/antvis/S2/issues/1904)
+如果你遇到了问题，或者对 [Issues](https://github.com/antvis/S2/issues) 和 [Discussions](https://github.com/antvis/S2/discussions) 列表的问题感兴趣，**可以直接认领并尝试修复**，帮助 S2 变得更好，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
+
+请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose) 或在 [Discussions](https://github.com/antvis/S2/discussions) 提问，在这之前强烈建议阅读 [《⚠️ 提 Issue 前必读》](https://github.com/antvis/S2/issues/1904)
 
 ## ⌨️ 本地开发
 
@@ -262,15 +261,11 @@ bootstrap();
 
 ## 🤝 参与贡献
 
-请查看 [贡献指南](https://s2.antv.antgroup.com/manual/contribution)
+S2 非常需要你的共建，请阅读 [贡献指南](https://s2.antv.antgroup.com/manual/contribution) 后提交 PR.
 
 ## 👁️ 项目洞察
 
 ![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
-
-## 📧 反馈问题
-
-有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose) 或在 [Discussions](https://github.com/antvis/S2/discussions) 提问。
 
 ## 👬 贡献者们
 

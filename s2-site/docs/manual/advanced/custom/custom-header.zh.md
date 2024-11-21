@@ -13,7 +13,7 @@ tag: New
 :::warning{title="注意"}
 
 1. 默认的排序 icon `showDefaultHeaderActionIcon` 无效。
-2. 自定义行头时，不支持配置行头[小计总计](/manual/basic/totals)；自定义列头时，不支持配置列头[小计总计](/manual/basic/totals)。
+2. 自定义行头时，不支持配置行头 [小计总计](/manual/basic/totals)；自定义列头时，不支持配置列头 [小计总计](/manual/basic/totals)。
 
 :::
 
@@ -106,6 +106,8 @@ const s2DataConfig = {
 
 #### 平铺模式
 
+[查看示例](/examples/layout/custom-header-group/#custom-pivot-row-header)
+
 ```ts
 const s2Options = {
   hierarchyType: 'grid'
@@ -116,6 +118,8 @@ const s2Options = {
 
 #### 树状模式
 
+[查看示例](/examples/layout/custom-header-group/#custom-tree)
+
 ```ts
 const s2Options = {
   hierarchyType: 'tree'
@@ -123,6 +127,23 @@ const s2Options = {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/iJft9ExZs/da1f768c-7689-44df-be54-708442a74d76.png" width="1000" alt="preview" />
+
+##### 节点展开/收起
+
+树状模式下默认使用 `customTreeNode.collapsed` 作为展开/收起状态，也可以使用通用的配置，具体请查看 [自定义折叠/展开节点](/manual/advanced/custom/custom-collapse-nodes) 章节
+
+```ts
+const s2Options = {
+  style: {
+    rowCell: {
+      collapseFields: {
+        'custom-node-1': true,
+        'custom-node-2': false,
+      },
+    },
+  },
+}
+```
 
 ### 1.2 自定义列头
 
@@ -148,6 +169,8 @@ const s2DataConfig = {
 ```
 
 #### 平铺模式
+
+[查看示例](/examples/layout/custom-header-group/#custom-pivot-col-header)
 
 ```ts
 const s2Options = {
@@ -239,6 +262,8 @@ const s2DataConfig = {
 :::
 
 <Playground path='layout/custom-header-group/demo/custom-table-col-header.ts' rid='custom-table-col-header' height='400'></playground>
+
+[查看示例](/examples/layout/custom-header-group/#custom-table-col-header)
 
 ## 3. 行列头文本格式化
 

@@ -7,6 +7,9 @@ git clone git@github.com:antvis/S2.git
 
 cd S2
 
+# 切换到 2.x 分支
+git checkout next
+
 # 安装依赖
 pnpm install # 或者 pnpm bootstrap
 

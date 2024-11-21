@@ -8,7 +8,7 @@ tag: Updated
 
 为了满足更多的分析场景，S2 提供开箱即用的场景表组件 —— 趋势分析表。借助它，你可以非常方便的实现单元格内展示多指标的场景表格。
 
-如图所示，该类表格的表形态特点在于可以在**同一个数据单元格**和**列头单元格内**展示多个指标数据，用于需要**关注时间趋势下的数据指标**，**查看同环比**等场景。行头可以 [自定义层级结构](/manual/advanced/custom/custom-tree)。因此有此类分析需求时，可以直接使用该组件。
+如图所示，该类表格的表形态特点在于可以在**同一个数据单元格**和**列头单元格内**展示多个指标数据，用于需要**关注时间趋势下的数据指标**，**查看同环比**等场景。行头可以 [自定义层级结构](/manual/advanced/custom/custom-header)。因此有此类分析需求时，可以直接使用该组件。
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png" width="600"  alt="preview" />
 
@@ -18,7 +18,7 @@ tag: Updated
 
 - [基本概念](/manual/basic/base-concept)
 - [字段标记](/manual/basic/conditions/)
-- [自定义行列头](/manual/advanced/custom/custom-tree)
+- [自定义行列头](/manual/advanced/custom/custom-header)
 
 :::
 
@@ -109,7 +109,7 @@ const data = {
 }
 ```
 
-#### 2. 行头层级结构：[自定义层级结构](/zh/docs/manual/advanced/custom/custom-tree)
+#### 2. 行头层级结构：[自定义层级结构](/manual/advanced/custom/custom-header)
 
 ```ts
 const fields = {

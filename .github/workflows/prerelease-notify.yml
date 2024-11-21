@@ -11,11 +11,6 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Sleep 10s
-        uses: juliangruber/sleep-action@v1
-        with:
-          time: 10s
-
       - name: Pre Release Notify
         uses: visiky/dingtalk-release-notify@main
         with:
@@ -23,8 +18,8 @@ jobs:
             ${{ secrets.DING_TALK_ACCESS_TOKEN }}
             ${{ secrets.DING_TALK_GROUP_TOKEN }}
             ${{ secrets.DING_TALK_PUBLIC_TOKEN }}
-          notify_title: '🎉 测试版 {release_tag} 发布 🎉'
-          notify_body: '## { title } <hr /> ![preview](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original) <hr /> { body } <hr />'
-          notify_footer: '> 该版本为测试版, 请谨慎使用, 前往 [**AntV/S2 Releases**]({ release_url }) 查看完整更新日志.'
+          notify_title: '🎉 AntV/S2 测试版发布 🎉'
+          notify_body: '![preview](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original) <hr /> [**查看更新日志**](https://github.com/antvis/S2/releases) <hr />'
+          notify_footer: '> 该版本为测试版, 请谨慎使用 ([AntV/S2 Releases](https://github.com/antvis/S2/releases))'
           at_all: false
           enable_prerelease: true

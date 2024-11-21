@@ -15,16 +15,7 @@ function generateNextVersion() {
 }
 
 function build() {
-  // 直接运行 pnpm build 要报错，用一下蠢办法
-  execSync(`pnpm clean`, {
-    stdio: 'inherit',
-  });
-
-  execSync(`pnpm build:umd & pnpm build:cjs & pnpm build:esm`, {
-    stdio: 'inherit',
-  });
-
-  execSync(`pnpm dts:build && pnpm dts:extract`, {
+  execSync(`pnpm build`, {
     stdio: 'inherit',
   });
 }

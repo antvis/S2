@@ -216,7 +216,7 @@ const s2Options = {
 
 ### 渐变柱状图
 
-`S2` 的底层图形绘制采用 [AntV/g](https://g.antv.antgroup.com/guide/getting-started) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.antgroup.com/api/css/gradient)、[纹理](https://g.antv.antgroup.com/api/css/pattern) 等。
+`S2` 的底层图形绘制采用 [AntV/G](https://g.antv.antgroup.com/guide/getting-started) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.antgroup.com/api/css/gradient)、[纹理](https://g.antv.antgroup.com/api/css/pattern) 等。
 
 ```ts
 const s2Options = {

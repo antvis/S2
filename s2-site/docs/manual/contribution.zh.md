@@ -4,7 +4,7 @@ order: 7
 tag: Updated
 ---
 
-如果你恰好看到了这篇文章，你一定是希望对这个项目贡献自己的一份力量。
+如果你恰好看到了这篇文章，你一定是希望对这个项目贡献自己的一份力量。这是一个开源项目，我们也有繁忙的业务要做，是用自己的业余时间在维护，为爱发电，精力有限，所以有时候 issue 响应速度不是那么及时，如果你遇到了问题，或者对 Issues 和 Discussions 列表的问题感兴趣，可以直接认领并尝试修复，帮助 S2 变得更好，而不是一味的埋怨和催促，我们不是甲方乙方的关系。
 
 ## 🫡 欢迎任何形式的贡献
 
@@ -14,16 +14,14 @@ tag: Updated
 
 这是一个开源项目，我们也有繁忙的业务要做，是用自己的业余时间在维护，为爱发电，精力有限，所以有时候 issue 响应速度不是那么及时。
 
-如果你遇到了问题，或者对 Issues 和 Discussions 列表的问题感兴趣，可以直接认领并尝试修复，帮助 S2 变得更好，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
+如果你遇到了问题，或者对 [Issues](https://github.com/antvis/S2/issues) 和 [Discussions](https://github.com/antvis/S2/discussions) 列表的问题感兴趣，可以直接认领并尝试修复，帮助 S2 变得更好，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
 
 ## ✍️ 分支管理
 
-目前我们主要基于 `master` 和 `next` 分支开发，有任何修改，请基于 `master` 或 `next` 拉一个分支，然后通过 `PR` 的形式提交，我们集成了钉钉机器人，会第一次时间 `review` 你的 `PR`, 给与反馈。
+目前我们主要基于 `next` 分支开发，有任何修改，请基于 `next` 拉一个分支，然后通过 `PR` 的形式提交，我们集成了钉钉机器人，会第一次时间 `review` 你的 `PR`, 给与反馈。
 
 - `master`: `1.x` 版本
 - `next`: `2.x` 版本
-- `alpha`: `1.x-alpha.x` 版本
-- `beta`: `1.x-beta.x` 版本
 
 ## 🐛 提交 Bug 反馈
 
