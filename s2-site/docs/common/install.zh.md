@@ -35,3 +35,4 @@ npm install @antv/s2 @antv/s2-react-components antd @ant-design/icons --save
 
 ```bash
 npm install @antv/s2 @antv/s2-vue ant-design-vue@3.x --save
+```
