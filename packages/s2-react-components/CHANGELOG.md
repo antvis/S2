@@ -1,3 +1,7 @@
+# [@antv/s2-react-components-v2.0.0](#) (2024-11-21)
+
+* 2.0 正式版已发布，请查看 [升级指南](https://s2.antv.antgroup.com/manual/migration-v2)
+
 # [@antv/s2-react-components-v1.1.0-next.1](https://github.com/antvis/S2/compare/@antv/s2-react-components-v1.0.1-next.1...@antv/s2-react-components-v1.1.0-next.1) (2024-11-15)
 
 
