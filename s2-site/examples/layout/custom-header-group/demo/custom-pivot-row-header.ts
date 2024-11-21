@@ -122,6 +122,7 @@ async function render() {
     width: 600,
     height: 480,
     hierarchyType: 'grid',
+    // hierarchyType: 'tree',
     // cornerText: '自定义角头标题',
   };
 

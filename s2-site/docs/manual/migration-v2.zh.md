@@ -1433,4 +1433,4 @@ class AntdV5AliasPlugin {
 
 ## 🙋 遇到问题
 
-更多新特性和改动请阅读文档，如果您在升级过程中遇到了问题，请到 [GitHub issues](https://github.com/antvis/S2/issues/2454) 或者 [GitHub Discussions](https://github.com/antvis/S2/discussions/1933) 进行反馈。我们会尽快响应和改进这篇文档。
+更多新特性和改动请阅读文档，如果您在升级过程中遇到了问题，请到 [GitHub issues](https://github.com/antvis/S2/issues) 或者 [GitHub Discussions](https://github.com/antvis/S2/discussions) 进行反馈。我们会尽快响应和改进这篇文档。
