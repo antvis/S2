@@ -20,14 +20,8 @@ export class PanelBBox extends BaseBBox {
     this.minX = this.x;
     this.minY = this.y;
 
-    const { width: canvasWidth, height: canvasHeight } =
-      this.spreadsheet.options;
-
-    const panelWidth = Math.max(0, canvasWidth! - this.x);
-    const panelHeight = Math.max(0, canvasHeight! - this.y);
-
-    this.width = panelWidth;
-    this.height = panelHeight;
+    this.width = this.getPanelWidth();
+    this.height = this.getPanelHeight();
     this.viewportHeight = Math.abs(
       floor(Math.min(this.height, this.originalHeight)),
     );
