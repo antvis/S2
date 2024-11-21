@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-vue",
-  "version": "2.0.0-next.16",
+  "version": "2.0.0",
   "private": false,
   "description": "use S2 with vue",
   "keywords": [
@@ -74,7 +74,8 @@
     "vue": ">=3.x"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "size-limit": [
     {
