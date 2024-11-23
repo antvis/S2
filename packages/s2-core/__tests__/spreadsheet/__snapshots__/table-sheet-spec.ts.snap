@@ -2,7 +2,7 @@
 
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder 1`] = `
 Object {
-  "height": 562,
+  "height": 568,
   "stroke": CSSRGB {
     "alpha": 1,
     "b": 253,
@@ -32,7 +32,7 @@ Object {
   "name": "Empty",
   "width": 64,
   "x": 367.5,
-  "y": 292.5,
+  "y": 295.5,
 }
 `;
 
@@ -55,13 +55,13 @@ Object {
   "opacity": 1,
   "text": "暂无数据",
   "x": 375,
-  "y": 357.5,
+  "y": 360.5,
 }
 `;
 
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col height 1`] = `
 Object {
-  "height": 272,
+  "height": 278,
   "stroke": CSSRGB {
     "alpha": 1,
     "b": 253,
@@ -91,7 +91,7 @@ Object {
   "name": "Empty",
   "width": 64,
   "x": 267.5,
-  "y": 317.5,
+  "y": 320.5,
 }
 `;
 
@@ -114,13 +114,13 @@ Object {
   "opacity": 1,
   "text": "暂无数据",
   "x": 275,
-  "y": 382.5,
+  "y": 385.5,
 }
 `;
 
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col width 1`] = `
 Object {
-  "height": 442,
+  "height": 448,
   "stroke": CSSRGB {
     "alpha": 1,
     "b": 253,
@@ -150,7 +150,7 @@ Object {
   "name": "Empty",
   "width": 64,
   "x": 223,
-  "y": 232.5,
+  "y": 235.5,
 }
 `;
 
@@ -173,13 +173,13 @@ Object {
   "opacity": 1,
   "text": "暂无数据",
   "x": 230.5,
-  "y": 297.5,
+  "y": 300.5,
 }
 `;
 
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description 1`] = `
 Object {
-  "height": 562,
+  "height": 568,
   "stroke": CSSRGB {
     "alpha": 1,
     "b": 253,
@@ -209,7 +209,7 @@ Object {
   "name": "Trend",
   "width": 64,
   "x": 367.5,
-  "y": 292.5,
+  "y": 295.5,
 }
 `;
 
@@ -232,13 +232,13 @@ Object {
   "opacity": 1,
   "text": "暂无数据",
   "x": 375,
-  "y": 357.5,
+  "y": 360.5,
 }
 `;
 
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description style 1`] = `
 Object {
-  "height": 562,
+  "height": 568,
   "stroke": CSSRGB {
     "alpha": 1,
     "b": 253,
@@ -268,7 +268,7 @@ Object {
   "name": "Empty",
   "width": 100,
   "x": 349.5,
-  "y": 263,
+  "y": 266,
 }
 `;
 
@@ -291,13 +291,13 @@ Object {
   "opacity": 1,
   "text": "暂无数据",
   "x": 359,
-  "y": 443,
+  "y": 446,
 }
 `;
 
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder for en_US lang 1`] = `
 Object {
-  "height": 562,
+  "height": 568,
   "stroke": CSSRGB {
     "alpha": 1,
     "b": 253,
@@ -327,7 +327,7 @@ Object {
   "name": "Empty",
   "width": 64,
   "x": 367.5,
-  "y": 292.5,
+  "y": 295.5,
 }
 `;
 
@@ -349,14 +349,14 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "No Data",
-  "x": 376.5,
-  "y": 357.5,
+  "x": 375,
+  "y": 360.5,
 }
 `;
 
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder if contains horizontal scrollbar 1`] = `
 Object {
-  "height": 562,
+  "height": 568,
   "stroke": CSSRGB {
     "alpha": 1,
     "b": 253,
@@ -386,7 +386,7 @@ Object {
   "name": "Empty",
   "width": 64,
   "x": 367.5,
-  "y": 292.5,
+  "y": 295.5,
 }
 `;
 
@@ -409,6 +409,6 @@ Object {
   "opacity": 1,
   "text": "暂无数据",
   "x": 375,
-  "y": 357.5,
+  "y": 360.5,
 }
 `;
