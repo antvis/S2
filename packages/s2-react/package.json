@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-react",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "description": "use S2 with react",
   "keywords": [
@@ -83,7 +83,7 @@
     "vite-plugin-svgr": "^2.2.2"
   },
   "peerDependencies": {
-    "@antv/s2": "^2.0.0-next.1",
+    "@antv/s2": "^2.0.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
