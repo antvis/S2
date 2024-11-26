@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "description": "effective spreadsheet render core lib",
   "keywords": [
