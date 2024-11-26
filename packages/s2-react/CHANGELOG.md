@@ -1,3 +1,5 @@
+# [@antv/s2-react-v2.0.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.1...@antv/s2-react-v2.0.2) (2024-11-26)
+
 # [@antv/s2-react-v2.0.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0...@antv/s2-react-v2.0.1) (2024-11-21)
 
 
