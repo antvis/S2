@@ -41,10 +41,6 @@ export const getBaseConfig = ({
     resolve.alias.push(
       ...[
         {
-          find: /^(.*)\/theme\/(.*)\.less$/,
-          replacement: '$1/theme/$2.less?inline',
-        },
-        {
           find: /^@antv\/s2$/,
           replacement: path.join(__dirname, './packages/s2-core/src'),
         },

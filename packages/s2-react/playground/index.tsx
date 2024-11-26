@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
+  DARK_THEME_CLS,
   DEFAULT_FROZEN_COUNTS,
   DEFAULT_STYLE,
   Node,
@@ -22,6 +23,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
+import '@antv/s2/src/styles/theme/dark.less';
 import { useUpdateEffect } from 'ahooks';
 import {
   Button,
@@ -40,6 +42,7 @@ import {
   Tooltip,
   type RadioChangeEvent,
 } from 'antd';
+import cls from 'classnames';
 import { debounce, isEmpty, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
@@ -391,7 +394,11 @@ function MainLayout() {
           logHandler,
         }}
       >
-        <div className="playground">
+        <div
+          className={cls('playground', {
+            [DARK_THEME_CLS]: themeCfg.name === 'dark',
+          })}
+        >
           <LinkGroup />
           <Tabs
             defaultActiveKey={localStorage.getItem('debugTabKey') || 'basic'}

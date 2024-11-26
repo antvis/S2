@@ -70,7 +70,6 @@ import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { isMobile } from '../utils/is-mobile';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
-import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 import type { PivotSheet } from './pivot-sheet';
 import type { TableSheet } from './table-sheet';
@@ -548,7 +547,6 @@ export abstract class SpreadSheet extends EE {
 
     this.theme = customMerge(newTheme, theme);
     this.setThemeName(themeCfg?.name!);
-    injectThemeVars(themeCfg?.name);
   }
 
   public setTheme(theme: S2Theme) {

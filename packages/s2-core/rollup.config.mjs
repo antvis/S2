@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
@@ -32,14 +31,6 @@ const output = {
 
 const plugins = [
   peerDepsExternal(),
-  alias({
-    entries: [
-      {
-        find: /^(?<name>.*).less\?inline$/,
-        replacement: '$1.less',
-      },
-    ],
-  }),
   replace({
     'process.env.NODE_ENV': JSON.stringify('production'),
     preventAssignment: true,
