@@ -161,7 +161,7 @@ export const setTooltipContainerStyle = (
     return;
   }
 
-  const { style, className = [], visible, dark } = options;
+  const { style, className = [], visible, dark = false } = options;
 
   if (style) {
     Object.assign(container.style, style);

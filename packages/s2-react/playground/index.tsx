@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
+  DARK_THEME_CLS,
   DEFAULT_FROZEN_COUNTS,
   DEFAULT_STYLE,
   Node,
@@ -395,7 +396,7 @@ function MainLayout() {
       >
         <div
           className={cls('playground', {
-            'antv-s2-dark-theme': themeCfg.name === 'dark',
+            [DARK_THEME_CLS]: themeCfg.name === 'dark',
           })}
         >
           <LinkGroup />

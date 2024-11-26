@@ -29,6 +29,7 @@ import {
   getTooltipOptions,
   setTooltipContainerStyle,
 } from '@/utils/tooltip';
+import { DARK_THEME_CLS } from '@antv/s2';
 import { omit } from 'lodash';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import {
@@ -1219,6 +1220,16 @@ describe('Tooltip Utils Tests', () => {
     expect(container.className).toEqual(
       `visible ${TOOLTIP_CONTAINER_HIDE_CLS}`,
     );
+  });
+
+  test('should set container dark style', () => {
+    const container = document.createElement('div');
+
+    setTooltipContainerStyle(container, {
+      dark: true,
+    });
+
+    expect(container.classList.contains(DARK_THEME_CLS)).toBeTruthy();
   });
 
   test('should get custom fields summaries of custom tree', () => {
