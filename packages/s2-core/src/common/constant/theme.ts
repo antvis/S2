@@ -23,10 +23,7 @@ export const FONT_FAMILY =
 
 export const INTERVAL_BAR_HEIGHT = 12;
 
-/**
- * 注入主题 css 变量的节点名
- */
-export const STYLE_ELEMENT_ID = `${S2_PREFIX_CLS}-core-vars`;
+export const DARK_THEME_CLS = `${S2_PREFIX_CLS}-dark-theme`;
 
 /**
  * 兼容 G2 主题: S2 和 G2 的主题名转换

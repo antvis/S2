@@ -22,6 +22,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
+import '@antv/s2/src/styles/theme/dark.less';
 import { useUpdateEffect } from 'ahooks';
 import {
   Button,
@@ -40,6 +41,7 @@ import {
   Tooltip,
   type RadioChangeEvent,
 } from 'antd';
+import cls from 'classnames';
 import { debounce, isEmpty, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
@@ -391,7 +393,11 @@ function MainLayout() {
           logHandler,
         }}
       >
-        <div className="playground">
+        <div
+          className={cls('playground', {
+            'antv-s2-dark-theme': themeCfg.name === 'dark',
+          })}
+        >
           <LinkGroup />
           <Tabs
             defaultActiveKey={localStorage.getItem('debugTabKey') || 'basic'}

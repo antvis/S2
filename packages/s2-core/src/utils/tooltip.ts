@@ -29,6 +29,7 @@ import {
 } from 'lodash';
 import {
   CellType,
+  DARK_THEME_CLS,
   EXTRA_FIELD,
   PRECISION,
   VALUE_FIELD,
@@ -153,13 +154,14 @@ export const setTooltipContainerStyle = (
     visible?: boolean;
     style?: CSS.Properties;
     className?: string[];
+    dark?: boolean;
   },
 ) => {
   if (!container) {
     return;
   }
 
-  const { style, className = [], visible } = options;
+  const { style, className = [], visible, dark } = options;
 
   if (style) {
     Object.assign(container.style, style);
@@ -173,6 +175,7 @@ export const setTooltipContainerStyle = (
 
   container.classList.toggle(TOOLTIP_CONTAINER_SHOW_CLS, visible);
   container.classList.toggle(TOOLTIP_CONTAINER_HIDE_CLS, !visible);
+  container.classList.toggle(DARK_THEME_CLS, dark);
 };
 
 export const getListItem = (

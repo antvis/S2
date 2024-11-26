@@ -11,7 +11,6 @@ import {
   getAutoAdjustPosition,
   setTooltipContainerStyle,
 } from '../../utils/tooltip';
-
 import './index.less';
 
 /**
@@ -73,6 +72,7 @@ export class BaseTooltip<
         pointerEvents: 'all',
       },
       visible: true,
+      dark: this.spreadsheet.getThemeName() === 'dark',
     });
   }
 
