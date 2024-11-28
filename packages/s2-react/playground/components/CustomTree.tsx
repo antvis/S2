@@ -28,6 +28,7 @@ export const CustomTreeOptions: SheetComponentOptions = {
   width: 600,
   height: 480,
   hierarchyType: 'tree',
+  treeLineShow: true,
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,
