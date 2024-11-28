@@ -445,7 +445,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
     const viewport = this.handleViewport();
-    const textHeight = textStyle.fontSize || this.getActualTextHeight();
+    const textHeight = this.getActualTextHeight();
 
     const { textStart } = adjustTextIconPositionWhileScrolling(
       viewport,
