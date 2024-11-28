@@ -11,9 +11,9 @@ import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import { isEmpty } from 'lodash';
 import type { Key } from 'ant-design-vue/lib/_util/type';
 import type { ChangeEvent } from 'ant-design-vue/lib/_util/EventInterface';
-import LocationIcon from '../../svg/location-icon.svg?component';
-import TextIcon from '../../svg/text-icon.svg?component';
-import CalendarIcon from '../../svg/calendar-icon.svg?component';
+import LocationIcon from '../../icons/location-icon.vue';
+import TextIcon from '../../icons/text-icon.vue';
+import CalendarIcon from '../../icons/calendar-icon.vue';
 import {
   initDrillDownEmits,
   initDrillDownProps,
@@ -136,9 +136,9 @@ export default defineComponent({
         :class="`${DRILL_DOWN_PRE_CLASS}-menu-item`"
       >
         <template #icon>
-          <text-icon v-if="option.type === 'text'" />
-          <calendar-icon v-if="option.type === 'date'" />
-          <location-icon v-if="option.type === 'location'" />
+          <TextIcon v-if="option.type === 'text'" />
+          <CalendarIcon v-if="option.type === 'date'" />
+          <LocationIcon v-if="option.type === 'location'" />
         </template>
         {{ option?.name }}
       </MenuItem>

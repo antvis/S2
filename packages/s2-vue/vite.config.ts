@@ -4,7 +4,6 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import path from 'path';
 import { UserConfig, defineConfig } from 'vite';
-import svgLoader from 'vite-svg-loader';
 import { getBaseConfig } from '../../build.config.base.mjs';
 
 const { getViteConfig, isDevMode } = getBaseConfig();
@@ -19,12 +18,6 @@ export default defineConfig({
     port: 5050,
     name: 's2-vue',
     libName: 'S2Vue',
-    plugins: [
-      vue(),
-      svgLoader({
-        defaultImport: 'component',
-      }),
-      vueJsx(),
-    ] as UserConfig['plugins'],
+    plugins: [vue(), vueJsx()] as UserConfig['plugins'],
   }),
 } as UserConfig);
