@@ -444,8 +444,8 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
-
     const viewport = this.handleViewport();
+    const textHeight = textStyle.fontSize || this.getActualTextHeight();
 
     const { textStart } = adjustTextIconPositionWhileScrolling(
       viewport,
@@ -456,7 +456,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       {
         align: normalizeTextAlign(textStyle.textBaseline!),
         size: {
-          textSize: textStyle.fontSize!,
+          textSize: textHeight,
         },
         padding: {
           start: cell.padding.top,
@@ -476,7 +476,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const iconY = getVerticalIconPosition(
       iconStyle?.size!,
       textStart,
-      textStyle.fontSize!,
+      textHeight,
       textStyle.textBaseline!,
     );
 
