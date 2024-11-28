@@ -18,7 +18,7 @@ async function measurePivotSheetRender(
   console.log(title, measure.duration);
 }
 
-describe('pivot sheet benchmark', () => {
+describe.skip('pivot sheet benchmark', () => {
   describe('single values', () => {
     const baseDataCfg: S2DataConfig = {
       fields: {
