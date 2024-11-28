@@ -364,7 +364,7 @@ const s2Options = {
 
 2. Row Header Width Configuration Changes in Tree Structure
 
-Deprecated `treeRowsWidth`, replaced with `rowCell.width`.
+`treeRowsWidth`, replaced with `rowCell.treeWidth`.
 
 ```diff
 const s2Options = {
@@ -372,13 +372,13 @@ const s2Options = {
   style: {
 -   treeRowsWidth: 200
 +   rowCell: {
-+     width: 200,
++     treeWidth: 200,
 +   }
   },
 }
 ```
 
-3. `customTree` and `customTreeItems` have been deprecated.
+1. `customTree` and `customTreeItems` have been deprecated.
 
 The original way of customizing tree structures has been deprecated. Now custom structures support both `flat` and `tree` modes.
 

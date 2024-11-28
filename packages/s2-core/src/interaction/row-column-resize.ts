@@ -351,7 +351,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
             rowCell: {
-              width: displayWidth,
+              treeWidth: displayWidth,
             },
           },
         };
