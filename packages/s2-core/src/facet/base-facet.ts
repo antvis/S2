@@ -236,6 +236,10 @@ export abstract class BaseFacet {
     this.init();
   }
 
+  protected shouldRender() {
+    return !areAllFieldsEmpty(this.spreadsheet.dataCfg.fields);
+  }
+
   public getLayoutResult = (): LayoutResult => {
     return {
       ...this.layoutResult,
@@ -609,11 +613,8 @@ export abstract class BaseFacet {
     this.emitPaginationEvent();
   };
 
-  /**
-   * Start render, call from outside
-   */
   public render() {
-    if (areAllFieldsEmpty(this.spreadsheet.dataCfg.fields)) {
+    if (!this.shouldRender()) {
       return;
     }
 

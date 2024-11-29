@@ -83,6 +83,10 @@ export class TableFacet extends FrozenFacet {
   }
 
   public render() {
+    if (!this.shouldRender()) {
+      return;
+    }
+
     super.render();
     this.renderEmptyPlaceholder();
   }
@@ -102,7 +106,9 @@ export class TableFacet extends FrozenFacet {
   }
 
   private renderEmptyPlaceholder() {
-    if (!this.spreadsheet.dataSet?.isEmpty()) {
+    const { maxY, viewportWidth, height } = this.panelBBox || {};
+
+    if (!this.spreadsheet.dataSet?.isEmpty() || viewportWidth <= 0) {
       return;
     }
 
@@ -113,7 +119,6 @@ export class TableFacet extends FrozenFacet {
       horizontalBorderColor,
       horizontalBorderColorOpacity,
     } = this.spreadsheet.theme.dataCell.cell!;
-    const { maxY, viewportWidth, height } = this.panelBBox;
     const iconX = viewportWidth / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
     const text = empty?.description ?? i18n('暂无数据');
