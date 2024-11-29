@@ -69,6 +69,11 @@ describe('Interaction Corner Cell Click Tests', () => {
         [],
         {
           data: { summaries: [{ name: '', selectedData: [], value: null }] },
+          operator: {
+            menu: {
+              items: [],
+            },
+          },
         },
       );
       expect(s2.interaction.getState()).toEqual({
