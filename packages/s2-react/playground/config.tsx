@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 import { PlusCircleFilled } from '@ant-design/icons';
 import {
+  DataCell,
   EMPTY_PLACEHOLDER,
   customMerge,
   getBaseSheetComponentOptions,
@@ -309,7 +310,9 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
           key: 'custom-c',
           label: '操作3',
           icon: 'EyeOutlined',
-          visible: false,
+          visible: (cell) => {
+            return cell instanceof DataCell;
+          },
           onClick: (info, cell) => {
             console.log('操作3点击:', info, cell);
           },

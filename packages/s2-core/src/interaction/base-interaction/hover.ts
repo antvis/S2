@@ -128,6 +128,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       hideSummary: true,
       onlyShowCellText: true,
       enableFormat: true,
+      operator: this.getTooltipOperator(event),
     };
     const data = this.getCellData(meta, options.onlyShowCellText);
 

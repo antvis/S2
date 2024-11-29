@@ -2,9 +2,14 @@ import type {
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
 } from '@antv/g';
-import { type CellAppendInfo } from '../common';
+import {
+  type CellAppendInfo,
+  type TooltipOperatorMenuItems,
+  type TooltipOperatorOptions,
+} from '../common';
 import type { SpreadSheet } from '../sheet-type';
 import { getAppendInfo } from '../utils/interaction/common';
+import { getTooltipOptions, getTooltipVisibleOperator } from '../utils/tooltip';
 
 export interface BaseEventImplement {
   bindEvents: () => void;
@@ -29,6 +34,19 @@ export abstract class BaseEvent {
 
     return cellAppendInfo?.isLinkFieldText;
   };
+
+  protected getTooltipOperator(
+    event: CanvasEvent,
+    defaultMenus: TooltipOperatorMenuItems = [],
+  ): TooltipOperatorOptions {
+    const cell = this.spreadsheet.getCell(event.target)!;
+    const { operation } = getTooltipOptions(this.spreadsheet, event)!;
+
+    return getTooltipVisibleOperator(operation!, {
+      defaultMenus,
+      cell,
+    });
+  }
 
   public reset() {}
 
