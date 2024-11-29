@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import type { UserConfig } from 'vite';
 import { defineConfig } from 'vite';
-import svgr from 'vite-plugin-svgr';
 import { getBaseConfig } from '../../build.config.base.mjs';
 
 const { getViteConfig, isDevMode } = getBaseConfig({
@@ -27,7 +26,6 @@ export default defineConfig({
       react({
         jsxRuntime: 'classic',
       }),
-      svgr(),
     ] as UserConfig['plugins'],
   }) as UserConfig),
 });

@@ -522,14 +522,19 @@ const partDrillDown: PartDrillDown = {
   drillConfig: {
     dataSet: [
       {
+        name: '客户性别',
+        value: 'sex2',
+        type: 'location',
+      },
+      {
         name: '销售渠道',
         value: 'channel',
         type: 'text',
       },
       {
-        name: '客户性别',
-        value: 'sex',
-        type: 'text',
+        name: '客户性别111',
+        value: 'sex1',
+        type: 'date',
       },
     ],
   },
