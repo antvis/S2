@@ -83,6 +83,10 @@ export class TableFacet extends FrozenFacet {
   }
 
   public render() {
+    if (!this.shouldRender()) {
+      return;
+    }
+
     super.render();
     this.renderEmptyPlaceholder();
   }

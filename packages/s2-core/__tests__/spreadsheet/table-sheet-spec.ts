@@ -429,5 +429,30 @@ describe('TableSheet normal spec', () => {
 
       await expectEmptyPlaceholder(s2);
     });
+
+    test('should not render empty placeholder if all fields is empty', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, fields: {}, data: [] },
+        {
+          ...options,
+          frozen: {},
+          seriesNumber: {
+            enable: false,
+          },
+        },
+      );
+
+      await s2.render();
+      const [rect, icon, text] = (s2.facet as TableFacet).emptyPlaceholderGroup
+        .children;
+
+      expect(
+        (s2.facet as TableFacet).emptyPlaceholderGroup.children,
+      ).toHaveLength(0);
+      expect(rect).not.toBeDefined();
+      expect(icon).not.toBeDefined();
+      expect(text).not.toBeDefined();
+    });
   });
 });
