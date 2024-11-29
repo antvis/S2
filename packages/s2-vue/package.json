@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-vue",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "description": "use S2 with vue",
   "keywords": [
