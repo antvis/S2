@@ -106,9 +106,7 @@ export class TableFacet extends FrozenFacet {
   }
 
   private renderEmptyPlaceholder() {
-    const { maxY, viewportWidth, height } = this.panelBBox || {};
-
-    if (!this.spreadsheet.dataSet?.isEmpty() || viewportWidth <= 0) {
+    if (!this.spreadsheet.dataSet?.isEmpty()) {
       return;
     }
 
@@ -119,6 +117,7 @@ export class TableFacet extends FrozenFacet {
       horizontalBorderColor,
       horizontalBorderColorOpacity,
     } = this.spreadsheet.theme.dataCell.cell!;
+    const { maxY, viewportWidth, height } = this.panelBBox;
     const iconX = viewportWidth / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
     const text = empty?.description ?? i18n('暂无数据');
