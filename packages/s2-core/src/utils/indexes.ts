@@ -106,7 +106,7 @@ export const diffPanelIndexes = (
   const allAdd: Diff['add'] = [];
   const allRemove: Diff['remove'] = [];
 
-  Object.keys(targetIndexes).forEach((key) => {
+  Object.keys(targetIndexes || {}).forEach((key) => {
     const { add, remove } = diffIndexes(
       sourceIndexes?.[key as keyof PanelIndexes] || ([] as unknown as Indexes),
       targetIndexes[key as keyof PanelIndexes]!,

@@ -19,9 +19,8 @@ fetch(
         rowHeader: 0.5,
       },
       style: {
-        // 和平铺模式配置一致
         rowCell: {
-          width: 200,
+          treeWidth: 200,
         },
       },
     };

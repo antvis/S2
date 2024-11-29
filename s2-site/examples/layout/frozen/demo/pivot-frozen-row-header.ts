@@ -20,7 +20,7 @@ fetch(
       },
       style: {
         rowCell: {
-          width: 400,
+          treeWidth: 400,
         },
         colCell: {
           width: 200,

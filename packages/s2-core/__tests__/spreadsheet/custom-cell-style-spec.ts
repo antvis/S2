@@ -91,7 +91,21 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        await s2.render();
+        await s2.render(false);
+
+        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
+      });
+
+      test('should get custom tree row cell style', async () => {
+        s2.setOptions({
+          hierarchyType: 'tree',
+          style: {
+            rowCell: {
+              treeWidth: 150,
+            },
+          },
+        });
+        await s2.render(false);
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
@@ -113,7 +127,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        await s2.render();
+        await s2.render(false);
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
@@ -131,7 +145,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        await s2.render();
+        await s2.render(false);
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
@@ -151,7 +165,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        await s2.render();
+        await s2.render(false);
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
@@ -200,7 +214,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        await s2.render();
+        await s2.render(false);
 
         const rootRowNodes = s2.facet
           .getRowNodes()

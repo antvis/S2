@@ -710,7 +710,7 @@ export abstract class BaseFacet {
   }
 
   public setScrollOffset = (scrollOffset: ScrollOffset) => {
-    Object.keys(scrollOffset).forEach((key) => {
+    Object.keys(scrollOffset || {}).forEach((key) => {
       const offset = get(scrollOffset, key);
 
       if (!isUndefined(offset)) {

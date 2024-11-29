@@ -47,7 +47,8 @@ order: 3
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | ---  |
-| width | 行单元格宽度，可根据当前行头节点动态设置，树状结构同样适用 | `number \| (rowNode: Node) => number` | 平铺：`96`, 树状：`120` |  |
+| width | 行单元格宽度，可根据当前行头节点动态设置，树状结构同样适用 | `number \| (rowNode: Node) => number` |  |  |
+| treeWidth | 树状模式下行单元格宽度，优先级高于 `width`, 值为空时则默认使用 `width` | `number` |  |  |
 | height | 行单元格高度，可根据当前行头节点动态设置 | `number \| (rowNode: Node) => number` | 30 |  |
 | collapseFields | 树状模式下行头自定义折叠节点。<br> 支持 id (`'root[&] 行头维度值'`) 和 维度 field (`'city'`) 两种格式，优先级大于 `collapseAll` 和 `expandDepth`, 设置为 `null` 时优先级最低。 [查看 demo](/examples/basic/pivot#tree) | `Record<string, boolean>` |  | |
 | collapseAll | 在树状结构模式下行头是否默认收起全部。 | `boolean` |   `false` | |

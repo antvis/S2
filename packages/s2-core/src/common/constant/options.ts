@@ -28,7 +28,7 @@ export enum LayoutWidthType {
 
 export const SPLIT_LINE_WIDTH = 1;
 
-export const DEFAULT_TREE_ROW_CELL_WIDTH = 120;
+export const DEFAULT_ROW_CELL_TREE_WIDTH = 120;
 
 export const DEFAULT_CELL_TEXT_WORD_WRAP_STYLE: CellTextWordWrapStyle = {
   wordWrap: true,
