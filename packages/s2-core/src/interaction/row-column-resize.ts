@@ -445,7 +445,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       Math.floor((displayHeight - padding) / lineHeight),
     );
 
-    const maxLinesByField = Object.keys(heightByField).reduce<
+    const maxLinesByField = Object.keys(heightByField || {}).reduce<
       Record<string, number>
     >((result, field) => {
       result![field] = maxLines;

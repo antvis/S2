@@ -18,7 +18,7 @@ async function measureTableSheetRender(
   console.log(title, measure.duration);
 }
 
-describe.skip('table sheet benchmark', () => {
+describe('table sheet benchmark', () => {
   const baseDataCfg: S2DataConfig = {
     fields: {
       columns: ['province', 'city', 'type', 'subType', 'number'],

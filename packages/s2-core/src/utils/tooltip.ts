@@ -457,7 +457,7 @@ export const getCustomFieldsSummaries = (
 ): TooltipSummaryOptions[] => {
   const customFieldGroup = groupBy(summaries, 'name');
 
-  return Object.keys(customFieldGroup).map((name) => {
+  return Object.keys(customFieldGroup || {}).map((name) => {
     const cellsData = customFieldGroup[name];
     const selectedData = flatMap(
       cellsData,
