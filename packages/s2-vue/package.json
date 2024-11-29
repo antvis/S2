@@ -64,7 +64,6 @@
     "@vue/shared": "^3.3.4",
     "@vue/tsconfig": "^0.4.0",
     "ant-design-vue": "^3.2.20",
-    "vite-svg-loader": "^3.6.0",
     "vue": "^3.3.4",
     "vue-tsc": "^2.1.6"
   },
