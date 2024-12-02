@@ -155,28 +155,48 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const iconX = x + contentIndent;
     const iconY = this.getIconPosition().y;
+    let offsetXY = 0;
+    let offsetWH = 0;
+
+    // 移动端的时候，将icon变化，从而增加触发交互的面积
+    if (isMobile()) {
+      offsetXY = size / 4;
+      offsetWH = size / 2!;
+    }
 
     this.treeIcon = renderTreeIcon({
       group: this,
       iconCfg: {
-        x: iconX,
-        y: iconY,
-        width: size!,
-        height: size!,
+        x: iconX - offsetXY,
+        y: iconY - offsetXY,
+        width: size + offsetWH,
+        height: size + offsetWH,
         fill,
       },
       isCollapsed,
       onClick: () => {
         this.onTreeIconClick();
       },
+      onTouchEnd: () => {
+        /**
+         * 移动端时，绑定展开、收起事件
+         */
+        this.emitCollapseEvent();
+      },
     });
 
+    /**
+     * 这里不能将整个单元格作为热区
+     * 否则会导致emitCollapseEvent回调执行两次，
+     * 还会影响到绑定到整个单元格的其他事件，比如ToolTop.show
+     * 树形结构的展开、收起操作，在移动端下失效
+     */
     // 移动端, 点击热区为整个单元格
-    if (isMobile()) {
-      this.addEventListener('click', () => {
-        this.emitCollapseEvent();
-      });
-    }
+    // if (isMobile()) {
+    //   this.addEventListener('click', () => {
+    //     this.emitCollapseEvent();
+    //   });
+    // }
   }
 
   protected drawTreeLeafNodeAlignDot() {
