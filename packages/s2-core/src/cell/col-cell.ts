@@ -583,12 +583,19 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
   }
 
+  /**
+   * 以下场景根据当前高度动态计算 maxLines, 保证文本展示合理性
+   * 1.手动拖拽 2.预设高度
+   */
   protected getResizedTextMaxLines() {
     const { colCell } = this.spreadsheet.options.style!;
 
     return (
       colCell?.maxLinesByField?.[this.meta.id] ??
-      colCell?.maxLinesByField?.[this.meta.field]
+      colCell?.maxLinesByField?.[this.meta.field] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: this.meta.extra?.isCustomHeight,
+      })
     );
   }
 }
