@@ -24,6 +24,7 @@
   "files": [],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "postinstall": "pnpm core:build-esm",
     "bootstrap": "pnpm install",
     "bootstrap:ci": "pnpm bootstrap --frozen-lockfile",
     "prepare": "husky install",
