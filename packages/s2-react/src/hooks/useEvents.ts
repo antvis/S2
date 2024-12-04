@@ -17,7 +17,7 @@ export const useCellEvent = (
 ) => {
   React.useLayoutEffect(() => {
     const handlerFn = (event: GEvent) => {
-      handler?.(getBaseCellData(event));
+      handler?.(getBaseCellData(event, s2));
     };
 
     s2?.on(eventName, handlerFn);
