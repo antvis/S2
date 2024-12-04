@@ -80,15 +80,15 @@ const s2Options = {
 
 ```json
 {
-  province: '浙江\n浙江',
-  city: '杭州\n杭州\n杭州',
-  type: '纸张\n纸张\n纸张',
-  price: 2,
-  cost: 20,
+  "province": "浙江\n浙江",
+  "city": "杭州\n杭州\n杭州",
+  "type": "纸张\n纸张\n纸张",
+  "price": 2,
+  "cost": 20,
 }
 ```
 
-以上诉数据为例，可以根据文本中换行符的数量，指定 `maxLines` 的值.
+以上诉数据为例，可以根据文本中换行符的数量，指定 `maxLines` 的值。
 如果文本是动态的，则可以指定为一个**较大**的数值，如 `maxLines: 99` 或者 `maxLines: Infinity`, 从而实现高度自适应的效果。
 
 ```ts
@@ -109,8 +109,8 @@ const s2Options = {
 
 开启文本自动换行后，默认会根据**文本实际的高度**调整对应单元格的高度。
 
-1. 如果配置了 [自定义单元格宽高](/manual/advanced/custom/cell-size), 则高度自适应失效，以自定义的宽高为准。
-2. 默认根据 `maxLines` 来计算单元格高度，当**手动拖拽调整高度**后, 为保证展示合理性，会根据当前文本行高计算出能展示的最大行数，**覆盖**默认的 `maxLines` 配置。
+1. 如果配置了 [自定义单元格高度](/manual/advanced/custom/cell-size), 则高度自适应失效，以自定义的宽高为准。
+2. 默认根据 `maxLines` 来计算单元格高度，当 [**手动拖拽调整高度**](/manual/advanced/interaction/resize) 或存在 [**自定义单元格高度**](/manual/advanced/custom/cell-size) 时，为保证展示合理性，会根据当前文本行高计算出能展示的最大行数，**覆盖**默认的 `maxLines` 配置。
 
 :::
 

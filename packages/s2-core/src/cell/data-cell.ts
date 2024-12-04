@@ -1,6 +1,7 @@
 import type { PointLike } from '@antv/g';
 import { find, first, get, isEmpty, isEqual, isObject, merge } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
+import { DEFAULT_STYLE } from '../common';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import {
   CellType,
@@ -515,7 +516,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     // 数值和行高保持一致, 同时兼容明细表
     return (
       rowCell?.maxLinesByField?.[this.meta.id] ??
-      rowCell?.maxLinesByField?.[this.meta.rowId!]
+      rowCell?.maxLinesByField?.[this.meta.rowId!] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: this.meta.height !== DEFAULT_STYLE.dataCell?.height,
+      })
     );
   }
 }
