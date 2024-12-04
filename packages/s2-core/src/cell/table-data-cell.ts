@@ -8,6 +8,7 @@ import {
   ResizeDirectionType,
 } from '../common/constant';
 import { CustomRect, type SimpleBBox } from '../engine';
+import type { TableFacet } from '../facet';
 import type { FrozenFacet } from '../facet/frozen-facet';
 import { isFrozenRow, isFrozenTrailingRow } from '../facet/utils';
 import {
@@ -154,5 +155,18 @@ export class TableDataCell extends DataCell {
 
   protected isDisableHover(cellMeta: CellMeta) {
     return cellMeta?.type === CellType.COL_CELL;
+  }
+
+  protected getResizedTextMaxLines() {
+    const { rowCell } = this.spreadsheet.options.style!;
+
+    return (
+      rowCell?.maxLinesByField?.[this.meta.id] ??
+      rowCell?.maxLinesByField?.[this.meta.rowId!] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: (this.spreadsheet.facet as TableFacet)
+          ?.customRowHeightStatusMap?.[this.meta.rowIndex],
+      })
+    );
   }
 }
