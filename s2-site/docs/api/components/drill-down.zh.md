@@ -108,6 +108,7 @@ const s2Options = {
 | setDrillFields | 内部设置当前下钻维度的回调                         | `Function` |  |  |  |
 | extra | 自定义插入的节点，插入在搜索框和下钻菜单中间 | `ReactNode` |  |  | 仅 `React` 组件支持此属性 |
 | drillFields | 允许下钻的维度      | `string[]` |  |  | 仅 `React` 组件支持此属性  |
+| renderMenu | 自定义下钻组件      | `(props: MenuProps) => ReactNode` |  |  | 仅 `React` 组件支持此属性  |
 
 ##### DataSet
 

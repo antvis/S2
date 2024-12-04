@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line prettier/prettier
-import { BaseTooltip, customMerge, isMobile, SpreadSheet } from '@antv/s2';
+import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
 import React from 'react';
 import {
   forceClearContent,
@@ -32,8 +32,7 @@ export class CustomTooltip extends BaseTooltip<
 
   renderContent() {
     // 配置级 s2.options.tooltip.content = ''
-    const { content: contentFromOptions, operation } =
-      this.spreadsheet.options.tooltip!;
+    const { content: contentFromOptions } = this.spreadsheet.options.tooltip!;
     // 方法级 s2.showTooltip({ content: '' })
     const showOptions = this.options;
     const cell = this.spreadsheet.getCell(showOptions?.event?.target);
@@ -41,18 +40,11 @@ export class CustomTooltip extends BaseTooltip<
     const content = (showOptions?.content ??
       contentFromOptions) as React.ReactNode;
 
-    const tooltipProps = customMerge<TooltipRenderProps>(
-      {
-        options: {
-          operator: operation,
-        },
-      },
-      {
-        ...showOptions,
-        cell,
-        content,
-      },
-    );
+    const tooltipProps: TooltipRenderProps = {
+      ...showOptions,
+      cell,
+      content,
+    };
 
     if (showOptions?.options?.forceRender) {
       this.forceClearContent();
