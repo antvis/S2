@@ -251,11 +251,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       return;
     }
 
-    const colNodes = spreadsheet.facet.getColNodes();
+    const colNodes = spreadsheet.facet?.getColNodes() || [];
 
     nodes.forEach((node) => {
       // 自定义列头高度时, 需要同时标记下对应的角头 (兼容自定义列头场景)
-      const currentColNode = colNodes.find(
+      const currentColNode = colNodes?.find(
         (colNode) => node?.y === colNode?.y && node?.height === colNode?.height,
       );
 

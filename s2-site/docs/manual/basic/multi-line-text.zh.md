@@ -80,11 +80,11 @@ const s2Options = {
 
 ```json
 {
-  province: '浙江、n 浙江',
-  city: '杭州、n 杭州、n 杭州',
-  type: '纸张、n 纸张、n 纸张',
-  price: 2,
-  cost: 20,
+  "province": "浙江\n浙江",
+  "city": "杭州\n杭州\n杭州",
+  "type": "纸张\n纸张\n纸张",
+  "price": 2,
+  "cost": 20,
 }
 ```
 
