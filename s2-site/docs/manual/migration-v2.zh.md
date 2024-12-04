@@ -364,7 +364,7 @@ const s2Options = {
 
 2. 树状结构下行头宽度配置调整
 
-废弃 `treeRowsWidth`, 使用 `rowCell.width` 代替。
+原 `treeRowsWidth` 重命名为 `rowCell.treeWidth`。
 
 ```diff
 const s2Options = {
@@ -372,13 +372,13 @@ const s2Options = {
   style: {
 -   treeRowsWidth: 200
 +   rowCell: {
-+     width: 200,
++     treeWidth: 200,
 +   }
   },
 }
 ```
 
-3. `customTree` 和 `customTreeItems` 已废弃。
+1. `customTree` 和 `customTreeItems` 已废弃。
 
 原本自定义树状结构的方式已废弃，现在自定义结构同时支持 `平铺` 和 `树状` 两种模式。
 

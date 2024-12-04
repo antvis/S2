@@ -17,7 +17,7 @@ import {
 } from 'lodash';
 import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
-  DEFAULT_TREE_ROW_CELL_WIDTH,
+  DEFAULT_ROW_CELL_TREE_WIDTH,
   LAYOUT_SAMPLE_COUNT,
   type IconTheme,
   type MultiData,
@@ -804,6 +804,10 @@ export class PivotFacet extends FrozenFacet {
     const { rowCell } = this.spreadsheet.options.style!;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
+    if (isNumber(rowCell?.treeWidth)) {
+      return rowCell.treeWidth;
+    }
+
     const customRowCellWidth = this.getCellCustomSize(null, rowCell?.width!);
 
     if (isNumber(customRowCellWidth)) {
@@ -829,11 +833,11 @@ export class PivotFacet extends FrozenFacet {
       this.rowCellTheme.padding?.right;
 
     const width = Math.max(
-      customRowCellWidth ?? DEFAULT_TREE_ROW_CELL_WIDTH,
+      customRowCellWidth ?? DEFAULT_ROW_CELL_TREE_WIDTH,
       maxLabelWidth,
     );
 
-    return Number.isNaN(width) ? DEFAULT_TREE_ROW_CELL_WIDTH : width;
+    return Number.isNaN(width) ? DEFAULT_ROW_CELL_TREE_WIDTH : width;
   }
 
   /**

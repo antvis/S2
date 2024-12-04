@@ -8,7 +8,6 @@ import {
 } from '../../../common/constant';
 import type {
   TooltipData,
-  TooltipOperatorOptions,
   ViewMeta,
   ViewMetaData,
 } from '../../../common/interface';
@@ -16,10 +15,6 @@ import {
   afterSelectDataCells,
   getCellMeta,
 } from '../../../utils/interaction/select-event';
-import {
-  getTooltipOptions,
-  getTooltipVisibleOperator,
-} from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
@@ -91,16 +86,6 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         meta,
       );
       this.spreadsheet.emit(S2Event.DATA_CELL_CLICK_TRIGGERED_PRIVATE, cell);
-    });
-  }
-
-  private getTooltipOperator(event: CanvasEvent): TooltipOperatorOptions {
-    const cell = this.spreadsheet.getCell(event.target)!;
-    const { operation } = getTooltipOptions(this.spreadsheet, event)!;
-
-    return getTooltipVisibleOperator(operation!, {
-      defaultMenus: [],
-      cell,
     });
   }
 
