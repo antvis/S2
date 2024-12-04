@@ -1,3 +1,10 @@
+# [@antv/s2-react-components-v2.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-components-v2.1.0...@antv/s2-react-components-v2.1.1) (2024-12-04)
+
+
+### Bug Fixes
+
+* 修复下钻组件展示错误操作 icon & 兼容低版本 menu 写法 ([#3011](https://github.com/antvis/S2/issues/3011)) ([7d171f0](https://github.com/antvis/S2/commit/7d171f037e7f52cc49ad02ddf56598aa477bf043))
+
 # [@antv/s2-react-components-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-components-v2.0.1...@antv/s2-react-components-v2.1.0) (2024-11-29)
 
 
