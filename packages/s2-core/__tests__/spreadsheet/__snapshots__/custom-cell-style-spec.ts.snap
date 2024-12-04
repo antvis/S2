@@ -235,6 +235,26 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom tree row cell style 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]浙江",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 150,
+  },
+]
+`;
+
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests should render default cell style 1`] = `
 Array [
   Object {

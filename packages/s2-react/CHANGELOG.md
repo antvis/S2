@@ -1,3 +1,15 @@
+# [@antv/s2-react-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.2...@antv/s2-react-v2.1.0) (2024-11-29)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复操作按钮的 visible 对角头和文本溢出场景不生效 ([#3001](https://github.com/antvis/S2/issues/3001)) ([8f56023](https://github.com/antvis/S2/commit/8f56023b4f29584bc619b00bc5a03a0c3bf30494))
+
+
+### Features
+
+* 增加树状模式下行头宽度配置 rowCell.treeWidth ([#2998](https://github.com/antvis/S2/issues/2998)) ([b8fdd2a](https://github.com/antvis/S2/commit/b8fdd2a700a9a3bdc5d565c2bf89a85427c66a88))
+
 # [@antv/s2-react-v2.0.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.1...@antv/s2-react-v2.0.2) (2024-11-26)
 
 # [@antv/s2-react-v2.0.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0...@antv/s2-react-v2.0.1) (2024-11-21)

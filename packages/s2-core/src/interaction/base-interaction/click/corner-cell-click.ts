@@ -154,8 +154,10 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
   private showTooltip(event: CanvasEvent) {
     // 角头的选中是维值, 不需要计算数值总和, 显示 [`xx 项已选中`] 即可
     const selectedData = this.spreadsheet.interaction.getActiveCells();
+    const operator = this.getTooltipOperator(event);
 
     this.spreadsheet.showTooltipWithInfo(event, [], {
+      operator,
       data: {
         summaries: [
           {
