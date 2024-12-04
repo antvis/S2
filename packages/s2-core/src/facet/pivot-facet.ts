@@ -15,7 +15,7 @@ import {
   size,
   sumBy,
 } from 'lodash';
-import { ColCell, RowCell, SeriesNumberCell } from '../cell';
+import { ColCell, CornerCell, RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_ROW_CELL_TREE_WIDTH,
   LAYOUT_SAMPLE_COUNT,
@@ -27,6 +27,7 @@ import { EXTRA_FIELD, LayoutWidthType, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  CellCallback,
   CellCallbackParams,
   LayoutResult,
   SimpleData,
@@ -43,7 +44,7 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { floor } from '../utils/math';
 import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
-import { CornerHeader, Frame } from './header';
+import { CornerHeader, Frame, type CornerHeaderConfig } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
@@ -52,6 +53,14 @@ import { Node } from './layout/node';
 export class PivotFacet extends FrozenFacet {
   get rowCellTheme() {
     return this.spreadsheet.theme.rowCell!.cell;
+  }
+
+  protected override getCornerCellInstance(...args: CellCallbackParams) {
+    return (
+      this.spreadsheet.options.cornerCell?.(
+        ...(args as Parameters<CellCallback<CornerHeaderConfig, CornerCell>>),
+      ) || new CornerCell(...args)
+    );
   }
 
   protected override getRowCellInstance(...args: CellCallbackParams) {
@@ -199,14 +208,14 @@ export class PivotFacet extends FrozenFacet {
   }
 
   protected calculateColNodesCoordinate(layoutResult: LayoutResult) {
-    const { colLeafNodes, colsHierarchy } = layoutResult;
+    const { colLeafNodes, colsHierarchy, rowsHierarchy } = layoutResult;
 
     // 1. 计算叶子节点宽度
     this.calculateColLeafNodesWidth(layoutResult);
     // 2. 根据叶子节点宽度计算所有父级节点宽度和 x 坐标, 便于计算自动换行后节点的真实高度
     this.calculateColNodeWidthAndX(colLeafNodes);
     // 3. 计算每一层级的采样节点
-    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
+    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy, rowsHierarchy);
     // 4. 计算所有节点的高度
     this.calculateColNodesHeight(colsHierarchy);
     // 5. 如果存在自定义多级列头, 还需要更新某一层级的采样
@@ -274,11 +283,11 @@ export class PivotFacet extends FrozenFacet {
       }
 
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
-      const colNodeHeight = this.getColNodeHeight(
-        currentNode,
+      const colNodeHeight = this.getColNodeHeight({
+        colNode: currentNode,
         colsHierarchy,
-        false,
-      );
+        useCache: false,
+      });
 
       currentNode.height =
         currentNode.isGrandTotals &&
@@ -452,14 +461,16 @@ export class PivotFacet extends FrozenFacet {
       rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap;
 
     if (this.isCustomRowCellHeight(rowNode) || !isEnableHeightAdaptive) {
+      rowNode.extra.isCustomHeight = true;
+
       return defaultHeight || 0;
     }
 
-    return this.getNodeAdaptiveHeight(
-      rowNode,
-      this.textWrapTempRowCell,
+    return this.getNodeAdaptiveHeight({
+      meta: rowNode,
+      cell: this.textWrapTempRowCell,
       defaultHeight,
-    );
+    });
   }
 
   /**

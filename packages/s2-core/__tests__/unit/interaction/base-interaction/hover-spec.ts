@@ -36,11 +36,6 @@ describe('Interaction Hover Tests', () => {
       hideSummary: true,
       isTotals: undefined,
       onlyShowCellText: true,
-      operator: {
-        menu: {
-          items: [],
-        },
-      },
     },
   ];
 

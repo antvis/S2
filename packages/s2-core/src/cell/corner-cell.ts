@@ -279,7 +279,10 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
 
     return (
       colCell?.maxLinesByField?.[this.meta.id] ??
-      colCell?.maxLinesByField?.[this.meta.field]
+      colCell?.maxLinesByField?.[this.meta.field] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: this.meta.extra?.isCustomHeight,
+      })
     );
   }
 }
