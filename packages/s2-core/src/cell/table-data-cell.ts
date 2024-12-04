@@ -159,14 +159,13 @@ export class TableDataCell extends DataCell {
 
   protected getResizedTextMaxLines() {
     const { rowCell } = this.spreadsheet.options.style!;
-    const { customRowHeightStatusMap: customHeightStatusMap } = this.spreadsheet
-      .facet as TableFacet;
 
     return (
       rowCell?.maxLinesByField?.[this.meta.id] ??
       rowCell?.maxLinesByField?.[this.meta.rowId!] ??
       this.getMaxLinesByCustomHeight({
-        isCustomHeight: customHeightStatusMap?.[this.meta.rowIndex],
+        isCustomHeight: (this.spreadsheet.facet as TableFacet)
+          ?.customRowHeightStatusMap?.[this.meta.rowIndex],
       })
     );
   }

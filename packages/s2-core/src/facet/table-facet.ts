@@ -64,7 +64,7 @@ export class TableFacet extends FrozenFacet {
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
-  protected override getCornerCellInstance() {
+  protected getCornerCellInstance() {
     return null;
   }
 

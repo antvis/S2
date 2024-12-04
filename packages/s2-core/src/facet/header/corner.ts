@@ -193,7 +193,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cornerNode.width = rowNode.width;
         cornerNode.height =
           leafNode?.height! ??
-          spreadsheet.facet.getCellCustomSize(null, colCell?.height);
+          spreadsheet.facet?.getCellCustomSize(null, colCell?.height);
         cornerNode.isPivotMode = true;
         cornerNode.cornerType = CornerNodeType.Row;
         cornerNode.spreadsheet = spreadsheet;
