@@ -10,6 +10,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "province",
     "height": 30,
     "id": "province",
@@ -27,6 +30,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "city",
     "height": 30,
     "id": "city",
@@ -53,6 +59,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "series",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "",
@@ -70,6 +79,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "province",
     "height": 30,
     "id": "province",
@@ -87,6 +99,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "city",
     "height": 30,
     "id": "city",
@@ -113,6 +128,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "province/city/数值",
@@ -140,6 +158,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "series",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "",
@@ -157,6 +178,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "province/city/数值",
@@ -184,6 +208,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "province",
     "height": 30,
     "id": "province",
@@ -201,6 +228,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "city",
     "height": 30,
     "id": "city",
@@ -227,6 +257,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "series",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "",
@@ -244,6 +277,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "province",
     "height": 30,
     "id": "province",
@@ -261,6 +297,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "city",
     "height": 30,
     "id": "city",
@@ -287,6 +326,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "province/city",
@@ -314,6 +356,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "series",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "",
@@ -331,6 +376,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "province/city",
@@ -358,6 +406,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "province",
     "height": 30,
     "id": "province",
@@ -375,6 +426,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "city",
     "height": 30,
     "id": "city",
@@ -401,6 +455,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "series",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "",
@@ -418,6 +475,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "province",
     "height": 30,
     "id": "province",
@@ -435,6 +495,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "city",
     "height": 30,
     "id": "city",
@@ -461,6 +524,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "province/city",
@@ -488,6 +554,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "series",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "",
@@ -505,6 +574,9 @@ Array [
     "children": Array [],
     "colIndex": -1,
     "cornerType": "row",
+    "extra": Object {
+      "isCustomHeight": undefined,
+    },
     "field": "",
     "height": 30,
     "id": "province/city",

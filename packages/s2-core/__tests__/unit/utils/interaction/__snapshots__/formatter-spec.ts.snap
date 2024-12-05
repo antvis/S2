@@ -12,6 +12,7 @@ Object {
     "getActualText": [MockFunction],
     "getBBoxByType": [MockFunction],
     "getFieldValue": [MockFunction],
+    "getMaxLinesByCustomHeight": [MockFunction],
     "getMeta": [Function],
     "getStyle": [MockFunction],
     "getTextLineHeight": [MockFunction],
