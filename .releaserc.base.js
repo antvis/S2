@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   extends: 'semantic-release-monorepo',
   branches: [
-    'latest',
+    { name: '1.x-stable', channel: 'latest', prerelease: false },
     { name: 'beta', channel: 'beta', prerelease: true },
     { name: 'alpha', channel: 'alpha', prerelease: true },
     { name: 'next', channel: 'next', prerelease: true },
@@ -28,9 +28,9 @@ module.exports = {
     '@semantic-release/npm',
     [
       '@semantic-release/git',
-    {
+      {
         message: 'chore(release): 🤖 ${nextRelease.gitTag} [skip ci]',
-    },
+      },
     ],
     '@semantic-release/github',
     [

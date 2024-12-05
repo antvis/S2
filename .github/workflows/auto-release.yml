@@ -2,7 +2,7 @@ name: 🚀 Auto Release
 on:
   push:
     branches:
-      - latest # 正式版
+      - 1.x-stable # 1.x 稳定版
       - beta
       - alpha
       - next
