@@ -296,7 +296,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
     const resizeInfo = this.getResizeInfo();
     const { displayHeight } = this.getDisAllowResizeInfo();
-    const height = displayHeight - rowCellPadding.top - rowCellPadding.bottom;
+    const height = this.spreadsheet.isPivotMode()
+      ? displayHeight - rowCellPadding.top - rowCellPadding.bottom
+      : displayHeight;
 
     let rowCellStyle: Style;
     switch (resizeInfo.effect) {
