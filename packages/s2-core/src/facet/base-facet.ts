@@ -42,7 +42,6 @@ import {
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
-  DEFAULT_CELL_HEIGHT,
   DEFAULT_STYLE,
   EXTRA_FIELD,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -487,7 +486,7 @@ export abstract class BaseFacet {
     const defaultHeight =
       this.getColCellDraggedHeight(colNode) ??
       this.getCellCustomSize(colNode, colCell?.height) ??
-      DEFAULT_CELL_HEIGHT;
+      0;
 
     return Math.max(defaultHeight, sampleMaxHeight);
   }
