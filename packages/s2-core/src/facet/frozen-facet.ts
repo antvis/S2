@@ -675,6 +675,10 @@ export abstract class FrozenFacet extends BaseFacet {
   }
 
   public render() {
+    if (!this.shouldRender()) {
+      return;
+    }
+
     this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     super.render();
@@ -697,7 +701,7 @@ export abstract class FrozenFacet extends BaseFacet {
       cellRange,
     );
 
-    (Object.keys(result) as (keyof typeof result)[]).forEach((key) => {
+    (Object.keys(result || {}) as (keyof typeof result)[]).forEach((key) => {
       const cells = result[key];
       const group = this.frozenGroups[key];
 

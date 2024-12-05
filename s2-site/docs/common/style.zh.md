@@ -47,7 +47,8 @@ order: 3
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | ---  |
-| width | 行单元格宽度，可根据当前行头节点动态设置，树状结构同样适用 | `number \| (rowNode: Node) => number` | 平铺：`96`, 树状：`120` |  |
+| width | 行单元格宽度，可根据当前行头节点动态设置，树状结构同样适用 | `number \| (rowNode: Node) => number` |  |  |
+| treeWidth | 树状模式下行单元格宽度，优先级高于 `width`, 值为空时则默认使用 `width` | `number` |  |  |
 | height | 行单元格高度，可根据当前行头节点动态设置 | `number \| (rowNode: Node) => number` | 30 |  |
 | collapseFields | 树状模式下行头自定义折叠节点。<br> 支持 id (`'root[&] 行头维度值'`) 和 维度 field (`'city'`) 两种格式，优先级大于 `collapseAll` 和 `expandDepth`, 设置为 `null` 时优先级最低。 [查看 demo](/examples/basic/pivot#tree) | `Record<string, boolean>` |  | |
 | collapseAll | 在树状结构模式下行头是否默认收起全部。 | `boolean` |   `false` | |
@@ -75,5 +76,6 @@ order: 3
 | 参数    | 说明 | 类型   | 默认值 | 必选  |
 | ------- | ------------ | ------ | ------ | ---- |
 | wordWrap      | 文本是否自动换行（数值单元格不建议换行）。[了解更多](https://g.antv.antgroup.com/api/basic/text#wordwrap)                                                                    | `boolean`                      | `true`                                                                                                 |      |
+| maxLines      | 最大行数，文本超出后将被截断，当 [**手动拖拽调整高度**](/manual/advanced/interaction/resize) 或存在 [**自定义单元格高度**](/manual/advanced/custom/cell-size) 时，为保证展示合理性，会根据当前文本行高计算出能展示的最大行数，**覆盖**默认的 `maxLines` 配置。<br/> 该配置 支持配置为 `Infinity`（数值单元格不建议换行），需要配合 `wordWrap` 和 `textOverflow` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#maxlines)                                                                      | `number`                      | `1`                                                                                                 |      |
 | maxLines      | 最大行数，文本超出后将被截断，支持配置为 `Infinity`（数值单元格不建议换行），需要配合 `wordWrap` 和 `textOverflow` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#maxlines)                                                                      | `number`                      | `1`                                                                                                 |      |
 | textOverflow      | 自定义隐藏的文本溢出内容，例如直接裁剪、追加省略号或一个自定义字符串，需要配合 `wordWrap` 和 `maxLines` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#textoverflow)                                                                 | `string`                      | `ellipsis`                                                                                                |      |

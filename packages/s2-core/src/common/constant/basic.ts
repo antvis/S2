@@ -89,3 +89,5 @@ export const getDefaultCornerText = () => i18n('指标');
 
 // 省略号
 export const ELLIPSIS_SYMBOL = '...';
+
+export const DEFAULT_TEXT_LINE_HEIGHT = 16;

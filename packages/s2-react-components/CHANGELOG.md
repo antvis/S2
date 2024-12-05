@@ -1,3 +1,22 @@
+# [@antv/s2-react-components-v2.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-components-v2.1.0...@antv/s2-react-components-v2.1.1) (2024-12-04)
+
+
+### Bug Fixes
+
+* 修复下钻组件展示错误操作 icon & 兼容低版本 menu 写法 ([#3011](https://github.com/antvis/S2/issues/3011)) ([7d171f0](https://github.com/antvis/S2/commit/7d171f037e7f52cc49ad02ddf56598aa477bf043))
+
+# [@antv/s2-react-components-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-components-v2.0.1...@antv/s2-react-components-v2.1.0) (2024-11-29)
+
+
+### Bug Fixes
+
+* 修复 react, vue component 层的 svg 问题 close [#2990](https://github.com/antvis/S2/issues/2990) ([#2999](https://github.com/antvis/S2/issues/2999)) ([b626986](https://github.com/antvis/S2/commit/b626986827a4cd6439d06bdd2e9fb8aa6e19fdc4))
+
+
+### Features
+
+* 增加树状模式下行头宽度配置 rowCell.treeWidth ([#2998](https://github.com/antvis/S2/issues/2998)) ([b8fdd2a](https://github.com/antvis/S2/commit/b8fdd2a700a9a3bdc5d565c2bf89a85427c66a88))
+
 # [@antv/s2-react-components-v2.0.1](https://github.com/antvis/S2/compare/@antv/s2-react-components-v2.0.0...@antv/s2-react-components-v2.0.1) (2024-11-21)
 
 

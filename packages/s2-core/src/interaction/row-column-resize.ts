@@ -8,7 +8,6 @@ import {
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
   CellTextWordWrapStyle,
-  DefaultCellTheme,
   ResizeInteractionOptions,
   ResizeParams,
 } from '../common';
@@ -351,7 +350,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
             rowCell: {
-              width: displayWidth,
+              treeWidth: displayWidth,
             },
           },
         };
@@ -436,19 +435,16 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     // 如果开启了换行, 高度拖拽后动态计算 maxLines 的值, 已保证展示合理性.
     const { cell } = this.getResizeInfo();
-    const { cell: cellTheme } = cell?.getStyle() as DefaultCellTheme;
-    const padding = cellTheme!.padding!.top! + cellTheme!.padding!.bottom!;
-    const lineHeight = cell?.getTextLineHeight()!;
+    const maxLines = cell.getMaxLinesByCustomHeight({
+      targetCell: cell,
+      displayHeight,
+      isCustomHeight: true,
+    });
 
-    const maxLines = Math.max(
-      1,
-      Math.floor((displayHeight - padding) / lineHeight),
-    );
-
-    const maxLinesByField = Object.keys(heightByField).reduce<
+    const maxLinesByField = Object.keys(heightByField || {}).reduce<
       Record<string, number>
     >((result, field) => {
-      result![field] = maxLines;
+      result![field] = maxLines!;
 
       return result;
     }, {});

@@ -328,6 +328,7 @@ export const createMockCellInfo = (
     updateByState: jest.fn(),
     isTextOverflowing: jest.fn(),
     getTextLineHeight: jest.fn(() => 16),
+    getMaxLinesByCustomHeight: jest.fn(() => 1),
   } as unknown as S2CellType;
 
   const getNode = () => mockCellViewMeta as unknown as Node;

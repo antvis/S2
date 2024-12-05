@@ -26,11 +26,7 @@ import {
   isMouseEventWithMeta,
   isMultiSelectionKey,
 } from '../../../utils/interaction/select-event';
-import {
-  getTooltipOptions,
-  getTooltipVisibleOperator,
-  mergeCellInfo,
-} from '../../../utils/tooltip';
+import { getTooltipOptions, mergeCellInfo } from '../../../utils/tooltip';
 import type { ViewMeta } from './../../../common/interface/basic';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
@@ -147,7 +143,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    const operator = this.getTooltipOperator(event, operation!);
+    const operator = this.getHeaderTooltipOperator(event, operation!);
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       onlyShowCellText: true,
@@ -155,7 +151,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  protected getTooltipOperator(
+  protected getHeaderTooltipOperator(
     event: CanvasEvent,
     operation: TooltipOperation,
   ): TooltipOperatorOptions {
@@ -185,10 +181,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     const menus = enableHiddenColumnOperator ? [hiddenColumnsMenu] : [];
 
-    return getTooltipVisibleOperator(operation, {
-      defaultMenus: menus,
-      cell,
-    });
+    return this.getTooltipOperator(event, menus);
   }
 
   protected bindTableColExpand() {

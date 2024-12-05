@@ -118,11 +118,12 @@ export class Node {
   /** 是否不绘制 row cell 竖直 resize 热区 */
   public hideRowCellVerticalResize?: boolean;
 
-  public extra?: {
+  public extra: {
     description?: string;
     isCustomNode?: boolean;
+    isCustomHeight?: boolean;
     [key: string]: any;
-  };
+  } = {};
 
   [key: string]: any;
 

@@ -81,6 +81,11 @@ export interface DataCellStyle extends CellTextWordWrapStyle {
 
 export interface RowCellStyle extends BaseCellStyle, CellTextWordWrapStyle {
   /**
+   * 树状结构的行头宽度
+   */
+  treeWidth?: number;
+
+  /**
    * 是否展示树状分层下的层级占位点
    */
   showTreeLeafNodeAlignDot?: boolean;

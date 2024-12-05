@@ -22,7 +22,7 @@ pnpm build
 pnpm core:start
 
 # 调试 s2-react 和 s2-core（推荐）
-pnpm core:build-esm # 首次运行需要先执行一次
+pnpm core:build-esm # 首次运行需要先执行一次（安装依赖后自动执行）
 pnpm react:playground
 
 # 调试 s2-react-components

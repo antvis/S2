@@ -523,14 +523,14 @@ describe('Interaction Row Column Resize Tests', () => {
       info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
       style: {
         rowCell: {
-          width: 5,
+          treeWidth: 5,
         },
       },
     };
 
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
-    expect(s2.options.style!.rowCell!.width).toEqual(resizeInfo.width);
+    expect(s2.options.style!.rowCell!.treeWidth).toEqual(resizeInfo.width);
   });
 
   test('should get horizontal filed resize style', () => {

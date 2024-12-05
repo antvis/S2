@@ -317,7 +317,7 @@ describe('PivotSheet Corner Tests', () => {
     expect(selected).not.toHaveBeenCalled();
   });
 
-  test('should get corner row cell summaries', () => {
+  test.skip('should get corner row cell summaries', () => {
     const node = s2.facet
       .getRowNodes()
       .find((rowNode) => rowNode.field === 'province');

@@ -17,11 +17,12 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
     clearText = i18n('恢复默认'),
     searchText = i18n('搜索字段'),
     extra,
-    drillFields,
+    drillFields = [],
     dataSet = [],
     disabledFields,
     getDrillFields,
     setDrillFields,
+    renderMenu,
     ...restProps
   }) => {
     const DRILL_DOWN_ICON_MAP = {
@@ -82,7 +83,7 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
       setOptions(getOptions());
     }, [disabledFields]);
 
-    const menusItems: MenuProps['items'] = options.map((option) => {
+    const menuItems: MenuProps['items'] = options.map((option) => {
       return {
         key: option.value,
         label: option.name,
@@ -91,6 +92,13 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
         icon: option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type!],
       };
     });
+
+    const menuProps: MenuProps = {
+      className: `${DRILL_DOWN_PRE_CLASS}-menu`,
+      selectedKeys: drillFields || [],
+      onSelect: handleSelect,
+      items: menuItems,
+    };
 
     return (
       <div className={cx(DRILL_DOWN_PRE_CLASS, className)} {...restProps}>
@@ -119,12 +127,7 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
           />
         )}
         {extra}
-        <Menu
-          className={`${DRILL_DOWN_PRE_CLASS}-menu`}
-          selectedKeys={drillFields}
-          onSelect={handleSelect}
-          items={menusItems}
-        />
+        {renderMenu?.(menuProps) ?? <Menu {...menuProps} />}
       </div>
     );
   },

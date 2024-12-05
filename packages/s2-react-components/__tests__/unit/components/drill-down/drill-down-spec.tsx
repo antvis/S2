@@ -71,4 +71,37 @@ describe('DrillDown Component Tests', () => {
       1,
     );
   });
+
+  test('should render custom menu', () => {
+    const renderMenu = jest.fn(() => <div className="custom-menu">custom</div>);
+    const { asFragment, container } = render(
+      <DrillDown
+        dataSet={[
+          {
+            name: '性别',
+            value: 'sex',
+            type: 'text',
+          },
+        ]}
+        renderMenu={renderMenu}
+      />,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+    expect(container.querySelector('.custom-menu')).toBeDefined();
+    expect(renderMenu).toHaveBeenCalledWith({
+      className: 'antv-s2-drill-down-menu',
+      items: [
+        {
+          className: 'antv-s2-drill-down-menu-item',
+          disabled: false,
+          icon: expect.anything(),
+          key: 'sex',
+          label: '性别',
+        },
+      ],
+      onSelect: expect.any(Function),
+      selectedKeys: [],
+    });
+  });
 });
