@@ -54,8 +54,6 @@ import { Node } from './layout/node';
 export class TableFacet extends FrozenFacet {
   public emptyPlaceholderGroup: Group;
 
-  public customRowHeightStatusMap: Record<string, boolean> = {};
-
   private lastRowOffset: number;
 
   public constructor(spreadsheet: SpreadSheet) {
@@ -230,8 +228,10 @@ export class TableFacet extends FrozenFacet {
   protected calculateRowOffsets() {
     const { style } = this.spreadsheet.options;
     const heightByField = style?.rowCell?.heightByField;
+    const isEnableHeightAdaptive =
+      style?.dataCell?.maxLines! > 1 && style?.dataCell?.wordWrap;
 
-    if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
+    if (keys(heightByField!).length || isEnableHeightAdaptive) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
       this.textWrapNodeHeightCache.clear();

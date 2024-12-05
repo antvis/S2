@@ -23125,14 +23125,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
       "江省浙江省浙江",
-      "省浙江省浙江...",
+      "省浙江省浙江省",
+      "浙江省浙江省浙",
+      "江省",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 103.8,
@@ -23204,14 +23206,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
       "州市杭州市杭州",
-      "市杭州市杭州...",
+      "市杭州市杭州市",
+      "杭州市杭州市杭",
+      "州市",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -23283,14 +23287,15 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
+    "actualTextHeight": 60,
+    "actualTextWidth": 340,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
       "具家具家具家具",
-      "家具家具家具...",
+      "家具家具家具家",
+      "具家具家具家具",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "width": 103.8,
@@ -23362,14 +23367,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
       "子桌子桌子桌子",
-      "桌子桌子桌子...",
+      "桌子桌子桌子桌",
+      "子桌子桌子桌子",
+      "桌子",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "width": 103.8,
@@ -24328,7 +24335,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style less than actual text height by dataCell.height 1`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style less than actual text height by dataCell.height 1`] = `
 Array [
   Object {
     "actualText": "序号",
@@ -24344,7 +24351,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style less than actual text height by dataCell.height 2`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style less than actual text height by dataCell.height 2`] = `
 Array [
   Object {
     "actualText": "1",
@@ -24547,7 +24554,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style less than actual text height by dataCell.height 3`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style less than actual text height by dataCell.height 3`] = `
 Array [
   Object {
     "actualText": "序号",
@@ -24621,9 +24628,9 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style less than actual text height by dataCell.height 4`] = `Array []`;
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style less than actual text height by dataCell.height 4`] = `Array []`;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style less than actual text height by dataCell.height 5`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style less than actual text height by dataCell.height 5`] = `
 Array [
   Object {
     "actualText": "1",
@@ -24835,13 +24842,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "浙江省浙江省...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "浙江省浙江省浙",
-      "江省浙江省浙...",
+      "浙江省浙江省...",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 103.8,
@@ -25034,13 +25040,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "杭州市杭州市...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "杭州市杭州市杭",
-      "州市杭州市杭...",
+      "杭州市杭州市...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -25233,13 +25238,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "家具家具家具...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "家具家具家具家",
-      "具家具家具家...",
+      "家具家具家具...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "width": 103.8,
@@ -25432,13 +25436,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "桌子桌子桌子...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "桌子桌子桌子桌",
-      "子桌子桌子桌...",
+      "桌子桌子桌子...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "width": 103.8,
@@ -25620,37 +25623,34 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 20,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 103.8,
   },
   Object {
-    "actualText": "778977897789778977897789...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 172,
+    "actualText": "77897789778...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 20,
     "multiLineActualTexts": Array [
-      "7789778977897",
-      "78977897789...",
+      "77897789778...",
     ],
     "originalText": "7789778977897789778977897789",
     "width": 103.8,
   },
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 20,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 103.8,
@@ -25823,7 +25823,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style more than actual text height by dataCell.height 1`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style more than actual text height by dataCell.height 1`] = `
 Array [
   Object {
     "actualText": "序号",
@@ -25839,7 +25839,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style more than actual text height by dataCell.height 2`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style more than actual text height by dataCell.height 2`] = `
 Array [
   Object {
     "actualText": "1",
@@ -25888,7 +25888,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style more than actual text height by dataCell.height 3`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style more than actual text height by dataCell.height 3`] = `
 Array [
   Object {
     "actualText": "序号",
@@ -25962,9 +25962,9 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style more than actual text height by dataCell.height 4`] = `Array []`;
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style more than actual text height by dataCell.height 4`] = `Array []`;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height if custom cell style more than actual text height by dataCell.height 5`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should not adaptive adjust data cell height, but should adjust maxLines if custom cell style more than actual text height by dataCell.height 5`] = `
 Array [
   Object {
     "actualText": "1",
@@ -26022,13 +26022,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
-      "江省浙江省浙...",
+      "江省浙江省浙江",
+      "省浙江省浙江省",
+      "浙江省浙江省浙",
+      "江省",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 103.8,
@@ -26067,13 +26070,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
-      "州市杭州市杭...",
+      "州市杭州市杭州",
+      "市杭州市杭州市",
+      "杭州市杭州市杭",
+      "州市",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -26112,13 +26118,15 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
+    "actualTextHeight": 60,
+    "actualTextWidth": 340,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
-      "具家具家具家...",
+      "具家具家具家具",
+      "家具家具家具家",
+      "具家具家具家具",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "width": 103.8,
@@ -26157,13 +26165,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
+    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
-      "子桌子桌子桌...",
+      "子桌子桌子桌子",
+      "桌子桌子桌子桌",
+      "子桌子桌子桌子",
+      "桌子",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "width": 103.8,
@@ -26203,13 +26214,14 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "778977897789778977897789...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 172,
+    "actualText": "7789778977897789778977897789",
+    "actualTextHeight": 45,
+    "actualTextWidth": 189,
     "height": 100,
     "multiLineActualTexts": Array [
       "7789778977897",
-      "78977897789...",
+      "7897789778977",
+      "89",
     ],
     "originalText": "7789778977897789778977897789",
     "width": 103.8,
@@ -27681,14 +27693,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "浙江省浙江省...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "浙江省浙江省浙",
-      "江省浙江省浙江",
-      "省浙江省浙江...",
+      "浙江省浙江省...",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 103.8,
@@ -27870,14 +27880,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "杭州市杭州市...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "杭州市杭州市杭",
-      "州市杭州市杭州",
-      "市杭州市杭州...",
+      "杭州市杭州市...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -28059,13 +28067,11 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "家具家具家具...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "家具家具家具家",
-      "具家具家具家具",
       "家具家具家具...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
@@ -28248,13 +28254,11 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "桌子桌子桌子...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "桌子桌子桌子桌",
-      "子桌子桌子桌子",
       "桌子桌子桌子...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
@@ -28426,38 +28430,34 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 20,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 103.8,
   },
   Object {
-    "actualText": "7789778977897789778977897789",
-    "actualTextHeight": 45,
-    "actualTextWidth": 189,
+    "actualText": "77897789778...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 20,
     "multiLineActualTexts": Array [
-      "7789778977897",
-      "7897789778977",
-      "89",
+      "77897789778...",
     ],
     "originalText": "7789778977897789778977897789",
     "width": 103.8,
   },
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 20,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 103.8,
@@ -28909,14 +28909,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "浙江省浙江省...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "浙江省浙江省浙",
-      "江省浙江省浙江",
-      "省浙江省浙江...",
+      "浙江省浙江省...",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 103.8,
@@ -28999,14 +28997,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "杭州市杭州市...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "杭州市杭州市杭",
-      "州市杭州市杭州",
-      "市杭州市杭州...",
+      "杭州市杭州市...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -29089,13 +29085,11 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "家具家具家具...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "家具家具家具家",
-      "具家具家具家具",
       "家具家具家具...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
@@ -29179,13 +29173,11 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "桌子桌子桌子...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 83,
     "height": 20,
     "multiLineActualTexts": Array [
-      "桌子桌子桌子桌",
-      "子桌子桌子桌子",
       "桌子桌子桌子...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
@@ -29270,14 +29262,12 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "7789778977897789778977897789",
-    "actualTextHeight": 45,
-    "actualTextWidth": 189,
+    "actualText": "77897789778...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 20,
     "multiLineActualTexts": Array [
-      "7789778977897",
-      "7897789778977",
-      "89",
+      "77897789778...",
     ],
     "originalText": "7789778977897789778977897789",
     "width": 103.8,
@@ -29554,14 +29544,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
       "江省浙江省浙江",
-      "省浙江省浙江...",
+      "省浙江省浙江省",
+      "浙江省浙江省浙",
+      "江省",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 103.8,
@@ -29600,14 +29592,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
       "州市杭州市杭州",
-      "市杭州市杭州...",
+      "市杭州市杭州市",
+      "杭州市杭州市杭",
+      "州市",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -29646,14 +29640,15 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
+    "actualTextHeight": 60,
+    "actualTextWidth": 340,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
       "具家具家具家具",
-      "家具家具家具...",
+      "家具家具家具家",
+      "具家具家具家具",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "width": 103.8,
@@ -29692,14 +29687,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
       "子桌子桌子桌子",
-      "桌子桌子桌子...",
+      "桌子桌子桌子桌",
+      "子桌子桌子桌子",
+      "桌子",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "width": 103.8,
@@ -30023,14 +30020,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
       "江省浙江省浙江",
-      "省浙江省浙江...",
+      "省浙江省浙江省",
+      "浙江省浙江省浙",
+      "江省",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 103.8,
@@ -30091,14 +30090,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
       "州市杭州市杭州",
-      "市杭州市杭州...",
+      "市杭州市杭州市",
+      "杭州市杭州市杭",
+      "州市",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -30159,14 +30160,15 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
+    "actualTextHeight": 60,
+    "actualTextWidth": 340,
     "height": 100,
     "multiLineActualTexts": Array [
       "家具家具家具家",
       "具家具家具家具",
-      "家具家具家具...",
+      "家具家具家具家",
+      "具家具家具家具",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "width": 103.8,
@@ -30227,14 +30229,16 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
+    "actualTextHeight": 75,
+    "actualTextWidth": 365,
     "height": 100,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
       "子桌子桌子桌子",
-      "桌子桌子桌子...",
+      "桌子桌子桌子桌",
+      "子桌子桌子桌子",
+      "桌子",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "width": 103.8,

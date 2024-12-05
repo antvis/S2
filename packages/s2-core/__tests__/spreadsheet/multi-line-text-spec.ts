@@ -852,7 +852,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     test('should calc correctly data cell height if actual text lines is difference', async () => {
       updateStyle(4);
 
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
 
@@ -878,7 +878,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
 
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
       expect((s2.facet as unknown as TableFacet).rowOffsets).toMatchSnapshot();
@@ -897,7 +897,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
 
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
       expect((s2.facet as unknown as TableFacet).rowOffsets).toMatchSnapshot();
@@ -916,7 +916,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           },
         },
       });
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });
@@ -931,7 +931,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           },
         },
       });
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });
@@ -949,7 +949,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           },
         },
       });
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });
@@ -964,7 +964,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           },
         },
       });
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });
@@ -1009,12 +1009,12 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           },
         },
       });
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });
 
-    test('should not adaptive adjust data cell height if custom cell style more than actual text height by dataCell.height', async () => {
+    test('should not adaptive adjust data cell height, but should adjust maxLines if custom cell style more than actual text height by dataCell.height', async () => {
       s2.setOptions({
         style: {
           dataCell: {
@@ -1029,7 +1029,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       matchCellStyleSnapshot();
     });
 
-    test('should not adaptive adjust data cell height if custom cell style less than actual text height by dataCell.height', async () => {
+    test('should not adaptive adjust data cell height, but should adjust maxLines if custom cell style less than actual text height by dataCell.height', async () => {
       s2.setOptions({
         style: {
           dataCell: {
@@ -1054,7 +1054,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           },
         },
       });
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });
@@ -1069,7 +1069,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           },
         },
       });
-      await s2.render();
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });

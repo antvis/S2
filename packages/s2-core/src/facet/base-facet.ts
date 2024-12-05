@@ -182,6 +182,8 @@ export abstract class BaseFacet {
 
   protected textWrapTempColCell: ColCell | TableColCell;
 
+  public customRowHeightStatusMap: Record<string, boolean>;
+
   protected abstract getCornerCellInstance(
     node: Node,
     spreadsheet: SpreadSheet,
@@ -270,6 +272,7 @@ export abstract class BaseFacet {
     this.textWrapTempColCell = this.getColCellInstance(...args);
     this.textWrapTempCornerCell = this.getCornerCellInstance?.(...args);
     this.textWrapNodeHeightCache = new Map();
+    this.customRowHeightStatusMap = {};
   }
 
   protected initGroups() {
@@ -333,14 +336,13 @@ export abstract class BaseFacet {
   }
 
   protected isCustomRowCellHeight(node: Node) {
-    const { dataCell, rowCell } = this.spreadsheet.options.style!;
+    const { dataCell } = this.spreadsheet.options.style!;
     const defaultDataCellHeight = DEFAULT_STYLE.dataCell?.height;
-    const rowHeight = this.getCellCustomSize(node, rowCell?.height);
-    const isCustomDefaultHeight = rowHeight
-      ? rowCell?.height !== defaultDataCellHeight
-      : dataCell?.height !== defaultDataCellHeight;
 
-    return isNumber(this.getCustomRowCellHeight(node)) || isCustomDefaultHeight;
+    return (
+      isNumber(this.getCustomRowCellHeight(node)) ||
+      dataCell?.height !== defaultDataCellHeight
+    );
   }
 
   protected getCustomRowCellHeight(node: Node) {
@@ -789,6 +791,7 @@ export abstract class BaseFacet {
     this.unbindEvents();
     this.clearAllGroup();
     this.preCellIndexes = null;
+    this.customRowHeightStatusMap = {};
     this.textWrapNodeHeightCache.clear();
     cancelAnimationFrame(this.scrollFrameId!);
   }
