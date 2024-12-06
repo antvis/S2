@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.1.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.1...@antv/s2-react-v2.1.2) (2024-12-06)
+
+
+### Bug Fixes
+
+* 修复手动调用 showTooltip 不展示菜单的问题 ([d8afe27](https://github.com/antvis/S2/commit/d8afe2723ba731c220a1dcd8be22afd8d63aed8e))
+
 # [@antv/s2-react-v2.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.0...@antv/s2-react-v2.1.1) (2024-12-04)
 
 
