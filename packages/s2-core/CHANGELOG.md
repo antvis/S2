@@ -1,3 +1,10 @@
+# [@antv/s2-v1.56.1](https://github.com/antvis/S2/compare/@antv/s2-v1.56.0...@antv/s2-v1.56.1) (2024-12-06)
+
+
+### Bug Fixes
+
+* 修复表格拖拽行高受rowCell影响问题 close [#2905](https://github.com/antvis/S2/issues/2905) ([#3015](https://github.com/antvis/S2/issues/3015)) ([b7b50cf](https://github.com/antvis/S2/commit/b7b50cf7b86197de5fa31808f1ba2148e6d0e93e))
+
 # [@antv/s2-v1.56.0](https://github.com/antvis/S2/compare/@antv/s2-v1.55.8...@antv/s2-v1.56.0) (2024-10-25)
 
 
