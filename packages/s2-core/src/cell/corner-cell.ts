@@ -24,6 +24,7 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
+import { isMobile } from '../utils/is-mobile';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell<CornerHeaderConfig> {
@@ -55,6 +56,11 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     this.update();
   }
 
+  private onTreeIconClick(isCollapsed: boolean) {
+    this.spreadsheet.facet.resetScrollY();
+    this.spreadsheet.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
+  }
+
   /**
    * 绘制折叠展开的 icon
    */
@@ -73,23 +79,37 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       values(collapseFields!).filter(Boolean).length === rootRowNodes.length ||
       rootRowNodes.every((node) => node.isCollapsed);
     const isCollapsed = isAllCollapsed;
+    let offsetXY = 0;
+    let offsetWH = 0;
+
+    // 移动端的时候，将icon变化，从而增加触发交互的面积
+    if (isMobile()) {
+      offsetXY = size / 4;
+      offsetWH = size / 2!;
+    }
 
     this.treeIcon = renderTreeIcon({
       group: this,
       iconCfg: {
-        x: area.x,
-        y: this.getIconPosition().y,
-        width: size,
-        height: size,
+        x: area.x - offsetXY,
+        y: this.getIconPosition().y - offsetXY,
+        width: size + offsetWH,
+        height: size + offsetWH,
         fill,
       },
       isCollapsed,
       onClick: () => {
-        this.spreadsheet.facet.resetScrollY();
-        this.spreadsheet.emit(
-          S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
-          isCollapsed,
-        );
+        if (isMobile()) {
+          return;
+        }
+
+        this.onTreeIconClick(isCollapsed);
+      },
+      onTouchEnd: () => {
+        /**
+         * 移动端时，绑定展开、收起事件
+         */
+        this.onTreeIconClick(isCollapsed);
       },
     });
   }
