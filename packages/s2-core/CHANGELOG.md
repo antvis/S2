@@ -1,3 +1,10 @@
+# [@antv/s2-v2.1.2](https://github.com/antvis/S2/compare/@antv/s2-v2.1.1...@antv/s2-v2.1.2) (2024-12-06)
+
+
+### Bug Fixes
+
+* 修复明细表自定义行高时多行文本未自适应调整 ([#3017](https://github.com/antvis/S2/issues/3017)) ([8a55fa6](https://github.com/antvis/S2/commit/8a55fa6be4d3030845b54f5f11e752e31d9919e1))
+
 # [@antv/s2-v2.1.1](https://github.com/antvis/S2/compare/@antv/s2-v2.1.0...@antv/s2-v2.1.1) (2024-12-04)
 
 
