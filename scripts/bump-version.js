@@ -3,7 +3,7 @@ const { getCurrentBranch } = require('./util');
 
 const branch = getCurrentBranch();
 
-const branchList = ['latest', 'alpha', 'beta', 'next'];
+const branchList = ['latest', 'alpha', 'beta', 'next', '1.x-stable'];
 
 if (!branchList.includes(branch)) {
   console.log('❌ 只允许在发布分支执行该命令');
