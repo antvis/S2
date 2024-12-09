@@ -145,6 +145,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       cells: selectedCells,
     });
     spreadsheet.interaction.emitSelectEvent({
+      event,
       interactionName: InteractionName.SELECTED_CELL_MOVE,
     });
     this.spreadsheet.emit(S2Event.DATA_CELL_SELECT_MOVE, selectedCells);

@@ -99,7 +99,7 @@ export class ColCellBrushSelection extends BaseBrushSelection {
   }
 
   // 最终刷选的 cell
-  protected updateSelectedCells() {
+  protected updateSelectedCells(event: MouseEvent) {
     const { interaction, facet } = this.spreadsheet;
 
     interaction.changeState({
@@ -114,6 +114,7 @@ export class ColCellBrushSelection extends BaseBrushSelection {
       S2Event.COL_CELL_BRUSH_SELECTION,
       this.brushRangeCells,
       {
+        event,
         targetCell: this.brushRangeCells[0],
         interactionName: InteractionName.COL_CELL_BRUSH_SELECTION,
       },

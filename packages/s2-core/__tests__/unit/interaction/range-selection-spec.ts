@@ -205,6 +205,7 @@ describe('Interaction Range Selection Tests', () => {
     expect(selected).toHaveBeenCalledWith(activeCells, {
       interactionName: 'rangeSelection',
       targetCell: s2.getCell(),
+      event: expect.anything(),
     });
     expect(
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
@@ -290,6 +291,7 @@ describe('Interaction Range Selection Tests', () => {
     expect(selected).toHaveBeenCalledWith(activeCells, {
       interactionName: 'rangeSelection',
       targetCell: s2.getCell(),
+      event: expect.anything(),
     });
     expect(
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),

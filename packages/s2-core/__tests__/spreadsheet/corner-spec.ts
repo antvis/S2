@@ -275,6 +275,7 @@ describe('PivotSheet Corner Tests', () => {
       expect(selected).toHaveBeenCalledWith(s2.interaction.getActiveCells(), {
         interactionName: 'cornerCellClick',
         targetCell: expect.anything(),
+        event: expect.anything(),
       });
 
       // 取消选中
@@ -286,6 +287,7 @@ describe('PivotSheet Corner Tests', () => {
       expect(selected).toHaveBeenCalledWith([], {
         interactionName: 'cornerCellClick',
         targetCell: expect.anything(),
+        event: expect.anything(),
       });
 
       getCellSpy.mockClear();

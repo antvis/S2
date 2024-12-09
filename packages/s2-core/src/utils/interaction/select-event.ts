@@ -40,16 +40,6 @@ export const getCellMeta = (cell: S2CellType): CellMeta => {
   };
 };
 
-// export const selectCells = (spreadsheet: SpreadSheet, cells: CellMeta[]) => {
-//   const { interaction } = spreadsheet;
-
-//   interaction.changeState({
-//     stateName: InteractionStateName.SELECTED,
-//     cells,
-//   });
-//   spreadsheet.emit(S2Event.GLOBAL_SELECTED, interaction.getActiveCells());
-// };
-
 export function getRangeIndex<T extends CellMeta | ViewMeta | Node>(
   start: T,
   end: T,
