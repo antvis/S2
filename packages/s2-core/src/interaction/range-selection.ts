@@ -126,6 +126,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       );
       interaction.emitSelectEvent({
         targetCell: cell,
+        event,
         interactionName: InteractionName.RANGE_SELECTION,
       });
     });
@@ -189,8 +190,8 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         const selectedCellIds = groupSelectedCells(selectedCells);
 
         interaction.updateCells(facet.getHeaderCells(selectedCellIds));
-
         interaction.emitSelectEvent({
+          event,
           targetCell: cell,
           interactionName: InteractionName.RANGE_SELECTION,
         });

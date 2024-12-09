@@ -121,6 +121,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
         {
           interactionName: 'dataCellMultiSelection',
           targetCell: s2.getCell(),
+          event: expect.anything(),
         },
       );
 

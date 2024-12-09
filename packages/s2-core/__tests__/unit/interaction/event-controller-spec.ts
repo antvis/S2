@@ -573,6 +573,7 @@ describe('Interaction Event Controller Tests', () => {
     expect(selected).toHaveBeenCalledWith([], {
       interactionName: 'globalReset',
       targetCell: null,
+      event: expect.anything(),
     });
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
@@ -600,6 +601,7 @@ describe('Interaction Event Controller Tests', () => {
     expect(selected).toHaveBeenCalledWith([], {
       interactionName: 'globalReset',
       targetCell: null,
+      event: expect.anything(),
     });
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();

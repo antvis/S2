@@ -96,7 +96,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
   };
 
   // 最终刷选的 cells
-  protected updateSelectedCells() {
+  protected updateSelectedCells(event: MouseEvent) {
     const selectedRowNodes = this.getSelectedRowNodes();
     const scrollBrushRangeCells =
       this.getScrollBrushRangeCells(selectedRowNodes);
@@ -112,6 +112,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
       S2Event.ROW_CELL_BRUSH_SELECTION,
       scrollBrushRangeCells,
       {
+        event,
         targetCell: scrollBrushRangeCells[0],
         interactionName: InteractionName.ROW_CELL_BRUSH_SELECTION,
       },

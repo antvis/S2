@@ -179,6 +179,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       expect(selected).toHaveBeenCalledWith([mockCell], {
         interactionName: 'rowCellClick',
         targetCell: s2.getCell(),
+        event: expect.anything(),
       });
 
       // 取消选中
@@ -189,7 +190,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       expect(s2.interaction.getState().cells).toEqual([]);
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
       expect(selected).toHaveBeenCalled();
-      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalse();
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalsy();
 
       getInteractedCellsSpy.mockRestore();
     },
@@ -243,6 +244,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       expect(selected).toHaveBeenCalledWith([mockCell], {
         interactionName: 'rowCellClick',
         targetCell: s2.getCell(),
+        event: expect.anything(),
       });
     },
   );

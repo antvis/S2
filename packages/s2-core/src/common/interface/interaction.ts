@@ -116,6 +116,11 @@ export interface ChangeCellOptions extends CellScrollToOptions {
    * @default true
    */
   scrollIntoView?: boolean;
+
+  /**
+   * 触发事件对象
+   */
+  event?: FederatedPointerEvent;
 }
 
 export type InteractionConstructor = new (

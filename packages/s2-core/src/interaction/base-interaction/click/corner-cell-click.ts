@@ -115,8 +115,9 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private emitSelectEvent(targetCell: S2CellType) {
+  private emitSelectEvent(event: CanvasEvent, targetCell: S2CellType) {
     this.spreadsheet.interaction.emitSelectEvent({
+      event,
       targetCell,
       interactionName: InteractionName.CORNER_CELL_CLICK,
     });
@@ -130,7 +131,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
 
     if (sample && interaction.isSelectedCell(sample)) {
       interaction.reset();
-      this.emitSelectEvent(cornerCell);
+      this.emitSelectEvent(event, cornerCell);
 
       return;
     }
@@ -148,7 +149,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
     cornerCell?.updateByState(InteractionStateName.SELECTED);
 
     this.showTooltip(event);
-    this.emitSelectEvent(cornerCell);
+    this.emitSelectEvent(event, cornerCell);
   }
 
   private showTooltip(event: CanvasEvent) {

@@ -199,6 +199,7 @@ export class EventController {
       S2Event.GLOBAL_SELECTED,
       interaction.getActiveCells(),
       {
+        event,
         targetCell: null,
         interactionName: InteractionName.GLOBAL_RESET,
       },

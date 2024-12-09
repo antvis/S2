@@ -581,6 +581,7 @@ export class RootInteraction {
    */
   public changeCell(options: ChangeCellOptions = {} as ChangeCellOptions) {
     const {
+      event,
       cell,
       stateName = InteractionStateName.SELECTED,
       interactionName,
@@ -628,6 +629,7 @@ export class RootInteraction {
     if (isEmpty(selectedCells)) {
       this.reset();
       this.emitSelectEvent({
+        event,
         targetCell: cell,
         interactionName,
       });
@@ -670,6 +672,7 @@ export class RootInteraction {
     // 由于绘制的顺序问题, 交互背景图层展示后, 会遮挡边框, 需要让边框展示在前面.
     this.spreadsheet.facet.centerFrame?.toFront();
     this.emitSelectEvent({
+      event,
       targetCell: cell,
       interactionName,
     });
