@@ -12,7 +12,7 @@ jobs:
     # runs-on: macos-latest # (目前 macos-latest 对应的是 Big Sur 11, macos-12 对应  Monterey 12)
     # macOS 3-core CPU, 其他 2-core CPU
     # > macos-14 会导致 CI 的测试卡死, 没有任何报错!!!
-    runs-on: macos-13
+    runs-on: macos-15
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
