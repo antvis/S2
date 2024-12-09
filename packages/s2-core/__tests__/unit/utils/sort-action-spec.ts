@@ -211,6 +211,30 @@ describe('Sort By Custom Test', () => {
         'Wednesday[&]afternoon',
       ]);
     });
+
+    test('sort by custom with semblable value', () => {
+      const params = {
+        originValues: [
+          '我也是测1试',
+          '我是测试',
+          '我也是测试',
+          '我也是测试1',
+          '我也是1测试',
+          '测试',
+        ],
+        sortByValues: ['测试', '我是测试'],
+      };
+
+      // 原来的处理是 endsWith 去模糊匹配维值, 导致其他维值会排序到最上方
+      expect(sortByCustom(params)).toEqual([
+        '测试',
+        '我是测试',
+        '我也是测1试',
+        '我也是测试',
+        '我也是测试1',
+        '我也是1测试',
+      ]);
+    });
   });
 });
 

@@ -1,12 +1,12 @@
 import {
   compact,
-  endsWith,
   flatMap,
   includes,
   indexOf,
   isEmpty,
   isNil,
   keys,
+  last,
   map,
   sortBy,
   split,
@@ -108,8 +108,10 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues = [], originValues = [] } = params;
 
   // 从 originValues 中过滤出所有包含 sortByValue 的 id
-  const idWithPre = originValues.filter((originItem) =>
-    sortByValues.find((value) => endsWith(originItem, value)),
+  const idWithPre = originValues.filter((originValue) =>
+    sortByValues.find((value) => {
+      return last(split(originValue, NODE_ID_SEPARATOR)) === value;
+    }),
   );
   // 将 id 拆分为父节点和目标节点
   const idListWithPre = idWithPre.map((idStr) => {
