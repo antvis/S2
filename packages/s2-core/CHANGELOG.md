@@ -1,3 +1,10 @@
+# [@antv/s2-v1.56.2](https://github.com/antvis/S2/compare/@antv/s2-v1.56.1...@antv/s2-v1.56.2) (2024-12-09)
+
+
+### Bug Fixes
+
+* 修复手动排序在单行头且维值相似的场景不生效 ([5c86145](https://github.com/antvis/S2/commit/5c86145a4e8ae40b9b132161e09fa5ddb2eee8e4))
+
 # [@antv/s2-v1.56.1](https://github.com/antvis/S2/compare/@antv/s2-v1.56.0...@antv/s2-v1.56.1) (2024-12-06)
 
 
