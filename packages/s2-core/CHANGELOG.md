@@ -1,3 +1,11 @@
+# [@antv/s2-v2.1.3](https://github.com/antvis/S2/compare/@antv/s2-v2.1.2...@antv/s2-v2.1.3) (2024-12-09)
+
+
+### Bug Fixes
+
+* 修复手动排序在单行头且维值相似的场景不生效 ([#3019](https://github.com/antvis/S2/issues/3019)) ([6221958](https://github.com/antvis/S2/commit/6221958ddc4113384260f82fd54f768077168287))
+* 选中事件增加 event 信息 ([#3021](https://github.com/antvis/S2/issues/3021)) ([291c727](https://github.com/antvis/S2/commit/291c727959d496f5210a2bc47bcdb0919080defa))
+
 # [@antv/s2-v2.1.2](https://github.com/antvis/S2/compare/@antv/s2-v2.1.1...@antv/s2-v2.1.2) (2024-12-06)
 
 
