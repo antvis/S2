@@ -93,7 +93,7 @@ interface ScrollSpeedRatio {
 | -- | -- | -- | -- | --- |
 | interactionName | 触发选中的交互名 | [InteractionName](#interactionname) |  |  |
 | targetCell | 触发选中的单元格 | [S2CellType](/api/basic-class/base-cell) |  |  |
-| event | 触发选中的事件对象 | FederatedPointerEvent |  |  |
+| event | 触发选中的事件对象 | `FederatedPointerEvent \| Event \| KeyboardEvent` |  |  |
 
 ### InterceptType
 
