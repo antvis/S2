@@ -98,6 +98,7 @@ export class DataCellMultiSelection
           interaction.clearState();
           this.spreadsheet.hideTooltip();
           interaction.emitSelectEvent({
+            event,
             targetCell: cell,
             interactionName: InteractionName.DATA_CELL_MULTI_SELECTION,
           });
@@ -114,6 +115,7 @@ export class DataCellMultiSelection
           onUpdateCells: afterSelectDataCells,
         });
         interaction.emitSelectEvent({
+          event,
           targetCell: cell,
           interactionName: InteractionName.DATA_CELL_MULTI_SELECTION,
         });

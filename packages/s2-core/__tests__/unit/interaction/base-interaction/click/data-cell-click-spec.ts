@@ -92,6 +92,7 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(selected).toHaveBeenCalledWith([mockCellInfo.mockCell], {
       interactionName: 'dataCellClick',
       targetCell: s2.getCell(),
+      event: expect.anything(),
     });
   });
 
@@ -115,6 +116,7 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(selected).toHaveBeenCalledWith([], {
       interactionName: 'dataCellClick',
       targetCell: s2.getCell(),
+      event: expect.anything(),
     });
   });
 

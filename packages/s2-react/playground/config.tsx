@@ -284,6 +284,9 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
           key: 'custom-a',
           label: '操作1',
           icon: 'Trend',
+          visible: (cell) => {
+            return cell instanceof DataCell;
+          },
           onClick: (info, cell) => {
             console.log('操作1点击:', info, cell);
           },
@@ -302,25 +305,6 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
           key: 'custom-b',
           label: '操作2',
           icon: 'EyeOutlined',
-          onClick: (info, cell) => {
-            console.log('操作2点击:', info, cell);
-          },
-        },
-        {
-          key: 'custom-c',
-          label: '操作3',
-          icon: 'EyeOutlined',
-          visible: (cell) => {
-            return cell instanceof DataCell;
-          },
-          onClick: (info, cell) => {
-            console.log('操作3点击:', info, cell);
-          },
-        },
-        {
-          key: 'custom-d',
-          label: '操作4',
-          icon: 'EyeOutlined',
           visible: (cell) => {
             // 叶子节点才显示
             const meta = cell.getMeta();
@@ -328,7 +312,7 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
             return meta.isLeaf;
           },
           onClick: (info, cell) => {
-            console.log('操作4点击:', info, cell);
+            console.log('操作2点击:', info, cell);
           },
         },
       ],
