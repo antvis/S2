@@ -288,6 +288,12 @@ export interface SplitLine {
   borderDash?: LineStyleProps['lineDash'];
 }
 
+export interface PolyLine {
+  stroke?: string;
+  lineDash?: number[];
+  lineWidth?: number;
+}
+
 export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /**
    * 粗体文本样式 (如: 总计, 小计, 行列头非叶子节点文本)
@@ -354,6 +360,8 @@ export interface S2Theme extends CellThemes {
 
   /** 空数据占位符 */
   empty?: EmptyTheme;
+  /** 线性配置 */
+  polyline?: PolyLine;
 }
 
 export type ThemeName = keyof typeof PALETTE_MAP;

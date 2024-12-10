@@ -109,6 +109,10 @@ export interface RowCellStyle extends BaseCellStyle, CellTextWordWrapStyle {
    * @description 优先级 `collapseFields` > `expandDepth` > `collapseAll`
    */
   expandDepth?: number | null;
+  /**
+   * 是否配置线性样式，默认不配置
+   */
+  showTreeLine: boolean;
 }
 
 export interface ColCellStyle extends BaseCellStyle, CellTextWordWrapStyle {

@@ -1,5 +1,6 @@
 import { S2Event, type SpreadSheet } from '@antv/s2';
 import { ref, watch, type ShallowRef } from 'vue';
+import { drawDottedLines } from '../../../s2-core/src/extends/pivot-chart/utils/polyline-axis';
 
 export const useLoading = (
   s2Ref: ShallowRef<SpreadSheet | undefined>,
@@ -17,6 +18,9 @@ export const useLoading = (
 
     s2?.on(S2Event.LAYOUT_AFTER_RENDER, () => {
       setLoading(false);
+    });
+    s2?.on(S2Event.GLOBAL_SCROLL, () => {
+      drawDottedLines(s2);
     });
   });
 
