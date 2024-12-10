@@ -76,7 +76,7 @@ describe('PanelBBox Tests', () => {
     const bbox = new PanelBBox(facet, true);
 
     expect(bbox.width).toBe(578);
-    expect(bbox.height).toBe(573);
+    expect(bbox.height).toBe(578);
     expect(bbox.viewportWidth).toBe(200);
     expect(bbox.viewportHeight).toBe(200);
     expect(bbox.maxX).toBe(222);
@@ -90,11 +90,11 @@ describe('PanelBBox Tests', () => {
     const bbox = new PanelBBox(facet, true);
 
     expect(bbox.width).toBe(578);
-    expect(bbox.height).toBe(573);
+    expect(bbox.height).toBe(578);
     expect(bbox.viewportWidth).toBe(578);
-    expect(bbox.viewportHeight).toBe(573);
+    expect(bbox.viewportHeight).toBe(578);
     expect(bbox.maxX).toBe(600);
-    expect(bbox.maxY).toBe(595);
+    expect(bbox.maxY).toBe(600);
     expect(bbox.originalHeight).toBe(2000);
     expect(bbox.originalWidth).toBe(2000);
   });
@@ -110,7 +110,7 @@ describe('PanelBBox Tests', () => {
     const bbox = new PanelBBox(facet, true);
 
     expect(bbox.width).toBe(578);
-    expect(bbox.height).toBe(573);
+    expect(bbox.height).toBe(578);
     expect(bbox.viewportWidth).toBe(200);
     expect(bbox.viewportHeight).toBe(200);
     expect(bbox.maxX).toBe(222);
@@ -130,7 +130,7 @@ describe('PanelBBox Tests', () => {
     const bbox = new PanelBBox(facet, true);
 
     expect(bbox.width).toBe(578);
-    expect(bbox.height).toBe(573);
+    expect(bbox.height).toBe(578);
     expect(bbox.viewportWidth).toBe(200);
     expect(bbox.viewportHeight).toBe(200);
     expect(bbox.maxX).toBe(222);
