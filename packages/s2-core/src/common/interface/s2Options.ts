@@ -332,10 +332,6 @@ export interface S2PivotSheetOptions {
   hierarchyType?: HierarchyType;
 
   /**
-   * 是否配置线性样式，默认不配置
-   */
-  treeLineShow?: boolean;
-  /**
    * 小计/总计配置
    * @see https://s2.antv.antgroup.com/manual/basic/totals
    */

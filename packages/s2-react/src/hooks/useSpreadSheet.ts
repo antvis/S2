@@ -15,7 +15,6 @@ import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 import { usePagination } from './usePagination';
-import { usePolyline } from './usePolyline';
 import { useResize } from './useResize';
 
 export function useSpreadSheet(props: SheetComponentProps) {
@@ -51,7 +50,6 @@ export function useSpreadSheet(props: SheetComponentProps) {
 
   const { loading, setLoading } = useLoading(s2Ref.current!, props.loading);
   const pagination = usePagination(s2Ref.current!, props.options!);
-  const { drawDottedLines } = usePolyline();
 
   useEvents(props, s2Ref.current!);
 
@@ -84,7 +82,6 @@ export function useSpreadSheet(props: SheetComponentProps) {
     s2.setThemeCfg(props.themeCfg);
     await s2.render();
     setLoading(false);
-    drawDottedLines(s2);
     s2Ref.current = s2;
 
     /**
