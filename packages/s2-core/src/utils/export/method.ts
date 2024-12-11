@@ -14,6 +14,7 @@ import {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { resolveNillString } from '../layout';
+import { replaceEmptyFieldValue } from '../text';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -64,8 +65,9 @@ export const getHeaderMeasureFieldNames = (
     }
 
     // https://github.com/antvis/S2/issues/2688
+    // https://github.com/antvis/S2/pull/2829
     if (!formatHeader) {
-      return resolveNillString(field);
+      return replaceEmptyFieldValue(resolveNillString(field)!);
     }
 
     return spreadsheet.dataSet.getFieldName(field);
