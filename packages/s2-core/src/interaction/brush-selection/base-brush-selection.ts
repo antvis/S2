@@ -772,18 +772,18 @@ export class BaseBrushSelection
   };
 
   public autoBrushScroll(point: PointLike, isRowHeader = false) {
-    if (this.isPointInCanvas(point)) {
-      return false;
-    }
-
     this.clearAutoScroll();
 
-    const deltaX = point?.x - this.endBrushPoint?.x;
-    const deltaY = point?.y - this.endBrushPoint?.y;
+    if (!this.isPointInCanvas(point)) {
+      const deltaX = point?.x - this.endBrushPoint?.x;
+      const deltaY = point?.y - this.endBrushPoint?.y;
 
-    this.handleScroll(deltaX, deltaY, isRowHeader);
+      this.handleScroll(deltaX, deltaY, isRowHeader);
 
-    return true;
+      return true;
+    }
+
+    return false;
   }
 
   public emitBrushSelectionEvent(
