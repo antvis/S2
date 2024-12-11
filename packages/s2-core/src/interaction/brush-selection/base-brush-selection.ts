@@ -158,8 +158,11 @@ export class BaseBrushSelection
 
     let newX = this.endBrushPoint?.x + x;
     let newY = this.endBrushPoint?.y + y;
-    let needScrollForX = true;
-    let needScrollForY = true;
+    // 有滚动条才需要滚动
+    let needScrollForX = isRowHeader
+      ? !!facet.hRowScrollBar
+      : !!facet.hScrollBar;
+    let needScrollForY = !!facet.vScrollBar;
     const vScrollBarWidth = facet.vScrollBar?.getBBox()?.width;
     // 额外加缩进，保证 getShape 在 panelBox 内
     const extraPixel = 2;
@@ -769,18 +772,18 @@ export class BaseBrushSelection
   };
 
   public autoBrushScroll(point: PointLike, isRowHeader = false) {
-    this.clearAutoScroll();
-
-    if (!this.isPointInCanvas(point)) {
-      const deltaX = point?.x - this.endBrushPoint?.x;
-      const deltaY = point?.y - this.endBrushPoint?.y;
-
-      this.handleScroll(deltaX, deltaY, isRowHeader);
-
-      return true;
+    if (this.isPointInCanvas(point)) {
+      return false;
     }
 
-    return false;
+    this.clearAutoScroll();
+
+    const deltaX = point?.x - this.endBrushPoint?.x;
+    const deltaY = point?.y - this.endBrushPoint?.y;
+
+    this.handleScroll(deltaX, deltaY, isRowHeader);
+
+    return true;
   }
 
   public emitBrushSelectionEvent(
