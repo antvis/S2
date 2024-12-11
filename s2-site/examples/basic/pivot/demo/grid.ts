@@ -43,10 +43,14 @@ fetch(
       width: 600,
       height: 480,
       hierarchyType: 'grid',
+      // 数值挂行头时, 自定义角头虚拟数值字段文本, 默认 "数值"
+      cornerExtraFieldText: '自定义',
       interaction: {
-        copy: { enable: true },
-        withFormat: true,
-        withHeader: true,
+        copy: {
+          enable: true,
+          withFormat: true,
+          withHeader: true,
+        },
       },
       // 显示序号
       // seriesNumber: {
