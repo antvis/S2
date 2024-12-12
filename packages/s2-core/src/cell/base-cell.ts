@@ -24,6 +24,7 @@ import {
 import {
   CellType,
   DEFAULT_FONT_COLOR,
+  DEFAULT_TEXT_LINE_HEIGHT,
   InteractionStateName,
   REVERSE_FONT_COLOR,
   SHAPE_ATTRS_MAP,
@@ -302,10 +303,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
-   * 获取文本包围盒
+   * 获取文本行高
    */
   public getTextLineHeight() {
-    return this.textShape?.parsedStyle?.metrics?.lineHeight;
+    return (
+      this.textShape?.parsedStyle?.metrics?.lineHeight ||
+      DEFAULT_TEXT_LINE_HEIGHT
+    );
   }
 
   /**
@@ -824,5 +828,36 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       backgroundColorOpacity,
       backgroundColor: this.getStyle().cell.backgroundColor,
     };
+  }
+
+  public getMaxLinesByCustomHeight(options: {
+    targetCell?: S2CellType;
+    displayHeight?: number;
+    isCustomHeight?: boolean;
+  }) {
+    const {
+      targetCell = this,
+      displayHeight = this.meta.height,
+      isCustomHeight = false,
+    } = options;
+    const cell = targetCell || this;
+    const cellStyle = this.spreadsheet.options.style?.[cell.cellType];
+    const isEnableHeightAdaptive =
+      cellStyle?.maxLines! > 1 && cellStyle?.wordWrap;
+
+    if (!isEnableHeightAdaptive || !isCustomHeight) {
+      return;
+    }
+
+    const { cell: cellTheme } = cell?.getStyle() as DefaultCellTheme;
+    const padding = cellTheme!.padding!.top! + cellTheme!.padding!.bottom!;
+    const lineHeight = cell?.getTextLineHeight()!;
+
+    const maxLines = Math.max(
+      1,
+      Math.floor((displayHeight - padding) / lineHeight),
+    );
+
+    return maxLines;
   }
 }

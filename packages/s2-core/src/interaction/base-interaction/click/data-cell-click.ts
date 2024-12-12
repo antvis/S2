@@ -60,6 +60,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
           // https://github.com/antvis/S2/issues/2447
           interaction.emitSelectEvent({
+            event,
             targetCell: cell,
             interactionName: InteractionName.DATA_CELL_CLICK,
           });
@@ -74,6 +75,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         onUpdateCells: afterSelectDataCells,
       });
       interaction.emitSelectEvent({
+        event,
         targetCell: cell,
         interactionName: InteractionName.DATA_CELL_CLICK,
         cells: [cell],

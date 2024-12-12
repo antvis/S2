@@ -2,6 +2,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line prettier/prettier
 import { BaseTooltip, customMerge, isMobile, SpreadSheet } from '@antv/s2';
+import { omit } from 'lodash';
 import React from 'react';
 import {
   forceClearContent,
@@ -44,7 +45,9 @@ export class CustomTooltip extends BaseTooltip<
     const tooltipProps = customMerge<TooltipRenderProps>(
       {
         options: {
-          operator: operation,
+          operator: {
+            menu: omit(operation?.menu, 'items'),
+          },
         },
       },
       {

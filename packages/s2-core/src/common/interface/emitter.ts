@@ -44,10 +44,16 @@ export interface CellSelectedDetail {
    * 触发选中的交互名
    */
   interactionName?: `${InteractionName}`;
+
   /**
    * 触发选中的单元格
    */
   targetCell?: S2CellType | null;
+
+  /**
+   * 触发选中的事件对象
+   */
+  event?: CanvasEvent | KeyboardEvent | Event | null;
 }
 
 export type CellSelectedHandler = (

@@ -24,6 +24,7 @@
   "files": [],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "postinstall": "pnpm core:build-esm",
     "bootstrap": "pnpm install",
     "bootstrap:ci": "pnpm bootstrap --frozen-lockfile",
     "prepare": "husky install",
@@ -40,6 +41,7 @@
     "react:start": "pnpm --filter @antv/s2-react test:live",
     "react:playground": "pnpm --filter @antv/s2-react start",
     "react:build": "pnpm --filter @antv/s2-react build",
+    "react:build-esm": "pnpm --filter @antv/s2-react build:esm",
     "react:test": "pnpm --filter @antv/s2-react test",
     "react:test-coverage": "pnpm --filter @antv/s2-react test:coverage",
     "react:watch": " pnpm --filter @antv/s2-react watch",

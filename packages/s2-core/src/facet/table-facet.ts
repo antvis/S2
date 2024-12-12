@@ -62,6 +62,10 @@ export class TableFacet extends FrozenFacet {
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
+  protected getCornerCellInstance() {
+    return null;
+  }
+
   protected override getRowCellInstance(node: ViewMeta) {
     const { dataCell } = this.spreadsheet.options;
 
@@ -167,16 +171,19 @@ export class TableFacet extends FrozenFacet {
     const rowHeight = this.getRowCellHeight(node);
 
     if (this.isCustomRowCellHeight(node)) {
+      // 标记当前行是否为自定义高度
+      this.customRowHeightStatusMap[viewMeta?.rowIndex] = true;
+
       return rowHeight || 0;
     }
 
     const defaultHeight = this.getCellHeightByRowIndex(viewMeta?.rowIndex);
 
-    return this.getNodeAdaptiveHeight(
-      viewMeta,
-      this.textWrapTempRowCell,
+    return this.getNodeAdaptiveHeight({
+      meta: viewMeta,
+      cell: this.textWrapTempRowCell,
       defaultHeight,
-    );
+    });
   }
 
   private getCellHeightByRowIndex(rowIndex: number) {
@@ -221,11 +228,14 @@ export class TableFacet extends FrozenFacet {
   protected calculateRowOffsets() {
     const { style } = this.spreadsheet.options;
     const heightByField = style?.rowCell?.heightByField;
+    const isEnableHeightAdaptive =
+      style?.dataCell?.maxLines! > 1 && style?.dataCell?.wordWrap;
 
-    if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
+    if (keys(heightByField!).length || isEnableHeightAdaptive) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
       this.textWrapNodeHeightCache.clear();
+      this.customRowHeightStatusMap = {};
       this.rowOffsets = [0];
       this.lastRowOffset = 0;
 
@@ -470,19 +480,18 @@ export class TableFacet extends FrozenFacet {
   private calculateColNodesHeight(colsHierarchy: Hierarchy) {
     const colNodes = colsHierarchy.getNodes();
 
-    colNodes.forEach((currentNode) => {
-      if (currentNode.level === 0) {
-        currentNode.y = 0;
+    colNodes.forEach((colNode) => {
+      if (colNode.level === 0) {
+        colNode.y = 0;
       } else {
-        currentNode.y =
-          currentNode?.parent?.y! + currentNode?.parent?.height! || 0;
+        colNode.y = colNode?.parent?.y! + colNode?.parent?.height! || 0;
       }
 
-      currentNode.height = this.getColNodeHeight(
-        currentNode,
+      colNode.height = this.getColNodeHeight({
+        colNode,
         colsHierarchy,
-        false,
-      );
+        useCache: false,
+      });
     });
   }
 

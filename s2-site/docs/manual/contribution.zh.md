@@ -59,7 +59,11 @@ tag: Updated
 
 ### 调试功能
 
-根目录运行 `pnpm react:playground`（如果是首次运行，需要先执行一次 `pnpm core:build-esm`) 来运行 `S2`, 可用于调试 `@antv/s2` 和 `@antv/s2-react`, 提供了一些常用的图表场景和配置。
+:::info{title="提示"}
+安装依赖后，会自动构建 `@antv/s2`, 如果是首次运行，并且自动构建失败，提示找不到 `@antv/s2/esm` 之类的报错，手动执行一次 `pnpm core:build-esm` 即可。
+:::
+
+根目录运行 `pnpm react:playground` 来运行 `S2`, 可用于调试 `@antv/s2` 和 `@antv/s2-react`, 提供了一些常用的图表场景和配置。
 
 <img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6t8RRbg5x_kAAAAAAAAAAAAADmJ7AQ/original" />
 

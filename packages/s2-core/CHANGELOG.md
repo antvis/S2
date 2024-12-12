@@ -1,3 +1,27 @@
+# [@antv/s2-v2.1.3](https://github.com/antvis/S2/compare/@antv/s2-v2.1.2...@antv/s2-v2.1.3) (2024-12-09)
+
+
+### Bug Fixes
+
+* 修复手动排序在单行头且维值相似的场景不生效 ([#3019](https://github.com/antvis/S2/issues/3019)) ([6221958](https://github.com/antvis/S2/commit/6221958ddc4113384260f82fd54f768077168287))
+* 选中事件增加 event 信息 ([#3021](https://github.com/antvis/S2/issues/3021)) ([291c727](https://github.com/antvis/S2/commit/291c727959d496f5210a2bc47bcdb0919080defa))
+
+# [@antv/s2-v2.1.2](https://github.com/antvis/S2/compare/@antv/s2-v2.1.1...@antv/s2-v2.1.2) (2024-12-06)
+
+
+### Bug Fixes
+
+* 修复明细表自定义行高时多行文本未自适应调整 ([#3017](https://github.com/antvis/S2/issues/3017)) ([8a55fa6](https://github.com/antvis/S2/commit/8a55fa6be4d3030845b54f5f11e752e31d9919e1))
+
+# [@antv/s2-v2.1.1](https://github.com/antvis/S2/compare/@antv/s2-v2.1.0...@antv/s2-v2.1.1) (2024-12-04)
+
+
+### Bug Fixes
+
+* 修复下钻组件展示错误操作 icon & 兼容低版本 menu 写法 ([#3011](https://github.com/antvis/S2/issues/3011)) ([7d171f0](https://github.com/antvis/S2/commit/7d171f037e7f52cc49ad02ddf56598aa477bf043))
+* 修复点击单元格中的 icon 时无法获取到单元格 meta 信息的问题 close [#2985](https://github.com/antvis/S2/issues/2985) ([#3013](https://github.com/antvis/S2/issues/3013)) ([67853a2](https://github.com/antvis/S2/commit/67853a2c08456ff166e948c9be30eb817e220079))
+* 修复角头存在多行文本时未自动撑开列头高度的问题 ([#3010](https://github.com/antvis/S2/issues/3010)) ([0b79f27](https://github.com/antvis/S2/commit/0b79f27870b7183cdb1632f713823059f7449444))
+
 # [@antv/s2-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-v2.0.1...@antv/s2-v2.1.0) (2024-11-29)
 
 

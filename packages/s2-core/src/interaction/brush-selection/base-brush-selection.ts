@@ -698,7 +698,7 @@ export class BaseBrushSelection
 
       if (this.isValidBrushSelection()) {
         this.addBrushIntercepts();
-        this.updateSelectedCells();
+        this.updateSelectedCells(event);
 
         const tooltipData = getCellsTooltipData(this.spreadsheet);
 
@@ -819,7 +819,8 @@ export class BaseBrushSelection
 
   protected bindMouseMove() {}
 
-  protected updateSelectedCells() {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected updateSelectedCells(event: MouseEvent) {}
 
   protected getPrepareSelectMaskPosition(brushRange: BrushRange): PointLike {
     return {

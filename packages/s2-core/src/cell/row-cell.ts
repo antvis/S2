@@ -517,7 +517,10 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     return (
       rowCell?.maxLinesByField?.[this.meta.id] ??
-      rowCell?.maxLinesByField?.[this.meta.field]
+      rowCell?.maxLinesByField?.[this.meta.field] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: this.meta.extra?.isCustomHeight,
+      })
     );
   }
 }

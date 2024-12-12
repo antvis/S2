@@ -1,3 +1,18 @@
+# [@antv/s2-react-v2.1.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.1...@antv/s2-react-v2.1.2) (2024-12-06)
+
+
+### Bug Fixes
+
+* 修复手动调用 showTooltip 不展示菜单的问题 ([d8afe27](https://github.com/antvis/S2/commit/d8afe2723ba731c220a1dcd8be22afd8d63aed8e))
+
+# [@antv/s2-react-v2.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.0...@antv/s2-react-v2.1.1) (2024-12-04)
+
+
+### Bug Fixes
+
+* 修复下钻组件展示错误操作 icon & 兼容低版本 menu 写法 ([#3011](https://github.com/antvis/S2/issues/3011)) ([7d171f0](https://github.com/antvis/S2/commit/7d171f037e7f52cc49ad02ddf56598aa477bf043))
+* 修复点击单元格中的 icon 时无法获取到单元格 meta 信息的问题 close [#2985](https://github.com/antvis/S2/issues/2985) ([#3013](https://github.com/antvis/S2/issues/3013)) ([67853a2](https://github.com/antvis/S2/commit/67853a2c08456ff166e948c9be30eb817e220079))
+
 # [@antv/s2-react-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.2...@antv/s2-react-v2.1.0) (2024-11-29)
 
 

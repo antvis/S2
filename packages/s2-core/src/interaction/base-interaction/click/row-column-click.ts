@@ -114,6 +114,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
         : InteractionName.COL_CELL_CLICK;
 
     const success = interaction.changeCell({
+      event,
       cell,
       isMultiSelection,
       interactionName: isMultiSelection
