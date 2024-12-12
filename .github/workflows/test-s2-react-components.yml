@@ -1,4 +1,4 @@
-name: 💯 test
+name: 💯 test (@antv/s2-react-components)
 
 on: [pull_request]
 
@@ -42,7 +42,7 @@ jobs:
 
       - name: Test
         run: |
-          pnpm test:ci-coverage
+          pnpm --filter @antv/s2-react-components test:ci-coverage
 
       - name: Upload test coverage
         uses: codecov/codecov-action@v3

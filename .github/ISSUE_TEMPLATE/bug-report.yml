@@ -1,0 +1,146 @@
+name: '🐛 Bug report'
+description: Create a report to help us improve, Ask questions in Discussions / 创建一个问题报告以帮助我们改进，提问请到 Discussions
+title: '🐛'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report errors and exceptions found in S2.
+
+        Before submitting a new bug/issue, please check the links below to see if there is a solution or question posted there already:
+
+        ---
+
+        ### 反馈在 S2 中发现的错误、异常 ([提 Issue 前必读](https://github.com/antvis/S2/issues/1904))。
+
+        ⚠️ 在提出问题前，请确保你已经仔细阅读👓/搜索🔍过 [官方文档](https://s2.antv.antgroup.com/docs/manual/introduction) 和 [常见问题](https://s2.antv.antgroup.com/docs/manual/faq) 以及 [图表示例](https://s2.antv.antgroup.com/examples/gallery), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed) 和 [Discussions 列表](https://github.com/antvis/S2/discussions). 当你确定自己的问题没有解决方案时，请提交 issue。 ⚠️
+
+        如果是使用问题，不知道怎么用，请移步 [Discussions 讨论区](https://github.com/antvis/S2/discussions) 并提供 [有效信息](https://github.com/antvis/S2/issues/1904) 进行提问。
+
+        ### 参与社区共建
+
+        **这是一个开源项目, 我们也有繁忙的业务要做, 是用自己的业余时间在维护, 为爱发电, 精力有限, 所以有时候 issue 响应速度不是那么及时, 如果你遇到了问题, 或者对 [Issues](https://github.com/antvis/S2/issues) 和 [Discussions](https://github.com/antvis/S2/discussions) 列表的问题感兴趣, 可以直接认领并尝试修复 ([贡献指南](https://s2.antv.antgroup.com/manual/contribution))，帮助 S2 变得更好, 而不是一味的埋怨和催促, 我们不是甲方乙方的关系.**
+
+  - type: textarea
+    id: version
+    attributes:
+      label: 🏷  S2 Version / S2 版本
+      description: |
+        请填写你实际安装到 node_modules 中的具体版本号，请确保你已经尝试过安装最新版本解决问题，并且本地和官网都能复现该问题.
+        请不要写 `latest`, `2.x` 这种没有意义的版本号,
+      placeholder: |
+        复制下方的表格, 修改对应版本号即可:
+
+        | Package        | Version |
+        | -------------- | ------- |
+        | @antv/s2       |  2.0.0  |
+        | @antv/s2-react |  2.0.0  |
+        | @antv/s2-react-components   | 2.0.0 |
+
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: sheet-type
+    attributes:
+      label: 💻 Sheet Type / 表格类型
+      description: |
+        请选择你具体使用的表格，这能帮助我们更快的定位问题
+      options:
+        - label: PivotSheet
+        - label: TableSheet
+        - label: GridAnalysisSheet
+        - label: StrategySheet
+        - label: EditableSheet
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 🖋 Describe the bug / 问题描述
+      description: |
+        1. 请填写你具体的问题描述，**请不要惜字如金，尽可能的多提供一些你能想到的有用信息**。
+        2. 请至少懂表格的基本概念，会基本的 JavaScript, 统一用语，不要将 `行头` 说成 `列头`,  `列头` 说成 `表头`, 统一用语，可以减少我们的沟通成本。
+
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: ⌨️ Code Snapshots / 代码片段
+      description: |
+        1. 请粘贴你的**核心代码片段**，包括但不限于 `报错信息`, `s2Options 配置信息`, `s2DataConfig 数据源信息`。
+        2. 请不要粘贴你自己的业务代码, 更不要无脑粘贴一大段没有格式化的 "乱码"。
+        3. 请不要**直接粘贴官网的在线示例链接, 然后告诉我们有问题, 官网不会保存你编辑后的代码**, 请粘贴 `你的代码片段`, 或者使用 [codesandbox](https://codesandbox.io/)
+        4. 请尽量不要粘贴代码的截图，请使用文本.
+      placeholder: |
+        If there is a code block, please use Markdown syntax, such as:
+        请注意使用 markdown code 标签:
+
+        ```javascript
+        // Your code here
+        ```
+    validations:
+      required: true
+
+  - type: input
+    id: link
+    attributes:
+      label: 🔗 Reproduction link / 复现链接
+      description: |
+        1. 请提供一个精简的可复现链接，它可以让我们更快的帮你复现，定位问题，这很重要，尽量避免 gif, 视频等形式。
+        2. 推荐使用 [codesandbox](https://codesandbox.io/), 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)。
+        3. [官网在线示例](https://s2.antv.vision/zh/examples/gallery) 支持在线编写代码，你可以将代码转成 `codesandbox` 并将对应的链接发给我们，请不要将官网的代码原封不动的复制给我们，请不要 `这么麻烦, 还要复现链接? 赶紧给我修啊, 很急!`, 请不要 `打了一个压缩包给你, 代码都在这, 给我修吧`，更不要 `复现步骤，联系 xxx@qq.com`。
+        4. 请不要 `开局一张图，内容全靠猜`, 我们不是侦探
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 📋 Steps to Reproduce the Bug or Issue / 重现步骤
+      description: |
+        1. 请不要惜字如金，粘贴一个张图或者一句话就草草了事，我们需要你详细的复现步骤，这个问题需要怎么样的操作步骤才能复现。
+        2. 不同的问题有不同的复现步骤，只有你最清楚怎么复现这个问题，比如问题需要 **滚动表格到指定位置才能复现, 但是通篇都没有提到, 而你就贴一张图, 什么信息都不给**：所以请 `1. 拖动表格滚动条，滚动到 xx 位置 2. 停留 300ms, 3. tooltip 消失`。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 😊 Expected Behavior / 期望行为
+      description: |
+        说明这个问题的预期行为，只有你才最了解自己的代码，所以请不要让我们猜，请说明预期，不如 `数据不对，正确应该是：xx`, `布局错误：正确应该是 A 节点在 B 位置`, 如有必要请使用截图工具标注一下, 让问题更醒目。
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: 😅 Current Behavior / 当前行为
+      description: |
+        说明这个问题当前行为, 如有必要请使用截图工具标注一下, 让问题更醒目。
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: OS
+    attributes:
+      label: 💻 OS / 操作系统
+      options:
+        - label: macOS
+        - label: Windows
+        - label: Linux
+        - label: Others / 其他
+
+  - type: checkboxes
+    id: Browser
+    attributes:
+      label: 🌏 Browser / 浏览器
+      options:
+        - label: Chrome
+        - label: Edge
+        - label: Firefox
+        - label: Safari (Limited support / 有限支持)
+        - label: IE (Nonsupport / 不支持)
+        - label: Others / 其他

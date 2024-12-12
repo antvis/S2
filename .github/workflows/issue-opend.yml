@@ -20,20 +20,6 @@ jobs:
 
             Hello, @${{ github.event.issue.user.login }}, please edit your issue title. a concise issue title will save everyone time. please do not leave the title as the body or empty.
 
-      # 如果 issue 的提交者无视模版, 连基本的版本号,表格类型, 描述都没有, 直接自动关闭, 不多BB.
-      - name: check issue body
-        if: contains(github.event.issue.body, 'Version') == false && contains(github.event.issue.body, 'Sheet Type') == false && contains(github.event.issue.body, 'Description') == false
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'create-comment,add-labels,close-issue'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.issue.number }}
-          labels: '⛔ invalid'
-          body: |
-            你好 @${{ github.event.issue.user.login }}，请按照 issue 模板填写相关信息, 方便大家高效沟通, 强烈推荐你阅读 [提 Issue 前必读](https://github.com/antvis/S2/issues/1904) 和 [如何向开源项目提交无法解答的问题](https://zhuanlan.zhihu.com/p/25795393)。
-
-            Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template to facilitate communication efficiently. recommend you to read [提 Issue 前必读](https://github.com/antvis/S2/issues/1904) and [如何向开源项目提交无法解答的问题](https://zhuanlan.zhihu.com/p/25795393), Thanks so much!
-
       # 标题或正文 (版本号) 带有 next, 增加标记便于统计
       - name: Auto Set Next Label
         if: contains(github.event.issue.title, 'next') || contains(github.event.issue.body, 'next')
