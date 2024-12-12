@@ -8,7 +8,7 @@ jobs:
   issue-opend-check:
     runs-on: ubuntu-latest
     steps:
-      - name: check issue title
+      - name: Check issue title
         if: github.event.issue.title == '🤔' || github.event.issue.title == '🙏' || github.event.issue.title == '🐛'
         uses: actions-cool/issues-helper@main
         with:
@@ -29,3 +29,22 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           labels: 'next'
+
+      - name: Auto Tips
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}:
+
+            ### 提 Issue 须知
+
+            ⚠️ 在提出问题前，请确保你已经仔细阅读👓/搜索🔍过 [官方文档](https://s2.antv.antgroup.com) 和 [常见问题](https://s2.antv.antgroup.com/manual/faq) 以及 [图表示例](https://s2.antv.antgroup.com/examples), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed) 和 [Discussions 列表](https://github.com/antvis/S2/discussions). 当你确定自己的问题没有解决方案时，请提交 issue。 ⚠️
+
+            如果是使用问题，不知道怎么用，移步 [Discussions 讨论区](https://github.com/antvis/S2/discussions) 并提供 [有效信息](https://zhuanlan.zhihu.com/p/25795393) 进行 [提问](https://github.com/antvis/S2/discussions/new?category=q-a)。
+
+            ### 参与社区共建
+
+            **这是一个开源项目, 我们也有繁忙的业务要做, 是用自己的业余时间在维护, 为爱发电, 精力有限, 所以有时候 issue 响应速度不是那么及时, 如果你遇到了问题, 或者对 [Issues](https://github.com/antvis/S2/issues) 和 [Discussions](https://github.com/antvis/S2/discussions) 列表的问题感兴趣, 可以直接认领并尝试修复 ([贡献指南](https://s2.antv.antgroup.com/manual/contribution))，帮助 S2 变得更好, 而不是一味的埋怨和催促, 我们不是甲方乙方的关系.**

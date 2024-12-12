@@ -13,9 +13,9 @@ body:
 
         ### 反馈在 S2 中发现的错误、异常 ([提 Issue 前必读](https://github.com/antvis/S2/issues/1904))。
 
-        ⚠️ 在提出问题前，请确保你已经仔细阅读👓/搜索🔍过 [官方文档](https://s2.antv.antgroup.com/docs/manual/introduction) 和 [常见问题](https://s2.antv.antgroup.com/docs/manual/faq) 以及 [图表示例](https://s2.antv.antgroup.com/examples/gallery), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed) 和 [Discussions 列表](https://github.com/antvis/S2/discussions). 当你确定自己的问题没有解决方案时，请提交 issue。 ⚠️
+        ⚠️ 在提出问题前，请确保你已经仔细阅读👓/搜索🔍过 [官方文档](https://s2.antv.antgroup.com) 和 [常见问题](https://s2.antv.antgroup.com/manual/faq) 以及 [图表示例](https://s2.antv.antgroup.com/examples), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed) 和 [Discussions 列表](https://github.com/antvis/S2/discussions). 当你确定自己的问题没有解决方案时，请提交 issue。 ⚠️
 
-        如果是使用问题，不知道怎么用，请移步 [Discussions 讨论区](https://github.com/antvis/S2/discussions) 并提供 [有效信息](https://github.com/antvis/S2/issues/1904) 进行提问。
+        如果是使用问题，不知道怎么用，请移步 [Discussions 讨论区](https://github.com/antvis/S2/discussions) 并提供 [有效信息](https://github.com/antvis/S2/issues/1904) 进行[提问](https://github.com/antvis/S2/discussions/new?category=q-a)。
 
         ### 参与社区共建
 

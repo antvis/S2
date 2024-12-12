@@ -95,17 +95,21 @@ jobs:
 
             Hello, @${{ github.event.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
 
-      - name: Pending
-        if: github.event.label.name == '💤 pending'
+      - name: Welcom PR
+        if: github.event.label.name == '⭐️ Welcom PR'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 但人力资源有限, 短期内无法支持, 请关注后续发布日志。当然, 如果能贡献 PR 帮助我们改进, 不胜感激！
+            你好 @${{ github.event.issue.user.login }}，你的反馈我们已收到, 这是一个开源项目, 我们也是用自己的业余时间在维护, 为爱发电, 精力实在有限, 👏🏻 欢迎根据 [贡献指南](https://s2.antv.antgroup.com/manual/contribution) 提交 PR. 一起参与到开源项目的建设中.
 
-            Hello, @${{ github.event.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development. However, it could not be supported in the short term since limited time, please pay attention to the follow-up release logs. Of course, looking forward for your PR!
+            如果你遇到了问题，或者对 [Issues](https://github.com/antvis/S2/issues) 和 [Discussions](https://github.com/antvis/S2/discussions) 列表的问题感兴趣，可以**直接认领并尝试修复**，帮助 S2 变得更好，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
+
+            Hello, @${{ github.event.issue.user.login }}, We have received your feedback, this is an open source project, we also use our spare time to maintain, for love power generation, energy is really limited, 👏 🏻 welcome according to contribution guide (https://s2.antv.antgroup.com/manual/contribution) to submit PR. Get involved in open source projects together.
+
+            If you have a problem, Or to [Issues] (https://github.com/antvis/S2/issues) and [Discussions] (https://github.com/antvis/S2/discussions) interested in a list of questions, Can directly claim and try to repair, help S2 better, look forward to in the [contributor list] (https://github.com/antvis/S2/graphs/contributors) saw your head.
 
       - name: Rejected
         if: github.event.label.name == '❌ won''t support'

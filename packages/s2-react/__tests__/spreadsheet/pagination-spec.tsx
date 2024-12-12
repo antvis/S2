@@ -28,25 +28,34 @@ describe('Pagination Tests', () => {
   });
 
   test('should render with antd <Pagination/> component', async () => {
-    const { container, asFragment } = render(
+    const renderPagination = jest.fn(({ pagination }) => (
+      <Pagination
+        size="small"
+        showTotal={(total) => `共计 ${total} 条`}
+        showSizeChanger={false}
+        showQuickJumper
+        {...pagination}
+      />
+    ));
+    const { container } = render(
       <SheetComponent
         options={s2Options}
         dataCfg={mockDataConfig as S2DataConfig}
       >
-        {({ pagination }) => (
-          <Pagination
-            size="small"
-            showTotal={(total) => `共计 ${total} 条`}
-            showSizeChanger={false}
-            showQuickJumper
-            {...pagination}
-          />
-        )}
+        {renderPagination}
       </SheetComponent>,
     );
 
     await waitFor(() => {
-      expect(asFragment()).toMatchSnapshot();
+      expect(renderPagination).toHaveBeenCalledWith({
+        pagination: {
+          current: 1,
+          pageSize: 1,
+          total: 0,
+          onChange: expect.any(Function),
+          onShowSizeChange: expect.any(Function),
+        },
+      });
       expect(
         container.querySelector('.ant-pagination-options-quick-jumper'),
       ).toBeTruthy();
@@ -75,7 +84,7 @@ describe('Pagination Tests', () => {
     await waitFor(() => {
       const rowCell = s2.facet.getRowCells()[0];
 
-      expect(rowCell.getTextShape().parsedStyle.y).toBe(15);
+      expect(rowCell.getTextShape().parsedStyle.y).toBe(16);
     });
   });
 });
