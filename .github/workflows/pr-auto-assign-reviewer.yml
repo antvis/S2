@@ -21,5 +21,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           pr-emoji: '+1, rocket'
-          reviewers: 'lijinke666,wjgogogo,wuhaiyang'
+          reviewers: 'lijinke666,wjgogogo'
           review-creator: false

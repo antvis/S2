@@ -16,9 +16,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            你好 @${{ github.event.pull_request.user.login }}，感谢你的贡献, 为了让代码更健壮, 请根据 [贡献指南](https://s2.antv.antgroup.com/manual/contribution) 补充相应单元测试, 如果有 API 改动, 请修改 [相应的文档](https://github.com/antvis/S2/tree/master/s2-site)
+            你好 @${{ github.event.pull_request.user.login }}，感谢你的贡献, 为了让代码更健壮, 请根据 [贡献指南](https://s2.antv.antgroup.com/manual/contribution) 补充相应单元测试, 如果有 API 改动, 请修改 [相应的文档](https://github.com/antvis/S2/tree/next/s2-site)
 
-            Hello, @${{ github.event.pull_request.user.login }}, Thanks for your contribution. In order to make the code more robust, please add the corresponding unit tests, and update the [docs](https://github.com/antvis/S2/tree/master/s2-site) if there are API changes.
+            Hello, @${{ github.event.pull_request.user.login }}, Thanks for your contribution. In order to make the code more robust, please add the corresponding unit tests, and update the [docs](https://github.com/antvis/S2/tree/next/s2-site) if there are API changes.
 
       - name: Need more info
         if: github.event.label.name == '👀 need more info'

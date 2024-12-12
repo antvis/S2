@@ -1,4 +1,4 @@
-name: 💯 test
+name: 💯 test (@antv/s2-react)
 
 on: [pull_request]
 
@@ -11,7 +11,6 @@ jobs:
     # jest-electron 需要 macOS 环境, 但是 免费用户 并发有限制, 容易排队 https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
     # runs-on: macos-latest # (目前 macos-latest 对应的是 Big Sur 11, macos-12 对应  Monterey 12)
     # macOS 3-core CPU, 其他 2-core CPU
-    # > macos-14 会导致 CI 的测试卡死, 没有任何报错!!!
     runs-on: macos-14
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
@@ -42,7 +41,7 @@ jobs:
 
       - name: Test
         run: |
-          pnpm test:ci-coverage
+          pnpm --filter @antv/s2-react test:ci-coverage
 
       - name: Upload test coverage
         uses: codecov/codecov-action@v3

@@ -48,8 +48,8 @@
     "clean": "rimraf lib esm dist temp",
     "start": "cross-env PLAYGROUND=true vite",
     "test": "jest --passWithNoTests",
-    "test:ci": "pnpm test -- --maxWorkers=3",
-    "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
+    "test:ci": "pnpm test",
+    "test:ci-coverage": "pnpm test:coverage",
     "test:coverage": "pnpm test -- --coverage",
     "test:watch": "pnpm test -- --watch",
     "tsc": "vue-tsc --noEmit"
