@@ -177,13 +177,6 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
         this.emitCollapseEvent();
       },
     });
-
-    // 移动端, 点击热区为整个单元格
-    // if (isMobile()) {
-    //   this.addEventListener('click', () => {
-    //     this.emitCollapseEvent();
-    //   });
-    // }
   }
 
   protected drawTreeLeafNodeAlignDot() {
