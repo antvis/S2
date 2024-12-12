@@ -43,6 +43,7 @@ import {
 } from '../utils/cell/header-cell';
 import { findFieldCondition } from '../utils/condition/condition';
 import { renderIcon } from '../utils/g-renders';
+import { isMobile } from '../utils/is-mobile';
 import { getSortTypeIcon } from '../utils/sort-action';
 
 export abstract class HeaderCell<
@@ -518,5 +519,21 @@ export abstract class HeaderCell<
 
   public getActionIcons() {
     return this.actionIcons || [];
+  }
+
+  protected getActionIconOffset(iconSize: number) {
+    let offsetXY = 0;
+    let offsetWH = 0;
+
+    // 移动端的时候，将icon变大，从而增加触发交互的面积
+    if (isMobile()) {
+      offsetXY = iconSize / 4;
+      offsetWH = iconSize / 2;
+    }
+
+    return {
+      offsetXY,
+      offsetWH,
+    };
   }
 }
