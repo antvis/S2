@@ -1016,6 +1016,19 @@ splitLine: {
 }
 ```
 
+#### 自定义 hook 变更
+
+1. 原 `layoutDataPosition` 废弃，新增 `layoutCellMeta` 用于自定义单元格元数据。
+
+```diff
+const s2Options = {
+-  layoutDataPosition: (s2, getCellData) => {}
++  layoutCellMeta: (cellMeta) => {}
+}
+```
+
+具体请查看 [自定义单元格元数据](/examples/custom/custom-layout/#custom-layout-cell-meta) 相关示例。
+
 ### 组件层 (s2-react) <Badge>@antv/s2-react</Badge>
 
 #### 移除 Ant Design 组件库依赖
