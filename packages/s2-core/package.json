@@ -63,7 +63,7 @@
     "clean": "rimraf lib esm dist temp",
     "start": "pnpm test:live",
     "sync-event": "node ./scripts/sync-event.mjs",
-    "test": "jest --passWithNoTests --detectOpenHandles",
+    "test": "jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:ci": "pnpm test",
     "test:ci-coverage": "pnpm test:coverage",
     "test:coverage": "pnpm test -- --coverage",

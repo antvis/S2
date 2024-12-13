@@ -6,6 +6,8 @@ module.exports = {
   setupFilesAfterEnv: ['jest-extended', './__tests__/setup.js'],
   clearMocks: true,
   collectCoverage: false,
+  verbose: true,
+  forceExit: true,
   collectCoverageFrom: [
     'src/**/*.{ts,tsx,js,vue}',
     '!**/node_modules/**',
