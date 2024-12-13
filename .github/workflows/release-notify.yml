@@ -5,7 +5,7 @@ on:
     # published: latest release 和 pre release 都会触发
     # prereleased: 只有 pre release 触发
     # released: 只有 latest release 触发
-    types: [released]
+    types: [published]
 
 jobs:
   notify:
@@ -20,7 +20,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🎉 AntV/S2 新版本发布啦 (${{ github.head_ref || github.ref_name }}) 🎉",
+                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
                 "text": "📋 点击查看更新日志",
                 "messageUrl": "https://github.com/antvis/S2/releases",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
@@ -36,7 +36,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🎉 AntV/S2 新版本发布啦 🎉",
+                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
                 "text": "📋 点击查看更新日志",
                 "messageUrl": "https://github.com/antvis/S2/releases",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
@@ -52,7 +52,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🎉 AntV/S2 新版本发布啦 🎉",
+                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
                 "text": "📋 点击查看更新日志",
                 "messageUrl": "https://github.com/antvis/S2/releases",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
