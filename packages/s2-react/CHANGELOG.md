@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.1.3](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.2...@antv/s2-react-v2.1.3) (2024-12-13)
+
+
+### Bug Fixes
+
+* 构建产物编译到 es2015 close [#3025](https://github.com/antvis/S2/issues/3025) ([#3026](https://github.com/antvis/S2/issues/3026)) ([0a7977c](https://github.com/antvis/S2/commit/0a7977c1793a8171b14b07a22847b4dd9ed85d5f))
+
 # [@antv/s2-react-v2.1.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.1...@antv/s2-react-v2.1.2) (2024-12-06)
 
 
