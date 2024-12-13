@@ -155,28 +155,28 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const iconX = x + contentIndent;
     const iconY = this.getIconPosition().y;
-    const { offsetXY, offsetWH } = this.getActionIconOffset(size);
 
     this.treeIcon = renderTreeIcon({
       group: this,
       iconCfg: {
-        x: iconX - offsetXY,
-        y: iconY - offsetXY,
-        width: size + offsetWH,
-        height: size + offsetWH,
+        x: iconX,
+        y: iconY,
+        width: size,
+        height: size,
         fill,
       },
       isCollapsed,
       onClick: () => {
         this.onTreeIconClick();
       },
-      onTouchEnd: () => {
-        /**
-         * 移动端时，绑定展开、收起事件
-         */
-        this.emitCollapseEvent();
-      },
     });
+
+    // 移动端, 点击热区为整个单元格
+    if (isMobile()) {
+      this.addEventListener('touchend', () => {
+        this.emitCollapseEvent();
+      });
+    }
   }
 
   protected drawTreeLeafNodeAlignDot() {

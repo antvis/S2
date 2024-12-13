@@ -130,9 +130,8 @@ export function renderTreeIcon(options: {
   isCollapsed?: boolean | null;
   iconCfg: Omit<GuiIconCfg, 'name'>;
   onClick?: () => void;
-  onTouchEnd?: () => void;
 }) {
-  const { group, iconCfg, isCollapsed, onClick, onTouchEnd } = options;
+  const { group, iconCfg, isCollapsed, onClick } = options;
   const iconShape = renderIcon(group, {
     ...iconCfg,
     name: isCollapsed ? 'Plus' : 'Minus',
@@ -141,10 +140,6 @@ export function renderTreeIcon(options: {
 
   if (isFunction(onClick)) {
     iconShape.addEventListener('click', onClick);
-  }
-
-  if (isFunction(onTouchEnd)) {
-    iconShape.addEventListener('touchend', onTouchEnd);
   }
 
   return iconShape;

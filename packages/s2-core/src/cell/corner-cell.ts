@@ -87,28 +87,27 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       values(collapseFields!).filter(Boolean).length === rootRowNodes.length ||
       rootRowNodes.every((node) => node.isCollapsed);
     const isCollapsed = isAllCollapsed;
-    const { offsetXY, offsetWH } = this.getActionIconOffset(size);
 
     this.treeIcon = renderTreeIcon({
       group: this,
       iconCfg: {
-        x: area.x - offsetXY,
-        y: this.getIconPosition().y - offsetXY,
-        width: size + offsetWH,
-        height: size + offsetWH,
+        x: area.x,
+        y: this.getIconPosition().y,
+        width: size,
+        height: size,
         fill,
       },
       isCollapsed,
       onClick: () => {
         this.onTreeIconClick(isCollapsed);
       },
-      onTouchEnd: () => {
-        /**
-         * 移动端时，绑定展开、收起事件
-         */
-        this.emitCollapseEvent(isCollapsed);
-      },
     });
+    // 移动端, 点击热区为整个单元格
+    if (isMobile()) {
+      this.addEventListener('touchend', () => {
+        this.emitCollapseEvent(isCollapsed);
+      });
+    }
   }
 
   protected isLastRowCornerCell() {
