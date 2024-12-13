@@ -36,6 +36,12 @@ body:
         | @antv/s2       |  2.0.0  |
         | @antv/s2-react |  2.0.0  |
         | @antv/s2-react-components   | 2.0.0 |
+      value: |
+        | Package        | Version |
+        | -------------- | ------- |
+        | @antv/s2       |    |
+        | @antv/s2-react |    |
+        | @antv/s2-react-components   |  |
 
     validations:
       required: true

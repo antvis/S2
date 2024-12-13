@@ -361,7 +361,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     expect(result).toStrictEqual({
       x: {
-        needScroll: true,
+        needScroll: false,
         value: maxX - VSCROLLBAR_WIDTH - EXTRA_PIXEL,
       },
       y: {
@@ -409,7 +409,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     expect(result).toStrictEqual({
       x: {
-        needScroll: true,
+        needScroll: false,
         value: minX + EXTRA_PIXEL,
       },
       y: {

@@ -33,6 +33,11 @@ body:
         | ---- | ---- | ------- | ----------- |
         | -    | -    | -       | -           |
 
+      value: |
+        | name | type | default | description |
+        | ---- | ---- | ------- | ----------- |
+        | -    | -    | -       | -           |
+
     validations:
       required: true
 
