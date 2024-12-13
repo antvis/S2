@@ -145,3 +145,28 @@ jobs:
             Hello, @${{ github.event.issue.user.login }}, This feature or defect has been supported or fixed in the '2.x' version, please use the '2.x' version for development (' 1.x 'version is no longer maintained), thank you for your support and understanding.
 
             Any `2.x` version issues, please go to [issue](https://github.com/antvis/S2/issues), or [view docs](https://s2.antv.antgroup.com), the first trial:
+
+      - name: S2 Vue
+        if: github.event.label.name == 's2-vue'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment,close-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，`@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发。
+
+            Hello, @${{ github.event.issue.user.login }}, `@antv/s2-vue` has stopped maintenance, due to limited energy investment, due to the comprehensive consideration of maintenance costs, package downloads and other factors, from the '2.0.0' official version will not continue to update, please based on '@antv/s2' self-encapsulation, or fork warehouse for secondary development.
+
+      - name: G
+        if: github.event.label.name == 'G'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，这个属于底层渲染引擎 [AntV/G](https://g.antv.antgroup.com/) 的问题, 需要等待底层支持或修复后, 上层才能适配, 请耐心等待, 感谢你的理解。
+
+            Hello, @${{ github.event.issue.user.login }}, This belongs to the underlying rendering engine AntV/G (https://g.antv.antgroup.com/), needs to wait for the underlying support or after repair, the upper can adapter, please wait patiently, thank you for your understanding.
+
