@@ -37,7 +37,11 @@ import {
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Indexes } from '../utils/indexes';
-import { getDisplayText, getEmptyPlaceholder } from '../utils/text';
+import {
+  getDisplayText,
+  getEmptyPlaceholder,
+  replaceEmptyFieldValue,
+} from '../utils/text';
 import type { GetCellMultiDataParams } from './index';
 import type { GetCellDataParams, Query } from './interface';
 
@@ -145,7 +149,7 @@ export abstract class BaseDataSet {
     return get(
       this.getFieldMeta(realField, this.meta),
       'name',
-      defaultValue ?? realDefaultValue,
+      replaceEmptyFieldValue(defaultValue ?? realDefaultValue),
     );
   }
 
