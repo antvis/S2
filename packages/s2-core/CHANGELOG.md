@@ -1,3 +1,13 @@
+# [@antv/s2-v2.1.4](https://github.com/antvis/S2/compare/@antv/s2-v2.1.3...@antv/s2-v2.1.4) (2024-12-13)
+
+
+### Bug Fixes
+
+* 修复在维值缺失场景下导出数据占位符未解析的问题 ([#3027](https://github.com/antvis/S2/issues/3027)) ([6e63b97](https://github.com/antvis/S2/commit/6e63b970da353a7ccc231e3cbf716a008e191f4f))
+* 修复行头圈选复制时部分场景下数据重复 close [#2975](https://github.com/antvis/S2/issues/2975) ([#3029](https://github.com/antvis/S2/issues/3029)) ([001573f](https://github.com/antvis/S2/commit/001573f2dedbf069c996deb1579bcc9525f5efa8))
+* 构建产物编译到 es2015 close [#3025](https://github.com/antvis/S2/issues/3025) ([#3026](https://github.com/antvis/S2/issues/3026)) ([0a7977c](https://github.com/antvis/S2/commit/0a7977c1793a8171b14b07a22847b4dd9ed85d5f))
+* 解决移动端下，树形结构展开、收起交互失效的问题 ([#3039](https://github.com/antvis/S2/issues/3039)) ([a97625c](https://github.com/antvis/S2/commit/a97625c8524c660956fbb815ba943210d6f3fc76))
+
 # [@antv/s2-v2.1.3](https://github.com/antvis/S2/compare/@antv/s2-v2.1.2...@antv/s2-v2.1.3) (2024-12-09)
 
 
