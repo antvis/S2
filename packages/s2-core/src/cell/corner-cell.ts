@@ -24,6 +24,7 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
+import { isMobile } from '../utils/is-mobile';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell<CornerHeaderConfig> {
@@ -53,6 +54,19 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     this.drawBorders();
     this.drawResizeArea();
     this.update();
+  }
+
+  private onTreeIconClick(isCollapsed: boolean) {
+    if (isMobile()) {
+      return;
+    }
+
+    this.emitCollapseEvent(isCollapsed);
+  }
+
+  private emitCollapseEvent(isCollapsed: boolean) {
+    this.spreadsheet.facet.resetScrollY();
+    this.spreadsheet.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
   }
 
   /**
@@ -85,13 +99,15 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       },
       isCollapsed,
       onClick: () => {
-        this.spreadsheet.facet.resetScrollY();
-        this.spreadsheet.emit(
-          S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
-          isCollapsed,
-        );
+        this.onTreeIconClick(isCollapsed);
       },
     });
+    // 移动端, 点击热区为整个单元格
+    if (isMobile()) {
+      this.addEventListener('touchend', () => {
+        this.emitCollapseEvent(isCollapsed);
+      });
+    }
   }
 
   protected isLastRowCornerCell() {

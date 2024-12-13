@@ -161,8 +161,8 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       iconCfg: {
         x: iconX,
         y: iconY,
-        width: size!,
-        height: size!,
+        width: size,
+        height: size,
         fill,
       },
       isCollapsed,
@@ -173,7 +173,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     // 移动端, 点击热区为整个单元格
     if (isMobile()) {
-      this.addEventListener('click', () => {
+      this.addEventListener('touchend', () => {
         this.emitCollapseEvent();
       });
     }
