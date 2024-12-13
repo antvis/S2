@@ -12,14 +12,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pre Release Notify
-        uses: visiky/dingtalk-release-notify@main
+        uses: zcong1993/actions-ding@master
         with:
-          DING_TALK_TOKEN: |
-            ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-            ${{ secrets.DING_TALK_GROUP_TOKEN }}
-            ${{ secrets.DING_TALK_PUBLIC_TOKEN }}
-          notify_title: '🎉 AntV/S2 测试版发布 🎉'
-          notify_body: '🎉 **AntV/S2 新版本发布啦** 🎉 <hr /><br/> ![preview](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original) <hr /> [**点击查看更新日志**](https://github.com/antvis/S2/releases) <hr />'
-          notify_footer: '> 该版本为测试版, 请谨慎使用 ([AntV/S2 Releases](https://github.com/antvis/S2/releases))'
-          at_all: false
-          enable_prerelease: true
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🎉 AntV/S2 测试版本发布啦 🎉",
+                "text": "📋 测试版本请谨慎使用, 点击查看更新日志",
+                "messageUrl": "https://github.com/antvis/S2/releases",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
+
+      - name: Pre Release Notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_GROUP_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🎉 AntV/S2 测试版本发布啦 🎉",
+                "text": "📋 测试版本请谨慎使用, 点击查看更新日志",
+                "messageUrl": "https://github.com/antvis/S2/releases",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
+
+      - name: Pre Release Notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_PUBLIC_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🎉 AntV/S2 测试版本发布啦 🎉",
+                "text": "📋 测试版本请谨慎使用, 点击查看更新日志",
+                "messageUrl": "https://github.com/antvis/S2/releases",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
+
