@@ -47,7 +47,7 @@ type SimpleData = string | number | null | undefined;
 
 | 配置项名称       | 说明                                       | 类型                          | 默认值 | 必选 |
 | :--------------- | :----------------------------------------- | :---------------------------- | :----- | :--- |
-| `values`         | 格式化后的数据，直接展示在 dataCfg 中      | [SimpleData](#simpledata)[][] | ✓      |
+| `values`         | 格式化后的数据，直接展示在 dataCfg 中      | [SimpleData](#simpledata)[][] |        |   ✓   |
 | `originalValues` | 原始数据，用于原始数据导出                 | [SimpleData](#simpledata)[][] |        |      |
 | `label`          | 用作单元格小标题，单独占一行展示           | `string`                      |        |      |
 | `[key: string]`  | 其他透传字段，用于自定义单元格的定制化展示 | `unknown`                     | ``     |      |
