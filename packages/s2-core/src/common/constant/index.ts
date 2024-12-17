@@ -1,3 +1,4 @@
+export * from './axisPolyline';
 export * from './basic';
 export * from './classnames';
 export * from './condition';

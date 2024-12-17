@@ -601,6 +601,12 @@ export const getTheme = (
           opacity: 1,
         },
       },
+      // ------------- poly line -----------------
+      polyline: {
+        stroke: '#000',
+        lineDash: [2, 3],
+        lineWidth: 1,
+      },
     },
     customTheme,
   );

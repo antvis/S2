@@ -43,6 +43,7 @@ export const CustomTreeOptions: SheetComponentOptions = {
   },
   style: {
     rowCell: {
+      showTreeLine: true,
       // expandDepth: 0,
       // collapseAll: true,
     },
@@ -59,6 +60,12 @@ export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
       CustomTreeOptions.hierarchyType!,
     );
     const { logHandler } = context;
+    const theme = {
+      polyline: {
+        // stroke: 'red',
+        // lineDash: [5, 0],
+      },
+    };
 
     return (
       <>
@@ -85,6 +92,9 @@ export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
           options={{ ...CustomTreeOptions, hierarchyType }}
           ref={ref}
           onCopied={logHandler('onCopied')}
+          themeCfg={{
+            theme,
+          }}
         />
       </>
     );

@@ -23,6 +23,7 @@ import { BaseCell } from '../cell';
 import {
   InterceptType,
   S2Event,
+  dottedTreeLines,
   getDefaultSeriesNumberText,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
@@ -71,6 +72,8 @@ import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { isMobile } from '../utils/is-mobile';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+
+import { drawDottedLines } from '../extends/pivot-chart/utils/polyline-axis';
 import type { PivotSheet } from './pivot-sheet';
 import type { TableSheet } from './table-sheet';
 
@@ -454,6 +457,7 @@ export abstract class SpreadSheet extends EE {
     }
 
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
+    drawDottedLines(this);
   }
 
   /**
@@ -919,5 +923,13 @@ export abstract class SpreadSheet extends EE {
 
   public enableAsyncExport(): Error | true {
     return true;
+  }
+
+  public getDottedLines() {
+    return dottedTreeLines;
+  }
+
+  public getDottedLinesLengh() {
+    return dottedTreeLines?.length || 0;
   }
 }
