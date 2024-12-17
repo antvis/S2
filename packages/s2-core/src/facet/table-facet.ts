@@ -86,6 +86,15 @@ export class TableFacet extends FrozenFacet {
     this.initEmptyPlaceholderGroup();
   }
 
+  protected shouldRender(): boolean {
+    const { fields } = this.spreadsheet.dataSet;
+    const isOnlyContainedSeriesNumber = fields?.columns?.every(
+      (field) => field === SERIES_NUMBER_FIELD,
+    );
+
+    return super.shouldRender() && !isOnlyContainedSeriesNumber;
+  }
+
   public render() {
     if (!this.shouldRender()) {
       return;
