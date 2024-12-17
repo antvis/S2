@@ -44,5 +44,6 @@ pnpm react:test -- -u
 pnpm lint
 
 # 本地启动官网
+pnpm build # 首次运行官网需要先执行一次
 pnpm site:start
 ```
