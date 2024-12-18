@@ -1,4 +1,5 @@
 import type { S2Options } from '@/common/interface';
+import { DARK_THEME_CLS } from '@antv/s2';
 import { createPivotSheet } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
@@ -103,6 +104,21 @@ describe('Tooltip Tests', () => {
         `#custom-container > div[class^="${CONTAINER_CLASS_NAME}"]`,
       ),
     ).toBeTruthy();
+
+    s2.destroy();
+  });
+
+  test('should render dark theme tooltip style', async () => {
+    const s2 = createS2({ enable: true });
+
+    s2.setThemeCfg({
+      name: 'dark',
+    });
+
+    await s2.render();
+    s2.showTooltip({ position: { x: 0, y: 0 } });
+
+    expect(document.querySelector(`body > .${DARK_THEME_CLS}`)).toBeTruthy();
 
     s2.destroy();
   });

@@ -1,4 +1,4 @@
-import { head, isEmpty } from 'lodash';
+import { assign, head, isEmpty } from 'lodash';
 import { SERIES_NUMBER_FIELD } from '../../common';
 import { ROOT_NODE_ID } from '../../common/constant/node';
 import type {
@@ -10,46 +10,11 @@ import type { Query } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
-export interface BaseNodeConfig {
-  /**
-   * id 只在行头、列头 node 以及 hierarchy 中有用，是当前 node query 的拼接产物
-   */
-  id: string;
-
-  /**
-   * 当前 node 的 field 属性， 在角头、行列头中 node 使用，和 dataCfg.fields 对应
-   */
-  field: string;
-  value: string;
-  level?: number;
-  rowIndex?: number;
-  colIndex?: number;
-  parent?: Node;
-  isTotals?: boolean;
-  isSubTotals?: boolean;
-  isCollapsed?: boolean | null;
-  isGrandTotals?: boolean;
-  isTotalRoot?: boolean;
-  hierarchy?: Hierarchy;
-  isPivotMode?: boolean;
-  seriesNumberWidth?: number;
-  spreadsheet?: SpreadSheet;
-  query?: Record<string, any>;
-  belongsCell?: S2CellType;
-  isTotalMeasure?: boolean;
-  inCollapseNode?: boolean;
-  isLeaf?: boolean;
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  padding?: number;
-  children?: Node[];
-  hiddenColumnsInfo?: HiddenColumnsInfo | null;
-  // 额外的节点信息
-  extra?: Record<string, any>;
-}
-
+export type NodeProperties = {
+  [K in keyof Node as Node[K] extends (...args: any[]) => any
+    ? never
+    : K]?: Node[K];
+};
 /**
  * Node for cornerHeader, colHeader, rowHeader
  */
@@ -84,7 +49,7 @@ export class Node {
   public rowIndex: number;
 
   // node's parent node
-  public parent: Node | undefined;
+  public parent?: Node;
 
   // check if node is leaf(the max level in tree)
   public isLeaf = false;
@@ -92,13 +57,11 @@ export class Node {
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
-  public colId: string;
-
   // node represent total measure
   public isTotalMeasure: boolean;
 
   // node is collapsed
-  public isCollapsed: boolean;
+  public isCollapsed: boolean | null;
 
   // node's children
   public children: Node[] = [];
@@ -116,7 +79,8 @@ export class Node {
   public seriesNumberWidth: number;
 
   /**
-   * 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分
+   * 1. 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分
+   * 2. 给 pivot chart sheet 用，关联当前格子和拆分的 axis 的格子
    */
   public relatedNode: Node;
 
@@ -126,9 +90,11 @@ export class Node {
   // node self's query condition(represent where node stay)
   public query?: Query;
 
-  public belongsCell?: S2CellType | null | undefined;
+  public belongsCell?: S2CellType | null;
 
   public inCollapseNode?: boolean;
+
+  public hiddenColumnsInfo?: HiddenColumnsInfo | null;
 
   public cornerType?: CornerNodeType;
 
@@ -146,60 +112,23 @@ export class Node {
 
   public shallowRender?: boolean;
 
-  public extra?: {
+  /** 是否不绘制 col cell 水平 resize 热区 */
+  public hideColCellHorizontalResize?: boolean;
+
+  /** 是否不绘制 row cell 竖直 resize 热区 */
+  public hideRowCellVerticalResize?: boolean;
+
+  public extra: {
     description?: string;
     isCustomNode?: boolean;
+    isCustomHeight?: boolean;
     [key: string]: any;
-  };
+  } = {};
 
   [key: string]: any;
 
-  constructor(cfg: BaseNodeConfig) {
-    const {
-      id,
-      field,
-      value,
-      parent,
-      level,
-      rowIndex,
-      isTotals,
-      isGrandTotals,
-      isSubTotals,
-      isCollapsed,
-      isTotalRoot,
-      hierarchy,
-      isPivotMode,
-      seriesNumberWidth,
-      spreadsheet,
-      query,
-      belongsCell,
-      inCollapseNode,
-      isTotalMeasure,
-      isLeaf,
-      extra,
-    } = cfg;
-
-    this.id = id;
-    this.field = field;
-    this.value = value;
-    this.parent = parent;
-    this.level = level!;
-    this.rowIndex = rowIndex!;
-    this.isTotals = isTotals!;
-    this.isCollapsed = isCollapsed!;
-    this.hierarchy = hierarchy!;
-    this.isPivotMode = isPivotMode!;
-    this.seriesNumberWidth = seriesNumberWidth!;
-    this.spreadsheet = spreadsheet!;
-    this.query = query;
-    this.inCollapseNode = inCollapseNode;
-    this.isTotalMeasure = isTotalMeasure!;
-    this.isLeaf = isLeaf!;
-    this.isGrandTotals = isGrandTotals;
-    this.isSubTotals = isSubTotals;
-    this.belongsCell = belongsCell;
-    this.isTotalRoot = isTotalRoot;
-    this.extra = extra;
+  constructor(cfg: NodeProperties) {
+    assign(this, cfg);
   }
 
   /**
@@ -273,11 +202,16 @@ export class Node {
    * get a branch's all nodes(c1~c4, b1, b2)
    * @param node
    */
-  public static getAllChildrenNodes(node: Node): Node[] {
+  public static getAllChildrenNodes(
+    node: Node,
+    push: (node: Node) => Node[] = (node) => [node],
+  ): Node[] {
     const all: Node[] = [];
 
     if (node.isLeaf) {
-      return [node];
+      all.push(...push(node));
+
+      return all;
     }
 
     // current root node children
@@ -285,7 +219,7 @@ export class Node {
     let current = nodes.shift();
 
     while (current) {
-      all.push(current);
+      all.push(...push(current));
       nodes.unshift(...current.children);
       current = nodes.shift();
     }
@@ -367,7 +301,7 @@ export class Node {
   }
 
   public clone() {
-    return Object.create(this) as Node;
+    return new Node({ ...this });
   }
 
   public get isFrozen() {

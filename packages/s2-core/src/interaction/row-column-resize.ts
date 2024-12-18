@@ -7,9 +7,9 @@ import {
 } from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
+  CellTextWordWrapStyle,
   ResizeInteractionOptions,
   ResizeParams,
-  RowCellStyle,
 } from '../common';
 import {
   InterceptType,
@@ -350,7 +350,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
             rowCell: {
-              width: displayWidth,
+              treeWidth: displayWidth,
             },
           },
         };
@@ -380,6 +380,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeHeightDetail(): ResizeDetail | null {
+    const { style } = this.spreadsheet.options;
     const resizeInfo = this.getResizeInfo();
     const { displayHeight } = this.getDisAllowResizeInfo();
 
@@ -388,9 +389,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
           style: {
-            colCell: {
-              heightByField: this.getHeightByField(resizeInfo, displayHeight!),
-            },
+            colCell: this.getResizedCellStyleByField(
+              this.getColCellHeightByField(resizeInfo, displayHeight!),
+              style?.colCell!,
+              displayHeight,
+            ),
           },
         };
 
@@ -399,10 +402,14 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
             rowCell: {
+              ...this.getResizedCellStyleByField(
+                this.getCellStyleByField(displayHeight),
+                style?.rowCell!,
+                displayHeight,
+              ),
               height: !this.isEffectRowOf(ResizeType.ALL)
                 ? undefined
                 : displayHeight,
-              heightByField: this.getCellStyleByField(displayHeight),
             },
           },
         };
@@ -412,10 +419,46 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
   }
 
-  private getHeightByField(
+  private getResizedCellStyleByField(
+    heightByField: Record<string, number>,
+    cellStyle: CellTextWordWrapStyle,
+    displayHeight: number,
+  ) {
+    const isEnableHeightAdaptive =
+      cellStyle?.maxLines! > 1 && cellStyle?.wordWrap;
+
+    if (!isEnableHeightAdaptive) {
+      return {
+        heightByField,
+      };
+    }
+
+    // 如果开启了换行, 高度拖拽后动态计算 maxLines 的值, 已保证展示合理性.
+    const { cell } = this.getResizeInfo();
+    const maxLines = cell.getMaxLinesByCustomHeight({
+      targetCell: cell,
+      displayHeight,
+      isCustomHeight: true,
+    });
+
+    const maxLinesByField = Object.keys(heightByField || {}).reduce<
+      Record<string, number>
+    >((result, field) => {
+      result![field] = maxLines!;
+
+      return result;
+    }, {});
+
+    return {
+      heightByField,
+      maxLinesByField,
+    };
+  }
+
+  private getColCellHeightByField(
     resizeInfo: ResizeInfo,
     displayHeight: number,
-  ): RowCellStyle['heightByField'] {
+  ): Record<string, number> {
     // 1. 自定义列头: 给同一层级且同高度的单元格设置高度. 2. 明细表: 列高一致
     if (
       this.spreadsheet.isCustomColumnFields() ||
@@ -428,7 +471,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
             node.level === resizeInfo.meta?.level &&
             node.height === resizeInfo.meta?.height,
         )
-        .reduce<RowCellStyle['heightByField']>((result, node) => {
+        .reduce<Record<string, number>>((result, node) => {
           result![node.field] = displayHeight;
 
           return result;

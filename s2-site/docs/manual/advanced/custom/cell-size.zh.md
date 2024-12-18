@@ -6,7 +6,7 @@ tag: Updated
 
 S2 可以手动拖拽动态改变单元格的宽高，同时内置了 `行列等宽`, `列等宽` 和 `行列紧凑布局` 三种布局 ([查看示例](/examples/layout/basic/#compact))
 
-我们可以通过 [主题](/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/docs/api/general/S2Options#style) 配置来实现
+我们可以通过 [主题](/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/api/general/s2-options#style) 配置来实现
 
 <Playground path='layout/custom/demo/custom-pivot-size.ts' rid='custom-pivot-size' height='400'></playground>
 
@@ -94,7 +94,7 @@ const s2Options = {
 
 如果想给特定某一行/列设置不同的宽高，可以通过 `rowCell` 的 `widthByField` 和 `heightByField` 预设高度来实现，支持两种类型的配置：
 
-- **fieldId** （例：`root[&]浙江省[&]杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+- **fieldId** （例：`root[&]浙江省[&]杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.rows` 中配置的 `field`, 适用于精确到某一类维值的单元格
 
 :::
@@ -190,7 +190,7 @@ const s2Options = {
 
 如果想给特定某一列设置不同的宽高，可以通过 `colCell` 的 `widthByField` 和 `heightByField` 预设宽高来实现，支持两种类型的配置：
 
-- **fieldId** （例：`root[&]家具[&]沙发[&]number`): 行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+- **fieldId** （例：`root[&]家具[&]沙发[&]number`): 行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.columns` 中配置的 `field`, 适用于精确到某一类维值的单元格
 
 :::

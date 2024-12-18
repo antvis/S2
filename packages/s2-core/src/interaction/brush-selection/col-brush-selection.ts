@@ -1,9 +1,10 @@
 import type { FederatedPointerEvent as CanvasEvent, PointLike } from '@antv/g';
-import { isEmpty, map } from 'lodash';
+import { map } from 'lodash';
 import type { ColCell } from '../../cell/col-cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
+  InteractionName,
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { OnUpdateCells, ViewMeta } from '../../common/interface';
@@ -98,7 +99,7 @@ export class ColCellBrushSelection extends BaseBrushSelection {
   }
 
   // 最终刷选的 cell
-  protected updateSelectedCells() {
+  protected updateSelectedCells(event: MouseEvent) {
     const { interaction, facet } = this.spreadsheet;
 
     interaction.changeState({
@@ -109,15 +110,15 @@ export class ColCellBrushSelection extends BaseBrushSelection {
       stateName: InteractionStateName.COL_CELL_BRUSH_SELECTED,
     });
 
-    this.spreadsheet.emit(
+    this.emitBrushSelectionEvent(
       S2Event.COL_CELL_BRUSH_SELECTION,
       this.brushRangeCells,
+      {
+        event,
+        targetCell: this.brushRangeCells[0],
+        interactionName: InteractionName.COL_CELL_BRUSH_SELECTION,
+      },
     );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeCells);
-    // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeCells)) {
-      interaction.removeIntercepts([InterceptType.HOVER]);
-    }
   }
 
   protected addBrushIntercepts() {

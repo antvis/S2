@@ -21,10 +21,10 @@ const s2Options: S2Options = {
 describe('Table Sheet Editable Formatter Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new TableSheet(getContainer(), s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });
 
   test('should get formatted data', () => {
@@ -36,7 +36,7 @@ describe('Table Sheet Editable Formatter Tests', () => {
     expect(costValues).toEqual(['2-@', '2-@', '2-@']);
   });
 
-  test('should only format data once after data edited', () => {
+  test('should only format data once after data edited', async () => {
     const id = '0-root[&]cost';
     const inputValue = 'test';
 
@@ -46,7 +46,7 @@ describe('Table Sheet Editable Formatter Tests', () => {
     displayData[0]['cost'] = inputValue;
     s2.dataSet.displayFormattedValueMap?.set(id, inputValue);
 
-    s2.render();
+    await s2.render();
 
     const costValues = s2.facet
       .getDataCells()

@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-react-components",
-  "version": "1.0.1-next.1",
+  "version": "2.1.2",
   "private": false,
   "description": "React components for S2",
   "keywords": [
@@ -27,7 +27,7 @@
   "license": "MIT",
   "author": "https://github.com/orgs/antvis/people",
   "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
+  "unpkg": "dist/s2-react-components.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "directories": {
@@ -41,53 +41,45 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
+    "build": "npm-run-all clean --parallel build:cjs build:esm build:umd",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
-    "build:cjs": "cross-env FORMAT=cjs vite build",
-    "build:dts": "run-s dts:*",
-    "build:esm": "cross-env FORMAT=es vite build",
+    "build:cjs": "tsc --module commonjs --outDir lib -p tsconfig.build.json && pnpm build:sync-assets lib/",
+    "build:esm": "tsc --module ESNext --outDir esm -p tsconfig.build.json && pnpm build:sync-assets esm/",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
+    "build:sync-assets": "rsync -av --include='*/' --include='*.less' --include='*.svg' --exclude='*' src/",
     "build:umd": "cross-env FORMAT=umd vite build",
     "clean": "rimraf lib esm dist temp",
-    "dts:build": "tsc -p tsconfig.declaration.json",
-    "dts:extract": "cross-env LIB=s2-react-components node ../../scripts/dts.js",
     "start": "cross-env PLAYGROUND=true vite",
     "test": "jest --passWithNoTests --detectOpenHandles",
-    "test:ci": "pnpm test -- --maxWorkers=3",
-    "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
+    "test:ci": "pnpm test",
+    "test:ci-coverage": "pnpm test:coverage",
     "test:coverage": "pnpm test -- --coverage",
-    "test:live": "node ./scripts/test-live.mjs",
+    "test:live": "node ../s2-react/scripts/test-live.mjs",
     "test:watch": "pnpm test -- --watch",
     "tsc": "tsc --noEmit",
     "watch": "rimraf esm && pnpm build:esm -w"
   },
   "dependencies": {
+    "ahooks": "^3.8.0",
     "classnames": "^2.5.1",
     "lodash": "^4.17.21",
+    "react-beautiful-dnd": "^13.1.1",
     "tinycolor2": "^1.6.0",
     "tinygradient": "^1.1.5"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.3.7",
-    "@antv/event-emitter": "^0.1.3",
-    "@antv/g": "^6.0.12",
-    "@antv/g-plugin-a11y": "^1.0.9",
-    "@antv/g-plugin-rough-canvas-renderer": "^2.0.11",
-    "@antv/g2": "^5.1.20",
     "@antv/s2": "workspace:*",
     "@antv/s2-react": "workspace:*",
-    "@antv/s2-shared": "workspace:*",
     "@testing-library/react": "^15.0.7",
     "@testing-library/react-hooks": "^8.0.1",
-    "@types/d3-dsv": "^3.0.7",
     "@types/react": "^18.3.3",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.3.0",
     "@types/tinycolor2": "^1.4.6",
     "antd": "^5.17.4",
-    "d3-dsv": "^1.1.1",
     "react": "^18.3.1",
     "react-color": "^2.19.3",
     "react-dom": "^18.3.1",
@@ -95,19 +87,26 @@
   },
   "peerDependencies": {
     "@ant-design/icons": ">=4.7.0",
-    "@antv/s2": "^1.0.0",
+    "@antv/s2": "^2.0.0",
     "antd": ">=4.16.13",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
+      "path": "./dist/s2-react-components.min.js",
       "import": "{ createComponent }",
-      "limit": "70 kB"
+      "limit": "110 kB",
+      "ignore": [
+        "antd",
+        "S2",
+        "React",
+        "ReactDOM"
+      ]
     }
   ],
   "tnpm": {

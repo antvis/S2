@@ -11,9 +11,6 @@ S2 多维分析表格配置套的 React 分析/配置组件库。
   <a href="https://www.npmjs.com/package/@antv/s2-react-components" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react-components/latest.svg?logo=npm" alt="latest version" />
   </a>
-  <a href="https://www.npmjs.com/package/@antv/s2-react-components" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react-components/next.svg?logo=npm" alt="next version" />
-  </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status" />
   </a>
@@ -34,7 +31,7 @@ $ pnpm add @antv/s2-react-components
 ```tsx
 import React from 'React'
 import { ThemePanel, TextAlignPanel, FrozenPanel } from '@antv/s2-react-components'
-import '@antv/s2-components/dist/style.min.css'
+import '@antv/s2-react-components/dist/s2-react-components.min.css'
 
 const App = () => {
   return (
@@ -84,7 +81,7 @@ const App = () => {
 ```tsx
 import React from 'React'
 import { ThemePanel } from '@antv/s2-react-components'
-import '@antv/s2-components/dist/style.min.css'
+import '@antv/s2-react-components/dist/s2-react-components.min.css'
 
 const App = () => {
   const s2Ref = React.useRef<SpreadSheet>();

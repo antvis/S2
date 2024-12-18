@@ -1,17 +1,20 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
+import { PlusCircleFilled } from '@ant-design/icons';
 import {
+  DataCell,
   EMPTY_PLACEHOLDER,
   customMerge,
+  getBaseSheetComponentOptions,
   type CustomHeaderField,
   type CustomTreeNode,
   type S2BaseFrozenOptions,
   type S2DataConfig,
   type ThemeCfg,
 } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
-import type { SliderSingleProps } from 'antd';
+import { Menu, type SliderSingleProps } from 'antd';
+import React from 'react';
 import {
   data,
   fields,
@@ -269,8 +272,10 @@ export const PivotSheetFrozenOptions: S2BaseFrozenOptions = {
 export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
   operation: {
     menu: {
-      // 支持透传 Ant Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
-      // mode: 'vertical',
+      // 声明菜单组件, 如: Ant Design <Menu/> API: https://ant-design.antgroup.com/components/menu-cn#api
+      render: (props) => {
+        return <Menu {...props} />;
+      },
       onClick(info, cell) {
         console.log('菜单项点击: ', info, cell);
       },
@@ -279,6 +284,9 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
           key: 'custom-a',
           label: '操作1',
           icon: 'Trend',
+          visible: (cell) => {
+            return cell instanceof DataCell;
+          },
           onClick: (info, cell) => {
             console.log('操作1点击:', info, cell);
           },
@@ -286,7 +294,7 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
             {
               key: 'custom-a-a',
               label: '操作 1-1',
-              icon: 'Trend',
+              icon: <PlusCircleFilled />,
               onClick: (info, cell) => {
                 console.log('操作1-1点击:', info, cell);
               },
@@ -297,23 +305,6 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
           key: 'custom-b',
           label: '操作2',
           icon: 'EyeOutlined',
-          onClick: (info, cell) => {
-            console.log('操作2点击:', info, cell);
-          },
-        },
-        {
-          key: 'custom-c',
-          label: '操作3',
-          icon: 'EyeOutlined',
-          visible: false,
-          onClick: (info, cell) => {
-            console.log('操作3点击:', info, cell);
-          },
-        },
-        {
-          key: 'custom-c',
-          label: '操作4',
-          icon: 'EyeOutlined',
           visible: (cell) => {
             // 叶子节点才显示
             const meta = cell.getMeta();
@@ -321,7 +312,7 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
             return meta.isLeaf;
           },
           onClick: (info, cell) => {
-            console.log('操作4点击:', info, cell);
+            console.log('操作2点击:', info, cell);
           },
         },
       ],
@@ -346,7 +337,7 @@ export const s2Options: SheetComponentOptions = {
   },
   transformCanvasConfig() {
     return {
-      supportsCSSTransform: true,
+      supportsCSSTransform: false,
       supportsPointerEvents: false,
       // dblClickSpeed: 500,
       // devicePixelRatio: 3,
@@ -422,12 +413,7 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {
-    dataCell: {
-      width: 200,
-      height: 200,
-    },
-  },
+  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {
@@ -443,7 +429,7 @@ export const sliderOptions: SliderSingleProps = {
 };
 
 export const s2ThemeConfig: ThemeCfg = {
-  name: 'colorful',
+  name: 'default',
   theme: {},
 };
 

@@ -1,16 +1,21 @@
 import type { FederatedPointerEvent } from '@antv/g';
 import { inRange, isEmpty, isNil, range } from 'lodash';
-import { DataCell } from '../cell';
+import { DataCell, type ColCell } from '../cell';
 import {
   CellType,
   InteractionKeyboardKey,
+  InteractionName,
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '../common/constant';
 import type { S2CellType, ViewMeta } from '../common/interface';
 import type { Node } from '../facet/layout/node';
-import { getCellMeta, getRangeIndex } from '../utils/interaction/select-event';
+import {
+  getCellMeta,
+  getRangeIndex,
+  groupSelectedCells,
+} from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
@@ -60,13 +65,6 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private bindColCellClick() {
-    if (this.spreadsheet.isTableMode()) {
-      // series-number click
-      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event) => {
-        this.handleColClick(event);
-      });
-    }
-
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event) => {
       this.handleColClick(event);
     });
@@ -75,7 +73,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event) => {
       event.stopPropagation();
-      const cell = this.spreadsheet.getCell(event.target) as DataCell;
+      const cell = this.spreadsheet.getCell<DataCell>(event.target)!;
       const meta = cell.getMeta();
       const { interaction } = this.spreadsheet;
 
@@ -126,17 +124,18 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         event,
         getCellsTooltipData(this.spreadsheet),
       );
-      this.spreadsheet.emit(
-        S2Event.GLOBAL_SELECTED,
-        interaction.getActiveCells(),
-      );
+      interaction.emitSelectEvent({
+        targetCell: cell,
+        event,
+        interactionName: InteractionName.RANGE_SELECTION,
+      });
     });
   }
 
   private handleColClick = (event: FederatedPointerEvent) => {
     event.stopPropagation();
     const { interaction, facet } = this.spreadsheet;
-    const cell = this.spreadsheet.getCell(event.target);
+    const cell = this.spreadsheet.getCell<ColCell>(event.target)!;
     const meta = cell?.getMeta() as Node;
 
     if (!isNil(meta?.x)) {
@@ -184,31 +183,25 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
           );
         }
 
-        /*
-         * 兼容行列多选
-         * Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
-         */
         interaction.changeState({
           cells: selectedCells,
           stateName: InteractionStateName.SELECTED,
         });
+        const selectedCellIds = groupSelectedCells(selectedCells);
+
+        interaction.updateCells(facet.getHeaderCells(selectedCellIds));
+        interaction.emitSelectEvent({
+          event,
+          targetCell: cell,
+          interactionName: InteractionName.RANGE_SELECTION,
+        });
       } else {
         if (isEmpty(interaction.getCells())) {
-          interaction.removeIntercepts([InterceptType.HOVER]);
+          interaction.reset();
         }
 
         this.spreadsheet.store.set('lastClickedCell', cell);
       }
-
-      const selectedCellIds = selectedCells.map(({ id }) => id);
-
-      // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-      interaction.updateCells(facet.getHeaderCells(selectedCellIds));
-
-      this.spreadsheet.emit(
-        S2Event.GLOBAL_SELECTED,
-        interaction.getActiveCells(),
-      );
     }
   };
 

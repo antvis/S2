@@ -14,9 +14,6 @@ A practical visualization library for tabular analysis.
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img src="https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm" alt="latest version">
   </a>
-  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img  src="https://img.shields.io/npm/v/@antv/s2/next.svg?logo=npm" alt="next version">
-  </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
@@ -30,7 +27,7 @@ A practical visualization library for tabular analysis.
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
@@ -77,9 +74,9 @@ demo components and expansion capabilities, it allows developers to use it quick
 ## 📦 Installation
 
 ```bash
-$ npm install @antv/s2@next --save
-# yarn add @antv/s2@next
-# pnpm add @antv/s2@next
+$ npm install @antv/s2 --save
+# yarn add @antv/s2
+# pnpm add @antv/s2
 ```
 
 ## 🔨 Getting Started
@@ -208,11 +205,12 @@ bootstrap()
 
 ### 📦 Packages
 
-| Package  | Latest   | Beta   | Alpha   | Next | Size   | Download     |
-| - | - | - | - | - | - | - |
-| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)       | ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg)       | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg)   |  ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) |  ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg)   | ![beta](https://img.shields.io/npm/v/@antv/s2-vue/beta.svg)   | ![alpha](https://img.shields.io/npm/v/@antv/s2-vue/alpha.svg)  |  ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+| Package  | Latest  | Size   | Download     |
+| -------- | ------ | ----------  | ------ |
+| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg?logo=npm)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg?logo=npm) |
+| [@antv/s2-react-components](https://github.com/antvis/S2/tree/next/packages/s2-react-components) | ![latest](https://img.shields.io/npm/v/@antv/s2-react-components/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react-components@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react-components.svg?logo=npm) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg?logo=npm)   |
 
 ### 🖥️ Browser Compatibility
 
@@ -265,14 +263,6 @@ pnpm site:start
 ## 👁️ Insight
 
 ![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
-
-## 📧 Contact Us
-
-<p>
-  <a>
-    <img width="300" height="auto" alt="S2" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*2VvTSZmI4vYAAAAAAAAAAAAADmJ7AQ/original">
-  </a>
-</p>
 
 ## 👬 Contributors
 

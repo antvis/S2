@@ -29,6 +29,7 @@ import {
 } from 'lodash';
 import {
   CellType,
+  DARK_THEME_CLS,
   EXTRA_FIELD,
   PRECISION,
   VALUE_FIELD,
@@ -153,13 +154,14 @@ export const setTooltipContainerStyle = (
     visible?: boolean;
     style?: CSS.Properties;
     className?: string[];
+    dark?: boolean;
   },
 ) => {
   if (!container) {
     return;
   }
 
-  const { style, className = [], visible } = options;
+  const { style, className = [], visible, dark = false } = options;
 
   if (style) {
     Object.assign(container.style, style);
@@ -173,6 +175,7 @@ export const setTooltipContainerStyle = (
 
   container.classList.toggle(TOOLTIP_CONTAINER_SHOW_CLS, visible);
   container.classList.toggle(TOOLTIP_CONTAINER_HIDE_CLS, !visible);
+  container.classList.toggle(DARK_THEME_CLS, dark);
 };
 
 export const getListItem = (
@@ -191,9 +194,11 @@ export const getListItem = (
     targetCell?: S2CellType;
   },
 ): TooltipDetailListItem => {
-  const name =
-    spreadsheet?.dataSet.getCustomRowFieldName(targetCell!) ||
-    spreadsheet?.dataSet?.getFieldName(field);
+  const defaultFieldName = spreadsheet?.dataSet?.getFieldName(field);
+  const name = spreadsheet.isCustomRowFields()
+    ? spreadsheet?.dataSet.getCustomRowFieldName(targetCell!) ||
+      defaultFieldName
+    : defaultFieldName;
 
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
@@ -452,7 +457,7 @@ export const getCustomFieldsSummaries = (
 ): TooltipSummaryOptions[] => {
   const customFieldGroup = groupBy(summaries, 'name');
 
-  return Object.keys(customFieldGroup).map((name) => {
+  return Object.keys(customFieldGroup || {}).map((name) => {
     const cellsData = customFieldGroup[name];
     const selectedData = flatMap(
       cellsData,

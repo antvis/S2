@@ -29,6 +29,7 @@ import {
   getTooltipOptions,
   setTooltipContainerStyle,
 } from '@/utils/tooltip';
+import { DARK_THEME_CLS } from '@antv/s2';
 import { omit } from 'lodash';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import {
@@ -636,6 +637,30 @@ describe('Tooltip Utils Tests', () => {
       expect(tooltipData).toEqual(defaultTooltipData);
     });
 
+    test('should get correctly data cell details', () => {
+      s2 = createPivotSheet();
+
+      const cell = createMockCellInfo('test-a');
+      const tooltipData = getTooltipData({
+        cellInfos: [
+          getCellData(7789, false, {
+            sub_type: '桌子',
+            type: '家具',
+          }),
+        ],
+        options: {
+          enableFormat: true,
+          isTotals: false,
+          hideSummary: true,
+          onlyShowCellText: false,
+        },
+        targetCell: cell.mockCell,
+        spreadsheet: s2,
+      });
+
+      expect(tooltipData).toMatchSnapshot();
+    });
+
     test.each([
       { count: 1, isTotalCell: true, name: '单选' },
       { count: 4, isTotalCell: false, name: '多选' },
@@ -948,7 +973,7 @@ describe('Tooltip Utils Tests', () => {
     });
 
     describe('Tooltip Get Data Tests For TableSheet', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         s2 = createTableSheet(
           {
             seriesNumber: {
@@ -957,7 +982,7 @@ describe('Tooltip Utils Tests', () => {
           },
           { useSimpleData: false },
         );
-        s2.render();
+        await s2.render();
       });
 
       afterEach(() => {
@@ -1195,6 +1220,16 @@ describe('Tooltip Utils Tests', () => {
     expect(container.className).toEqual(
       `visible ${TOOLTIP_CONTAINER_HIDE_CLS}`,
     );
+  });
+
+  test('should set container dark style', () => {
+    const container = document.createElement('div');
+
+    setTooltipContainerStyle(container, {
+      dark: true,
+    });
+
+    expect(container.classList.contains(DARK_THEME_CLS)).toBeTruthy();
   });
 
   test('should get custom fields summaries of custom tree', () => {

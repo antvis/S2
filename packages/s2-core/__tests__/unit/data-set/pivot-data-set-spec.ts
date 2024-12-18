@@ -26,6 +26,7 @@ import {
   totalData as drillDownTotalData,
 } from 'tests/data/mock-drill-down-dataset.json';
 import { assembleDataCfg } from 'tests/util';
+import { EMPTY_FIELD_VALUE } from '../../../src';
 
 jest.mock('@/sheet-type');
 
@@ -510,6 +511,7 @@ describe('Pivot Dataset Test', () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       expect(dataSet.getFieldName(['1'])).toEqual(['1']);
+      expect(dataSet.getFieldName(EMPTY_FIELD_VALUE)).toStrictEqual('-');
     });
 
     test('should return correct field meta', () => {

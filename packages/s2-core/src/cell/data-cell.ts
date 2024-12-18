@@ -1,16 +1,7 @@
 import type { PointLike } from '@antv/g';
-import {
-  find,
-  first,
-  get,
-  isEmpty,
-  isEqual,
-  isObject,
-  isPlainObject,
-  merge,
-} from 'lodash';
+import { find, first, get, isEmpty, isEqual, isObject, merge } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
-import { G2_THEME_TYPE } from '../common';
+import { DEFAULT_STYLE } from '../common';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import {
   CellType,
@@ -18,7 +9,6 @@ import {
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
 import type {
-  BaseChartData,
   CellMeta,
   Condition,
   ConditionMappingResult,
@@ -26,8 +16,6 @@ import type {
   HeaderActionNameOptions,
   IconCondition,
   InteractionStateTheme,
-  MiniChartData,
-  MultiData,
   TextTheme,
   ValueRange,
   ViewMeta,
@@ -89,33 +77,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     const fieldValue = this.getFieldValue();
 
     return isObject(fieldValue);
-  }
-
-  public isChartData() {
-    const fieldValue = this.getFieldValue();
-
-    return isPlainObject(
-      (fieldValue as unknown as MultiData<MiniChartData>)?.values,
-    );
-  }
-
-  public getRenderChartData(): BaseChartData {
-    const { fieldValue } = this.meta;
-
-    return (fieldValue as MultiData)?.values as BaseChartData;
-  }
-
-  public getRenderChartOptions() {
-    const chartData = this.getRenderChartData();
-    const cellArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-    const themeName = this.spreadsheet.getThemeName();
-
-    return {
-      autoFit: true,
-      theme: { type: G2_THEME_TYPE[themeName] },
-      ...cellArea,
-      ...chartData,
-    };
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
@@ -547,5 +508,18 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
+  }
+
+  protected getResizedTextMaxLines() {
+    const { rowCell } = this.spreadsheet.options.style!;
+
+    // 数值和行高保持一致, 同时兼容明细表
+    return (
+      rowCell?.maxLinesByField?.[this.meta.id] ??
+      rowCell?.maxLinesByField?.[this.meta.rowId!] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: this.meta.height !== DEFAULT_STYLE.dataCell?.height,
+      })
+    );
   }
 }

@@ -1,7 +1,6 @@
 import type { S2DataConfig, S2Options } from '@/common/interface';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { getContainer } from 'tests/util/helpers';
-import { CustomTreePivotDataSet } from '../../src';
 import type { HeaderCell } from '../../src/cell/header-cell';
 import { customRowGridSimpleFields } from '../data/custom-grid-simple-fields';
 import { customTreeNodes } from '../data/custom-tree-nodes';
@@ -19,7 +18,7 @@ const s2Options: S2Options = {
   hierarchyType: 'tree',
   style: {
     rowCell: {
-      width: 400,
+      treeWidth: 400,
     },
   },
 };
@@ -79,10 +78,6 @@ describe('SpreadSheet Custom Tree Tests', () => {
   test('should disable valueInCols', () => {
     expect(s2.dataCfg.fields.valueInCols).toBeFalsy();
     expect(s2.dataSet.fields.valueInCols).toBeFalsy();
-  });
-
-  test('should use custom tree pivot dataSet', () => {
-    expect(s2.dataSet).toBeInstanceOf(CustomTreePivotDataSet);
   });
 
   test('should get correctly dataset fields', () => {
@@ -213,7 +208,8 @@ describe('SpreadSheet Custom Tree Tests', () => {
     s2.setOptions({
       style: {
         rowCell: {
-          width: 50,
+          treeWidth: 50,
+          width: 30,
         },
       },
     });

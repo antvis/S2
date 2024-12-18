@@ -11,9 +11,6 @@
   <a href="https://www.npmjs.com/package/@antv/s2-react" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/latest.svg?logo=npm" alt="latest version" />
   </a>
-  <a href="https://www.npmjs.com/package/@antv/s2-react" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/next.svg?logo=npm" alt="next version" />
-  </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status" />
   </a>
@@ -143,7 +140,7 @@ const s2Options = {
 ```tsx
 import React from 'React'
 import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const App = () => {
   return (

@@ -51,7 +51,7 @@ Tree:
 
 ### 1. Display configuration
 
-Configure the `totals` attribute of [S2Options](/docs/api/general/S2Options#total) to realize whether to display the row and column subtotals and the display position. The types are as follows:
+Configure the `totals` attribute of [S2Options](/docs/api/general/s2-options#total) to realize whether to display the row and column subtotals and the display position. The types are as follows:
 
 #### Totals
 
@@ -59,8 +59,8 @@ object is **required** , *default: null* Function description: subtotal total co
 
 | parameter | illustrate   | type                                       | Defaults | required |
 | --------- | ------------ | ------------------------------------------ | -------- | -------- |
-| row       | column total | [Total](/docs/api/general/S2Options#total) | {}       |          |
-| col       | row total    | [Total](/docs/api/general/S2Options#total) | {}       |          |
+| row       | column total | [Total](/docs/api/general/s2-options#total) | {}       |          |
+| col       | row total    | [Total](/docs/api/general/s2-options#total) | {}       |          |
 
 #### Total
 

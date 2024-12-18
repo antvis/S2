@@ -10,6 +10,7 @@ import { RangeSelection } from '@/interaction/range-selection';
 import type { SpreadSheet } from '@/sheet-type';
 import { getCellMeta } from '@/utils';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import { CellType } from '../../../src';
 import type { PivotFacet } from '../../../src/facet';
 
 jest.mock('@/utils/tooltip');
@@ -23,6 +24,8 @@ describe('Interaction Range Selection Tests', () => {
 
   beforeEach(() => {
     const mockCell = createMockCellInfo('testId1').mockCell as any;
+
+    mockCell.cellType = CellType.DATA_CELL;
 
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
@@ -141,10 +144,26 @@ describe('Interaction Range Selection Tests', () => {
       getSeriesNumberWidth: () => 200,
     } as unknown as PivotFacet;
 
-    const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
-    const mockCell01 = createMockCellInfo('0-1', { rowIndex: 0, colIndex: 1 });
-    const mockCell10 = createMockCellInfo('1-0', { rowIndex: 1, colIndex: 0 });
-    const mockCell11 = createMockCellInfo('1-1', { rowIndex: 1, colIndex: 1 });
+    const mockCell00 = createMockCellInfo('0-0', {
+      rowIndex: 0,
+      colIndex: 0,
+      cellType: CellType.DATA_CELL,
+    });
+    const mockCell01 = createMockCellInfo('0-1', {
+      rowIndex: 0,
+      colIndex: 1,
+      cellType: CellType.DATA_CELL,
+    });
+    const mockCell10 = createMockCellInfo('1-0', {
+      rowIndex: 1,
+      colIndex: 0,
+      cellType: CellType.DATA_CELL,
+    });
+    const mockCell11 = createMockCellInfo('1-1', {
+      rowIndex: 1,
+      colIndex: 1,
+      cellType: CellType.DATA_CELL,
+    });
 
     const activeCells: S2CellType[] = [
       mockCell00.mockCell,
@@ -183,7 +202,11 @@ describe('Interaction Range Selection Tests', () => {
       ],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(selected).toHaveBeenCalledWith(activeCells);
+    expect(selected).toHaveBeenCalledWith(activeCells, {
+      interactionName: 'rangeSelection',
+      targetCell: s2.getCell(),
+      event: expect.anything(),
+    });
     expect(
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
     ).toBeTruthy();
@@ -207,10 +230,26 @@ describe('Interaction Range Selection Tests', () => {
       getSeriesNumberWidth: () => 0,
     } as unknown as PivotFacet;
 
-    const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
-    const mockCell01 = createMockCellInfo('0-1', { rowIndex: 0, colIndex: 1 });
-    const mockCell10 = createMockCellInfo('1-0', { rowIndex: 1, colIndex: 0 });
-    const mockCell11 = createMockCellInfo('1-1', { rowIndex: 1, colIndex: 1 });
+    const mockCell00 = createMockCellInfo('0-0', {
+      rowIndex: 0,
+      colIndex: 0,
+      cellType: CellType.DATA_CELL,
+    });
+    const mockCell01 = createMockCellInfo('0-1', {
+      rowIndex: 0,
+      colIndex: 1,
+      cellType: CellType.DATA_CELL,
+    });
+    const mockCell10 = createMockCellInfo('1-0', {
+      rowIndex: 1,
+      colIndex: 0,
+      cellType: CellType.DATA_CELL,
+    });
+    const mockCell11 = createMockCellInfo('1-1', {
+      rowIndex: 1,
+      colIndex: 1,
+      cellType: CellType.DATA_CELL,
+    });
 
     const activeCells: S2CellType[] = [
       mockCell00.mockCell,
@@ -249,7 +288,11 @@ describe('Interaction Range Selection Tests', () => {
       ],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(selected).toHaveBeenCalledWith(activeCells);
+    expect(selected).toHaveBeenCalledWith(activeCells, {
+      interactionName: 'rangeSelection',
+      targetCell: s2.getCell(),
+      event: expect.anything(),
+    });
     expect(
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
     ).toBeTruthy();

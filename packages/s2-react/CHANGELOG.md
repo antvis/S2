@@ -1,3 +1,84 @@
+# [@antv/s2-react-v2.1.3](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.2...@antv/s2-react-v2.1.3) (2024-12-13)
+
+
+### Bug Fixes
+
+* 构建产物编译到 es2015 close [#3025](https://github.com/antvis/S2/issues/3025) ([#3026](https://github.com/antvis/S2/issues/3026)) ([0a7977c](https://github.com/antvis/S2/commit/0a7977c1793a8171b14b07a22847b4dd9ed85d5f))
+
+# [@antv/s2-react-v2.1.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.1...@antv/s2-react-v2.1.2) (2024-12-06)
+
+
+### Bug Fixes
+
+* 修复手动调用 showTooltip 不展示菜单的问题 ([d8afe27](https://github.com/antvis/S2/commit/d8afe2723ba731c220a1dcd8be22afd8d63aed8e))
+
+# [@antv/s2-react-v2.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.0...@antv/s2-react-v2.1.1) (2024-12-04)
+
+
+### Bug Fixes
+
+* 修复下钻组件展示错误操作 icon & 兼容低版本 menu 写法 ([#3011](https://github.com/antvis/S2/issues/3011)) ([7d171f0](https://github.com/antvis/S2/commit/7d171f037e7f52cc49ad02ddf56598aa477bf043))
+* 修复点击单元格中的 icon 时无法获取到单元格 meta 信息的问题 close [#2985](https://github.com/antvis/S2/issues/2985) ([#3013](https://github.com/antvis/S2/issues/3013)) ([67853a2](https://github.com/antvis/S2/commit/67853a2c08456ff166e948c9be30eb817e220079))
+
+# [@antv/s2-react-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.2...@antv/s2-react-v2.1.0) (2024-11-29)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复操作按钮的 visible 对角头和文本溢出场景不生效 ([#3001](https://github.com/antvis/S2/issues/3001)) ([8f56023](https://github.com/antvis/S2/commit/8f56023b4f29584bc619b00bc5a03a0c3bf30494))
+
+
+### Features
+
+* 增加树状模式下行头宽度配置 rowCell.treeWidth ([#2998](https://github.com/antvis/S2/issues/2998)) ([b8fdd2a](https://github.com/antvis/S2/commit/b8fdd2a700a9a3bdc5d565c2bf89a85427c66a88))
+
+# [@antv/s2-react-v2.0.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.1...@antv/s2-react-v2.0.2) (2024-11-26)
+
+# [@antv/s2-react-v2.0.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0...@antv/s2-react-v2.0.1) (2024-11-21)
+
+
+### Bug Fixes
+
+* 修改包 peerDependencies 版本和样式依赖问题 ([11df5d5](https://github.com/antvis/S2/commit/11df5d511515817047b09d6e3dd37000f7b189f2))
+
+# [@antv/s2-react-v2.0.0](#) (2024-11-21)
+
+* 2.0 正式版已发布，请查看 [升级指南](https://s2.antv.antgroup.com/manual/migration-v2)
+
+# [@antv/s2-react-v2.0.0-next.31](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.30...@antv/s2-react-v2.0.0-next.31) (2024-11-15)
+
+
+### Bug Fixes
+
+* 修复文本存在换行符时, 未显示省略号的问题 ([#2978](https://github.com/antvis/S2/issues/2978)) ([08dbf0d](https://github.com/antvis/S2/commit/08dbf0d9c63f1c64989fe242c9645df06e6b04e5))
+* 减少开启 ReactDOM.unstable_batchedUpdates 后的重渲染次数 ([#2971](https://github.com/antvis/S2/issues/2971)) ([9007e8e](https://github.com/antvis/S2/commit/9007e8ecf41b6d7434db312398f3996018ef0ecf))
+
+# [@antv/s2-react-v2.0.0-next.30](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.29...@antv/s2-react-v2.0.0-next.30) (2024-11-01)
+
+
+### Bug Fixes
+
+* 修复自定义菜单项不触发 click 事件的问题 ([#2946](https://github.com/antvis/S2/issues/2946)) ([82dbb61](https://github.com/antvis/S2/commit/82dbb617440ba3d81e7ade96ee98747a7a5ecf5a))
+
+
+### Features
+
+* 优化紧凑模式下的单元格宽度计算方式 ([#2953](https://github.com/antvis/S2/issues/2953)) ([68ed225](https://github.com/antvis/S2/commit/68ed2258305eca6f92be7c238cd29c21407bcdd7))
+* 增加不同类型单元格的选中事件 & 支持识别事件来源 ([#2956](https://github.com/antvis/S2/issues/2956)) ([69f6479](https://github.com/antvis/S2/commit/69f6479b43055c12d0295a7c77709b990a069ee3))
+* 增加对自定义行列头总计、小计节点和组内排序的支持，修复明细表自定义列头 icon 问题 icon closes [#2898](https://github.com/antvis/S2/issues/2898) [#2893](https://github.com/antvis/S2/issues/2893) ([#2934](https://github.com/antvis/S2/issues/2934)) ([a4ae432](https://github.com/antvis/S2/commit/a4ae432d2ddff8a3b44fdfb7abd96d6a2369c81b))
+
+# [@antv/s2-react-v2.0.0-next.29](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.28...@antv/s2-react-v2.0.0-next.29) (2024-10-25)
+
+
+### Bug Fixes
+
+* **type:** 修复 g renderer 的错误类型定义 ([#2939](https://github.com/antvis/S2/issues/2939)) ([523b2cc](https://github.com/antvis/S2/commit/523b2ccb8884933060000854f28d9a6d8b2806f5))
+* 修复下钻 icon 不应该默认全部展示和标题样式问题 ([#2925](https://github.com/antvis/S2/issues/2925)) ([55f1a40](https://github.com/antvis/S2/commit/55f1a40b85a5b8c03182f08accb856f56defc82c))
+* 修复排序菜单没有子节点时图标展示错误 & 调整默认样式 ([#2932](https://github.com/antvis/S2/issues/2932)) ([da5ebfb](https://github.com/antvis/S2/commit/da5ebfb9049eb33180dbc9c556480cd105acbe60))
+* 修复父容器存在 transform 时, 在 canvas 内点击也会重置交互的问题 close [#2879](https://github.com/antvis/S2/issues/2879) ([#2942](https://github.com/antvis/S2/issues/2942)) ([010ed05](https://github.com/antvis/S2/commit/010ed050214568ea1902e4a426d6638afd3ae2f9))
+* 修复通过修改引用的方式修改菜单配置时, tooltip 未重新渲染 ([#2933](https://github.com/antvis/S2/issues/2933)) ([82c1500](https://github.com/antvis/S2/commit/82c15002bd12b5c21cfae581711abf51553d8000))
+* 增加单元格单双击的判断范围 ([#2924](https://github.com/antvis/S2/issues/2924)) ([c40bbf9](https://github.com/antvis/S2/commit/c40bbf9a4bf29459a0cb6ac32e3a7c52068c4eb1))
+
 # [@antv/s2-react-v2.0.0-next.28](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.27...@antv/s2-react-v2.0.0-next.28) (2024-10-12)
 
 

@@ -1,12 +1,12 @@
 import {
   compact,
-  endsWith,
   flatMap,
   includes,
   indexOf,
   isEmpty,
   isNil,
   keys,
+  last,
   map,
   sortBy,
   split,
@@ -108,8 +108,10 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues = [], originValues = [] } = params;
 
   // 从 originValues 中过滤出所有包含 sortByValue 的 id
-  const idWithPre = originValues.filter((originItem) =>
-    sortByValues.find((value) => endsWith(originItem, value)),
+  const idWithPre = originValues.filter((originValue) =>
+    sortByValues.find((value) => {
+      return last(split(originValue, NODE_ID_SEPARATOR)) === value;
+    }),
   );
   // 将 id 拆分为父节点和目标节点
   const idListWithPre = idWithPre.map((idStr) => {
@@ -320,17 +322,17 @@ export const getSortByMeasureValues = (
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
   const sortFields = filterExtraDimension(
-    (isSortFieldInRow ? fields.rows : columns) as string[],
+    isSortFieldInRow ? fields.rows : columns,
   );
   // 与排序交叉的另一侧全部字段
   const oppositeFields = filterExtraDimension(
-    (isSortFieldInRow ? columns : fields.rows) as string[],
+    isSortFieldInRow ? columns : fields.rows,
   );
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
   const queryKeys = keys(query);
   const missedOppositeFields = oppositeFields.filter(
-    (field) => !queryKeys.includes(field),
+    (field) => !queryKeys.includes(field as string),
   );
 
   const totalDataList = dataList.filter((dataItem) => {
@@ -345,7 +347,7 @@ export const getSortByMeasureValues = (
       return false;
     }
 
-    if (dataItemKeys.has(fieldAfterSortField)) {
+    if (dataItemKeys.has(fieldAfterSortField as string)) {
       /*
        * 若排序数据包含`排序字段`的后一个维度字段，则过滤
        * 不需要比排序字段更 “明细” 的数据，只需取到 sortFieldId 当级的汇总
@@ -359,7 +361,7 @@ export const getSortByMeasureValues = (
      * 如 query={ type: 'xx',EXTRA_FIELD=price }，代表了最高可以取到 type 的小计汇总数据
      */
     const allMissed = missedOppositeFields.every(
-      (missedField) => !dataItemKeys.has(missedField),
+      (missedField) => !dataItemKeys.has(missedField as string),
     );
 
     // 返回符合要求的汇总数据

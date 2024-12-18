@@ -18,8 +18,7 @@ import {
   getSelectedRows,
 } from '../method';
 import { BaseDataCellCopy } from './base-data-cell-copy';
-import { assembleMatrix } from './common';
-import { getHeaderNodeFromMeta } from './core';
+import { assembleMatrix, getHeaderNodeFromMeta } from './common';
 
 class TableDataCellCopy extends BaseDataCellCopy {
   private displayData: RawData[];

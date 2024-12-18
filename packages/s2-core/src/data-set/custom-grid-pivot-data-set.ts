@@ -1,14 +1,12 @@
 import { EXTRA_FIELD, i18n } from '../common';
 import type { S2DataConfig } from '../common/interface';
-import { CustomTreePivotDataSet } from './custom-tree-pivot-data-set';
+import { PivotDataSet } from './pivot-data-set';
 
-export class CustomGridPivotDataSet extends CustomTreePivotDataSet {
+export class CustomGridPivotDataSet extends PivotDataSet {
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const valueInCols = !this.spreadsheet.isCustomRowFields();
     const originalRows = dataCfg.fields.rows || [];
-    const rows = valueInCols
-      ? [...originalRows]
-      : [...originalRows, EXTRA_FIELD];
+    const rows = valueInCols ? originalRows : [...originalRows, EXTRA_FIELD];
     const meta = this.processMeta(dataCfg.meta!, i18n('数值'));
 
     return {

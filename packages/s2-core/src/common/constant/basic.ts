@@ -41,9 +41,8 @@ export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
  * row
  */
 export const KEY_GROUP_ROW_SCROLL = 'rowScrollGroup';
-export const KEY_GROUP_ROW_HEADER_FROZEN = 'rowHeaderFrozenGroup';
-export const KEY_GROUP_ROW_HEADER_FROZEN_TRAILING =
-  'rowHeaderFrozenTrailingGroup';
+export const KEY_GROUP_ROW_FROZEN = 'rowHeaderFrozenGroup';
+export const KEY_GROUP_ROW_FROZEN_TRAILING = 'rowHeaderFrozenTrailingGroup';
 export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
 
 /**
@@ -90,3 +89,5 @@ export const getDefaultCornerText = () => i18n('指标');
 
 // 省略号
 export const ELLIPSIS_SYMBOL = '...';
+
+export const DEFAULT_TEXT_LINE_HEIGHT = 16;

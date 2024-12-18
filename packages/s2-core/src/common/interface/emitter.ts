@@ -7,7 +7,7 @@ import type {
 } from '../../cell';
 import type { ColCell } from '../../cell/col-cell';
 import type { DataCell } from '../../cell/data-cell';
-import type { S2Event } from '../../common/constant';
+import type { InteractionName, S2Event } from '../../common/constant';
 import type {
   CellMeta,
   CellScrollPosition,
@@ -37,8 +37,29 @@ type ResizeHandler = (data: {
   style?: S2Style;
   seriesNumberWidth?: number;
 }) => void;
-type SelectedHandler = (cells: S2CellType[]) => void;
 type SortedHandler = (rangeData: RawData[]) => any;
+
+export interface CellSelectedDetail {
+  /**
+   * 触发选中的交互名
+   */
+  interactionName?: `${InteractionName}`;
+
+  /**
+   * 触发选中的单元格
+   */
+  targetCell?: S2CellType | null;
+
+  /**
+   * 触发选中的事件对象
+   */
+  event?: CanvasEvent | KeyboardEvent | Event | null;
+}
+
+export type CellSelectedHandler = (
+  cells: S2CellType[],
+  detail: CellSelectedDetail,
+) => void;
 
 export interface EmitterType {
   /** ================ Global ================  */
@@ -58,7 +79,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_RESET]: EventHandler;
   [S2Event.GLOBAL_HOVER]: CanvasEventHandler;
-  [S2Event.GLOBAL_SELECTED]: SelectedHandler;
+  [S2Event.GLOBAL_SELECTED]: CellSelectedHandler;
   [S2Event.GLOBAL_SCROLL]: (position: CellScrollPosition) => void;
 
   /** ================ Sort ================  */
@@ -87,6 +108,9 @@ export interface EmitterType {
   [S2Event.DATA_CELL_BRUSH_SELECTION]: (cells: (DataCell | CellMeta)[]) => void;
   [S2Event.DATA_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
   [S2Event.DATA_CELL_RENDER]: (cell: DataCell) => void;
+  [S2Event.DATA_CELL_HOVER_TRIGGERED_PRIVATE]: (cell: DataCell) => void;
+  [S2Event.DATA_CELL_CLICK_TRIGGERED_PRIVATE]: (cell: DataCell) => void;
+  [S2Event.DATA_CELL_SELECTED]: CellSelectedHandler;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -103,6 +127,7 @@ export interface EmitterType {
   [S2Event.ROW_CELL_ALL_COLLAPSED]: (isCollapsed: boolean) => void;
   [S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE]: (isCollapsed: boolean) => void;
   [S2Event.ROW_CELL_RENDER]: (cell: RowCell) => void;
+  [S2Event.ROW_CELL_SELECTED]: CellSelectedHandler;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -119,6 +144,7 @@ export interface EmitterType {
     hiddenColumnsDetail: HiddenColumnsInfo[],
   ) => void;
   [S2Event.COL_CELL_RENDER]: (cell: ColCell) => void;
+  [S2Event.COL_CELL_SELECTED]: CellSelectedHandler;
 
   /** ================ Corner Cell ================  */
   [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;
@@ -129,6 +155,7 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.CORNER_CELL_RENDER]: (cell: CornerCell) => void;
+  [S2Event.CORNER_CELL_SELECTED]: CellSelectedHandler;
 
   /** ================ Merged Cells ================  */
   [S2Event.MERGED_CELLS_MOUSE_DOWN]: CanvasEventHandler;

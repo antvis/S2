@@ -95,17 +95,21 @@ jobs:
 
             Hello, @${{ github.event.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
 
-      - name: Pending
-        if: github.event.label.name == '💤 pending'
+      - name: Welcom PR
+        if: github.event.label.name == '⭐️ Welcom PR'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 但人力资源有限, 短期内无法支持, 请关注后续发布日志。当然, 如果能贡献 PR 帮助我们改进, 不胜感激！
+            你好 @${{ github.event.issue.user.login }}，你的反馈我们已收到, 这是一个开源项目, 我们也是用自己的业余时间在维护, 为爱发电, 精力实在有限, 👏🏻 欢迎根据 [贡献指南](https://s2.antv.antgroup.com/manual/contribution) 提交 PR. 一起参与到开源项目的建设中.
 
-            Hello, @${{ github.event.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development. However, it could not be supported in the short term since limited time, please pay attention to the follow-up release logs. Of course, looking forward for your PR!
+            如果你遇到了问题，或者对 [Issues](https://github.com/antvis/S2/issues) 和 [Discussions](https://github.com/antvis/S2/discussions) 列表的问题感兴趣，可以**直接认领并尝试修复**，帮助 S2 变得更好，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
+
+            Hello, @${{ github.event.issue.user.login }}, We have received your feedback, this is an open source project, we also use our spare time to maintain, for love power generation, energy is really limited, 👏 🏻 welcome according to contribution guide (https://s2.antv.antgroup.com/manual/contribution) to submit PR. Get involved in open source projects together.
+
+            If you have a problem, Or to [Issues] (https://github.com/antvis/S2/issues) and [Discussions] (https://github.com/antvis/S2/discussions) interested in a list of questions, Can directly claim and try to repair, help S2 better, look forward to in the [contributor list] (https://github.com/antvis/S2/graphs/contributors) saw your head.
 
       - name: Rejected
         if: github.event.label.name == '❌ won''t support'
@@ -119,24 +123,50 @@ jobs:
 
             Hello, @${{ github.event.issue.user.login }}, After our repeated discussions, your needs are too customized and not suitable for implementing directly to S2. As an open source framework, S2 will only enhance general capabilities and open custom interfaces. You can implement it yourself through the customization capabilities provided by S2, thank you for your understanding.
 
-      - name: Supported or fixed in next
-        if: github.event.label.name == '✨ supported or fixed in next'
+      - name: Supported or fixed in 2.x
+        if: github.event.label.name == '✨ supported or fixed in 2.x'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，该功能或缺陷已经在 `2.0 next 版本` 中支持或修复，`next` 版本目前处于内测中, 感谢你的支持与理解。
+            你好 @${{ github.event.issue.user.login }}，该功能或缺陷已经在 `2.x` 版本中支持或修复，请使用 `2.x` 版本进行开发（`1.x` 版本不再维护）, 感谢你的支持与理解。
 
-            如有任何 `2.0 版本` 问题，请前往[讨论区](https://github.com/antvis/S2/discussions/1933) 或 [查看文档](https://s2.antv.antgroup.com), 抢先试用:
+            如有任何 `2.x` 版本问题，欢迎提[issue](https://github.com/antvis/S2/issues) 或 [查看文档](https://s2.antv.antgroup.com):
 
             ```bash
-            yarn add @antv/s2@next
-            yarn add @antv/s2-react@next
-            yarn add @antv/s2-vue@next
+            yarn add @antv/s2
+            yarn add @antv/s2-react
+            yarn add @antv/s2-react-components
+            yarn add @antv/s2-vue
             ```
 
-            Hello, @${{ github.event.issue.user.login }}, This feature or flaw has been supported or fixed in `2.0 next version`, `next` version is currently in private beta, thank you for your support and understanding.
+            Hello, @${{ github.event.issue.user.login }}, This feature or defect has been supported or fixed in the '2.x' version, please use the '2.x' version for development (' 1.x 'version is no longer maintained), thank you for your support and understanding.
 
-            Any `2.0` version issues, please go to [discussion](https://github.com/antvis/S2/discussions/1933), or [view docs](https://s2.antv.antgroup.com), the first trial:
+            Any `2.x` version issues, please go to [issue](https://github.com/antvis/S2/issues), or [view docs](https://s2.antv.antgroup.com), the first trial:
+
+      - name: S2 Vue
+        if: github.event.label.name == 's2-vue'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment,close-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，`@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发。
+
+            Hello, @${{ github.event.issue.user.login }}, `@antv/s2-vue` has stopped maintenance, due to limited energy investment, due to the comprehensive consideration of maintenance costs, package downloads and other factors, from the '2.0.0' official version will not continue to update, please based on '@antv/s2' self-encapsulation, or fork warehouse for secondary development.
+
+      - name: G
+        if: github.event.label.name == 'G'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，这个属于底层渲染引擎 [AntV/G](https://g.antv.antgroup.com/) 的问题, 需要等待底层支持或修复后, 上层才能适配, 请耐心等待, 感谢你的理解。
+
+            Hello, @${{ github.event.issue.user.login }}, This belongs to the underlying rendering engine AntV/G (https://g.antv.antgroup.com/), needs to wait for the underlying support or after repair, the upper can adapter, please wait patiently, thank you for your understanding.
+

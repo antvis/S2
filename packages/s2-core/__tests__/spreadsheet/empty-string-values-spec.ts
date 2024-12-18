@@ -73,9 +73,9 @@ const testDataCfg: S2DataConfig = {
 describe('Empty String Values Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), testDataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('should get correctly first dimension values', () => {

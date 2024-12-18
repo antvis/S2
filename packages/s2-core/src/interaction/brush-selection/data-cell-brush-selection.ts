@@ -5,6 +5,7 @@ import { S2Event } from '../../common/constant';
 import {
   CellType,
   InteractionBrushSelectionStage,
+  InteractionName,
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
@@ -99,7 +100,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   };
 
   // 最终刷选的 cell
-  protected updateSelectedCells() {
+  protected updateSelectedCells(event: MouseEvent) {
     const brushRange = this.getBrushRange();
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
@@ -115,6 +116,11 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     this.emitBrushSelectionEvent(
       S2Event.DATA_CELL_BRUSH_SELECTION,
       scrollBrushRangeCells,
+      {
+        event,
+        targetCell: scrollBrushRangeCells[0],
+        interactionName: InteractionName.DATA_CELL_BRUSH_SELECTION,
+      },
     );
   }
 

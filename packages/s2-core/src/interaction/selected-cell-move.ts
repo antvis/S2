@@ -2,6 +2,8 @@ import type { FederatedPointerEvent as Event } from '@antv/g';
 import {
   CellType,
   FrozenGroupArea,
+  InteractionName,
+  InteractionStateName,
   type CellMeta,
   type ViewMeta,
 } from '../common';
@@ -9,7 +11,7 @@ import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import type { FrozenFacet } from '../facet';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils';
-import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
+import { getRangeIndex } from '../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 const SelectedCellMoveMap = [
@@ -82,6 +84,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         }
       },
     );
+
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       const cell = this.spreadsheet.getCell(event.target);
       const cellMeta = cell?.getMeta() as ViewMeta;
@@ -109,7 +112,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     isJumpMode,
     isSingleSelection,
   }: {
-    event: any;
+    event: KeyboardEvent;
     changeStartCell: boolean;
     isJumpMode: boolean;
     isSingleSelection: boolean;
@@ -125,17 +128,26 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const [rowIndex, colIndex] = [rowCol.row, rowCol.col];
 
     this.scrollToActiveCell(spreadsheet, rowIndex, colIndex);
+
     const movedCell = this.generateCellMeta(spreadsheet, rowIndex, colIndex);
     const selectedCells = isSingleSelection
       ? [movedCell]
       : this.getRangeCells(spreadsheet, startCell!, movedCell);
 
-    selectCells(spreadsheet, selectedCells);
     if (changeStartCell) {
       this.startCell = movedCell;
     }
 
     this.endCell = movedCell;
+
+    spreadsheet.interaction.changeState({
+      stateName: InteractionStateName.SELECTED,
+      cells: selectedCells,
+    });
+    spreadsheet.interaction.emitSelectEvent({
+      event,
+      interactionName: InteractionName.SELECTED_CELL_MOVE,
+    });
     this.spreadsheet.emit(S2Event.DATA_CELL_SELECT_MOVE, selectedCells);
   }
 

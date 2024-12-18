@@ -4,15 +4,14 @@
 
 数据驱动的多维分析表格 (Vue3 版本）
 
+> `@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发社区版本。
+
 <p>
  <a href="https://www.npmjs.com/package/@antv/s2-vue" title="npm">
     <img src="https://img.shields.io/npm/dm/@antv/s2-vue.svg" alt="npm"/>
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2-vue" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-vue/latest.svg?logo=npm" alt="latest version">
-  </a>
-  <a href="https://www.npmjs.com/package/@antv/s2-vue" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-vue/next.svg?logo=npm" alt="next version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
@@ -316,7 +315,7 @@ const rawOptions: S2Options = {
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, shallowRef } from 'vue';
-import "@antv/s2-vue/dist/style.min.css";
+import "@antv/s2-vue/dist/s2-vue.min.css";
 
 export default defineComponent({
   setup() {

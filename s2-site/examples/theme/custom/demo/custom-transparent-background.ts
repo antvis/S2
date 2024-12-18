@@ -1,8 +1,6 @@
 import { PivotSheet, S2DataConfig, S2Options, S2Theme } from '@antv/s2';
 
-fetch(
-  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
-)
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then(async (data) => {
     const container = document.getElementById('container');
@@ -50,7 +48,7 @@ fetch(
       },
     };
 
-    // https://s2.antv.antgroup.com/zh/docs/api/general/S2Theme#s2theme
+    // https://s2.antv.antgroup.com/zh/docs/api/general/s2-theme#s2theme
     const s2Theme: S2Theme = {
       background: {
         opacity: 0,

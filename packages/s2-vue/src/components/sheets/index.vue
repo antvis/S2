@@ -1,10 +1,11 @@
 <script lang="ts">
-import type { SheetType } from '@antv/s2-shared';
+import type { SheetType } from '@antv/s2';
 import { computed, defineComponent } from 'vue';
 import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';
 import PivotSheet from './pivot-sheet.vue';
 import TableSheet from './table-sheet.vue';
+import EditableSheet from './editable-sheet.vue';
 
 export default defineComponent({
   name: 'Sheet',
@@ -19,6 +20,8 @@ export default defineComponent({
       switch (type) {
         case 'table':
           return TableSheet;
+        case 'editable':
+          return EditableSheet;
         default:
           return PivotSheet;
       }
@@ -29,6 +32,7 @@ export default defineComponent({
   components: {
     PivotSheet,
     TableSheet,
+    EditableSheet,
   },
 });
 </script>

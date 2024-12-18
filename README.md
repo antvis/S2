@@ -13,9 +13,6 @@
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img src="https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm" alt="latest version">
   </a>
-  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img  src="https://img.shields.io/npm/v/@antv/s2/next.svg?logo=npm" alt="next version">
-  </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
@@ -29,7 +26,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
@@ -64,7 +61,7 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 
 ## ✨ 特性
 
-1. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
+1. 多维交叉分析：告别单一分析维度，全面拥抱任意维度的自由组合分析。
 2. 高性能：能支持全量百万数据下 `<8s` 渲染，也能通过局部下钻来实现秒级渲染。
 3. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据 hook 流等）。
 4. 开箱即用：提供不同分析场景下开箱即用的 `React`, `Vue3` 版本表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
@@ -73,9 +70,9 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 ## 📦 安装
 
 ```bash
-$ npm install @antv/s2@next --save
-# yarn add @antv/s2@next
-# pnpm add @antv/s2@next
+$ npm install @antv/s2 --save
+# yarn add @antv/s2
+# pnpm add @antv/s2
 ```
 
 ## 🔨 使用
@@ -204,11 +201,12 @@ bootstrap()
 
 ### 📦 版本
 
-| Package  | Latest   | Beta   | Alpha   | Next | Size   | Download     |
-| - | - | - | - | - | - | - |
-| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)       | ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg)       | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg)   |  ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) |  ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg)   | ![beta](https://img.shields.io/npm/v/@antv/s2-vue/beta.svg)   | ![alpha](https://img.shields.io/npm/v/@antv/s2-vue/alpha.svg)  |  ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+| 包名  | 稳定版  | 包大小  | 下载量    |
+| -------- | ------ | --------- | ------ |
+| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg?logo=npm)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg?logo=npm) |
+| [@antv/s2-react-components](https://github.com/antvis/S2/tree/next/packages/s2-react-components) | ![latest](https://img.shields.io/npm/v/@antv/s2-react-components/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react-components@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react-components.svg?logo=npm) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)（停止维护）| ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg?logo=npm)   |
 
 ### 🖥️ 兼容环境
 
@@ -220,51 +218,17 @@ bootstrap()
 
 ## 🙋‍♂️ 问题反馈
 
-有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose), 在这之前强烈建议阅读 [《⚠️ 提 Issue 前必读》](https://github.com/antvis/S2/issues/1904)
+如果你遇到了问题，或者对 [Issues](https://github.com/antvis/S2/issues) 和 [Discussions](https://github.com/antvis/S2/discussions) 列表的问题感兴趣，**可以直接认领并尝试修复**，帮助 S2 变得更好，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
 
-## ⌨️ 本地开发
+请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose) 或在 [Discussions](https://github.com/antvis/S2/discussions) 提问，在这之前强烈建议阅读 [《⚠️ 提 Issue 前必读》](https://github.com/antvis/S2/issues/1904)
 
-```bash
-git clone git@github.com:antvis/S2.git
+## 🤝 参与贡献 & ⌨️ 本地开发
 
-cd S2
-
-# 安装依赖
-pnpm install # 或者 pnpm bootstrap
-
-# 打包
-pnpm build
-
-# 调试 s2-core
-pnpm core:start
-
-# 调试 s2-react
-pnpm react:playground
-
-# 调试 s2-vue
-pnpm vue:playground
-
-# 单元测试
-pnpm test
-
-# 代码风格和类型检测
-pnpm lint
-
-# 本地启动官网
-pnpm site:start
-```
-
-## 🤝 参与贡献
-
-请查看 [贡献指南](https://s2.antv.antgroup.com/manual/contribution)
+S2 非常需要你的共建，请阅读 [贡献指南](https://s2.antv.antgroup.com/manual/contribution) 后提交 PR.
 
 ## 👁️ 项目洞察
 
 ![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
-
-## 📧 反馈问题
-
-有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose) 或在 [Discussions](https://github.com/antvis/S2/discussions) 提问。
 
 ## 👬 贡献者们
 

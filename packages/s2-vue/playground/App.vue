@@ -1,11 +1,14 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import { CellType, RawData, type S2DataConfig, type S2Options } from '@antv/s2';
-import type {
-  PartDrillDown,
-  PartDrillDownInfo,
-  SheetType,
-} from '@antv/s2-shared';
+import {
+  CellType,
+  type RawData,
+  type S2DataConfig,
+  type S2Options,
+  type PartDrillDown,
+  type PartDrillDownInfo,
+  type SheetType,
+} from '@antv/s2';
 import { forEach, random } from 'lodash';
 import { defineComponent, reactive, ref, shallowRef } from 'vue';
 import { SheetComponent } from '../src';
@@ -519,14 +522,19 @@ const partDrillDown: PartDrillDown = {
   drillConfig: {
     dataSet: [
       {
+        name: '客户性别',
+        value: 'sex2',
+        type: 'location',
+      },
+      {
         name: '销售渠道',
         value: 'channel',
         type: 'text',
       },
       {
-        name: '客户性别',
-        value: 'sex',
-        type: 'text',
+        name: '客户性别111',
+        value: 'sex1',
+        type: 'date',
       },
     ],
   },
@@ -576,7 +584,7 @@ const partDrillDown: PartDrillDown = {
 
 export default defineComponent({
   setup() {
-    const sheetType = ref<SheetType>('pivot');
+    const sheetType = ref<SheetType>('editable');
     const s2 = shallowRef();
     const dataCfgFlag = ref(1);
 
@@ -740,6 +748,15 @@ export default defineComponent({
       <label>
         <input type="radio" id="table" value="table" v-model="sheetType" />
         明细表
+      </label>
+      <label>
+        <input
+          type="radio"
+          id="editable"
+          value="editable"
+          v-model="sheetType"
+        />
+        编辑表
       </label>
     </div>
   </div>

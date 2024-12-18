@@ -171,6 +171,14 @@ export default defineConfig({
         order: 6,
       },
       {
+        slug: 'manual/advanced/sheet',
+        title: {
+          zh: '表格组件',
+          en: 'Sheet Component',
+        },
+        order: 7,
+      },
+      {
         slug: 'manual/basic/sort',
         title: {
           zh: '排序',
@@ -290,8 +298,9 @@ export default defineConfig({
       dependencies: {
         antd: 'latest',
         '@ant-design/icons': '^5.3.7',
-        '@antv/s2': '^2.0.0-next',
-        '@antv/s2-react': '^2.0.0-next',
+        '@antv/s2': '^2.0.0',
+        '@antv/s2-react': '^2.0.0',
+        '@antv/s2-react-components': '^2.0.0',
       },
       htmlCodeTemplate: `<!DOCTYPE html>
         <html>
@@ -311,8 +320,8 @@ export default defineConfig({
     announcement: {
       // icon: 'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
       title: {
-        zh: '🎉 S2 2.0 版本开始内测啦! 文档焕新升级, 原 1.x 官网已迁移至 https://s2-v1.antv.antgroup.com',
-        en: '🎉 S2 Next version 2.0 is in beta! see 1.x docs: https://s2-v1.antv.antgroup.com',
+        zh: '🎉 S2 2.0 正式版现已发布! 文档焕新升级, 原 1.x 已停止维护, 官网迁移至 https://s2-v1.antv.antgroup.com',
+        en: '🎉 S2 2.0 Stable Release is now available! English document is WIP, see 1.x docs: https://s2-v1.antv.antgroup.com',
       },
       link: {
         text: {
@@ -377,44 +386,44 @@ export default defineConfig({
       ],
     },
     /** 新闻公告，优先选择配置的，如果没有配置则使用远程的！ */
-    news: [
-      {
-        type: {
-          zh: '初心 · 出新 AntV 2023 年度发布',
-          en: 'AntV 2023',
-        },
-        title: {
-          zh: 'S2 2.0 表格看数新纪元',
-          en: 'S2 2.0 Next Version',
-        },
-        date: '2023.11.22',
-        link: 'https://www.yuque.com/antv/blog/1122_7_s2',
-      },
-      {
-        type: {
-          zh: 'S2 Next',
-          en: 'S2 Next',
-        },
-        title: {
-          zh: '2.0 版本开始内测啦! 欢迎尝鲜使用.',
-          en: '2.0 is in beta! Welcome to use.',
-        },
-        date: '2024.2.5',
-        link: 'https://github.com/antvis/S2/issues/2454',
-      },
-      {
-        type: {
-          zh: 'S2 1.x',
-          en: 'S2 1.x',
-        },
-        title: {
-          zh: '原 v1 文档已迁移至 https://s2-v1.antv.antgroup.com',
-          en: 'The original v1 documentation has been migrated to https://s2-v1.antv.antgroup.com',
-        },
-        date: '2024.2.5',
-        link: 'https://s2-v1.antv.antgroup.com',
-      },
-    ],
+    // news: [
+    //   {
+    //     type: {
+    //       zh: '初心 · 出新 AntV 2023 年度发布',
+    //       en: 'AntV 2023',
+    //     },
+    //     title: {
+    //       zh: 'S2 2.0 表格看数新纪元',
+    //       en: 'S2 2.0 Next Version',
+    //     },
+    //     date: '2023.11.22',
+    //     link: 'https://www.yuque.com/antv/blog/1122_7_s2',
+    //   },
+    //   {
+    //     type: {
+    //       zh: 'S2 Next',
+    //       en: 'S2 Next',
+    //     },
+    //     title: {
+    //       zh: '2.0 版本开始内测啦! 欢迎尝鲜使用.',
+    //       en: '2.0 is in beta! Welcome to use.',
+    //     },
+    //     date: '2024.2.5',
+    //     link: 'https://github.com/antvis/S2/issues/2454',
+    //   },
+    //   {
+    //     type: {
+    //       zh: 'S2 1.x',
+    //       en: 'S2 1.x',
+    //     },
+    //     title: {
+    //       zh: '原 v1 文档已迁移至 https://s2-v1.antv.antgroup.com',
+    //       en: 'The original v1 documentation has been migrated to https://s2-v1.antv.antgroup.com',
+    //     },
+    //     date: '2024.2.5',
+    //     link: 'https://s2-v1.antv.antgroup.com',
+    //   },
+    // ],
     /** 首页特性介绍 */
     features: [
       {

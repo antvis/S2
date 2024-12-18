@@ -54,7 +54,7 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "暂无数据",
-  "x": 375.5,
+  "x": 375,
   "y": 357.5,
 }
 `;
@@ -113,7 +113,7 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "暂无数据",
-  "x": 275.5,
+  "x": 275,
   "y": 382.5,
 }
 `;
@@ -172,7 +172,7 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "暂无数据",
-  "x": 231,
+  "x": 230.5,
   "y": 297.5,
 }
 `;
@@ -231,7 +231,7 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "暂无数据",
-  "x": 375.5,
+  "x": 375,
   "y": 357.5,
 }
 `;
@@ -290,7 +290,7 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "暂无数据",
-  "x": 359.5,
+  "x": 359,
   "y": 443,
 }
 `;
@@ -349,7 +349,7 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "No Data",
-  "x": 377.4892578125,
+  "x": 376.5,
   "y": 357.5,
 }
 `;
@@ -408,7 +408,7 @@ Object {
   "lineWidth": 1,
   "opacity": 1,
   "text": "暂无数据",
-  "x": 375.5,
+  "x": 375,
   "y": 357.5,
 }
 `;

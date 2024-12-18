@@ -134,6 +134,7 @@ export class TableDataCell extends DataCell {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
@@ -153,5 +154,19 @@ export class TableDataCell extends DataCell {
 
   protected isDisableHover(cellMeta: CellMeta) {
     return cellMeta?.type === CellType.COL_CELL;
+  }
+
+  protected getResizedTextMaxLines() {
+    const { facet, options } = this.spreadsheet;
+    const { rowCell } = options.style!;
+    const { id, rowId, rowIndex } = this.meta;
+
+    return (
+      rowCell?.maxLinesByField?.[id] ??
+      rowCell?.maxLinesByField?.[rowId!] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: facet?.customRowHeightStatusMap?.[rowIndex],
+      })
+    );
   }
 }

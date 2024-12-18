@@ -3,10 +3,9 @@ const path = require('path');
 module.exports = {
   extends: 'semantic-release-monorepo',
   branches: [
-    'latest',
     { name: 'beta', channel: 'beta', prerelease: true },
     { name: 'alpha', channel: 'alpha', prerelease: true },
-    { name: 'next', channel: 'next', prerelease: true },
+    { name: 'next', channel: 'latest', prerelease: false },
   ],
   plugins: [
     [

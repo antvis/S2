@@ -297,7 +297,7 @@ describe('TableSheet Tests', () => {
   });
 
   test('should get content height', () => {
-    expect(s2.facet.getContentHeight()).toEqual(120);
+    expect(s2.facet.getContentHeight()).toEqual(122);
   });
 
   test('should get content width', () => {

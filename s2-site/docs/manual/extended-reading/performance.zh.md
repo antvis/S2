@@ -10,7 +10,7 @@ tag: Updated
 
 `S2` 可以用于实现明细表，也可以实现透视表，还可以实现趋势分析表等。
 
-为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对 [基本概念](/docs/manual/basic/base-concept) 有初步认知。
+为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对 [基本概念](/manual/basic/base-concept) 有初步认知。
 
 ## 性能解读
 
@@ -21,7 +21,7 @@ tag: Updated
 * 通过配置信息将原始数据处理，转换为以 行、列 纬度值为 `path` 的多维数组
 * 在此之后，通过 `hierarchy` 来改变自动生成的层级结构。然后通过 `layout` 更改任意行、列、单元格的坐标信息
 * 最后由 `layoutResult` 来确定行、列的笛卡尔交集的 `dataCell` 数据信息
-  
+
 如下图所示：
 
 ![s2-data-process](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TFcyS6P0IPsAAAAAAAAAAAAADmJ7AQ/original)

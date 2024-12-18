@@ -1,5 +1,5 @@
 import {
-  CustomTreePivotDataSet,
+  CustomGridPivotDataSet,
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_FIELD,
   i18n,
@@ -9,7 +9,7 @@ import {
 } from '@antv/s2';
 import { isEmpty, isObject, keys, size } from 'lodash';
 
-export class StrategySheetDataSet extends CustomTreePivotDataSet {
+export class StrategySheetDataSet extends CustomGridPivotDataSet {
   getExistValuesByDataItem(data: RawData) {
     const result = keys(data).filter((key) => isObject(data[key]));
 

@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash';
 import type { DataCell } from '../cell';
 import {
   CellType,
+  InteractionName,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -86,7 +87,7 @@ export class DataCellMultiSelection
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      const cell = this.spreadsheet.getCell(event.target) as DataCell;
+      const cell = this.spreadsheet.getCell<DataCell>(event.target)!;
       const meta = cell.getMeta();
       const { interaction } = this.spreadsheet;
 
@@ -96,10 +97,11 @@ export class DataCellMultiSelection
         if (isEmpty(selectedCells)) {
           interaction.clearState();
           this.spreadsheet.hideTooltip();
-          this.spreadsheet.emit(
-            S2Event.GLOBAL_SELECTED,
-            interaction.getActiveCells(),
-          );
+          interaction.emitSelectEvent({
+            event,
+            targetCell: cell,
+            interactionName: InteractionName.DATA_CELL_MULTI_SELECTION,
+          });
 
           return;
         }
@@ -112,10 +114,11 @@ export class DataCellMultiSelection
           stateName: InteractionStateName.SELECTED,
           onUpdateCells: afterSelectDataCells,
         });
-        this.spreadsheet.emit(
-          S2Event.GLOBAL_SELECTED,
-          interaction.getActiveCells(),
-        );
+        interaction.emitSelectEvent({
+          event,
+          targetCell: cell,
+          interactionName: InteractionName.DATA_CELL_MULTI_SELECTION,
+        });
         this.spreadsheet.showTooltipWithInfo(
           event,
           getCellsTooltipData(this.spreadsheet),

@@ -1,3 +1,30 @@
+# [@antv/s2-vue-v2.0.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.1...@antv/s2-vue-v2.0.2) (2024-12-13)
+
+
+### Bug Fixes
+
+* 构建产物编译到 es2015 close [#3025](https://github.com/antvis/S2/issues/3025) ([#3026](https://github.com/antvis/S2/issues/3026)) ([0a7977c](https://github.com/antvis/S2/commit/0a7977c1793a8171b14b07a22847b4dd9ed85d5f))
+
+# [@antv/s2-vue-v2.0.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0...@antv/s2-vue-v2.0.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* 修复 react, vue component 层的 svg 问题 close [#2990](https://github.com/antvis/S2/issues/2990) ([#2999](https://github.com/antvis/S2/issues/2999)) ([b626986](https://github.com/antvis/S2/commit/b626986827a4cd6439d06bdd2e9fb8aa6e19fdc4))
+* 修改包 peerDependencies 版本和样式依赖问题 ([11df5d5](https://github.com/antvis/S2/commit/11df5d511515817047b09d6e3dd37000f7b189f2))
+
+# [@antv/s2-vue-v2.0.0](#) (2024-11-21)
+
+* 2.0 正式版已发布，请查看 [升级指南](https://s2.antv.antgroup.com/manual/migration-v2)
+
+# [@antv/s2-vue-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.15...@antv/s2-vue-v2.0.0-next.16) (2024-11-01)
+
+
+### Features
+
+* 增加不同类型单元格的选中事件 & 支持识别事件来源 ([#2956](https://github.com/antvis/S2/issues/2956)) ([69f6479](https://github.com/antvis/S2/commit/69f6479b43055c12d0295a7c77709b990a069ee3))
+* 增加对自定义行列头总计、小计节点和组内排序的支持，修复明细表自定义列头 icon 问题 icon closes [#2898](https://github.com/antvis/S2/issues/2898) [#2893](https://github.com/antvis/S2/issues/2893) ([#2934](https://github.com/antvis/S2/issues/2934)) ([a4ae432](https://github.com/antvis/S2/commit/a4ae432d2ddff8a3b44fdfb7abd96d6a2369c81b))
+
 # [@antv/s2-vue-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.14...@antv/s2-vue-v2.0.0-next.15) (2024-06-21)
 
 

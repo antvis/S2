@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*", "./typings.d.ts", "../../global.d.ts"],
+  "compilerOptions": {
+    "target": "es2015",
+    "paths": {}
+  }
+}

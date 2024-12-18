@@ -71,12 +71,13 @@ export default defineComponent({
         @change="handlePageChange"
         @showSizeChange="handlePageSizeChange"
       />
+      <slot name="editCell" />
     </div>
   </Spin>
 </template>
 
 <style lang="less">
-@import '@antv/s2-shared/src/styles/variables.less';
+@import '@antv/s2/esm/shared/styles/variables.less';
 
 .@{s2-cls-prefix} {
   &-spin.ant-spin-nested-loading,

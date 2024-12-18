@@ -19,7 +19,7 @@ tag: Updated
 
 ## 快速上手
 
-`S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/api/general/S2Options#conditions) 属性。
+`S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/api/general/s2-options#conditions) 属性。
 
 ```ts
 const s2Options = {
@@ -45,12 +45,12 @@ const s2Options = {
 
 ## 配置解释
 
-[Conditions 属性](/api/general/S2Options#conditions) 可配置四种不同的字段，分别对应四种不同的字段标记。
+[Conditions 属性](/api/general/s2-options#conditions) 可配置四种不同的字段，分别对应四种不同的字段标记。
 
-* `text`，`background` 和 `interval` ,`icon` 均是继承自 [Condition](/api/general/S2Options#condition) 数组类型
+* `text`，`background` 和 `interval` ,`icon` 均是继承自 [Condition](/api/general/s2-options#condition) 数组类型
   * 包含 `field` 和 `mapping` 两个字段。
   * 一个字段 ID 多次匹配到同一范围的字段标记规则，**以最后一个规则为准**.
-* `icon` 稍有不同，为 [IconCondition](/api/general/S2Options#iconcondition) 数组类型。
+* `icon` 稍有不同，为 [IconCondition](/api/general/s2-options#iconcondition) 数组类型。
   * 多一个额外的 `position` 字段用于指定图标相对于文字的位置，定义图标相对于单元格文本的位置。这个位置可以是文本的左侧、右侧。
 
 ### field
@@ -107,7 +107,7 @@ export type ConditionMapping<T = unknown> = (
 
 > 也可以通过 [condition.ts](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/interface/condition.ts) 查看具体的类型定义。
 
-🎨 字段标记详细的配置参考 [Conditions API](/api/general/S2Options#conditions) 文档。
+🎨 字段标记详细的配置参考 [Conditions API](/api/general/s2-options#conditions) 文档。
 
 ## 特性
 
@@ -216,7 +216,7 @@ const s2Options = {
 
 ### 渐变柱状图
 
-`S2` 的底层图形绘制采用 [AntV/g](https://g.antv.antgroup.com/guide/getting-started) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.antgroup.com/api/css/gradient)、[纹理](https://g.antv.antgroup.com/api/css/pattern) 等。
+`S2` 的底层图形绘制采用 [AntV/G](https://g.antv.antgroup.com/guide/getting-started) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.antgroup.com/api/css/gradient)、[纹理](https://g.antv.antgroup.com/api/css/pattern) 等。
 
 ```ts
 const s2Options = {

@@ -1,11 +1,6 @@
-import {
-  SpreadSheet,
-  setLang,
-  type LangType,
-  type Pagination,
-  type S2DataConfig,
-} from '@antv/s2';
-import { waitFor } from '@testing-library/react';
+import { type S2DataConfig, type SpreadSheet } from '@antv/s2';
+import { render, waitFor } from '@testing-library/react';
+import { Pagination } from 'antd';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { pivotSheetDataCfg } from '../../playground/config';
@@ -32,77 +27,40 @@ describe('Pagination Tests', () => {
     unmount?.();
   });
 
-  // https://github.com/antvis/S2/issues/1697
-  test.each([
-    {
-      locale: 'zh_CN',
-      page: '1 条/页',
-      count: '共计2条',
-    },
-    {
-      locale: 'en_US',
-      page: '1 / page',
-      count: 'Total2',
-    },
-  ] as Array<{ locale: LangType; page: string; count: string }>)(
-    'should render locale text for %o',
-    async ({ locale, page, count }) => {
-      setLang(locale);
-
-      let spreadsheet: SpreadSheet;
-
-      unmount = renderComponent(
-        <SheetComponent
-          options={s2Options}
-          dataCfg={mockDataConfig as S2DataConfig}
-          showPagination
-          onMounted={(instance) => {
-            spreadsheet = instance;
-          }}
-        />,
-      );
-
-      await waitFor(() => {
-        expect(spreadsheet).toBeDefined();
-        expect(
-          document.querySelector('.ant-select-selection-item')?.innerHTML,
-        ).toEqual(page);
-        expect(
-          document.querySelector('.antv-s2-pagination-count')?.innerHTML,
-        ).toEqual(count);
-      });
-    },
-  );
-
-  test('should receive antd <Pagination/> component extra props', async () => {
-    let spreadsheet: SpreadSheet;
-
-    unmount = renderComponent(
+  test('should render with antd <Pagination/> component', async () => {
+    const renderPagination = jest.fn(({ pagination }) => (
+      <Pagination
+        size="small"
+        showTotal={(total) => `共计 ${total} 条`}
+        showSizeChanger={false}
+        showQuickJumper
+        {...pagination}
+      />
+    ));
+    const { container } = render(
       <SheetComponent
-        options={{
-          ...s2Options,
-          pagination: {
-            ...s2Options.pagination,
-            current: 2,
-            showSizeChanger: false,
-            showQuickJumper: true,
-          } as Pagination,
-        }}
+        options={s2Options}
         dataCfg={mockDataConfig as S2DataConfig}
-        showPagination
-        onMounted={(instance) => {
-          spreadsheet = instance;
-        }}
-      />,
+      >
+        {renderPagination}
+      </SheetComponent>,
     );
 
     await waitFor(() => {
-      expect(spreadsheet).toBeDefined();
+      expect(renderPagination).toHaveBeenCalledWith({
+        pagination: {
+          current: 1,
+          pageSize: 1,
+          total: 0,
+          onChange: expect.any(Function),
+          onShowSizeChange: expect.any(Function),
+        },
+      });
       expect(
-        document.querySelector('.ant-pagination-options-quick-jumper'),
+        container.querySelector('.ant-pagination-options-quick-jumper'),
       ).toBeTruthy();
       expect(
-        document.querySelector('.ant-pagination-options-size-changer'),
+        container.querySelector('.ant-pagination-options-size-changer'),
       ).toBeFalsy();
     });
   });
@@ -112,25 +70,21 @@ describe('Pagination Tests', () => {
       <SheetComponent
         options={{
           ...s2Options,
-          pagination: {
-            ...s2Options.pagination,
-            current: 1,
-            pageSize: 1,
-          },
           height: 400,
         }}
         dataCfg={pivotSheetDataCfg}
         onMounted={(instance) => {
           s2 = instance;
         }}
-        showPagination
-      />,
+      >
+        {({ pagination }) => <Pagination size="small" {...pagination} />}
+      </SheetComponent>,
     );
 
     await waitFor(() => {
       const rowCell = s2.facet.getRowCells()[0];
 
-      expect(rowCell.getTextShape().parsedStyle.y).toBe(15);
+      expect(rowCell.getTextShape().parsedStyle.y).toBe(16);
     });
   });
 });

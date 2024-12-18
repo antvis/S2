@@ -87,16 +87,23 @@ export class Frame extends Group {
     this.render();
   }
 
-  private addCornerRightBorder() {
-    const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
-      this.cfg;
-    const {
-      verticalBorderColor,
-      verticalBorderColorOpacity,
-      horizontalBorderWidth,
-    } = spreadsheet.theme?.splitLine!;
+  protected getCornerRightBorderSizeForPivotMode() {
+    const { cornerHeight, viewportHeight, position, spreadsheet } = this.cfg;
 
+    const { horizontalBorderWidth } = spreadsheet.theme?.splitLine!;
+
+    const y = position.y;
+    const height = cornerHeight + horizontalBorderWidth! + viewportHeight;
+
+    return { y, height };
+  }
+
+  protected addCornerRightHeadBorder() {
+    const { cornerWidth, cornerHeight, position, spreadsheet } = this.cfg;
+    const { verticalBorderColor, verticalBorderColorOpacity } =
+      spreadsheet.theme?.splitLine!;
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
+    const frameHorizontalWidth = Frame.getHorizontalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
     // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
@@ -104,40 +111,80 @@ export class Frame extends Group {
     const {
       verticalBorderColor: headerVerticalBorderColor,
       verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
-    } =
-      spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
-        ? spreadsheet.theme.cornerCell!.cell!
-        : spreadsheet.theme.colCell!.cell!;
+      backgroundColor,
+      backgroundColorOpacity,
+    } = spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
+      ? spreadsheet.theme.cornerCell!.cell!
+      : spreadsheet.theme.colCell!.cell!;
 
-    renderLine(this, {
-      x1: x,
-      y1: position.y,
-      x2: x,
-      y2: position.y + cornerHeight,
-      stroke: verticalBorderColor || headerVerticalBorderColor,
-      lineWidth: frameVerticalWidth,
-      strokeOpacity:
-        verticalBorderColorOpacity || headerVerticalBorderColorOpacity,
+    /**
+     * G 6.0 颜色混合模式有调整, 相同颜色的 Line 在不同背景色绘制, 实际渲染的颜色会不一致
+     * 在绘制分割线前, 先填充一个和单元格相同的底色, 保证分割线和单元格边框表现一致
+     */
+    [
+      { stroke: backgroundColor, strokeOpacity: backgroundColorOpacity },
+      {
+        stroke: verticalBorderColor || headerVerticalBorderColor,
+        strokeOpacity:
+          verticalBorderColorOpacity || headerVerticalBorderColorOpacity,
+      },
+    ].forEach(({ stroke, strokeOpacity }) => {
+      renderLine(this, {
+        x1: x,
+        y1: position.y,
+        x2: x,
+        y2: position.y + cornerHeight + frameHorizontalWidth,
+        lineWidth: frameVerticalWidth,
+        stroke,
+        strokeOpacity,
+      });
     });
+  }
+
+  protected addCornerRightBorder() {
+    const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
+      this.cfg;
+    const { verticalBorderColor, verticalBorderColorOpacity } =
+      spreadsheet.theme?.splitLine!;
+    const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
+    const frameHorizontalWidth = Frame.getHorizontalBorderWidth(spreadsheet);
+    const x = position.x + cornerWidth + frameVerticalWidth! / 2;
+
+    // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
+    // 分两条线绘制, 默认和分割线所在区域对应的单元格边框颜色保持一致
+    this.addCornerRightHeadBorder();
 
     const {
       verticalBorderColor: cellVerticalBorderColor,
       verticalBorderColorOpacity: cellVerticalBorderColorOpacity,
+      backgroundColor: cellBackgroundColor,
+      backgroundColorOpacity: cellBackgroundColorOpacity,
     } = spreadsheet.theme.dataCell!.cell!;
 
-    renderLine(this, {
-      x1: x,
-      y1: position.y + cornerHeight + horizontalBorderWidth!,
-      x2: x,
-      y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
-      stroke: verticalBorderColor || cellVerticalBorderColor,
-      lineWidth: frameVerticalWidth,
-      strokeOpacity:
-        verticalBorderColorOpacity || cellVerticalBorderColorOpacity,
+    [
+      {
+        stroke: cellBackgroundColor,
+        strokeOpacity: cellBackgroundColorOpacity,
+      },
+      {
+        stroke: verticalBorderColor || cellVerticalBorderColor,
+        strokeOpacity:
+          verticalBorderColorOpacity || cellVerticalBorderColorOpacity,
+      },
+    ].forEach(({ stroke, strokeOpacity }) => {
+      renderLine(this, {
+        x1: x,
+        y1: position.y + cornerHeight + frameHorizontalWidth!,
+        x2: x,
+        y2: position.y + cornerHeight + frameHorizontalWidth! + viewportHeight,
+        lineWidth: frameVerticalWidth,
+        stroke,
+        strokeOpacity,
+      });
     });
   }
 
-  private addCornerBottomBorder() {
+  protected addCornerBottomBorder() {
     const cfg = this.cfg;
     const {
       cornerWidth,
@@ -182,7 +229,7 @@ export class Frame extends Group {
     });
   }
 
-  private addSplitLineShadow() {
+  protected addSplitLineShadow() {
     const cfg = this.cfg;
     const { spreadsheet } = cfg;
     const splitLine = spreadsheet.theme?.splitLine;
@@ -199,7 +246,7 @@ export class Frame extends Group {
     this.addSplitLineRightShadow();
   }
 
-  private addSplitLineLeftShadow() {
+  protected addSplitLineLeftShadow() {
     if (!this.cfg.showViewportLeftShadow) {
       return;
     }
@@ -225,28 +272,21 @@ export class Frame extends Group {
     );
   }
 
-  private addSplitLineRightShadow() {
+  protected addSplitLineRightShadow() {
     if (!this.cfg.showViewportRightShadow) {
       return;
     }
 
-    const {
-      cornerWidth,
-      cornerHeight,
-      viewportHeight,
-      viewportWidth,
-      position,
-      spreadsheet,
-    } = this.cfg;
-    const { shadowColors, shadowWidth, horizontalBorderWidth } =
-      spreadsheet.theme?.splitLine!;
+    const { cornerWidth, viewportWidth, position, spreadsheet } = this.cfg;
+    const { shadowColors, shadowWidth } = spreadsheet.theme?.splitLine!;
     const x =
       position.x +
       cornerWidth +
       Frame.getVerticalBorderWidth(spreadsheet)! +
       viewportWidth -
       shadowWidth!;
-    const y = position.y;
+
+    const { y, height } = this.getCornerRightBorderSizeForPivotMode();
 
     this.appendChild(
       new Rect({
@@ -254,7 +294,7 @@ export class Frame extends Group {
           x,
           y,
           width: shadowWidth!,
-          height: cornerHeight + horizontalBorderWidth! + viewportHeight,
+          height,
           fill: `l (0) 0:${shadowColors?.right} 1:${shadowColors?.left}`,
         },
       }),

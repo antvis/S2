@@ -1,14 +1,14 @@
 /* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line prettier/prettier
-import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
+import { BaseTooltip, customMerge, isMobile, SpreadSheet } from '@antv/s2';
+import { omit } from 'lodash';
 import React from 'react';
 import {
   forceClearContent,
   reactRender,
   reactUnmount,
 } from '../../utils/reactRender';
-import { ConfigProvider } from '../config-provider';
 import { TooltipComponent } from './index';
 import type {
   TooltipOperatorMenuOptions,
@@ -33,7 +33,8 @@ export class CustomTooltip extends BaseTooltip<
 
   renderContent() {
     // 配置级 s2.options.tooltip.content = ''
-    const { content: contentFromOptions } = this.spreadsheet.options.tooltip!;
+    const { content: contentFromOptions, operation } =
+      this.spreadsheet.options.tooltip!;
     // 方法级 s2.showTooltip({ content: '' })
     const showOptions = this.options;
     const cell = this.spreadsheet.getCell(showOptions?.event?.target);
@@ -41,21 +42,27 @@ export class CustomTooltip extends BaseTooltip<
     const content = (showOptions?.content ??
       contentFromOptions) as React.ReactNode;
 
-    const tooltipProps = {
-      ...showOptions,
-      cell,
-      content,
-    } as TooltipRenderProps;
+    const tooltipProps = customMerge<TooltipRenderProps>(
+      {
+        options: {
+          operator: {
+            menu: omit(operation?.menu, 'items'),
+          },
+        },
+      },
+      {
+        ...showOptions,
+        cell,
+        content,
+      },
+    );
 
     if (showOptions?.options?.forceRender) {
       this.forceClearContent();
     }
 
-    const themeName = this.spreadsheet.getThemeName();
     const TooltipContent = (
-      <ConfigProvider themeName={themeName}>
-        <TooltipComponent {...tooltipProps} content={content} />
-      </ConfigProvider>
+      <TooltipComponent {...tooltipProps} content={content} />
     );
 
     reactRender(TooltipContent, this.container!);

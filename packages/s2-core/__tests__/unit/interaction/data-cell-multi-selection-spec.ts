@@ -9,6 +9,7 @@ import type { GEvent } from '@/index';
 import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
 import type { SpreadSheet } from '@/sheet-type';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import { CellType } from '../../../src';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/ui/hd-adapter');
@@ -18,7 +19,9 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
   let s2: SpreadSheet;
 
   beforeEach(() => {
-    const mockCell = createMockCellInfo('testId1').mockCell as any;
+    const mockCell = createMockCellInfo('testId1', {
+      cellType: CellType.DATA_CELL,
+    }).mockCell as any;
 
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
@@ -89,6 +92,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       const mockCellA = createMockCellInfo('testId2', {
         rowIndex: 0,
         colIndex: 0,
+        cellType: CellType.DATA_CELL,
       });
 
       s2.interaction.getCells = () => [mockCellA.mockCellMeta as CellMeta];
@@ -96,6 +100,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       const mockCellB = createMockCellInfo('testId3', {
         rowIndex: 1,
         colIndex: 1,
+        cellType: CellType.DATA_CELL,
       });
 
       s2.getCell = () => mockCellB.mockCell as any;
@@ -111,10 +116,14 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
         stopPropagation() {},
       } as unknown as GEvent);
 
-      expect(selected).toHaveBeenCalledWith([
-        mockCellA.mockCell,
-        mockCellB.mockCell,
-      ]);
+      expect(selected).toHaveBeenCalledWith(
+        [mockCellA.mockCell, mockCellB.mockCell],
+        {
+          interactionName: 'dataCellMultiSelection',
+          targetCell: s2.getCell(),
+          event: expect.anything(),
+        },
+      );
 
       expect(s2.interaction.getState()).toEqual({
         cells: [mockCellA.mockCellMeta, mockCellB.mockCellMeta],

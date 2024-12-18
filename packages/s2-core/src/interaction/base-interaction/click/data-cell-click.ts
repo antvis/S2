@@ -1,13 +1,13 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type { DataCell } from '../../../cell/data-cell';
 import {
+  InteractionName,
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '../../../common/constant';
 import type {
   TooltipData,
-  TooltipOperatorOptions,
   ViewMeta,
   ViewMetaData,
 } from '../../../common/interface';
@@ -15,10 +15,6 @@ import {
   afterSelectDataCells,
   getCellMeta,
 } from '../../../utils/interaction/select-event';
-import {
-  getTooltipOptions,
-  getTooltipVisibleOperator,
-} from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
@@ -63,10 +59,11 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
           interaction.reset();
 
           // https://github.com/antvis/S2/issues/2447
-          this.spreadsheet.emit(
-            S2Event.GLOBAL_SELECTED,
-            interaction.getActiveCells(),
-          );
+          interaction.emitSelectEvent({
+            event,
+            targetCell: cell,
+            interactionName: InteractionName.DATA_CELL_CLICK,
+          });
         }
 
         return;
@@ -77,7 +74,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.SELECTED,
         onUpdateCells: afterSelectDataCells,
       });
-      this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
+      interaction.emitSelectEvent({
+        event,
+        targetCell: cell,
+        interactionName: InteractionName.DATA_CELL_CLICK,
+        cells: [cell],
+      });
       this.showTooltip(event, meta);
 
       // 点击单元格，高亮对应的行头、列头
@@ -85,16 +87,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         InteractionStateName.SELECTED,
         meta,
       );
-    });
-  }
-
-  private getTooltipOperator(event: CanvasEvent): TooltipOperatorOptions {
-    const cell = this.spreadsheet.getCell(event.target)!;
-    const { operation } = getTooltipOptions(this.spreadsheet, event)!;
-
-    return getTooltipVisibleOperator(operation!, {
-      defaultMenus: [],
-      cell,
+      this.spreadsheet.emit(S2Event.DATA_CELL_CLICK_TRIGGERED_PRIVATE, cell);
     });
   }
 

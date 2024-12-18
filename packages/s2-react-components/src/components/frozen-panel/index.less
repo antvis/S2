@@ -1,0 +1,34 @@
+@import '@antv/s2/esm/styles/variables.less';
+
+.@{s2-cls-prefix}-frozen-panel {
+  width: 400px;
+
+  &-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:not(:last-of-type) {
+      margin-bottom: 6px;
+    }
+
+    &-group {
+      color: rgba(0, 0, 0, 0.43);
+
+      &:not(:last-of-type) {
+        margin-right: 12px;
+      }
+    }
+
+    .ant-checkbox-wrapper {
+      margin-right: 50px;
+      color: #535455;
+    }
+
+    .ant-input-number.@{s2-cls-prefix}-frozen-input-number {
+      width: 50px;
+      margin: 0 4px;
+      border-radius: 4px;
+    }
+  }
+}

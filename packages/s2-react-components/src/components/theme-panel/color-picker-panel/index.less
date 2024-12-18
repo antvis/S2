@@ -1,0 +1,60 @@
+@import '@antv/s2/esm/styles/variables.less';
+
+@cls-prefix: ~'@{s2-cls-prefix}-color-picker-panel';
+
+.@{cls-prefix} {
+  width: 218px;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    &-title {
+      display: inline-flex;
+      margin-right: 8px;
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 20px;
+    }
+  }
+
+  &-section {
+    margin-bottom: 8px;
+
+    &-title {
+      margin-bottom: 8px;
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    &-color-list {
+      display: flex;
+
+      .@{s2-cls-prefix}-color-box:not(:last-child) {
+        margin-right: 6px;
+      }
+    }
+  }
+
+  &-collapse {
+    &-collapse-title {
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    .ant-collapse-content-box {
+      padding: 0 !important;
+
+      .@{cls-prefix}-sketch-picker {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+      }
+    }
+  }
+}

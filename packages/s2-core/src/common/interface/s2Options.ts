@@ -1,4 +1,5 @@
 import type { CanvasConfig } from '@antv/g';
+import type { Renderer } from '@antv/g-canvas';
 import type {
   ColCell,
   CornerCell,
@@ -188,7 +189,7 @@ export interface S2BasicOptions<
     },
    */
   transformCanvasConfig?: (
-    renderer: CanvasConfig['renderer'],
+    renderer: Renderer,
     spreadsheet: SpreadSheet,
   ) => (Partial<CanvasConfig> | null | undefined) | void;
 
@@ -385,5 +386,5 @@ export interface S2RenderOptions {
   /**
    * 是否重新生成列头隐藏信息
    */
-  reBuildHiddenColumnsDetail?: boolean;
+  rebuildHiddenColumnsDetail?: boolean;
 }

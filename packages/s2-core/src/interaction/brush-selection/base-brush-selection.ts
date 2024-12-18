@@ -23,6 +23,7 @@ import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
+  CellSelectedDetail,
   OnUpdateCells,
   S2CellType,
   ScrollOffsetConfig,
@@ -157,8 +158,11 @@ export class BaseBrushSelection
 
     let newX = this.endBrushPoint?.x + x;
     let newY = this.endBrushPoint?.y + y;
-    let needScrollForX = true;
-    let needScrollForY = true;
+    // 有滚动条才需要滚动
+    let needScrollForX = isRowHeader
+      ? !!facet.hRowScrollBar
+      : !!facet.hScrollBar;
+    let needScrollForY = !!facet.vScrollBar;
     const vScrollBarWidth = facet.vScrollBar?.getBBox()?.width;
     // 额外加缩进，保证 getShape 在 panelBox 内
     const extraPixel = 2;
@@ -697,7 +701,7 @@ export class BaseBrushSelection
 
       if (this.isValidBrushSelection()) {
         this.addBrushIntercepts();
-        this.updateSelectedCells();
+        this.updateSelectedCells(event);
 
         const tooltipData = getCellsTooltipData(this.spreadsheet);
 
@@ -785,9 +789,14 @@ export class BaseBrushSelection
   public emitBrushSelectionEvent(
     event: S2Event,
     scrollBrushRangeCells: S2CellType[],
+    detail: CellSelectedDetail,
   ) {
-    this.spreadsheet.emit(event, scrollBrushRangeCells);
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
+    this.spreadsheet.emit(event, scrollBrushRangeCells, detail);
+    this.spreadsheet.emit(
+      S2Event.GLOBAL_SELECTED,
+      scrollBrushRangeCells,
+      detail,
+    );
 
     // 未刷选到有效单元格, 允许 hover
     if (isEmpty(scrollBrushRangeCells)) {
@@ -813,7 +822,8 @@ export class BaseBrushSelection
 
   protected bindMouseMove() {}
 
-  protected updateSelectedCells() {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected updateSelectedCells(event: MouseEvent) {}
 
   protected getPrepareSelectMaskPosition(brushRange: BrushRange): PointLike {
     return {

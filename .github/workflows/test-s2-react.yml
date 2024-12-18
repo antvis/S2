@@ -1,0 +1,83 @@
+name: 💯 test (@antv/s2-react)
+
+on: [pull_request]
+
+concurrency:
+  group: ${{github.workflow}}-${{github.event_name}}-${{github.ref}}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # jest-electron 需要 macOS 环境, 但是 免费用户 并发有限制, 容易排队 https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+    # runs-on: macos-latest # (目前 macos-latest 对应的是 Big Sur 11, macos-12 对应  Monterey 12)
+    # macOS 3-core CPU, 其他 2-core CPU
+    runs-on: macos-14
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Python 3.11 和 node-gyp 有兼容问题, 导致无法安装依赖
+      # https://github.com/slint-ui/slint/commit/a9c48e33502fdebc36c5aa2f4f516c2218424679#diff-944291df2c9c06359d37cc8833d182d705c9e8c3108e7cfe132d61a06e9133dd
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm bootstrap:ci
+
+      - name: Test
+        run: |
+          pnpm --filter @antv/s2-react test:ci-coverage
+
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+          verbose: true
+
+      - name: Workflow failed alert
+        if: ${{ failure() }}
+        uses: actions-cool/maintain-one-comment@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            你好, @${{ github.event.pull_request.user.login }} CI 执行失败, 请点击 [Details] 按钮查看, 并根据日志修复。
+
+            Hello, @${{ github.event.pull_request.user.login }} CI run failed, please click the [Details] button for detailed log information and fix it.
+            <!-- Created by actions-cool/maintain-one-comment -->
+          emojis: 'eyes'
+          body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
+
+      # Github PR 列表 有显示 √ X 的提示, 但是比如一些 APP, 例如 codecov 的 patch 变低, 也会导致 出现 X, 添加label 在列表页快速识别是不是测试自身挂了
+      - name: Workflow failed add test failed label
+        if: ${{ failure() && github.event.pull_request.number != '' }}
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'add-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: '🚨 test failed'
+
+      - name: Remove test failed label
+        if: ${{ success() && github.event.pull_request.number != '' }}
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'remove-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: '🚨 test failed'

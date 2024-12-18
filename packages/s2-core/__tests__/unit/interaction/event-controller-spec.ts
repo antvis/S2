@@ -570,7 +570,11 @@ describe('Interaction Event Controller Tests', () => {
       } as MouseEventInit),
     );
 
-    expect(selected).toHaveBeenCalledWith([]);
+    expect(selected).toHaveBeenCalledWith([], {
+      interactionName: 'globalReset',
+      targetCell: null,
+      event: expect.anything(),
+    });
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
   });
@@ -594,7 +598,11 @@ describe('Interaction Event Controller Tests', () => {
       new KeyboardEvent('keydown', { key: InteractionKeyboardKey.ESC }),
     );
 
-    expect(selected).toHaveBeenCalledWith([]);
+    expect(selected).toHaveBeenCalledWith([], {
+      interactionName: 'globalReset',
+      targetCell: null,
+      event: expect.anything(),
+    });
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
   });

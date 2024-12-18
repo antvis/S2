@@ -161,8 +161,8 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       iconCfg: {
         x: iconX,
         y: iconY,
-        width: size!,
-        height: size!,
+        width: size,
+        height: size,
         fill,
       },
       isCollapsed,
@@ -173,7 +173,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     // 移动端, 点击热区为整个单元格
     if (isMobile()) {
-      this.addEventListener('click', () => {
+      this.addEventListener('touchend', () => {
         this.emitCollapseEvent();
       });
     }
@@ -212,9 +212,17 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     return (!isLeaf && level === 0) || isTotals;
   }
 
+  protected getResizesArea() {
+    return getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+  }
+
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
+      this.meta.hideRowCellVerticalResize ||
       !this.shouldDrawResizeAreaByType('rowCellVertical', this)
     ) {
       return;
@@ -222,10 +230,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
-    const resizeArea = getOrCreateResizeAreaGroupById(
-      this.spreadsheet,
-      KEY_GROUP_ROW_RESIZE_AREA,
-    );
+    const resizeArea = this.getResizesArea();
 
     if (!resizeArea) {
       return;
@@ -288,6 +293,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       width,
       height,
       meta: this.meta,
+      cell: this,
     });
 
     resizeArea.appendChild(
@@ -438,8 +444,8 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
-
     const viewport = this.handleViewport();
+    const textHeight = this.getActualTextHeight();
 
     const { textStart } = adjustTextIconPositionWhileScrolling(
       viewport,
@@ -450,7 +456,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       {
         align: normalizeTextAlign(textStyle.textBaseline!),
         size: {
-          textSize: textStyle.fontSize!,
+          textSize: textHeight,
         },
         padding: {
           start: cell.padding.top,
@@ -470,7 +476,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const iconY = getVerticalIconPosition(
       iconStyle?.size!,
       textStart,
-      textStyle.fontSize!,
+      textHeight,
       textStyle.textBaseline!,
     );
 
@@ -484,5 +490,17 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     };
 
     return { x: textX, y: textStart };
+  }
+
+  protected getResizedTextMaxLines() {
+    const { rowCell } = this.spreadsheet.options.style!;
+
+    return (
+      rowCell?.maxLinesByField?.[this.meta.id] ??
+      rowCell?.maxLinesByField?.[this.meta.field] ??
+      this.getMaxLinesByCustomHeight({
+        isCustomHeight: this.meta.extra?.isCustomHeight,
+      })
+    );
   }
 }

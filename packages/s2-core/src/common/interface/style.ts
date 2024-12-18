@@ -39,7 +39,12 @@ export interface BaseCellStyle {
 }
 
 export interface CellTextWordWrapStyle
-  extends Pick<TextStyleProps, 'wordWrap' | 'maxLines' | 'textOverflow'> {}
+  extends Pick<TextStyleProps, 'wordWrap' | 'maxLines' | 'textOverflow'> {
+  /**
+   * @private 内部使用
+   */
+  maxLinesByField?: Record<string, number> | null;
+}
 
 export interface DataCellStyle extends CellTextWordWrapStyle {
   /**
@@ -75,6 +80,11 @@ export interface DataCellStyle extends CellTextWordWrapStyle {
 }
 
 export interface RowCellStyle extends BaseCellStyle, CellTextWordWrapStyle {
+  /**
+   * 树状结构的行头宽度
+   */
+  treeWidth?: number;
+
   /**
    * 是否展示树状分层下的层级占位点
    */

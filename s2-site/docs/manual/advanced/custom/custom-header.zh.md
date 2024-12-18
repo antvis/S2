@@ -6,7 +6,16 @@ tag: New
 
 `S2` 默认提供 [平铺模式 (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) 和 [树状模式 (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) 两种**行头**单元格布局方式。
 
-默认通过**分组之后得到的数据生成层级结构**, 如果都不满足的话，可以通过自定义行列头，来定制你的目录结构，同样兼容平铺和树状这两种布局方式。
+默认通过**分组之后得到的数据生成层级结构**, 如果都不满足，还可以通过自定义行列头，来定制你的目录结构，同样兼容平铺和树状这两种布局方式。
+
+## 一些限制
+
+:::warning{title="注意"}
+
+1. 默认的排序 icon `showDefaultHeaderActionIcon` 无效。
+2. 自定义行头时，不支持配置行头 [小计总计](/manual/basic/totals)；自定义列头时，不支持配置列头 [小计总计](/manual/basic/totals)。
+
+:::
 
 ## 数据结构
 
@@ -97,6 +106,8 @@ const s2DataConfig = {
 
 #### 平铺模式
 
+[查看示例](/examples/layout/custom-header-group/#custom-pivot-row-header)
+
 ```ts
 const s2Options = {
   hierarchyType: 'grid'
@@ -107,6 +118,8 @@ const s2Options = {
 
 #### 树状模式
 
+[查看示例](/examples/layout/custom-header-group/#custom-tree)
+
 ```ts
 const s2Options = {
   hierarchyType: 'tree'
@@ -114,6 +127,23 @@ const s2Options = {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/iJft9ExZs/da1f768c-7689-44df-be54-708442a74d76.png" width="1000" alt="preview" />
+
+##### 节点展开/收起
+
+树状模式下默认使用 `customTreeNode.collapsed` 作为展开/收起状态，也可以使用通用的配置，具体请查看 [自定义折叠/展开节点](/manual/advanced/custom/custom-collapse-nodes) 章节
+
+```ts
+const s2Options = {
+  style: {
+    rowCell: {
+      collapseFields: {
+        'custom-node-1': true,
+        'custom-node-2': false,
+      },
+    },
+  },
+}
+```
 
 ### 1.2 自定义列头
 
@@ -140,6 +170,8 @@ const s2DataConfig = {
 
 #### 平铺模式
 
+[查看示例](/examples/layout/custom-header-group/#custom-pivot-col-header)
+
 ```ts
 const s2Options = {
   hierarchyType: 'grid'
@@ -162,7 +194,7 @@ const s2Options = {
 
 #### 1.3.1 平铺模式
 
-对于平铺模式，角头显示的文本默认对应**行头每一列的第一个单元格**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，此时 `field` 对应 [CustomTreeNode](#customtreenode) 的 `field` 值
+对于平铺模式，角头显示的文本默认对应**行头每一列的第一个单元格**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/s2-data-config#meta) 来对单元格文本进行格式化，此时 `field` 对应 [CustomTreeNode](#customtreenode) 的 `field` 值
 
 ```ts
 const meta = [
@@ -185,7 +217,7 @@ const meta = [
 
 #### 1.3.2 树状模式
 
-对于树状模式，角头默认显示的文本对应**所有的一级节点和数值**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，也可以配置 [s2Options.cornerText](/zh/docs/api/general/S2Options) 来自定义角头文本
+对于树状模式，角头默认显示的文本对应**所有的一级节点和数值**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/s2-data-config#meta) 来对单元格文本进行格式化，也可以配置 [s2Options.cornerText](/zh/docs/api/general/s2-options) 来自定义角头文本
 
 ```ts
 const meta = [
@@ -231,6 +263,8 @@ const s2DataConfig = {
 
 <Playground path='layout/custom-header-group/demo/custom-table-col-header.ts' rid='custom-table-col-header' height='400'></playground>
 
+[查看示例](/examples/layout/custom-header-group/#custom-table-col-header)
+
 ## 3. 行列头文本格式化
 
 自定义节点默认使用 `当前节点展示名`, 即 `CustomTreeNode.title`, 也可以使用通用的 [Meta](/api/general/s-2-data-config#meta) 来进行格式化，[查看更多](/manual/basic/formatter)
@@ -252,4 +286,4 @@ const s2DataConfig: S2DataConfig = {
 
 ## 4. 更多应用
 
-基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](/docs/manual/basic/analysis/strategy/).
+基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](/manual/basic/analysis/strategy/).

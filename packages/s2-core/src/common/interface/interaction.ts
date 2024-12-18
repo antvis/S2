@@ -19,6 +19,7 @@ import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
 import type {
   CellType,
+  InteractionName,
   InteractionStateName,
   InterceptType,
   ScrollbarPositionType,
@@ -106,10 +107,20 @@ export interface ChangeCellOptions extends CellScrollToOptions {
   stateName?: `${InteractionStateName}`;
 
   /**
+   * 交互名
+   */
+  interactionName?: `${InteractionName}`;
+
+  /**
    * 如果单元格不在可视范围, 是否自动滚动
    * @default true
    */
   scrollIntoView?: boolean;
+
+  /**
+   * 触发事件对象
+   */
+  event?: FederatedPointerEvent;
 }
 
 export type InteractionConstructor = new (

@@ -17,7 +17,7 @@ export const useCellEvent = (
 ) => {
   React.useLayoutEffect(() => {
     const handlerFn = (event: GEvent) => {
-      handler?.(getBaseCellData(event));
+      handler?.(getBaseCellData(event, s2));
     };
 
     s2?.on(eventName, handlerFn);
@@ -64,6 +64,7 @@ export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
   useS2Event(S2Event.ROW_CELL_COLLAPSED, props.onRowCellCollapsed, s2);
   useS2Event(S2Event.ROW_CELL_ALL_COLLAPSED, props.onRowCellAllCollapsed, s2);
   useS2Event(S2Event.ROW_CELL_RENDER, props.onRowCellRender, s2);
+  useS2Event(S2Event.ROW_CELL_SELECTED, props.onRowCellSelected, s2);
 
   // ============== Col Cell ====================
   useCellEvent(S2Event.COL_CELL_HOVER, props.onColCellHover, s2);
@@ -76,6 +77,7 @@ export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
   useS2Event(S2Event.COL_CELL_EXPANDED, props.onColCellExpanded, s2);
   useS2Event(S2Event.COL_CELL_HIDDEN, props.onColCellHidden, s2);
   useS2Event(S2Event.COL_CELL_RENDER, props.onColCellRender, s2);
+  useS2Event(S2Event.COL_CELL_SELECTED, props.onColCellSelected, s2);
 
   // ============== Data Cell ====================
   useCellEvent(S2Event.DATA_CELL_HOVER, props.onDataCellHover, s2);
@@ -92,6 +94,7 @@ export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
   );
   useS2Event(S2Event.DATA_CELL_SELECT_MOVE, props.onDataCellSelectMove, s2);
   useS2Event(S2Event.DATA_CELL_RENDER, props.onDataCellRender, s2);
+  useS2Event(S2Event.DATA_CELL_SELECTED, props.onDataCellSelected, s2);
 
   // ============== Corner Cell ====================
   useCellEvent(S2Event.CORNER_CELL_HOVER, props.onCornerCellHover, s2);
@@ -110,6 +113,7 @@ export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
   useCellEvent(S2Event.CORNER_CELL_MOUSE_UP, props.onCornerCellMouseUp, s2);
   useCellEvent(S2Event.CORNER_CELL_MOUSE_MOVE, props.onCornerCellMouseMove, s2);
   useS2Event(S2Event.CORNER_CELL_RENDER, props.onCornerCellRender, s2);
+  useS2Event(S2Event.CORNER_CELL_SELECTED, props.onCornerCellSelected, s2);
 
   // ============== Merged Cells ====================
   useCellEvent(S2Event.MERGED_CELLS_HOVER, props.onMergedCellsHover, s2);

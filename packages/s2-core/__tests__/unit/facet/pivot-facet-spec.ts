@@ -4,8 +4,8 @@
 import { CornerCell, DataCell } from '@/cell';
 import {
   DEFAULT_OPTIONS,
+  DEFAULT_ROW_CELL_TREE_WIDTH,
   DEFAULT_STYLE,
-  DEFAULT_TREE_ROW_CELL_WIDTH,
 } from '@/common/constant/options';
 import type { ViewMeta } from '@/common/interface/basic';
 import { Store } from '@/common/store';
@@ -88,6 +88,7 @@ jest.mock('@/sheet-type', () => {
           getCellRange: jest.fn().mockReturnValue({ start: 0, end: 100 }),
           cornerBBox: {},
           getHeaderNodes: jest.fn().mockReturnValue([]),
+          measureTextWidth: jest.fn(),
         },
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -98,6 +99,8 @@ jest.mock('@/sheet-type', () => {
         },
         measureTextWidth:
           jest.fn() as unknown as SpreadSheet['measureTextWidth'],
+        measureTextWidthRoughly:
+          jest.fn() as unknown as SpreadSheet['measureTextWidthRoughly'],
         getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
       };
     }),
@@ -258,11 +261,11 @@ describe('Pivot Mode Facet Test', () => {
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
-      expect(rowsHierarchy.width).toBe(DEFAULT_TREE_ROW_CELL_WIDTH);
+      expect(rowsHierarchy.width).toBe(DEFAULT_ROW_CELL_TREE_WIDTH);
       expect(rowCell?.width).toBeUndefined();
 
       rowsHierarchy.getNodes().forEach((node, index) => {
-        expect(node.width).toBe(DEFAULT_TREE_ROW_CELL_WIDTH);
+        expect(node.width).toBe(DEFAULT_ROW_CELL_TREE_WIDTH);
         expect(node.height).toBe(dataCell!.height!);
         expect(node.x).toBe(0);
         expect(node.y).toBe(node.height * index);

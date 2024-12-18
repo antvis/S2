@@ -1,4 +1,4 @@
-import { ELLIPSIS_SYMBOL } from '@/common';
+import { ELLIPSIS_SYMBOL, EMPTY_FIELD_VALUE } from '@/common';
 import {
   drawCustomContent,
   getCellWidth,
@@ -8,6 +8,7 @@ import {
   isUnchangedValue,
   isUpDataValue,
   isZeroOrEmptyValue,
+  replaceEmptyFieldValue,
 } from '@/utils/text';
 import {
   createFakeSpreadSheet,
@@ -384,4 +385,20 @@ describe('getDisplayText', () => {
   `('should get correct empty placeholder for $value', ({ value, result }) => {
     expect(getDisplayText(value, '@')).toEqual(result);
   });
+});
+
+describe('replaceEmptyFieldValue', () => {
+  test.each`
+    value                | result
+    ${'value'}           | ${'value'}
+    ${EMPTY_FIELD_VALUE} | ${'-'}
+    ${undefined}         | ${undefined}
+    ${0}                 | ${0}
+    ${NaN}               | ${NaN}
+  `(
+    'should get correct empty field display value for $value',
+    ({ value, result }) => {
+      expect(replaceEmptyFieldValue(value)).toEqual(result);
+    },
+  );
 });

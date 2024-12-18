@@ -10,7 +10,7 @@ Customize the sorting of table data rows, support row header/column header sorti
 
 ## use
 
-Driven by passing [sortParams](/docs/api/general/S2DataConfig#SortParams) data in [s2DataConfig](/docs/api/general/S2DataConfig)
+Driven by passing [sortParams](/docs/api/general/s2-data-config#SortParams) data in [s2DataConfig](/docs/api/general/s2-data-config)
 
 ### sortParam
 
@@ -128,7 +128,7 @@ The non-leaf node of the`行/列头`. At this time, `sortByMeasure` is the summa
 #### Configure Data Aggregation Mode
 
 1. Use aggregated data from data.
-2. Use aggregate calculations available in S2. ​📊 View document [subtotal total configuration](/docs/api/general/S2Options#totals)
+2. Use aggregate calculations available in S2. ​📊 View document [subtotal total configuration](/docs/api/general/s2-options#totals)
 
 #### Row Total/Row Subtotal
 

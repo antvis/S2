@@ -91,9 +91,9 @@ Function description: Drill down menu component configuration items
 | --------------- | ------------------------------------------------------------------------------------ | ----------------------- | -------- | -------- | --------------------------------------------- |
 | dataSet         | Drill down to data source configuration                                              | [DataSet\[\]](#dataset) |          | ✓        |                                               |
 | className       | Transparent style name                                                               | `string`                |          |          |                                               |
-| titleText       | title                                                                                | `string`                |          |          |                                               |
+| title       | title                                                                                | `string`                |          |          |                                               |
 | searchText      | Search Box Copywriting                                                               | `string`                |          |          |                                               |
-| clearButtonText | reset button copy                                                                    | `string`                |          |          |                                               |
+| clearText | reset button copy                                                                    | `string`                |          |          |                                               |
 | disabledFields  | Dimensions that do not allow drill-down                                              | `string[]`              |          |          |                                               |
 | getDrillFields  | Internally get the callback of the current drill-down dimension                      | `Function`              |          |          |                                               |
 | setDrillFields  | Internally set the callback of the current drill-down dimension                      | `Function`              |          |          |                                               |

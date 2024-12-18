@@ -24,6 +24,7 @@ import {
 import {
   CellType,
   DEFAULT_FONT_COLOR,
+  DEFAULT_TEXT_LINE_HEIGHT,
   InteractionStateName,
   REVERSE_FONT_COLOR,
   SHAPE_ATTRS_MAP,
@@ -141,7 +142,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getBorderPositions(): CellBorderPosition[];
 
-  protected abstract getTextStyle(): TextTheme;
+  protected abstract getTextStyle(): TextTheme & CellTextWordWrapStyle;
 
   protected abstract getFormattedFieldValue(): FormatResult;
 
@@ -188,6 +189,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleRestOptions(...options: unknown[]) {}
+
+  protected getResizedTextMaxLines(): number | void {}
 
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
@@ -297,6 +300,16 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    */
   public getTextLineBoundingRects() {
     return this.textShape?.getLineBoundingRects() || [];
+  }
+
+  /**
+   * 获取文本行高
+   */
+  public getTextLineHeight() {
+    return (
+      this.textShape?.parsedStyle?.metrics?.lineHeight ||
+      DEFAULT_TEXT_LINE_HEIGHT
+    );
   }
 
   /**
@@ -477,6 +490,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号: https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
     const maxTextWidth = Math.max(this.getMaxTextWidth(), 0) + EXTRA_PIXEL;
     const textStyle = this.getTextStyle();
+    const maxLines = this.getResizedTextMaxLines() || textStyle?.maxLines;
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
     this.renderTextShape({
@@ -485,6 +499,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       y: 0,
       text: this.getFieldValue()!,
       wordWrapWidth: maxTextWidth,
+      maxLines,
     });
 
     if (this.isShallowRender()) {
@@ -813,5 +828,36 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       backgroundColorOpacity,
       backgroundColor: this.getStyle().cell.backgroundColor,
     };
+  }
+
+  public getMaxLinesByCustomHeight(options: {
+    targetCell?: S2CellType;
+    displayHeight?: number;
+    isCustomHeight?: boolean;
+  }) {
+    const {
+      targetCell = this,
+      displayHeight = this.meta.height,
+      isCustomHeight = false,
+    } = options;
+    const cell = targetCell || this;
+    const cellStyle = this.spreadsheet.options.style?.[cell.cellType];
+    const isEnableHeightAdaptive =
+      cellStyle?.maxLines! > 1 && cellStyle?.wordWrap;
+
+    if (!isEnableHeightAdaptive || !isCustomHeight) {
+      return;
+    }
+
+    const { cell: cellTheme } = cell?.getStyle() as DefaultCellTheme;
+    const padding = cellTheme!.padding!.top! + cellTheme!.padding!.bottom!;
+    const lineHeight = cell?.getTextLineHeight()!;
+
+    const maxLines = Math.max(
+      1,
+      Math.floor((displayHeight - padding) / lineHeight),
+    );
+
+    return maxLines;
   }
 }

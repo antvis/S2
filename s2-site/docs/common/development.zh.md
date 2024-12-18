@@ -9,6 +9,9 @@ git clone git@github.com:antvis/S2.git
 
 cd S2
 
+# 切换到 2.x 分支
+git checkout next
+
 # 安装依赖
 pnpm install # 或者 pnpm bootstrap
 
@@ -18,8 +21,12 @@ pnpm build
 # 调试 s2-core
 pnpm core:start
 
-# 调试 s2-react 和 s2-core （推荐）
+# 调试 s2-react 和 s2-core（推荐）
+pnpm core:build-esm # 首次运行需要先执行一次（安装依赖后自动执行）
 pnpm react:playground
+
+# 调试 s2-react-components
+pnpm react-components:playground
 
 # 调试 s2-vue 和 s2-core
 pnpm vue:playground

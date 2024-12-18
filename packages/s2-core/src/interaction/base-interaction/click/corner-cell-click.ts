@@ -4,8 +4,10 @@ import type { CornerCell } from '../../../cell';
 import {
   CellType,
   CornerNodeType,
+  InteractionName,
   type CellMeta,
   type Data,
+  type S2CellType,
 } from '../../../common';
 import {
   InteractionStateName,
@@ -113,6 +115,14 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
+  private emitSelectEvent(event: CanvasEvent, targetCell: S2CellType) {
+    this.spreadsheet.interaction.emitSelectEvent({
+      event,
+      targetCell,
+      interactionName: InteractionName.CORNER_CELL_CLICK,
+    });
+  }
+
   private selectCells(nodes: Node[], event: CanvasEvent) {
     const { interaction } = this.spreadsheet;
     const sample = nodes[0]?.belongsCell;
@@ -121,10 +131,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
 
     if (sample && interaction.isSelectedCell(sample)) {
       interaction.reset();
-      this.spreadsheet.emit(
-        S2Event.GLOBAL_SELECTED,
-        interaction.getActiveCells(),
-      );
+      this.emitSelectEvent(event, cornerCell);
 
       return;
     }
@@ -142,17 +149,16 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
     cornerCell?.updateByState(InteractionStateName.SELECTED);
 
     this.showTooltip(event);
-    this.spreadsheet.emit(
-      S2Event.GLOBAL_SELECTED,
-      interaction.getActiveCells(),
-    );
+    this.emitSelectEvent(event, cornerCell);
   }
 
   private showTooltip(event: CanvasEvent) {
     // 角头的选中是维值, 不需要计算数值总和, 显示 [`xx 项已选中`] 即可
     const selectedData = this.spreadsheet.interaction.getActiveCells();
+    const operator = this.getTooltipOperator(event);
 
     this.spreadsheet.showTooltipWithInfo(event, [], {
+      operator,
       data: {
         summaries: [
           {

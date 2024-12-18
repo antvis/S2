@@ -1,16 +1,19 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import type { Ref } from 'vue';
-import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
+import {
+  DRILL_DOWN_PRE_CLASS,
+  type BaseDrillDownDataSet,
+  type BaseDrillDownComponentProps,
+} from '@antv/s2';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
 import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import { isEmpty } from 'lodash';
-import LocationIcon from '@antv/s2-shared/src/icons/location-icon.svg?component';
-import TextIcon from '@antv/s2-shared/src/icons/text-icon.svg?component';
-import CalendarIcon from '@antv/s2-shared/src/icons/calendar-icon.svg?component';
 import type { Key } from 'ant-design-vue/lib/_util/type';
 import type { ChangeEvent } from 'ant-design-vue/lib/_util/EventInterface';
-import { DRILL_DOWN_PRE_CLASS } from '@antv/s2-shared';
+import LocationIcon from '../../icons/location-icon.vue';
+import TextIcon from '../../icons/text-icon.vue';
+import CalendarIcon from '../../icons/calendar-icon.vue';
 import {
   initDrillDownEmits,
   initDrillDownProps,
@@ -40,13 +43,13 @@ export default defineComponent({
       className,
     } = props as BaseDrillDownComponentProps;
     const getOptions = () =>
-      dataSet.map((val: BaseDataSet) => {
+      dataSet.map((val: BaseDrillDownDataSet) => {
         val.disabled = !!(disabledFields && disabledFields.includes(val.value));
 
         return val;
       });
 
-    const options: Ref<BaseDataSet[]> = ref(getOptions());
+    const options: Ref<BaseDrillDownDataSet[]> = ref(getOptions());
     const selected = ref<Key[]>([]);
 
     const handleSearch = (e: ChangeEvent) => {
@@ -104,9 +107,9 @@ export default defineComponent({
 <template>
   <div :class="[DRILL_DOWN_PRE_CLASS, className]">
     <header :class="`${DRILL_DOWN_PRE_CLASS}-header`">
-      <div>{{ titleText }}</div>
+      <div>{{ title }}</div>
       <Button type="link" @click="handleClear">
-        {{ clearButtonText }}
+        {{ clearText }}
       </Button>
     </header>
     <Input
@@ -133,9 +136,9 @@ export default defineComponent({
         :class="`${DRILL_DOWN_PRE_CLASS}-menu-item`"
       >
         <template #icon>
-          <text-icon v-if="option.type === 'text'" />
-          <calendar-icon v-if="option.type === 'date'" />
-          <location-icon v-if="option.type === 'location'" />
+          <TextIcon v-if="option.type === 'text'" />
+          <CalendarIcon v-if="option.type === 'date'" />
+          <LocationIcon v-if="option.type === 'location'" />
         </template>
         {{ option?.name }}
       </MenuItem>
@@ -144,5 +147,5 @@ export default defineComponent({
 </template>
 
 <style lang="less" scoped>
-@import '@antv/s2-shared/src/styles/drill-down.less';
+@import '@antv/s2/esm/shared/styles/drill-down.less';
 </style>

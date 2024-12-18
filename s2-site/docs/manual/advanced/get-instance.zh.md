@@ -7,7 +7,7 @@ order: 8
 
 ## React 版本
 
-对于使用 `React` 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](/docs/api/basic-class/spreadsheet)，进行一些进阶操作时，可以使用 `React.useRef` 和 `onMounted` 进行获取。
+对于使用 `React` 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](/api/basic-class/spreadsheet)，进行一些进阶操作时，可以使用 `React.useRef` 和 `onMounted` 进行获取。
 
 ### 使用
 

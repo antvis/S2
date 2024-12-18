@@ -57,7 +57,7 @@ const s2Options = {
 
 #### 3. 使用自定义 icon
 
-如果内置 `icon` 不满足诉求，可以配置 `customSVGIcons` 来额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色（在线链接不支持），具体请查看 [主题配置](/docs/manual/basic/theme) 章节。
+如果内置 `icon` 不满足诉求，可以配置 `customSVGIcons` 来额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色（在线链接不支持），具体请查看 [主题配置](/manual/basic/theme) 章节。
 
 支持三种方式：
 
@@ -144,7 +144,7 @@ const s2Options = {
 ### 自定义数值单元格 icon
 
 :::info{title="提示"}
-对于数值单元格，我们可以使用通用的 `字段标记` 能力来进行自定义 icon 的展示，详情请查看 [字段标记](/docs/manual/basic/conditions) 章节。
+对于数值单元格，我们可以使用通用的 `字段标记` 能力来进行自定义 icon 的展示，详情请查看 [字段标记](/manual/basic/conditions) 章节。
 :::
 
 ```ts | pure | {17}

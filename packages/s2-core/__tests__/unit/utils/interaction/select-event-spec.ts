@@ -1,5 +1,5 @@
 import type { ViewMeta } from '@/common';
-import { InteractionKeyboardKey, S2Event } from '@/common/constant';
+import { InteractionKeyboardKey } from '@/common/constant';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import {
   getCellMeta,
@@ -11,7 +11,6 @@ import {
   getRowHeaderByCellId,
   isMouseEventWithMeta,
   isMultiSelectionKey,
-  selectCells,
 } from '@/utils/interaction/select-event';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { TableSeriesNumberCell } from '../../../../src/cell';
@@ -107,18 +106,6 @@ describe('Select Event Utils Tests', () => {
       rowQuery: undefined,
       type: undefined,
     });
-  });
-
-  test('#selectCells()', () => {
-    const s2 = createFakeSpreadSheet({ width: 100, height: 100 });
-    const selected = jest.fn();
-
-    s2.on(S2Event.GLOBAL_SELECTED, selected);
-    const cell = createMockCellInfo('test-a').mockCell;
-
-    selectCells(s2, [cell]);
-
-    expect(selected).toHaveBeenCalled();
   });
 
   test('#getRangeIndex()', () => {

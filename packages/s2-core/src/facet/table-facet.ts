@@ -10,7 +10,7 @@ import {
   set,
 } from 'lodash';
 import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
-import { i18n } from '../common';
+import { LAYOUT_SAMPLE_COUNT, i18n } from '../common';
 import {
   EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_EMPTY_PLACEHOLDER,
@@ -22,6 +22,7 @@ import {
 import { DebuggerUtil } from '../common/debug';
 import type {
   CellCallbackParams,
+  Data,
   DataItem,
   FilterParam,
   LayoutResult,
@@ -61,6 +62,10 @@ export class TableFacet extends FrozenFacet {
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
+  protected getCornerCellInstance() {
+    return null;
+  }
+
   protected override getRowCellInstance(node: ViewMeta) {
     const { dataCell } = this.spreadsheet.options;
 
@@ -82,6 +87,10 @@ export class TableFacet extends FrozenFacet {
   }
 
   public render() {
+    if (!this.shouldRender()) {
+      return;
+    }
+
     super.render();
     this.renderEmptyPlaceholder();
   }
@@ -116,7 +125,7 @@ export class TableFacet extends FrozenFacet {
     const iconX = viewportWidth / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
     const text = empty?.description ?? i18n('暂无数据');
-    const descWidth = this.spreadsheet.measureTextWidth(text, description);
+    const descWidth = this.measureTextWidth(text, description, false);
     const descX = viewportWidth / 2 - descWidth / 2;
     const descY = iconY + icon.height + icon.margin.bottom;
 
@@ -162,16 +171,19 @@ export class TableFacet extends FrozenFacet {
     const rowHeight = this.getRowCellHeight(node);
 
     if (this.isCustomRowCellHeight(node)) {
+      // 标记当前行是否为自定义高度
+      this.customRowHeightStatusMap[viewMeta?.rowIndex] = true;
+
       return rowHeight || 0;
     }
 
     const defaultHeight = this.getCellHeightByRowIndex(viewMeta?.rowIndex);
 
-    return this.getNodeAdaptiveHeight(
-      viewMeta,
-      this.textWrapTempRowCell,
+    return this.getNodeAdaptiveHeight({
+      meta: viewMeta,
+      cell: this.textWrapTempRowCell,
       defaultHeight,
-    );
+    });
   }
 
   private getCellHeightByRowIndex(rowIndex: number) {
@@ -216,11 +228,14 @@ export class TableFacet extends FrozenFacet {
   protected calculateRowOffsets() {
     const { style } = this.spreadsheet.options;
     const heightByField = style?.rowCell?.heightByField;
+    const isEnableHeightAdaptive =
+      style?.dataCell?.maxLines! > 1 && style?.dataCell?.wordWrap;
 
-    if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
+    if (keys(heightByField!).length || isEnableHeightAdaptive) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
       this.textWrapNodeHeightCache.clear();
+      this.customRowHeightStatusMap = {};
       this.rowOffsets = [0];
       this.lastRowOffset = 0;
 
@@ -376,7 +391,7 @@ export class TableFacet extends FrozenFacet {
     if (options.seriesNumber?.enable && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
     } else {
-      data = dataSet.getCellData({
+      data = (dataSet as TableDataSet).getCellData({
         query: {
           field: colNode.field,
           rowIndex,
@@ -397,7 +412,7 @@ export class TableFacet extends FrozenFacet {
       height: cellHeight,
       data: {
         [colNode.field]: data,
-      } as unknown as SimpleData,
+      } as unknown as Data,
       rowIndex,
       colIndex,
       isTotals: false,
@@ -465,19 +480,18 @@ export class TableFacet extends FrozenFacet {
   private calculateColNodesHeight(colsHierarchy: Hierarchy) {
     const colNodes = colsHierarchy.getNodes();
 
-    colNodes.forEach((currentNode) => {
-      if (currentNode.level === 0) {
-        currentNode.y = 0;
+    colNodes.forEach((colNode) => {
+      if (colNode.level === 0) {
+        colNode.y = 0;
       } else {
-        currentNode.y =
-          currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
+        colNode.y = colNode?.parent?.y! + colNode?.parent?.height! || 0;
       }
 
-      currentNode.height = this.getColNodeHeight(
-        currentNode,
+      colNode.height = this.getColNodeHeight({
+        colNode,
         colsHierarchy,
-        false,
-      );
+        useCache: false,
+      });
     });
   }
 
@@ -485,10 +499,11 @@ export class TableFacet extends FrozenFacet {
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
+    // 先计算宽度, 再计算高度, 确保计算多行文本时能获取到正确的最大文本宽度
     this.calculateColLeafNodesWidth(colLeafNodes, colsHierarchy);
+    this.calculateColNodeWidthAndX(colLeafNodes);
     this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
     this.calculateColNodesHeight(colsHierarchy);
-    this.calculateColNodeWidthAndX(colLeafNodes);
     this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustCustomColLeafNodesHeight({
       leafNodes: colLeafNodes,
@@ -521,14 +536,49 @@ export class TableFacet extends FrozenFacet {
     }
   }
 
+  private getCompactColNodeWidth(colNode: Node) {
+    const { theme, dataSet } = this.spreadsheet;
+    const { bolderText: colCellTextStyle } = theme.colCell!;
+    const { text: dataCellTextStyle, cell: cellStyle } = theme.dataCell!;
+    const data = dataSet.getDisplayDataSet();
+    const formatter = dataSet.getFieldFormatter(colNode.field);
+
+    // 采样前 50，找出表身最长的数据
+    const maxLabel = maxBy(
+      data
+        ?.slice(0, LAYOUT_SAMPLE_COUNT)
+        .map(
+          (data) =>
+            `${formatter?.(data[colNode.field]) ?? data[colNode.field]}`,
+        ),
+      (label) => this.measureTextWidth(label, dataCellTextStyle),
+    );
+
+    DebuggerUtil.getInstance().logger(
+      'Max Label In Col:',
+      colNode.field,
+      maxLabel,
+    );
+
+    const maxLabelWidth =
+      this.measureTextWidth(maxLabel, dataCellTextStyle) +
+      cellStyle!.padding!.left! +
+      cellStyle!.padding!.right!;
+
+    // 计算表头 label+icon 占用的空间
+    const colHeaderNodeWidth =
+      this.measureTextWidth(colNode.value, colCellTextStyle) +
+      getOccupiedWidthForTableCol(this.spreadsheet, colNode, theme.colCell!);
+
+    return Math.max(colHeaderNodeWidth, maxLabelWidth);
+  }
+
   private getColLeafNodesWidth(
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
-    const { spreadsheet } = this;
-    const { dataSet } = spreadsheet;
-    const { colCell } = spreadsheet.options.style!;
-    const layoutWidthType = spreadsheet.getLayoutWidthType();
+    const { colCell } = this.spreadsheet.options.style!;
+    const layoutWidthType = this.spreadsheet.getLayoutWidthType();
     const cellDraggedWidth = this.getColCellDraggedWidth(colNode);
 
     // 1. 拖拽后的宽度优先级最高
@@ -543,60 +593,18 @@ export class TableFacet extends FrozenFacet {
       return cellCustomWidth;
     }
 
-    let colWidth: number;
-
-    if (layoutWidthType === LayoutWidthType.Compact) {
-      const data = dataSet.getDisplayDataSet();
-      const formatter = dataSet.getFieldFormatter(colNode.field);
-
-      // 采样前50，找出表身最长的数据
-      const maxLabel = maxBy(
-        data
-          ?.slice(0, 50)
-          .map(
-            (data) =>
-              `${formatter?.(data[colNode.field]) ?? data[colNode.field]}`,
-          ),
-        (label) => spreadsheet.measureTextWidthRoughly(label),
-      );
-
-      DebuggerUtil.getInstance().logger(
-        'Max Label In Col:',
-        colNode.field,
-        maxLabel,
-      );
-
-      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell!;
-      const { text: dataCellTextStyle, cell: cellStyle } =
-        spreadsheet.theme.dataCell!;
-
-      // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
-      const EXTRA_PIXEL = 1;
-      const maxLabelWidth =
-        spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
-        cellStyle!.padding!.left! +
-        cellStyle!.padding!.right! +
-        EXTRA_PIXEL;
-
-      // 计算表头 label+icon 占用的空间
-      const colHeaderNodeWidth =
-        spreadsheet.measureTextWidth(colNode.value, colCellTextStyle) +
-        getOccupiedWidthForTableCol(
-          this.spreadsheet,
-          colNode,
-          spreadsheet.theme.colCell!,
-        );
-
-      colWidth = Math.max(colHeaderNodeWidth, maxLabelWidth);
-    } else {
-      colWidth = adaptiveColWidth;
-    }
-
+    // 3. 序号列, 使用配置宽度
     if (colNode.field === SERIES_NUMBER_FIELD) {
-      colWidth = this.getSeriesNumberWidth();
+      return this.getSeriesNumberWidth();
     }
 
-    return colWidth;
+    // 4. 紧凑模式
+    if (layoutWidthType === LayoutWidthType.Compact) {
+      return this.getCompactColNodeWidth(colNode);
+    }
+
+    // 5. 默认自适应列宽
+    return adaptiveColWidth;
   }
 
   public getViewCellHeights() {
@@ -613,7 +621,6 @@ export class TableFacet extends FrozenFacet {
           this.spreadsheet.dataSet.getDisplayDataSet().length
         );
       },
-
       getCellOffsetY: (offset: number) => {
         if (offset <= 0) {
           return 0;
@@ -625,9 +632,7 @@ export class TableFacet extends FrozenFacet {
 
         return offset * defaultCellHeight;
       },
-
       getTotalLength: () => this.spreadsheet.dataSet.getDisplayDataSet().length,
-
       getIndexRange: (minHeight: number, maxHeight: number) => {
         if (this.rowOffsets) {
           return getIndexRangeWithOffsets(
@@ -743,6 +748,10 @@ export class TableFacet extends FrozenFacet {
     const { getTotalHeight } = this.getViewCellHeights();
     const { colsHierarchy } = this.layoutResult;
 
-    return getTotalHeight() + colsHierarchy.height;
+    return (
+      getTotalHeight() +
+      colsHierarchy.height +
+      Frame.getHorizontalBorderWidth(this.spreadsheet)
+    );
   }
 }

@@ -15,7 +15,7 @@ order: 6
 | y | `number` |  |   | 单元格 y 坐标 |
 | width | `number` |   |  | 单元格宽度 |
 | height | `number` |    |  | 单元格高度 |
-| data | [ViewMetaData](#viewmetadata) \| [SimpleData](#simpledata) |    |  | 单元格原始数据度量 |
+| data | [ViewMetaData](#viewmetadata) |    |  | 单元格数据 |
 | rowIndex | `number` |  |  |   单元格在行叶子节点中的索引 |
 | colIndex | `number` |  |  |   单元格在列叶子节点中的索引 |
 | valueField | `string` |  |    | 度量 id |
@@ -47,7 +47,7 @@ type SimpleData = string | number | null | undefined;
 
 | 配置项名称       | 说明                                       | 类型                          | 默认值 | 必选 |
 | :--------------- | :----------------------------------------- | :---------------------------- | :----- | :--- |
-| `values`         | 格式化后的数据，直接展示在 dataCfg 中      | [SimpleData](#simpledata)[][] | ✓      |
+| `values`         | 格式化后的数据，直接展示在 dataCfg 中      | [SimpleData](#simpledata)[][] |        |   ✓   |
 | `originalValues` | 原始数据，用于原始数据导出                 | [SimpleData](#simpledata)[][] |        |      |
 | `label`          | 用作单元格小标题，单独占一行展示           | `string`                      |        |      |
 | `[key: string]`  | 其他透传字段，用于自定义单元格的定制化展示 | `unknown`                     | ``     |      |
