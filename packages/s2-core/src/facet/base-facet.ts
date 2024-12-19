@@ -538,6 +538,38 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 根据叶子节点宽度计算所有父级节点宽度和 x 坐标
+   */
+  protected calculateColParentNodeWidthAndX(colLeafNodes: Node[]) {
+    let prevColParent: Node | null = null;
+    let i = 0;
+
+    const leafNodes = colLeafNodes.slice(0);
+
+    while (i < leafNodes.length) {
+      const node = leafNodes[i++];
+      const parentNode = node?.parent;
+
+      if (prevColParent !== parentNode && parentNode) {
+        leafNodes.push(parentNode);
+
+        const firstVisibleChildNode = parentNode.children?.find(
+          (childNode) => childNode.width,
+        );
+        // 父节点 x 坐标 = 第一个未隐藏的子节点的 x 坐标
+        const parentNodeX = firstVisibleChildNode?.x || 0;
+        // 父节点宽度 = 所有子节点宽度之和
+        const parentNodeWidth = sumBy(parentNode.children, 'width');
+
+        parentNode.x = parentNodeX;
+        parentNode.width = parentNodeWidth;
+
+        prevColParent = parentNode;
+      }
+    }
+  }
+
+  /**
    * 将每一层级的采样节点更新为高度最大的节点 (未隐藏, 非汇总节点)
    */
   protected updateColsHierarchySampleMaxHeightNodes(

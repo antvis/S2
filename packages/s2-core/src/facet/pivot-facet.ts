@@ -213,7 +213,7 @@ export class PivotFacet extends FrozenFacet {
     // 1. 计算叶子节点宽度
     this.calculateColLeafNodesWidth(layoutResult);
     // 2. 根据叶子节点宽度计算所有父级节点宽度和 x 坐标, 便于计算自动换行后节点的真实高度
-    this.calculateColNodeWidthAndX(colLeafNodes);
+    this.calculateColParentNodeWidthAndX(colLeafNodes);
     // 3. 计算每一层级的采样节点
     this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy, rowsHierarchy);
     // 4. 计算所有节点的高度
@@ -374,39 +374,6 @@ export class PivotFacet extends FrozenFacet {
       }
       node[key] = res;
     });
-  }
-
-  /**
-   * Auto column no-leaf node's width and x coordinate
-   * @param colLeafNodes
-   */
-  protected calculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent: Node | null = null;
-    let i = 0;
-
-    const leafNodes = colLeafNodes.slice(0);
-
-    while (i < leafNodes.length) {
-      const node = leafNodes[i++];
-      const parentNode = node?.parent;
-
-      if (prevColParent !== parentNode && parentNode) {
-        leafNodes.push(parentNode);
-
-        const firstVisibleChildNode = parentNode.children?.find(
-          (childNode) => childNode.width,
-        );
-        // 父节点 x 坐标 = 第一个未隐藏的子节点的 x 坐标
-        const parentNodeX = firstVisibleChildNode?.x || 0;
-        // 父节点宽度 = 所有子节点宽度之和
-        const parentNodeWidth = sumBy(parentNode.children, 'width');
-
-        parentNode.x = parentNodeX;
-        parentNode.width = parentNodeWidth;
-
-        prevColParent = parentNode;
-      }
-    }
   }
 
   protected getColLeafNodesWidth(

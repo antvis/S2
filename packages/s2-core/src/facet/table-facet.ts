@@ -501,7 +501,7 @@ export class TableFacet extends FrozenFacet {
   ) {
     // 先计算宽度, 再计算高度, 确保计算多行文本时能获取到正确的最大文本宽度
     this.calculateColLeafNodesWidth(colLeafNodes, colsHierarchy);
-    this.calculateColNodeWidthAndX(colLeafNodes);
+    this.calculateColParentNodeWidthAndX(colLeafNodes);
     this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
     this.calculateColNodesHeight(colsHierarchy);
     this.updateCustomFieldsSampleNodes(colsHierarchy);
@@ -509,31 +509,6 @@ export class TableFacet extends FrozenFacet {
       leafNodes: colLeafNodes,
       hierarchy: colsHierarchy,
     });
-  }
-
-  /**
-   * Auto column no-leaf node's width and x coordinate
-   * @param colLeafNodes
-   */
-  private calculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent: Node | null = null;
-    const leafNodes = colLeafNodes.slice(0);
-
-    while (leafNodes.length) {
-      const node = leafNodes.shift();
-      const parent = node?.parent;
-
-      if (prevColParent !== parent && parent) {
-        leafNodes.push(parent);
-        // parent's x = first child's x
-        parent.x = parent.children[0].x;
-        // parent's width = all children's width
-        parent.width = parent.children
-          .map((childNode) => childNode.width)
-          .reduce((sum, current) => sum + current, 0);
-        prevColParent = parent;
-      }
-    }
   }
 
   private getCompactColNodeWidth(colNode: Node) {

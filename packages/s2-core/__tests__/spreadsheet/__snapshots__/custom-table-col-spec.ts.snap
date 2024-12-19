@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TableSheet Custom Tests should calc correctly cell conditions after hide first level node 1`] = `
+Array [
+  Object {},
+  Object {},
+  Object {},
+  Object {},
+  Object {},
+  Object {},
+]
+`;
+
 exports[`TableSheet Custom Tests should calc correctly col index of leaf nodes 1`] = `
 Array [
   Object {
