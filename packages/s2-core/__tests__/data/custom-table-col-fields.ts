@@ -86,3 +86,30 @@ export const customColMultipleColumns: CustomTreeNode[] = [
     children: [],
   },
 ];
+
+export const customColMultipleColumns2: CustomTreeNode[] = [
+  {
+    field: 'area',
+    title: '地区',
+    children: [
+      {
+        field: 'province',
+        title: '省份',
+        children: [
+          {
+            field: 'type',
+            title: '类型',
+          },
+        ],
+      },
+      {
+        field: 'city',
+        title: '城市',
+        children: [
+          { field: 'price', title: '价格', description: '价格描述' },
+          { field: 'number', title: '数量' },
+        ],
+      },
+    ],
+  },
+];

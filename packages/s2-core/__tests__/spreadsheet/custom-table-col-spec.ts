@@ -2,11 +2,13 @@ import type { S2DataConfig, S2Options } from '@/common/interface';
 import type { CustomRect } from '@/engine';
 import { SpreadSheet, TableSheet } from '@/sheet-type';
 import type { Group } from '@antv/g';
+import { pick } from 'lodash';
 import { waitForRender } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import {
   customColMultipleColumns,
+  customColMultipleColumns2,
   customColSimpleColumns,
 } from '../data/custom-table-col-fields';
 import { data } from '../data/mock-dataset.json';
@@ -333,4 +335,33 @@ describe('TableSheet Custom Tests', () => {
       );
     },
   );
+
+  // https://github.com/antvis/S2/issues/3044
+  test('should calc correctly cell conditions after hide first level node', async () => {
+    // 类型
+    const hiddenColumns = ['root[&]area[&]province[&]type'];
+
+    s2.setDataCfg({
+      ...baseDataConfig,
+      fields: {
+        columns: customColMultipleColumns2,
+      },
+    });
+    s2.setOptions({
+      seriesNumber: {
+        enable: true,
+      },
+    });
+    await s2.render();
+
+    await waitForRender(s2, () => {
+      s2.interaction.hideColumns(hiddenColumns);
+    });
+
+    const colNodes = s2.facet
+      .getColNodes()
+      .map((node) => pick(node, ['x', 'y', 'width', 'height']));
+
+    expect(colNodes).toMatchSnapshot();
+  });
 });

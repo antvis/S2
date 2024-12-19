@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TableSheet Custom Tests should calc correctly cell conditions after hide first level node 1`] = `
+Array [
+  Object {
+    "height": 90,
+    "width": 80,
+    "x": 0,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 519,
+    "x": 80,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 0,
+    "x": 0,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "width": 519,
+    "x": 80,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "width": 259.5,
+    "x": 80,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "width": 259.5,
+    "x": 339.5,
+    "y": 60,
+  },
+]
+`;
+
 exports[`TableSheet Custom Tests should calc correctly col index of leaf nodes 1`] = `
 Array [
   Object {

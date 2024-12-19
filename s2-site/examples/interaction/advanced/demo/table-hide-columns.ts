@@ -79,6 +79,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       height: 480,
       interaction: {
         // 默认隐藏 [省份] 和 [价格]
+        // 如果是自定义列头, 需要指定 `id`, 可通过 `s2.facet.getColNodes()` 获取列头节点查看 id
         hiddenColumnFields: ['province', 'price'],
       },
       tooltip: {

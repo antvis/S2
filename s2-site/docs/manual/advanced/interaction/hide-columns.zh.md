@@ -54,7 +54,20 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/GHizMg2ok/f8d667c9-910a-40da-a6e3-74c238e7afa8.png)
 
-对于 [自定义列头](/manual/advanced/custom/custom-header#21-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) 的明细表，指定 `field` 字段。
+对于 [自定义列头](/manual/advanced/custom/custom-header#21-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) 的明细表，需要指定单元格的对应 [节点 id](/api/basic-class/node)。
+
+<details>
+  <summary>如何获取列头 ID?</summary>
+
+```ts | pure
+const s2 = new TableSheet()
+
+await s2.render()
+
+console.log(s2.facet.getColNodes())
+```
+
+</details>
 
 ```ts
 const s2DataConfig = {
@@ -81,14 +94,14 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    hiddenColumnFields: ['a-1-1']
+    hiddenColumnFields: ['root[&]a-1[&]a-1-1']
   }
 }
 ```
 
 ### 2. 透视表
 
-透视表存在多列头，需要指定列头对应的 [节点 id](/api/basic-class/node), 如果是 [自定义列头](/manual/advanced/custom/custom-header#12-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) , 那么和明细表相同，指定 `field` 字段即可，这里不再赘述。
+透视表存在多列头，需要指定列头对应的 [节点 id](/api/basic-class/node), [自定义列头](/manual/advanced/custom/custom-header#12-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) 同理，这里不再赘述。
 
 <details>
   <summary>如何获取列头 ID?</summary>
@@ -158,7 +171,7 @@ const s2Options = {
 [查看所有 API](/api/basic-class/interaction)
 
 ```ts
-const s2 = new PivotSheet(...)
+const s2 = new TableSheet(...)
 
 const hiddenColumnFields = ['province', 'type', 'price']
 s2.interaction.hideColumns(hiddenColumnFields)
@@ -171,7 +184,7 @@ s2.interaction.hideColumns(hiddenColumnFields)
 ```ts
 import { S2Event } from '@antv/s2'
 
-const s2 = new PivotSheet(...);
+const s2 = new TableSheet(...);
 
 s2.on(S2Event.COL_CELL_EXPANDED, (cell) => {
   console.log('列头展开', cell);
