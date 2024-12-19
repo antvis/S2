@@ -2,7 +2,7 @@ import type { S2DataConfig, S2Options } from '@/common/interface';
 import type { CustomRect } from '@/engine';
 import { SpreadSheet, TableSheet } from '@/sheet-type';
 import type { Group } from '@antv/g';
-import { pickBy } from 'lodash';
+import { pick } from 'lodash';
 import { waitForRender } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
@@ -360,7 +360,7 @@ describe('TableSheet Custom Tests', () => {
 
     const colNodes = s2.facet
       .getColNodes()
-      .map((node) => pickBy(node, ['x', 'y', 'width', 'height']));
+      .map((node) => pick(node, ['x', 'y', 'width', 'height']));
 
     expect(colNodes).toMatchSnapshot();
   });
