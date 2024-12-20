@@ -57,6 +57,7 @@ describe('Merge Cells Test', () => {
       },
       getCellMeta: jest.fn(),
       getDataCells: jest.fn(() => mockAllVisibleCells),
+      createDataCell: jest.fn(() => ({})),
     } as unknown as BaseFacet;
 
     mockOneCellEdges = [
@@ -220,9 +221,11 @@ describe('Merge Cells Test', () => {
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
 
-    mockInstance.options = {
-      dataCell: ((meta: ViewMeta) => meta) as unknown as DataCellCallback,
-    };
+    mockInstance.facet.createDataCell = jest
+      .fn()
+      .mockImplementation(
+        ((meta: ViewMeta) => meta) as unknown as DataCellCallback,
+      );
 
     const { cells, cellsMeta } = getInvisibleInfo(
       mockMergeCellInfo,

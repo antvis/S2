@@ -1607,6 +1607,28 @@ export abstract class BaseFacet {
     return this.getRealScrollX(scrollX);
   }
 
+  public createDataCell(viewMeta: ViewMeta | null) {
+    if (!viewMeta) {
+      return;
+    }
+
+    const cell = this.spreadsheet.options.dataCell?.(
+      viewMeta,
+      this.spreadsheet,
+    )!;
+
+    if (!cell) {
+      return;
+    }
+
+    const { rowIndex, colIndex } = viewMeta;
+
+    cell.position = [rowIndex, colIndex];
+    cell.name = `${rowIndex}-${colIndex}`;
+
+    return cell;
+  }
+
   realDataCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
 
@@ -1620,35 +1642,24 @@ export abstract class BaseFacet {
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
-      each(willAddDataCells, ([i, j]) => {
-        const viewMeta = this.getCellMeta(j, i);
+      each(willAddDataCells, ([colIndex, rowIndex]) => {
+        const viewMeta = this.getCellMeta(rowIndex, colIndex);
+        const cell = this.createDataCell(viewMeta);
 
-        if (viewMeta) {
-          const cell = this.spreadsheet.options.dataCell?.(
-            viewMeta,
-            this.spreadsheet,
-          )!;
-
-          if (!cell) {
-            return;
-          }
-
-          cell.position = [j, i];
-          // mark cell for removing
-          cell.name = `${i}-${j}`;
-          this.addDataCell(cell);
+        if (!cell) {
+          return;
         }
+
+        this.addDataCell(cell);
       });
-      const allDataCells = getAllChildCells<DataCell>(
-        this.panelGroup.children as DataCell[],
-        DataCell,
-      );
+
+      const allDataCells = this.getDataCells();
 
       // remove cell from panelCell
-      each(willRemoveDataCells, ([i, j]) => {
+      each(willRemoveDataCells, ([colIndex, rowIndex]) => {
         const mountedDataCell = find(
           allDataCells,
-          (cell) => cell.name === `${i}-${j}`,
+          (cell) => cell.name === `${rowIndex}-${colIndex}`,
         );
 
         mountedDataCell?.remove();

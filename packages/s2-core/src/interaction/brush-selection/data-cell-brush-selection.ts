@@ -142,7 +142,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         meta.colIndex,
       )!;
 
-      return this.spreadsheet.options.dataCell!(viewMeta, this.spreadsheet);
+      return this.spreadsheet.facet.createDataCell(viewMeta)!;
     });
   }
 

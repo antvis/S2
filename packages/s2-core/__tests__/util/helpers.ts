@@ -197,6 +197,7 @@ export const createFakeSpreadSheet = (config?: {
     getFrozenOptions: jest.fn().mockReturnValue({
       ...DEFAULT_FROZEN_COUNTS,
     }),
+    createDataCell: jest.fn(),
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
