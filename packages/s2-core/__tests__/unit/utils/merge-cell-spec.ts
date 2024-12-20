@@ -44,6 +44,7 @@ describe('Merge Cells Test', () => {
     mockInstance.store = new Store();
     mockInstance.options = {
       conditions: [],
+      dataCell: jest.fn(() => ({})),
     };
     mockInstance.interaction = {
       getPanelGroupAllDataCells() {

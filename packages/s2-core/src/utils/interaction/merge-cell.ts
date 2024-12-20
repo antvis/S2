@@ -38,10 +38,18 @@ export const getInvisibleInfo = (
     );
 
     if (meta) {
-      const cell = sheet?.options?.dataCell?.(meta, meta.spreadsheet);
+      const cell = sheet?.options?.dataCell?.(meta, meta.spreadsheet)!;
+
+      if (cell) {
+        /**
+         * 避免移除可视范围后丢失 position 属性:  https://github.com/antvis/S2/issues/3048
+         * 绘制线依赖 position 属性 => packages/s2-core/src/utils/cell/merged-cell.ts#getRightAndBottomCells
+         */
+        cell.position = [cellInfo.rowIndex!, cellInfo.colIndex!];
+        cells.push(cell!);
+      }
 
       viewMeta = cellInfo?.showText ? meta : viewMeta;
-      cells.push(cell!);
     }
   });
 
