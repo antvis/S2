@@ -263,7 +263,7 @@ download(data, 'filename') // filename.csv
 | split       | 分隔符    | `string`       |     | ✓    |
 | formatOptions  | 是否使用 [S2DataConfig.Meta](/api/general/s2-data-config#meta) 进行格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `true`  |      |
 | customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => [`Partial<Transformer>`](#transformer)      |  |      |
-| async  | 是否异步复制/导出        | boolean      | `true`         |      |
+| async  | 是否异步复制/导出（当浏览器不支持 `requestIdleCallback` 时，会强制降级为**同步**)       | boolean      | `true`         |      |
 
 ##### copyToClipboard
 

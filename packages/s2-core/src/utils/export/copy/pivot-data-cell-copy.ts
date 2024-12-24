@@ -415,7 +415,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     let dataMatrix: SimpleData[][] = [];
 
     // 把两类导出都封装成异步的，保证导出类型的一致
-    if (this.config.async) {
+    if (this.isEnableASync()) {
       dataMatrix =
         (await this.getDataMatrixByHeaderNodeRIC()) as SimpleData[][];
     } else {

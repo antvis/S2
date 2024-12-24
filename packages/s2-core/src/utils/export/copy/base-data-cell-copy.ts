@@ -91,4 +91,11 @@ export abstract class BaseDataCellCopy {
 
     return ((value) => value) as Formatter;
   }
+
+  /**
+   * Safari 等不支持 requestIdleCallback 的浏览器, 降级为同步
+   */
+  protected isEnableASync() {
+    return this.config.async && !!window.requestIdleCallback;
+  }
 }

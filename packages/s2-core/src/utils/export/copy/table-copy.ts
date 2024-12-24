@@ -227,7 +227,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   async asyncProcessSelectedTable(allSelected = false): Promise<CopyableList> {
-    const matrix = this.config.async
+    const matrix = this.isEnableASync()
       ? await this.getDataMatrixRIC()
       : await Promise.resolve(this.getDataMatrix());
 
