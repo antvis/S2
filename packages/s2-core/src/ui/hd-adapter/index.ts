@@ -17,12 +17,14 @@ export class HdAdapter {
 
   private spreadsheet: SpreadSheet;
 
-  private isDevicePixelRatioChange = false;
+  private isDevicePixelRatioChange;
 
   private zoomOffsetLeft: number | undefined;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
+    this.isDevicePixelRatioChange = false;
+    this.zoomOffsetLeft = 0;
   }
 
   public init = () => {
@@ -146,10 +148,13 @@ export class HdAdapter {
      * 如果是触控板双指缩放触发的 resize 事件, offsetLeft 可以获取到值
      * 如果是浏览器窗口的放大缩小 (command +/-), offsetLeft 始终是 0
      */
-    const isTouchPadZoom = this.zoomOffsetLeft !== target.offsetLeft;
+    const isTouchPadZoom =
+      (this.zoomOffsetLeft || 0) !== (target?.offsetLeft || 0);
 
     if (ratio >= 1 && isTouchPadZoom && !this.isDevicePixelRatioChange) {
-      await this.renderByDevicePixelRatio(ratio);
+      const maxDPR = Math.max(ratio, window.devicePixelRatio);
+
+      await this.renderByDevicePixelRatio(maxDPR);
       this.zoomOffsetLeft = target.offsetLeft;
     }
   }, 350);
