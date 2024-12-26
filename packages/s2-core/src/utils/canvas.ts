@@ -1,4 +1,6 @@
-const OFFSCREEN_CANVAS_DOM_ID = 's2-offscreen-canvas';
+import { S2_PREFIX_CLS } from '../common/constant/classnames';
+
+const OFFSCREEN_CANVAS_DOM_ID = `${S2_PREFIX_CLS}-offscreen-canvas`;
 
 /**
  * 获取工具 canvas

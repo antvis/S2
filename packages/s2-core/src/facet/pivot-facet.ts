@@ -803,7 +803,7 @@ export class PivotFacet extends FrozenFacet {
      * 额外增加 1，当内容和容器宽度恰好相等时会出现换行
      */
     const maxLabelWidth =
-      this.measureTextWidth(treeHeaderLabel, cornerCellTextStyle, false) +
+      this.measureTextWidth(treeHeaderLabel, cornerCellTextStyle) +
       cornerIconStyle.size * 2 +
       cornerIconStyle.margin?.left +
       cornerIconStyle.margin?.right +

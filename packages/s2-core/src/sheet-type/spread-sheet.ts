@@ -65,7 +65,7 @@ import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
-import { removeOffscreenCanvas } from '../utils/canvas';
+import { getOffscreenCanvas, removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { isMobile } from '../utils/is-mobile';
@@ -784,7 +784,7 @@ export abstract class SpreadSheet extends EE {
         return null;
       }
 
-      const ctx = this.getCanvasElement()?.getContext('2d')!;
+      const ctx = getOffscreenCanvas()?.getContext('2d')!;
       const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
         font as CSSStyleDeclaration;
 

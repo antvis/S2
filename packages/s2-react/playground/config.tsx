@@ -103,7 +103,7 @@ export const pivotSheetDataCfgForCompactMode = customMerge<S2DataConfig>(
       {
         province: '浙江省',
         city: '杭州市',
-        sub_type: '纸张',
+        sub_type: '纸张123456',
         type: '办公用品',
         number: 2,
       },
@@ -112,7 +112,7 @@ export const pivotSheetDataCfgForCompactMode = customMerge<S2DataConfig>(
         city: '舟山市',
         sub_type: '笔',
         type: '办公用品',
-        number: 2,
+        number: '20000.334%',
       },
       {
         province: '浙江省',
@@ -412,7 +412,6 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {

@@ -134,7 +134,7 @@ export class TableFacet extends FrozenFacet {
     const iconX = viewportWidth / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
     const text = empty?.description ?? i18n('暂无数据');
-    const descWidth = this.measureTextWidth(text, description, false);
+    const descWidth = this.measureTextWidth(text, description);
     const descX = viewportWidth / 2 - descWidth / 2;
     const descY = iconY + icon.height + icon.margin.bottom;
 

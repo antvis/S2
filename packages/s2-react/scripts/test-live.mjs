@@ -8,7 +8,7 @@ import ora from 'ora';
 inquirer.registerPrompt('autocomplete', autoCompletePrompt);
 
 function run(path) {
-  const command = `cross-env DEBUG_MODE=1 npx jest ${path} --passWithNoTests --detectOpenHandles`;
+  const command = `cross-env DEBUG_MODE=1 npx jest ${path} --passWithNoTests`;
   const jestSpinner = ora(`[测试运行中]: ${command}`).start();
 
   try {

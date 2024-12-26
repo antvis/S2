@@ -491,13 +491,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const maxTextWidth = Math.max(this.getMaxTextWidth(), 0) + EXTRA_PIXEL;
     const textStyle = this.getTextStyle();
     const maxLines = this.getResizedTextMaxLines() || textStyle?.maxLines;
+    const text = this.getFieldValue()!;
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
     this.renderTextShape({
       ...textStyle,
       x: 0,
       y: 0,
-      text: this.getFieldValue()!,
+      text,
       wordWrapWidth: maxTextWidth,
       maxLines,
     });
