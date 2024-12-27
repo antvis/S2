@@ -2271,12 +2271,12 @@ Array [
     "width": 113.6,
   },
   Object {
-    "actualText": "2367236723611...",
+    "actualText": "236723672361111",
     "actualTextHeight": 15,
-    "actualTextWidth": 96,
+    "actualTextWidth": 98,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611...",
+      "236723672361111",
     ],
     "originalText": 236723672361111,
     "width": 113.6,
@@ -6356,8 +6356,8 @@ Array [
     "actualTextWidth": 100,
     "height": 30,
     "multiLineActualTexts": Array [
-      "236723672361",
-      "111",
+      "2367236723611",
+      "11",
     ],
     "originalText": 236723672361111,
     "width": 102.57,
@@ -12254,8 +12254,8 @@ Array [
     "actualTextWidth": 100,
     "height": 30,
     "multiLineActualTexts": Array [
-      "236723672361",
-      "111",
+      "2367236723611",
+      "11",
     ],
     "originalText": 236723672361111,
     "width": 102.57,
@@ -15261,8 +15261,8 @@ Array [
     "actualTextWidth": 100,
     "height": 30,
     "multiLineActualTexts": Array [
-      "236723672361",
-      "111",
+      "2367236723611",
+      "11",
     ],
     "originalText": 236723672361111,
     "width": 102.57,

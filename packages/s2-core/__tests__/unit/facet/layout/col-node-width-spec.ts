@@ -138,7 +138,7 @@ describe('Col width Test', () => {
       const colLeafNodes = s2.facet.getColLeafNodes();
 
       // price 列，列头标签比表身数据更长
-      expect(Math.round(colLeafNodes[0].width)).toBe(52);
+      expect(Math.round(colLeafNodes[0].width)).toBe(47);
       // cost 列，表身数据比列头更长（格式化）
       expect(Math.round(colLeafNodes[1].width)).toBe(168);
     });
