@@ -658,7 +658,7 @@ export class RootInteraction {
 
     // 平铺模式或者是树状模式下的列头单元格, 高亮子节点
     if (!isHierarchyTree || isColCell) {
-      this.highlightNodes(childrenNodes);
+      this.highlightNodes(childrenNodes, stateName);
     }
 
     // 如果不在可视范围, 自动滚动
@@ -684,12 +684,12 @@ export class RootInteraction {
    * 高亮节点对应的单元格
    * @example s2.interaction.highlightNodes([node])
    */
-  public highlightNodes = (nodes: Node[] = []) => {
+  public highlightNodes = (
+    nodes: Node[] = [],
+    stateName: `${InteractionStateName}` = InteractionStateName.HOVER,
+  ) => {
     nodes.forEach((node) => {
-      node?.belongsCell?.updateByState(
-        InteractionStateName.HOVER,
-        node.belongsCell,
-      );
+      node?.belongsCell?.updateByState(stateName, node.belongsCell);
     });
   };
 

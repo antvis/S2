@@ -33,6 +33,8 @@ s2.interaction.getCurrentStateName() // "hover"
 const targetNodes = s2.facet.getRowNodes()
 
 s2.interaction.highlightNodes(targetNodes)
+s2.interaction.highlightNodes(targetNodes, 'hover')
+s2.interaction.highlightNodes(targetNodes, 'selected')
 ```
 
 ## 选中单元格

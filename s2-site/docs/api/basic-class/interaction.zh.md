@@ -51,7 +51,7 @@ s2.interaction.reset()
 | addIntercepts | 新增交互拦截                                           | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | hasIntercepts | 是否有指定拦截的交互                                       | (interceptTypes: [InterceptType](#intercepttype)[]) => boolean |
 | removeIntercepts | 移除指定交互拦截                                         | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
-| highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/api/basic-class/node)[]) => void |
+| highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/api/basic-class/node)[], stateName: [InteractionStateName](#interactionstatename)) => void |
 | scrollTo | 滚动至指定位置   | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |    |
 | scrollToNode | 滚动至指定单元格节点   | (node: [Node](/api/basic-class/node), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToCell | 滚动至指定单元格   | (cell: [S2CellType](#s2celltype), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |

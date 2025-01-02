@@ -145,7 +145,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
       cells,
       stateName: InteractionStateName.SELECTED,
     });
-    interaction.highlightNodes(nodes);
+    interaction.highlightNodes(nodes, InteractionStateName.SELECTED);
     cornerCell?.updateByState(InteractionStateName.SELECTED);
 
     this.showTooltip(event);
