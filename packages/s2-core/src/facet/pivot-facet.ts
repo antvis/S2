@@ -952,10 +952,9 @@ export class PivotFacet extends FrozenFacet {
               dataCellIconStyle?.margin?.left +
               dataCellIconStyle?.margin?.right
             : 0;
-          const cellLabelWidth = this.measureTextWidth(
-            cellLabel as string,
-            dataCellTextStyle,
-          );
+          const cellLabelWidth =
+            this.measureTextWidth(cellLabel as string, dataCellTextStyle) +
+            dataCellIconWidth;
 
           if (cellLabelWidth > maxDataLabelWidth) {
             maxDataLabel = cellLabel as string;

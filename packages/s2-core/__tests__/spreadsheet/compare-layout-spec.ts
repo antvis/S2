@@ -3,7 +3,7 @@
  * https://github.com/antvis/S2/issues/2385
  */
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
-import { LayoutWidthType, type S2Options } from '../../src';
+import { LayoutWidthType, customMerge, type S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2385.json';
 import { getContainer } from '../util/helpers';
 
@@ -319,6 +319,64 @@ describe('Compare Layout Tests', () => {
     expect(colLeafNodeWidthList).toEqual([140, 81, 92]);
     expectTextOverflowing(s2);
   });
+
+  test.each([{ showIcon: true }, { showIcon: false }])(
+    'should get max col leaf node width for pivot sheet conditions and header action icons by %o',
+    async (options) => {
+      const s2 = new PivotSheet(
+        getContainer(),
+        customMerge(mockDataConfig, { fields: { columns: [] } }),
+        {
+          ...s2Options,
+          headerActionIcons: options.showIcon
+            ? [
+                {
+                  icons: ['SortDown'],
+                  belongsCell: 'colCell',
+                },
+              ]
+            : [],
+          conditions: {
+            icon: [
+              {
+                field: 'price',
+                position: 'left',
+                mapping(fieldValue: number) {
+                  if (!fieldValue) {
+                    return null;
+                  }
+
+                  return fieldValue > 0
+                    ? {
+                        fill: 'red',
+                        icon: 'CellUp',
+                      }
+                    : {
+                        fill: 'green',
+                        icon: 'CellDown',
+                      };
+                },
+              },
+            ],
+          },
+        },
+      );
+
+      s2.setDataCfg({
+        meta: [
+          {
+            field: 'price',
+            name: '环比差值',
+            formatter: () => '2,248.92万',
+          },
+        ],
+      });
+
+      await s2.render();
+
+      expectTextOverflowing(s2);
+    },
+  );
 
   test.each([
     { text: '中文文本测试中文文本测试', width: 145 },
