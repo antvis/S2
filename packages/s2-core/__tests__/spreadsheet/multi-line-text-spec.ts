@@ -1252,5 +1252,43 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       matchCellStyleSnapshot();
     });
+
+    // https://github.com/antvis/G/pull/1887
+    test('should not throw text wrapping exception', async () => {
+      s2.changeSheetSize(800, 600);
+
+      updateStyle(4);
+
+      s2.setDataCfg(
+        {
+          ...SimpleDataCfg,
+          meta: [
+            {
+              field: 'province',
+              name: '测试数据',
+            },
+          ],
+          fields: {
+            rows: [],
+            columns: ['province', 'city', 'type', 'price', 'cost'],
+            values: [],
+          },
+        },
+        true,
+      );
+
+      s2.setOptions({
+        style: {
+          colCell: {
+            widthByField: {
+              province: 20,
+            },
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
   });
 });
