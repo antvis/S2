@@ -9,6 +9,10 @@ order: 8
 
 对于使用 `React` 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](/api/basic-class/spreadsheet)，进行一些进阶操作时，可以使用 `React.useRef` 和 `onMounted` 进行获取。
 
+:::info{title="注意"}
+表格是异步渲染，需要在 `onMounted` 后才能拿到最新的实例。
+:::
+
 ### 使用
 
 ```tsx
@@ -29,13 +33,40 @@ function App() {
 }
 ```
 
+### 搭配组件使用
+
+如果需要搭配其他**依赖 S2 实例**的组件使用时，由于 Ref 不会触发组件重新渲染，可以使用 `React.useState` 保存实例，保证组件正常更新。[查看示例](/examples/react-component/export/#export)
+
+```tsx
+import React from 'react'
+import { SpreadSheet } from '@antv/s2'
+import { SheetComponent } from '@antv/s2-react'
+import { Export } from '@antv/s2-react-components';
+
+function App() {
+  const [sheetInstance, setSheetInstance] = React.useState<SpreadSheet>();
+
+  const onMounted = (s2: SpreadSheet) => {
+    setSheetInstance(s2);
+  };
+
+  return (
+    <>
+      <Export sheetInstance={sheetInstance} />
+      <SheetComponent onMounted={onMounted}/>
+    </>
+  )
+}
+
+```
+
 ### 组件形态变更时实例更新
 
 `S2` 提供了 `透视表`, `明细表` 等表形态，对于 `SheetComponent` 组件 对应 `sheetType` 属性
 
 ```tsx
 function App() {
-  // pivot 透视表，table: 明细表
+  // pivot: 透视表，table: 明细表
   return (
     <SheetComponent sheetType="pivot" />
   )

@@ -19,16 +19,20 @@ const s2Options: SheetComponentOptions = {
 };
 
 function App({ dataCfg }) {
-  const s2Ref = React.useRef<SpreadSheet>();
+  const [sheetInstance, setSheetInstance] = React.useState<SpreadSheet>();
+
+  const onMounted = (s2: SpreadSheet) => {
+    setSheetInstance(s2);
+  };
 
   return (
     <>
       <Space style={{ marginBottom: 12 }}>
-        <Export sheetInstance={s2Ref.current}>
+        <Export sheetInstance={sheetInstance}>
           <Button>自定义导出按钮</Button>
         </Export>
         <Export
-          sheetInstance={s2Ref.current}
+          sheetInstance={sheetInstance}
           onCopySuccess={(data) => {
             console.log('copy success:', data);
           }}
@@ -43,7 +47,11 @@ function App({ dataCfg }) {
           }}
         />
       </Space>
-      <SheetComponent dataCfg={dataCfg} options={s2Options} ref={s2Ref} />
+      <SheetComponent
+        dataCfg={dataCfg}
+        options={s2Options}
+        onMounted={onMounted}
+      />
     </>
   );
 }
