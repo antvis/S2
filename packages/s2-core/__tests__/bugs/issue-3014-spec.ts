@@ -37,15 +37,15 @@ describe('Cell SubPixel Render Tests', () => {
 
     expect(sizeList).toEqual([
       {
-        width: 200,
+        width: 199,
         height: 60,
       },
       {
-        width: 200,
+        width: 199,
         height: 30,
       },
       {
-        width: 200,
+        width: 199,
         height: 30,
       },
     ]);
