@@ -32,7 +32,7 @@ import type {
 } from '../common/interface/resize';
 import { CustomRect } from '../engine';
 import { Node } from '../facet/layout/node';
-import { floor } from '../utils/math';
+import { round } from '../utils/math';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -661,14 +661,14 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     );
 
     const { start, end } = this.getResizeGuideLinePosition();
-    const resizedWidth = floor(
+    const resizedWidth = round(
       end.x -
         start.x +
         (defaultResizeInfo.type === ResizeDirectionType.Horizontal
           ? defaultResizeInfo.size
           : 0),
     );
-    const resizedHeight = floor(
+    const resizedHeight = round(
       end.y -
         start.y +
         (defaultResizeInfo.type === ResizeDirectionType.Vertical

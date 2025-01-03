@@ -22,7 +22,7 @@ Array [
       "province",
     ],
     "originalText": "province",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "城市城市",
@@ -35,7 +35,7 @@ Array [
     ],
     "originalText": "城市
 城市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "类别类别",
@@ -48,7 +48,7 @@ Array [
     ],
     "originalText": "类别
 类别",
-    "width": 285.14,
+    "width": 286,
   },
   Object {
     "actualText": "子类别子类别子类别",
@@ -63,7 +63,7 @@ Array [
     "originalText": "子类别
 子类别
 子类别",
-    "width": 285.14,
+    "width": 286,
   },
 ]
 `;
@@ -117,7 +117,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "桌子",
@@ -128,7 +128,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -142,7 +142,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "沙发",
@@ -153,7 +153,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -167,7 +167,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "家具家具家具...",
@@ -178,7 +178,7 @@ Array [
       "家具家具家具...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "桌子桌子桌子...",
@@ -189,7 +189,7 @@ Array [
       "桌子桌子桌子...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -203,7 +203,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "办公用品",
@@ -214,7 +214,7 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "笔",
@@ -225,7 +225,7 @@ Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -239,7 +239,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "纸张",
@@ -250,7 +250,7 @@ Array [
       "纸张",
     ],
     "originalText": "纸张",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -264,7 +264,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -280,7 +280,7 @@ Array [
       "浙江省",
     ],
     "originalText": "浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绍兴市",
@@ -291,7 +291,7 @@ Array [
       "绍兴市",
     ],
     "originalText": "绍兴市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "宁波市",
@@ -302,7 +302,7 @@ Array [
       "宁波市",
     ],
     "originalText": "宁波市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "舟山市",
@@ -313,7 +313,7 @@ Array [
       "舟山市",
     ],
     "originalText": "舟山市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市",
@@ -324,7 +324,7 @@ Array [
       "杭州市",
     ],
     "originalText": "杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "浙江省浙江省...",
@@ -335,7 +335,7 @@ Array [
       "浙江省浙江省...",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市杭州市...",
@@ -346,7 +346,7 @@ Array [
       "杭州市杭州市...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "四川省",
@@ -357,7 +357,7 @@ Array [
       "四川省",
     ],
     "originalText": "四川省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "成都市",
@@ -368,7 +368,7 @@ Array [
       "成都市",
     ],
     "originalText": "成都市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绵阳市",
@@ -379,7 +379,7 @@ Array [
       "绵阳市",
     ],
     "originalText": "绵阳市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "南充市",
@@ -390,7 +390,7 @@ Array [
       "南充市",
     ],
     "originalText": "南充市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "乐山市",
@@ -401,7 +401,7 @@ Array [
       "乐山市",
     ],
     "originalText": "乐山市",
-    "width": 102.57,
+    "width": 103,
   },
 ]
 `;
@@ -417,7 +417,7 @@ Array [
       "23672367236...",
     ],
     "originalText": 236723672361111,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3877",
@@ -428,7 +428,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4342",
@@ -439,7 +439,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -450,7 +450,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -461,7 +461,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1723",
@@ -472,7 +472,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1822",
@@ -483,7 +483,7 @@ Array [
       "1822",
     ],
     "originalText": 1822,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1943",
@@ -494,7 +494,7 @@ Array [
       "1943",
     ],
     "originalText": 1943,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2330",
@@ -505,7 +505,7 @@ Array [
       "2330",
     ],
     "originalText": 2330,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "632",
@@ -516,7 +516,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "7234",
@@ -527,7 +527,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "834",
@@ -538,7 +538,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "5343",
@@ -549,7 +549,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -560,7 +560,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2451",
@@ -571,7 +571,7 @@ Array [
       "2451",
     ],
     "originalText": 2451,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2244",
@@ -582,7 +582,7 @@ Array [
       "2244",
     ],
     "originalText": 2244,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2333",
@@ -593,7 +593,7 @@ Array [
       "2333",
     ],
     "originalText": 2333,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2445",
@@ -604,7 +604,7 @@ Array [
       "2445",
     ],
     "originalText": 2445,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -615,7 +615,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -626,7 +626,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -637,7 +637,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -648,7 +648,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "77897789778...",
@@ -659,7 +659,7 @@ Array [
       "77897789778...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -670,7 +670,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -681,7 +681,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -692,7 +692,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -703,7 +703,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1304",
@@ -714,7 +714,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1145",
@@ -725,7 +725,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1432",
@@ -736,7 +736,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "945",
@@ -747,7 +747,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -758,7 +758,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2335",
@@ -769,7 +769,7 @@ Array [
       "2335",
     ],
     "originalText": 2335,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "245",
@@ -780,7 +780,7 @@ Array [
       "245",
     ],
     "originalText": 245,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2457",
@@ -791,7 +791,7 @@ Array [
       "2457",
     ],
     "originalText": 2457,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2458",
@@ -802,7 +802,7 @@ Array [
       "2458",
     ],
     "originalText": 2458,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1354",
@@ -813,7 +813,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1523",
@@ -824,7 +824,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1634",
@@ -835,7 +835,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1343",
@@ -846,7 +846,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -857,7 +857,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4004",
@@ -868,7 +868,7 @@ Array [
       "4004",
     ],
     "originalText": 4004,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3077",
@@ -879,7 +879,7 @@ Array [
       "3077",
     ],
     "originalText": 3077,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3551",
@@ -890,7 +890,7 @@ Array [
       "3551",
     ],
     "originalText": 3551,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "352",
@@ -901,7 +901,7 @@ Array [
       "352",
     ],
     "originalText": 352,
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -1970,7 +1970,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 227.2,
+    "width": 228,
   },
   Object {
     "actualText": "桌子",
@@ -1981,7 +1981,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "数量...",
@@ -1995,7 +1995,7 @@ Array [
 数量
 数量
 数量",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "沙发",
@@ -2006,7 +2006,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "数量...",
@@ -2020,7 +2020,7 @@ Array [
 数量
 数量
 数量",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "家具家具家具家...",
@@ -2031,7 +2031,7 @@ Array [
       "家具家具家具家...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "桌子桌子桌子桌...",
@@ -2042,7 +2042,7 @@ Array [
       "桌子桌子桌子桌...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "数量...",
@@ -2056,7 +2056,7 @@ Array [
 数量
 数量
 数量",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "办公用品",
@@ -2067,7 +2067,7 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 227.2,
+    "width": 228,
   },
   Object {
     "actualText": "笔",
@@ -2078,7 +2078,7 @@ Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "数量...",
@@ -2092,7 +2092,7 @@ Array [
 数量
 数量
 数量",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "纸张",
@@ -2103,7 +2103,7 @@ Array [
       "纸张",
     ],
     "originalText": "纸张",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "数量...",
@@ -2117,7 +2117,7 @@ Array [
 数量
 数量
 数量",
-    "width": 113.6,
+    "width": 114,
   },
 ]
 `;
@@ -2268,7 +2268,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "236723672361111",
@@ -2279,7 +2279,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "3877",
@@ -2290,7 +2290,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "4342",
@@ -2301,7 +2301,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2312,7 +2312,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2321,7 +2321,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2332,7 +2332,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2341,7 +2341,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1723",
@@ -2352,7 +2352,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1822",
@@ -2363,7 +2363,7 @@ Array [
       "1822",
     ],
     "originalText": 1822,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1943",
@@ -2374,7 +2374,7 @@ Array [
       "1943",
     ],
     "originalText": 1943,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2330",
@@ -2385,7 +2385,7 @@ Array [
       "2330",
     ],
     "originalText": 2330,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2394,7 +2394,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "632",
@@ -2405,7 +2405,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "7234",
@@ -2416,7 +2416,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "834",
@@ -2427,7 +2427,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "5343",
@@ -2438,7 +2438,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2447,7 +2447,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2458,7 +2458,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2467,7 +2467,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2451",
@@ -2478,7 +2478,7 @@ Array [
       "2451",
     ],
     "originalText": 2451,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2244",
@@ -2489,7 +2489,7 @@ Array [
       "2244",
     ],
     "originalText": 2244,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2333",
@@ -2500,7 +2500,7 @@ Array [
       "2333",
     ],
     "originalText": 2333,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2445",
@@ -2511,7 +2511,7 @@ Array [
       "2445",
     ],
     "originalText": 2445,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2520,7 +2520,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2531,7 +2531,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2542,7 +2542,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2553,7 +2553,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2564,7 +2564,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2573,7 +2573,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "7789778977897...",
@@ -2584,7 +2584,7 @@ Array [
       "7789778977897...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2593,7 +2593,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2604,7 +2604,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2615,7 +2615,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2626,7 +2626,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2637,7 +2637,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2646,7 +2646,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1304",
@@ -2657,7 +2657,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1145",
@@ -2668,7 +2668,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1432",
@@ -2679,7 +2679,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "945",
@@ -2690,7 +2690,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2699,7 +2699,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2710,7 +2710,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2719,7 +2719,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2335",
@@ -2730,7 +2730,7 @@ Array [
       "2335",
     ],
     "originalText": 2335,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "245",
@@ -2741,7 +2741,7 @@ Array [
       "245",
     ],
     "originalText": 245,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2457",
@@ -2752,7 +2752,7 @@ Array [
       "2457",
     ],
     "originalText": 2457,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "2458",
@@ -2763,7 +2763,7 @@ Array [
       "2458",
     ],
     "originalText": 2458,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2772,7 +2772,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1354",
@@ -2783,7 +2783,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1523",
@@ -2794,7 +2794,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1634",
@@ -2805,7 +2805,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "1343",
@@ -2816,7 +2816,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2825,7 +2825,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "-",
@@ -2836,7 +2836,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": undefined,
@@ -2845,7 +2845,7 @@ Array [
     "height": 30,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "4004",
@@ -2856,7 +2856,7 @@ Array [
       "4004",
     ],
     "originalText": 4004,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "3077",
@@ -2867,7 +2867,7 @@ Array [
       "3077",
     ],
     "originalText": 3077,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "3551",
@@ -2878,7 +2878,7 @@ Array [
       "3551",
     ],
     "originalText": 3551,
-    "width": 113.6,
+    "width": 114,
   },
   Object {
     "actualText": "352",
@@ -2889,7 +2889,7 @@ Array [
       "352",
     ],
     "originalText": 352,
-    "width": 113.6,
+    "width": 114,
   },
 ]
 `;
@@ -2916,7 +2916,7 @@ Array [
       "province",
     ],
     "originalText": "province",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "城市...",
@@ -2928,7 +2928,7 @@ Array [
     ],
     "originalText": "城市
 城市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "类别...",
@@ -2940,7 +2940,7 @@ Array [
     ],
     "originalText": "类别
 类别",
-    "width": 285.14,
+    "width": 286,
   },
   Object {
     "actualText": "子类别...",
@@ -2953,7 +2953,7 @@ Array [
     "originalText": "子类别
 子类别
 子类别",
-    "width": 285.14,
+    "width": 286,
   },
 ]
 `;
@@ -3007,7 +3007,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "桌子",
@@ -3018,7 +3018,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -3032,7 +3032,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "沙发",
@@ -3043,7 +3043,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -3057,7 +3057,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "家具家具家具...",
@@ -3068,7 +3068,7 @@ Array [
       "家具家具家具...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "桌子桌子桌子...",
@@ -3079,7 +3079,7 @@ Array [
       "桌子桌子桌子...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -3093,7 +3093,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "办公用品",
@@ -3104,7 +3104,7 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "笔",
@@ -3115,7 +3115,7 @@ Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -3129,7 +3129,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "纸张",
@@ -3140,7 +3140,7 @@ Array [
       "纸张",
     ],
     "originalText": "纸张",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量...",
@@ -3154,7 +3154,7 @@ Array [
 数量
 数量
 数量",
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -3170,7 +3170,7 @@ Array [
       "浙江省",
     ],
     "originalText": "浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绍兴市",
@@ -3181,7 +3181,7 @@ Array [
       "绍兴市",
     ],
     "originalText": "绍兴市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "宁波市",
@@ -3192,7 +3192,7 @@ Array [
       "宁波市",
     ],
     "originalText": "宁波市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "舟山市",
@@ -3203,7 +3203,7 @@ Array [
       "舟山市",
     ],
     "originalText": "舟山市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市",
@@ -3214,7 +3214,7 @@ Array [
       "杭州市",
     ],
     "originalText": "杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "浙江省浙江省...",
@@ -3225,7 +3225,7 @@ Array [
       "浙江省浙江省...",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市杭州市...",
@@ -3236,7 +3236,7 @@ Array [
       "杭州市杭州市...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "四川省",
@@ -3247,7 +3247,7 @@ Array [
       "四川省",
     ],
     "originalText": "四川省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "成都市",
@@ -3258,7 +3258,7 @@ Array [
       "成都市",
     ],
     "originalText": "成都市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绵阳市",
@@ -3269,7 +3269,7 @@ Array [
       "绵阳市",
     ],
     "originalText": "绵阳市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "南充市",
@@ -3280,7 +3280,7 @@ Array [
       "南充市",
     ],
     "originalText": "南充市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "乐山市",
@@ -3291,7 +3291,7 @@ Array [
       "乐山市",
     ],
     "originalText": "乐山市",
-    "width": 102.57,
+    "width": 103,
   },
 ]
 `;
@@ -3307,7 +3307,7 @@ Array [
       "23672367236...",
     ],
     "originalText": 236723672361111,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3877",
@@ -3318,7 +3318,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4342",
@@ -3329,7 +3329,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3340,7 +3340,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3351,7 +3351,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1723",
@@ -3362,7 +3362,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1822",
@@ -3373,7 +3373,7 @@ Array [
       "1822",
     ],
     "originalText": 1822,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1943",
@@ -3384,7 +3384,7 @@ Array [
       "1943",
     ],
     "originalText": 1943,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2330",
@@ -3395,7 +3395,7 @@ Array [
       "2330",
     ],
     "originalText": 2330,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "632",
@@ -3406,7 +3406,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "7234",
@@ -3417,7 +3417,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "834",
@@ -3428,7 +3428,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "5343",
@@ -3439,7 +3439,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3450,7 +3450,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2451",
@@ -3461,7 +3461,7 @@ Array [
       "2451",
     ],
     "originalText": 2451,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2244",
@@ -3472,7 +3472,7 @@ Array [
       "2244",
     ],
     "originalText": 2244,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2333",
@@ -3483,7 +3483,7 @@ Array [
       "2333",
     ],
     "originalText": 2333,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2445",
@@ -3494,7 +3494,7 @@ Array [
       "2445",
     ],
     "originalText": 2445,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3505,7 +3505,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3516,7 +3516,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3527,7 +3527,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3538,7 +3538,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "77897789778...",
@@ -3549,7 +3549,7 @@ Array [
       "77897789778...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3560,7 +3560,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3571,7 +3571,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3582,7 +3582,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3593,7 +3593,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1304",
@@ -3604,7 +3604,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1145",
@@ -3615,7 +3615,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1432",
@@ -3626,7 +3626,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "945",
@@ -3637,7 +3637,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3648,7 +3648,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2335",
@@ -3659,7 +3659,7 @@ Array [
       "2335",
     ],
     "originalText": 2335,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "245",
@@ -3670,7 +3670,7 @@ Array [
       "245",
     ],
     "originalText": 245,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2457",
@@ -3681,7 +3681,7 @@ Array [
       "2457",
     ],
     "originalText": 2457,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2458",
@@ -3692,7 +3692,7 @@ Array [
       "2458",
     ],
     "originalText": 2458,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1354",
@@ -3703,7 +3703,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1523",
@@ -3714,7 +3714,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1634",
@@ -3725,7 +3725,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1343",
@@ -3736,7 +3736,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -3747,7 +3747,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4004",
@@ -3758,7 +3758,7 @@ Array [
       "4004",
     ],
     "originalText": 4004,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3077",
@@ -3769,7 +3769,7 @@ Array [
       "3077",
     ],
     "originalText": 3077,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3551",
@@ -3780,7 +3780,7 @@ Array [
       "3551",
     ],
     "originalText": 3551,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "352",
@@ -3791,7 +3791,7 @@ Array [
       "352",
     ],
     "originalText": 352,
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -5295,7 +5295,7 @@ Array [
       "province",
     ],
     "originalText": "province",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "city",
@@ -5306,7 +5306,7 @@ Array [
       "city",
     ],
     "originalText": "city",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "type",
@@ -5317,7 +5317,7 @@ Array [
       "type",
     ],
     "originalText": "type",
-    "width": 319.32,
+    "width": 320,
   },
   Object {
     "actualText": "sub_type",
@@ -5328,7 +5328,7 @@ Array [
       "sub_type",
     ],
     "originalText": "sub_type",
-    "width": 319.32,
+    "width": 320,
   },
 ]
 `;
@@ -5371,7 +5371,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 239.34,
+    "width": 240,
   },
   Object {
     "actualText": "桌子",
@@ -5382,7 +5382,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "number",
@@ -5393,7 +5393,7 @@ Array [
       "number",
     ],
     "originalText": "number",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "沙发",
@@ -5404,7 +5404,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "number",
@@ -5415,7 +5415,7 @@ Array [
       "number",
     ],
     "originalText": "number",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "办公用品",
@@ -5426,7 +5426,7 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 239.34,
+    "width": 240,
   },
   Object {
     "actualText": "笔",
@@ -5437,7 +5437,7 @@ Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "number",
@@ -5448,7 +5448,7 @@ Array [
       "number",
     ],
     "originalText": "number",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "纸张",
@@ -5459,7 +5459,7 @@ Array [
       "纸张",
     ],
     "originalText": "纸张",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "number",
@@ -5470,7 +5470,7 @@ Array [
       "number",
     ],
     "originalText": "number",
-    "width": 119.67,
+    "width": 120,
   },
 ]
 `;
@@ -5486,7 +5486,7 @@ Array [
       "浙江省",
     ],
     "originalText": "浙江省",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "宁波市",
@@ -5497,7 +5497,7 @@ Array [
       "宁波市",
     ],
     "originalText": "宁波市",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "舟山市",
@@ -5508,7 +5508,7 @@ Array [
       "舟山市",
     ],
     "originalText": "舟山市",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "杭州市",
@@ -5519,7 +5519,7 @@ Array [
       "杭州市",
     ],
     "originalText": "杭州市",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "绍兴市",
@@ -5530,7 +5530,7 @@ Array [
       "绍兴市",
     ],
     "originalText": "绍兴市",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "四川省",
@@ -5541,7 +5541,7 @@ Array [
       "四川省",
     ],
     "originalText": "四川省",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "成都市",
@@ -5552,7 +5552,7 @@ Array [
       "成都市",
     ],
     "originalText": "成都市",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "绵阳市",
@@ -5563,7 +5563,7 @@ Array [
       "绵阳市",
     ],
     "originalText": "绵阳市",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "南充市",
@@ -5574,7 +5574,7 @@ Array [
       "南充市",
     ],
     "originalText": "南充市",
-    "width": 119.66,
+    "width": 120,
   },
   Object {
     "actualText": "乐山市",
@@ -5585,7 +5585,7 @@ Array [
       "乐山市",
     ],
     "originalText": "乐山市",
-    "width": 119.66,
+    "width": 120,
   },
 ]
 `;
@@ -5601,7 +5601,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "4342",
@@ -5612,7 +5612,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "-",
@@ -5623,7 +5623,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "-",
@@ -5634,7 +5634,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1723",
@@ -5645,7 +5645,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1822",
@@ -5656,7 +5656,7 @@ Array [
       "1822",
     ],
     "originalText": 1822,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1943",
@@ -5667,7 +5667,7 @@ Array [
       "1943",
     ],
     "originalText": 1943,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2330",
@@ -5678,7 +5678,7 @@ Array [
       "2330",
     ],
     "originalText": 2330,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "7234",
@@ -5689,7 +5689,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "834",
@@ -5700,7 +5700,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "5343",
@@ -5711,7 +5711,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "632",
@@ -5722,7 +5722,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2451",
@@ -5733,7 +5733,7 @@ Array [
       "2451",
     ],
     "originalText": 2451,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2244",
@@ -5744,7 +5744,7 @@ Array [
       "2244",
     ],
     "originalText": 2244,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2333",
@@ -5755,7 +5755,7 @@ Array [
       "2333",
     ],
     "originalText": 2333,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2445",
@@ -5766,7 +5766,7 @@ Array [
       "2445",
     ],
     "originalText": 2445,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1145",
@@ -5777,7 +5777,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1432",
@@ -5788,7 +5788,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "945",
@@ -5799,7 +5799,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1304",
@@ -5810,7 +5810,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2335",
@@ -5821,7 +5821,7 @@ Array [
       "2335",
     ],
     "originalText": 2335,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "245",
@@ -5832,7 +5832,7 @@ Array [
       "245",
     ],
     "originalText": 245,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2457",
@@ -5843,7 +5843,7 @@ Array [
       "2457",
     ],
     "originalText": 2457,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "2458",
@@ -5854,7 +5854,7 @@ Array [
       "2458",
     ],
     "originalText": 2458,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1523",
@@ -5865,7 +5865,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1634",
@@ -5876,7 +5876,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1343",
@@ -5887,7 +5887,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "1354",
@@ -5898,7 +5898,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "4004",
@@ -5909,7 +5909,7 @@ Array [
       "4004",
     ],
     "originalText": 4004,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "3077",
@@ -5920,7 +5920,7 @@ Array [
       "3077",
     ],
     "originalText": 3077,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "3551",
@@ -5931,7 +5931,7 @@ Array [
       "3551",
     ],
     "originalText": 3551,
-    "width": 119.67,
+    "width": 120,
   },
   Object {
     "actualText": "352",
@@ -5942,7 +5942,7 @@ Array [
       "352",
     ],
     "originalText": 352,
-    "width": 119.67,
+    "width": 120,
   },
 ]
 `;
@@ -5969,7 +5969,7 @@ Array [
       "省份",
     ],
     "originalText": "省份",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市...",
@@ -5982,7 +5982,7 @@ Array [
       "城市城市城市...",
     ],
     "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "类别类别类别类别类别类别类别类别类别类别",
@@ -5993,7 +5993,7 @@ Array [
       "类别类别类别类别类别类别类别类别类别类别",
     ],
     "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 285.14,
+    "width": 286,
   },
   Object {
     "actualText": "子类别",
@@ -6004,7 +6004,7 @@ Array [
       "子类别",
     ],
     "originalText": "子类别",
-    "width": 285.14,
+    "width": 286,
   },
 ]
 `;
@@ -6058,7 +6058,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "桌子",
@@ -6069,7 +6069,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
@@ -6082,7 +6082,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "沙发",
@@ -6093,7 +6093,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
@@ -6106,7 +6106,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具...",
@@ -6119,7 +6119,7 @@ Array [
       "家具家具家具...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
@@ -6132,7 +6132,7 @@ Array [
       "桌子桌子桌子...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
@@ -6145,7 +6145,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "办公用品",
@@ -6156,7 +6156,7 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "笔",
@@ -6167,7 +6167,7 @@ Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
@@ -6180,7 +6180,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "纸张",
@@ -6191,7 +6191,7 @@ Array [
       "纸张",
     ],
     "originalText": "纸张",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
@@ -6204,7 +6204,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -6220,7 +6220,7 @@ Array [
       "浙江省",
     ],
     "originalText": "浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绍兴市",
@@ -6231,7 +6231,7 @@ Array [
       "绍兴市",
     ],
     "originalText": "绍兴市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "宁波市",
@@ -6242,7 +6242,7 @@ Array [
       "宁波市",
     ],
     "originalText": "宁波市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "舟山市",
@@ -6253,7 +6253,7 @@ Array [
       "舟山市",
     ],
     "originalText": "舟山市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市",
@@ -6264,7 +6264,7 @@ Array [
       "杭州市",
     ],
     "originalText": "杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
@@ -6277,7 +6277,7 @@ Array [
       "省浙江省浙江...",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市杭州市...",
@@ -6288,7 +6288,7 @@ Array [
       "杭州市杭州市...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "四川省",
@@ -6299,7 +6299,7 @@ Array [
       "四川省",
     ],
     "originalText": "四川省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "成都市",
@@ -6310,7 +6310,7 @@ Array [
       "成都市",
     ],
     "originalText": "成都市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绵阳市",
@@ -6321,7 +6321,7 @@ Array [
       "绵阳市",
     ],
     "originalText": "绵阳市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "南充市",
@@ -6332,7 +6332,7 @@ Array [
       "南充市",
     ],
     "originalText": "南充市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "乐山市",
@@ -6343,7 +6343,7 @@ Array [
       "乐山市",
     ],
     "originalText": "乐山市",
-    "width": 102.57,
+    "width": 103,
   },
 ]
 `;
@@ -6360,7 +6360,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3877",
@@ -6371,7 +6371,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4342",
@@ -6382,7 +6382,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6393,7 +6393,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6404,7 +6404,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1723",
@@ -6415,7 +6415,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1822",
@@ -6426,7 +6426,7 @@ Array [
       "1822",
     ],
     "originalText": 1822,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1943",
@@ -6437,7 +6437,7 @@ Array [
       "1943",
     ],
     "originalText": 1943,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2330",
@@ -6448,7 +6448,7 @@ Array [
       "2330",
     ],
     "originalText": 2330,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "632",
@@ -6459,7 +6459,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "7234",
@@ -6470,7 +6470,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "834",
@@ -6481,7 +6481,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "5343",
@@ -6492,7 +6492,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6503,7 +6503,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2451",
@@ -6514,7 +6514,7 @@ Array [
       "2451",
     ],
     "originalText": 2451,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2244",
@@ -6525,7 +6525,7 @@ Array [
       "2244",
     ],
     "originalText": 2244,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2333",
@@ -6536,7 +6536,7 @@ Array [
       "2333",
     ],
     "originalText": 2333,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2445",
@@ -6547,7 +6547,7 @@ Array [
       "2445",
     ],
     "originalText": 2445,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6558,7 +6558,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6569,7 +6569,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6580,7 +6580,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6591,7 +6591,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "77897789778...",
@@ -6602,7 +6602,7 @@ Array [
       "77897789778...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6613,7 +6613,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6624,7 +6624,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6635,7 +6635,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6646,7 +6646,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1304",
@@ -6657,7 +6657,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1145",
@@ -6668,7 +6668,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1432",
@@ -6679,7 +6679,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "945",
@@ -6690,7 +6690,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6701,7 +6701,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2335",
@@ -6712,7 +6712,7 @@ Array [
       "2335",
     ],
     "originalText": 2335,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "245",
@@ -6723,7 +6723,7 @@ Array [
       "245",
     ],
     "originalText": 245,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2457",
@@ -6734,7 +6734,7 @@ Array [
       "2457",
     ],
     "originalText": 2457,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2458",
@@ -6745,7 +6745,7 @@ Array [
       "2458",
     ],
     "originalText": 2458,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1354",
@@ -6756,7 +6756,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1523",
@@ -6767,7 +6767,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1634",
@@ -6778,7 +6778,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1343",
@@ -6789,7 +6789,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -6800,7 +6800,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4004",
@@ -6811,7 +6811,7 @@ Array [
       "4004",
     ],
     "originalText": 4004,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3077",
@@ -6822,7 +6822,7 @@ Array [
       "3077",
     ],
     "originalText": 3077,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3551",
@@ -6833,7 +6833,7 @@ Array [
       "3551",
     ],
     "originalText": 3551,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "352",
@@ -6844,7 +6844,7 @@ Array [
       "352",
     ],
     "originalText": 352,
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -11858,7 +11858,7 @@ Array [
       "省份",
     ],
     "originalText": "省份",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市城市城市",
@@ -11872,7 +11872,7 @@ Array [
       "市城市",
     ],
     "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "类别类别类别类别类别类别类别类别类别类别",
@@ -11883,18 +11883,18 @@ Array [
       "类别类别类别类别类别类别类别类别类别类别",
     ],
     "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 285.14,
+    "width": 286,
   },
   Object {
     "actualText": "子类别",
     "actualTextHeight": 16,
     "actualTextWidth": 37,
-    "height": 96,
+    "height": 64,
     "multiLineActualTexts": Array [
       "子类别",
     ],
     "originalText": "子类别",
-    "width": 285.14,
+    "width": 286,
   },
 ]
 `;
@@ -11948,18 +11948,18 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "桌子",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 96,
+    "height": 64,
     "multiLineActualTexts": Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -11973,18 +11973,18 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "沙发",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 96,
+    "height": 64,
     "multiLineActualTexts": Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -11998,7 +11998,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "家具家具家具家具家具家具家...",
@@ -12010,20 +12010,20 @@ Array [
       "具家具家具家...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
     "actualTextHeight": 48,
     "actualTextWidth": 253,
-    "height": 96,
+    "height": 64,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
       "子桌子桌子桌子",
       "桌子桌子桌子...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -12037,7 +12037,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "办公用品",
@@ -12048,18 +12048,18 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "笔",
     "actualTextHeight": 16,
     "actualTextWidth": 13,
-    "height": 96,
+    "height": 64,
     "multiLineActualTexts": Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -12073,18 +12073,18 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "纸张",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 96,
+    "height": 64,
     "multiLineActualTexts": Array [
       "纸张",
     ],
     "originalText": "纸张",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -12098,7 +12098,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -12114,7 +12114,7 @@ Array [
       "浙江省",
     ],
     "originalText": "浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绍兴市",
@@ -12125,7 +12125,7 @@ Array [
       "绍兴市",
     ],
     "originalText": "绍兴市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "宁波市",
@@ -12136,7 +12136,7 @@ Array [
       "宁波市",
     ],
     "originalText": "宁波市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "舟山市",
@@ -12147,7 +12147,7 @@ Array [
       "舟山市",
     ],
     "originalText": "舟山市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市",
@@ -12158,7 +12158,7 @@ Array [
       "杭州市",
     ],
     "originalText": "杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
@@ -12173,7 +12173,7 @@ Array [
       "江省",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
@@ -12186,7 +12186,7 @@ Array [
       "市杭州市杭州...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "四川省",
@@ -12197,7 +12197,7 @@ Array [
       "四川省",
     ],
     "originalText": "四川省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "成都市",
@@ -12208,7 +12208,7 @@ Array [
       "成都市",
     ],
     "originalText": "成都市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绵阳市",
@@ -12219,7 +12219,7 @@ Array [
       "绵阳市",
     ],
     "originalText": "绵阳市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "南充市",
@@ -12230,7 +12230,7 @@ Array [
       "南充市",
     ],
     "originalText": "南充市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "乐山市",
@@ -12241,7 +12241,7 @@ Array [
       "乐山市",
     ],
     "originalText": "乐山市",
-    "width": 102.57,
+    "width": 103,
   },
 ]
 `;
@@ -12258,7 +12258,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3877",
@@ -12269,7 +12269,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4342",
@@ -12280,7 +12280,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12291,7 +12291,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12302,7 +12302,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1723",
@@ -12313,7 +12313,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1822",
@@ -12324,7 +12324,7 @@ Array [
       "1822",
     ],
     "originalText": 1822,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1943",
@@ -12335,7 +12335,7 @@ Array [
       "1943",
     ],
     "originalText": 1943,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2330",
@@ -12346,7 +12346,7 @@ Array [
       "2330",
     ],
     "originalText": 2330,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "632",
@@ -12357,7 +12357,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "7234",
@@ -12368,7 +12368,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "834",
@@ -12379,7 +12379,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "5343",
@@ -12390,7 +12390,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12401,7 +12401,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2451",
@@ -12412,7 +12412,7 @@ Array [
       "2451",
     ],
     "originalText": 2451,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2244",
@@ -12423,7 +12423,7 @@ Array [
       "2244",
     ],
     "originalText": 2244,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2333",
@@ -12434,7 +12434,7 @@ Array [
       "2333",
     ],
     "originalText": 2333,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2445",
@@ -12445,7 +12445,7 @@ Array [
       "2445",
     ],
     "originalText": 2445,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12456,7 +12456,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12467,7 +12467,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12478,7 +12478,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12489,7 +12489,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -12502,7 +12502,7 @@ Array [
       "7789",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12513,7 +12513,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12524,7 +12524,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12535,7 +12535,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12546,7 +12546,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1304",
@@ -12557,7 +12557,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1145",
@@ -12568,7 +12568,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1432",
@@ -12579,7 +12579,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "945",
@@ -12590,7 +12590,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12601,7 +12601,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2335",
@@ -12612,7 +12612,7 @@ Array [
       "2335",
     ],
     "originalText": 2335,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "245",
@@ -12623,7 +12623,7 @@ Array [
       "245",
     ],
     "originalText": 245,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2457",
@@ -12634,7 +12634,7 @@ Array [
       "2457",
     ],
     "originalText": 2457,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2458",
@@ -12645,7 +12645,7 @@ Array [
       "2458",
     ],
     "originalText": 2458,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1354",
@@ -12656,7 +12656,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1523",
@@ -12667,7 +12667,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1634",
@@ -12678,7 +12678,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1343",
@@ -12689,7 +12689,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -12700,7 +12700,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4004",
@@ -12711,7 +12711,7 @@ Array [
       "4004",
     ],
     "originalText": 4004,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3077",
@@ -12722,7 +12722,7 @@ Array [
       "3077",
     ],
     "originalText": 3077,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3551",
@@ -12733,7 +12733,7 @@ Array [
       "3551",
     ],
     "originalText": 3551,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "352",
@@ -12744,7 +12744,7 @@ Array [
       "352",
     ],
     "originalText": 352,
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -14859,7 +14859,7 @@ Array [
       "省份",
     ],
     "originalText": "省份",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "城市城市城市城市城市城市城市城市城市城市城市城市",
@@ -14873,7 +14873,7 @@ Array [
       "市城市",
     ],
     "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "类别类别类别类别类别类别类别类别类别类别",
@@ -14884,7 +14884,7 @@ Array [
       "类别类别类别类别类别类别类别类别类别类别",
     ],
     "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 285.14,
+    "width": 286,
   },
   Object {
     "actualText": "子类别",
@@ -14895,7 +14895,7 @@ Array [
       "子类别",
     ],
     "originalText": "子类别",
-    "width": 285.14,
+    "width": 286,
   },
 ]
 `;
@@ -14949,7 +14949,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "桌子",
@@ -14960,7 +14960,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -14974,7 +14974,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "沙发",
@@ -14985,7 +14985,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -14999,7 +14999,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
@@ -15013,7 +15013,7 @@ Array [
       "具家具家具家具",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
@@ -15028,7 +15028,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -15042,7 +15042,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "办公用品",
@@ -15053,7 +15053,7 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 205.14,
+    "width": 204,
   },
   Object {
     "actualText": "笔",
@@ -15064,7 +15064,7 @@ Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -15078,7 +15078,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "纸张",
@@ -15089,7 +15089,7 @@ Array [
       "纸张",
     ],
     "originalText": "纸张",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
@@ -15103,7 +15103,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -15119,7 +15119,7 @@ Array [
       "浙江省",
     ],
     "originalText": "浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绍兴市",
@@ -15130,7 +15130,7 @@ Array [
       "绍兴市",
     ],
     "originalText": "绍兴市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "宁波市",
@@ -15141,7 +15141,7 @@ Array [
       "宁波市",
     ],
     "originalText": "宁波市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "舟山市",
@@ -15152,7 +15152,7 @@ Array [
       "舟山市",
     ],
     "originalText": "舟山市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市",
@@ -15163,7 +15163,7 @@ Array [
       "杭州市",
     ],
     "originalText": "杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
@@ -15178,7 +15178,7 @@ Array [
       "江省",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
@@ -15193,7 +15193,7 @@ Array [
       "州市",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "四川省",
@@ -15204,7 +15204,7 @@ Array [
       "四川省",
     ],
     "originalText": "四川省",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "成都市",
@@ -15215,7 +15215,7 @@ Array [
       "成都市",
     ],
     "originalText": "成都市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "绵阳市",
@@ -15226,7 +15226,7 @@ Array [
       "绵阳市",
     ],
     "originalText": "绵阳市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "南充市",
@@ -15237,7 +15237,7 @@ Array [
       "南充市",
     ],
     "originalText": "南充市",
-    "width": 102.57,
+    "width": 103,
   },
   Object {
     "actualText": "乐山市",
@@ -15248,7 +15248,7 @@ Array [
       "乐山市",
     ],
     "originalText": "乐山市",
-    "width": 102.57,
+    "width": 103,
   },
 ]
 `;
@@ -15265,7 +15265,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3877",
@@ -15276,7 +15276,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4342",
@@ -15287,7 +15287,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15298,7 +15298,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15309,7 +15309,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1723",
@@ -15320,7 +15320,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1822",
@@ -15331,7 +15331,7 @@ Array [
       "1822",
     ],
     "originalText": 1822,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1943",
@@ -15342,7 +15342,7 @@ Array [
       "1943",
     ],
     "originalText": 1943,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2330",
@@ -15353,7 +15353,7 @@ Array [
       "2330",
     ],
     "originalText": 2330,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "632",
@@ -15364,7 +15364,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "7234",
@@ -15375,7 +15375,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "834",
@@ -15386,7 +15386,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "5343",
@@ -15397,7 +15397,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15408,7 +15408,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2451",
@@ -15419,7 +15419,7 @@ Array [
       "2451",
     ],
     "originalText": 2451,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2244",
@@ -15430,7 +15430,7 @@ Array [
       "2244",
     ],
     "originalText": 2244,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2333",
@@ -15441,7 +15441,7 @@ Array [
       "2333",
     ],
     "originalText": 2333,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2445",
@@ -15452,7 +15452,7 @@ Array [
       "2445",
     ],
     "originalText": 2445,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15463,7 +15463,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15474,7 +15474,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15485,7 +15485,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15496,7 +15496,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -15509,7 +15509,7 @@ Array [
       "7789",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15520,7 +15520,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15531,7 +15531,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15542,7 +15542,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15553,7 +15553,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1304",
@@ -15564,7 +15564,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1145",
@@ -15575,7 +15575,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1432",
@@ -15586,7 +15586,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "945",
@@ -15597,7 +15597,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15608,7 +15608,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2335",
@@ -15619,7 +15619,7 @@ Array [
       "2335",
     ],
     "originalText": 2335,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "245",
@@ -15630,7 +15630,7 @@ Array [
       "245",
     ],
     "originalText": 245,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2457",
@@ -15641,7 +15641,7 @@ Array [
       "2457",
     ],
     "originalText": 2457,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "2458",
@@ -15652,7 +15652,7 @@ Array [
       "2458",
     ],
     "originalText": 2458,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1354",
@@ -15663,7 +15663,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1523",
@@ -15674,7 +15674,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1634",
@@ -15685,7 +15685,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "1343",
@@ -15696,7 +15696,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "-",
@@ -15707,7 +15707,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "4004",
@@ -15718,7 +15718,7 @@ Array [
       "4004",
     ],
     "originalText": 4004,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3077",
@@ -15729,7 +15729,7 @@ Array [
       "3077",
     ],
     "originalText": 3077,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "3551",
@@ -15740,7 +15740,7 @@ Array [
       "3551",
     ],
     "originalText": 3551,
-    "width": 102.57,
+    "width": 102,
   },
   Object {
     "actualText": "352",
@@ -15751,7 +15751,7 @@ Array [
       "352",
     ],
     "originalText": 352,
-    "width": 102.57,
+    "width": 102,
   },
 ]
 `;
@@ -35064,1424 +35064,6 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests TableSheet should render by maxLinesByField 4`] = `Array []`;
 
 exports[`SpreadSheet Multi Line Text Tests TableSheet should render by maxLinesByField 5`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": 1,
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 61,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": 2,
-    "width": 80,
-  },
-  Object {
-    "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "3",
-    ],
-    "originalText": 3,
-    "width": 80,
-  },
-  Object {
-    "actualText": "4",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4",
-    ],
-    "originalText": 4,
-    "width": 80,
-  },
-  Object {
-    "actualText": "5",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5",
-    ],
-    "originalText": 5,
-    "width": 80,
-  },
-  Object {
-    "actualText": "6",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "6",
-    ],
-    "originalText": 6,
-    "width": 80,
-  },
-  Object {
-    "actualText": "7",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7",
-    ],
-    "originalText": 7,
-    "width": 80,
-  },
-  Object {
-    "actualText": "8",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "8",
-    ],
-    "originalText": 8,
-    "width": 80,
-  },
-  Object {
-    "actualText": "9",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "9",
-    ],
-    "originalText": 9,
-    "width": 80,
-  },
-  Object {
-    "actualText": "10",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "10",
-    ],
-    "originalText": 10,
-    "width": 80,
-  },
-  Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": 11,
-    "width": 80,
-  },
-  Object {
-    "actualText": "12",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "12",
-    ],
-    "originalText": 12,
-    "width": 80,
-  },
-  Object {
-    "actualText": "13",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "13",
-    ],
-    "originalText": 13,
-    "width": 80,
-  },
-  Object {
-    "actualText": "14",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "14",
-    ],
-    "originalText": 14,
-    "width": 80,
-  },
-  Object {
-    "actualText": "15",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "15",
-    ],
-    "originalText": 15,
-    "width": 80,
-  },
-  Object {
-    "actualText": "16",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "16",
-    ],
-    "originalText": 16,
-    "width": 80,
-  },
-  Object {
-    "actualText": "17",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "17",
-    ],
-    "originalText": 17,
-    "width": 80,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 240,
-    "height": 61,
-    "multiLineActualTexts": Array [
-      "浙江省浙江省浙江省浙",
-      "江省浙江省浙江省浙...",
-    ],
-    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 240,
-    "height": 61,
-    "multiLineActualTexts": Array [
-      "杭州市杭州市杭州市杭",
-      "州市杭州市杭州市杭...",
-    ],
-    "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 240,
-    "height": 61,
-    "multiLineActualTexts": Array [
-      "家具家具家具家具家具",
-      "家具家具家具家具家...",
-    ],
-    "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 240,
-    "height": 61,
-    "multiLineActualTexts": Array [
-      "桌子桌子桌子桌子桌子",
-      "桌子桌子桌子桌子桌...",
-    ],
-    "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "纸张",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "纸张",
-    ],
-    "originalText": "纸张",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "纸张",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "纸张",
-    ],
-    "originalText": "纸张",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "纸张",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "纸张",
-    ],
-    "originalText": "纸张",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "纸张",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "纸张",
-    ],
-    "originalText": "纸张",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 15,
-    "actualTextWidth": 98,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "236723672361111",
-    ],
-    "originalText": 236723672361111,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "7789778977897789778977897789",
-    "actualTextHeight": 30,
-    "actualTextWidth": 188,
-    "height": 61,
-    "multiLineActualTexts": Array [
-      "7789778977897789778",
-      "977897789",
-    ],
-    "originalText": "7789778977897789778977897789",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 15,
-    "actualTextWidth": 98,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "236723672361111",
-    ],
-    "originalText": 236723672361111,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "3877",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "3877",
-    ],
-    "originalText": 3877,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "4342",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4342",
-    ],
-    "originalText": 4342,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "5343",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5343",
-    ],
-    "originalText": 5343,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "632",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "632",
-    ],
-    "originalText": 632,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "7234",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7234",
-    ],
-    "originalText": 7234,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "834",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "834",
-    ],
-    "originalText": 834,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "945",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "945",
-    ],
-    "originalText": 945,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "1304",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1304",
-    ],
-    "originalText": 1304,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "1145",
-    "actualTextHeight": 15,
-    "actualTextWidth": 26,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1145",
-    ],
-    "originalText": 1145,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "1432",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1432",
-    ],
-    "originalText": 1432,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "1343",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1343",
-    ],
-    "originalText": 1343,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "1354",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1354",
-    ],
-    "originalText": 1354,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "1523",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1523",
-    ],
-    "originalText": 1523,
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "1634",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1634",
-    ],
-    "originalText": 1634,
-    "width": 143.8,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should render by maxLinesByField1 1`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 64,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should render by maxLinesByField1 2`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": 1,
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 61,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": 2,
-    "width": 80,
-  },
-  Object {
-    "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "3",
-    ],
-    "originalText": 3,
-    "width": 80,
-  },
-  Object {
-    "actualText": "4",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4",
-    ],
-    "originalText": 4,
-    "width": 80,
-  },
-  Object {
-    "actualText": "5",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5",
-    ],
-    "originalText": 5,
-    "width": 80,
-  },
-  Object {
-    "actualText": "6",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "6",
-    ],
-    "originalText": 6,
-    "width": 80,
-  },
-  Object {
-    "actualText": "7",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7",
-    ],
-    "originalText": 7,
-    "width": 80,
-  },
-  Object {
-    "actualText": "8",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "8",
-    ],
-    "originalText": 8,
-    "width": 80,
-  },
-  Object {
-    "actualText": "9",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "9",
-    ],
-    "originalText": 9,
-    "width": 80,
-  },
-  Object {
-    "actualText": "10",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "10",
-    ],
-    "originalText": 10,
-    "width": 80,
-  },
-  Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": 11,
-    "width": 80,
-  },
-  Object {
-    "actualText": "12",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "12",
-    ],
-    "originalText": 12,
-    "width": 80,
-  },
-  Object {
-    "actualText": "13",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "13",
-    ],
-    "originalText": 13,
-    "width": 80,
-  },
-  Object {
-    "actualText": "14",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "14",
-    ],
-    "originalText": 14,
-    "width": 80,
-  },
-  Object {
-    "actualText": "15",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "15",
-    ],
-    "originalText": 15,
-    "width": 80,
-  },
-  Object {
-    "actualText": "16",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "16",
-    ],
-    "originalText": 16,
-    "width": 80,
-  },
-  Object {
-    "actualText": "17",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "17",
-    ],
-    "originalText": 17,
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should render by maxLinesByField1 3`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 64,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-  Object {
-    "actualText": "省份",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 64,
-    "multiLineActualTexts": Array [
-      "省份",
-    ],
-    "originalText": "省份",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "actualTextHeight": 48,
-    "actualTextWidth": 291,
-    "height": 64,
-    "multiLineActualTexts": Array [
-      "城市城市城市城市城市",
-      "城市城市城市城市城市",
-      "城市城市",
-    ],
-    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "类别类别类别类别类别类别类别类别类别类别",
-    "actualTextHeight": 32,
-    "actualTextWidth": 242,
-    "height": 64,
-    "multiLineActualTexts": Array [
-      "类别类别类别类别类别",
-      "类别类别类别类别类别",
-    ],
-    "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "子类别",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 64,
-    "multiLineActualTexts": Array [
-      "子类别",
-    ],
-    "originalText": "子类别",
-    "width": 143.8,
-  },
-  Object {
-    "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "actualTextHeight": 48,
-    "actualTextWidth": 267,
-    "height": 64,
-    "multiLineActualTexts": Array [
-      "数量数量数量数量数量",
-      "数量数量数量数量数量",
-      "数量",
-    ],
-    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 143.8,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should render by maxLinesByField1 4`] = `Array []`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should render by maxLinesByField1 5`] = `
 Array [
   Object {
     "actualText": "1",

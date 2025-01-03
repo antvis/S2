@@ -40,7 +40,7 @@ import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
-import { floor } from '../utils/math';
+import { floor, round } from '../utils/math';
 import type { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
@@ -460,7 +460,7 @@ export class TableFacet extends FrozenFacet {
       );
     }
 
-    return dataCell?.width ?? 0;
+    return round(dataCell?.width ?? 0);
   }
 
   private calculateColLeafNodesWidth(
@@ -554,7 +554,7 @@ export class TableFacet extends FrozenFacet {
       this.measureTextWidth(colNode.value, colCellTextStyle) +
       getOccupiedWidthForTableCol(this.spreadsheet, colNode, theme.colCell!);
 
-    return Math.max(colHeaderNodeWidth, maxLabelWidth);
+    return round(Math.max(colHeaderNodeWidth, maxLabelWidth));
   }
 
   private getColLeafNodesWidth(
@@ -567,14 +567,14 @@ export class TableFacet extends FrozenFacet {
 
     // 1. 拖拽后的宽度优先级最高
     if (isNumber(cellDraggedWidth)) {
-      return cellDraggedWidth;
+      return round(cellDraggedWidth);
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
     const cellCustomWidth = this.getCellCustomSize(colNode, colCell?.width);
 
     if (isNumber(cellCustomWidth)) {
-      return cellCustomWidth;
+      return round(cellCustomWidth);
     }
 
     // 3. 序号列, 使用配置宽度
@@ -588,7 +588,7 @@ export class TableFacet extends FrozenFacet {
     }
 
     // 5. 默认自适应列宽
-    return adaptiveColWidth;
+    return round(adaptiveColWidth);
   }
 
   public getViewCellHeights() {
@@ -725,17 +725,17 @@ export class TableFacet extends FrozenFacet {
   public getContentWidth(): number {
     const { colsHierarchy } = this.layoutResult;
 
-    return colsHierarchy.width;
+    return round(colsHierarchy.width);
   }
 
   public getContentHeight(): number {
     const { getTotalHeight } = this.getViewCellHeights();
     const { colsHierarchy } = this.layoutResult;
 
-    return (
+    return round(
       getTotalHeight() +
-      colsHierarchy.height +
-      Frame.getHorizontalBorderWidth(this.spreadsheet)
+        colsHierarchy.height +
+        Frame.getHorizontalBorderWidth(this.spreadsheet),
     );
   }
 }

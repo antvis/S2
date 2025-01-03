@@ -26,6 +26,7 @@ import {
   max,
   maxBy,
   reduce,
+  round,
   size,
   sumBy,
 } from 'lodash';
@@ -463,7 +464,9 @@ export abstract class BaseFacet {
     }
 
     // 两者要取最大, 保证高度自动撑高的合理性
-    return Math.max(cornerAdaptiveHeight, colAdaptiveHeight, defaultHeight);
+    return round(
+      Math.max(cornerAdaptiveHeight, colAdaptiveHeight, defaultHeight),
+    );
   }
 
   protected getDefaultColNodeHeight(
@@ -488,7 +491,7 @@ export abstract class BaseFacet {
       this.getCellCustomSize(colNode, colCell?.height) ??
       0;
 
-    return Math.max(defaultHeight, sampleMaxHeight);
+    return round(Math.max(defaultHeight, sampleMaxHeight));
   }
 
   protected getNodeAdaptiveHeight(options: {
@@ -758,9 +761,11 @@ export abstract class BaseFacet {
   public getSeriesNumberWidth(): number {
     const { seriesNumber } = this.spreadsheet.options;
 
-    return seriesNumber?.enable
-      ? this.spreadsheet.theme.rowCell?.seriesNumberWidth ?? 0
-      : 0;
+    return round(
+      seriesNumber?.enable
+        ? this.spreadsheet.theme.rowCell?.seriesNumberWidth ?? 0
+        : 0,
+    );
   }
 
   public getCanvasSize() {

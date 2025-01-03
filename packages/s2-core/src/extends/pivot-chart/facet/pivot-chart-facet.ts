@@ -24,6 +24,7 @@ import {
   isNumber,
   last,
   merge,
+  round,
   sum,
 } from 'lodash';
 import {
@@ -113,7 +114,7 @@ export class PivotChartFacet extends PivotFacet {
     const { rows = [] } = this.spreadsheet.dataSet.fields;
     const lastRow = last(rows) as string;
 
-    return rowCell?.widthByField?.[lastRow] ?? 0;
+    return round(rowCell?.widthByField?.[lastRow] ?? 0);
   }
 
   protected getColAxisHeight() {
@@ -122,7 +123,7 @@ export class PivotChartFacet extends PivotFacet {
     const { columns = [] } = this.spreadsheet.dataSet.fields;
     const lastCol = last(columns) as string;
 
-    return colCell?.heightByField?.[lastCol] ?? 0;
+    return round(colCell?.heightByField?.[lastCol] ?? 0);
   }
 
   protected override getCompactGridColNodeWidth(colNode: Node) {
@@ -132,7 +133,7 @@ export class PivotChartFacet extends PivotFacet {
       this.getColLeafNodeRelatedCount(colNode),
     );
 
-    return dataCellWidth;
+    return round(dataCellWidth);
   }
 
   protected override getAdaptGridColWidth(
@@ -160,18 +161,18 @@ export class PivotChartFacet extends PivotFacet {
     const currentSize = colNode ? this.getColLeafNodeRelatedCount(colNode) : 1;
 
     if (!rowHeaderWidth) {
-      return (
+      return round(
         currentSize *
-        Math.max(getCellWidth(dataCell!), floor(availableWidth / colSize))
+          Math.max(getCellWidth(dataCell!), floor(availableWidth / colSize)),
       );
     }
 
-    return (
+    return round(
       currentSize *
-      Math.max(
-        getCellWidth(dataCell!),
-        floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
-      )
+        Math.max(
+          getCellWidth(dataCell!),
+          floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
+        ),
     );
   }
 
@@ -180,11 +181,11 @@ export class PivotChartFacet extends PivotFacet {
 
     // 1. 拖拽后的宽度优先级最高
     if (isNumber(customHeight)) {
-      return customHeight;
+      return round(customHeight);
     }
 
     const { dataCell } = this.spreadsheet.options.style!;
-    const dataCellHeight = dataCell?.height ?? 0;
+    const dataCellHeight = round(dataCell?.height ?? 0);
 
     return this.getRowLeafNodeRelatedCount(rowLeafNode) * dataCellHeight;
   }

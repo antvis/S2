@@ -41,7 +41,7 @@ import { findFieldCondition } from '../utils/condition/condition';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
-import { floor } from '../utils/math';
+import { floor, round } from '../utils/math';
 import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
 import { CornerHeader, Frame, type CornerHeaderConfig } from './header';
@@ -388,14 +388,14 @@ export class PivotFacet extends FrozenFacet {
 
     // 1. 拖拽后的宽度优先级最高
     if (isNumber(cellDraggedWidth)) {
-      return cellDraggedWidth;
+      return round(cellDraggedWidth);
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
     const cellCustomWidth = this.getCellCustomSize(colNode, colCell?.width!);
 
     if (isNumber(cellCustomWidth)) {
-      return cellCustomWidth;
+      return round(cellCustomWidth);
     }
 
     // 3. 紧凑布局
@@ -528,7 +528,7 @@ export class PivotFacet extends FrozenFacet {
       ? defaultHeight
       : max(currentBranchNodeHeights) ?? defaultHeight;
 
-    return nodeHeight;
+    return round(nodeHeight);
   }
 
   protected calculateRowNodesBBox(rowsHierarchy: Hierarchy) {
@@ -649,13 +649,13 @@ export class PivotFacet extends FrozenFacet {
     const cellDraggedWidth = this.getRowCellDraggedWidth(node);
 
     if (isNumber(cellDraggedWidth)) {
-      return cellDraggedWidth;
+      return round(cellDraggedWidth);
     }
 
     const cellCustomWidth = this.getCellCustomSize(node, rowCell?.width!);
 
     if (isNumber(cellCustomWidth)) {
-      return cellCustomWidth;
+      return round(cellCustomWidth);
     }
 
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthType.Adaptive) {
@@ -689,9 +689,11 @@ export class PivotFacet extends FrozenFacet {
     const colSize = Math.max(1, colLeafNodes.length);
     const { dataCell } = this.spreadsheet.options.style!;
 
-    return Math.max(
-      getCellWidth(dataCell!, this.getColLabelLength(col, rowLeafNodes)),
-      floor((availableWidth - rowHeaderWidth) / colSize),
+    return round(
+      Math.max(
+        getCellWidth(dataCell!, this.getColLabelLength(col, rowLeafNodes)),
+        floor((availableWidth - rowHeaderWidth) / colSize),
+      ),
     );
   }
 
@@ -766,12 +768,16 @@ export class PivotFacet extends FrozenFacet {
     const colSize = Math.max(1, rowHeaderColSize + colHeaderColSize);
 
     if (!rowHeaderWidth) {
-      return Math.max(getCellWidth(dataCell!), floor(availableWidth / colSize));
+      return round(
+        Math.max(getCellWidth(dataCell!), floor(availableWidth / colSize)),
+      );
     }
 
-    return Math.max(
-      getCellWidth(dataCell!),
-      floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
+    return round(
+      Math.max(
+        getCellWidth(dataCell!),
+        floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
+      ),
     );
   }
 
@@ -783,13 +789,13 @@ export class PivotFacet extends FrozenFacet {
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
     if (isNumber(rowCell?.treeWidth)) {
-      return rowCell.treeWidth;
+      return round(rowCell.treeWidth);
     }
 
     const customRowCellWidth = this.getCellCustomSize(null, rowCell?.width!);
 
     if (isNumber(customRowCellWidth)) {
-      return customRowCellWidth;
+      return round(customRowCellWidth);
     }
 
     // 2. 然后是计算 (+ icon province/city/level)
@@ -815,7 +821,7 @@ export class PivotFacet extends FrozenFacet {
       maxLabelWidth,
     );
 
-    return Number.isNaN(width) ? DEFAULT_ROW_CELL_TREE_WIDTH : width;
+    return Number.isNaN(width) ? DEFAULT_ROW_CELL_TREE_WIDTH : round(width);
   }
 
   /**
@@ -883,7 +889,7 @@ export class PivotFacet extends FrozenFacet {
       rowNodeWidth > fieldNameNodeWidth ? maxLabel : fieldName,
     );
 
-    return Math.max(rowNodeWidth, fieldNameNodeWidth);
+    return round(Math.max(rowNodeWidth, fieldNameNodeWidth));
   }
 
   protected getCompactGridColNodeWidth(colNode: Node, rowLeafNodes: Node[]) {
@@ -985,12 +991,12 @@ export class PivotFacet extends FrozenFacet {
       fontSize: Math.max(dataCellTextStyle.fontSize, colCellTextStyle.fontSize),
     });
 
-    return (
+    return round(
       maxTextWidth +
-      colCellStyle!.padding!.left! +
-      colCellStyle!.padding!.right! +
-      colCellStyle!.verticalBorderWidth! * 2 +
-      appendedWidth
+        colCellStyle!.padding!.left! +
+        colCellStyle!.padding!.right! +
+        colCellStyle!.verticalBorderWidth! * 2 +
+        appendedWidth,
     );
   }
 
@@ -1044,20 +1050,20 @@ export class PivotFacet extends FrozenFacet {
   public getContentWidth(): number {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
-    return (
+    return round(
       rowsHierarchy.width +
-      colsHierarchy.width +
-      Frame.getVerticalBorderWidth(this.spreadsheet)
+        colsHierarchy.width +
+        Frame.getVerticalBorderWidth(this.spreadsheet),
     );
   }
 
   public getContentHeight(): number {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
-    return (
+    return round(
       rowsHierarchy.height +
-      colsHierarchy.height +
-      Frame.getHorizontalBorderWidth(this.spreadsheet)
+        colsHierarchy.height +
+        Frame.getHorizontalBorderWidth(this.spreadsheet),
     );
   }
 }
