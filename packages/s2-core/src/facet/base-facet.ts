@@ -39,6 +39,7 @@ import {
   SeriesNumberCell,
   TableColCell,
   TableSeriesNumberCell,
+  type HeaderCell,
 } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -524,6 +525,8 @@ export abstract class BaseFacet {
       return cacheHeight || defaultHeight;
     }
 
+    // 预生成 icon 配置, 用于计算文本正确的最大可用宽度
+    (cell as HeaderCell).generateIconConfig?.();
     cell.drawTextShape();
 
     const { padding } = cell.getStyle().cell;

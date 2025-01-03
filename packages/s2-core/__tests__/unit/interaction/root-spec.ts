@@ -178,17 +178,33 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should selected header cell', () => {
+    const highlightNodesSpy = jest
+      .spyOn(rootInteraction, 'highlightNodes')
+      .mockImplementationOnce(() => {});
+
     rootInteraction.selectCell(mockCell);
 
     expect(rootInteraction.getState()).toMatchSnapshot();
     expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+    expect(highlightNodesSpy).toHaveBeenCalledWith(
+      [],
+      InteractionStateName.SELECTED,
+    );
   });
 
   test('should highlight header cell', () => {
+    const highlightNodesSpy = jest
+      .spyOn(rootInteraction, 'highlightNodes')
+      .mockImplementationOnce(() => {});
+
     rootInteraction.highlightCell(mockCell);
 
     expect(rootInteraction.getState()).toMatchSnapshot();
     expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+    expect(highlightNodesSpy).toHaveBeenCalledWith(
+      [],
+      InteractionStateName.HOVER,
+    );
   });
 
   // https://github.com/antvis/S2/issues/1243
@@ -444,7 +460,7 @@ describe('RootInteraction Tests', () => {
       expect(rootInteraction.getActiveCells()).toEqual([]);
     });
 
-    test('should set selected status after highlight nodes', () => {
+    test('should set hover status after highlight nodes', () => {
       const belongsCell = createMockCellInfo('test-A').mockCell;
 
       const mockNodeA = new Node({
@@ -469,6 +485,28 @@ describe('RootInteraction Tests', () => {
           belongsCell,
         );
       });
+    });
+
+    // https://github.com/antvis/S2/discussions/3062
+    test('should set selected status after highlight nodes', () => {
+      const belongsCell = createMockCellInfo('test-A').mockCell;
+
+      const mockNodeA = new Node({
+        id: 'test',
+        field: 'test',
+        value: '1',
+        belongsCell,
+      });
+
+      rootInteraction.highlightNodes(
+        [mockNodeA],
+        InteractionStateName.SELECTED,
+      );
+
+      expect(mockNodeA.belongsCell?.updateByState).toHaveBeenCalledWith(
+        InteractionStateName.SELECTED,
+        belongsCell,
+      );
     });
 
     test.each`

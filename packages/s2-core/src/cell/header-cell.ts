@@ -112,7 +112,7 @@ export abstract class HeaderCell<
     this.generateIconConfig();
   }
 
-  protected generateIconConfig() {
+  public generateIconConfig() {
     this.conditionIconMappingResult = this.getIconConditionResult();
 
     const { sortParam } = this.getHeaderConfig();
@@ -185,6 +185,10 @@ export abstract class HeaderCell<
     if (options.showDefaultHeaderActionIcon && !isEmptyValues) {
       const { sortParam } = this.getHeaderConfig();
       const query = this.meta.query;
+
+      if (this.isShallowRender()) {
+        return query;
+      }
 
       // sortParam 的 query，和 type 本身可能会 undefined
       return (

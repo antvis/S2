@@ -320,6 +320,21 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
   },
 };
 
+export const headerActionIcons: SheetComponentOptions['headerActionIcons'] = [
+  {
+    icons: ['Trend', { position: 'left', name: 'SortUp' }],
+    belongsCell: 'cornerCell',
+  },
+  {
+    icons: ['Trend', { position: 'left', name: 'SortUp' }],
+    belongsCell: 'rowCell',
+  },
+  {
+    icons: ['Trend', { position: 'left', name: 'SortUp' }],
+    belongsCell: 'colCell',
+  },
+];
+
 export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
