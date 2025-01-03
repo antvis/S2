@@ -66,6 +66,7 @@ import {
   PivotSheetFrozenOptions,
   TableSheetFrozenOptions,
   defaultOptions,
+  headerActionIcons,
   pivotSheetDataCfg,
   pivotSheetDataCfgForCompactMode,
   pivotSheetMultiLineTextDataCfg,
@@ -686,6 +687,9 @@ function MainLayout() {
                                   onChange={(checked) => {
                                     updateOptions({
                                       showDefaultHeaderActionIcon: checked,
+                                      headerActionIcons: checked
+                                        ? []
+                                        : headerActionIcons,
                                     });
                                   }}
                                 />

@@ -702,6 +702,57 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       matchCellStyleSnapshot();
       expectColHierarchyHeight(96, 48, 48, 2);
     });
+
+    test('should calculate correctly max text width for headerActionIcons', async () => {
+      updateStyle(Infinity);
+      s2.changeSheetSize(800, 600);
+      s2.setOptions({
+        headerActionIcons: [
+          {
+            icons: ['Trend', 'SortDown', { position: 'left', name: 'SortUp' }],
+            belongsCell: 'cornerCell',
+          },
+          {
+            icons: ['Trend', 'SortDown', { position: 'left', name: 'SortUp' }],
+            belongsCell: 'rowCell',
+          },
+          {
+            icons: ['Trend', 'SortDown', { position: 'left', name: 'SortUp' }],
+            belongsCell: 'colCell',
+          },
+        ],
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should calculate correctly max text width for default sort header action icons', async () => {
+      updateStyle(Infinity);
+      s2.changeSheetSize(800, 600);
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should calculate correctly max text width for default sort header action icons and valuesInCols=false', async () => {
+      updateStyle(Infinity);
+      s2.changeSheetSize(800, 600);
+      s2.setDataCfg({
+        fields: {
+          valueInCols: false,
+        },
+      });
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
   });
 
   describe('TableSheet', () => {
@@ -1287,6 +1338,31 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
       await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should calculate correctly max text width for headerActionIcons', async () => {
+      updateStyle(Infinity);
+      s2.setOptions({
+        headerActionIcons: [
+          {
+            icons: ['Trend', 'SortDown', { position: 'left', name: 'SortUp' }],
+            belongsCell: 'colCell',
+          },
+        ],
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should calculate correctly max text width for default sort header action icons', async () => {
+      updateStyle(Infinity);
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+      });
+      await s2.render(false);
 
       matchCellStyleSnapshot();
     });
