@@ -9,6 +9,7 @@ import {
   getCellWidth,
   getDataCellId,
   getHeaderTotalStatus,
+  round,
   type FrameConfig,
   type LayoutResult,
   type S2CellType,
@@ -24,7 +25,6 @@ import {
   isNumber,
   last,
   merge,
-  round,
   sum,
 } from 'lodash';
 import {

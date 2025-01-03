@@ -26,7 +26,6 @@ import {
   max,
   maxBy,
   reduce,
-  round,
   size,
   sumBy,
 } from 'lodash';
@@ -99,7 +98,7 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile, isWindows } from '../utils/is-mobile';
-import { floor } from '../utils/math';
+import { floor, round } from '../utils/math';
 import { CornerBBox } from './bbox/corner-bbox';
 import { PanelBBox } from './bbox/panel-bbox';
 import {
