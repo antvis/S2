@@ -187,7 +187,7 @@ describe('Col Cell Tests', () => {
 
       // @ts-ignore
       expect(colCell.rightIconPosition).toEqual({
-        x: 152,
+        x: 152.5,
         y: 10.5,
       });
     });

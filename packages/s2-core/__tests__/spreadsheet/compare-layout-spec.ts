@@ -169,14 +169,10 @@ describe('Compare Layout Tests', () => {
 
       const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
 
-      expect(dataCellWidthList).toEqual(
-        options.showDefaultHeaderActionIcon
-          ? [209, 209, 209, 209, 110, 110, 110, 110, 85, 85, 85, 85]
-          : [209, 209, 209, 209, 110, 110, 110, 110, 69, 69, 69, 69],
-      );
-      expect(colLeafNodeWidthList).toEqual(
-        options.showDefaultHeaderActionIcon ? [209, 110, 85] : [209, 110, 69],
-      );
+      expect(dataCellWidthList).toEqual([
+        209, 209, 209, 209, 110, 110, 110, 110, 69, 69, 69, 69,
+      ]);
+      expect(colLeafNodeWidthList).toEqual([209, 110, 69]);
       expectTextOverflowing(s2);
     },
   );

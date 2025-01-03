@@ -87,7 +87,7 @@ describe('HeaderActionIcons Tests', () => {
       customSVGIcons: [
         {
           name: 'CustomIcon',
-          svg: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48"><path fill="#90CAF9" d="M43 30V18c0-2.2-1.8-4-4-4H9c-2.2 0-4 1.8-4 4v12c0 2.2 1.8 4 4 4h30c2.2 0 4-1.8 4-4M9 18h30v12H9z"/><circle cx="38" cy="38" r="10" fill="#43A047"/><g fill="#fff"><path d="M32 36h12v4H32z"/><path d="M36 32h4v12h-4z"/></g></svg>`,
+          src: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48"><path fill="#90CAF9" d="M43 30V18c0-2.2-1.8-4-4-4H9c-2.2 0-4 1.8-4 4v12c0 2.2 1.8 4 4 4h30c2.2 0 4-1.8 4-4M9 18h30v12H9z"/><circle cx="38" cy="38" r="10" fill="#43A047"/><g fill="#fff"><path d="M32 36h12v4H32z"/><path d="M36 32h4v12h-4z"/></g></svg>`,
         },
       ],
       headerActionIcons: [
@@ -198,40 +198,7 @@ describe('HeaderActionIcons Tests', () => {
         .map((icon) => pick(icon.iconImageShape.attributes, ['x', 'y']));
     });
 
-    expect(positions).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
-            "x": 9,
-            "y": 24.5,
-          },
-          Object {
-            "x": 51,
-            "y": 24.5,
-          },
-        ],
-        Array [
-          Object {
-            "x": 158.5,
-            "y": 9.5,
-          },
-          Object {
-            "x": 200.5,
-            "y": 9.5,
-          },
-        ],
-        Array [
-          Object {
-            "x": 158.5,
-            "y": 39.5,
-          },
-          Object {
-            "x": 200.5,
-            "y": 39.5,
-          },
-        ],
-      ]
-    `);
+    expect(positions).toMatchSnapshot();
   });
 
   test('should only trigger plus icon click event', async () => {
@@ -300,27 +267,6 @@ describe('HeaderActionIcons Tests', () => {
       .getRowCells()
       .map((cell) => pick(cell.getActionIcons()[0], ['cfg.x', 'cfg.y']));
 
-    expect(positions).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "cfg": Object {
-            "x": 37,
-            "y": 24.5,
-          },
-        },
-        Object {
-          "cfg": Object {
-            "x": 186.5,
-            "y": 9.5,
-          },
-        },
-        Object {
-          "cfg": Object {
-            "x": 186.5,
-            "y": 39.5,
-          },
-        },
-      ]
-    `);
+    expect(positions).toMatchSnapshot();
   });
 });

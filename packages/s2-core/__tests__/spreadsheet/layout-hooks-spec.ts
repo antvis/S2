@@ -195,14 +195,6 @@ describe('layout hooks spec', () => {
     const { fieldValue, data } = s2.facet.getCellMeta(0, 0)!;
 
     expect(fieldValue).toEqual(999);
-    expect(data).toMatchInlineSnapshot(`
-      Object {
-        "$$extra$$": "profit",
-        "$$value$$": 999,
-        "area": "中南",
-        "sub_type": "系固件",
-        "type": "办公用品",
-      }
-    `);
+    expect(data).toMatchSnapshot();
   });
 });

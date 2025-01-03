@@ -36,6 +36,8 @@ exports[`List Table Core Data Process should copy all data 1`] = `
 32	四川省	乐山市	办公用品	纸张	352"
 `;
 
+exports[`List Table Core Data Process should copy all data 2`] = `"2	浙江省	绍兴市	家具	桌子	2367"`;
+
 exports[`List Table Core Data Process should copy all data with header in table mode 1`] = `
 "province	city	type	sub_type	number
 浙江省	杭州市	家具	\\"### 问题摘要 
@@ -72,6 +74,8 @@ exports[`List Table Core Data Process should copy correct data when selected dia
 -	宁波市"
 `;
 
+exports[`List Table Core Data Process should copy correct data with data filtered 1`] = `"1	四川省	乐山市	家具	桌子	2330"`;
+
 exports[`List Table Core Data Process should copy correctly data with header in table mode if contain repeat column 1`] = `
 "城市	城市	城市	城市	城市
 浙江省	杭州市	家具	\\"### 问题摘要 
@@ -96,6 +100,8 @@ exports[`List Table Core Data Process should copy correctly data with header in 
 四川省	南充市	家具	桌子	1943"
 `;
 
+exports[`List Table Core Data Process should copy row data 1`] = `"1	浙江省	舟山市	家具	桌子	4342"`;
+
 exports[`List Table Core Data Process should copy series number data 1`] = `
 "1	浙江省	杭州市	家具	### 问题摘要 
 - **会话地址**：	7789
@@ -118,6 +124,8 @@ exports[`List Table Core Data Process should copy series number data 1`] = `
 18	四川省	绵阳市	家具	桌子	1822
 19	四川省	南充市	家具	桌子	1943"
 `;
+
+exports[`List Table Core Data Process should support custom copy matrix transformer 1`] = `"custom data"`;
 
 exports[`Pivot Table Core Data Process should copy format total data in grid mode 1`] = `
 "			总计	家具	家具	家具
@@ -189,6 +197,8 @@ exports[`Pivot Table Core Data Process should get correct data with hideMeasureC
 四川省	小计	7818	9473	17291	7495
 总计		26193	23516	49709	12321"
 `;
+
+exports[`Pivot Table Core Data Process should support custom copy matrix transformer 1`] = `"custom data"`;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy all col data in grid mode 1`] = `
 "家具	家具	办公用品	办公用品
@@ -500,3 +510,5 @@ exports[`Tree Table Core Data Process should copy normal data with header in tre
 四川省	乐山市	2330	2445	4775	2458	352
 总计		26193	23516	49709	12321	16838"
 `;
+
+exports[`Tree Table Core Data Process should copy row data in grid tree 1`] = `"18375	14043	32418	4826	5854	10680	43098"`;

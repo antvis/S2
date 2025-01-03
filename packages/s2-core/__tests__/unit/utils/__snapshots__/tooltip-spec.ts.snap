@@ -87,6 +87,137 @@ Object {
 }
 `;
 
+exports[`Tooltip Utils Tests Tooltip Get Data Tests Tooltip Get Data Tests For TableSheet should get correctly summaries of selected col cell 1`] = `
+Object {
+  "description": "类别说明。。",
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [
+    Object {
+      "name": "",
+      "selectedData": Array [
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "家具",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+        "办公用品",
+      ],
+      "value": "",
+    },
+  ],
+  "tips": undefined,
+}
+`;
+
+exports[`Tooltip Utils Tests Tooltip Get Data Tests Tooltip Get Data Tests For TableSheet should get correctly summaries of selected col cell 2`] = `
+Object {
+  "description": "子类别说明。。",
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [
+    Object {
+      "name": "",
+      "selectedData": Array [
+        "桌子",
+        "桌子",
+        "桌子",
+        "桌子",
+        "沙发",
+        "沙发",
+        "沙发",
+        "沙发",
+        "笔",
+        "笔",
+        "笔",
+        "笔",
+        "纸张",
+        "纸张",
+        "纸张",
+        "纸张",
+        "桌子",
+        "桌子",
+        "桌子",
+        "桌子",
+        "沙发",
+        "沙发",
+        "沙发",
+        "沙发",
+        "笔",
+        "笔",
+        "笔",
+        "笔",
+        "纸张",
+        "纸张",
+        "纸张",
+        "纸张",
+      ],
+      "value": "",
+    },
+  ],
+  "tips": undefined,
+}
+`;
+
+exports[`Tooltip Utils Tests Tooltip Get Data Tests Tooltip Get Data Tests For TableSheet should get correctly summaries of selected series number cell 1`] = `
+Object {
+  "description": undefined,
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [
+    Object {
+      "name": "",
+      "selectedData": Array [
+        Object {
+          "city": "杭州市",
+          "number": 7789,
+          "province": "浙江省",
+          "sub_type": "桌子",
+          "type": "家具",
+        },
+      ],
+      "value": "",
+    },
+  ],
+  "tips": undefined,
+}
+`;
+
 exports[`Tooltip Utils Tests Tooltip Get Data Tests should get correctly data cell details 1`] = `
 Object {
   "description": undefined,

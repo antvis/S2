@@ -160,13 +160,11 @@ describe('SpreadSheet Tests', () => {
       await sleep(500);
 
       expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
-      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
-        Object {
-          "rowHeaderScrollX": 0,
-          "scrollX": 30,
-          "scrollY": 0,
-        }
-      `);
+      expect(s2.facet.getScrollOffset()).toEqual({
+        rowHeaderScrollX: 0,
+        scrollX: 30,
+        scrollY: 0,
+      });
     });
 
     test('should update scroll offset y immediately', async () => {
@@ -187,13 +185,11 @@ describe('SpreadSheet Tests', () => {
 
       await sleep(500);
       expect(s2.facet.vScrollBar.current()).toBeGreaterThan(0);
-      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
-        Object {
-          "rowHeaderScrollX": 0,
-          "scrollX": 0,
-          "scrollY": 20,
-        }
-      `);
+      expect(s2.facet.getScrollOffset()).toEqual({
+        rowHeaderScrollX: 0,
+        scrollX: 0,
+        scrollY: 20,
+      });
     });
 
     test('should update row header scroll offset x immediately', async () => {
@@ -210,13 +206,11 @@ describe('SpreadSheet Tests', () => {
       await s2.render();
 
       expect(s2.facet.hRowScrollBar.current()).toEqual(0);
-      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
-        Object {
-          "rowHeaderScrollX": 0,
-          "scrollX": 0,
-          "scrollY": 0,
-        }
-      `);
+      expect(s2.facet.getScrollOffset()).toEqual({
+        rowHeaderScrollX: 0,
+        scrollX: 0,
+        scrollY: 0,
+      });
 
       s2.interaction.scrollTo({
         rowHeaderOffsetX: { value: 30, animate: false },
@@ -224,13 +218,11 @@ describe('SpreadSheet Tests', () => {
 
       await sleep(500);
       expect(s2.facet.hRowScrollBar.current()).toBeGreaterThan(0);
-      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
-        Object {
-          "rowHeaderScrollX": 30,
-          "scrollX": 0,
-          "scrollY": 0,
-        }
-      `);
+      expect(s2.facet.getScrollOffset()).toEqual({
+        rowHeaderScrollX: 30,
+        scrollX: 0,
+        scrollY: 0,
+      });
     });
 
     test('should update scroll offset immediately', async () => {
@@ -259,13 +251,11 @@ describe('SpreadSheet Tests', () => {
       expect(s2.facet.vScrollBar.current()).toBeGreaterThan(0);
       expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
       expect(s2.facet.hRowScrollBar.current()).toBeGreaterThan(0);
-      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
-        Object {
-          "rowHeaderScrollX": 40,
-          "scrollX": 30,
-          "scrollY": 20,
-        }
-      `);
+      expect(s2.facet.getScrollOffset()).toEqual({
+        rowHeaderScrollX: 40,
+        scrollX: 30,
+        scrollY: 20,
+      });
     });
 
     // https://github.com/antvis/S2/issues/1197

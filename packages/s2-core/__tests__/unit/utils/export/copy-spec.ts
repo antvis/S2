@@ -134,9 +134,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(
-      `"1	浙江省	舟山市	家具	桌子	4342"`,
-    );
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
     expect(getCopyPlainContent(s2).split(TAB_SEPARATOR).length).toBe(6);
   });
 
@@ -147,9 +145,7 @@ describe('List Table Core Data Process', () => {
 
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
     expect(getCopyPlainContent(s2).split(LINE_SEPARATOR).length).toBe(33);
-    expect(
-      getCopyPlainContent(s2).split(LINE_SEPARATOR)[2],
-    ).toMatchInlineSnapshot(`"2	浙江省	绍兴市	家具	桌子	2367"`);
+    expect(getCopyPlainContent(s2).split(LINE_SEPARATOR)[2]).toMatchSnapshot();
   });
 
   it('should copy all data with header in table mode', async () => {
@@ -385,7 +381,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2);
 
-    expect(data).toMatchInlineSnapshot(`"1	四川省	乐山市	家具	桌子	2330"`);
+    expect(data).toMatchSnapshot();
 
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -554,7 +550,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   it('should called with cell view meta when brush select formatted data', async () => {
@@ -1251,7 +1247,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   // https://github.com/antvis/S2/issues/2866
@@ -1346,9 +1342,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(
-      `"18375	14043	32418	4826	5854	10680	43098"`,
-    );
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   it('should copy all data in tree mode', () => {

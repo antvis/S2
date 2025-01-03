@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`indexes test #diffIndexes() 1`] = `
+Object {
+  "add": Array [],
+  "remove": Array [
+    Array [
+      0,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      1,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`indexes test #diffPanelIndexes() 1`] = `
+Object {
+  "add": Array [],
+  "remove": Array [
+    Array [
+      0,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      1,
+      1,
+    ],
+  ],
+}
+`;

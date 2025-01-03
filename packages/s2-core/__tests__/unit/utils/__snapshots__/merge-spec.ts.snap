@@ -1,5 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`merge test should cancel valueInCols if custom rows is not empty by get safety data config 1`] = `
+Object {
+  "data": Array [],
+  "fields": Object {
+    "columns": Array [],
+    "rows": Array [
+      Object {
+        "field": "1",
+        "title": "test",
+      },
+    ],
+    "valueInCols": false,
+    "values": Array [
+      "1",
+    ],
+  },
+  "filterParams": Array [],
+  "meta": Array [],
+  "sortParams": Array [],
+}
+`;
+
+exports[`merge test should cancel valueInCols if value is empty by get safety data config 1`] = `
+Object {
+  "data": Array [],
+  "fields": Object {
+    "columns": Array [],
+    "rows": Array [],
+    "valueInCols": false,
+    "values": Array [],
+  },
+  "filterParams": Array [],
+  "meta": Array [],
+  "sortParams": Array [],
+}
+`;
+
+exports[`merge test should get custom options 1`] = `
+Object {
+  "autoAdjustBoundary": "body",
+  "enable": false,
+  "operation": Object {
+    "hiddenColumns": false,
+    "menu": Object {
+      "items": Array [
+        Object {
+          "key": "custom",
+          "label": "custom",
+        },
+      ],
+    },
+    "sort": false,
+  },
+}
+`;
+
+exports[`merge test should get safety data config 1`] = `
+Object {
+  "data": Array [],
+  "fields": Object {
+    "columns": Array [],
+    "rows": Array [],
+    "valueInCols": false,
+    "values": Array [],
+  },
+  "filterParams": Array [],
+  "meta": Array [],
+  "sortParams": Array [],
+}
+`;
+
 exports[`merge test should get safety options 1`] = `
 Object {
   "conditions": Object {},
@@ -117,6 +188,28 @@ Object {
 }
 `;
 
+exports[`merge test should merge old dataCfg 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "value": 1,
+    },
+    Object {
+      "value": 2,
+    },
+  ],
+  "fields": Object {
+    "columns": Array [],
+    "rows": Array [],
+    "valueInCols": false,
+    "values": Array [],
+  },
+  "filterParams": Array [],
+  "meta": Array [],
+  "sortParams": Array [],
+}
+`;
+
 exports[`merge test should not setup correctly compact layout width type style 1`] = `
 Object {
   "colCell": Object {
@@ -149,5 +242,28 @@ Object {
     "textOverflow": "ellipsis",
     "wordWrap": true,
   },
+}
+`;
+
+exports[`merge test should unique dataConfig fields 1`] = `
+Object {
+  "data": Array [],
+  "fields": Object {
+    "columns": Array [
+      "type",
+    ],
+    "rows": Array [
+      "province",
+      "city",
+    ],
+    "valueInCols": false,
+    "values": Array [
+      "count",
+      "cost",
+    ],
+  },
+  "filterParams": Array [],
+  "meta": Array [],
+  "sortParams": Array [],
 }
 `;

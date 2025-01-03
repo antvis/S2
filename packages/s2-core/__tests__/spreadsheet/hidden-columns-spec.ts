@@ -188,16 +188,13 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(tableSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(tableSheet.facet.getColNodes().map((node) => node.field))
-        .toMatchInlineSnapshot(`
-        Array [
-          "a-1",
-          "a-1-1",
-          "city",
-          "a-1-2",
-          "a-2",
-        ]
-      `);
+      expect(tableSheet.facet.getColNodes().map((node) => node.field)).toEqual([
+        'a-1',
+        'a-1-1',
+        'city',
+        'a-1-2',
+        'a-2',
+      ]);
       expect(hiddenColumnsDetail).toHaveLength(1);
       expect(detail.displaySiblingNode.prev?.field).toBeFalsy();
       expect(detail.displaySiblingNode.next?.field).toEqual('city');
@@ -546,16 +543,13 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(pivotSheet.facet.getColNodes().map((node) => node.field))
-        .toMatchInlineSnapshot(`
-        Array [
-          "a-1",
-          "a-1-1",
-          "measure-2",
-          "a-1-2",
-          "a-2",
-        ]
-      `);
+      expect(pivotSheet.facet.getColNodes().map((node) => node.field)).toEqual([
+        'a-1',
+        'a-1-1',
+        'measure-2',
+        'a-1-2',
+        'a-2',
+      ]);
       expect(hiddenColumnsDetail).toHaveLength(1);
       expect(detail.displaySiblingNode.prev?.field).toBeFalsy();
       expect(detail.displaySiblingNode.next?.field).toEqual('measure-2');

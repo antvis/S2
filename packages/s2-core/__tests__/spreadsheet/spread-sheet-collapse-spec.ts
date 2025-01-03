@@ -76,13 +76,11 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       const rowLeafNodes = s2.facet.getRowLeafNodes();
 
       expect(rowLeafNodes).toHaveLength(3);
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-                "root[&]浙江[&]义乌",
-                "root[&]浙江[&]杭州",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual([
+        'root[&]浙江',
+        'root[&]浙江[&]义乌',
+        'root[&]浙江[&]杭州',
+      ]);
 
       s2.setOptions({
         style: {
@@ -93,15 +91,13 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       });
       await s2.render();
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-                "root[&]浙江[&]义乌",
-                "root[&]浙江[&]义乌[&]笔",
-                "root[&]浙江[&]杭州",
-                "root[&]浙江[&]杭州[&]笔",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual([
+        'root[&]浙江',
+        'root[&]浙江[&]义乌',
+        'root[&]浙江[&]义乌[&]笔',
+        'root[&]浙江[&]杭州',
+        'root[&]浙江[&]杭州[&]笔',
+      ]);
     });
 
     test('should collapse all row nodes', async () => {
@@ -115,11 +111,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
 
       await s2.render(false);
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual(['root[&]浙江']);
       expectCornerIconName(s2, 'Plus');
     });
 
@@ -136,11 +128,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
 
       await s2.render(false);
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual(['root[&]浙江']);
       expectCornerIconName(s2, 'Plus');
     });
 
@@ -157,14 +145,12 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
 
       await s2.render();
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-                "root[&]浙江[&]义乌",
-                "root[&]浙江[&]杭州",
-                "root[&]浙江[&]杭州[&]笔",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual([
+        'root[&]浙江',
+        'root[&]浙江[&]义乌',
+        'root[&]浙江[&]杭州',
+        'root[&]浙江[&]杭州[&]笔',
+      ]);
       expectCornerIconName(s2, 'Plus');
     });
 
@@ -182,13 +168,11 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
 
       await s2.render(false);
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-                "root[&]浙江[&]义乌",
-                "root[&]浙江[&]杭州",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual([
+        'root[&]浙江',
+        'root[&]浙江[&]义乌',
+        'root[&]浙江[&]杭州',
+      ]);
       expectCornerIconName(s2, 'Plus');
     });
 
@@ -203,15 +187,13 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       });
       await s2.render(false);
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-                "root[&]浙江[&]义乌",
-                "root[&]浙江[&]义乌[&]笔",
-                "root[&]浙江[&]杭州",
-                "root[&]浙江[&]杭州[&]笔",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual([
+        'root[&]浙江',
+        'root[&]浙江[&]义乌',
+        'root[&]浙江[&]义乌[&]笔',
+        'root[&]浙江[&]杭州',
+        'root[&]浙江[&]杭州[&]笔',
+      ]);
       expectCornerIconName(s2, 'Minus');
     });
 
@@ -229,14 +211,12 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       });
       await s2.render(false);
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-              Array [
-                "root[&]浙江",
-                "root[&]浙江[&]义乌",
-                "root[&]浙江[&]义乌[&]笔",
-                "root[&]浙江[&]杭州",
-              ]
-          `);
+      expect(mapNodes(s2)).toEqual([
+        'root[&]浙江',
+        'root[&]浙江[&]义乌',
+        'root[&]浙江[&]义乌[&]笔',
+        'root[&]浙江[&]杭州',
+      ]);
       expectCornerIconName(s2, 'Plus');
     });
 
@@ -253,11 +233,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       });
       await s2.render(false);
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-        Array [
-          "root[&]浙江",
-        ]
-      `);
+      expect(mapNodes(s2)).toEqual(['root[&]浙江']);
       expectCornerIconName(s2, 'Plus');
     });
 
@@ -272,11 +248,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       });
       await s2.render(false);
 
-      expect(mapNodes(s2)).toMatchInlineSnapshot(`
-        Array [
-          "root[&]浙江",
-        ]
-      `);
+      expect(mapNodes(s2)).toEqual(['root[&]浙江']);
       expectCornerIconName(s2, 'Plus');
     });
 

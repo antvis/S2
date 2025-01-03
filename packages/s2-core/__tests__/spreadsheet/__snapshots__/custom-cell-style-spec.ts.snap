@@ -45,17 +45,17 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]笔",
-    "width": 299,
+    "width": 300,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]price",
-    "width": 149.5,
+    "width": 150,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]cost",
-    "width": 149.5,
+    "width": 150,
   },
 ]
 `;
@@ -65,7 +65,7 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]笔",
-    "width": 199.5,
+    "width": 200,
   },
   Object {
     "height": 300,
@@ -75,7 +75,7 @@ Array [
   Object {
     "height": 300,
     "id": "root[&]笔[&]cost",
-    "width": 149.5,
+    "width": 150,
   },
 ]
 `;
@@ -85,7 +85,7 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]笔",
-    "width": 199.5,
+    "width": 200,
   },
   Object {
     "height": 300,
@@ -95,7 +95,7 @@ Array [
   Object {
     "height": 300,
     "id": "root[&]笔[&]cost",
-    "width": 149.5,
+    "width": 150,
   },
 ]
 `;
@@ -160,12 +160,12 @@ Array [
   Object {
     "height": 1200,
     "id": "root[&]浙江",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 600,
     "id": "root[&]浙江[&]义乌",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 300,
@@ -180,7 +180,7 @@ Array [
   Object {
     "height": 600,
     "id": "root[&]浙江[&]杭州",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 300,
@@ -200,7 +200,7 @@ Array [
   Object {
     "height": 66,
     "id": "root[&]浙江",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 33,
@@ -220,17 +220,17 @@ Array [
   Object {
     "height": 330,
     "id": "root[&]浙江",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 300,
     "id": "root[&]浙江[&]杭州",
-    "width": 149.5,
+    "width": 149,
   },
 ]
 `;
@@ -260,17 +260,17 @@ Array [
   Object {
     "height": 60,
     "id": "root[&]浙江",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌",
-    "width": 149.5,
+    "width": 149,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]杭州",
-    "width": 149.5,
+    "width": 149,
   },
 ]
 `;
@@ -280,17 +280,17 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]笔",
-    "width": 299,
+    "width": 300,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]price",
-    "width": 149.5,
+    "width": 150,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]cost",
-    "width": 149.5,
+    "width": 150,
   },
 ]
 `;
@@ -300,22 +300,22 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
-    "width": 149.5,
+    "width": 150,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
-    "width": 149.5,
+    "width": 150,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌-root[&]笔[&]cost",
-    "width": 149.5,
+    "width": 150,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]杭州-root[&]笔[&]cost",
-    "width": 149.5,
+    "width": 150,
   },
 ]
 `;
@@ -327,12 +327,12 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
 ]
 `;
@@ -342,132 +342,132 @@ Array [
   Object {
     "height": 30,
     "id": "0-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "1-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "2-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "3-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "4-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "5-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "6-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "7-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "8-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "9-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "10-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "11-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "12-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "0-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "1-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "2-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "3-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "4-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "5-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "6-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "7-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "8-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "9-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "10-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "11-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "12-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
 ]
 `;
@@ -507,7 +507,7 @@ Array [
   Object {
     "height": 60,
     "id": "root[&]type",
-    "width": 119.8,
+    "width": 119,
   },
   Object {
     "height": 30,
@@ -532,12 +532,12 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
 ]
 `;
@@ -562,72 +562,72 @@ Array [
   Object {
     "height": 60,
     "id": "0-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "1-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "2-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "3-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "4-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "5-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "6-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "0-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "1-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "2-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "3-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "4-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "5-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 60,
     "id": "6-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
 ]
 `;
@@ -637,102 +637,102 @@ Array [
   Object {
     "height": 40,
     "id": "0-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "1-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 100,
     "id": "2-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "3-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "4-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "5-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "6-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "7-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "8-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "9-root[&]type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 40,
     "id": "0-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "1-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 100,
     "id": "2-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "3-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "4-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "5-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "6-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "7-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "8-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "9-root[&]sub_type",
-    "width": 299.5,
+    "width": 299,
   },
 ]
 `;

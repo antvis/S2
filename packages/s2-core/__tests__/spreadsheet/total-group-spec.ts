@@ -26,24 +26,22 @@ describe('Total Group Dimension Test', () => {
     const facet = s2.facet as PivotFacet;
     const { rowLeafNodes } = facet.getLayoutResult();
 
-    expect(map(rowLeafNodes, 'id')).toMatchInlineSnapshot(`
-      Array [
-        "root[&]总计[&]家具",
-        "root[&]总计[&]办公用品",
-        "root[&]浙江省[&]小计[&]家具",
-        "root[&]浙江省[&]小计[&]办公用品",
-        "root[&]浙江省[&]杭州市[&]家具",
-        "root[&]浙江省[&]杭州市[&]办公用品",
-        "root[&]浙江省[&]舟山市[&]家具",
-        "root[&]浙江省[&]舟山市[&]办公用品",
-        "root[&]四川省[&]小计[&]家具",
-        "root[&]四川省[&]小计[&]办公用品",
-        "root[&]四川省[&]成都市[&]家具",
-        "root[&]四川省[&]成都市[&]办公用品",
-        "root[&]四川省[&]绵阳市[&]家具",
-        "root[&]四川省[&]绵阳市[&]办公用品",
-      ]
-    `);
+    expect(map(rowLeafNodes, 'id')).toEqual([
+      'root[&]总计[&]家具',
+      'root[&]总计[&]办公用品',
+      'root[&]浙江省[&]小计[&]家具',
+      'root[&]浙江省[&]小计[&]办公用品',
+      'root[&]浙江省[&]杭州市[&]家具',
+      'root[&]浙江省[&]杭州市[&]办公用品',
+      'root[&]浙江省[&]舟山市[&]家具',
+      'root[&]浙江省[&]舟山市[&]办公用品',
+      'root[&]四川省[&]小计[&]家具',
+      'root[&]四川省[&]小计[&]办公用品',
+      'root[&]四川省[&]成都市[&]家具',
+      'root[&]四川省[&]成都市[&]办公用品',
+      'root[&]四川省[&]绵阳市[&]家具',
+      'root[&]四川省[&]绵阳市[&]办公用品',
+    ]);
 
     expect((facet.getCellMeta(0, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       type: '家具',
@@ -73,26 +71,24 @@ describe('Total Group Dimension Test', () => {
     const facet = s2.facet;
     const { rowLeafNodes } = facet.getLayoutResult();
 
-    expect(map(rowLeafNodes, 'id')).toMatchInlineSnapshot(`
-      Array [
-        "root[&]总计[&]杭州市",
-        "root[&]总计[&]舟山市",
-        "root[&]总计[&]成都市",
-        "root[&]总计[&]绵阳市",
-        "root[&]浙江省[&]小计[&]家具",
-        "root[&]浙江省[&]小计[&]办公用品",
-        "root[&]浙江省[&]杭州市[&]家具",
-        "root[&]浙江省[&]杭州市[&]办公用品",
-        "root[&]浙江省[&]舟山市[&]家具",
-        "root[&]浙江省[&]舟山市[&]办公用品",
-        "root[&]四川省[&]小计[&]家具",
-        "root[&]四川省[&]小计[&]办公用品",
-        "root[&]四川省[&]成都市[&]家具",
-        "root[&]四川省[&]成都市[&]办公用品",
-        "root[&]四川省[&]绵阳市[&]家具",
-        "root[&]四川省[&]绵阳市[&]办公用品",
-      ]
-    `);
+    expect(map(rowLeafNodes, 'id')).toEqual([
+      'root[&]总计[&]杭州市',
+      'root[&]总计[&]舟山市',
+      'root[&]总计[&]成都市',
+      'root[&]总计[&]绵阳市',
+      'root[&]浙江省[&]小计[&]家具',
+      'root[&]浙江省[&]小计[&]办公用品',
+      'root[&]浙江省[&]杭州市[&]家具',
+      'root[&]浙江省[&]杭州市[&]办公用品',
+      'root[&]浙江省[&]舟山市[&]家具',
+      'root[&]浙江省[&]舟山市[&]办公用品',
+      'root[&]四川省[&]小计[&]家具',
+      'root[&]四川省[&]小计[&]办公用品',
+      'root[&]四川省[&]成都市[&]家具',
+      'root[&]四川省[&]成都市[&]办公用品',
+      'root[&]四川省[&]绵阳市[&]家具',
+      'root[&]四川省[&]绵阳市[&]办公用品',
+    ]);
 
     expect((facet.getCellMeta(0, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '杭州市',

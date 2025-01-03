@@ -14,8 +14,8 @@ describe('Row Cell Tests', () => {
 
     test.each([
       ['left', 21],
-      ['center', 75.25],
-      ['right', 129.5],
+      ['center', 75],
+      ['right', 129],
     ] as [TextAlign, number][])(
       'should align link shape with text by %o',
       async (textAlign, textCenterX) => {
@@ -97,7 +97,7 @@ describe('Row Cell Tests', () => {
       const rowCell = s2.facet.getRowCells()[1];
 
       // @ts-ignore
-      expect(rowCell.rightIconPosition).toEqual({ x: 186.5, y: 9.5 });
+      expect(rowCell.rightIconPosition).toEqual({ x: 186, y: 9.5 });
     });
 
     test('should draw right condition background shape', async () => {

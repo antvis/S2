@@ -308,7 +308,7 @@ Array [
     "field": "a-1",
     "height": 30,
     "value": "自定义节点 a-1",
-    "width": 299.01,
+    "width": 300,
     "x": 0,
     "y": 0,
   },
@@ -317,7 +317,7 @@ Array [
     "field": "a-1-1",
     "height": 30,
     "value": "自定义节点 a-1-1",
-    "width": 199.34,
+    "width": 200,
     "x": 0,
     "y": 30,
   },
@@ -326,7 +326,7 @@ Array [
     "field": "measure-1",
     "height": 30,
     "value": "指标1",
-    "width": 99.67,
+    "width": 100,
     "x": 0,
     "y": 60,
   },
@@ -335,8 +335,8 @@ Array [
     "field": "measure-2",
     "height": 30,
     "value": "指标2",
-    "width": 99.67,
-    "x": 99.67,
+    "width": 100,
+    "x": 100,
     "y": 60,
   },
   Object {
@@ -344,8 +344,8 @@ Array [
     "field": "a-1-2",
     "height": 60,
     "value": "自定义节点 a-1-2",
-    "width": 99.67,
-    "x": 199.34,
+    "width": 100,
+    "x": 200,
     "y": 30,
   },
   Object {
@@ -353,8 +353,8 @@ Array [
     "field": "a-2",
     "height": 90,
     "value": "自定义节点 a-2",
-    "width": 99.67,
-    "x": 299.01,
+    "width": 100,
+    "x": 300,
     "y": 0,
   },
 ]
@@ -364,19 +364,19 @@ exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should calc correct
 Array [
   Object {
     "field": "measure-1",
-    "width": 119.6,
+    "width": 119,
   },
   Object {
     "field": "measure-2",
-    "width": 119.6,
+    "width": 119,
   },
   Object {
     "field": "a-1-2",
-    "width": 159.6,
+    "width": 159,
   },
   Object {
     "field": "a-2",
-    "width": 279.2,
+    "width": 278,
   },
 ]
 `;
@@ -385,11 +385,11 @@ exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should calc correct
 Array [
   Object {
     "field": "sub_type",
-    "width": 159.4,
+    "width": 160,
   },
   Object {
     "field": "sub_type",
-    "width": 159.4,
+    "width": 160,
   },
 ]
 `;
@@ -545,37 +545,37 @@ Array [
     "description": "a-1 描述",
     "height": 90,
     "value": "自定义节点 a-1",
-    "width": 119.6,
+    "width": 119,
   },
   Object {
     "description": "a-1-1 描述",
     "height": 60,
     "value": "自定义节点 a-1-1",
-    "width": 119.6,
+    "width": 119,
   },
   Object {
     "description": "指标1描述",
     "height": 30,
     "value": "指标1",
-    "width": 119.6,
+    "width": 119,
   },
   Object {
     "description": "指标2描述",
     "height": 30,
     "value": "指标2",
-    "width": 119.6,
+    "width": 119,
   },
   Object {
     "description": "a-1-2 描述",
     "height": 30,
     "value": "自定义节点 a-1-2",
-    "width": 239.2,
+    "width": 238,
   },
   Object {
     "description": "a-2 描述",
     "height": 30,
     "value": "自定义节点 a-2",
-    "width": 358.79999999999995,
+    "width": 357,
   },
 ]
 `;

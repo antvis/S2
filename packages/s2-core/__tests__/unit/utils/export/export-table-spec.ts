@@ -249,8 +249,7 @@ describe('TableSheet Export Test', () => {
       },
     });
 
-    expect(data).toMatchInlineSnapshot(`"custom data"`);
-    expect(data).toEqual('custom data');
+    expect(data).toMatchSnapshot();
   });
 
   // https://github.com/antvis/S2/issues/2236

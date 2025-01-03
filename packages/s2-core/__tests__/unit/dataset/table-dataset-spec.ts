@@ -363,24 +363,20 @@ describe('Table Mode Dataset Test', () => {
       dataSet.handleDimensionValuesSort();
 
       expect(dataSet.getDisplayDataSet()).toHaveLength(32);
-      expect(first(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
-        Object {
-          "city": "杭州市",
-          "number": 7789,
-          "province": "浙江省",
-          "sub_type": "桌子",
-          "type": "家具",
-        }
-      `);
-      expect(last(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
-        Object {
-          "city": "绵阳市",
-          "number": 245,
-          "province": "四川省",
-          "sub_type": "笔",
-          "type": "办公用品",
-        }
-      `);
+      expect(first(dataSet.getDisplayDataSet())).toEqual({
+        city: '杭州市',
+        number: 7789,
+        province: '浙江省',
+        sub_type: '桌子',
+        type: '家具',
+      });
+      expect(last(dataSet.getDisplayDataSet())).toEqual({
+        city: '绵阳市',
+        number: 245,
+        province: '四川省',
+        sub_type: '笔',
+        type: '办公用品',
+      });
     });
 
     it('should frozen correctly asc sorted data', () => {
@@ -403,24 +399,20 @@ describe('Table Mode Dataset Test', () => {
       dataSet.handleDimensionValuesSort();
 
       expect(dataSet.getDisplayDataSet()).toHaveLength(32);
-      expect(first(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
-        Object {
-          "city": "绵阳市",
-          "number": 245,
-          "province": "四川省",
-          "sub_type": "笔",
-          "type": "办公用品",
-        }
-      `);
-      expect(last(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
-        Object {
-          "city": "杭州市",
-          "number": 7789,
-          "province": "浙江省",
-          "sub_type": "桌子",
-          "type": "家具",
-        }
-      `);
+      expect(first(dataSet.getDisplayDataSet())).toEqual({
+        city: '绵阳市',
+        number: 245,
+        province: '四川省',
+        sub_type: '笔',
+        type: '办公用品',
+      });
+      expect(last(dataSet.getDisplayDataSet())).toEqual({
+        city: '杭州市',
+        number: 7789,
+        province: '浙江省',
+        sub_type: '桌子',
+        type: '家具',
+      });
     });
   });
 });

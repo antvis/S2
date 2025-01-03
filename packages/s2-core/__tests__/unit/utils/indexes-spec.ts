@@ -37,29 +37,7 @@ describe('indexes test', () => {
       add: [],
       remove: [],
     });
-    expect(diffIndexes([0, 1, 0, 1], [0, 1, 2, 1])).toMatchInlineSnapshot(`
-      Object {
-        "add": Array [],
-        "remove": Array [
-          Array [
-            0,
-            0,
-          ],
-          Array [
-            0,
-            1,
-          ],
-          Array [
-            1,
-            0,
-          ],
-          Array [
-            1,
-            1,
-          ],
-        ],
-      }
-    `);
+    expect(diffIndexes([0, 1, 0, 1], [0, 1, 2, 1])).toMatchSnapshot();
   });
 
   test('#diffPanelIndexes()', () => {
@@ -78,29 +56,8 @@ describe('indexes test', () => {
       add: [],
       remove: [],
     });
-    expect(diffPanelIndexes({ center: [0, 1, 0, 1] }, { center: [0, 1, 2, 1] }))
-      .toMatchInlineSnapshot(`
-      Object {
-        "add": Array [],
-        "remove": Array [
-          Array [
-            0,
-            0,
-          ],
-          Array [
-            0,
-            1,
-          ],
-          Array [
-            1,
-            0,
-          ],
-          Array [
-            1,
-            1,
-          ],
-        ],
-      }
-    `);
+    expect(
+      diffPanelIndexes({ center: [0, 1, 0, 1] }, { center: [0, 1, 2, 1] }),
+    ).toMatchSnapshot();
   });
 });

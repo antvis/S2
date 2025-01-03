@@ -23,20 +23,7 @@ describe('merge test', () => {
   });
 
   test('should get safety data config', () => {
-    expect(setupDataConfig(null)).toMatchInlineSnapshot(`
-      Object {
-        "data": Array [],
-        "fields": Object {
-          "columns": Array [],
-          "rows": Array [],
-          "valueInCols": false,
-          "values": Array [],
-        },
-        "filterParams": Array [],
-        "meta": Array [],
-        "sortParams": Array [],
-      }
-    `);
+    expect(setupDataConfig(null)).toMatchSnapshot();
   });
 
   test('should unique dataConfig fields', () => {
@@ -49,28 +36,7 @@ describe('merge test', () => {
           valueInCols: false,
         },
       }),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "data": Array [],
-        "fields": Object {
-          "columns": Array [
-            "type",
-          ],
-          "rows": Array [
-            "province",
-            "city",
-          ],
-          "valueInCols": false,
-          "values": Array [
-            "count",
-            "cost",
-          ],
-        },
-        "filterParams": Array [],
-        "meta": Array [],
-        "sortParams": Array [],
-      }
-    `);
+    ).toMatchSnapshot();
   });
 
   test('should cancel valueInCols if custom rows is not empty by get safety data config', () => {
@@ -85,27 +51,7 @@ describe('merge test', () => {
       setupDataConfig({
         fields,
       }),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "data": Array [],
-        "fields": Object {
-          "columns": Array [],
-          "rows": Array [
-            Object {
-              "field": "1",
-              "title": "test",
-            },
-          ],
-          "valueInCols": false,
-          "values": Array [
-            "1",
-          ],
-        },
-        "filterParams": Array [],
-        "meta": Array [],
-        "sortParams": Array [],
-      }
-    `);
+    ).toMatchSnapshot();
   });
 
   test('should cancel valueInCols if value is empty by get safety data config', () => {
@@ -118,20 +64,7 @@ describe('merge test', () => {
       setupDataConfig({
         fields,
       }),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "data": Array [],
-        "fields": Object {
-          "columns": Array [],
-          "rows": Array [],
-          "valueInCols": false,
-          "values": Array [],
-        },
-        "filterParams": Array [],
-        "meta": Array [],
-        "sortParams": Array [],
-      }
-    `);
+    ).toMatchSnapshot();
   });
 
   test('should merge old dataCfg', () => {
@@ -147,27 +80,7 @@ describe('merge test', () => {
       setupDataConfig(oldDataCfg, {
         fields,
       }),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "data": Array [
-          Object {
-            "value": 1,
-          },
-          Object {
-            "value": 2,
-          },
-        ],
-        "fields": Object {
-          "columns": Array [],
-          "rows": Array [],
-          "valueInCols": false,
-          "values": Array [],
-        },
-        "filterParams": Array [],
-        "meta": Array [],
-        "sortParams": Array [],
-      }
-    `);
+    ).toMatchSnapshot();
   });
 
   test('should get safety options', () => {
@@ -203,24 +116,7 @@ describe('merge test', () => {
       },
     });
 
-    expect(options.tooltip).toMatchInlineSnapshot(`
-      Object {
-        "autoAdjustBoundary": "body",
-        "enable": false,
-        "operation": Object {
-          "hiddenColumns": false,
-          "menu": Object {
-            "items": Array [
-              Object {
-                "key": "custom",
-                "label": "custom",
-              },
-            ],
-          },
-          "sort": false,
-        },
-      }
-    `);
+    expect(options.tooltip).toMatchSnapshot();
   });
 
   test('should get custom data config', () => {

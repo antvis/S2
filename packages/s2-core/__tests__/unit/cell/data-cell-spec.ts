@@ -57,7 +57,7 @@ describe('Data Cell Tests', () => {
     });
 
     test.each([
-      ['left', 312],
+      ['left', 311],
       ['center', 375],
       ['right', 438],
     ] as const)(

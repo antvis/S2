@@ -250,25 +250,21 @@ describe('Miss Dimension Values Tests', () => {
       emptyDimensionValueNode.parent!.query,
     );
     expect(emptyDimensionDataCell.getMeta().fieldValue).toEqual(1732771);
-    expect(data[0][ORIGIN_FIELD]).toMatchInlineSnapshot(`
-      Object {
-        "first": "总计",
-        "number": 1732771,
-      }
-    `);
-    expect(dimensionValues).toMatchInlineSnapshot(`
-      Array [
-        "维值-2",
-        "维值-3",
-        "测试-2",
-        "测试-3",
-        "测试-4",
-        "测试-5",
-        "测试-x",
-        "测试-7",
-        "测试-8",
-      ]
-    `);
+    expect(data[0][ORIGIN_FIELD]).toEqual({
+      first: '总计',
+      number: 1732771,
+    });
+    expect(dimensionValues).toEqual([
+      '维值-2',
+      '维值-3',
+      '测试-2',
+      '测试-3',
+      '测试-4',
+      '测试-5',
+      '测试-x',
+      '测试-7',
+      '测试-8',
+    ]);
   });
 
   test('should replace empty dimension value placeholder when copy original data', async () => {

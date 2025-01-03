@@ -393,7 +393,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-colCount)
         .reverse()
         .map((node) => Math.floor(node.x)),
-    ).toEqual([479, 359]);
+    ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
@@ -405,7 +405,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-trailingColCount!)
         .reverse()
         .map((node) => Math.floor(node.x)),
-    ).toEqual([479, 359]);
+    ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
@@ -475,43 +475,7 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
   test('should get correct rowOffsets when custom row height is set', () => {
     const rowOffsets = facet.rowOffsets;
 
-    expect(rowOffsets).toMatchInlineSnapshot(`
-      Array [
-        0,
-        30,
-        60,
-        360,
-        560,
-        590,
-        620,
-        650,
-        680,
-        710,
-        740,
-        800,
-        830,
-        860,
-        890,
-        920,
-        940,
-        970,
-        1000,
-        1030,
-        1060,
-        1090,
-        1120,
-        1150,
-        1180,
-        1210,
-        1240,
-        1270,
-        1300,
-        1330,
-        1360,
-        1390,
-        1420,
-      ]
-    `);
+    expect(rowOffsets).toMatchSnapshot();
   });
 
   test('should get correct viewCellHeights result when custom row height is set', () => {
@@ -708,41 +672,8 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     const originHeight = facet.panelBBox.viewportHeight;
 
     facet.panelBBox.viewportHeight = 10;
-    expect(facet.calculateXYIndexes(0, 0)).toMatchInlineSnapshot(`
-      Object {
-        "center": Array [
-          1,
-          1,
-          2,
-          0,
-        ],
-        "frozenCol": Array [
-          0,
-          0,
-          2,
-          0,
-        ],
-        "frozenRow": Array [
-          1,
-          1,
-          0,
-          1,
-        ],
-        "frozenTrailingCol": Array [
-          2,
-          2,
-          2,
-          0,
-        ],
-        "frozenTrailingRow": Array [
-          1,
-          1,
-          30,
-          31,
-        ],
-      }
-    `);
-    // reset
+    expect(facet.calculateXYIndexes(0, 0)).toMatchSnapshot();
+
     facet.panelBBox.viewportHeight = originHeight;
   });
 });

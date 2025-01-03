@@ -36,14 +36,9 @@ describe('Table Sheet Row Offsets Tests', () => {
   });
 
   test('should get correctly row offset data', () => {
-    expect((s2.facet as TableFacet).rowOffsets).toMatchInlineSnapshot(`
-      Array [
-        0,
-        100,
-        250,
-        280,
-      ]
-    `);
+    expect((s2.facet as TableFacet).rowOffsets).toStrictEqual([
+      0, 100, 250, 280,
+    ]);
   });
 
   test('should get correctly data cell offset for heightByField', () => {

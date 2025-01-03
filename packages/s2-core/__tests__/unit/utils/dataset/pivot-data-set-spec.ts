@@ -492,16 +492,7 @@ describe('pivot-data-set utils test', () => {
         sortedDimensionValues,
         dimensionValues: [MULTI_VALUE, '成[&]都[&]市', MULTI_VALUE, '纸张'],
       }),
-    ).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "办公用品",
-          "纸张",
-        ],
-      ]
-    `);
+    ).toMatchSnapshot();
 
     expect(
       flattenDimensionValues({
@@ -515,34 +506,7 @@ describe('pivot-data-set utils test', () => {
           MULTI_VALUE,
         ],
       }),
-    ).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "家具",
-          "桌子",
-        ],
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "家具",
-          "沙发",
-        ],
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "办公用品",
-          "笔",
-        ],
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "办公用品",
-          "纸张",
-        ],
-      ]
-    `);
+    ).toMatchSnapshot();
 
     expect(
       flattenDimensionValues({
@@ -551,58 +515,7 @@ describe('pivot-data-set utils test', () => {
         sortedDimensionValues,
         dimensionValues: [MULTI_VALUE, MULTI_VALUE, '办公用品', MULTI_VALUE],
       }),
-    ).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "办公用品",
-          "笔",
-        ],
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "办公用品",
-          "纸张",
-        ],
-        Array [
-          "四川省",
-          "绵阳市",
-          "办公用品",
-          "笔",
-        ],
-        Array [
-          "四川省",
-          "绵阳市",
-          "办公用品",
-          "纸张",
-        ],
-        Array [
-          "浙江省",
-          "杭州市",
-          "办公用品",
-          "笔",
-        ],
-        Array [
-          "浙江省",
-          "杭州市",
-          "办公用品",
-          "纸张",
-        ],
-        Array [
-          "浙江省",
-          "舟山市",
-          "办公用品",
-          "笔",
-        ],
-        Array [
-          "浙江省",
-          "舟山市",
-          "办公用品",
-          "纸张",
-        ],
-      ]
-    `);
+    ).toMatchSnapshot();
 
     expect(
       flattenDimensionValues({
@@ -611,33 +524,6 @@ describe('pivot-data-set utils test', () => {
         sortedDimensionValues,
         dimensionValues: ['四川省', MULTI_VALUE, '办公用品', MULTI_VALUE],
       }),
-    ).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "办公用品",
-          "笔",
-        ],
-        Array [
-          "四川省",
-          "成[&]都[&]市",
-          "办公用品",
-          "纸张",
-        ],
-        Array [
-          "四川省",
-          "绵阳市",
-          "办公用品",
-          "笔",
-        ],
-        Array [
-          "四川省",
-          "绵阳市",
-          "办公用品",
-          "纸张",
-        ],
-      ]
-    `);
+    ).toMatchSnapshot();
   });
 });

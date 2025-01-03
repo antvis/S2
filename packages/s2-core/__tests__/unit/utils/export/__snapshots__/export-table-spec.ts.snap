@@ -636,3 +636,5 @@ province	city		price	number
 四川省	南充市-@	办公用品	-	3551-$
 四川省	乐山市-@	办公用品	-	352-$"
 `;
+
+exports[`TableSheet Export Test should support custom export matrix transformer 1`] = `"custom data"`;

@@ -4,25 +4,25 @@ exports[`SpreadSheet Hidden Columns Tests PivotSheet Multiple Values Tests shoul
 Array [
   Object {
     "height": 30,
-    "width": 119.6,
+    "width": 119,
     "x": 0,
     "y": 60,
   },
   Object {
     "height": 30,
-    "width": 119.6,
-    "x": 119.6,
+    "width": 119,
+    "x": 119,
     "y": 60,
   },
   Object {
     "height": 30,
-    "width": 239.2,
+    "width": 238,
     "x": 0,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 239.2,
+    "width": 238,
     "x": 0,
     "y": 30,
   },

@@ -296,24 +296,7 @@ describe.skip('PivotSheet Brush Selection Scroll Tests', () => {
 
     // 只选中 [浙江省, 四川省]
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
-    expect(s2.interaction.getCells()).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "colIndex": -1,
-          "id": "root[&]浙江省",
-          "rowIndex": undefined,
-          "rowQuery": undefined,
-          "type": "rowCell",
-        },
-        Object {
-          "colIndex": -1,
-          "id": "root[&]四川省",
-          "rowIndex": undefined,
-          "rowQuery": undefined,
-          "type": "rowCell",
-        },
-      ]
-    `);
+    expect(s2.interaction.getCells()).toMatchSnapshot();
 
     s2.destroy();
   });
