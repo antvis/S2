@@ -33,6 +33,11 @@ export default defineConfig({
     showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true, // 是否在 demo 页展示 API 文档
     es5: false,
+    petercat: {
+      show: true,
+      // token 获取方式：https://github.com/petercat-ai/petercat/blob/main/docs/guides/quick_%20assistant_start_cn.md#token-%E8%8E%B7%E5%8F%96
+      token: '611bb8ac-e7d2-47c6-994e-9c68421fae7d',
+    },
     versions: {
       // 历史版本以及切换下拉菜单
       // [version || '2.x']: 'https://s2.antv.antgroup.com',
