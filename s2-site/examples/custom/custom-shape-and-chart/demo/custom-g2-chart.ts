@@ -1,10 +1,12 @@
 import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 import { ChartDataCell } from '@antv/s2/extends';
+
 const s2Options: S2Options = {
   width: 1000,
   height: 900,
   style: {
     colCell: {
+      // 多指标情况下 (即: s2DataConfig.fields.values), 需要设为 false
       hideValue: true,
     },
     rowCell: {

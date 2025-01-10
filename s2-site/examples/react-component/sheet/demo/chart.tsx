@@ -9,6 +9,7 @@ const s2Options: S2Options = {
   height: 900,
   style: {
     colCell: {
+      // 多指标情况下 (即: s2DataConfig.fields.values), 需要设为 false
       hideValue: true,
     },
     rowCell: {
@@ -18,6 +19,11 @@ const s2Options: S2Options = {
     dataCell: {
       width: 350,
       height: 400,
+    },
+  },
+  tooltip: {
+    dataCell: {
+      enable: false,
     },
   },
 };

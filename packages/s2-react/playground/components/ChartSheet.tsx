@@ -27,7 +27,6 @@ const options: SheetComponentOptions = {
     multiSelection: true,
     overscrollBehavior: 'none',
   },
-  style: {},
 };
 
 export const ChartSheet = React.forwardRef<

@@ -116,7 +116,7 @@ pnpm add @antv/g2
 
 #### 1.3 在 `@antv/s2` 中使用
 
-##### 1. 使用 `@antv/s2/extends` 中导出的`ChartDataCell`
+##### 1. 使用 `@antv/s2/extends` 中导出的 `ChartDataCell`
 
 ```ts
 import { PivotSheet } from '@antv/s2';
@@ -148,7 +148,7 @@ function App() {
   return (
     <SheetComponent
       sheetType="chart"
-      dataCfg={s2DataConfig} 
+      dataCfg={s2DataConfig}
     />
   )
 }
