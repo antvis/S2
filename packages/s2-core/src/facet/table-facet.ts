@@ -124,6 +124,7 @@ export class TableFacet extends FrozenFacet {
     }
 
     const { empty } = this.spreadsheet.options.placeholder!;
+    const { background } = this.spreadsheet.theme;
     const { icon, description } = this.spreadsheet.theme.empty;
     const {
       horizontalBorderWidth,
@@ -148,6 +149,7 @@ export class TableFacet extends FrozenFacet {
         stroke: horizontalBorderColor,
         strokeWidth: horizontalBorderWidth,
         strokeOpacity: horizontalBorderColorOpacity,
+        fill: background?.color,
       },
     });
 
@@ -173,6 +175,8 @@ export class TableFacet extends FrozenFacet {
         y: descY,
       },
     });
+
+    this.emptyPlaceholderGroup.toFront();
   }
 
   private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
