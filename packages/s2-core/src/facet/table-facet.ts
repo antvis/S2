@@ -150,6 +150,7 @@ export class TableFacet extends FrozenFacet {
         strokeWidth: horizontalBorderWidth,
         strokeOpacity: horizontalBorderColorOpacity,
         fill: background?.color,
+        fillOpacity: background?.opacity ?? 1,
       },
     });
 
