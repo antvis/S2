@@ -106,7 +106,7 @@ export class TableFacet extends FrozenFacet {
 
   public clearAllGroup() {
     super.clearAllGroup();
-    this.emptyPlaceholderGroup.removeChildren();
+    this.emptyPlaceholderGroup.remove();
   }
 
   private initEmptyPlaceholderGroup() {

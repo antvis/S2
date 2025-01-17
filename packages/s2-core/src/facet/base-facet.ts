@@ -952,20 +952,9 @@ export abstract class BaseFacet {
   };
 
   public clearAllGroup() {
-    const { children = [] } = this.panelGroup;
-
-    for (let i = children.length - 1; i >= 0; i--) {
-      const child = children[i];
-
-      if (child instanceof Group) {
-        child.removeChildren();
-      } else {
-        children[i].remove();
-      }
-    }
-
-    this.foregroundGroup.removeChildren();
-    this.backgroundGroup.removeChildren();
+    this.panelGroup.remove();
+    this.foregroundGroup.remove();
+    this.backgroundGroup.remove();
   }
 
   scrollWithAnimation = (
