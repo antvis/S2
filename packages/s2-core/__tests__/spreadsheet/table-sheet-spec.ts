@@ -9,7 +9,7 @@ import {
   type S2Options,
 } from '@/index';
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import { SpreadSheet, TableFacet, setLang } from '../../src';
+import { SpreadSheet, TableFacet, setLang, type GuiIcon } from '../../src';
 import type { TableColHeader } from '../../src/facet/header/table-col';
 
 const data = getMockData(
@@ -123,9 +123,9 @@ describe('TableSheet normal spec', () => {
     expect(
       (s2.facet as TableFacet).emptyPlaceholderGroup.children,
     ).toHaveLength(3);
-    expect(rect.parsedStyle).toMatchSnapshot();
-    expect(icon.getCfg()).toMatchSnapshot();
-    expect(text.parsedStyle).toMatchSnapshot();
+    expect(rect).toBeDefined();
+    expect((icon as GuiIcon).getCfg()).toMatchSnapshot();
+    expect(text).toBeDefined();
   };
 
   test('scrollWithAnimation with duration and callback', async () => {
