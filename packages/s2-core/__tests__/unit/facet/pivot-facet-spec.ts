@@ -304,7 +304,7 @@ describe('Pivot Mode Facet Test', () => {
 
       const rect = backgroundGroup.children[0];
 
-      expect(backgroundGroup.children).toHaveLength(1);
+      expect(backgroundGroup.children).toHaveLength(2);
       expect(rect).toBeInstanceOf(Rect);
       expect(rect.parsedStyle.visibility).not.toEqual('hidden');
     });

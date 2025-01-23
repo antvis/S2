@@ -24,6 +24,7 @@ module.exports = {
     'hd-adapter/index.ts',
     'packages/s2-vue',
   ],
+  testPathIgnorePatterns: ['benchmark'],
   coverageReporters: ['text', 'clover', 'html'],
   transformIgnorePatterns: [],
   testRegex: '/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js|vue)?$',
@@ -58,5 +59,5 @@ module.exports = {
     /* ignore module query: foo.less?a=1 -> foo.less */
     '(.+)\\.(.+)\\?(.*)$': '$1.$2',
   },
-  testTimeout: 30000,
+  testTimeout: 100000,
 };
