@@ -55,7 +55,7 @@ export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
 }
 
 /**
- * 复制/导出时会在位置中增加制表符，用于在 Excel 中展示
+ * 复制/导出时会在文本的两侧中增加制表符，用于在 Excel 中展示
  * 兼容极端情况，防止维值中本身就存在制表符的情况，如：“成都市\t” => "成都市\t\t" 导致错列
  */
 export const trimTabSeparator = (text: string) => {
