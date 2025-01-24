@@ -643,4 +643,47 @@ describe('PivotSheet Export Test', () => {
 
     await expectMatchSnapshot(sheet);
   });
+
+  it.each([
+    { formatHeader: true, formatBody: true },
+    { formatHeader: true, formatBody: false },
+    { formatHeader: false, formatBody: true },
+    { formatHeader: false, formatBody: false },
+  ])(
+    'should ignore contains tab trimTabSeparator dimension value by %o',
+    async (formatOptions) => {
+      const data = clone<DataItem[]>(originData);
+
+      data.unshift({
+        number: 7789,
+        province: '测试-province\t',
+        city: '测试-city\t',
+        type: '测试-type\t',
+        sub_type: '测试-sub_type\t',
+      });
+
+      const s2 = new PivotSheet(
+        getContainer(),
+        assembleDataCfg({
+          data,
+          fields: {
+            valueInCols: true,
+            columns: ['province', 'city'],
+            rows: ['type', 'sub_type'],
+            values: ['number'],
+          },
+        }),
+        assembleOptions(),
+      );
+
+      await s2.render();
+      const result = await asyncGetAllPlainData({
+        sheetInstance: s2,
+        split: TAB_SEPARATOR,
+        formatOptions,
+      });
+
+      expect(result.split(TAB_SEPARATOR)).toHaveLength(81);
+    },
+  );
 });

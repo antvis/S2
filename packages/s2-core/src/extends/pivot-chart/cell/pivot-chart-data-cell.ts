@@ -29,7 +29,7 @@ export class PivotChartDataCell extends ChartDataCell {
     return {
       data,
       encode: {
-        x: (this.spreadsheet as PivotChartSheet).isPolarCoordinate()
+        x: (this.spreadsheet as unknown as PivotChartSheet).isPolarCoordinate()
           ? null
           : xField,
         y: yField,
