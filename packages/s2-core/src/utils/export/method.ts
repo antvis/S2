@@ -8,7 +8,6 @@ import {
   NODE_ID_SEPARATOR,
   SERIES_NUMBER_FIELD,
   type CellMeta,
-  type DataItem,
   type SimpleData,
 } from '../../common';
 import type { Node } from '../../facet/layout/node';
@@ -23,15 +22,6 @@ export function keyEqualTo(key: string, compareKey: string) {
 
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
-
-export const convertString = (value: DataItem) => {
-  if (/\n/.test(value as string)) {
-    // 单元格内换行 替换双引号 防止内容存在双引号 导致内容换行出错
-    return `"${(value as string).replace(/\r\n?/g, '\n').replace(/"/g, "'")}"`;
-  }
-
-  return value;
-};
 
 /**
  * 获取 intersection cell 所有的层级
