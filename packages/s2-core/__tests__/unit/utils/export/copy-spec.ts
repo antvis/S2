@@ -423,8 +423,7 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy correct data with "\n" data', async () => {
-    const newLineText = `1
-    2`;
+    const newLineText = `1\n2`;
     const sheet = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -458,12 +457,11 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(`"${newLineText}"`);
+    expect(data).toBe(`"1\r2"`);
   });
 
   it('should not transform double quotes to single quotes when newline char is in data', async () => {
-    const newLineText = `"1
-    2"`;
+    const newLineText = `"1\n2"`;
     const sheet = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -495,7 +493,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(`""${newLineText}""`);
+    expect(data).toBe(`"""1\r2"""`);
   });
 
   it('should copy row data when select data row cell', async () => {
@@ -1096,7 +1094,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(`"7789\n元"`);
+    expect(data).toBe(`"7789\r元"`);
   });
 
   it('should get correct data with - string in header', async () => {
@@ -1135,7 +1133,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2New);
 
-    expect(data).toBe(`"7789\n元"`);
+    expect(data).toBe(`"7789\r元"`);
   });
 
   it('should get correct data with - string in header name', async () => {
@@ -1169,7 +1167,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2New);
 
-    expect(data).toBe(`"7789\n元"`);
+    expect(data).toBe(`"7789\r元"`);
   });
 
   it('should get correct data with hideMeasureColumn is true', async () => {

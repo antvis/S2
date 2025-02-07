@@ -59,6 +59,8 @@ export const escapeField = (field: SimpleData): SimpleData => {
   if (/[",\r\n\t]/.test(field)) {
     // 转义双引号 -> 两个双引号
     field = field.replace(/"/g, '""');
+    // 为了兼容直接粘贴纯文本到Excel单元格保持换行的场景，把\n替换成\r。但是\r\n不做替换
+    field = field.replace(/(?<!\r)\n/g, '\r');
 
     // 用双引号包裹字段
     return `"${field}"`;

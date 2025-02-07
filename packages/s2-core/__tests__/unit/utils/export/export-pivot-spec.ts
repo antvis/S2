@@ -762,6 +762,6 @@ describe('PivotSheet Export Test', () => {
     expect(result).toContain(`,"ac, abs, moon,",`);
     expect(result).toContain(`,"7,789.000",`);
     expect(result).toContain(`,"Venture ""Extended Edition""\t",`);
-    expect(result).toContain(`"Venture ""Extended E\ndition, Very Large""",`);
+    expect(result).toContain(`"Venture ""Extended E\rdition, Very Large""",`);
   });
 });

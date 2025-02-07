@@ -41,11 +41,14 @@ describe('escapeField', () => {
     expect(escapeField(input)).toBe(expected);
   });
 
-  it('should wrap strings containing newlines in double quotes', () => {
+  it('should replace \n to \r in double quotes', () => {
     const input = 'hello\nworld';
-    const expected = '"hello\nworld"';
+    const inputRN = 'hello\r\nworld';
+    const expected = '"hello\rworld"';
+    const expectedRN = '"hello\r\nworld"';
 
     expect(escapeField(input)).toBe(expected);
+    expect(escapeField(inputRN)).toBe(expectedRN);
   });
 
   it('should wrap strings containing tabs in double quotes', () => {
