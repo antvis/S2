@@ -457,7 +457,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(`"1\r2"`);
+    expect(data).toBe(`"1\r\n2"`);
   });
 
   it('should not transform double quotes to single quotes when newline char is in data', async () => {
@@ -493,7 +493,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(`"""1\r2"""`);
+    expect(data).toBe(`"""1\r\n2"""`);
   });
 
   it('should copy row data when select data row cell', async () => {
@@ -1094,7 +1094,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(`"7789\r元"`);
+    expect(data).toBe(`"7789\r\n元"`);
   });
 
   it('should get correct data with - string in header', async () => {
@@ -1133,7 +1133,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2New);
 
-    expect(data).toBe(`"7789\r元"`);
+    expect(data).toBe(`"7789\r\n元"`);
   });
 
   it('should get correct data with - string in header name', async () => {
@@ -1167,7 +1167,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2New);
 
-    expect(data).toBe(`"7789\r元"`);
+    expect(data).toBe(`"7789\r\n元"`);
   });
 
   it('should get correct data with hideMeasureColumn is true', async () => {

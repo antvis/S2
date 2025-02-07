@@ -44,7 +44,7 @@ describe('escapeField', () => {
   it('should replace \n to \r in double quotes', () => {
     const input = 'hello\nworld';
     const inputRN = 'hello\r\nworld';
-    const expected = '"hello\rworld"';
+    const expected = '"hello\r\nworld"';
     const expectedRN = '"hello\r\nworld"';
 
     expect(escapeField(input)).toBe(expected);
