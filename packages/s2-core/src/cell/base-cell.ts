@@ -856,7 +856,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
     const maxLines = Math.max(
       1,
-      Math.floor((displayHeight - padding) / lineHeight),
+      Math.round((displayHeight - padding) / lineHeight),
     );
 
     return maxLines;
