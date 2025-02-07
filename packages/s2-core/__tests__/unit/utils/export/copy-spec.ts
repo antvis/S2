@@ -9,7 +9,6 @@ import { Aggregation } from '@/common/interface';
 import { CopyMIMEType } from '@/common/interface/export';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { getSelectedData } from '@/utils/export/copy';
-import { convertString } from '@/utils/export/method';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
@@ -459,7 +458,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(convertString(newLineText));
+    expect(data).toBe(`"${newLineText}"`);
   });
 
   it('should not transform double quotes to single quotes when newline char is in data', async () => {
@@ -496,7 +495,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(convertString(newLineText));
+    expect(data).toBe(`""${newLineText}""`);
   });
 
   it('should copy row data when select data row cell', async () => {
@@ -1097,7 +1096,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe(convertString(`7789\n元`));
+    expect(data).toBe(`"7789\n元"`);
   });
 
   it('should get correct data with - string in header', async () => {
@@ -1136,7 +1135,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2New);
 
-    expect(data).toBe(convertString(`7789\n元`));
+    expect(data).toBe(`"7789\n元"`);
   });
 
   it('should get correct data with - string in header name', async () => {
@@ -1170,7 +1169,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2New);
 
-    expect(data).toBe(convertString(`7789\n元`));
+    expect(data).toBe(`"7789\n元"`);
   });
 
   it('should get correct data with hideMeasureColumn is true', async () => {

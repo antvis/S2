@@ -60,13 +60,13 @@ export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
  * 若字段中的双引号 → 转义为两个双引号 ""。
  * @param field
  */
-export const escapeCSVField = (field: SimpleData): SimpleData => {
+export const escapeField = (field: SimpleData): SimpleData => {
   if (typeof field !== 'string') {
     return field;
   }
 
   // 检查是否需要转义：包含逗号、双引号或换行符
-  if (/[",\n\t]/.test(field)) {
+  if (/[",\r\n\t]/.test(field)) {
     // 转义双引号 -> 两个双引号
     field = field.replace(/"/g, '""');
 

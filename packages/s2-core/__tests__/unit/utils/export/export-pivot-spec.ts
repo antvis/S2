@@ -683,7 +683,10 @@ describe('PivotSheet Export Test', () => {
         formatOptions,
       });
 
-      expect(result.split(TAB_SEPARATOR)).toHaveLength(81);
+      expect(result).toContain(`"测试-province\t"`);
+      expect(result).toContain(`"测试-city\t"`);
+      expect(result).toContain(`"测试-type\t"`);
+      expect(result).toContain(`"测试-sub_type\t"`);
     },
   );
 
@@ -733,7 +736,11 @@ describe('PivotSheet Export Test', () => {
           {
             field: 'type',
             name: '类别',
-            formatter: (value) => `${value}\n`,
+            formatter: (value) => {
+              const valueString = String(value);
+
+              return `${valueString.slice(0, valueString.length / 2)}\n${valueString.slice(valueString.length / 2)}`;
+            },
           },
           {
             field: 'sub_type',
@@ -754,6 +761,7 @@ describe('PivotSheet Export Test', () => {
 
     expect(result).toContain(`,"ac, abs, moon,",`);
     expect(result).toContain(`,"7,789.000",`);
-    expect(result).toContain(`,"Venture ""Extended Edition""",`);
+    expect(result).toContain(`,"Venture ""Extended Edition""\t",`);
+    expect(result).toContain(`"Venture ""Extended E\ndition, Very Large""",`);
   });
 });

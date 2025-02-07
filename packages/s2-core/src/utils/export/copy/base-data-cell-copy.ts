@@ -1,7 +1,6 @@
 import { map } from 'lodash';
 import {
   AsyncRenderThreshold,
-  CSV_SEPARATOR,
   TAB_SEPARATOR,
   type DataItem,
   type Formatter,
@@ -17,7 +16,7 @@ import { CopyMIMEType } from '../../../common/interface/export';
 import { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
-  escapeCSVField,
+  escapeField,
   getHeaderList,
   getHeaderMeasureFieldNames,
 } from '../method';
@@ -56,11 +55,9 @@ export abstract class BaseDataCellCopy {
     dataMatrix: SimpleData[][],
     separator: string,
   ): CopyablePlain {
-    let escapeDataMatrix: SimpleData[][] = dataMatrix;
-
-    if (separator === CSV_SEPARATOR) {
-      escapeDataMatrix = map(dataMatrix, (row) => map(row, escapeCSVField));
-    }
+    const escapeDataMatrix: SimpleData[][] = map(dataMatrix, (row) =>
+      map(row, escapeField),
+    );
 
     return this.config.transformers[CopyMIMEType.PLAIN](
       escapeDataMatrix,

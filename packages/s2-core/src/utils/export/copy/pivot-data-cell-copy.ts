@@ -29,7 +29,6 @@ import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import { getHeaderTotalStatus } from '../../dataset/pivot-data-set';
 import {
-  convertString,
   getColNodeFieldFromNode,
   getSelectedCols,
   getSelectedRows,
@@ -369,7 +368,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
           },
         });
 
-        return convertString(dataItem);
+        return dataItem;
       }),
     ) as SimpleData[][];
 

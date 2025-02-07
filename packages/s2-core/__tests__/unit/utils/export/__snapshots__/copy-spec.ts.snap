@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`List Table Core Data Process should copy all data 1`] = `
-"1	浙江省	杭州市	家具	### 问题摘要 
-- **会话地址**：	7789
+"1	浙江省	杭州市	家具	\\"### 问题摘要 
+- **会话地址**：\\"	7789
 2	浙江省	绍兴市	家具	桌子	2367
 3	浙江省	宁波市	家具	桌子	3877
 4	浙江省	舟山市	家具	桌子	4342
@@ -103,8 +103,8 @@ exports[`List Table Core Data Process should copy correctly data with header in 
 exports[`List Table Core Data Process should copy row data 1`] = `"1	浙江省	舟山市	家具	桌子	4342"`;
 
 exports[`List Table Core Data Process should copy series number data 1`] = `
-"1	浙江省	杭州市	家具	### 问题摘要 
-- **会话地址**：	7789
+"1	浙江省	杭州市	家具	\\"### 问题摘要 
+- **会话地址**：\\"	7789
 2	浙江省	绍兴市	家具	桌子	2367
 3	浙江省	宁波市	家具	桌子	3877
 4	浙江省	舟山市	家具	桌子	4342

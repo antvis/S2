@@ -12,7 +12,6 @@ import type {
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
-  convertString,
   getColNodeFieldFromNode,
   getSelectedCols,
   getSelectedRows,
@@ -191,7 +190,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
     // 因为通过复制数据单元格的方式和通过行列头复制的方式不同，所以不能复用 getDataMatrix 方法
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-      map(cellsMeta, (meta) => convertString(this.getValueFromMeta(meta))),
+      map(cellsMeta, (meta) => this.getValueFromMeta(meta)),
     ) as string[][];
 
     if (!copy?.withHeader) {
