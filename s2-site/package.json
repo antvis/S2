@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
-    "@antv/dumi-theme-antv": "^0.6.0",
+    "@antv/dumi-theme-antv": "^0.6.1",
     "@antv/g": "^6.1.21",
     "@antv/g-canvas": "^2.0.39",
     "@antv/g-plugin-a11y": "^1.1.20",
