@@ -67,7 +67,7 @@ const rowsMeta: PivotMeta = {
     level: 1,
     childField:"city",
     children: {
-      浙江市：{
+      杭州市：{
         level: 1,
         children: {},
       },

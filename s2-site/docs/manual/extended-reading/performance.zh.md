@@ -75,7 +75,7 @@ const rowsMeta: PivotMeta = {
     level: 1,
     childField:"city",
     children: {
-      浙江市：{
+      杭州市：{
         level: 1,
         children: {},
       },
@@ -185,7 +185,7 @@ each(add, (x, y) => renderCell(x, y));
 each(remove, (x, y) => getCell(x, y).remove());
 ```
 
-通过按需渲染，极大的提高了 `S2` 的渲染效率，这也是为什么我们支持百万级别数据渲染的原因。
+通过按需渲染，极大的提高了 `S2` 的渲染效率，这也是我们支持百万级别数据渲染的原因。
 
 ### 缓存设计
 
