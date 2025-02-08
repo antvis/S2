@@ -386,3 +386,18 @@ interface Transformer {
 | --- | --- |--------------------------|-----| --- |
 | type | 复制内容的 MIMEType | [`CopyMIMEType`](#copymimetype)           |     | ✓    |
 | transformer | 处理函数 | `MatrixHTMLTransformer \| MatrixPlainTransformer`   |      |   ✓   |
+
+## 特殊字符处理规则说明
+
+根据 [CSV规范](https://en.wikipedia.org/wiki/Comma-separated_values#Example) 及 Excel的处理规则，`S2`会按以下规则处理特殊字符：
+
+1. **字段包裹规则**  
+   当字段包含以下任意字符时，会用双引号包裹整个字段：  
+   `,` `"` `\r` `\n` `\t`
+2. **双引号转义规则**
+
+   字段中的双引号 " 会转义为两个双引号 ""：
+3. **换行符处理规则**  
+   为兼容直接粘贴到 Excel 单元格的场景：
+   - 将独立的 `\n` 替换为 `\r\n`
+   - 已有的 `\r\n` 保持原样

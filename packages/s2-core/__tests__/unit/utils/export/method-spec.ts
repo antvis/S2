@@ -1,4 +1,3 @@
-import { SimpleData } from '../../../../src';
 import { escapeField, keyEqualTo } from '../../../../src/utils/export/method';
 
 describe('method test', () => {
@@ -11,21 +10,12 @@ describe('method test', () => {
 });
 
 describe('escapeField', () => {
-  it('should return the same value for non-string types', () => {
-    const testData: SimpleData[] = [42, null, undefined];
-
-    testData.forEach((input) => {
+  it.each([42, null, undefined, 'hello', '123', 'test'])(
+    'should return the same value for non-string and normal types %s',
+    (input) => {
       expect(escapeField(input)).toBe(input);
-    });
-  });
-
-  it('should return the same string if no special characters are present', () => {
-    const testStrings = ['hello', '123', 'test'];
-
-    testStrings.forEach((str) => {
-      expect(escapeField(str)).toBe(str);
-    });
-  });
+    },
+  );
 
   it('should escape double quotes by replacing with two double quotes', () => {
     const input = 'hello "world"';

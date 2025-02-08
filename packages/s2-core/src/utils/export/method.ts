@@ -45,9 +45,10 @@ export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
 
 /**
  * https://en.wikipedia.org/wiki/Comma-separated_values#Example
- * 根据 CSV 规范，按以下规则处理字段内容：
- * 若字段包含 ,、"、\n 或 \t → 用双引号包裹字段。
- * 若字段中的双引号 → 转义为两个双引号 ""。
+ * 根据 CSV、Excel 规范，按以下规则处理字段内容：
+ * 若字段包含 ,、"、\r、\n 或 \t → 用双引号包裹字段。
+ * 字段中的双引号 → 转义为两个双引号 ""。
+ * 为了兼容直接粘贴纯文本到Excel单元格保持换行的场景，把\n替换成\r\n。但是\r\n不做替换
  * @param field
  */
 export const escapeField = (field: SimpleData): SimpleData => {
@@ -58,12 +59,11 @@ export const escapeField = (field: SimpleData): SimpleData => {
   // 检查是否需要转义：包含逗号、双引号或换行符
   if (/[",\r\n\t]/.test(field)) {
     // 转义双引号 -> 两个双引号
-    field = field.replace(/"/g, '""');
     // 为了兼容直接粘贴纯文本到Excel单元格保持换行的场景，把\n替换成\r\n。但是\r\n不做替换
-    field = field.replace(/(?<!\r)\n/g, '\r\n');
+    const newField = field.replace(/"/g, '""').replace(/(?<!\r)\n/g, '\r\n');
 
     // 用双引号包裹字段
-    return `"${field}"`;
+    return `"${newField}"`;
   }
 
   return field;

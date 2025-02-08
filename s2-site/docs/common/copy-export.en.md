@@ -48,3 +48,17 @@ download(data, 'filename')
 | --------- | ----------- | -------- | -------- | -------- |
 | data      | data source | `string` |          | ✓        |
 | filename  | file name   | `string` |          | ✓        |
+
+## Special Character Handling Rules
+
+According to the [CSV specification](https://en.wikipedia.org/wiki/Comma-separated_values#Example) and Excel's handling rules, `S2` will process special characters as follows:
+
+1. **Field Wrapping Rule**  
+   When a field contains any of the following characters, the entire field will be wrapped in double quotes:  
+   `,` `"` `\r` `\n` `\t`
+2. **Double Quote Escaping Rule**  
+   Any double quotes `"` within a field will be escaped as two double quotes `""`.
+3. **Newline Handling Rule**  
+   To be compatible with direct pasting into Excel cells:
+    - Standalone `\n` will be replaced with `\r\n`
+    - Existing `\r\n` will remain unchanged
