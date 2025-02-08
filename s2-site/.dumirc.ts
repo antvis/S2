@@ -60,14 +60,14 @@ export default defineConfig({
     // },
     navs: [
       {
-        slug: 'docs/manual',
+        slug: 'docs/manual/getting-started',
         title: {
           zh: '使用文档',
           en: 'Manual',
         },
       },
       {
-        slug: 'docs/api',
+        slug: 'docs/api/general/s2-data-config',
         title: {
           zh: 'API 文档',
           en: 'API',
@@ -85,13 +85,6 @@ export default defineConfig({
         title: {
           zh: '在线体验',
           en: 'Playground',
-        },
-      },
-      {
-        slug: 'manual/faq',
-        title: {
-          zh: '常见问题',
-          en: 'FAQ',
         },
       },
       {
