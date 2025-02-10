@@ -2,7 +2,7 @@ import {
   FederatedWheelEvent,
   Group,
   Rect,
-  type FederatedPointerEvent as GraphEvent,
+  type FederatedPointerEvent,
 } from '@antv/g';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
@@ -1445,8 +1445,9 @@ export abstract class BaseFacet {
       event?.preventDefault?.();
     }
 
-    // 移动端的 prevent 存在于 originalEvent 上
-    const mobileEvent = (event as unknown as GraphEvent)?.originalEvent;
+    // 使用 G 对应的原生 TouchEvent，以达到移动端禁用外部容器滚动的效果
+    const mobileEvent =
+      (event as unknown as FederatedPointerEvent)?.nativeEvent || event;
 
     if (mobileEvent?.cancelable) {
       mobileEvent?.preventDefault?.();
