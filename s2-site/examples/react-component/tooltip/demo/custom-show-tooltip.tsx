@@ -85,7 +85,7 @@ fetch(
               },
             };
 
-            instance.showTooltip(customOptions);
+            instance.tooltip.show(customOptions);
           };
         }}
       />

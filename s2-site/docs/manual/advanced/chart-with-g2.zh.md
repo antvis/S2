@@ -138,7 +138,7 @@ await s2.render();
 
 #### 2.4 在 `@antv/s2-react` 使用
 
-如果希望在 `React` 中使用，除了上诉的方式外，也可以直接使用 `<SheetComponent sheetType="chart" />`, 内部封装了 `ChartDateCell`。
+如果希望在 `React` 中使用，除了上述的方式外，也可以直接使用 `<SheetComponent sheetType="chart" />`, 内部封装了 `ChartDateCell`。
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react';
