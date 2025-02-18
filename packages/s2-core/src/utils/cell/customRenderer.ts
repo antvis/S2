@@ -1,15 +1,25 @@
 import { HTML, Image } from '@antv/g';
+import type { BaseCell } from '../../cell';
+import { RendererType } from '../../common/constant/renderer';
 import { CellClipBox } from '../../common/interface/basic';
-import { S2CellType } from '../../common/interface/interaction';
 import { CustomRendererConfig } from '../../common/interface/renderer';
+
+const defaultVideoConfig = {
+  loop: true,
+  autoplay: true,
+  crossOrigin: true,
+  controls: false,
+  muted: true,
+};
 
 export function drawCustomRenderer(
   renderer: CustomRendererConfig,
-  cell: S2CellType,
+  cell: BaseCell<any>,
 ) {
-  const text = cell.getFieldValue()!.toString();
-  const { x, y, height } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
-  const config = renderer.config || {};
+  const fieldValue = cell.getFieldValue();
+  const text = fieldValue?.toString() ?? '';
+  const { x, y, height, width } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
+  let config: CustomRendererConfig['config'] = { ...renderer.config };
 
   if (!config.height && !config.width) {
     config.height = height;
@@ -18,7 +28,7 @@ export function drawCustomRenderer(
   let element;
 
   switch (renderer.type) {
-    case 'image': {
+    case RendererType.image: {
       element = new Image({
         style: {
           x,
@@ -30,21 +40,22 @@ export function drawCustomRenderer(
       });
       break;
     }
-    case 'video': {
+    case RendererType.video: {
       const video = document.createElement('video');
 
+      config = { height, width, ...defaultVideoConfig, ...config, src: text };
       Object.assign(video, config);
       element = new HTML({
         style: {
           x,
           y,
           innerHTML: video,
-          pointerEvents: 'auto',
+          pointerEvents: 'none',
         },
       });
       break;
     }
-    case 'html': {
+    case RendererType.html: {
       element = new HTML({
         style: {
           x,

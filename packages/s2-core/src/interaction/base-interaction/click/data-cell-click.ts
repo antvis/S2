@@ -43,9 +43,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       const cell = this.spreadsheet.getCell<DataCell>(event.target)!;
       const meta = cell.getMeta();
-      const renderer = cell.getRenderer();
 
-      if (renderer?.type) {
+      if (cell.getRenderer?.()?.type) {
         bindMediaClick(cell);
 
         return;

@@ -29,7 +29,6 @@ import {
   getVerticalIconPosition,
   getVerticalTextPosition,
 } from '../utils/cell/cell';
-import { drawCustomRenderer } from '../utils/cell/customRenderer';
 import {
   includeCell,
   shouldUpdateBySelectedCellsHighlight,
@@ -232,14 +231,6 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public drawTextShape() {
-    const renderer = this.getRenderer();
-
-    if (renderer) {
-      drawCustomRenderer(renderer, this);
-
-      return;
-    }
-
     super.drawTextShape();
 
     if (!this.isShallowRender()) {
@@ -533,9 +524,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
   }
 
-  public getRenderer() {
-    return this.spreadsheet.dataCfg.meta?.find(
-      (m) => m.field === this.meta.valueField,
-    )?.renderer;
+  public getMetaField() {
+    return this.meta.valueField;
   }
 }

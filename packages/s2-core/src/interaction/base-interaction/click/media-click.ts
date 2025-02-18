@@ -1,14 +1,15 @@
 // ==================== 通用工具函数 ====================
 
-import { DataCell } from '../../../cell/data-cell';
+import type { BaseCell } from '../../../cell/base-cell';
+import { RendererType } from '../../../common/constant/renderer';
 
 // 1. 创建蒙版层
 const createPreviewOverlay = (): HTMLDivElement => {
   const overlay = document.createElement('div');
 
   Object.assign(overlay.style, {
-    width: '100%',
-    height: '100%',
+    width: '100vw',
+    height: '100vh',
     position: 'fixed',
     top: '0',
     left: '0',
@@ -19,6 +20,8 @@ const createPreviewOverlay = (): HTMLDivElement => {
     overflow: 'hidden',
     zIndex: '9999',
     cursor: 'pointer',
+    touchAction: 'none',
+    backdropFilter: 'blur(2px)',
   });
 
   return overlay;
@@ -26,9 +29,16 @@ const createPreviewOverlay = (): HTMLDivElement => {
 
 // 2. 通用媒体容器样式
 const applyMediaContainerStyle = (element: HTMLElement) => {
+  const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+  // 根据横竖屏切换
+  const maxSize = isPortrait ? '90vw' : '90vh';
+  const minSize = isPortrait ? '60vw' : '60vh';
+
   Object.assign(element.style, {
-    maxWidth: '80%',
-    maxHeight: '80%',
+    maxWidth: maxSize,
+    maxHeight: maxSize,
+    minHeight: minSize,
+    minWidth: minSize,
     objectFit: 'contain',
   });
 };
@@ -48,43 +58,63 @@ const createVideoElement = (src: string): HTMLVideoElement => {
   const video = document.createElement('video');
 
   video.src = src;
-  applyMediaContainerStyle(video);
   video.controls = true;
   video.preload = 'auto';
-  // 移动端适配
   video.playsInline = true;
+  // iOS 兼容
+  video.setAttribute('webkit-playsinline', 'true');
+  video.setAttribute('playsinline', 'true');
+
+  applyMediaContainerStyle(video);
 
   return video;
 };
 
 // ==================== 主逻辑 ====================
-export const bindMediaClick = (cell: DataCell) => {
+export const bindMediaClick = (cell: BaseCell<any>) => {
   const renderer = cell.getRenderer()!;
   const { type } = renderer;
   const src = cell.getFieldValue()!.toString();
 
-  // 1. 类型安全检查
-  if (renderer!.clickToPreview === false) {
+  if (
+    renderer!.clickToPreview === false ||
+    ![RendererType.image, RendererType.video].includes(renderer.type)
+  ) {
     return;
   }
 
-  // 2. 创建蒙版
+  // 创建蒙版和媒体元素
   const overlay = createPreviewOverlay();
-
-  // 3. 创建媒体元素
   const mediaElement =
-    type === 'image' ? createImageElement(src) : createVideoElement(src);
+    type === RendererType.image
+      ? createImageElement(src)
+      : createVideoElement(src);
 
-  // 4. 事件处理
-  const handleOverlayClick = (e: MouseEvent) => {
+  // 统一事件处理（支持触控）
+  const handleClose = (e: Event) => {
+    e.preventDefault();
     if (e.target === overlay) {
       document.body.removeChild(overlay);
       mediaElement.remove();
-      overlay.removeEventListener('click', handleOverlayClick);
+      // 恢复滚动
+      document.body.style.overflow = 'auto';
     }
   };
 
-  overlay.addEventListener('click', handleOverlayClick);
-  overlay.appendChild(mediaElement);
+  // 同时监听多种事件类型
+  overlay.addEventListener('pointerdown', handleClose);
+  overlay.addEventListener('touchstart', handleClose, { passive: false });
+
+  // 禁止背景滚动
+  document.body.style.overflow = 'hidden';
+
+  if (type === 'image') {
+    (mediaElement as HTMLImageElement).onload = () => {
+      overlay.appendChild(mediaElement);
+    };
+  } else {
+    overlay.appendChild(mediaElement);
+  }
+
   document.body.appendChild(overlay);
 };
