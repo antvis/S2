@@ -10,7 +10,12 @@ interface BaseRendererConfig {
   /** 当渲染失败时的回退内容（文字/HTML） */
   fallback?: string;
   /** 是否开启点击预览 */
-  clickToPreview?: boolean;
+  clickToPreview?:
+    | {
+        overlayStyle?: CSSStyleDeclaration;
+        mediaContainerStyle?: CSSStyleDeclaration;
+      }
+    | false;
 }
 
 // 图片渲染配置

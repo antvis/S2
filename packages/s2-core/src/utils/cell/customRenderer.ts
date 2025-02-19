@@ -1,4 +1,4 @@
-import { HTML, Image } from '@antv/g';
+import { Image as GImage, HTML } from '@antv/g';
 import type { BaseCell } from '../../cell';
 import { RendererType } from '../../common/constant/renderer';
 import { CellClipBox } from '../../common/interface/basic';
@@ -12,7 +12,27 @@ const defaultVideoConfig = {
   muted: true,
 };
 
-export function drawCustomRenderer(
+function asyncDrawImage(
+  src: string,
+  fallback?: string,
+): Promise<HTMLImageElement> {
+  return new Promise((resolve) => {
+    const img = new Image();
+
+    img.src = src;
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      resolve(img);
+    };
+    img.onerror = () => {
+      if (fallback) {
+        resolve(asyncDrawImage(fallback));
+      }
+    };
+  });
+}
+
+export async function drawCustomRenderer(
   renderer: CustomRendererConfig,
   cell: BaseCell<any>,
 ) {
@@ -29,12 +49,13 @@ export function drawCustomRenderer(
 
   switch (renderer.type) {
     case RendererType.image: {
-      element = new Image({
+      // 图片加载成功后创建
+      element = new GImage({
         style: {
           x,
           y,
           keepAspectRatio: true,
-          src: text,
+          src: await asyncDrawImage(text, renderer.fallback),
           ...config,
         },
       });

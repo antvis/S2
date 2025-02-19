@@ -4,7 +4,9 @@ import type { BaseCell } from '../../../cell/base-cell';
 import { RendererType } from '../../../common/constant/renderer';
 
 // 1. 创建蒙版层
-const createPreviewOverlay = (): HTMLDivElement => {
+const createPreviewOverlay = (
+  overlayStyle?: CSSStyleDeclaration,
+): HTMLDivElement => {
   const overlay = document.createElement('div');
 
   Object.assign(overlay.style, {
@@ -22,13 +24,17 @@ const createPreviewOverlay = (): HTMLDivElement => {
     cursor: 'pointer',
     touchAction: 'none',
     backdropFilter: 'blur(2px)',
+    ...overlayStyle,
   });
 
   return overlay;
 };
 
 // 2. 通用媒体容器样式
-const applyMediaContainerStyle = (element: HTMLElement) => {
+const applyMediaContainerStyle = (
+  element: HTMLElement,
+  mediaContainerStyle?: CSSStyleDeclaration,
+) => {
   const isPortrait = window.matchMedia('(orientation: portrait)').matches;
   // 根据横竖屏切换
   const maxSize = isPortrait ? '90vw' : '90vh';
@@ -40,21 +46,28 @@ const applyMediaContainerStyle = (element: HTMLElement) => {
     minHeight: minSize,
     minWidth: minSize,
     objectFit: 'contain',
+    ...mediaContainerStyle,
   });
 };
 
 // ==================== 工厂函数 ====================
-const createImageElement = (src: string): HTMLImageElement => {
+const createImageElement = (
+  src: string,
+  mediaContainerStyle?: CSSStyleDeclaration,
+): HTMLImageElement => {
   const img = new Image();
 
   img.src = src;
-  applyMediaContainerStyle(img);
+  applyMediaContainerStyle(img, mediaContainerStyle);
   img.alt = 'preview';
 
   return img;
 };
 
-const createVideoElement = (src: string): HTMLVideoElement => {
+const createVideoElement = (
+  src: string,
+  mediaContainerStyle?: CSSStyleDeclaration,
+): HTMLVideoElement => {
   const video = document.createElement('video');
 
   video.src = src;
@@ -65,7 +78,7 @@ const createVideoElement = (src: string): HTMLVideoElement => {
   video.setAttribute('webkit-playsinline', 'true');
   video.setAttribute('playsinline', 'true');
 
-  applyMediaContainerStyle(video);
+  applyMediaContainerStyle(video, mediaContainerStyle);
 
   return video;
 };
@@ -84,11 +97,11 @@ export const bindMediaClick = (cell: BaseCell<any>) => {
   }
 
   // 创建蒙版和媒体元素
-  const overlay = createPreviewOverlay();
+  const overlay = createPreviewOverlay(renderer.clickToPreview?.overlayStyle);
   const mediaElement =
     type === RendererType.image
-      ? createImageElement(src)
-      : createVideoElement(src);
+      ? createImageElement(src, renderer.clickToPreview?.mediaContainerStyle)
+      : createVideoElement(src, renderer.clickToPreview?.mediaContainerStyle);
 
   // 统一事件处理（支持触控）
   const handleClose = (e: Event) => {
