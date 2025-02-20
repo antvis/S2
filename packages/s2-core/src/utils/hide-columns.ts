@@ -239,12 +239,12 @@ export const isLastColumnAfterHidden = (
   spreadsheet: SpreadSheet,
   columnField: string,
 ) => {
-  const columnNodes = spreadsheet.facet.getColNodes();
+  const columnLeafNodes = spreadsheet.facet.getColLeafNodes();
   const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
   const fieldKey = getHiddenColumnFieldKey(columnField);
 
   return (
-    get(last(columnNodes), fieldKey) === columnField &&
+    get(last(columnLeafNodes), fieldKey) === columnField &&
     get(last(initColLeafNodes), fieldKey) !== columnField
   );
 };
