@@ -2,7 +2,7 @@
 
 import { FederatedPointerEvent as CanvasEvent } from '@antv/g-lite/types/dom/FederatedPointerEvent';
 import type { BaseCell } from '../../../cell/base-cell';
-import { S2Event } from '../../../common/constant';
+import { CellType, S2Event } from '../../../common/constant';
 import { CellRendererType } from '../../../common/constant/renderer';
 import type { PreviewTheme } from '../../../common/interface';
 import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
@@ -161,7 +161,10 @@ export class PreviewClick extends BaseEvent implements BaseEventImplement {
   bindMediaCellClick(event: CanvasEvent) {
     const cell = this.spreadsheet.getCell<BaseCell<any>>(event.target);
 
-    if (cell?.getRenderer?.()?.type) {
+    if (
+      cell?.getRenderer?.()?.type &&
+      (this.spreadsheet.isPivotMode() || cell.cellType !== CellType.COL_CELL)
+    ) {
       bindMediaClick(cell);
     }
   }
