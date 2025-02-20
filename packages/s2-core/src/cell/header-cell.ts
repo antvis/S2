@@ -532,6 +532,8 @@ export abstract class HeaderCell<
     // 明细表列头仅允许文本
     if (!this.spreadsheet.isPivotMode()) {
       this.drawTextShape();
+    } else {
+      super.drawTextOrCustomRenderer();
     }
   }
 }
