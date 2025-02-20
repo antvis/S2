@@ -1,11 +1,9 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import type { HeaderCell } from '../../../cell/header-cell';
 import { InterceptType, S2Event } from '../../../common/constant';
 import type { Data, RawData } from '../../../common/interface';
 import { CellData } from '../../../data-set/cell-data';
 import type { Node } from '../../../facet/layout/node';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
-import { bindMediaClick } from './media-click';
 
 export class HeaderCellLinkClick
   extends BaseEvent
@@ -18,14 +16,6 @@ export class HeaderCellLinkClick
 
   private onHeaderCellClick(event: CanvasEvent) {
     if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
-      return;
-    }
-
-    const cell = this.spreadsheet.getCell<HeaderCell>(event.target);
-
-    if (cell?.getRenderer?.()?.type) {
-      bindMediaClick(cell);
-
       return;
     }
 

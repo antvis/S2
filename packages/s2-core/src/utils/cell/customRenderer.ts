@@ -1,6 +1,6 @@
 import { Image as GImage, HTML } from '@antv/g';
 import type { BaseCell } from '../../cell';
-import { RendererType } from '../../common/constant/renderer';
+import { CellRendererType } from '../../common/constant/renderer';
 import { CellClipBox } from '../../common/interface/basic';
 import { CustomRendererConfig } from '../../common/interface/renderer';
 
@@ -15,24 +15,41 @@ const defaultVideoConfig = {
 function asyncDrawImage(
   src: string,
   fallback?: string,
+  timeout: number = 5000,
 ): Promise<HTMLImageElement> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const img = new Image();
+    const handleTimeout = () => {
+      reject(new Error('Image loading timed out'));
+    };
 
     img.src = src;
     img.crossOrigin = 'Anonymous';
+
+    // 设置超时
+    const timeoutId = setTimeout(handleTimeout, timeout);
+
     img.onload = () => {
+      clearTimeout(timeoutId);
       resolve(img);
     };
+
     img.onerror = () => {
+      clearTimeout(timeoutId);
       if (fallback) {
-        resolve(asyncDrawImage(fallback));
+        // 如果加载失败，尝试 fallback
+        asyncDrawImage(fallback, undefined, timeout)
+          .then(resolve)
+          .catch(reject);
+      } else {
+        // 如果没有 fallback 或者 fallback 也失败，返回错误
+        reject(new Error('Failed to load image and fallback'));
       }
     };
   });
 }
 
-export async function drawCustomRenderer(
+export async function drawCustomCellRenderer(
   renderer: CustomRendererConfig,
   cell: BaseCell<any>,
 ) {
@@ -48,7 +65,7 @@ export async function drawCustomRenderer(
   let element;
 
   switch (renderer.type) {
-    case RendererType.image: {
+    case CellRendererType.IMAGE: {
       // 图片加载成功后创建
       element = new GImage({
         style: {
@@ -61,7 +78,7 @@ export async function drawCustomRenderer(
       });
       break;
     }
-    case RendererType.video: {
+    case CellRendererType.VIDEO: {
       const video = document.createElement('video');
 
       config = { height, width, ...defaultVideoConfig, ...config, src: text };
@@ -76,7 +93,7 @@ export async function drawCustomRenderer(
       });
       break;
     }
-    case RendererType.html: {
+    case CellRendererType.HTML: {
       element = new HTML({
         style: {
           x,

@@ -1,5 +1,5 @@
-export enum RendererType {
-  html = 'html',
-  video = 'video',
-  image = 'image',
+export enum CellRendererType {
+  HTML = 'HTML',
+  VIDEO = 'VIDEO',
+  IMAGE = 'IMAGE',
 }

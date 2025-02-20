@@ -249,7 +249,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     if (!this.shouldHideRowSubtotalData()) {
-      this.drawTextShape();
+      this.drawTextOrCustomRenderer();
       this.drawConditionIconShapes();
     }
 

@@ -16,7 +16,7 @@ import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import type { CellType } from '../constant';
 import type { S2CellType } from './interaction';
-import { CustomRendererConfig } from './renderer';
+import type { CustomRendererConfig } from './renderer';
 import type { DataItem } from './s2DataConfig';
 
 export type { GetCellMeta, LayoutResult } from './facet';

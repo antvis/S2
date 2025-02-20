@@ -58,7 +58,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     // interactive cell border shape
     this.drawInteractiveBorderShape();
     // draw text
-    this.drawTextShape();
+    this.drawTextOrCustomRenderer();
     // 绘制字段标记 -- icon
     this.drawActionAndConditionIcons();
     // draw borders

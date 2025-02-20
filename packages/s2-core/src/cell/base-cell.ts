@@ -63,7 +63,7 @@ import {
   getBorderPositionAndStyle,
   getCellBoxByType,
 } from '../utils/cell/cell';
-import { drawCustomRenderer } from '../utils/cell/customRenderer';
+import { drawCustomCellRenderer } from '../utils/cell/customRenderer';
 import {
   getIconTotalWidth,
   type GroupedIcons,
@@ -166,6 +166,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     backgroundColorOpacity: number | undefined;
     intelligentReverseTextColor: boolean;
   };
+
+  public abstract getMetaField(): string;
 
   public constructor(
     meta: T,
@@ -485,15 +487,17 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.textShape?.attr('y', position?.y ?? defaultPosition?.y);
   }
 
-  public drawTextShape() {
+  public drawTextOrCustomRenderer() {
     const renderer = this.getRenderer();
 
     if (renderer) {
-      drawCustomRenderer(renderer, this);
-
-      return;
+      drawCustomCellRenderer(renderer, this);
+    } else {
+      this.drawTextShape();
     }
+  }
 
+  public drawTextShape() {
     // 额外添加一像素余量，防止出现省略号 (文本和省略后的宽度一致): https://github.com/antvis/S2/issues/2726
     const EXTRA_PIXEL = 1;
     // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号: https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
@@ -876,6 +880,4 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       (m) => m.field === this.getMetaField(),
     )?.renderer;
   }
-
-  public abstract getMetaField(): string;
 }

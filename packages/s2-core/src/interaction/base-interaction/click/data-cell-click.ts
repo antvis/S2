@@ -16,7 +16,6 @@ import {
   getCellMeta,
 } from '../../../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
-import { bindMediaClick } from './media-click';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -43,12 +42,6 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       const cell = this.spreadsheet.getCell<DataCell>(event.target)!;
       const meta = cell.getMeta();
-
-      if (cell.getRenderer?.()?.type) {
-        bindMediaClick(cell);
-
-        return;
-      }
 
       if (!meta) {
         return;
