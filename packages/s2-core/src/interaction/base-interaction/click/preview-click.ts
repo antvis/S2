@@ -125,7 +125,7 @@ export const bindMediaClick = (cell: BaseCell<any>) => {
   };
 
   // 同时监听多种事件类型
-  ['click', 'touchstart', 'touchend', 'pointerdown'].forEach((eventType) => {
+  ['click', 'touchstart', 'touchend'].forEach((eventType) => {
     overlay.addEventListener(eventType, handleClose, { passive: false });
   });
 
