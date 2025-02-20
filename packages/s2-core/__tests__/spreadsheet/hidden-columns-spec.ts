@@ -517,9 +517,14 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       );
 
       const leafNodes = sheet.facet.getColLeafNodes();
+      const borderWidth = 1;
+      const expandIconWidth = 20;
 
       expect(leafNodes).toHaveLength(1);
       expect(leafNodes[0].id).toEqual('root[&]家具[&]桌子[&]number');
+      expect(leafNodes[0].belongsCell.rightIconPosition.x).toEqual(
+        leafNodes[0].width - expandIconWidth / 2 + borderWidth,
+      );
     });
 
     test('should hide columns for multiple columns', async () => {
