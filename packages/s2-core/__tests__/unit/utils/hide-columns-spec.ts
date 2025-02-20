@@ -35,6 +35,7 @@ describe('Hide Columns Tests', () => {
       facet: {
         getInitColLeafNodes: () => initColumnNodes,
         getColNodes: () => initColumnNodes,
+        getColLeafNodes: () => initColumnNodes,
       },
     } as PivotSheet;
 
