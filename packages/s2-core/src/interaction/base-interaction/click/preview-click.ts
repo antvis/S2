@@ -9,7 +9,7 @@ import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
 
 // 1. 创建蒙版层
 const createPreviewOverlay = (
-  overlayStyle?: CSSStyleDeclaration,
+  overlayStyle?: Record<string, any>,
 ): HTMLDivElement => {
   const overlay = document.createElement('div');
 
@@ -38,7 +38,7 @@ const createPreviewOverlay = (
 // 2. 通用媒体容器样式
 const applyMediaContainerStyle = (
   element: HTMLElement,
-  mediaContainerStyle?: CSSStyleDeclaration,
+  mediaContainerStyle?: Record<string, any>,
 ) => {
   const isPortrait = window.matchMedia('(orientation: portrait)').matches;
   // 根据横竖屏切换
@@ -58,7 +58,7 @@ const applyMediaContainerStyle = (
 // ==================== 工厂函数 ====================
 const createImageElement = (
   src: string,
-  mediaContainerStyle?: CSSStyleDeclaration,
+  mediaContainerStyle?: Record<string, any>,
 ): HTMLImageElement => {
   const img = new Image();
 
@@ -71,7 +71,7 @@ const createImageElement = (
 
 const createVideoElement = (
   src: string,
-  mediaContainerStyle?: CSSStyleDeclaration,
+  mediaContainerStyle?: Record<string, any>,
 ): HTMLVideoElement => {
   const video = document.createElement('video');
 

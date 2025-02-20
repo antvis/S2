@@ -459,8 +459,8 @@ export interface MiniChartTheme {
 
 /** 预览图片、视频的样式 */
 export interface PreviewTheme {
-  overlay?: CSSStyleDeclaration;
-  mediaContainer?: CSSStyleDeclaration;
+  overlay?: Record<string, any>;
+  mediaContainer?: Record<string, any>;
 }
 
 export type InternalFullyCellTheme = DeepRequired<DefaultCellTheme>;
