@@ -18,6 +18,7 @@ interface BaseRendererConfig<T extends RendererType | CellRendererType> {
 export interface ImageRendererConfig
   extends BaseRendererConfig<CellRendererType.IMAGE> {
   config?: Partial<ImageStyleProps>;
+  timeout?: number;
 }
 
 // 视频渲染配置

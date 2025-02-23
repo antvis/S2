@@ -12,30 +12,14 @@ const defaultVideoConfig = {
   muted: true,
 };
 
-function asyncDrawImage(
+export function asyncDrawImage(
   src: string,
   fallback?: string,
-  timeout: number = 5000,
+  timeout: number = 10000,
 ): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    const handleTimeout = () => {
-      reject(new Error('Image loading timed out'));
-    };
-
-    img.src = src;
-    img.crossOrigin = 'Anonymous';
-
-    // 设置超时
-    const timeoutId = setTimeout(handleTimeout, timeout);
-
-    img.onload = () => {
-      clearTimeout(timeoutId);
-      resolve(img);
-    };
-
-    img.onerror = () => {
-      clearTimeout(timeoutId);
+    const onerror = () => {
       if (fallback) {
         // 如果加载失败，尝试 fallback
         asyncDrawImage(fallback, undefined, timeout)
@@ -46,6 +30,22 @@ function asyncDrawImage(
         reject(new Error('Failed to load image and fallback'));
       }
     };
+
+    img.src = src;
+    img.crossOrigin = 'Anonymous';
+
+    // 设置超时
+    const timeoutId = setTimeout(onerror, timeout);
+
+    img.onload = () => {
+      clearTimeout(timeoutId);
+      resolve(img);
+    };
+
+    img.onerror = () => {
+      clearTimeout(timeoutId);
+      onerror();
+    };
   });
 }
 
@@ -54,6 +54,7 @@ export async function drawCustomCellRenderer(
   cell: BaseCell<any>,
 ) {
   const fieldValue = cell.getFieldValue();
+
   const text = fieldValue?.toString() ?? '';
   const { x, y, height, width } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
   let config: CustomRendererConfig['config'] = { ...renderer.config };
@@ -72,7 +73,7 @@ export async function drawCustomCellRenderer(
           x,
           y,
           keepAspectRatio: true,
-          src: await asyncDrawImage(text, renderer.fallback),
+          src: await asyncDrawImage(text, renderer.fallback, renderer.timeout),
           ...config,
         },
       });
