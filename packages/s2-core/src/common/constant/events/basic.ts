@@ -30,6 +30,7 @@ export enum S2Event {
   COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
   COL_CELL_BRUSH_SELECTION = 'col-cell:brush-selection',
   COL_CELL_EXPANDED = 'col-cell:expanded',
+  COL_CELL_EXPAND_ICON_HOVER = 'col-cell:expand-icon-hover',
   COL_CELL_HIDDEN = 'col-cell:hidden',
   COL_CELL_RENDER = 'col-cell:render',
   COL_CELL_SELECTED = 'col-cell:selected',

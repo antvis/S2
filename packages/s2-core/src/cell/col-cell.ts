@@ -1,4 +1,4 @@
-import type { Group, PointLike } from '@antv/g';
+import type { FederatedPointerEvent, Group, PointLike } from '@antv/g';
 import { isEmpty } from 'lodash';
 import {
   CellType,
@@ -29,6 +29,7 @@ import {
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { renderIcon, renderLine } from '../utils/g-renders';
 import {
+  getHiddenColumnContinuousSiblingNodes,
   isEqualDisplaySiblingNodeId,
   isLastColumnAfterHidden,
 } from '../utils/hide-columns';
@@ -550,6 +551,18 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
         this.meta,
         isLastColumn ? 'prev' : 'next',
       );
+    });
+
+    icon.addEventListener('mouseenter', (event: FederatedPointerEvent) => {
+      this.spreadsheet.emit(S2Event.COL_CELL_EXPAND_ICON_HOVER, {
+        event,
+        meta: this.meta,
+        hiddenColumns: getHiddenColumnContinuousSiblingNodes(
+          this.spreadsheet,
+          this.meta.id,
+          isLastColumn ? 'prev' : 'next',
+        ),
+      });
     });
   }
 

@@ -4,6 +4,7 @@ import type { RootInteraction } from '@/interaction/root';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   getColumns,
+  getHiddenColumnContinuousSiblingNodes,
   getHiddenColumnDisplaySiblingNode,
   getHiddenColumnNodes,
   getHiddenColumnsThunkGroup,
@@ -544,5 +545,23 @@ describe('Hide Columns Tests', () => {
         ),
       ).toBeFalsy();
     });
+  });
+
+  test('should return continuous column correctly', () => {
+    hideColumns(mockSpreadSheetInstance, ['1', '2', '4']);
+    expect(
+      getHiddenColumnContinuousSiblingNodes(
+        mockSpreadSheetInstance,
+        'id-3',
+        'next',
+      ).map((item) => item.id),
+    ).toEqual(['id-1', 'id-2']);
+    expect(
+      getHiddenColumnContinuousSiblingNodes(
+        mockSpreadSheetInstance,
+        'id-3',
+        'prev',
+      ).map((item) => item.id),
+    ).toEqual(['id-4']);
   });
 });
