@@ -225,6 +225,10 @@ const cellEventCases = [
     name: 'onColCellExpanded',
   },
   {
+    event: S2Event.COL_CELL_EXPAND_ICON_HOVER,
+    name: 'onColCellExpandIconHover',
+  },
+  {
     event: S2Event.COL_CELL_HIDDEN,
     name: 'onColCellHidden',
   },

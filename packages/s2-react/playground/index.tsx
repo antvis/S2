@@ -1599,6 +1599,9 @@ function MainLayout() {
                           onCopied={logHandler('onCopied')}
                           onColCellHidden={logHandler('onColCellHidden')}
                           onColCellExpanded={logHandler('onColCellExpanded')}
+                          onColCellExpandIconHover={logHandler(
+                            'onColCellExpandIconHover',
+                          )}
                           onSelected={logHandler('onSelected')}
                           onCornerCellSelected={logHandler(
                             'onCornerCellSelected',
