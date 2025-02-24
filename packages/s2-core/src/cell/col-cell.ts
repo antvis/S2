@@ -485,7 +485,11 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     }
 
     return !!hiddenColumnsDetail.find((column) =>
-      isEqualDisplaySiblingNodeId(column?.displaySiblingNode, this.meta.id),
+      isEqualDisplaySiblingNodeId(
+        column?.displaySiblingNode,
+        this.meta.id,
+        this.isLastColumn() ? 'prev' : 'next',
+      ),
     );
   }
 
@@ -541,7 +545,11 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     });
 
     icon.addEventListener('click', () => {
-      this.spreadsheet.emit(S2Event.COL_CELL_EXPANDED, this.meta);
+      this.spreadsheet.emit(
+        S2Event.COL_CELL_EXPANDED,
+        this.meta,
+        isLastColumn ? 'prev' : 'next',
+      );
     });
   }
 
