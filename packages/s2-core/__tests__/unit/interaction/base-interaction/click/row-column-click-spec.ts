@@ -16,7 +16,12 @@ import type { GEvent } from '@/index';
 import { RowColumnClick } from '@/interaction/base-interaction/click';
 import type { SpreadSheet } from '@/sheet-type';
 import { omit } from 'lodash';
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import {
+  createFakeSpreadSheet,
+  createMockCellInfo,
+  createPivotSheet,
+  sleep,
+} from 'tests/util/helpers';
 import { CellType } from '../../../../../src';
 
 jest.mock('@/interaction/event-controller');
@@ -330,6 +335,43 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     // rerender
     expect(s2.render).toHaveBeenCalled();
   });
+
+  test.each([
+    { direction: 'prev', displayIndex: 3 },
+    { direction: 'next', displayIndex: 2 },
+  ])(
+    'should expand columns correctly when last column is hidden and third last column is hidden and second last column o% is expanded',
+    async ({ direction, displayIndex }) => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+
+      await sheet.render();
+
+      const colIds = [
+        'root[&]家具[&]桌子[&]number',
+        'root[&]家具[&]沙发[&]number',
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]办公用品[&]纸张[&]number',
+      ];
+
+      await sheet.interaction.hideColumns([colIds[3]]);
+      await sheet.interaction.hideColumns([colIds[1]]);
+
+      sheet.emit(S2Event.COL_CELL_EXPANDED, { id: colIds[2] }, direction);
+
+      await sleep(200);
+
+      const leafNodes = sheet.facet.getColLeafNodes();
+
+      expect(leafNodes[2].id).toBe(colIds[displayIndex]);
+    },
+  );
 
   test('should hidden columns correctly', async () => {
     const resetSpy = jest

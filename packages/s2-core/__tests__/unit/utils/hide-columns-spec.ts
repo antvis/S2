@@ -509,5 +509,40 @@ describe('Hide Columns Tests', () => {
         isEqualDisplaySiblingNodeId({ next: null, prev: null }, nextNode.id),
       ).toBeFalsy();
     });
+
+    test('should get is equal display sibling node by direction', () => {
+      expect(
+        isEqualDisplaySiblingNodeId(
+          {
+            next: nextNode,
+            prev: prevNode,
+          },
+          nextNode.id,
+          'next',
+        ),
+      ).toBeTruthy();
+
+      expect(
+        isEqualDisplaySiblingNodeId(
+          {
+            next: nextNode,
+            prev: prevNode,
+          },
+          prevNode.id,
+          'prev',
+        ),
+      ).toBeTruthy();
+
+      expect(
+        isEqualDisplaySiblingNodeId(
+          {
+            next: null,
+            prev: null,
+          },
+          nextNode.id,
+          'next',
+        ),
+      ).toBeFalsy();
+    });
   });
 });

@@ -251,12 +251,17 @@ export const isLastColumnAfterHidden = (
 
 export const getValidDisplaySiblingNode = (
   displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
-) => displaySiblingNode?.next || displaySiblingNode?.prev;
+  direction?: 'prev' | 'next',
+) =>
+  direction
+    ? displaySiblingNode?.[direction]
+    : displaySiblingNode?.next || displaySiblingNode?.prev;
 
 export const getValidDisplaySiblingNodeId = (
   displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+  direction?: 'prev' | 'next',
 ) => {
-  const node = getValidDisplaySiblingNode(displaySiblingNode);
+  const node = getValidDisplaySiblingNode(displaySiblingNode, direction);
 
   return node?.id;
 };
@@ -264,4 +269,5 @@ export const getValidDisplaySiblingNodeId = (
 export const isEqualDisplaySiblingNodeId = (
   displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
   nodeId: string,
-) => getValidDisplaySiblingNodeId(displaySiblingNode) === nodeId;
+  direction?: 'prev' | 'next',
+) => getValidDisplaySiblingNodeId(displaySiblingNode, direction) === nodeId;
