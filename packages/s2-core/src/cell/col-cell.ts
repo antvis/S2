@@ -470,7 +470,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   }
 
   protected hasHiddenColumnCell() {
-    const { interaction, tooltip } = this.spreadsheet.options;
+    const { interaction } = this.spreadsheet.options;
 
     const hiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
@@ -479,8 +479,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
     if (
       isEmpty(hiddenColumnsDetail) ||
-      isEmpty(interaction?.hiddenColumnFields) ||
-      !tooltip?.operation?.hiddenColumns
+      isEmpty(interaction?.hiddenColumnFields)
     ) {
       return false;
     }
