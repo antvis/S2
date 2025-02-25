@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.2.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.7...@antv/s2-react-v2.2.0) (2025-02-25)
+
+
+### Features
+
+* 新增隐藏列展开按钮hover事件 ([#3105](https://github.com/antvis/S2/issues/3105)) ([89d4b85](https://github.com/antvis/S2/commit/89d4b851009b5c54dee5ced61c6130e871b4c8c6))
+
 # [@antv/s2-react-v2.1.7](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.6...@antv/s2-react-v2.1.7) (2025-01-17)
 
 
