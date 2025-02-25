@@ -142,6 +142,11 @@ export interface EmitterType {
     expandedNode: Node,
     hideDirection: 'prev' | 'next',
   ) => void;
+  [S2Event.COL_CELL_EXPAND_ICON_HOVER]: (data: {
+    event: CanvasEvent;
+    meta: Node;
+    hiddenColumns: Node[];
+  }) => void;
   [S2Event.COL_CELL_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],

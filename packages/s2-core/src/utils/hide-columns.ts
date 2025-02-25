@@ -1,4 +1,4 @@
-import { compact, get, isEmpty, isEqual, last, uniq } from 'lodash';
+import { compact, get, isEmpty, isEqual, last, sortBy, uniq } from 'lodash';
 import { NODE_ID_SEPARATOR, S2Event } from '../common/constant';
 import type { HiddenColumnsInfo } from '../common/interface/store';
 import type { Node } from '../facet/layout/node';
@@ -271,3 +271,44 @@ export const isEqualDisplaySiblingNodeId = (
   nodeId: string,
   direction?: 'prev' | 'next',
 ) => getValidDisplaySiblingNodeId(displaySiblingNode, direction) === nodeId;
+
+export const getHiddenColumnContinuousSiblingNodes = (
+  spreadsheet: SpreadSheet,
+  nodeId: string,
+  hideDirection: 'prev' | 'next',
+) => {
+  const continuousSiblingNodes = [];
+
+  const hiddenColumnFields =
+    spreadsheet.options.interaction?.hiddenColumnFields || [];
+
+  const hiddenColumnNodes = getHiddenColumnNodes(
+    spreadsheet,
+    hiddenColumnFields,
+  );
+
+  const hiddenColumnNodesMap = new Map(
+    hiddenColumnNodes.map((node) => [node.id, node]),
+  );
+
+  const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
+  const step = hideDirection === 'prev' ? 1 : -1;
+  const nodeIndex = initColLeafNodes.findIndex((node) => node.id === nodeId);
+  const startIndex = nodeIndex + step;
+
+  for (let i = startIndex; i < initColLeafNodes.length; i += step) {
+    const currentNode = initColLeafNodes[i];
+
+    if (!currentNode) {
+      break;
+    }
+
+    if (hiddenColumnNodesMap.has(currentNode?.id)) {
+      continuousSiblingNodes.push(currentNode);
+    } else {
+      break;
+    }
+  }
+
+  return sortBy(continuousSiblingNodes, 'colIndex');
+};
