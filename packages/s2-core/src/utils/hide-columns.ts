@@ -292,19 +292,16 @@ export const getHiddenColumnContinuousSiblingNodes = (
   );
 
   const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
-
-  const indexDirection = hideDirection === 'prev' ? 1 : -1;
-
+  const step = hideDirection === 'prev' ? 1 : -1;
   const nodeIndex = initColLeafNodes.findIndex((node) => node.id === nodeId);
+  const startIndex = nodeIndex + step;
 
-  const nextNodeIndex = nodeIndex + indexDirection;
-
-  for (
-    let i = nextNodeIndex;
-    i < initColLeafNodes.length;
-    i += indexDirection
-  ) {
+  for (let i = startIndex; i < initColLeafNodes.length; i += step) {
     const currentNode = initColLeafNodes[i];
+
+    if (!currentNode) {
+      break;
+    }
 
     if (hiddenColumnNodesMap.has(currentNode?.id)) {
       continuousSiblingNodes.push(currentNode);
