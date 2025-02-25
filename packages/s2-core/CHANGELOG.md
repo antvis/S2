@@ -1,3 +1,16 @@
+# [@antv/s2-v2.2.0](https://github.com/antvis/S2/compare/@antv/s2-v2.1.12...@antv/s2-v2.2.0) (2025-02-25)
+
+
+### Bug Fixes
+
+* 修复前后节点都被隐藏的尾列展开icon位置异常和展开节点异常 ([#3103](https://github.com/antvis/S2/issues/3103)) ([556a66c](https://github.com/antvis/S2/commit/556a66ce856510ec026594f241d8d0bd560724c8))
+* 修复透视表尾列隐藏后的展开icon位置异常 ([#3102](https://github.com/antvis/S2/issues/3102)) ([af6a95d](https://github.com/antvis/S2/commit/af6a95d41c929f7826911c76b8bbad27f08ceb17))
+
+
+### Features
+
+* 新增隐藏列展开按钮hover事件 ([#3105](https://github.com/antvis/S2/issues/3105)) ([89d4b85](https://github.com/antvis/S2/commit/89d4b851009b5c54dee5ced61c6130e871b4c8c6))
+
 # [@antv/s2-v2.1.12](https://github.com/antvis/S2/compare/@antv/s2-v2.1.11...@antv/s2-v2.1.12) (2025-02-12)
 
 
