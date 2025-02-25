@@ -561,6 +561,43 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       );
     });
 
+    test('should render expanded icon correctly when use hideColumns', async () => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+
+      sheet.setOptions({
+        tooltip: {
+          hiddenColumns: false,
+        },
+      });
+
+      await sheet.render();
+
+      const colIds = [
+        'root[&]家具[&]桌子[&]number',
+        'root[&]家具[&]沙发[&]number',
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]办公用品[&]纸张[&]number',
+      ];
+
+      await sheet.interaction.hideColumns([colIds[2]]);
+
+      const leafNodes = sheet.facet.getColLeafNodes();
+      const node = leafNodes[2];
+      const icon = node.belongsCell.children.find(
+        (item) => item.cfg?.name === 'ExpandColIcon',
+      ).cfg;
+      const { width, x } = icon;
+
+      expect(x).toBe(node.x - width / 2);
+    });
+
     test('should hide columns for multiple columns', async () => {
       const hiddenColumns = ['root[&]a-1[&]a-1-1[&]measure-1'];
 
