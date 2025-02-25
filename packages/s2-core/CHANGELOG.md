@@ -1,3 +1,10 @@
+# [@antv/s2-v2.2.1](https://github.com/antvis/S2/compare/@antv/s2-v2.2.0...@antv/s2-v2.2.1) (2025-02-25)
+
+
+### Bug Fixes
+
+* 修复调用hideColumns方法时，展开icon未透出 ([#3107](https://github.com/antvis/S2/issues/3107)) ([26fa6fb](https://github.com/antvis/S2/commit/26fa6fbf92edd892e575dd40c58478a56460c0cb))
+
 # [@antv/s2-v2.2.0](https://github.com/antvis/S2/compare/@antv/s2-v2.1.12...@antv/s2-v2.2.0) (2025-02-25)
 
 
