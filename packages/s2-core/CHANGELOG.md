@@ -1,3 +1,10 @@
+# [@antv/s2-v2.2.2](https://github.com/antvis/S2/compare/@antv/s2-v2.2.1...@antv/s2-v2.2.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* 在ios 14.8.1中正则前瞻和后顾存在兼容问题 ([#3109](https://github.com/antvis/S2/issues/3109)) ([32e56ea](https://github.com/antvis/S2/commit/32e56ea682e11874aa4ff01d4061bc270e3f012f))
+
 # [@antv/s2-v2.2.1](https://github.com/antvis/S2/compare/@antv/s2-v2.2.0...@antv/s2-v2.2.1) (2025-02-25)
 
 
