@@ -8,6 +8,7 @@ import {
   getHiddenColumnDisplaySiblingNode,
   getHiddenColumnNodes,
   getHiddenColumnsThunkGroup,
+  getSameHiddenGroupIndex,
   getValidDisplaySiblingNode,
   getValidDisplaySiblingNodeId,
   hideColumns,
@@ -565,5 +566,26 @@ describe('Hide Columns Tests', () => {
         'prev',
       ).map((item) => item.id),
     ).toEqual(['id-4']);
+  });
+
+  test('should return column index correctly', () => {
+    expect(
+      getSameHiddenGroupIndex({ hideColumnNodes: [{ id: 'b' }] }, [
+        { hideColumnNodes: [{ id: 'a' }] },
+        { hideColumnNodes: [{ id: 'b' }, { id: 'c' }] },
+      ]),
+    ).toBe(1);
+    expect(
+      getSameHiddenGroupIndex({ hideColumnNodes: [{ id: 'b' }, { id: 'c' }] }, [
+        { hideColumnNodes: [{ id: 'a' }] },
+        { hideColumnNodes: [{ id: 'b' }] },
+      ]),
+    ).toBe(1);
+    expect(
+      getSameHiddenGroupIndex({ hideColumnNodes: [{ id: 'c' }] }, [
+        { hideColumnNodes: [{ id: 'a' }] },
+        { hideColumnNodes: [{ id: 'b' }] },
+      ]),
+    ).toBe(-1);
   });
 });
