@@ -753,6 +753,53 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       matchCellStyleSnapshot();
     });
+
+    test('should render Col Height correct after hide Sample Nodes', async () => {
+      const cellTextWordWrapStyle: CellTextWordWrapStyle = {
+        heightByField: null,
+        height: 30,
+        maxLines: 10,
+        textOverflow: 'ellipsis',
+        wordWrap: true,
+      };
+
+      s2.setOptions({
+        width: 1000,
+        height: 480,
+        seriesNumber: {
+          enable: true,
+          text: '序号序号序号序号序号序号',
+        },
+        tooltip: {
+          enable: true,
+          operation: {
+            // 开启手动隐藏, 叶子节点有效
+            hiddenColumns: true,
+          },
+        },
+        style: {
+          seriesNumberCell: cellTextWordWrapStyle,
+          colCell: cellTextWordWrapStyle,
+          cornerCell: cellTextWordWrapStyle,
+          rowCell: {
+            ...cellTextWordWrapStyle,
+            height: 50,
+          },
+        },
+      });
+      await s2.render(false);
+      // 隐藏前两列，即所谓“采样节点”
+      await s2.interaction.hideColumns(
+        s2.facet
+          .getLayoutResult()
+          .colLeafNodes.map((node) => node.id)
+          .slice(0, 2),
+      );
+      // 每个列头节点的高度都正常
+      expect(
+        s2.facet.getLayoutResult().colNodes.every((node) => node.height <= 64),
+      ).toBe(true);
+    });
   });
 
   describe('TableSheet', () => {
@@ -1417,53 +1464,6 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       const actualText2 = tableSheet.facet.getDataCells()[0].getActualText();
 
       expect(actualText1).toEqual(actualText2);
-    });
-
-    test('should render Col Height correct after hide Sample Nodes', async () => {
-      const cellTextWordWrapStyle: CellTextWordWrapStyle = {
-        heightByField: null,
-        height: 30,
-        maxLines: 10,
-        textOverflow: 'ellipsis',
-        wordWrap: true,
-      };
-
-      s2.setOptions({
-        width: 1000,
-        height: 480,
-        seriesNumber: {
-          enable: true,
-          text: '序号序号序号序号序号序号',
-        },
-        tooltip: {
-          enable: true,
-          operation: {
-            // 开启手动隐藏, 叶子节点有效
-            hiddenColumns: true,
-          },
-        },
-        style: {
-          seriesNumberCell: cellTextWordWrapStyle,
-          colCell: cellTextWordWrapStyle,
-          cornerCell: cellTextWordWrapStyle,
-          rowCell: {
-            ...cellTextWordWrapStyle,
-            height: 50,
-          },
-        },
-      });
-      await s2.render(false);
-      // 隐藏前两列，即所谓“采样节点”
-      await s2.interaction.hideColumns(
-        s2.facet
-          .getLayoutResult()
-          .colLeafNodes.map((node) => node.id)
-          .slice(0, 2),
-      );
-      // 每个列头节点的高度都正常
-      expect(
-        s2.facet.getLayoutResult().colNodes.every((node) => node.height <= 64),
-      ).toBe(true);
     });
   });
 });
