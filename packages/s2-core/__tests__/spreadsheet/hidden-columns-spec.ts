@@ -1,6 +1,7 @@
 import type { HiddenColumnsInfo, S2DataConfig, S2Options } from '@/common';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { difference, pick } from 'lodash';
+import { difference, merge, pick } from 'lodash';
+import * as mockPivotMultiDataConfig from 'tests/data/mock-dataset-multi-measure.json';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
@@ -559,6 +560,60 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(leafNodes[0].belongsCell.rightIconPosition.x).toEqual(
         leafNodes[0].width - expandIconWidth / 2 + borderWidth,
       );
+    });
+
+    test('should hide column correctly when their changes', async () => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+
+      sheet.setDataCfg(mockPivotMultiDataConfig);
+
+      await sheet.render();
+
+      const columnFields = mockPivotMultiDataConfig.fields.values;
+
+      const colIds = [
+        'root[&]家具[&]桌子[&]number',
+        'root[&]家具[&]桌子[&]money',
+        'root[&]家具[&]桌子[&]price',
+        'root[&]家具[&]桌子[&]count',
+        'root[&]家具[&]桌子[&]gdp',
+      ];
+
+      await sheet.interaction.hideColumns([colIds[3]]);
+      await sheet.interaction.hideColumns([colIds[1]]);
+
+      sheet.setDataCfg(
+        merge({}, sheet.dataCfg, {
+          fields: {
+            values: [
+              columnFields[3],
+              columnFields[2],
+              columnFields[1],
+              columnFields[4],
+            ],
+          },
+        }),
+      );
+      await sheet.render();
+      const getInitColIndexLeafNodes = sheet.facet.getInitColIndexLeafNodes();
+
+      expect(
+        getInitColIndexLeafNodes
+          .filter((node) => node.colIndex === -1)
+          .map((node) => node.id),
+      ).toEqual([colIds[3], colIds[1]]);
+      expect(
+        getInitColIndexLeafNodes
+          .filter((node) => [colIds[3], colIds[1]].includes(node.id))
+          .map((node) => node.id),
+      ).toEqual([colIds[3], colIds[1]]);
     });
 
     test('should render expanded icon correctly when use hideColumns', async () => {
