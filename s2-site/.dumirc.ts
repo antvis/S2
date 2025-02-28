@@ -23,6 +23,8 @@ export default defineConfig({
     isAntVSite: false, // 是否是 AntV 的大官网
     footerTheme: 'light', // 白色 底部主题
     siteUrl: 'https://antv.antgroup.com', // 官网地址
+    sitePackagePath: '/s2-site', // 官网子包所在路径
+    feedback: true, // 开启文档用户反馈
     githubUrl: repository.url, // GitHub 地址
     showSearch: true, // 是否显示搜索框
     showGithubCorner: true, // 是否显示头部的 GitHub icon
