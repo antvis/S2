@@ -516,6 +516,11 @@ export abstract class BaseFacet {
     }
 
     const maxTextWidth = Math.ceil(cell.getMaxTextWidth());
+
+    if (maxTextWidth <= 0 && cell.cellType === CellType.COL_CELL) {
+      return defaultHeight;
+    }
+
     // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
     const cacheKey = `${size(fieldValue)}${NODE_ID_SEPARATOR}${maxTextWidth}`;
     const cacheHeight = this.textWrapNodeHeightCache.get(cacheKey);

@@ -130,15 +130,13 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       !isGrandTotals &&
       !parentNode.isGrandTotals &&
       !parentNode.isSubTotals &&
-      !node.isSubTotals
+      !node.isSubTotals &&
+      !hiddenColumnsInfo
     ) {
       hierarchy.sampleNodesForAllLevels.push(node);
       hierarchy.maxLevel = level;
       // 如果当前是隐藏节点, 则采样其兄弟节点
-      hierarchy.sampleNodeForLastLevel = hiddenColumnsInfo
-        ? hiddenColumnsInfo?.displaySiblingNode?.next ||
-          hiddenColumnsInfo?.displaySiblingNode?.prev
-        : node;
+      hierarchy.sampleNodeForLastLevel = node;
     }
 
     const isLeafNode = isLeaf || isCollapsed || !expandCurrentNode;
