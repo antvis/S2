@@ -1,3 +1,11 @@
+# [@antv/s2-v2.2.3](https://github.com/antvis/S2/compare/@antv/s2-v2.2.2...@antv/s2-v2.2.3) (2025-02-28)
+
+
+### Bug Fixes
+
+* 修复隐藏列后变更列顺序，隐藏列展开异常 ([#3112](https://github.com/antvis/S2/issues/3112)) ([eb06cf7](https://github.com/antvis/S2/commit/eb06cf7e40469440209ab3e9a8aaf74b26186fc8))
+* 列头换行，隐藏采样节点后，列头高度异常 ([#3114](https://github.com/antvis/S2/issues/3114)) ([0c5d5b8](https://github.com/antvis/S2/commit/0c5d5b8cb0bbb887413a3d52b97c670889b79f40))
+
 # [@antv/s2-v2.2.2](https://github.com/antvis/S2/compare/@antv/s2-v2.2.1...@antv/s2-v2.2.2) (2025-02-26)
 
 
