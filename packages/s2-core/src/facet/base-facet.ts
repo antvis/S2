@@ -2444,6 +2444,10 @@ export abstract class BaseFacet {
     return cells.filter((cell) => cellIds.includes(cell.getMeta().id));
   }
 
+  public getInitColIndexLeafNodes(): Node[] {
+    return this.layoutResult.colsHierarchy.getIndexNodes() || [];
+  }
+
   public getInitColLeafNodes(): Node[] {
     return this.spreadsheet.store.get('initColLeafNodes', [])!;
   }

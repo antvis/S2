@@ -20,7 +20,7 @@ export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): Node[] => {
-  const colNodes = spreadsheet.facet.getInitColLeafNodes();
+  const colNodes = spreadsheet.facet.getInitColIndexLeafNodes();
 
   return compact(
     hiddenColumnFields.map((field) => {
@@ -49,18 +49,18 @@ export const getHiddenColumnDisplaySiblingNode = (
     };
   }
 
-  const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
+  const initColLeafNodes = spreadsheet.facet.getInitColIndexLeafNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
     hiddenColumnFields,
-  ).map((node) => node?.colIndex);
+  ).map((node) => initColLeafNodes.findIndex((item) => item.id === node.id));
   const lastHiddenColumnIndex = Math.max(...hiddenColumnIndexes);
   const firstHiddenColumnIndex = Math.min(...hiddenColumnIndexes);
   const nextSiblingNode = initColLeafNodes.find(
-    (node) => node.colIndex === lastHiddenColumnIndex + 1,
+    (node, index) => index === lastHiddenColumnIndex + 1,
   );
   const prevSiblingNode = initColLeafNodes.find(
-    (node) => node.colIndex === firstHiddenColumnIndex - 1,
+    (node, index) => index === firstHiddenColumnIndex - 1,
   );
 
   return {
@@ -104,6 +104,24 @@ export const getHiddenColumnsThunkGroup = (
 
     return result;
   }, []);
+};
+
+/**
+ * @name 获取相同隐藏组的索引
+ * 原始列: [a, b, c, d, e, f, g, i]
+ * 隐藏部分列: [[a, b], c, [d], e, f, [g], i]
+ * 变换列头顺序后: [[a], e, [b], c, f, [d, g], i]
+ * 也就是说，变换列头顺序后重新分组，本轮遍历时和列头变换顺序之前的隐藏组做对比，只要有一项是相同的, 那么就属于同一个隐藏组，需要进行替换，如 [a, b] => [a], 剩下的 b ，在本轮遍历时就不会有相同组了，会重新添加 [b]，本轮的[d, g]分组会找到上一次的 [d] 分组，并且替换
+ */
+export const getSameHiddenGroupIndex = (
+  currentHiddenColumnsInfo: HiddenColumnsInfo,
+  lastHiddenColumnDetail: HiddenColumnsInfo[],
+) => {
+  return lastHiddenColumnDetail.findIndex((item) =>
+    currentHiddenColumnsInfo.hideColumnNodes.some((node) =>
+      item.hideColumnNodes?.find((hiddenNode) => hiddenNode.id === node.id),
+    ),
+  );
 };
 
 /**
@@ -176,10 +194,24 @@ export const hideColumns = async (
     displaySiblingNode,
   };
 
-  const hiddenColumnsDetail: HiddenColumnsInfo[] = [
-    ...lastHiddenColumnDetail,
+  const index = getSameHiddenGroupIndex(
     currentHiddenColumnsInfo,
-  ];
+    lastHiddenColumnDetail,
+  );
+
+  let hiddenColumnsDetail = [];
+
+  if (index !== -1) {
+    hiddenColumnsDetail = lastHiddenColumnDetail.map((item, i) => {
+      if (i === index) {
+        return currentHiddenColumnsInfo;
+      }
+
+      return item;
+    });
+  } else {
+    hiddenColumnsDetail = [...lastHiddenColumnDetail, currentHiddenColumnsInfo];
+  }
 
   spreadsheet.emit(
     S2Event.COL_CELL_HIDDEN,
@@ -201,7 +233,7 @@ export const getColumns = (spreadsheet: SpreadSheet) => {
     return columns;
   }
 
-  return spreadsheet.facet.getInitColLeafNodes().map(({ id }) => id);
+  return spreadsheet.facet.getInitColIndexLeafNodes().map(({ id }) => id);
 };
 
 /**
@@ -240,7 +272,7 @@ export const isLastColumnAfterHidden = (
   columnField: string,
 ) => {
   const columnLeafNodes = spreadsheet.facet.getColLeafNodes();
-  const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
+  const initColLeafNodes = spreadsheet.facet.getInitColIndexLeafNodes();
   const fieldKey = getHiddenColumnFieldKey(columnField);
 
   return (
@@ -291,7 +323,7 @@ export const getHiddenColumnContinuousSiblingNodes = (
     hiddenColumnNodes.map((node) => [node.id, node]),
   );
 
-  const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
+  const initColLeafNodes = spreadsheet.facet.getInitColIndexLeafNodes();
   const step = hideDirection === 'prev' ? 1 : -1;
   const nodeIndex = initColLeafNodes.findIndex((node) => node.id === nodeId);
   const startIndex = nodeIndex + step;
