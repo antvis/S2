@@ -318,15 +318,15 @@ export default defineConfig({
     announcement: {
       // icon: 'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
       title: {
-        zh: '🎉 S2 2.0 正式版现已发布! 文档焕新升级, 原 1.x 已停止维护, 官网迁移至 https://s2-v1.antv.antgroup.com',
-        en: '🎉 S2 2.0 Stable Release is now available! English document is WIP, see 1.x docs: https://s2-v1.antv.antgroup.com',
+        zh: '参与 AntV 文档体验问卷，助力打造更友好的开发者文档，有机会赢取 AntV 限定周边！👉',
+        en: 'Join in the AntV Documentation Experience Survey to help us create more developer-friendly documentation, and stand a chance to win exclusive AntV merchandise! 👉',
       },
       link: {
         text: {
-          zh: '查看升级指南',
-          en: 'Upgrade Guide',
+          zh: '立即填写',
+          en: 'Fill in now',
         },
-        url: '/manual/migration-v2',
+        url: 'https://www.wjx.cn/vm/Pf0XYWM.aspx#',
       },
     },
     /** 首页技术栈介绍 */
