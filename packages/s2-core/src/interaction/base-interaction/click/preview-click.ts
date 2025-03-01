@@ -32,6 +32,8 @@ const createPreviewOverlay = (
     ...overlayStyle,
   });
 
+  overlay.className = 's2-preview-overlay';
+
   return overlay;
 };
 
