@@ -1,3 +1,38 @@
+# [@antv/s2-v2.2.3](https://github.com/antvis/S2/compare/@antv/s2-v2.2.2...@antv/s2-v2.2.3) (2025-02-28)
+
+
+### Bug Fixes
+
+* 修复隐藏列后变更列顺序，隐藏列展开异常 ([#3112](https://github.com/antvis/S2/issues/3112)) ([eb06cf7](https://github.com/antvis/S2/commit/eb06cf7e40469440209ab3e9a8aaf74b26186fc8))
+* 列头换行，隐藏采样节点后，列头高度异常 ([#3114](https://github.com/antvis/S2/issues/3114)) ([0c5d5b8](https://github.com/antvis/S2/commit/0c5d5b8cb0bbb887413a3d52b97c670889b79f40))
+
+# [@antv/s2-v2.2.2](https://github.com/antvis/S2/compare/@antv/s2-v2.2.1...@antv/s2-v2.2.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* 在ios 14.8.1中正则前瞻和后顾存在兼容问题 ([#3109](https://github.com/antvis/S2/issues/3109)) ([32e56ea](https://github.com/antvis/S2/commit/32e56ea682e11874aa4ff01d4061bc270e3f012f))
+
+# [@antv/s2-v2.2.1](https://github.com/antvis/S2/compare/@antv/s2-v2.2.0...@antv/s2-v2.2.1) (2025-02-25)
+
+
+### Bug Fixes
+
+* 修复调用hideColumns方法时，展开icon未透出 ([#3107](https://github.com/antvis/S2/issues/3107)) ([26fa6fb](https://github.com/antvis/S2/commit/26fa6fbf92edd892e575dd40c58478a56460c0cb))
+
+# [@antv/s2-v2.2.0](https://github.com/antvis/S2/compare/@antv/s2-v2.1.12...@antv/s2-v2.2.0) (2025-02-25)
+
+
+### Bug Fixes
+
+* 修复前后节点都被隐藏的尾列展开icon位置异常和展开节点异常 ([#3103](https://github.com/antvis/S2/issues/3103)) ([556a66c](https://github.com/antvis/S2/commit/556a66ce856510ec026594f241d8d0bd560724c8))
+* 修复透视表尾列隐藏后的展开icon位置异常 ([#3102](https://github.com/antvis/S2/issues/3102)) ([af6a95d](https://github.com/antvis/S2/commit/af6a95d41c929f7826911c76b8bbad27f08ceb17))
+
+
+### Features
+
+* 新增隐藏列展开按钮hover事件 ([#3105](https://github.com/antvis/S2/issues/3105)) ([89d4b85](https://github.com/antvis/S2/commit/89d4b851009b5c54dee5ced61c6130e871b4c8c6))
+
 # [@antv/s2-v2.1.12](https://github.com/antvis/S2/compare/@antv/s2-v2.1.11...@antv/s2-v2.1.12) (2025-02-12)
 
 

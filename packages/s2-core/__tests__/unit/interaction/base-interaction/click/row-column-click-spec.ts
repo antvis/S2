@@ -15,8 +15,14 @@ import type { Node } from '@/facet/layout/node';
 import type { GEvent } from '@/index';
 import { RowColumnClick } from '@/interaction/base-interaction/click';
 import type { SpreadSheet } from '@/sheet-type';
-import { omit } from 'lodash';
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import { merge, omit } from 'lodash';
+import * as mockPivotMultiDataConfig from 'tests/data/mock-dataset-multi-measure.json';
+import {
+  createFakeSpreadSheet,
+  createMockCellInfo,
+  createPivotSheet,
+  sleep,
+} from 'tests/util/helpers';
 import { CellType } from '../../../../../src';
 
 jest.mock('@/interaction/event-controller');
@@ -68,6 +74,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     s2.facet.getInitColLeafNodes = () => initColumnNodes as Node[];
     s2.facet.getColNodes = () => initColumnNodes as Node[];
     s2.facet.getColLeafNodes = () => initColumnNodes as Node[];
+    s2.facet.getInitColIndexLeafNodes = () => initColumnNodes as Node[];
     s2.options = {
       interaction: {
         hiddenColumnFields: ['a'],
@@ -329,6 +336,126 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     });
     // rerender
     expect(s2.render).toHaveBeenCalled();
+  });
+
+  test.each([
+    { direction: 'prev', displayIndex: 3 },
+    { direction: 'next', displayIndex: 2 },
+  ])(
+    'should expand columns correctly when last column is hidden and third last column is hidden and second last column o% is expanded',
+    async ({ direction, displayIndex }) => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+
+      await sheet.render();
+
+      const colIds = [
+        'root[&]家具[&]桌子[&]number',
+        'root[&]家具[&]沙发[&]number',
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]办公用品[&]纸张[&]number',
+      ];
+
+      await sheet.interaction.hideColumns([colIds[3]]);
+      await sheet.interaction.hideColumns([colIds[1]]);
+
+      sheet.emit(S2Event.COL_CELL_EXPANDED, { id: colIds[2] }, direction);
+
+      await sleep(200);
+
+      const leafNodes = sheet.facet.getColLeafNodes();
+
+      expect(leafNodes[2].id).toBe(colIds[displayIndex]);
+    },
+  );
+
+  test('should expand each column in order', async () => {
+    const sheet = createPivotSheet(
+      {
+        interaction: {
+          hiddenColumnFields: [],
+        },
+      },
+      { useSimpleData: false },
+    );
+
+    await sheet.render();
+
+    const colIds = [
+      'root[&]家具[&]桌子[&]number',
+      'root[&]家具[&]沙发[&]number',
+      'root[&]办公用品[&]笔[&]number',
+      'root[&]办公用品[&]纸张[&]number',
+    ];
+
+    await sheet.interaction.hideColumns([colIds[0]]);
+    await sheet.interaction.hideColumns([colIds[1]]);
+    await sheet.interaction.hideColumns([colIds[2]]);
+    sheet.emit(S2Event.COL_CELL_EXPANDED, { id: colIds[3] }, 'next');
+    await sleep(200);
+    expect(sheet.facet.getColLeafNodes().length).toBe(2);
+    sheet.emit(S2Event.COL_CELL_EXPANDED, { id: colIds[2] }, 'next');
+    await sleep(200);
+    expect(sheet.facet.getColLeafNodes().length).toBe(3);
+    sheet.emit(S2Event.COL_CELL_EXPANDED, { id: colIds[1] }, 'next');
+    await sleep(200);
+    expect(sheet.facet.getColLeafNodes().length).toBe(4);
+  });
+
+  test('should expand column correctly when their changes', async () => {
+    const sheet = createPivotSheet(
+      {
+        interaction: {
+          hiddenColumnFields: [],
+        },
+      },
+      { useSimpleData: false },
+    );
+
+    sheet.setDataCfg(mockPivotMultiDataConfig);
+
+    await sheet.render();
+
+    const columnFields = mockPivotMultiDataConfig.fields.values;
+
+    const colIds = [
+      'root[&]家具[&]桌子[&]number',
+      'root[&]家具[&]桌子[&]money',
+      'root[&]家具[&]桌子[&]price',
+      'root[&]家具[&]桌子[&]count',
+      'root[&]家具[&]桌子[&]gdp',
+    ];
+
+    await sheet.interaction.hideColumns([colIds[3]]);
+    await sheet.interaction.hideColumns([colIds[1]]);
+
+    sheet.setDataCfg(
+      merge({}, sheet.dataCfg, {
+        fields: {
+          values: [
+            columnFields[3],
+            columnFields[2],
+            columnFields[1],
+            columnFields[4],
+          ],
+        },
+      }),
+    );
+    await sheet.render();
+    sheet.emit(S2Event.COL_CELL_EXPANDED, { id: colIds[2] }, 'next');
+    await sleep(200);
+    expect(sheet.facet.getColLeafNodes().length).toBe(3);
+    expect(sheet.facet.getColLeafNodes()[0].id).toBe(colIds[3]);
+    sheet.emit(S2Event.COL_CELL_EXPANDED, { id: colIds[4] }, 'next');
+    await sleep(200);
+    expect(sheet.facet.getColLeafNodes().length).toBe(4);
+    expect(sheet.facet.getColLeafNodes()[2].id).toBe(colIds[1]);
   });
 
   test('should hidden columns correctly', async () => {

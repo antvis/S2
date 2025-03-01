@@ -75,6 +75,11 @@ export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
   useCellEvent(S2Event.COL_CELL_MOUSE_UP, props.onColCellMouseUp, s2);
   useCellEvent(S2Event.COL_CELL_MOUSE_MOVE, props.onColCellMouseMove, s2);
   useS2Event(S2Event.COL_CELL_EXPANDED, props.onColCellExpanded, s2);
+  useS2Event(
+    S2Event.COL_CELL_EXPAND_ICON_HOVER,
+    props.onColCellExpandIconHover,
+    s2,
+  );
   useS2Event(S2Event.COL_CELL_HIDDEN, props.onColCellHidden, s2);
   useS2Event(S2Event.COL_CELL_RENDER, props.onColCellRender, s2);
   useS2Event(S2Event.COL_CELL_SELECTED, props.onColCellSelected, s2);

@@ -180,6 +180,7 @@ s2.interaction.hideColumns(hiddenColumnFields)
 ## 获取隐藏列头数据
 
 可通过 `S2Event` 透出的 `COL_CELL_EXPANDED` 和 `COL_CELL_HIDDEN` 分别监听列头的展开和隐藏
+可通过 `S2Event` 透出的 `COL_CELL_EXPAND_ICON_HOVER` 获取当前位置的隐藏列
 
 ```ts
 import { S2Event } from '@antv/s2'
@@ -196,6 +197,13 @@ s2.on(
     console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
   },
 );
+
+s2.on(
+  S2Event.COL_CELL_EXPAND_ICON_HOVER,
+  ({event, meta, hiddenColumns}) => {
+    console.log('当前位置隐藏列', hiddenColumns)
+  }
+)
 ```
 
 也可以访问存储在 [`store`](/api/basic-class/store) 的 `hiddenColumnsDetail` 主动获取

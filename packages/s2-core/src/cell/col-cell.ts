@@ -1,4 +1,4 @@
-import type { Group, PointLike } from '@antv/g';
+import type { FederatedPointerEvent, Group, PointLike } from '@antv/g';
 import { isEmpty } from 'lodash';
 import {
   CellType,
@@ -29,6 +29,7 @@ import {
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { renderIcon, renderLine } from '../utils/g-renders';
 import {
+  getHiddenColumnContinuousSiblingNodes,
   isEqualDisplaySiblingNodeId,
   isLastColumnAfterHidden,
 } from '../utils/hide-columns';
@@ -469,7 +470,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   }
 
   protected hasHiddenColumnCell() {
-    const { interaction, tooltip } = this.spreadsheet.options;
+    const { interaction } = this.spreadsheet.options;
 
     const hiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
@@ -478,14 +479,17 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
     if (
       isEmpty(hiddenColumnsDetail) ||
-      isEmpty(interaction?.hiddenColumnFields) ||
-      !tooltip?.operation?.hiddenColumns
+      isEmpty(interaction?.hiddenColumnFields)
     ) {
       return false;
     }
 
     return !!hiddenColumnsDetail.find((column) =>
-      isEqualDisplaySiblingNodeId(column?.displaySiblingNode, this.meta.id),
+      isEqualDisplaySiblingNodeId(
+        column?.displaySiblingNode,
+        this.meta.id,
+        this.isLastColumn() ? 'prev' : 'next',
+      ),
     );
   }
 
@@ -541,7 +545,23 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     });
 
     icon.addEventListener('click', () => {
-      this.spreadsheet.emit(S2Event.COL_CELL_EXPANDED, this.meta);
+      this.spreadsheet.emit(
+        S2Event.COL_CELL_EXPANDED,
+        this.meta,
+        isLastColumn ? 'prev' : 'next',
+      );
+    });
+
+    icon.addEventListener('mouseenter', (event: FederatedPointerEvent) => {
+      this.spreadsheet.emit(S2Event.COL_CELL_EXPAND_ICON_HOVER, {
+        event,
+        meta: this.meta,
+        hiddenColumns: getHiddenColumnContinuousSiblingNodes(
+          this.spreadsheet,
+          this.meta.id,
+          isLastColumn ? 'prev' : 'next',
+        ),
+      });
     });
   }
 

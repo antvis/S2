@@ -186,8 +186,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   protected bindTableColExpand() {
-    this.spreadsheet.on(S2Event.COL_CELL_EXPANDED, (node) => {
-      this.handleExpandIconClick(node);
+    this.spreadsheet.on(S2Event.COL_CELL_EXPANDED, (node, hideDirection) => {
+      this.handleExpandIconClick(node, hideDirection);
     });
   }
 
@@ -224,7 +224,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     await hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
   }
 
-  protected async handleExpandIconClick(node: Node) {
+  protected async handleExpandIconClick(
+    node: Node,
+    hideDirection: 'prev' | 'next',
+  ) {
     const lastHiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
       [],
@@ -233,7 +236,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     // 当前单元格的前/后节点都被隐藏时, 会出现两个展开按钮, 优先展开靠右的
     const { hideColumnNodes = [] } =
       findLast(lastHiddenColumnsDetail, ({ displaySiblingNode }) =>
-        isEqualDisplaySiblingNodeId(displaySiblingNode, node.id),
+        isEqualDisplaySiblingNodeId(displaySiblingNode, node.id, hideDirection),
       ) || {};
 
     const { hiddenColumnFields: lastHideColumnFields } =
@@ -249,7 +252,11 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     const hiddenColumnsDetail = lastHiddenColumnsDetail.filter(
       ({ displaySiblingNode }) =>
-        !isEqualDisplaySiblingNodeId(displaySiblingNode, node.id),
+        !isEqualDisplaySiblingNodeId(
+          displaySiblingNode,
+          node.id,
+          hideDirection,
+        ),
     );
 
     this.spreadsheet.setOptions({
@@ -259,6 +266,9 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
     this.spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
     this.spreadsheet.interaction.reset();
-    await this.spreadsheet.render(false);
+    await this.spreadsheet.render({
+      reloadData: false,
+      rebuildHiddenColumnsDetail: false,
+    });
   }
 }

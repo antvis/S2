@@ -60,7 +60,11 @@ export const escapeField = (field: SimpleData): SimpleData => {
   if (/[",\r\n\t]/.test(field)) {
     // 转义双引号 -> 两个双引号
     // 为了兼容直接粘贴纯文本到Excel单元格保持换行的场景，把\n替换成\r\n。但是\r\n不做替换
-    const newField = field.replace(/"/g, '""').replace(/(?<!\r)\n/g, '\r\n');
+    // 在ios 14.8.1中正则前瞻和后顾存在兼容问题
+    const newField = field
+      .replace(/"/g, '""')
+      .replace(/\r\n/g, '\n')
+      .replace(/\n/g, '\r\n');
 
     // 用双引号包裹字段
     return `"${newField}"`;

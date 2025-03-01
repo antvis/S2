@@ -4,9 +4,11 @@ import type { RootInteraction } from '@/interaction/root';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   getColumns,
+  getHiddenColumnContinuousSiblingNodes,
   getHiddenColumnDisplaySiblingNode,
   getHiddenColumnNodes,
   getHiddenColumnsThunkGroup,
+  getSameHiddenGroupIndex,
   getValidDisplaySiblingNode,
   getValidDisplaySiblingNodeId,
   hideColumns,
@@ -36,6 +38,7 @@ describe('Hide Columns Tests', () => {
         getInitColLeafNodes: () => initColumnNodes,
         getColNodes: () => initColumnNodes,
         getColLeafNodes: () => initColumnNodes,
+        getInitColIndexLeafNodes: () => initColumnNodes,
       },
     } as PivotSheet;
 
@@ -53,6 +56,7 @@ describe('Hide Columns Tests', () => {
     );
     mockSpreadSheetInstance.facet = {
       getInitColLeafNodes: () => initColumnNodes as Node[],
+      getInitColIndexLeafNodes: () => initColumnNodes as Node[],
     } as unknown as PivotFacet;
     mockSpreadSheetInstance.render = jest.fn();
     mockSpreadSheetInstance.interaction = {
@@ -68,7 +72,7 @@ describe('Hide Columns Tests', () => {
   });
 
   test('should return empty list when there is not init columns', () => {
-    sheet.facet.getInitColLeafNodes = function fn() {
+    sheet.facet.getInitColIndexLeafNodes = function fn() {
       return [];
     };
     expect(getHiddenColumnNodes(sheet, ['1', '2', '3'])).toEqual([]);
@@ -208,7 +212,7 @@ describe('Hide Columns Tests', () => {
 
   test('should get correct last column when default last column has been hidden', () => {
     // hidden last column
-    sheet.facet.getInitColLeafNodes = () =>
+    sheet.facet.getInitColIndexLeafNodes = () =>
       initColumnNodes.slice(0, -1) as Node[];
     expect(isLastColumnAfterHidden(sheet, '5')).toBeTruthy();
     expect(isLastColumnAfterHidden(sheet, '4')).toBeFalsy();
@@ -509,5 +513,79 @@ describe('Hide Columns Tests', () => {
         isEqualDisplaySiblingNodeId({ next: null, prev: null }, nextNode.id),
       ).toBeFalsy();
     });
+
+    test('should get is equal display sibling node by direction', () => {
+      expect(
+        isEqualDisplaySiblingNodeId(
+          {
+            next: nextNode,
+            prev: prevNode,
+          },
+          nextNode.id,
+          'next',
+        ),
+      ).toBeTruthy();
+
+      expect(
+        isEqualDisplaySiblingNodeId(
+          {
+            next: nextNode,
+            prev: prevNode,
+          },
+          prevNode.id,
+          'prev',
+        ),
+      ).toBeTruthy();
+
+      expect(
+        isEqualDisplaySiblingNodeId(
+          {
+            next: null,
+            prev: null,
+          },
+          nextNode.id,
+          'next',
+        ),
+      ).toBeFalsy();
+    });
+  });
+
+  test('should return continuous column correctly', () => {
+    hideColumns(mockSpreadSheetInstance, ['1', '2', '4']);
+    expect(
+      getHiddenColumnContinuousSiblingNodes(
+        mockSpreadSheetInstance,
+        'id-3',
+        'next',
+      ).map((item) => item.id),
+    ).toEqual(['id-1', 'id-2']);
+    expect(
+      getHiddenColumnContinuousSiblingNodes(
+        mockSpreadSheetInstance,
+        'id-3',
+        'prev',
+      ).map((item) => item.id),
+    ).toEqual(['id-4']);
+  });
+
+  test('should return column index correctly', () => {
+    expect(
+      getSameHiddenGroupIndex({ hideColumnNodes: [{ id: 'b' }] }, [
+        { hideColumnNodes: [{ id: 'a' }] },
+        { hideColumnNodes: [{ id: 'b' }, { id: 'c' }] },
+      ]),
+    ).toBe(1);
+    expect(
+      getSameHiddenGroupIndex({ hideColumnNodes: [{ id: 'b' }, { id: 'c' }] }, [
+        { hideColumnNodes: [{ id: 'a' }] },
+        { hideColumnNodes: [{ id: 'b' }] },
+      ]),
+    ).toBe(1);
+    expect(
+      getSameHiddenGroupIndex({ hideColumnNodes: [{ id: 'c' }] }, [
+        { hideColumnNodes: [{ id: 'a' }] },
+        { hideColumnNodes: [{ id: 'b' }] },
+      ]),
+    ).toBe(-1);
   });
 });

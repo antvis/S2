@@ -138,7 +138,15 @@ export interface EmitterType {
   [S2Event.COL_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.COL_CELL_BRUSH_SELECTION]: (cells: ColCell[]) => void;
-  [S2Event.COL_CELL_EXPANDED]: (expandedNode: Node) => void;
+  [S2Event.COL_CELL_EXPANDED]: (
+    expandedNode: Node,
+    hideDirection: 'prev' | 'next',
+  ) => void;
+  [S2Event.COL_CELL_EXPAND_ICON_HOVER]: (data: {
+    event: CanvasEvent;
+    meta: Node;
+    hiddenColumns: Node[];
+  }) => void;
   [S2Event.COL_CELL_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],

@@ -105,6 +105,11 @@ export interface BaseSheetComponentProps<
   onColCellMouseUp?: (data: TargetCellInfo) => void;
   onColCellMouseMove?: (data: TargetCellInfo) => void;
   onColCellExpanded?: (node: Node) => void;
+  onColCellExpandIconHover?: (data: {
+    event: GEvent;
+    meta: Node;
+    hiddenNodes: Node[];
+  }) => void;
   onColCellHidden?: (data: {
     currentHiddenColumnsInfo: HiddenColumnsInfo;
     hiddenColumnsDetail: HiddenColumnsInfo[];

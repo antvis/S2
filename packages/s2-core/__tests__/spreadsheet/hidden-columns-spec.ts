@@ -1,6 +1,7 @@
 import type { HiddenColumnsInfo, S2DataConfig, S2Options } from '@/common';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { difference, pick } from 'lodash';
+import { difference, merge, pick } from 'lodash';
+import * as mockPivotMultiDataConfig from 'tests/data/mock-dataset-multi-measure.json';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
@@ -525,6 +526,131 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(leafNodes[0].belongsCell.rightIconPosition.x).toEqual(
         leafNodes[0].width - expandIconWidth / 2 + borderWidth,
       );
+    });
+
+    test('should render expanded icon correctly when always hidden last column and third last column', async () => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+
+      await sheet.render();
+
+      const colIds = [
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]家具[&]桌子[&]number',
+        'root[&]办公用品[&]纸张[&]number',
+        'root[&]家具[&]沙发[&]number',
+      ];
+
+      await sheet.interaction.hideColumns([colIds[3]]);
+      await sheet.interaction.hideColumns([colIds[1]]);
+      await sheet.interaction.hideColumns([colIds[2]]);
+
+      const leafNodes = sheet.facet.getColLeafNodes();
+      const borderWidth = 1;
+      const expandIconWidth = 20;
+
+      expect(leafNodes).toHaveLength(1);
+      expect(leafNodes[0].id).toEqual('root[&]办公用品[&]笔[&]number');
+      expect(leafNodes[0].belongsCell.rightIconPosition.x).toEqual(
+        leafNodes[0].width - expandIconWidth / 2 + borderWidth,
+      );
+    });
+
+    test('should hide column correctly when their changes', async () => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+
+      sheet.setDataCfg(mockPivotMultiDataConfig);
+
+      await sheet.render();
+
+      const columnFields = mockPivotMultiDataConfig.fields.values;
+
+      const colIds = [
+        'root[&]家具[&]桌子[&]number',
+        'root[&]家具[&]桌子[&]money',
+        'root[&]家具[&]桌子[&]price',
+        'root[&]家具[&]桌子[&]count',
+        'root[&]家具[&]桌子[&]gdp',
+      ];
+
+      await sheet.interaction.hideColumns([colIds[3]]);
+      await sheet.interaction.hideColumns([colIds[1]]);
+
+      sheet.setDataCfg(
+        merge({}, sheet.dataCfg, {
+          fields: {
+            values: [
+              columnFields[3],
+              columnFields[2],
+              columnFields[1],
+              columnFields[4],
+            ],
+          },
+        }),
+      );
+      await sheet.render();
+      const getInitColIndexLeafNodes = sheet.facet.getInitColIndexLeafNodes();
+
+      expect(
+        getInitColIndexLeafNodes
+          .filter((node) => node.colIndex === -1)
+          .map((node) => node.id),
+      ).toEqual([colIds[3], colIds[1]]);
+      expect(
+        getInitColIndexLeafNodes
+          .filter((node) => [colIds[3], colIds[1]].includes(node.id))
+          .map((node) => node.id),
+      ).toEqual([colIds[3], colIds[1]]);
+    });
+
+    test('should render expanded icon correctly when use hideColumns', async () => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+
+      sheet.setOptions({
+        tooltip: {
+          hiddenColumns: false,
+        },
+      });
+
+      await sheet.render();
+
+      const colIds = [
+        'root[&]家具[&]桌子[&]number',
+        'root[&]家具[&]沙发[&]number',
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]办公用品[&]纸张[&]number',
+      ];
+
+      await sheet.interaction.hideColumns([colIds[2]]);
+
+      const leafNodes = sheet.facet.getColLeafNodes();
+      const node = leafNodes[2];
+      const icon = node.belongsCell.children.find(
+        (item) => item.cfg?.name === 'ExpandColIcon',
+      ).cfg;
+      const { width, x } = icon;
+
+      expect(x).toBe(node.x - width / 2);
     });
 
     test('should hide columns for multiple columns', async () => {
