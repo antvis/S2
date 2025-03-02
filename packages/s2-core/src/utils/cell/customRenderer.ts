@@ -49,6 +49,48 @@ export function asyncDrawImage(
   });
 }
 
+/**
+ * 计算图片最佳缩放尺寸
+ * @param {number} containerWidth 容器宽度
+ * @param {number} containerHeight 容器高度
+ * @param {number} naturalWidth 图片原始宽度
+ * @param {number} naturalHeight 图片原始高度
+ * @returns {{ width: number, height: number }}
+ */
+export function calculateImageSize(
+  containerWidth: number,
+  containerHeight: number,
+  naturalWidth: number,
+  naturalHeight: number,
+): { width: number; height: number } {
+  if (containerWidth <= 0 || containerHeight <= 0) {
+    return {
+      width: 0,
+      height: 0,
+    };
+  }
+
+  if (naturalWidth <= 0 || naturalHeight <= 0) {
+    return {
+      width: containerWidth,
+      height: containerHeight,
+    };
+  }
+
+  // 计算宽高比例限制
+  const widthRatio = containerWidth / naturalWidth;
+  const heightRatio = containerHeight / naturalHeight;
+
+  // 取最小值防止溢出
+  const scale = Math.min(widthRatio, heightRatio);
+
+  // 返回整数尺寸 (避免亚像素模糊)
+  return {
+    width: Math.floor(naturalWidth * scale),
+    height: Math.floor(naturalHeight * scale),
+  };
+}
+
 export async function drawCustomCellRenderer(
   renderer: CustomRendererConfig,
   cell: BaseCell<any>,
@@ -68,12 +110,23 @@ export async function drawCustomCellRenderer(
   switch (renderer.type) {
     case CellRendererType.IMAGE: {
       // 图片加载成功后创建
+      const htmlImageElement = await asyncDrawImage(
+        text,
+        renderer.fallback,
+        renderer.timeout,
+      );
+
       element = new GImage({
         style: {
           x,
           y,
-          keepAspectRatio: true,
-          src: await asyncDrawImage(text, renderer.fallback, renderer.timeout),
+          src: htmlImageElement,
+          ...calculateImageSize(
+            width,
+            height,
+            htmlImageElement.naturalWidth,
+            htmlImageElement.naturalHeight,
+          ),
           ...config,
         },
       });
