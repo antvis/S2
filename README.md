@@ -13,8 +13,8 @@
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img src="https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm" alt="latest version">
   </a>
-   <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
-    <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
+  <a href="https://github.com/antvis/S2/actions/workflows/test-s2.yml" target="_blank">
+    <img src="https://github.com/antvis/S2/actions/workflows/test-s2.yml/badge.svg" alt="ci test status"/>
   </a>
   <a href="https://codecov.io/gh/antvis/S2" target="_blank">
     <img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="test coverage"/>
@@ -52,133 +52,43 @@
 
 S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数据驱动的方式。通过提供底层能力库，基础组件，业务场景组件以及自由扩展的能力，让开发者基于自身场景自由选择，既能开箱即用，又能自由发挥。
 
-## 🏠 官网
-
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
-* [主页](https://s2.antv.antgroup.com/zh)
-* [Demo 示例](https://s2.antv.antgroup.com/zh/examples)
+<p align="center">
+  <a href="https://s2.antv.antgroup.com/zh">简介</a> •
+  <a href="https://s2.antv.antgroup.com/manual/getting-started">快速开始</a> •
+  <a href="https://s2.antv.antgroup.com/zh/examples">图表示例</a> •
+  <a href="https://s2.antv.antgroup.com/playground">在线体验</a>
+</p>
 
 ## ✨ 特性
 
-1. 多维交叉分析：告别单一分析维度，全面拥抱任意维度的自由组合分析。
-2. 高性能：能支持全量百万数据下 `<8s` 渲染，也能通过局部下钻来实现秒级渲染。
-3. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据 hook 流等）。
-4. 开箱即用：提供不同分析场景下开箱即用的 `React`, `Vue3` 版本表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
-5. 可交互：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
+- **多维交叉分析**：告别单一分析维度，全面拥抱任意维度的自由组合分析。
+- **高性能**：能支持全量百万数据下 `<8s` 渲染，也能通过局部下钻来实现秒级渲染。
+- **高扩展性**：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据 hook 流等）。
+- **开箱即用**：提供不同分析场景下开箱即用的 `React`, `Vue3` 版本表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
+- **可交互**：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
 
-## 📦 安装
+## 🔨 快速开始
+
+可以通过 NPM、Yarn 或者 pnpm 等包管理器来安装。
 
 ```bash
-$ npm install @antv/s2 --save
-# yarn add @antv/s2
-# pnpm add @antv/s2
+npm install @antv/s2 --save
 ```
 
-## 🔨 使用
-
-### 1. 数据准备
-
-<details>
-  <summary>s2DataConfig</summary>
-
-```ts
-const s2DataConfig = {
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['type'],
-    values: ['price'],
-  },
-  data: [
-     {
-      province: '浙江',
-      city: '杭州',
-      type: '笔',
-      price: '1',
-    },
-    {
-      province: '浙江',
-      city: '杭州',
-      type: '纸张',
-      price: '2',
-    },
-    {
-      province: '浙江',
-      city: '舟山',
-      type: '笔',
-      price: '17',
-    },
-    {
-      province: '浙江',
-      city: '舟山',
-      type: '纸张',
-      price: '0.5',
-    },
-    {
-      province: '吉林',
-      city: '长春',
-      type: '笔',
-      price: '8',
-    },
-    {
-      province: '吉林',
-      city: '白山',
-      type: '笔',
-      price: '9',
-    },
-    {
-      province: '吉林',
-      city: '长春',
-      type: ' 纸张',
-      price: '3',
-    },
-    {
-      province: '吉林',
-      city: '白山',
-      type: '纸张',
-      price: '1',
-    },
-  ],
-  meta: [
-    {
-      field: 'price',
-      name: '价格',
-    },
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '类别',
-    },
-    {
-      field: 'sub_type',
-      name: '子类别',
-    },
-  ]
-};
+```bash
+yarn add @antv/s2
 ```
 
-</details>
-
-### 2. 配置项准备
-
-```ts
-const s2Options = {
-  width: 600,
-  height: 600,
-}
+```bash
+pnpm add @antv/s2
 ```
 
-### 3. 渲染
+安装成功之后，准备一个用于渲染的 DOM 容器，然后通过 import 导入对应的 S2 API 对象。
 
 ```html
-<div id="container" />
+<div id="container"></div>
 ```
 
 ```ts
@@ -187,7 +97,12 @@ import { PivotSheet } from '@antv/s2';
 async function bootstrap() {
   const container = document.getElementById('container');
 
-  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+  const s2DataConfig = await fetch('https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json').then(r => r.json())
+
+  const s2 = new PivotSheet(container, s2DataConfig, {
+    width: 600,
+    height: 300,
+  });
 
   await s2.render();
 }
@@ -195,11 +110,9 @@ async function bootstrap() {
 bootstrap()
 ```
 
-### 4. 结果
+![result](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*fod3RoX8iRwAAAAAAAAAAAAAemJ7AQ/fmt.avif)
 
-![result](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aTPcT4aKOq4AAAAAAAAAAAAADmJ7AQ/original)
-
-### 📦 版本
+## 📦 版本
 
 | 包名  | 稳定版  | 包大小  | 下载量    |
 | -------- | ------ | --------- | ------ |
@@ -208,7 +121,7 @@ bootstrap()
 | [@antv/s2-react-components](https://github.com/antvis/S2/tree/next/packages/s2-react-components) | ![latest](https://img.shields.io/npm/v/@antv/s2-react-components/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react-components@latest/dist/s2-react-components.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react-components.svg?logo=npm) |
 | [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)（停止维护）| ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/s2-vue.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg?logo=npm)   |
 
-### 🖥️ 兼容环境
+## 🖥️ 兼容环境
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
 | --- |  --- | --- | --- |
@@ -233,10 +146,6 @@ S2 非常需要你的共建，请阅读 [贡献指南](https://s2.antv.antgroup.
 ## 👬 贡献者们
 
 ![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
-
-## 👤 作者
-
-[**@AntV**](https://github.com/orgs/antvis/people)
 
 ## 📄 License
 

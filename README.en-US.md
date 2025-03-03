@@ -14,8 +14,8 @@ A practical visualization library for tabular analysis.
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img src="https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm" alt="latest version">
   </a>
-   <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
-    <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
+  <a href="https://github.com/antvis/S2/actions/workflows/test-s2.yml" target="_blank">
+    <img src="https://github.com/antvis/S2/actions/workflows/test-s2.yml/badge.svg" alt="ci test status"/>
   </a>
   <a href="https://codecov.io/gh/antvis/S2" target="_blank">
     <img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="test coverage"/>
@@ -48,19 +48,20 @@ A practical visualization library for tabular analysis.
     <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg" alt="pr welcome"/>
   <a/>
 </p>
-
 </div>
 
 S2 is a solution in multi-dimensional cross-analysis tables, which provides data-driven analysis table components.
  It supplements multi-dimensional analysis tables in the industry. By providing the core library, essential components,
 demo components and expansion capabilities, it allows developers to use it quickly and freely.
 
-## 🏠 Homepage
+<p align="center">
+  <a href="https://s2.antv.antgroup.com/zh">Homepage</a> •
+  <a href="https://s2.antv.antgroup.com/manual/getting-started">Getting Started</a> •
+  <a href="https://s2.antv.antgroup.com/zh/examples">Examples</a> •
+  <a href="https://s2.antv.antgroup.com/playground">Live DEMO</a>
+</p>
 
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
-
-* [Homepage](https://s2.antv.antgroup.com/en)
-* [Demos](https://s2.antv.antgroup.com/en/examples)
 
 ## ✨ Features
 
@@ -71,118 +72,30 @@ demo components and expansion capabilities, it allows developers to use it quick
  of complex scenes quickly.
 5. High interaction: support rich interaction forms (single selection, circle selection, row selection, column selection, freeze line header, width and height dragging, custom interaction, etc.)
 
-## 📦 Installation
-
-```bash
-$ npm install @antv/s2 --save
-# yarn add @antv/s2
-# pnpm add @antv/s2
-```
-
 ## 🔨 Getting Started
 
-### 1. Data Preparation
+可以通过 NPM、Yarn 或者 pnpm 等包管理器来安装。
 
-<details>
-  <summary>s2DataConfig</summary>
+`S2` is usually installed via a package manager such as npm, Yarn, or pnpm.
 
-```ts
-const s2DataConfig = {
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['type'],
-    values: ['price'],
-  },
-  data: [
-     {
-      province: '浙江',
-      city: '杭州',
-      type: '笔',
-      price: '1',
-    },
-    {
-      province: '浙江',
-      city: '杭州',
-      type: '纸张',
-      price: '2',
-    },
-    {
-      province: '浙江',
-      city: '舟山',
-      type: '笔',
-      price: '17',
-    },
-    {
-      province: '浙江',
-      city: '舟山',
-      type: '纸张',
-      price: '0.5',
-    },
-    {
-      province: '吉林',
-      city: '长春',
-      type: '笔',
-      price: '8',
-    },
-    {
-      province: '吉林',
-      city: '白山',
-      type: '笔',
-      price: '9',
-    },
-    {
-      province: '吉林',
-      city: '长春',
-      type: ' 纸张',
-      price: '3',
-    },
-    {
-      province: '吉林',
-      city: '白山',
-      type: '纸张',
-      price: '1',
-    },
-  ],
-  meta: [
-    {
-      field: 'price',
-      name: '价格',
-    },
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '类别',
-    },
-    {
-      field: 'sub_type',
-      name: '子类别',
-    },
-  ],
-};
+```bash
+npm install @antv/s2 --save
 ```
 
-</details>
-
-### 2.  Options Preparation
-
-```ts
-const s2Options = {
-  width: 600,
-  height: 600,
-}
+```bash
+yarn add @antv/s2
 ```
 
-### 3. Component Rendering
+```bash
+pnpm add @antv/s2
+```
+
+After
+
+After successful installation, prepare a DOM container for rendering and import the corresponding S2 API object through import.
 
 ```html
-<div id="container" />
+<div id="container"></div>
 ```
 
 ```ts
@@ -191,7 +104,12 @@ import { PivotSheet } from '@antv/s2';
 async function bootstrap() {
   const container = document.getElementById('container');
 
-  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+  const s2DataConfig = await fetch('https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json').then(r => r.json())
+
+  const s2 = new PivotSheet(container, s2DataConfig, {
+    width: 600,
+    height: 300,
+  });
 
   await s2.render();
 }
@@ -199,11 +117,9 @@ async function bootstrap() {
 bootstrap()
 ```
 
-### 4. Preview
+![result](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*fod3RoX8iRwAAAAAAAAAAAAAemJ7AQ/fmt.avif)
 
-![result](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aTPcT4aKOq4AAAAAAAAAAAAADmJ7AQ/original)
-
-### 📦 Packages
+## 📦 Packages
 
 | Package  | Latest  | Size   | Download     |
 | -------- | ------ | ----------  | ------ |
@@ -212,7 +128,7 @@ bootstrap()
 | [@antv/s2-react-components](https://github.com/antvis/S2/tree/next/packages/s2-react-components) | ![latest](https://img.shields.io/npm/v/@antv/s2-react-components/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react-components@latest/dist/s2-react-components.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react-components.svg?logo=npm) |
 | [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg?logo=npm) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/s2-vue.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg?logo=npm)   |
 
-### 🖥️ Browser Compatibility
+## 🖥️ Browser Compatibility
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
 | --- |  --- | --- | --- |
