@@ -491,7 +491,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const renderer = this.getRenderer();
 
     if (renderer) {
-      drawCustomCellRenderer(renderer, this);
+      const textPosition = this.getTextPosition();
+
+      drawCustomCellRenderer(renderer, this, {
+        spreadsheet: this.spreadsheet,
+        textPosition,
+      });
     } else {
       this.drawTextShape();
     }

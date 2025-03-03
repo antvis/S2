@@ -1,6 +1,7 @@
 // ==================== 通用工具函数 ====================
 
 import { FederatedPointerEvent as CanvasEvent } from '@antv/g-lite/types/dom/FederatedPointerEvent';
+import { get } from 'lodash';
 import type { BaseCell } from '../../../cell/base-cell';
 import { CellType, S2Event } from '../../../common/constant';
 import { CellRendererType } from '../../../common/constant/renderer';
@@ -162,6 +163,24 @@ export class PreviewClick extends BaseEvent implements BaseEventImplement {
 
   bindMediaCellClick(event: CanvasEvent) {
     const cell = this.spreadsheet.getCell<BaseCell<any>>(event.target);
+    const cellRendererType = cell?.getRenderer?.()?.type;
+
+    if (
+      cellRendererType === CellRendererType.IMAGE &&
+      get(event.target, 'nodeName') !== 'image'
+    ) {
+      // 如果点击的位置并不是图片，则不预览
+      return;
+    }
+
+    // if (cellRendererType === CellRendererType.VIDEO) {
+    //   // 如果点击的位置并不是视频，则不预览
+    //   const gVideoElm = cell?.childNodes.find(
+    //     (node) => get(node, 'config.type') === 'html',
+    //   );
+    //
+    //   return;
+    // }
 
     if (
       cell?.getRenderer?.()?.type &&

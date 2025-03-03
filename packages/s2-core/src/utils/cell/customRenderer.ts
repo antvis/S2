@@ -1,8 +1,10 @@
-import { Image as GImage, HTML } from '@antv/g';
+import { Image as GImage, HTML, PointLike } from '@antv/g';
 import type { BaseCell } from '../../cell';
+import { CellType } from '../../common';
 import { CellRendererType } from '../../common/constant/renderer';
 import { CellClipBox } from '../../common/interface/basic';
 import { CustomRendererConfig } from '../../common/interface/renderer';
+import type { SpreadSheet } from '../../sheet-type';
 
 const defaultVideoConfig = {
   loop: true,
@@ -94,11 +96,28 @@ export function calculateImageSize(
 export async function drawCustomCellRenderer(
   renderer: CustomRendererConfig,
   cell: BaseCell<any>,
+  params?: {
+    spreadsheet?: SpreadSheet;
+    textPosition?: PointLike;
+  },
 ) {
   const fieldValue = cell.getFieldValue();
+  const { spreadsheet, textPosition } = params || {};
 
   const text = fieldValue?.toString() ?? '';
-  const { x, y, height, width } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
+  // eslint-disable-next-line prefer-const
+  let { x, y, height, width } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
+  const { x: textX } = textPosition || {};
+
+  if (
+    spreadsheet?.isHierarchyTreeType() &&
+    cell.cellType === CellType.ROW_CELL &&
+    textX
+  ) {
+    x = textX;
+    width -= x;
+  }
+
   let config: CustomRendererConfig['config'] = { ...renderer.config };
 
   if (!config.height && !config.width) {
