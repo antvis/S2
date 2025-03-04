@@ -12,22 +12,47 @@ const defaultVideoConfig = {
   muted: true,
 };
 
+const mediaCache = new Map<string, HTMLElement | null>();
+const loadError = new Error('Failed to load image and fallback');
+
 export function asyncDrawImage(
   src: string,
   fallback?: string,
   timeout: number = 10000,
 ): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
+    if (mediaCache.has(src)) {
+      const cacheImg = mediaCache.get(src);
+
+      if (cacheImg) {
+        resolve(mediaCache.get(src) as HTMLImageElement);
+      } else {
+        reject(loadError);
+      }
+
+      return;
+    }
+
+    const cacheResolve = (img: HTMLImageElement) => {
+      mediaCache.set(src, img);
+      resolve(img);
+    };
+
+    const cacheReject = (error: Error) => {
+      mediaCache.set(src, null);
+      reject(error);
+    };
+
     const img = new Image();
     const onerror = () => {
       if (fallback) {
         // 如果加载失败，尝试 fallback
         asyncDrawImage(fallback, undefined, timeout)
-          .then(resolve)
-          .catch(reject);
+          .then(cacheResolve)
+          .catch(cacheReject);
       } else {
         // 如果没有 fallback 或者 fallback 也失败，返回错误
-        reject(new Error('Failed to load image and fallback'));
+        cacheReject(loadError);
       }
     };
 
@@ -39,7 +64,7 @@ export function asyncDrawImage(
 
     img.onload = () => {
       clearTimeout(timeoutId);
-      resolve(img);
+      cacheResolve(img);
     };
 
     img.onerror = () => {
