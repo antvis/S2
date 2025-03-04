@@ -15,7 +15,11 @@ import type {
   FormatResult,
   IconTheme,
 } from '../common/interface';
-import { CellBorderPosition, CellClipBox } from '../common/interface';
+import {
+  CellBorderPosition,
+  CellClipBox,
+  ContentPositionParams,
+} from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import { CustomRect, type SimpleBBox } from '../engine';
 import type { FrozenFacet } from '../facet';
@@ -148,7 +152,9 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     };
   }
 
-  protected getTextPosition(): PointLike {
+  public getContentPosition({
+    contentWidth = this.getActualTextWidth(),
+  }: ContentPositionParams = {}): PointLike {
     const { isLeaf } = this.meta;
 
     const textStyle = this.getTextStyle();
@@ -166,10 +172,11 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     if (isLeaf) {
       const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
         bbox: contentBox,
-        textWidth: this.getActualTextWidth(),
+        textWidth: contentWidth,
         textAlign: textStyle.textAlign!,
         groupedIcons: this.groupedIcons,
         iconStyle,
+        isCustomRenderer: !!this.getRenderer(),
       });
 
       this.leftIconPosition = {
@@ -196,7 +203,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
         {
           align: normalizeTextAlign(textAlign!),
           size: {
-            textSize: this.getActualTextWidth(),
+            textSize: contentWidth,
             iconStartSize: this.getActionAndConditionIconWidth('left'),
             iconEndSize: this.getActionAndConditionIconWidth('right'),
           },
@@ -205,6 +212,9 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
             end: cell?.padding?.right!,
             betweenTextAndEndIcon: icon?.margin?.left!,
           },
+        },
+        {
+          isCustomRenderer: !!this.getRenderer(),
         },
       );
 
@@ -220,6 +230,10 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     };
 
     return { x: textStart, y };
+  }
+
+  protected getTextPosition(): PointLike {
+    return this.getContentPosition();
   }
 
   protected getColResizeArea(): Group | undefined {

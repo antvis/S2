@@ -21,6 +21,9 @@ describe('自定义单元格渲染器测试', () => {
       getFieldValue: jest.fn(),
       getBBoxByType: jest.fn(() => mockBBox),
       appendChild: jest.fn(),
+      getContentPosition: jest.fn(() => ({
+        x: 0,
+      })),
     } as unknown as BaseCell<any>;
   });
 
@@ -133,7 +136,7 @@ describe('自定义单元格渲染器测试', () => {
       const createdElement = (mockCell.appendChild as jest.Mock).mock
         .calls[0][0];
 
-      expect(createdElement.style.height).toBe(100); // 来自 mockBBox.height
+      expect(createdElement.style.height).toBe(68); // 来自 mockBBox.height
     });
 
     test('应该优先使用用户配置尺寸', async () => {

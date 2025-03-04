@@ -1,10 +1,8 @@
-import { Image as GImage, HTML, PointLike } from '@antv/g';
+import { Image as GImage, HTML } from '@antv/g';
 import type { BaseCell } from '../../cell';
-import { CellType } from '../../common';
 import { CellRendererType } from '../../common/constant/renderer';
 import { CellClipBox } from '../../common/interface/basic';
 import { CustomRendererConfig } from '../../common/interface/renderer';
-import type { SpreadSheet } from '../../sheet-type';
 
 const defaultVideoConfig = {
   loop: true,
@@ -96,33 +94,11 @@ export function calculateImageSize(
 export async function drawCustomCellRenderer(
   renderer: CustomRendererConfig,
   cell: BaseCell<any>,
-  params?: {
-    spreadsheet?: SpreadSheet;
-    textPosition?: PointLike;
-  },
 ) {
   const fieldValue = cell.getFieldValue();
-  const { spreadsheet, textPosition } = params || {};
-
   const text = fieldValue?.toString() ?? '';
   // eslint-disable-next-line prefer-const
   let { x, y, height, width } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
-  const { x: textX } = textPosition || {};
-
-  if (
-    spreadsheet?.isHierarchyTreeType() &&
-    cell.cellType === CellType.ROW_CELL &&
-    textX
-  ) {
-    x = textX;
-    width -= x;
-  }
-
-  let config: CustomRendererConfig['config'] = { ...renderer.config };
-
-  if (!config.height && !config.width) {
-    config.height = height;
-  }
 
   let element;
 
@@ -135,26 +111,41 @@ export async function drawCustomCellRenderer(
         renderer.timeout,
       );
 
+      const { width: calcWidth, height: calcHeight } = calculateImageSize(
+        width,
+        height,
+        htmlImageElement.naturalWidth,
+        htmlImageElement.naturalHeight,
+      );
+
+      const { x: calcX } = cell.getContentPosition({
+        contentWidth: calcWidth,
+      });
+
       element = new GImage({
         style: {
-          x,
+          x: calcX,
           y,
           src: htmlImageElement,
-          ...calculateImageSize(
-            width,
-            height,
-            htmlImageElement.naturalWidth,
-            htmlImageElement.naturalHeight,
-          ),
-          ...config,
+          width: calcWidth,
+          height: calcHeight,
+          ...renderer.config,
         },
       });
+
       break;
     }
     case CellRendererType.VIDEO: {
       const video = document.createElement('video');
 
-      config = { height, width, ...defaultVideoConfig, ...config, src: text };
+      const config = {
+        height,
+        width,
+        ...defaultVideoConfig,
+        ...renderer.config,
+        src: text,
+      };
+
       Object.assign(video, config);
       element = new HTML({
         style: {
@@ -173,7 +164,7 @@ export async function drawCustomCellRenderer(
           y,
           innerHTML: text,
           pointerEvents: 'auto',
-          ...config,
+          ...renderer.config,
         },
       });
       break;

@@ -8,7 +8,11 @@ import {
   S2Event,
 } from '../common/constant';
 import type { FormatResult } from '../common/interface';
-import { CellBorderPosition, CellClipBox } from '../common/interface';
+import {
+  CellBorderPosition,
+  CellClipBox,
+  ContentPositionParams,
+} from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
 import { CustomRect } from '../engine';
 import type { CornerHeaderConfig } from '../facet/header/interface';
@@ -237,7 +241,9 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     );
   }
 
-  protected getTextPosition(): PointLike {
+  public getContentPosition({
+    contentWidth = this.getActualTextWidth(),
+  }: ContentPositionParams = {}): PointLike {
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { x, y, height, width } = contentBox;
 
@@ -251,7 +257,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
         height,
       },
       textAlign: textStyle.textAlign!,
-      textWidth: this.getActualTextWidth(),
+      textWidth: contentWidth,
       groupedIcons: this.groupedIcons,
       iconStyle: this.getIconStyle()!,
     });
@@ -279,6 +285,10 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       x: textX,
       y: textY,
     };
+  }
+
+  protected getTextPosition(): PointLike {
+    return this.getContentPosition();
   }
 
   // CornerCell 不需要使用 formatter 进行格式化

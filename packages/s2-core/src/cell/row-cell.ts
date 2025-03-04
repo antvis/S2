@@ -11,6 +11,7 @@ import {
 import {
   CellBorderPosition,
   CellClipBox,
+  ContentPositionParams,
   type AreaRange,
   type ViewMeta,
 } from '../common/interface';
@@ -440,7 +441,9 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     return viewport;
   }
 
-  protected getTextPosition(): PointLike {
+  public getContentPosition({
+    contentWidth = this.getActualTextWidth(),
+  }: ContentPositionParams = {}): PointLike {
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
@@ -467,10 +470,11 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: textArea,
-      textWidth: this.getActualTextWidth(),
+      textWidth: contentWidth,
       textAlign: textStyle.textAlign!,
       groupedIcons: this.groupedIcons,
       iconStyle,
+      isCustomRenderer: !!this.getRenderer(),
     });
 
     const iconY = getVerticalIconPosition(
@@ -490,6 +494,10 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     };
 
     return { x: textX, y: textStart };
+  }
+
+  protected getTextPosition(): PointLike {
+    return this.getContentPosition();
   }
 
   protected getResizedTextMaxLines() {

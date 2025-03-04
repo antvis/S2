@@ -38,6 +38,7 @@ import {
   type Condition,
   type ConditionMappingResult,
   type Conditions,
+  type ContentPositionParams,
   type DefaultCellTheme,
   type FormatResult,
   type HeaderActionNameOptions,
@@ -150,6 +151,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   public abstract getMaxTextWidth(): number;
 
   protected abstract getTextPosition(): PointLike;
+
+  public abstract getContentPosition(
+    options?: ContentPositionParams,
+  ): PointLike;
 
   protected abstract getIconPosition(): PointLike;
 
@@ -491,12 +496,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const renderer = this.getRenderer();
 
     if (renderer) {
-      const textPosition = this.getTextPosition();
-
-      drawCustomCellRenderer(renderer, this, {
-        spreadsheet: this.spreadsheet,
-        textPosition,
-      });
+      drawCustomCellRenderer(renderer, this);
     } else {
       this.drawTextShape();
     }

@@ -533,3 +533,7 @@ export interface GridInfo {
 export interface Point extends PointLike {}
 
 export type RowData = Data | CellData[];
+
+export interface ContentPositionParams {
+  contentWidth?: number;
+}

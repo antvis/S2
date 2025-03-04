@@ -1,7 +1,7 @@
 import type { PointLike } from '@antv/g';
 import { find, first, get, isEmpty, isEqual, isObject, merge } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
-import { DEFAULT_STYLE } from '../common';
+import { ContentPositionParams, DEFAULT_STYLE } from '../common';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import {
   CellType,
@@ -353,7 +353,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     return width - this.getActionAndConditionIconWidth();
   }
 
-  protected getTextPosition(): PointLike {
+  public getContentPosition({
+    contentWidth = this.getActualTextWidth(),
+  }: ContentPositionParams = {}): PointLike {
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const textStyle = this.getTextStyle();
     const iconStyle = this.getIconStyle()!;
@@ -361,9 +363,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: contentBox,
       iconStyle,
-      textWidth: this.getActualTextWidth(),
+      textWidth: contentWidth,
       textAlign: textStyle.textAlign!,
       groupedIcons: this.groupedIcons,
+      isCustomRenderer: !!this.getRenderer(),
     });
     const y = getVerticalTextPosition(contentBox, textStyle.textBaseline!);
     const iconY = getVerticalIconPosition(
@@ -382,6 +385,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       x: textX,
       y,
     };
+  }
+
+  protected getTextPosition(): PointLike {
+    return this.getContentPosition();
   }
 
   protected getIconPosition() {
