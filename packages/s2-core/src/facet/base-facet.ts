@@ -586,22 +586,31 @@ export abstract class BaseFacet {
     colsHierarchy: Hierarchy,
     rowsHierarchy?: Hierarchy,
   ) {
-    const sampleMaxHeightNodesForAllLevels =
-      colsHierarchy.sampleNodesForAllLevels.map((sampleNode) => {
-        const maxHeightNode = maxBy(
-          colsHierarchy
-            .getNodes(sampleNode.level)
-            .filter((node) => !node.isTotals),
-          (levelSampleNode) => {
-            return this.getColNodeHeight({
-              colNode: levelSampleNode,
-              colsHierarchy,
-            });
-          },
-        )!;
+    const hasNotSample = isEmpty(colsHierarchy.sampleNodesForAllLevels);
+    const sampleNodes = hasNotSample
+      ? colsHierarchy.allNodesWithoutRoot
+      : colsHierarchy.sampleNodesForAllLevels;
+    const sampleMaxHeightNodesForAllLevels = sampleNodes.map((sampleNode) => {
+      const maxHeightNode = maxBy(
+        colsHierarchy
+          .getNodes(sampleNode.level)
+          .filter((node) => !node.isTotals || hasNotSample),
+        (levelSampleNode) => {
+          return this.getColNodeHeight({
+            colNode: levelSampleNode,
+            colsHierarchy,
+          });
+        },
+      )!;
 
-        return maxHeightNode!;
-      });
+      return maxHeightNode!;
+    });
+
+    if (hasNotSample) {
+      colsHierarchy.sampleNodeForLastLevel =
+        sampleMaxHeightNodesForAllLevels[0] ?? null;
+      colsHierarchy.maxLevel = 0;
+    }
 
     colsHierarchy.sampleNodesForAllLevels = compact(
       sampleMaxHeightNodesForAllLevels,

@@ -361,13 +361,7 @@ export class PivotFacet extends FrozenFacet {
         }
       }
 
-      let res =
-        isEmpty(hierarchy.sampleNodesForAllLevels) &&
-        !isRowHeader &&
-        node.isGrandTotals &&
-        !multiple
-          ? 30
-          : 0;
+      let res = 0;
 
       for (let i = 0; i < multiple; i++) {
         res += get(
