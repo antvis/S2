@@ -127,10 +127,12 @@ export const bindMediaClick = (cell: BaseCell<any>) => {
     }
   };
 
-  // 同时监听多种事件类型
-  ['click', 'touchstart', 'touchend'].forEach((eventType) => {
-    overlay.addEventListener(eventType, handleClose, { passive: false });
-  });
+  // 避免移动端误触
+  setTimeout(() => {
+    ['click', 'touchstart', 'touchend'].forEach((eventType) => {
+      overlay.addEventListener(eventType, handleClose, { passive: false });
+    });
+  }, 500);
 
   // 禁止背景滚动
   document.body.style.overflow = 'hidden';
