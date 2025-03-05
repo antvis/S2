@@ -1,3 +1,11 @@
+# [@antv/s2-v2.2.4](https://github.com/antvis/S2/compare/@antv/s2-v2.2.3...@antv/s2-v2.2.4) (2025-03-05)
+
+
+### Bug Fixes
+
+* 修复单层列头下，隐藏完所有非总计列头后，总计列头高度异常 ([#3119](https://github.com/antvis/S2/issues/3119)) ([6ece5d8](https://github.com/antvis/S2/commit/6ece5d8074a774570896b2954f1f9862bf8d2c7d))
+* 避免getIntervalScale除0异常 ([#3115](https://github.com/antvis/S2/issues/3115)) ([cdecc07](https://github.com/antvis/S2/commit/cdecc07bec9a7640575f43e4786642bda0c35ceb))
+
 # [@antv/s2-v2.2.3](https://github.com/antvis/S2/compare/@antv/s2-v2.2.2...@antv/s2-v2.2.3) (2025-02-28)
 
 
