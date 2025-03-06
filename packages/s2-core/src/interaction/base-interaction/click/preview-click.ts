@@ -175,19 +175,11 @@ export class PreviewClick extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    // if (cellRendererType === CellRendererType.VIDEO) {
-    //   // 如果点击的位置并不是视频，则不预览
-    //   const gVideoElm = cell?.childNodes.find(
-    //     (node) => get(node, 'config.type') === 'html',
-    //   );
-    //
-    //   return;
-    // }
-
     if (
       cell?.getRenderer?.()?.type &&
       (this.spreadsheet.isPivotMode() || cell.cellType !== CellType.COL_CELL)
     ) {
+      this.spreadsheet.emit(S2Event.GLOBAL_PREVIEW_CLICK, event);
       bindMediaClick(cell);
     }
   }
