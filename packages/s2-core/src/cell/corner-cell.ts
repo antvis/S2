@@ -60,6 +60,8 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     this.update();
   }
 
+  protected afterDrawText() {}
+
   private onTreeIconClick(isCollapsed: boolean) {
     if (isMobile()) {
       return;

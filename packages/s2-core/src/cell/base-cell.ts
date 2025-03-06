@@ -150,7 +150,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public abstract getMaxTextWidth(): number;
 
-  public abstract afterDrawText(): void;
+  protected abstract afterDrawText(): void;
 
   protected abstract getTextPosition(): PointLike;
 
