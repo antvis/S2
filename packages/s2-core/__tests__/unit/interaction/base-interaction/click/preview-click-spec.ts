@@ -71,6 +71,7 @@ describe('预览事件处理类测试', () => {
     on: jest.fn(),
     getCell: jest.fn(),
     isPivotMode: jest.fn(() => true),
+    emit: jest.fn(() => {}),
   };
 
   beforeEach(() => {
