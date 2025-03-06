@@ -76,6 +76,7 @@ export interface EmitterType {
   [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: PointerEventHandler;
   [S2Event.GLOBAL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.GLOBAL_CLICK]: CanvasEventHandler;
+  [S2Event.GLOBAL_PREVIEW_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_RESET]: EventHandler;
   [S2Event.GLOBAL_HOVER]: CanvasEventHandler;

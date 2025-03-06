@@ -6,7 +6,7 @@ import {
 } from '@/interaction/base-interaction/click/preview-click';
 
 describe('点击事件绑定测试', () => {
-  test('图片渲染应该阻止默认行为和事件冒泡', () => {
+  test('图片渲染应该阻止默认行为和事件冒泡', async () => {
     // 初始化模拟单元格
     const mockCell: BaseCell<any> = {
       getRenderer: jest.fn(() => ({ type: 'IMAGE' })),
@@ -15,6 +15,11 @@ describe('点击事件绑定测试', () => {
     } as unknown as BaseCell<any>;
 
     bindMediaClick(mockCell);
+
+    await new Promise((r) => {
+      setTimeout(r, 1000);
+    });
+
     const overlay = document.querySelector('.s2-preview-overlay');
 
     overlay.dispatchEvent(new Event('click', { bubbles: true }));
@@ -22,7 +27,7 @@ describe('点击事件绑定测试', () => {
     expect(document.querySelector('.s2-preview-overlay')).toBeNull();
   });
 
-  test('视频渲染应该阻止默认行为和事件冒泡', () => {
+  test('视频渲染应该阻止默认行为和事件冒泡', async () => {
     // 初始化模拟单元格
     const mockCell: BaseCell<any> = {
       getRenderer: jest.fn(() => ({ type: 'VIDEO' })),
@@ -31,6 +36,11 @@ describe('点击事件绑定测试', () => {
     } as unknown as BaseCell<any>;
 
     bindMediaClick(mockCell);
+
+    await new Promise((r) => {
+      setTimeout(r, 1000);
+    });
+
     const overlay = document.querySelector('.s2-preview-overlay');
 
     overlay.dispatchEvent(new Event('click', { bubbles: true }));

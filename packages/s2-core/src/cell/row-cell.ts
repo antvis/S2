@@ -52,8 +52,11 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     this.drawInteractiveBgShape();
     // 绘制交互边框
     this.drawInteractiveBorderShape();
-    // 绘制单元格文本
+    // 绘制单元格文本 or 图片
     this.drawTextOrCustomRenderer();
+  }
+
+  protected afterDrawText() {
     // 绘制字段和 action标记 -- icon 和 action
     this.drawActionAndConditionIcons();
     // 绘制树状模式收起展开的 icon

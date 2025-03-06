@@ -527,13 +527,4 @@ export abstract class HeaderCell<
   public getMetaField() {
     return this.meta.field;
   }
-
-  public drawTextOrCustomRenderer() {
-    // 明细表列头仅允许文本
-    if (!this.spreadsheet.isPivotMode()) {
-      this.drawTextShape();
-    } else {
-      super.drawTextOrCustomRenderer();
-    }
-  }
 }

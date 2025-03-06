@@ -250,6 +250,13 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     if (!this.shouldHideRowSubtotalData()) {
       this.drawTextOrCustomRenderer();
+    } else {
+      this.afterDrawText();
+    }
+  }
+
+  protected afterDrawText() {
+    if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIconShapes();
     }
 

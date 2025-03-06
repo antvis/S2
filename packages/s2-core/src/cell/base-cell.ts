@@ -150,6 +150,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public abstract getMaxTextWidth(): number;
 
+  public abstract afterDrawText(): void;
+
   protected abstract getTextPosition(): PointLike;
 
   public abstract getContentPosition(
@@ -496,11 +498,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const renderer = this.getRenderer();
 
     if (renderer) {
-      this.getTextPosition();
-      drawCustomCellRenderer(renderer, this);
-    } else {
-      this.drawTextShape();
+      drawCustomCellRenderer(renderer, this).then(() => {
+        this.afterDrawText();
+      });
+
+      return;
     }
+
+    this.drawTextShape();
+    this.afterDrawText();
   }
 
   public drawTextShape() {
