@@ -5,6 +5,7 @@ import * as mockPivotMultiDataConfig from 'tests/data/mock-dataset-multi-measure
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
+import * as singleMeasureDataset from 'tests/data/single-measure-total.json';
 import { waitForRender } from 'tests/util';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import { customColGridSimpleFields } from '../data/custom-grid-simple-fields';
@@ -837,6 +838,31 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           );
         },
       );
+    });
+
+    test('should render total column correctly when the only measure column is hidden', async () => {
+      const sheet = createPivotSheet({
+        totals: {
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseGrandTotalsLayout: true,
+            reverseSubTotalsLayout: true,
+            subTotalsDimensions: ['type'],
+          },
+        },
+      });
+
+      sheet.setDataCfg(singleMeasureDataset);
+      await sheet.render();
+      sheet.interaction.hideColumns(
+        'root[&]17c89630-2286-4624-8ffd-2ff895d01ce7',
+      );
+      const totalNode = sheet.facet
+        .getColLeafNodes()
+        .find((item) => item.id === 'root[&]总计');
+
+      expect(totalNode.height).toBe(30);
     });
   });
 });
