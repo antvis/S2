@@ -59,12 +59,12 @@ import type { ViewMeta } from '../common/interface/basic';
 import type { SimpleBBox } from '../engine';
 import type { CustomText } from '../engine/CustomText';
 import type { Node } from '../facet/layout/node';
+import { SingletonRenderer } from '../renderer';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getBorderPositionAndStyle,
   getCellBoxByType,
 } from '../utils/cell/cell';
-import { drawCustomCellRenderer } from '../utils/cell/customRenderer';
 import {
   getIconTotalWidth,
   type GroupedIcons,
@@ -498,7 +498,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const renderer = this.getRenderer();
 
     if (renderer) {
-      drawCustomCellRenderer(renderer, this).then(() => {
+      SingletonRenderer.render(renderer, this).then(() => {
         this.afterDrawText();
       });
 

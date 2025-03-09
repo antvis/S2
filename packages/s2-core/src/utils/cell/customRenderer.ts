@@ -1,27 +1,15 @@
-import { Image as GImage, HTML } from '@antv/g';
-import type { BaseCell } from '../../cell';
-import { CellRendererType } from '../../common/constant/renderer';
-import { CellClipBox } from '../../common/interface/basic';
-import { CustomRendererConfig } from '../../common/interface/renderer';
-
-const defaultVideoConfig = {
-  loop: true,
-  autoplay: true,
-  crossOrigin: true,
-  controls: false,
-  muted: true,
-};
-
-const mediaCache = new Map<string, HTMLElement | null>();
 const loadError = new Error('Failed to load image and fallback');
 
-export function asyncDrawImage(
-  src: string,
-  fallback?: string,
-  timeout: number = 10000,
-): Promise<HTMLImageElement> {
+export function asyncDrawImage(options: {
+  src: string;
+  fallback?: string;
+  timeout?: number;
+  mediaCache?: Map<string, HTMLElement | null>;
+}): Promise<HTMLImageElement> {
+  const { src, fallback, timeout = 10000, mediaCache } = options;
+
   return new Promise((resolve, reject) => {
-    if (mediaCache.has(src)) {
+    if (mediaCache?.has(src)) {
       const cacheImg = mediaCache.get(src);
 
       if (cacheImg) {
@@ -34,12 +22,12 @@ export function asyncDrawImage(
     }
 
     const cacheResolve = (img: HTMLImageElement) => {
-      mediaCache.set(src, img);
+      mediaCache?.set(src, img);
       resolve(img);
     };
 
     const cacheReject = (error: Error) => {
-      mediaCache.set(src, null);
+      mediaCache?.set(src, null);
       reject(error);
     };
 
@@ -47,7 +35,7 @@ export function asyncDrawImage(
     const onerror = () => {
       if (fallback) {
         // 如果加载失败，尝试 fallback
-        asyncDrawImage(fallback, undefined, timeout)
+        asyncDrawImage({ src: fallback, timeout, mediaCache })
           .then(cacheResolve)
           .catch(cacheReject);
       } else {
@@ -114,89 +102,4 @@ export function calculateImageSize(
     width: Math.floor(naturalWidth * scale),
     height: Math.floor(naturalHeight * scale),
   };
-}
-
-export async function drawCustomCellRenderer(
-  renderer: CustomRendererConfig,
-  cell: BaseCell<any>,
-) {
-  const fieldValue = cell.getFieldValue();
-  const text = fieldValue?.toString() ?? '';
-  // eslint-disable-next-line prefer-const
-  let { x, y, height, width } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
-
-  let element;
-
-  switch (renderer.type) {
-    case CellRendererType.IMAGE: {
-      // 图片加载成功后创建
-      const htmlImageElement = await asyncDrawImage(
-        text,
-        renderer.fallback,
-        renderer.timeout,
-      );
-
-      const { width: calcWidth, height: calcHeight } = calculateImageSize(
-        width,
-        height,
-        htmlImageElement.naturalWidth,
-        htmlImageElement.naturalHeight,
-      );
-
-      const { x: calcX } = cell.getContentPosition({
-        contentWidth: calcWidth,
-      });
-
-      element = new GImage({
-        style: {
-          x: calcX,
-          y,
-          src: htmlImageElement,
-          width: calcWidth,
-          height: calcHeight,
-          ...renderer.config,
-        },
-      });
-
-      break;
-    }
-    case CellRendererType.VIDEO: {
-      const video = document.createElement('video');
-
-      const config = {
-        height,
-        width,
-        ...defaultVideoConfig,
-        ...renderer.config,
-        src: text,
-      };
-
-      Object.assign(video, config);
-      element = new HTML({
-        style: {
-          x,
-          y,
-          innerHTML: video,
-          pointerEvents: 'none',
-        },
-      });
-      break;
-    }
-    case CellRendererType.HTML: {
-      element = new HTML({
-        style: {
-          x,
-          y,
-          innerHTML: text,
-          pointerEvents: 'auto',
-          ...renderer.config,
-        },
-      });
-      break;
-    }
-    default:
-  }
-  if (element) {
-    cell.appendChild(element);
-  }
 }
