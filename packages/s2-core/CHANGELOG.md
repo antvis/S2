@@ -1,3 +1,34 @@
+# [@antv/s2-v2.3.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.2.4...@antv/s2-v2.3.0-beta.1) (2025-03-10)
+
+
+### Bug Fixes
+
+* 修复TS类型 ([be5f618](https://github.com/antvis/S2/commit/be5f6182165cf15c24ec0475df245f969d3af520))
+* 修复点击单元格重复出发预览 ([79bcafa](https://github.com/antvis/S2/commit/79bcafa329db5f1ced14428ebd208c872d96fab1))
+* 图片渲染可能溢出单元格 ([523862f](https://github.com/antvis/S2/commit/523862f7323b7711e2403be8660c6994a7f6dc8c))
+* 图片渲染场景icon位置异常 ([e6b7b69](https://github.com/antvis/S2/commit/e6b7b6970a1407178e5d422e28e1636127a14a4f))
+* 明细表列头仅允许文本 ([a4ee1c5](https://github.com/antvis/S2/commit/a4ee1c54505e8cc04c66674c5919aa8c99ac4416))
+* 明细表列头仅允许文本 ([750e715](https://github.com/antvis/S2/commit/750e7156651131d8fa42a221df2f541fc56c8336))
+* 避免移动端误触 ([28525f8](https://github.com/antvis/S2/commit/28525f83eab4541c7684e2af88d962e83f4f1b36))
+
+
+### Features
+
+* 图片支持居左、居中、居右 ([71788ba](https://github.com/antvis/S2/commit/71788babad326706c0080aed37fc89820eb616e4))
+* 图片缓存 ([4c0289c](https://github.com/antvis/S2/commit/4c0289c1dd32caccbd71cfbec050c5259a682090))
+* 增加预览点击事件 ([333bc91](https://github.com/antvis/S2/commit/333bc91728c97d324e24835880ad1c164042a485))
+* 将视频作为底图渲染 ([4f324e9](https://github.com/antvis/S2/commit/4f324e9e91513a4eaa073f7713bdad7a8bd882c3))
+* 支持单元格渲染图片 ([81b84c0](https://github.com/antvis/S2/commit/81b84c0ba444d33d1ab7e74cffe87c6f0c951537))
+* 支持单元格渲染图片 ([addedac](https://github.com/antvis/S2/commit/addedace8271b9f9d75ca749ad94c550fd757f13))
+* 支持图片、视频、富文本渲染 ([6789514](https://github.com/antvis/S2/commit/6789514a0523b87f1d474750dc316f9e6bfeee7f))
+* 补充兜底逻辑、预览样式配置 ([62751fb](https://github.com/antvis/S2/commit/62751fb3a60701edb2b75a532c2b056377cfa5f2))
+* 预览事件需要点击图片主体，支持树状行头渲染图片 ([0c2e931](https://github.com/antvis/S2/commit/0c2e931f56cf1b753d4440592585ec845f06f165))
+
+
+### Reverts
+
+* 去掉HTML相关实现 ([ee55d88](https://github.com/antvis/S2/commit/ee55d88fc61ae1b6a135d6022103d1d0e8ba5725))
+
 # [@antv/s2-v2.2.4](https://github.com/antvis/S2/compare/@antv/s2-v2.2.3...@antv/s2-v2.2.4) (2025-03-05)
 
 
