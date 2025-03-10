@@ -122,32 +122,34 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 ### 布局
 
-| 名称                     | 事件名                             | 描述                                        |
-| ----------------------- | --------------------------------- | ------------------------------------------ |
-| 表头布局完成                 | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT`     | 行头和列头布局完成后触发                  |
-| 数值单元格布局完成                | `S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER`  | 当前可视范围数值单元格渲染完成后触发 |
-| 分页                 | `S2Event.LAYOUT_PAGINATION`       | 分页事件           |
-| 列头展开                 | `S2Event.COL_CELL_EXPANDED`     | 列头展开时触发                  |
-| 列头隐藏                 | `S2Event.COL_CELL_HIDDEN`       | 列头隐藏时触发                  |
-| 开始渲染                 | `S2Event.LAYOUT_BEFORE_RENDER`       | 开始 render 前的事件，即 `s2.render()`                   |
-| 渲染完成                 | `S2Event.LAYOUT_AFTER_RENDER`       | render 完成的事件，即 `s2.render()`                  |
-| 表格销毁                 | `S2Event.LAYOUT_DESTROY`       | 表格销毁后或 调用 `s2.destroy()` 触发                  |
-| 单元格渲染                 | `S2Event.LAYOUT_CELL_RENDER`       | 单个单元格布局渲染完成事件                  |
+| 名称           | 事件名                             | 描述                             |
+|--------------| --------------------------------- |--------------------------------|
+| 表头布局完成       | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT`     | 行头和列头布局完成后触发                   |
+| 数值单元格布局完成    | `S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER`  | 当前可视范围数值单元格渲染完成后触发             |
+| 分页           | `S2Event.LAYOUT_PAGINATION`       | 分页事件                           |
+| 列头展开         | `S2Event.COL_CELL_EXPANDED`     | 列头展开时触发                        |
+| 列头隐藏         | `S2Event.COL_CELL_HIDDEN`       | 列头隐藏时触发                        |
+| 列头展开 icon 悬停 | `S2Event.COL_CELL_EXPAND_ICON_HOVER`       | 鼠标悬停在列头隐藏后的展开 icon 上时触发        |
+| 开始渲染         | `S2Event.LAYOUT_BEFORE_RENDER`       | 开始 render 前的事件，即 `s2.render()` |
+| 渲染完成         | `S2Event.LAYOUT_AFTER_RENDER`       | render 完成的事件，即 `s2.render()`   |
+| 表格销毁         | `S2Event.LAYOUT_DESTROY`       | 表格销毁后或 调用 `s2.destroy()` 触发    |
+| 单元格渲染        | `S2Event.LAYOUT_CELL_RENDER`       | 单个单元格布局渲染完成事件                  |
 
 ### 全局
 
-| 名称      | 事件名                             | 描述                                         |
-| -------- | --------------------------------- | ------------------------------------------- |
-| 键盘按下  | `S2Event.GLOBAL_KEYBOARD_DOWN`     | 键盘按下                                     |
-| 键盘松开  | `S2Event.GLOBAL_KEYBOARD_UP`       | 键盘松开                                     |
-| 复制      | `S2Event.GLOBAL_COPIED`            | 对选中的单元格复制                           |
-| 鼠标松开  | `S2Event.GLOBAL_MOUSE_UP`          | 图表区域鼠标松开                             |
-| 点击      | `S2Event.GLOBAL_CLICK`             | 图表区域点击                                 |
-| 右键      | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88))                          |
-| 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选 （可以获取到选中的单元格，交互名，和触发单元格等信息）          |
-| 悬停      | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                             |
-| 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时       |
-| 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击（行头/列头/数值）为链接字段的文本时           |
-| icon 点击 | `S2Event.GLOBAL_ACTION_ICON_CLICK` | 单元格右侧的操作 icon 点击时，比如：排序图标 |
-| icon 悬停 | `S2Event.GLOBAL_ACTION_ICON_HOVER` | 单元格右侧的操作 icon 悬停时，比如：排序图标 |
-| 滚动      | `S2Event.GLOBAL_SCROLL`            | 表格滚动 （含数值和行头单元格） |
+| 名称        | 事件名                             | 描述                                                                                                                   |
+|-----------| --------------------------------- |----------------------------------------------------------------------------------------------------------------------|
+| 键盘按下      | `S2Event.GLOBAL_KEYBOARD_DOWN`     | 键盘按下                                                                                                                 |
+| 键盘松开      | `S2Event.GLOBAL_KEYBOARD_UP`       | 键盘松开                                                                                                                 |
+| 复制        | `S2Event.GLOBAL_COPIED`            | 对选中的单元格复制                                                                                                            |
+| 鼠标松开      | `S2Event.GLOBAL_MOUSE_UP`          | 图表区域鼠标松开                                                                                                             |
+| 点击        | `S2Event.GLOBAL_CLICK`             | 图表区域点击                                                                                                               |
+| 图片/视频预览点击 | `S2Event.GLOBAL_PREVIEW_CLICK`             | 图片/视频预览点击                                                                                                            |
+| 右键        | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) |
+| 选中        | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选 （可以获取到选中的单元格，交互名，和触发单元格等信息）                                                                        |
+| 悬停        | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                                                                                                             |
+| 重置        | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时                                                                                               |
+| 链接跳转      | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击（行头/列头/数值）为链接字段的文本时                                                                                                |
+| icon 点击   | `S2Event.GLOBAL_ACTION_ICON_CLICK` | 单元格右侧的操作 icon 点击时，比如：排序图标                                                                                            |
+| icon 悬停   | `S2Event.GLOBAL_ACTION_ICON_HOVER` | 单元格右侧的操作 icon 悬停时，比如：排序图标                                                                                            |
+| 滚动        | `S2Event.GLOBAL_SCROLL`            | 表格滚动 （含数值和行头单元格）                                                                                                     |

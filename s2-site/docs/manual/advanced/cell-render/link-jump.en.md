@@ -1,6 +1,6 @@
 ---
-title: Link Jump
-order: 3
+title: Link
+order: 1
 ---
 
 Mark the cell text as an underlined link style to achieve link jumps 🔗, there are subtle differences between pivot tables and schedule tables

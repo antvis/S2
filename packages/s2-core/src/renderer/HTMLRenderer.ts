@@ -13,7 +13,7 @@ export class HTMLRenderer extends BaseRenderer {
     renderer: HTMLRendererConfig,
     cell: BaseCell<SimpleBBox>,
   ): DisplayObjectConfig<HTMLStyleProps> {
-    const { x, y, text } = this.getCellInfo(cell);
+    const { x, y, text, height, width } = this.getCellInfo(cell);
 
     return {
       style: {
@@ -21,6 +21,11 @@ export class HTMLRenderer extends BaseRenderer {
         y,
         innerHTML: text,
         pointerEvents: 'auto',
+        // 多余属性会作为css透传给HTML
+        // @ts-ignore
+        maxHeight: `${height}px`,
+        maxWidth: `${width}px`,
+        overflow: 'auto',
         ...renderer.config,
       },
     };

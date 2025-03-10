@@ -147,6 +147,14 @@ export default defineConfig({
         order: 4,
       },
       {
+        slug: 'manual/advanced/cell-render',
+        title: {
+          zh: '单元格渲染类型',
+          en: 'Advanced Tutorial',
+        },
+        order: 3,
+      },
+      {
         slug: 'manual/advanced/custom',
         title: {
           zh: '自定义',
