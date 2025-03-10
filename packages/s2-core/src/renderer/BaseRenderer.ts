@@ -17,22 +17,11 @@ export abstract class BaseRenderer {
     config: DisplayObjectConfig<CustomRendererConfig['config']>,
   ): void;
 
-  public generateConfig(
+  abstract generateConfig(
     renderer: CustomRendererConfig,
     cell: BaseCell<SimpleBBox>,
     element: HTMLElement,
-  ): DisplayObjectConfig<CustomRendererConfig['config']> {
-    const { x, y } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
-
-    return {
-      style: {
-        x,
-        y,
-        innerHTML: element,
-        ...renderer.config,
-      },
-    };
-  }
+  ): DisplayObjectConfig<CustomRendererConfig['config']>;
 
   public async process(
     renderer: CustomRendererConfig,

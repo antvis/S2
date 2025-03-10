@@ -3,7 +3,6 @@ import { CellRendererType } from '../common/constant/renderer';
 import { CustomRendererConfig } from '../common/interface';
 import { SimpleBBox } from '../engine';
 import { BaseRenderer } from './BaseRenderer';
-import { HTMLRenderer } from './HTMLRenderer';
 import { ImageRenderer } from './ImageRenderer';
 import { VideoRenderer } from './VideoRenderer';
 
@@ -21,10 +20,6 @@ export class SingletonRenderer {
         }
         case CellRendererType.VIDEO: {
           renderer = new VideoRenderer();
-          break;
-        }
-        case CellRendererType.HTML: {
-          renderer = new HTMLRenderer();
           break;
         }
         default: {

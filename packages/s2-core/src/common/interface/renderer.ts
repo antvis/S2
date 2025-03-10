@@ -1,4 +1,4 @@
-import { HTMLStyleProps, ImageStyleProps } from '@antv/g';
+import { ImageStyleProps } from '@antv/g';
 import { CellRendererType } from '../constant/renderer';
 
 type RendererType = keyof typeof CellRendererType;
@@ -27,13 +27,4 @@ export interface VideoRendererConfig
   config?: Partial<HTMLVideoElement>;
 }
 
-// HTML渲染配置
-export interface HTMLRendererConfig
-  extends BaseRendererConfig<CellRendererType.HTML> {
-  config?: HTMLStyleProps;
-}
-
-export type CustomRendererConfig =
-  | ImageRendererConfig
-  | VideoRendererConfig
-  | HTMLRendererConfig;
+export type CustomRendererConfig = ImageRendererConfig | VideoRendererConfig;

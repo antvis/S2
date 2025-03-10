@@ -89,7 +89,7 @@ export const getHorizontalTextIconPosition = (options: {
       break;
     case 'right':
       textX = x + width - rightIconWidth - (isCustomRenderer ? textWidth : 0);
-      leftIconX = textX - textWidth - leftIconWidth;
+      leftIconX = textX - (isCustomRenderer ? 0 : textWidth) - leftIconWidth;
       rightIconX =
         x +
         width -

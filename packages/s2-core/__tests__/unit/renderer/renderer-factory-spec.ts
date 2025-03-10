@@ -66,24 +66,6 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     expect(createdElement1.style.innerHTML.controls).toBe(true); // 检查合并后的视频属性
   });
 
-  test('应该正确创建HTML元素', async () => {
-    // 测试HTML渲染类型
-    const config: CustomRendererConfig = {
-      type: 'HTML',
-      config: { fontSize: 16 },
-    };
-
-    mockCell.getFieldValue.mockReturnValue('<div>测试内容</div>');
-
-    await SingletonRenderer.render(config, mockCell);
-
-    // 验证HTML参数合并
-    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[0][0];
-
-    expect(createdElement.style.innerHTML).toBe('<div>测试内容</div>');
-    expect(createdElement.style.fontSize).toBe(16);
-  });
-
   test('应该使用单元格尺寸作为默认配置', async () => {
     // 测试默认尺寸配置逻辑
     const config: CustomRendererConfig = {

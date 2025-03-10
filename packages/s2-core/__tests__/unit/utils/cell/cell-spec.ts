@@ -258,4 +258,48 @@ describe('Text and Icon area Test', () => {
       ).toEqual(result);
     },
   );
+
+  test.each([
+    {
+      textAlign: 'left',
+      result: {
+        leftIconX: 0,
+        textX: 20,
+        rightIconX: 80,
+      },
+    },
+    {
+      textAlign: 'center',
+      result: {
+        leftIconX: 5,
+        textX: 25,
+        rightIconX: 85,
+      },
+    },
+    {
+      textAlign: 'right',
+      result: {
+        leftIconX: 10,
+        textX: 30,
+        rightIconX: 90,
+      },
+    },
+  ])(
+    'should return correct coordinates when isCustomRenderer is true and textAlign is %s with left and right icons',
+    ({ textAlign, result }) => {
+      expect(
+        getHorizontalTextIconPosition({
+          bbox: contentBBox,
+          textAlign: textAlign as any,
+          textWidth: 50,
+          iconStyle,
+          groupedIcons: {
+            left: [{ name: 'left', position: 'left' }],
+            right: [{ name: 'right', position: 'right' }],
+          },
+          isCustomRenderer: true,
+        }),
+      ).toEqual(result);
+    },
+  );
 });
