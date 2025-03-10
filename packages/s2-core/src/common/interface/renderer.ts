@@ -1,4 +1,4 @@
-import { ImageStyleProps } from '@antv/g';
+import { ImageStyleProps, RectStyleProps } from '@antv/g';
 import { CellRendererType } from '../constant/renderer';
 
 type RendererType = keyof typeof CellRendererType;
@@ -12,19 +12,20 @@ interface BaseRendererConfig<T extends RendererType | CellRendererType> {
   fallback?: string;
   /** 是否开启点击预览 */
   clickToPreview?: boolean;
+  timeout?: number;
 }
 
 // 图片渲染配置
 export interface ImageRendererConfig
   extends BaseRendererConfig<CellRendererType.IMAGE> {
   config?: Partial<ImageStyleProps>;
-  timeout?: number;
 }
 
 // 视频渲染配置
 export interface VideoRendererConfig
   extends BaseRendererConfig<CellRendererType.VIDEO> {
-  config?: Partial<HTMLVideoElement>;
+  config?: Partial<RectStyleProps>;
+  videoConfig?: Partial<HTMLVideoElement>;
 }
 
 export type CustomRendererConfig = ImageRendererConfig | VideoRendererConfig;

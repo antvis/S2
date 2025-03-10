@@ -1,5 +1,5 @@
 import { SingletonRenderer } from '@/renderer';
-import { BaseCell, CustomRendererConfig } from '@/src';
+import { BaseCell, CustomRendererConfig, VideoRendererConfig } from '@/src';
 import { Image as GImage } from '@antv/g';
 
 const validImageURL = `https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original`;
@@ -41,9 +41,9 @@ describe('SingletonRenderer.render 渲染器测试', () => {
 
   test('应该正确创建视频元素', async () => {
     // 测试视频渲染类型
-    const config: CustomRendererConfig = {
+    const config: VideoRendererConfig = {
       type: 'VIDEO',
-      config: { width: 300, controls: true, autoplay: true },
+      videoConfig: { width: 300, controls: true, autoplay: true },
     };
 
     mockCell.getFieldValue.mockReturnValue(
@@ -55,7 +55,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     // 验证视频参数合并
     const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[0][0];
 
-    expect(createdElement.style.innerHTML.controls).toBe(true); // 检查合并后的视频属性
+    expect(createdElement.style.fill.image.controls).toBe(true); // 检查合并后的视频属性
 
     await SingletonRenderer.render(config, mockCell);
 
@@ -63,7 +63,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     const createdElement1 = (mockCell.appendChild as jest.Mock).mock
       .calls[0][0];
 
-    expect(createdElement1.style.innerHTML.controls).toBe(true); // 检查合并后的视频属性
+    expect(createdElement1.style.fill.image.controls).toBe(true); // 检查合并后的视频属性
   });
 
   test('应该使用单元格尺寸作为默认配置', async () => {

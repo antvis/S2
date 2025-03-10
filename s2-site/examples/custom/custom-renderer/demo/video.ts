@@ -20,10 +20,10 @@ async function render(data) {
 
     const s2Options: S2Options = {
         width: 800,
-        height: 1000,
+        height: 800,
         style: {
             dataCell: {
-                height: 500,
+                height: 300,
             },
         },
     };

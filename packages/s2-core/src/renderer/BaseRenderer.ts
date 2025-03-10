@@ -10,7 +10,7 @@ export abstract class BaseRenderer {
   abstract prepare(
     renderer: CustomRendererConfig,
     cell: BaseCell<SimpleBBox>,
-  ): Promise<HTMLElement | null>;
+  ): Promise<HTMLElement | string | null>;
 
   abstract render(
     cell: BaseCell<SimpleBBox>,
@@ -20,7 +20,7 @@ export abstract class BaseRenderer {
   abstract generateConfig(
     renderer: CustomRendererConfig,
     cell: BaseCell<SimpleBBox>,
-    element: HTMLElement,
+    element: HTMLElement | string,
   ): DisplayObjectConfig<CustomRendererConfig['config']>;
 
   public async process(

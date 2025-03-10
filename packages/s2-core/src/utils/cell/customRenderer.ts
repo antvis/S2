@@ -59,6 +59,11 @@ export function asyncDrawImage(options: {
       clearTimeout(timeoutId);
       onerror();
     };
+
+    img.onabort = () => {
+      clearTimeout(timeoutId);
+      onerror();
+    };
   });
 }
 

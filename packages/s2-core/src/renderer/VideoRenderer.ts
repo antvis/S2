@@ -1,5 +1,5 @@
 // 视频渲染器
-import { DisplayObjectConfig, HTML, HTMLStyleProps } from '@antv/g';
+import { DisplayObjectConfig, Rect, RectStyleProps } from '@antv/g';
 import type { BaseCell } from '../cell';
 import { VideoRendererConfig } from '../common/interface';
 import { SimpleBBox } from '../engine';
@@ -15,63 +15,82 @@ const defaultVideoConfig = {
 
 export class VideoRenderer extends BaseRenderer {
   prepare(renderer: VideoRendererConfig, cell: BaseCell<SimpleBBox>) {
-    const { text, height, width } = this.getCellInfo(cell);
+    return new Promise<HTMLVideoElement | string>((resolve) => {
+      const { text, height, width } = this.getCellInfo(cell);
+      const { timeout = 10000, fallback = text } = renderer;
 
-    if (BaseRenderer.mediaCache.has(text)) {
-      const video = BaseRenderer.mediaCache.get(text)! as HTMLVideoElement;
+      if (BaseRenderer.mediaCache.has(text)) {
+        const video = BaseRenderer.mediaCache.get(text)! as HTMLVideoElement;
 
-      Object.assign(video, {
-        height,
-        width,
-        ...defaultVideoConfig,
-        ...renderer.config,
-      });
+        resolve(video);
 
-      // video元素被移除可视区域后，再进入可视区域，自动播放
-      if (video.autoplay) {
-        video.play();
+        return;
       }
 
-      return Promise.resolve(video);
-    }
+      const video = document.createElement('video');
 
-    const video = document.createElement('video');
+      const fallbackTimer = setTimeout(() => {
+        resolve(fallback);
+      }, timeout);
 
-    const config = {
-      height,
-      width,
-      ...defaultVideoConfig,
-      ...renderer.config,
-      src: text,
-    };
+      const config = {
+        height,
+        width,
+        src: text,
+        ...defaultVideoConfig,
+        ...renderer.videoConfig,
+      };
 
-    Object.assign(video, config);
-    BaseRenderer.mediaCache.set(text, video);
+      Object.assign(video, config);
 
-    return Promise.resolve(video);
+      video.onloadeddata = () => {
+        clearTimeout(fallbackTimer);
+        BaseRenderer.mediaCache.set(text, video);
+
+        resolve(video);
+      };
+
+      const onError = () => {
+        clearTimeout(fallbackTimer);
+        resolve(fallback);
+      };
+
+      // 错误处理
+      ['error', 'abort', 'stalled'].forEach((eventName) => {
+        video.addEventListener(eventName, onError);
+      });
+    });
   }
 
   public generateConfig(
     renderer: VideoRendererConfig,
     cell: BaseCell<SimpleBBox>,
-    element: HTMLElement,
-  ): DisplayObjectConfig<HTMLStyleProps> {
-    const { x, y } = this.getCellInfo(cell);
+    element: HTMLVideoElement | string,
+  ): DisplayObjectConfig<RectStyleProps> {
+    const { x, y, width, height } = this.getCellInfo(cell);
 
+    // https://g.antv.antgroup.com/api/css/pattern
     return {
       style: {
         x,
         y,
-        innerHTML: element,
-        pointerEvents: 'none',
+        width,
+        height,
+        fill: {
+          image: element,
+          repetition: 'no-repeat',
+        },
+        ...renderer.config,
       },
     };
   }
 
   render(
     cell: BaseCell<SimpleBBox>,
-    config: DisplayObjectConfig<HTMLStyleProps>,
+    config: DisplayObjectConfig<RectStyleProps>,
   ) {
-    cell.appendChild(new HTML(config));
+    const rect = new Rect(config);
+
+    cell.appendChild(rect);
   }
 }

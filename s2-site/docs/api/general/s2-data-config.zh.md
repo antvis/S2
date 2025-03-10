@@ -42,23 +42,23 @@ const s2DataConfig = {
 
 功能描述：字段元数据，可配置字段别名和数值格式化。[查看示例](/examples/basic/pivot/#grid)
 
-| 参数        | 说明                                                         | 类型                                                         | 默认值 | 必选 |
-| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------ | ---- |
-| field       | 字段 id （即 [Fields](#fields) 中配置的字段）                | `string \| string[] \| RegExp`                               |        |      |
-| name        | 字段名称                                                     | `string`                                                     |        |      |
-| description | 字段描述，会显示在行头、列头、单元格对应的 tooltip 中        | `string`                                                     |        |      |
+| 参数        | 说明                                                        | 类型                                                         | 默认值 | 必选 |
+| ----------- | ----------------------------------------------------------- | ------------------------------------------------------------ | ------ | ---- |
+| field       | 字段 id （即 [Fields](#fields) 中配置的字段）               | `string \| string[] \| RegExp`                               |        |      |
+| name        | 字段名称                                                    | `string`                                                     |        |      |
+| description | 字段描述，会显示在行头、列头、单元格对应的 tooltip 中       | `string`                                                     |        |      |
 | formatter   | 格式化 <br/> 单元格、行头和列头支持格式化，角头不支持格式化。只有单元格存在第二个参数。 <br/>数值字段：一般用于格式化数字单位<br/>文本字段：一般用于做字段枚举值的别名<br/> 第二个参数在以下情况会传入：data cell 格式化，复制/导出，tooltip 展示（**且仅在选择多个单元格时，data 类型为数组**） | (value: unknown, data?: [`Data`](#data) \| [`Data`](#data)[], meta?: [`Node`](/api/basic-class/node) \| [`ViewMeta`](#viewmeta)) => string |        |      |
-| renderer    | 单元格渲染类型（图片、视频、富文本等）                       | [`Renderer`](#renderer)                                      |        |      |
+| renderer    | 单元格渲染类型（图片、视频等）                       | [`Renderer`](#renderer)                                      |        |      |
 
 #### Renderer
 
-| 参数           | 说明                                     | 类型                                                         | 默认值 | 必选 |
-| -------------- | ---------------------------------------- | ------------------------------------------------------------ | ------ | ---- |
-| type           | 渲染类型                                 | `IMAGE \| VIDEO \| HTML`                                     |        | ✓    |
-| clickToPreview | 是否开启点击预览。type为图片、视频时生效 | boolean                                                      | true   |      |
-| fallback       | 图片加载失败的兜底展示                   | string                                                       |        |      |
-| timeout        | 图片加载超时时间                         | number                                                       | 10000  |      |
-| config         | 图片、视频、富文本的配置项               | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |        |      |
+| 参数           | 说明                 | 类型                                                     | 默认值 | 必选 |
+| -------------- |--------------------| -------------------------------------------------------- | ------ | ---- |
+| type           | 渲染类型               | `IMAGE \| VIDEO`                                     |        | ✓    |
+| clickToPreview | 是否开启点击预览。type为图片、视频时生效 | boolean                                                  | true   |      |
+| fallback       | 图片、视频加载失败的兜底展示     | string                                                   |        |      |
+| timeout        | 图片、视频加载超时时间           | number                                                   | 10000  |      |
+| config         | 图片、视频的配置项          | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |        |      |
 
 <embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
 <embed src="@/docs/common/view-meta.zh.md"></embed>
