@@ -1,9 +1,9 @@
 // ==================== 通用工具函数 ====================
 
-import { FederatedPointerEvent as CanvasEvent } from '@antv/g-lite/types/dom/FederatedPointerEvent';
+import { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { get } from 'lodash';
 import type { BaseCell } from '../../../cell/base-cell';
-import { CellType, S2Event } from '../../../common/constant';
+import { CellType, S2Event, S2_PREFIX_CLS } from '../../../common/constant';
 import { CellRendererType } from '../../../common/constant/renderer';
 import type { PreviewTheme } from '../../../common/interface';
 import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
@@ -33,7 +33,7 @@ const createPreviewOverlay = (
     ...overlayStyle,
   });
 
-  overlay.className = 's2-preview-overlay';
+  overlay.className = `${S2_PREFIX_CLS}-preview-overlay`;
 
   return overlay;
 };

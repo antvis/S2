@@ -1,8 +1,8 @@
 import { BaseCell } from '@/cell';
-import { CellType, S2Event } from '@/common/constant';
+import { CellType, S2_PREFIX_CLS, S2Event } from '@/common/constant';
 import {
-  PreviewClick,
   bindMediaClick,
+  PreviewClick,
 } from '@/interaction/base-interaction/click/preview-click';
 
 describe('点击事件绑定测试', () => {
@@ -20,11 +20,13 @@ describe('点击事件绑定测试', () => {
       setTimeout(r, 1000);
     });
 
-    const overlay = document.querySelector('.s2-preview-overlay');
+    const overlay = document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`);
 
     overlay.dispatchEvent(new Event('click', { bubbles: true }));
 
-    expect(document.querySelector('.s2-preview-overlay')).toBeNull();
+    expect(
+      document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`),
+    ).toBeNull();
   });
 
   test('视频渲染应该阻止默认行为和事件冒泡', async () => {
@@ -41,11 +43,13 @@ describe('点击事件绑定测试', () => {
       setTimeout(r, 1000);
     });
 
-    const overlay = document.querySelector('.s2-preview-overlay');
+    const overlay = document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`);
 
     overlay.dispatchEvent(new Event('click', { bubbles: true }));
 
-    expect(document.querySelector('.s2-preview-overlay')).toBeNull();
+    expect(
+      document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`),
+    ).toBeNull();
   });
 
   test('当配置禁用预览时不应该创建元素', () => {
