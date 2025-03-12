@@ -1163,4 +1163,35 @@ describe('Scroll Tests', () => {
 
     expect(s2.facet.scrollImmediately).toHaveBeenCalled();
   });
+
+  test('should scroll correct when frozen', async () => {
+    s2.setDataCfg(cloneDeep(mockDataConfig));
+    s2.setOptions({
+      frozen: {
+        rowCount: 1,
+      },
+    });
+    await s2.render(false);
+    const rowNode = s2.facet.getRowNodeById('root[&]浙江[&]杭州');
+
+    s2.interaction.scrollTo = jest.fn();
+
+    s2.interaction.scrollToNode(rowNode);
+
+    expect(s2.interaction.scrollTo).toHaveBeenCalledWith({
+      skipScrollEvent: undefined,
+      rowHeaderOffsetX: {
+        value: 100,
+        animate: true,
+      },
+      offsetX: {
+        value: 100,
+        animate: true,
+      },
+      offsetY: {
+        value: 0,
+        animate: true,
+      },
+    });
+  });
 });

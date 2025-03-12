@@ -11,6 +11,7 @@ import {
 import { type MergedCell } from '../cell';
 import {
   CellType,
+  FrozenGroupArea,
   INTERACTION_STATE_INFO_KEY,
   InteractionName,
   InteractionStateName,
@@ -33,6 +34,7 @@ import type {
   ScrollOffsetConfig,
   ViewMeta,
 } from '../common/interface';
+import { FrozenFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import { customMerge } from '../utils';
@@ -372,7 +374,7 @@ export class RootInteraction {
     }
 
     const { skipScrollEvent, animate } = options;
-    const { facet } = this.spreadsheet;
+    const facet: FrozenFacet = this.spreadsheet.facet as FrozenFacet;
 
     if (!facet.hRowScrollBar && !facet.hScrollBar && !facet.vScrollBar) {
       return;
@@ -385,11 +387,11 @@ export class RootInteraction {
         animate,
       },
       offsetX: {
-        value: meta.x,
+        value: meta.x - facet.frozenGroupAreas[FrozenGroupArea.Col].width,
         animate,
       },
       offsetY: {
-        value: meta.y,
+        value: meta.y - facet.frozenGroupAreas[FrozenGroupArea.Row].height,
         animate,
       },
     });
