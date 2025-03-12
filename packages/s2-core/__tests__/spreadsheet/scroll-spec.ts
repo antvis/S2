@@ -1130,4 +1130,37 @@ describe('Scroll Tests', () => {
     expect(onScroll).not.toHaveBeenCalled();
     expect(onRowScroll).not.toHaveBeenCalled();
   });
+
+  test('should scroll with animation when some direction animation is true', async () => {
+    s2.setDataCfg(cloneDeep(mockDataConfig));
+    await s2.render(false);
+    const rowNode = s2.facet.getRowNodeById('root[&]浙江[&]杭州');
+
+    s2.facet.scrollWithAnimation = jest.fn();
+
+    s2.interaction.scrollTo({
+      offsetY: {
+        value: rowNode.y,
+        animate: true,
+      },
+    });
+
+    expect(s2.facet.scrollWithAnimation).toHaveBeenCalled();
+  });
+
+  test('should scroll without animation when every direction animation is false', async () => {
+    s2.setDataCfg(cloneDeep(mockDataConfig));
+    await s2.render(false);
+    const rowNode = s2.facet.getRowNodeById('root[&]浙江[&]杭州');
+
+    s2.facet.scrollImmediately = jest.fn();
+
+    s2.interaction.scrollTo({
+      offsetY: {
+        value: rowNode.y,
+      },
+    });
+
+    expect(s2.facet.scrollImmediately).toHaveBeenCalled();
+  });
 });
