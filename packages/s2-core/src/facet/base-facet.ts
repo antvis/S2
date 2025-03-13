@@ -797,32 +797,14 @@ export abstract class BaseFacet {
    * @alias s2.interaction.scrollTo(offsetConfig)
    */
   public updateScrollOffset(offsetConfig: ScrollOffsetConfig) {
-    if (offsetConfig.rowHeaderOffsetX?.value !== undefined) {
-      if (offsetConfig.rowHeaderOffsetX?.animate) {
-        this.scrollWithAnimation(offsetConfig);
-      } else {
-        this.scrollImmediately(offsetConfig);
-      }
-
-      return;
-    }
-
-    if (offsetConfig.offsetX?.value !== undefined) {
-      if (offsetConfig.offsetX?.animate) {
-        this.scrollWithAnimation(offsetConfig);
-      } else {
-        this.scrollImmediately(offsetConfig);
-      }
-
-      return;
-    }
-
-    if (offsetConfig.offsetY?.value !== undefined) {
-      if (offsetConfig.offsetY?.animate) {
-        this.scrollWithAnimation(offsetConfig);
-      } else {
-        this.scrollImmediately(offsetConfig);
-      }
+    if (
+      offsetConfig.rowHeaderOffsetX?.animate ||
+      offsetConfig.offsetX?.animate ||
+      offsetConfig.offsetY?.animate
+    ) {
+      this.scrollWithAnimation(offsetConfig);
+    } else {
+      this.scrollImmediately(offsetConfig);
     }
   }
 
