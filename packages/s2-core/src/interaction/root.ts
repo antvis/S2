@@ -34,7 +34,7 @@ import type {
   ScrollOffsetConfig,
   ViewMeta,
 } from '../common/interface';
-import { FrozenFacet } from '../facet';
+import type { FrozenFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import { customMerge } from '../utils';
