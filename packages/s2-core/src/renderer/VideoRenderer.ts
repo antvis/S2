@@ -18,7 +18,7 @@ export class VideoRenderer extends BaseRenderer {
   prepare(renderer: VideoRendererConfig, cell: BaseCell<SimpleBBox>) {
     return new Promise<HTMLVideoElement | string>((resolve) => {
       const { text, height, width } = this.getCellInfo(cell);
-      const { timeout = 10000, fallback = text } = renderer;
+      const { timeout = 10000, fallback = '' } = renderer;
 
       if (BaseRenderer.mediaCache.has(text)) {
         const video = BaseRenderer.mediaCache.get(text)! as HTMLVideoElement;

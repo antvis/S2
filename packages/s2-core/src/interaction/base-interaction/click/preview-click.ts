@@ -6,7 +6,9 @@ import type { BaseCell } from '../../../cell/base-cell';
 import { CellType, S2Event, S2_PREFIX_CLS } from '../../../common/constant';
 import { CellRendererType } from '../../../common/constant/renderer';
 import type { PreviewTheme } from '../../../common/interface';
+import { ImageRendererConfig } from '../../../common/interface';
 import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
+import { asyncDrawImage } from '../../../utils/cell/customRenderer';
 
 // 1. 创建蒙版层
 const createPreviewOverlay = (
@@ -59,13 +61,18 @@ const applyMediaContainerStyle = (
 };
 
 // ==================== 工厂函数 ====================
-const createImageElement = (
-  src: string,
-  mediaContainerStyle?: Record<string, any>,
-): HTMLImageElement => {
-  const img = new Image();
+const createImageElement = async (options: {
+  src: string;
+  mediaContainerStyle?: Record<string, any>;
+  config?: ImageRendererConfig;
+}): Promise<HTMLImageElement> => {
+  const { src, mediaContainerStyle, config } = options;
+  const img = await asyncDrawImage({
+    src,
+    fallback: config?.fallback,
+    timeout: config?.timeout,
+  });
 
-  img.src = src;
   applyMediaContainerStyle(img, mediaContainerStyle);
   img.alt = 'preview';
 
@@ -92,7 +99,7 @@ const createVideoElement = (
 };
 
 // ==================== 主逻辑 ====================
-export const bindMediaClick = (cell: BaseCell<any>) => {
+export const bindMediaClick = async (cell: BaseCell<any>) => {
   const renderer = cell.getRenderer()!;
   const { type } = renderer;
   const src = cell.getFieldValue()!.toString();
@@ -110,7 +117,11 @@ export const bindMediaClick = (cell: BaseCell<any>) => {
 
   const mediaElement =
     type === CellRendererType.IMAGE
-      ? createImageElement(src, previewTheme?.mediaContainer)
+      ? await createImageElement({
+          src,
+          mediaContainerStyle: previewTheme?.mediaContainer,
+          config: renderer,
+        })
       : createVideoElement(src, previewTheme?.mediaContainer);
 
   // 统一事件处理（支持触控）
@@ -137,13 +148,7 @@ export const bindMediaClick = (cell: BaseCell<any>) => {
   // 禁止背景滚动
   document.body.style.overflow = 'hidden';
 
-  if (type === CellRendererType.IMAGE) {
-    (mediaElement as HTMLImageElement).onload = () => {
-      overlay.appendChild(mediaElement);
-    };
-  } else {
-    overlay.appendChild(mediaElement);
-  }
+  overlay.appendChild(mediaElement);
 
   document.body.appendChild(overlay);
 };
