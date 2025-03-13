@@ -505,7 +505,7 @@ export class RootInteraction {
    * 滚动至底部
    * @example s2.interaction.scrollToBottom({ animate: true, skipScrollEvent: true })
    */
-  public scrollToBottom(options: CellScrollToOptions) {
+  public scrollToBottom(options?: CellScrollToOptions) {
     this.scrollTo({
       skipScrollEvent: options?.skipScrollEvent,
       offsetY: {
@@ -519,7 +519,7 @@ export class RootInteraction {
    * 滚动至左边
    * @example s2.interaction.scrollToLeft({ animate: true, skipScrollEvent: true })
    */
-  public scrollToLeft(options: CellScrollToOptions) {
+  public scrollToLeft(options?: CellScrollToOptions) {
     this.scrollTo({
       skipScrollEvent: options?.skipScrollEvent,
       offsetX: {
