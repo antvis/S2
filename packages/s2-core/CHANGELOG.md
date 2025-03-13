@@ -1,3 +1,17 @@
+# [@antv/s2-v2.3.0-beta.2](https://github.com/antvis/S2/compare/@antv/s2-v2.3.0-beta.1...@antv/s2-v2.3.0-beta.2) (2025-03-13)
+
+
+### Bug Fixes
+
+* 滚动动画，冻结行列滚动位置 ([#3121](https://github.com/antvis/S2/issues/3121)) ([60e8431](https://github.com/antvis/S2/commit/60e843168d30e4ddc6e61c014f56744534b29051))
+* 预览缺少兜底 ([e660a8c](https://github.com/antvis/S2/commit/e660a8cde3c4b5f5b90ecf094ff686ce272ae489))
+
+
+### Features
+
+* 增加加载态Loading效果 ([27d62f0](https://github.com/antvis/S2/commit/27d62f0a01d1cbaed6c03b6585030ba9353cb880))
+* 视频渲染增加播放icon，适配单元格缩放 ([45ce78b](https://github.com/antvis/S2/commit/45ce78b37085ec594fe3318180728271dd8ffb2e))
+
 # [@antv/s2-v2.3.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.2.4...@antv/s2-v2.3.0-beta.1) (2025-03-10)
 
 
