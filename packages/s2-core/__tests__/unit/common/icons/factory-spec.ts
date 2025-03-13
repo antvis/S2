@@ -6,7 +6,7 @@ describe('GuiIcon Factory Tests', () => {
   test('should get default icon', () => {
     const icons = keys(InternalSvgIcons);
 
-    expect(icons).toHaveLength(21);
+    expect(icons).toHaveLength(22);
     icons.forEach((name) => {
       expect(getIcon(name)).toBeTruthy();
     });

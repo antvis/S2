@@ -14,6 +14,7 @@ export {
   GroupNone,
   InfoCircle,
   Minus,
+  Play,
   Plus,
   SortDown,
   SortDownSelected,

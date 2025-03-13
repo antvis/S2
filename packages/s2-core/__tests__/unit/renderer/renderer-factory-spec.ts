@@ -18,6 +18,8 @@ describe('SingletonRenderer.render 渲染器测试', () => {
       getContentPosition: jest.fn(() => ({
         x: 0,
       })),
+      getIconStyle: jest.fn(),
+      removeChild: jest.fn(),
     } as unknown as BaseCell<any>;
   });
   test('应该正确创建图片元素', async () => {
@@ -34,7 +36,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
 
     // 验证元素创建参数
     expect(mockCell.appendChild).toHaveBeenCalledWith(expect.any(GImage));
-    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[0][0];
+    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[1][0];
 
     expect(createdElement.style.opacity).toBe(0.8);
   });
@@ -53,7 +55,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     await SingletonRenderer.render(config, mockCell);
 
     // 验证视频参数合并
-    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[0][0];
+    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[1][0];
 
     expect(createdElement.style.fill.image.controls).toBe(true); // 检查合并后的视频属性
 
@@ -61,7 +63,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
 
     // 验证视频参数合并
     const createdElement1 = (mockCell.appendChild as jest.Mock).mock
-      .calls[0][0];
+      .calls[1][0];
 
     expect(createdElement1.style.fill.image.controls).toBe(true); // 检查合并后的视频属性
   });
@@ -78,7 +80,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     await SingletonRenderer.render(config, mockCell);
 
     // 验证默认尺寸应用
-    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[0][0];
+    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[1][0];
 
     expect(createdElement.style.height).toBe(68); // 来自 mockBBox.height
   });
@@ -95,7 +97,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     await SingletonRenderer.render(config, mockCell);
 
     // 验证用户配置覆盖
-    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[0][0];
+    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[1][0];
 
     expect(createdElement.style.height).toBe(150);
     expect(createdElement.style.width).toBe(250);

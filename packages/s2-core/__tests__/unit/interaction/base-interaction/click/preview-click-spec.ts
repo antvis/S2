@@ -1,51 +1,58 @@
 import { BaseCell } from '@/cell';
-import { CellType, S2Event } from '@/common/constant';
+import { CellType, S2_PREFIX_CLS, S2Event } from '@/common/constant';
 import {
-  PreviewClick,
   bindMediaClick,
+  PreviewClick,
 } from '@/interaction/base-interaction/click/preview-click';
+
+const validImageURL = `https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original`;
+const validVideoURL = `https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/file/A*EZfPRJqzl4cAAAAAAAAAAAAAARQnAQ`;
 
 describe('点击事件绑定测试', () => {
   test('图片渲染应该阻止默认行为和事件冒泡', async () => {
     // 初始化模拟单元格
     const mockCell: BaseCell<any> = {
       getRenderer: jest.fn(() => ({ type: 'IMAGE' })),
-      getFieldValue: jest.fn(() => 'test.jpg'),
+      getFieldValue: jest.fn(() => validImageURL),
       getStyle: jest.fn(() => ({})),
     } as unknown as BaseCell<any>;
 
-    bindMediaClick(mockCell);
+    await bindMediaClick(mockCell);
 
     await new Promise((r) => {
       setTimeout(r, 1000);
     });
 
-    const overlay = document.querySelector('.s2-preview-overlay');
+    const overlay = document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`);
 
     overlay.dispatchEvent(new Event('click', { bubbles: true }));
 
-    expect(document.querySelector('.s2-preview-overlay')).toBeNull();
+    expect(
+      document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`),
+    ).toBeNull();
   });
 
   test('视频渲染应该阻止默认行为和事件冒泡', async () => {
     // 初始化模拟单元格
     const mockCell: BaseCell<any> = {
       getRenderer: jest.fn(() => ({ type: 'VIDEO' })),
-      getFieldValue: jest.fn(() => 'test.mp4'),
+      getFieldValue: jest.fn(() => validVideoURL),
       getStyle: jest.fn(() => ({})),
     } as unknown as BaseCell<any>;
 
-    bindMediaClick(mockCell);
+    await bindMediaClick(mockCell);
 
     await new Promise((r) => {
       setTimeout(r, 1000);
     });
 
-    const overlay = document.querySelector('.s2-preview-overlay');
+    const overlay = document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`);
 
     overlay.dispatchEvent(new Event('click', { bubbles: true }));
 
-    expect(document.querySelector('.s2-preview-overlay')).toBeNull();
+    expect(
+      document.querySelector(`.${S2_PREFIX_CLS}-preview-overlay`),
+    ).toBeNull();
   });
 
   test('当配置禁用预览时不应该创建元素', () => {
