@@ -373,7 +373,7 @@ export class RootInteraction {
     }
 
     const { skipScrollEvent, animate } = options;
-    const facet = this.spreadsheet.facet;
+    const { facet } = this.spreadsheet;
 
     if (!facet.hRowScrollBar && !facet.hScrollBar && !facet.vScrollBar) {
       return;
