@@ -2,6 +2,7 @@ import {
   concat,
   find,
   forEach,
+  get,
   isBoolean,
   isEmpty,
   isNil,
@@ -386,11 +387,11 @@ export class RootInteraction {
         animate,
       },
       offsetX: {
-        value: meta.x,
+        value: meta.x - get(facet, 'frozenGroupAreas.frozenCol.width', 0),
         animate,
       },
       offsetY: {
-        value: meta.y,
+        value: meta.y - get(facet, 'frozenGroupAreas.frozenRow.height', 0),
         animate,
       },
     });
