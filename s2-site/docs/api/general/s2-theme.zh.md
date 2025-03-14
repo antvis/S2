@@ -72,6 +72,7 @@ s2.setTheme({
 | splitLine         | 单元格分割线样式                       | [SplitLine](#splitline)                         |        |      |
 | prepareSelectMask | 刷选遮罩样式                           | [InteractionStateTheme](#interactionstatetheme) |        |      |
 | background        | 背景样式                               | [Background](#background)                       |        |      |
+| preview | 图片、视频预览样式 | [PreviewTheme](#previewtheme) | | |
 | empty        | 空数据占位符样式 （明细表有效）                               | [Empty](#empty)                       |        |      |
 | [key: string]     | 额外属性字段，用于用户自定义主题时传参 | `unknown`                                       |        |      |
 
@@ -318,3 +319,12 @@ s2.setTheme({
 | ------ | ---------- | -------- | ------ | ---- |
 | height | 条形图高度 | `number` |        |      |
 | fill   | 颜色填充   | `string` |        |      |
+
+#### PreviewTheme
+
+功能描述：图片、视频预览样式
+
+| 参数           | 说明                   | 类型            | 默认值 | 必选 |
+| -------------- | ---------------------- | --------------- | ------ | ---- |
+| overlay        | 预览遮罩样式           | `CssProperties` |        |      |
+| mediaContainer | 预览图片、视频本体样式 | `CssProperties` |        |      |

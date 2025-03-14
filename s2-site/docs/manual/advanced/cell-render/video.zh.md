@@ -31,6 +31,20 @@ const s2DataConfig = {
 
 ## 交互
 
-1. 点击视频主体，可在当前页面预览播放，并触发 `S2Event.GLOBAL_PREVIEW_CLICK` 事件。预览时支持浏览器原生的视频控制操作，点击空白区域可关闭预览。
+1. 点击视频主体，可在当前页面预览播放，并触发 `S2Event.GLOBAL_PREVIEW_CLICK` 事件。预览时支持浏览器原生的视频控制操作，点击空白区域可关闭预览。预览样式可以通过主题配置修改，如：
+
+   ```ts
+   s2.setTheme({
+       preview: {
+         overlay: {
+           backgroundColor: 'red',
+         },
+         mediaContainer: {
+           height: '100px',
+         },
+       },
+     });
+   ```
+
 2. 视频单元格的复制与导出会显示为原文本数据而不是视频
 3. 默认会按照视频原始大小比例缩放显示，若调整单元格宽高，视频也会自适应调整尺寸
