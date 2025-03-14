@@ -59,7 +59,6 @@ function addScrollToTopButton(s2: SpreadSheet) {
     // s2.interaction.scrollTo({
     //   offsetY: {
     //     value: 0,
-    //     animate: true,
     //   },
     // });
   });
@@ -78,7 +77,6 @@ function addScrollToBottomButton(s2: SpreadSheet) {
     // s2.interaction.scrollTo({
     //   offsetY: {
     //     value: 0,
-    //     animate: true,
     //   },
     // });
   });
