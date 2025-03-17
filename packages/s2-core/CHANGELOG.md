@@ -1,3 +1,15 @@
+# [@antv/s2-v2.3.0](https://github.com/antvis/S2/compare/@antv/s2-v2.2.4...@antv/s2-v2.3.0) (2025-03-17)
+
+
+### Bug Fixes
+
+* 滚动动画，冻结行列滚动位置 ([#3121](https://github.com/antvis/S2/issues/3121)) ([60e8431](https://github.com/antvis/S2/commit/60e843168d30e4ddc6e61c014f56744534b29051))
+
+
+### Features
+
+* 单元格渲染支持图片、视频 ([#3101](https://github.com/antvis/S2/issues/3101)) ([b514b5e](https://github.com/antvis/S2/commit/b514b5e1bb47fd4b3b533e5409a888743bd389d7))
+
 # [@antv/s2-v2.2.4](https://github.com/antvis/S2/compare/@antv/s2-v2.2.3...@antv/s2-v2.2.4) (2025-03-05)
 
 
