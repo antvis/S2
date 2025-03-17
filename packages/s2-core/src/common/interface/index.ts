@@ -9,6 +9,7 @@ export * from './frame';
 export * from './hooks';
 export * from './interaction';
 export * from './node';
+export * from './renderer';
 export * from './resize';
 export * from './s2DataConfig';
 export * from './s2Options';

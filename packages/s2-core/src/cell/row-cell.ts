@@ -11,6 +11,7 @@ import {
 import {
   CellBorderPosition,
   CellClipBox,
+  ContentPositionParams,
   type AreaRange,
   type ViewMeta,
 } from '../common/interface';
@@ -51,8 +52,11 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     this.drawInteractiveBgShape();
     // 绘制交互边框
     this.drawInteractiveBorderShape();
-    // 绘制单元格文本
-    this.drawTextShape();
+    // 绘制单元格文本 or 图片
+    this.drawTextOrCustomRenderer();
+  }
+
+  protected afterDrawText() {
     // 绘制字段和 action标记 -- icon 和 action
     this.drawActionAndConditionIcons();
     // 绘制树状模式收起展开的 icon
@@ -440,7 +444,9 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     return viewport;
   }
 
-  protected getTextPosition(): PointLike {
+  public getContentPosition({
+    contentWidth = this.getActualTextWidth(),
+  }: ContentPositionParams = {}): PointLike {
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
@@ -467,10 +473,11 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: textArea,
-      textWidth: this.getActualTextWidth(),
+      textWidth: contentWidth,
       textAlign: textStyle.textAlign!,
       groupedIcons: this.groupedIcons,
       iconStyle,
+      isCustomRenderer: !!this.getRenderer(),
     });
 
     const iconY = getVerticalIconPosition(
@@ -490,6 +497,10 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     };
 
     return { x: textX, y: textStart };
+  }
+
+  protected getTextPosition(): PointLike {
+    return this.getContentPosition();
   }
 
   protected getResizedTextMaxLines() {

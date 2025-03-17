@@ -60,8 +60,16 @@ export const getHorizontalTextIconPosition = (options: {
   textAlign: TextAlign;
   groupedIcons: GroupedIcons;
   iconStyle: IconTheme;
+  isCustomRenderer?: boolean;
 }) => {
-  const { bbox, textWidth, textAlign, groupedIcons, iconStyle } = options;
+  const {
+    bbox,
+    textWidth,
+    textAlign,
+    groupedIcons,
+    iconStyle,
+    isCustomRenderer = false,
+  } = options;
   const { x, width } = bbox;
 
   const leftIconWidth = getIconTotalWidth(groupedIcons.left, iconStyle);
@@ -80,8 +88,8 @@ export const getHorizontalTextIconPosition = (options: {
 
       break;
     case 'right':
-      textX = x + width - rightIconWidth;
-      leftIconX = textX - textWidth - leftIconWidth;
+      textX = x + width - rightIconWidth - (isCustomRenderer ? textWidth : 0);
+      leftIconX = textX - (isCustomRenderer ? 0 : textWidth) - leftIconWidth;
       rightIconX =
         x +
         width -
@@ -93,7 +101,8 @@ export const getHorizontalTextIconPosition = (options: {
       const totalWidth = leftIconWidth + textWidth + rightIconWidth;
 
       leftIconX = x + width / 2 - totalWidth / 2;
-      textX = leftIconX + leftIconWidth + textWidth / 2;
+      textX =
+        leftIconX + leftIconWidth + (isCustomRenderer ? 0 : textWidth / 2);
       rightIconX =
         leftIconX +
         leftIconWidth +

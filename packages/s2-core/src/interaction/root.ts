@@ -55,6 +55,7 @@ import {
   DataCellClick,
   HeaderCellLinkClick,
   MergedCellClick,
+  PreviewClick,
   RowColumnClick,
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
@@ -777,6 +778,10 @@ export class RootInteraction {
       {
         key: InteractionName.MERGED_CELLS_CLICK,
         interaction: MergedCellClick,
+      },
+      {
+        key: InteractionName.PREVIEW_CLICK,
+        interaction: PreviewClick,
       },
       {
         key: InteractionName.HOVER,

@@ -38,6 +38,7 @@ import {
   type Condition,
   type ConditionMappingResult,
   type Conditions,
+  type ContentPositionParams,
   type DefaultCellTheme,
   type FormatResult,
   type HeaderActionNameOptions,
@@ -58,6 +59,7 @@ import type { ViewMeta } from '../common/interface/basic';
 import type { SimpleBBox } from '../engine';
 import type { CustomText } from '../engine/CustomText';
 import type { Node } from '../facet/layout/node';
+import { SingletonRenderer } from '../renderer';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getBorderPositionAndStyle,
@@ -148,7 +150,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public abstract getMaxTextWidth(): number;
 
+  protected abstract afterDrawText(): void;
+
   protected abstract getTextPosition(): PointLike;
+
+  public abstract getContentPosition(
+    options?: ContentPositionParams,
+  ): PointLike;
 
   protected abstract getIconPosition(): PointLike;
 
@@ -165,6 +173,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     backgroundColorOpacity: number | undefined;
     intelligentReverseTextColor: boolean;
   };
+
+  public abstract getMetaField(): string;
 
   public constructor(
     meta: T,
@@ -482,6 +492,21 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
     this.textShape?.attr('x', position?.x ?? defaultPosition?.x);
     this.textShape?.attr('y', position?.y ?? defaultPosition?.y);
+  }
+
+  public drawTextOrCustomRenderer() {
+    const renderer = this.getRenderer();
+
+    if (renderer) {
+      SingletonRenderer.render(renderer, this).then(() => {
+        this.afterDrawText();
+      });
+
+      return;
+    }
+
+    this.drawTextShape();
+    this.afterDrawText();
   }
 
   public drawTextShape() {
@@ -860,5 +885,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
 
     return maxLines;
+  }
+
+  public getRenderer() {
+    return this.spreadsheet.dataCfg.meta?.find(
+      (m) => m.field === this.getMetaField(),
+    )?.renderer;
   }
 }

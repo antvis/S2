@@ -215,4 +215,54 @@ describe('text-scrolling test', () => {
       iconEnd: 80,
     });
   });
+
+  test('should get correct Center point when cell is inside of viewport and isCustomRenderer is true', () => {
+    const content: AreaRange = { start: 20, size: 50 };
+    const result = adjustTextIconPositionWhileScrolling(
+      viewport,
+      content,
+      {
+        align: NormalizedAlign.Center,
+        size: {
+          textSize: 10,
+          iconEndSize,
+        },
+        padding,
+      },
+      {
+        isCustomRenderer: true,
+      },
+    );
+
+    expect(result).toEqual({
+      textStart: 32.5,
+      iconStart: 32.5,
+      iconEnd: 47.5,
+    });
+  });
+
+  test('should get correct End point when cell is inside of viewport and isCustomRenderer is true', () => {
+    const content: AreaRange = { start: 20, size: 50 };
+    const result = adjustTextIconPositionWhileScrolling(
+      viewport,
+      content,
+      {
+        align: NormalizedAlign.End,
+        size: {
+          textSize: 10,
+          iconEndSize,
+        },
+        padding,
+      },
+      {
+        isCustomRenderer: true,
+      },
+    );
+
+    expect(result).toEqual({
+      textStart: 45,
+      iconStart: 45,
+      iconEnd: 60,
+    });
+  });
 });
