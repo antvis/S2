@@ -11,7 +11,6 @@ import {
   compact,
   concat,
   debounce,
-  each,
   filter,
   find,
   get,
@@ -40,6 +39,7 @@ import {
   TableSeriesNumberCell,
   type HeaderCell,
 } from '../cell';
+import { DataCellPool } from '../cell/DataCellPool';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
@@ -1605,10 +1605,14 @@ export abstract class BaseFacet {
       return;
     }
 
-    const cell = this.spreadsheet.options.dataCell?.(
-      viewMeta,
-      this.spreadsheet,
-    )!;
+    let cell;
+
+    if (DataCellPool.pool.length > 0) {
+      cell = DataCellPool.acquire()!;
+      cell.setMeta(viewMeta);
+    } else {
+      cell = this.spreadsheet.options.dataCell?.(viewMeta, this.spreadsheet)!;
+    }
 
     if (!cell) {
       return;
@@ -1634,29 +1638,38 @@ export abstract class BaseFacet {
       diffPanelIndexes(this.preCellIndexes!, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-      // add new cell in panelCell
-      each(willAddDataCells, ([colIndex, rowIndex]) => {
-        const viewMeta = this.getCellMeta(rowIndex, colIndex);
-        const cell = this.createDataCell(viewMeta);
+      const allDataCells = this.getDataCells();
+      const maxLength = Math.max(
+        willRemoveDataCells.length,
+        willAddDataCells.length,
+      );
 
-        if (!cell) {
-          return;
+      // 交替执行删除和添加操作
+      for (let i = 0; i < maxLength; i++) {
+        // 删除单元格
+        if (i < willRemoveDataCells.length) {
+          const [colIndex, rowIndex] = willRemoveDataCells[i];
+          const mountedDataCell = find(
+            allDataCells,
+            (cell) => cell.name === `${rowIndex}-${colIndex}`,
+          );
+
+          if (mountedDataCell) {
+            DataCellPool.release(mountedDataCell);
+          }
         }
 
-        this.addDataCell(cell);
-      });
+        // 添加单元格
+        if (i < willAddDataCells.length) {
+          const [colIndex, rowIndex] = willAddDataCells[i];
+          const viewMeta = this.getCellMeta(rowIndex, colIndex);
+          const cell = this.createDataCell(viewMeta);
 
-      const allDataCells = this.getDataCells();
-
-      // remove cell from panelCell
-      each(willRemoveDataCells, ([colIndex, rowIndex]) => {
-        const mountedDataCell = find(
-          allDataCells,
-          (cell) => cell.name === `${rowIndex}-${colIndex}`,
-        );
-
-        mountedDataCell?.remove();
-      });
+          if (cell) {
+            this.addDataCell(cell);
+          }
+        }
+      }
 
       DebuggerUtil.getInstance().logger(
         `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,

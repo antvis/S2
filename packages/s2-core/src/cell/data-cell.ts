@@ -1,4 +1,4 @@
-import type { PointLike } from '@antv/g';
+import type { PointLike, RectStyleProps } from '@antv/g';
 import { find, first, get, isEmpty, isEqual, isObject, merge } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import { ContentPositionParams, DEFAULT_STYLE } from '../common';
@@ -40,7 +40,7 @@ import {
   getIconPosition,
 } from '../utils/condition/condition';
 import { drawInterval } from '../utils/g-mini-charts';
-import { updateShapeAttr } from '../utils/g-renders';
+import { batchSetStyle, renderRect, updateShapeAttr } from '../utils/g-renders';
 
 import type { RawData } from './../common/interface/s2DataConfig';
 
@@ -540,5 +540,58 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public getMetaField() {
     return this.meta.valueField;
+  }
+
+  protected drawBackgroundShape() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getBackgroundColor();
+    const style = {
+      ...this.getBBoxByType(),
+      fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
+    };
+
+    if (this.backgroundShape) {
+      batchSetStyle(this.backgroundShape, style);
+    } else {
+      this.backgroundShape = renderRect(this, style);
+    }
+  }
+
+  protected drawInteractiveBgShape() {
+    const style = {
+      ...this.getBBoxByType(),
+      visibility: 'hidden',
+      pointerEvents: 'none',
+    } as RectStyleProps;
+
+    const reuseInteractiveBgShape = this.stateShapes.get('interactiveBgShape');
+
+    if (reuseInteractiveBgShape) {
+      batchSetStyle(reuseInteractiveBgShape, style);
+    } else {
+      this.stateShapes.set('interactiveBgShape', renderRect(this, style));
+    }
+  }
+
+  /**
+   * 绘制 hover 悬停，刷选的外框
+   */
+  protected drawInteractiveBorderShape() {
+    const style = {
+      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+      visibility: 'hidden',
+      pointerEvents: 'none',
+    } as RectStyleProps;
+
+    const interactiveBorderShape = this.stateShapes.get(
+      'interactiveBorderShape',
+    );
+
+    if (interactiveBorderShape) {
+      batchSetStyle(interactiveBorderShape, style);
+    } else {
+      this.stateShapes.set('interactiveBorderShape', renderRect(this, style));
+    }
   }
 }

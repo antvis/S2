@@ -72,6 +72,7 @@ import {
 import { isReadableText, shouldReverseFontColor } from '../utils/color';
 import { getIconPosition } from '../utils/condition/condition';
 import {
+  batchSetStyle,
   renderIcon,
   renderLine,
   renderRect,
@@ -462,15 +463,23 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const text = getDisplayText(style.text, this.getEmptyPlaceholder());
     const shallowRender = options?.shallowRender || this.isShallowRender();
 
-    this.textShape = renderText({
-      group: this,
-      textShape: shallowRender ? undefined : this.textShape,
-      style: {
+    if (this.textShape && !shallowRender) {
+      batchSetStyle(this.textShape, {
         ...style,
         // 文本必须为字符串
         text: `${text}`,
-      },
-    });
+      });
+    } else {
+      this.textShape = renderText({
+        group: this,
+        textShape: shallowRender ? undefined : this.textShape,
+        style: {
+          ...style,
+          // 文本必须为字符串
+          text: `${text}`,
+        },
+      });
+    }
 
     this.addTextShape(this.textShape);
 
@@ -562,8 +571,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       }
 
       const { bottom: maxY } = this.textShape.getBBox();
-
-      this.linkFieldShape = renderLine(this, {
+      const options = {
         x1: startX,
         y1: maxY + 1,
         // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
@@ -571,7 +579,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         y2: maxY + 1,
         stroke: linkFillColor,
         lineWidth: 1,
-      });
+      };
+
+      if (this.linkFieldShape) {
+        batchSetStyle(this.linkFieldShape, options);
+      } else {
+        this.linkFieldShape = renderLine(this, options);
+      }
     }
 
     this.textShape.style.fill = linkFillColor;
@@ -891,5 +905,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.spreadsheet.dataCfg.meta?.find(
       (m) => m.field === this.getMetaField(),
     )?.renderer;
+  }
+
+  public getConditionIntervalShape() {
+    return this.conditionIntervalShape;
   }
 }

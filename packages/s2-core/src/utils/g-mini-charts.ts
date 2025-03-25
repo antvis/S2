@@ -21,6 +21,7 @@ import type {
 import { getIntervalScale } from '../utils/condition/condition';
 import { parseNumberWithPrecision } from '../utils/formatter';
 import {
+  batchSetStyle,
   renderCircle,
   renderLine,
   renderPolyline,
@@ -304,13 +305,23 @@ export const drawInterval = (cell: DataCell) => {
 
     const fill = attrs.fill ?? barChartFillColor;
 
-    return renderRect(cell, {
+    const style = {
       x: x + width * zeroScale,
       y: y + height / 2 - barChartHeight! / 2,
       width: width * intervalScale,
       height: barChartHeight!,
       fill,
-    });
+    };
+
+    const conditionIntervalShape = cell.getConditionIntervalShape();
+
+    if (conditionIntervalShape) {
+      batchSetStyle(conditionIntervalShape, style);
+
+      return conditionIntervalShape;
+    }
+
+    return renderRect(cell, style);
   }
 };
 
