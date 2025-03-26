@@ -33,7 +33,7 @@ export default defineConfig({
       },
       description: {
         zh: "S2 是多维交叉分析领域的表格解决方案，数据驱动视图，提供底层核心库、基础组件库、业务场景库，具备自由扩展的能力，让开发者既能开箱即用，也能基于自身场景自由发挥。",
-        en: "Based on dumi2, the AntV official website theme package"
+        en: "S2 is a table solution in the field of multidimensional cross analysis. It is data-driven view, provides the underlying core library, basic component library and business scenario library, and has the ability of free expansion, allowing developers to use it out of the box and freely play based on their own scenarios."
       }
     },
     title: 'S2',
