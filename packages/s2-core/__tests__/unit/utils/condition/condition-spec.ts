@@ -93,4 +93,13 @@ describe('getIntervalScale Test', () => {
       scale: -0.1,
     });
   });
+
+  test('最大值最小值相等时避免除0异常', () => {
+    const getScale = getIntervalScale(1, 1);
+
+    expect(getScale(1)).toEqual({
+      zeroScale: 0,
+      scale: 0,
+    });
+  });
 });

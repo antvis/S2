@@ -523,4 +523,8 @@ export abstract class HeaderCell<
   public getActionIcons() {
     return this.actionIcons || [];
   }
+
+  public getMetaField() {
+    return this.meta.field;
+  }
 }

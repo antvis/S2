@@ -70,4 +70,10 @@ export class TableColCell extends ColCell {
       fillOpacity: backgroundColorOpacity,
     });
   }
+
+  public drawTextOrCustomRenderer() {
+    // 明细表列头仅允许文本
+    this.drawTextShape();
+    this.afterDrawText();
+  }
 }

@@ -1,0 +1,26 @@
+{
+  "title": {
+    "zh": "单元格渲染类型",
+    "en": "Cell Render Type"
+  },
+  "demos": [
+    {
+      "filename": "image.ts",
+      "title": {
+        "zh": "图片",
+        "en": "image"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7CEdSqFhjQQAAAAAAAAAAAAAemJ7AQ/fmt.webp",
+      "new": true
+    },
+    {
+      "filename": "video.ts",
+      "title": {
+        "zh": "视频",
+        "en": "video"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*eznwSJwKRdoAAAAAAAAAAAAAemJ7AQ/fmt.webp",
+      "new": true
+    }
+  ]
+}

@@ -20,7 +20,11 @@ export const adjustTextIconPositionWhileScrolling = (
       betweenTextAndEndIcon?: number;
     };
   },
+  options?: {
+    isCustomRenderer?: boolean;
+  },
 ) => {
+  const { isCustomRenderer = false } = options || {};
   const { align, size, padding } = style;
   const { textSize, iconStartSize = 0, iconEndSize = 0 } = size;
   let { betweenTextAndEndIcon = 0 } = padding;
@@ -52,7 +56,8 @@ export const adjustTextIconPositionWhileScrolling = (
 
         return {
           iconStart: start,
-          textStart: start + iconStartSize + textSize / 2,
+          textStart:
+            start + iconStartSize + (isCustomRenderer ? 0 : textSize / 2),
           iconEnd: start + iconStartSize + textSize + betweenTextAndEndIcon,
         };
 
@@ -61,7 +66,7 @@ export const adjustTextIconPositionWhileScrolling = (
 
         return {
           iconStart: areaEnd - iconEndSize - textSize - iconStartSize,
-          textStart: areaEnd - iconEndSize,
+          textStart: areaEnd - iconEndSize - (isCustomRenderer ? textSize : 0),
           iconEnd: areaEnd - iconEndSize + betweenTextAndEndIcon,
         };
     }

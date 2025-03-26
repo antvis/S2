@@ -1,3 +1,38 @@
+# [@antv/s2-v2.3.0](https://github.com/antvis/S2/compare/@antv/s2-v2.2.4...@antv/s2-v2.3.0) (2025-03-17)
+
+
+### Bug Fixes
+
+* 滚动动画，冻结行列滚动位置 ([#3121](https://github.com/antvis/S2/issues/3121)) ([60e8431](https://github.com/antvis/S2/commit/60e843168d30e4ddc6e61c014f56744534b29051))
+
+
+### Features
+
+* 单元格渲染支持图片、视频 ([#3101](https://github.com/antvis/S2/issues/3101)) ([b514b5e](https://github.com/antvis/S2/commit/b514b5e1bb47fd4b3b533e5409a888743bd389d7))
+
+# [@antv/s2-v2.2.4](https://github.com/antvis/S2/compare/@antv/s2-v2.2.3...@antv/s2-v2.2.4) (2025-03-05)
+
+
+### Bug Fixes
+
+* 修复单层列头下，隐藏完所有非总计列头后，总计列头高度异常 ([#3119](https://github.com/antvis/S2/issues/3119)) ([6ece5d8](https://github.com/antvis/S2/commit/6ece5d8074a774570896b2954f1f9862bf8d2c7d))
+* 避免getIntervalScale除0异常 ([#3115](https://github.com/antvis/S2/issues/3115)) ([cdecc07](https://github.com/antvis/S2/commit/cdecc07bec9a7640575f43e4786642bda0c35ceb))
+
+# [@antv/s2-v2.2.3](https://github.com/antvis/S2/compare/@antv/s2-v2.2.2...@antv/s2-v2.2.3) (2025-02-28)
+
+
+### Bug Fixes
+
+* 修复隐藏列后变更列顺序，隐藏列展开异常 ([#3112](https://github.com/antvis/S2/issues/3112)) ([eb06cf7](https://github.com/antvis/S2/commit/eb06cf7e40469440209ab3e9a8aaf74b26186fc8))
+* 列头换行，隐藏采样节点后，列头高度异常 ([#3114](https://github.com/antvis/S2/issues/3114)) ([0c5d5b8](https://github.com/antvis/S2/commit/0c5d5b8cb0bbb887413a3d52b97c670889b79f40))
+
+# [@antv/s2-v2.2.2](https://github.com/antvis/S2/compare/@antv/s2-v2.2.1...@antv/s2-v2.2.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* 在ios 14.8.1中正则前瞻和后顾存在兼容问题 ([#3109](https://github.com/antvis/S2/issues/3109)) ([32e56ea](https://github.com/antvis/S2/commit/32e56ea682e11874aa4ff01d4061bc270e3f012f))
+
 # [@antv/s2-v2.2.1](https://github.com/antvis/S2/compare/@antv/s2-v2.2.0...@antv/s2-v2.2.1) (2025-02-25)
 
 

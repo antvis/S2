@@ -354,6 +354,9 @@ export interface S2Theme extends CellThemes {
 
   /** 空数据占位符 */
   empty?: EmptyTheme;
+
+  /** 图片、视频预览 */
+  preview?: PreviewTheme;
 }
 
 export type ThemeName = keyof typeof PALETTE_MAP;
@@ -452,6 +455,12 @@ export interface MiniChartTheme {
   bar?: BarTheme;
   bullet?: BulletTheme;
   interval?: IntervalTheme;
+}
+
+/** 预览图片、视频的样式 */
+export interface PreviewTheme {
+  overlay?: Record<string, any>;
+  mediaContainer?: Record<string, any>;
 }
 
 export type InternalFullyCellTheme = DeepRequired<DefaultCellTheme>;

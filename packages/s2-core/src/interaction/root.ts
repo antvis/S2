@@ -2,6 +2,7 @@ import {
   concat,
   find,
   forEach,
+  get,
   isBoolean,
   isEmpty,
   isNil,
@@ -54,6 +55,7 @@ import {
   DataCellClick,
   HeaderCellLinkClick,
   MergedCellClick,
+  PreviewClick,
   RowColumnClick,
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
@@ -385,11 +387,11 @@ export class RootInteraction {
         animate,
       },
       offsetX: {
-        value: meta.x,
+        value: meta.x - get(facet, 'frozenGroupAreas.frozenCol.width', 0),
         animate,
       },
       offsetY: {
-        value: meta.y,
+        value: meta.y - get(facet, 'frozenGroupAreas.frozenRow.height', 0),
         animate,
       },
     });
@@ -776,6 +778,10 @@ export class RootInteraction {
       {
         key: InteractionName.MERGED_CELLS_CLICK,
         interaction: MergedCellClick,
+      },
+      {
+        key: InteractionName.PREVIEW_CLICK,
+        interaction: PreviewClick,
       },
       {
         key: InteractionName.HOVER,

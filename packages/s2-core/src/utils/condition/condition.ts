@@ -31,6 +31,14 @@ export const getIntervalScale = (minValue = 0, maxValue = 0) => {
   minValue = parseNumberWithPrecision(minValue);
   maxValue = parseNumberWithPrecision(maxValue);
 
+  // 处理所有值相等的情况
+  if (minValue === maxValue) {
+    return () => ({
+      zeroScale: 0,
+      scale: 0,
+    });
+  }
+
   const allPositiveValue = minValue >= 0;
   const bothPositiveAndNegativeValue = maxValue >= 0 && minValue <= 0;
 

@@ -1,7 +1,6 @@
 ---
-title: 结合 @antv/g2 绘制图形
+title: 结合@antv/g2
 order: 12
-tag: Experimental
 ---
 
 :::warning{title='提示'}

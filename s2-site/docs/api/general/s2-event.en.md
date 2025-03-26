@@ -99,18 +99,19 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 ### global
 
-| name             | event name                         | describe                                                                                    |
-| ---------------- | ---------------------------------- | ------------------------------------------------------------------------------------------- |
-| keyboard press   | `S2Event.GLOBAL_KEYBOARD_DOWN`     | keyboard press                                                                              |
-| keyboard release | `S2Event.GLOBAL_KEYBOARD_UP`       | keyboard release                                                                            |
-| copy             | `S2Event.GLOBAL_COPIED`            | Copy selected cells                                                                         |
-| mouse release    | `S2Event.GLOBAL_MOUSE_UP`          | Chart area mouse release                                                                    |
-| click            | `S2Event.GLOBAL_CLICK`             | Chart area click                                                                            |
-| right click      | `S2Event.GLOBAL_CONTEXT_MENU`      | Right click on the chart area                                                               |
-| selected         | `S2Event.GLOBAL_SELECTED`          | When selecting a cell, such as: brush selection, multiple selection, single selection       |
-| hover            | `S2Event.GLOBAL_HOVER`             | mouse over cell                                                                             |
-| reset            | `S2Event.GLOBAL_RESET`             | When clicking on an empty space, pressing the Esc key resets the interaction style          |
-| link jump        | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | When clicked row column header is edited as text of link field                              |
-| icon click       | `S2Event.GLOBAL_ACTION_ICON_CLICK` | When the operation icon on the right side of the cell is clicked, for example: sort icon    |
-| icon hover       | `S2Event.GLOBAL_ACTION_ICON_HOVER` | When hovering over the operation icon on the right side of the cell, for example: sort icon |
-| scroll           | `S2Event.GLOBAL_SCROLL`            | Table scrolling (with values and row header cells)                                          |
+| name                      | event name                         | describe                                                                                    |
+|---------------------------| ---------------------------------- | ------------------------------------------------------------------------------------------- |
+| keyboard press            | `S2Event.GLOBAL_KEYBOARD_DOWN`     | keyboard press                                                                              |
+| keyboard release          | `S2Event.GLOBAL_KEYBOARD_UP`       | keyboard release                                                                            |
+| copy                      | `S2Event.GLOBAL_COPIED`            | Copy selected cells                                                                         |
+| mouse release             | `S2Event.GLOBAL_MOUSE_UP`          | Chart area mouse release                                                                    |
+| click                     | `S2Event.GLOBAL_CLICK`             | Chart area click                                                                            |
+| Image/Video Preview click | `S2Event.GLOBAL_PREVIEW_CLICK`             | Image/Video Preview click                                                                            |
+| right click               | `S2Event.GLOBAL_CONTEXT_MENU`      | Right click on the chart area                                                               |
+| selected                  | `S2Event.GLOBAL_SELECTED`          | When selecting a cell, such as: brush selection, multiple selection, single selection       |
+| hover                     | `S2Event.GLOBAL_HOVER`             | mouse over cell                                                                             |
+| reset                     | `S2Event.GLOBAL_RESET`             | When clicking on an empty space, pressing the Esc key resets the interaction style          |
+| link jump                 | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | When clicked row column header is edited as text of link field                              |
+| icon click                | `S2Event.GLOBAL_ACTION_ICON_CLICK` | When the operation icon on the right side of the cell is clicked, for example: sort icon    |
+| icon hover                | `S2Event.GLOBAL_ACTION_ICON_HOVER` | When hovering over the operation icon on the right side of the cell, for example: sort icon |
+| scroll                    | `S2Event.GLOBAL_SCROLL`            | Table scrolling (with values and row header cells)                                          |

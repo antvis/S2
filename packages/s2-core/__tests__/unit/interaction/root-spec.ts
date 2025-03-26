@@ -624,13 +624,13 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should get correctly default interaction size', () => {
-    expect(defaultInteractionSize).toEqual(18);
+    expect(defaultInteractionSize).toEqual(19);
   });
 
   test('should register default interaction', () => {
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
 
-    expect(rootInteraction.interactions.size).toEqual(13);
+    expect(rootInteraction.interactions.size).toEqual(14);
     expect(rootInteraction.interactions.keys()).toMatchSnapshot();
   });
 
@@ -672,7 +672,7 @@ describe('RootInteraction Tests', () => {
     ];
 
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    expect(rootInteraction.interactions.size).toEqual(14);
+    expect(rootInteraction.interactions.size).toEqual(15);
     expect(
       rootInteraction.interactions.has(customInteraction.key),
     ).toBeTruthy();
@@ -699,7 +699,7 @@ describe('RootInteraction Tests', () => {
 
       rootInteraction = new RootInteraction(mockSpreadSheetInstance);
 
-      expect(rootInteraction.interactions.size).toEqual(12);
+      expect(rootInteraction.interactions.size).toEqual(13);
       expect(rootInteraction.interactions.has(name)).toBeFalsy();
       [...rootInteraction.interactions.values()].forEach((interaction) => {
         expect(interaction).not.toBeInstanceOf(expected);
@@ -717,7 +717,7 @@ describe('RootInteraction Tests', () => {
 
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
 
-    expect(rootInteraction.interactions.size).toEqual(10);
+    expect(rootInteraction.interactions.size).toEqual(11);
     expect(
       rootInteraction.interactions.has(
         InteractionName.DATA_CELL_BRUSH_SELECTION,

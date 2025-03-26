@@ -516,6 +516,11 @@ export abstract class BaseFacet {
     }
 
     const maxTextWidth = Math.ceil(cell.getMaxTextWidth());
+
+    if (maxTextWidth <= 0 && cell.cellType === CellType.COL_CELL) {
+      return defaultHeight;
+    }
+
     // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
     const cacheKey = `${size(fieldValue)}${NODE_ID_SEPARATOR}${maxTextWidth}`;
     const cacheHeight = this.textWrapNodeHeightCache.get(cacheKey);
@@ -581,22 +586,31 @@ export abstract class BaseFacet {
     colsHierarchy: Hierarchy,
     rowsHierarchy?: Hierarchy,
   ) {
-    const sampleMaxHeightNodesForAllLevels =
-      colsHierarchy.sampleNodesForAllLevels.map((sampleNode) => {
-        const maxHeightNode = maxBy(
-          colsHierarchy
-            .getNodes(sampleNode.level)
-            .filter((node) => !node.isTotals),
-          (levelSampleNode) => {
-            return this.getColNodeHeight({
-              colNode: levelSampleNode,
-              colsHierarchy,
-            });
-          },
-        )!;
+    const hasNotSample = isEmpty(colsHierarchy.sampleNodesForAllLevels);
+    const sampleNodes = hasNotSample
+      ? colsHierarchy.allNodesWithoutRoot
+      : colsHierarchy.sampleNodesForAllLevels;
+    const sampleMaxHeightNodesForAllLevels = sampleNodes.map((sampleNode) => {
+      const maxHeightNode = maxBy(
+        colsHierarchy
+          .getNodes(sampleNode.level)
+          .filter((node) => !node.isTotals || hasNotSample),
+        (levelSampleNode) => {
+          return this.getColNodeHeight({
+            colNode: levelSampleNode,
+            colsHierarchy,
+          });
+        },
+      )!;
 
-        return maxHeightNode!;
-      });
+      return maxHeightNode!;
+    });
+
+    if (hasNotSample) {
+      colsHierarchy.sampleNodeForLastLevel =
+        sampleMaxHeightNodesForAllLevels[0] ?? null;
+      colsHierarchy.maxLevel = 0;
+    }
 
     colsHierarchy.sampleNodesForAllLevels = compact(
       sampleMaxHeightNodesForAllLevels,
@@ -783,32 +797,14 @@ export abstract class BaseFacet {
    * @alias s2.interaction.scrollTo(offsetConfig)
    */
   public updateScrollOffset(offsetConfig: ScrollOffsetConfig) {
-    if (offsetConfig.rowHeaderOffsetX?.value !== undefined) {
-      if (offsetConfig.rowHeaderOffsetX?.animate) {
-        this.scrollWithAnimation(offsetConfig);
-      } else {
-        this.scrollImmediately(offsetConfig);
-      }
-
-      return;
-    }
-
-    if (offsetConfig.offsetX?.value !== undefined) {
-      if (offsetConfig.offsetX?.animate) {
-        this.scrollWithAnimation(offsetConfig);
-      } else {
-        this.scrollImmediately(offsetConfig);
-      }
-
-      return;
-    }
-
-    if (offsetConfig.offsetY?.value !== undefined) {
-      if (offsetConfig.offsetY?.animate) {
-        this.scrollWithAnimation(offsetConfig);
-      } else {
-        this.scrollImmediately(offsetConfig);
-      }
+    if (
+      offsetConfig.rowHeaderOffsetX?.animate ||
+      offsetConfig.offsetX?.animate ||
+      offsetConfig.offsetY?.animate
+    ) {
+      this.scrollWithAnimation(offsetConfig);
+    } else {
+      this.scrollImmediately(offsetConfig);
     }
   }
 
@@ -2437,6 +2433,10 @@ export abstract class BaseFacet {
     }
 
     return cells.filter((cell) => cellIds.includes(cell.getMeta().id));
+  }
+
+  public getInitColIndexLeafNodes(): Node[] {
+    return this.layoutResult.colsHierarchy.getIndexNodes() || [];
   }
 
   public getInitColLeafNodes(): Node[] {

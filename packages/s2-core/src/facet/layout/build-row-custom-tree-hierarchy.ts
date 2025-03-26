@@ -37,10 +37,6 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       hideColumnNodes.find((hideNode) => hideNode.field === field),
     );
 
-    if (isHiddenNode) {
-      return;
-    }
-
     // query 只与值本身有关，不会涉及到 parent 节点
     const valueQuery = { [EXTRA_FIELD]: field };
     // 使用 field 作为 id, 保证其唯一性, 复制时再做二次转换
@@ -79,6 +75,14 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
         isCustomNode: true,
       },
     });
+
+    if (isLeaf || isHiddenNode || isCollapsedNode) {
+      hierarchy.pushIndexNode(node);
+    }
+
+    if (isHiddenNode) {
+      return;
+    }
 
     if (level > hierarchy.maxLevel && !node.isSeriesNumberNode()) {
       hierarchy.maxLevel = level;
