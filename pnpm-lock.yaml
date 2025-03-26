@@ -777,7 +777,7 @@ packages:
     resolution: {integrity: sha512-UTbrMLhwJUkKzqJx5KFnSRpU3BqrdLORJbwUbHK2zHSCT3q3bjcFA//ZYLVfIlwqFDXp/hzfMyRtp0c77A9ZVA==}
 
   '@antv/dumi-theme-antv@0.7.2':
-    resolution: {integrity: sha512-wZ+89BU7+W1u7juipm3FB0fYpROELsRbVk/cGsuQM/pnsee6y6VZXeZxhg15tNGW/Us8AQfsmGn40NKX2hV+4A==}
+    resolution: {integrity: sha512-ISQsVstUcoQORmt25efEawIsNCxU4K9wT3DrceWCGTeItYN6+V+RcsBwlp5XYAr7w+b/J2jhkaeiqlft990KYw==}
     peerDependencies:
       dumi: ^2.0.0
       react: '>=16.9.0'
