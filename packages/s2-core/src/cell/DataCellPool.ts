@@ -8,6 +8,10 @@ export class DataCellPool {
   }
 
   static release(cell: DataCell) {
-    DataCellPool.pool.push(cell);
+    if (!cell.getRenderer()) {
+      DataCellPool.pool.push(cell);
+    } else {
+      cell.destroy();
+    }
   }
 }
