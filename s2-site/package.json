@@ -39,29 +39,29 @@
     "@antv/s2-react-components": "workspace:*",
     "antd": "^5.17.0",
     "copy-to-clipboard": "^3.3.3",
-    "dumi": "^2.4.17",
-    "gh-pages": "^6.1.1",
+    "dumi": "^2.4.18",
+    "gh-pages": "^6.3.0",
     "lodash": "^4.17.21",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-color": "^2.19.3",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@google-cloud/translate": "^7.0.3",
+    "@google-cloud/translate": "^7.2.2",
     "@stone-lyl/google-translate-script": "^0.1.0",
-    "hast-util-to-html": "^8.0.3",
-    "micromark-extension-directive": "^2.1.2",
+    "hast-util-to-html": "^8.0.4",
+    "micromark-extension-directive": "^2.2.1",
     "rehype-document": "^6.1.0",
     "rehype-format": "^4.0.1",
-    "rehype-parse": "^8.0.4",
+    "rehype-parse": "^8.0.5",
     "rehype-remark": "^9.1.2",
-    "rehype-stringify": "^9.0.3",
+    "rehype-stringify": "^9.0.4",
     "remark-gfm": "^3.0.1",
-    "remark-parse": "^10.0.1",
+    "remark-parse": "^10.0.2",
     "remark-rehype": "^10.1.0",
-    "remark-stringify": "^10.0.2",
+    "remark-stringify": "^10.0.3",
     "unified": "^10.1.2",
-    "unist-util-visit": "^4.1.1"
+    "unist-util-visit": "^4.1.2"
   },
   "tnpm": {
     "mode": "pnpm"

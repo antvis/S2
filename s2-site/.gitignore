@@ -13,3 +13,4 @@ yarn-error.log
 .history
 yarn.lock
 pnpm-lock.yaml
+server
