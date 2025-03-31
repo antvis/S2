@@ -527,4 +527,11 @@ export abstract class HeaderCell<
   public getMetaField() {
     return this.meta.field;
   }
+
+  public setMeta(viewMeta: Node) {
+    super.setMeta(viewMeta);
+    if (!this.isShallowRender()) {
+      this.initCell();
+    }
+  }
 }

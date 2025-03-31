@@ -39,7 +39,7 @@ import {
   TableSeriesNumberCell,
   type HeaderCell,
 } from '../cell';
-import { DataCellPool } from '../cell/DataCellPool';
+import { ColCellPool, DataCellPool, RowCellPool } from '../cell/pool';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
@@ -182,6 +182,12 @@ export abstract class BaseFacet {
   protected textWrapTempRowCell: RowCell | DataCell;
 
   protected textWrapTempColCell: ColCell | TableColCell;
+
+  protected dataCellPool: DataCellPool;
+
+  protected colCellPool: ColCellPool;
+
+  protected rowCellPool: RowCellPool;
 
   public customRowHeightStatusMap: Record<string, boolean>;
 
@@ -1607,8 +1613,8 @@ export abstract class BaseFacet {
 
     let cell;
 
-    if (DataCellPool.pool.length > 0) {
-      cell = DataCellPool.acquire()!;
+    if (this.dataCellPool.pool.length > 0) {
+      cell = this.dataCellPool.acquire()!;
       cell.setMeta(viewMeta);
     } else {
       cell = this.spreadsheet.options.dataCell?.(viewMeta, this.spreadsheet)!;
@@ -1655,7 +1661,7 @@ export abstract class BaseFacet {
           );
 
           if (mountedDataCell) {
-            DataCellPool.release(mountedDataCell);
+            this.dataCellPool.release(mountedDataCell);
           }
         }
 
@@ -1685,6 +1691,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initCellPool();
     this.initTextWrapTemp();
     this.initGroups();
     // layout
@@ -2471,5 +2478,9 @@ export abstract class BaseFacet {
     return (
       Math.ceil(this.spreadsheet.measureTextWidth(text, font)) + EXTRA_PIXEL
     );
+  }
+
+  protected initCellPool() {
+    this.dataCellPool = new DataCellPool();
   }
 }
