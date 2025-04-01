@@ -72,7 +72,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     if (this.colCellPool.pool.length > 0) {
       const colCell = this.colCellPool.acquire()!;
 
-      colCell.setMeta(node);
+      colCell.reInitCell(node, this.getHeaderConfig());
 
       return colCell;
     }
@@ -92,19 +92,23 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { spreadsheet } = this.getHeaderConfig();
     const group = this.getCellGroup(node);
 
+    let cell: ColCell;
+
     if (
       node.belongsCell?.parentNode === group &&
       node.belongsCell.getMeta() === node
     ) {
-      return;
-    }
+      cell = node.belongsCell as ColCell;
+      cell.setHeaderConfig(this.headerConfig);
+      cell.updateTextPosition();
+    } else {
+      cell = this.getCellInstance(node);
 
-    const cell = this.getCellInstance(node);
+      node.belongsCell = cell;
 
-    node.belongsCell = cell;
-
-    if (cell.parentElement !== group) {
-      group?.appendChild(cell);
+      if (cell.parentElement !== group) {
+        group?.appendChild(cell);
+      }
     }
 
     spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);

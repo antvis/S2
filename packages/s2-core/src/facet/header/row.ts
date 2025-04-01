@@ -56,7 +56,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     if (this.rowCellPool.pool.length > 0) {
       const rowCell = this.rowCellPool.acquire()!;
 
-      rowCell.setMeta(node);
+      rowCell.reInitCell(node, this.headerConfig);
 
       return rowCell;
     }
@@ -118,20 +118,23 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     const appendNode = (node: Node) => {
       const group = this.getCellGroup(node);
+      let cell;
 
       if (
         node.belongsCell?.parentNode === group &&
         node.belongsCell.getMeta() === node
       ) {
-        return;
-      }
+        cell = node.belongsCell as RowCell;
+        cell.setHeaderConfig(this.headerConfig);
+        cell.updateTextPosition();
+      } else {
+        cell = this.getCellInstance(node);
 
-      const cell = this.getCellInstance(node);
+        node.belongsCell = cell;
 
-      node.belongsCell = cell;
-
-      if (cell.parentElement !== group) {
-        group?.appendChild(cell);
+        if (cell.parentElement !== group) {
+          group?.appendChild(cell);
+        }
       }
 
       this.emitRenderEvent(cell);

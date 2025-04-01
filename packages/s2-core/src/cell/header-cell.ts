@@ -528,10 +528,13 @@ export abstract class HeaderCell<
     return this.meta.field;
   }
 
-  public setMeta(viewMeta: Node) {
-    super.setMeta(viewMeta);
-    if (!this.isShallowRender()) {
-      this.initCell();
-    }
+  public reInitCell(node: Node, headerConfig: T) {
+    this.setMeta(node);
+    this.handleRestOptions(headerConfig, undefined);
+    this.initCell();
+  }
+
+  public setHeaderConfig(headerConfig: T) {
+    this.handleRestOptions(headerConfig, undefined);
   }
 }
