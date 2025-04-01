@@ -72,13 +72,13 @@ import {
 import { isReadableText, shouldReverseFontColor } from '../utils/color';
 import { getIconPosition } from '../utils/condition/condition';
 import {
-  batchSetStyle,
   renderIcon,
   renderLine,
   renderRect,
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
+import { batchSetStyle } from '../utils/g-utils';
 import { isLinkFieldNode } from '../utils/interaction/link-field';
 import { isMobile } from '../utils/is-mobile';
 import {
@@ -768,13 +768,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       const position = this.getIconPosition();
       const { size } = this.getStyle()!.icon!;
 
-      this.conditionIconShape = renderIcon(this, {
+      const iconCfg = {
         ...position,
         name: attrs?.name!,
         width: size,
         height: size,
         fill: attrs?.fill,
-      });
+      };
+
+      if (this.conditionIconShape) {
+        this.conditionIconShape.reRender(iconCfg);
+      } else {
+        this.conditionIconShape = renderIcon(this, iconCfg);
+      }
+
       this.addConditionIconShape(this.conditionIconShape);
     }
   }

@@ -21,12 +21,12 @@ import type {
 import { getIntervalScale } from '../utils/condition/condition';
 import { parseNumberWithPrecision } from '../utils/formatter';
 import {
-  batchSetStyle,
   renderCircle,
   renderLine,
   renderPolyline,
   renderRect,
 } from '../utils/g-renders';
+import { batchSetStyle } from '../utils/g-utils';
 
 interface FractionDigitsOptions {
   min: number;

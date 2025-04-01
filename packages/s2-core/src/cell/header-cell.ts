@@ -298,14 +298,21 @@ export abstract class HeaderCell<
         const y = iconPosition.y;
 
         if (icon.isConditionIcon) {
-          this.conditionIconShape = renderIcon(this, {
+          const iconCfg = {
             x,
             y,
             name: icon.name,
             width: size,
             height: size,
             fill: icon.fill,
-          });
+          };
+
+          if (this.conditionIconShape) {
+            this.conditionIconShape.reRender(iconCfg);
+          } else {
+            this.conditionIconShape = renderIcon(this, iconCfg);
+          }
+
           this.addConditionIconShape(this.conditionIconShape);
 
           return;
