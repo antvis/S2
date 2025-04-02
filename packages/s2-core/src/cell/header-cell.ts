@@ -277,7 +277,11 @@ export abstract class HeaderCell<
     this.appendChild(icon);
   }
 
-  protected drawActionAndConditionIcons() {
+  protected drawActionAndConditionIcons({
+    updatePositionOnly = false,
+  }: {
+    updatePositionOnly?: boolean;
+  } = {}) {
     if (isEmpty(this.groupedIcons.left) && isEmpty(this.groupedIcons.right)) {
       return;
     }
@@ -285,6 +289,8 @@ export abstract class HeaderCell<
     if (!this.leftIconPosition || !this.rightIconPosition) {
       return;
     }
+
+    let updatePositionOnlyIndex = 0;
 
     forEach(this.groupedIcons, (icons, position) => {
       const { size, margin } = this.getStyle()!.icon!;
@@ -308,12 +314,24 @@ export abstract class HeaderCell<
           };
 
           if (this.conditionIconShape) {
+            if (updatePositionOnly) {
+              this.conditionIconShape.updatePosition({ x, y });
+
+              return;
+            }
+
             this.conditionIconShape.reRender(iconCfg);
           } else {
             this.conditionIconShape = renderIcon(this, iconCfg);
           }
 
           this.addConditionIconShape(this.conditionIconShape);
+
+          return;
+        }
+
+        if (updatePositionOnly) {
+          this.actionIcons[updatePositionOnlyIndex++]?.updatePosition({ x, y });
 
           return;
         }
@@ -543,5 +561,7 @@ export abstract class HeaderCell<
 
   public setHeaderConfig(headerConfig: T) {
     this.handleRestOptions(headerConfig, undefined);
+    this.updateTextPosition();
+    this.drawActionAndConditionIcons({ updatePositionOnly: true });
   }
 }

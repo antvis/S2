@@ -100,7 +100,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     ) {
       cell = node.belongsCell as ColCell;
       cell.setHeaderConfig(this.headerConfig);
-      cell.updateTextPosition();
     } else {
       cell = this.getCellInstance(node);
 
@@ -256,4 +255,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       }
     });
   }
+
+  protected clearResizeAreaGroup() {}
 }

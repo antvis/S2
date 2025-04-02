@@ -514,4 +514,8 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       })
     );
   }
+
+  public setHeaderConfig(headerConfig: RowHeaderConfig) {
+    super.setHeaderConfig(headerConfig);
+  }
 }
