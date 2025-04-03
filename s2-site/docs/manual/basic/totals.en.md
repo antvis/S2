@@ -162,7 +162,7 @@ You can configure attributes `calcGrandTotals` and `calcSubTotals` for `row` and
 
 ##### 1. Configure aggregation mode
 
-It is realized by configuring `aggregation` , which currently supports `SUM` (sum), `MIN` (minimum value), `MAX` (maximum value) and `AVG` (arithmetic average).
+It is realized by configuring `aggregation` , which currently supports `SUM` (sum), `MIN` (minimum value), `MAX` (maximum value) , `AVG` (arithmetic average) and `COUNT`.
 
 ```ts
 const s2Options = {
