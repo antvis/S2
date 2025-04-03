@@ -84,7 +84,7 @@ export class EventController {
     });
     const realClickEvent = isMobile()
       ? OriginEventType.TOUCH_END
-      : OriginEventType.POINTER_UP;
+      : OriginEventType.MOUSE_UP;
 
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
