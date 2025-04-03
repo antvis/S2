@@ -177,8 +177,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     // 移动端, 点击热区为整个单元格
     if (isMobile()) {
-      this.addEventListener('touchend', (evt: Event) => {
-        evt.stopPropagation();
+      this.addEventListener('touchend', () => {
         this.emitCollapseEvent();
       });
     }
