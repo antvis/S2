@@ -21,6 +21,7 @@ import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
 import { getAppendInfo } from '../utils/interaction/common';
+import { isMobile } from '../utils/is-mobile';
 import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
@@ -81,9 +82,13 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.TOUCH_START, (event) => {
       this.target = event.target;
     });
+    const realClickEvent = isMobile()
+      ? OriginEventType.TOUCH_END
+      : OriginEventType.POINTER_UP;
+
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
-    this.addCanvasEvent(OriginEventType.POINTER_UP, this.onCanvasMouseup);
+    this.addCanvasEvent(realClickEvent, this.onCanvasMouseup);
     this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasDoubleClick);
     /**
      * 如果监听 G Canvas, 右键对应的是 rightup/rightdown 事件, 如需禁用右键菜单 (preventDefault), 需要监听 DOM

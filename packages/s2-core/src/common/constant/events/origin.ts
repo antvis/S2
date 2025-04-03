@@ -8,6 +8,7 @@ export enum OriginEventType {
   MOUSE_OUT = 'mouseout',
   MOUSE_LEAVE = 'mouseleave',
   TOUCH_START = 'touchstart',
+  TOUCH_END = 'touchend',
   KEY_DOWN = 'keydown',
   KEY_UP = 'keyup',
   CLICK = 'click',
