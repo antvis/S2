@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
-    "@antv/dumi-theme-antv": "^0.7.2",
+    "@antv/dumi-theme-antv": "^0.7.3",
     "@antv/g": "^6.1.21",
     "@antv/g-canvas": "^2.0.39",
     "@antv/g-plugin-a11y": "^1.1.20",
@@ -42,9 +42,9 @@
     "dumi": "^2.4.18",
     "gh-pages": "^6.3.0",
     "lodash": "^4.17.21",
-    "react": "^18.3.1",
+    "react": "^19.1.0",
     "react-color": "^2.19.3",
-    "react-dom": "^18.3.1"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@google-cloud/translate": "^7.2.2",
