@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { RawData, S2DataConfig, S2Options } from '@/common';
+import { Aggregation } from '@/common/interface';
 import type { Node } from '@/facet/layout/node';
 import { PivotSheet } from '@/sheet-type';
-import { merge } from 'lodash';
+import { cloneDeep, merge } from 'lodash';
 import { TOTALS_OPTIONS, assembleDataCfg, assembleOptions } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
+import { data } from '../data/mock-dataset';
 
 describe('Spreadsheet Totals Tests', () => {
   let spreadsheet: PivotSheet;
@@ -163,5 +165,26 @@ describe('Spreadsheet Totals Tests', () => {
       .find((cell) => cell.getMeta().rowId === 'root[&]四川省')!;
 
     expect(rowSubtotal2.getTextShape()).toBeUndefined();
+  });
+
+  test('should render total nodes by count on row header', async () => {
+    spreadsheet.setDataCfg({ data });
+    const countTotalOptions = cloneDeep(TOTALS_OPTIONS);
+
+    countTotalOptions.row.calcGrandTotals = {
+      aggregation: Aggregation.COUNT,
+    };
+
+    spreadsheet.setOptions({ totals: countTotalOptions });
+    await spreadsheet.render();
+
+    [
+      'root[&]总计-root[&]家具[&]桌子[&]number',
+      'root[&]总计-root[&]家具[&]沙发[&]number',
+      'root[&]总计-root[&]办公用品[&]笔[&]number',
+      'root[&]总计-root[&]办公用品[&]纸张[&]number',
+    ].forEach((d) => {
+      expect(spreadsheet.facet.getCellById(d).actualText).toEqual('8');
+    });
   });
 });
