@@ -90,7 +90,7 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | onRangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | onRangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
 | onLayoutCellRender | 单个单元格布局渲染完成事件 | cell: [S2CellType](/api/basic-class/base-cell) |  |  |
-| onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/s2-options/#layoutresult) ) => void; |  |  |
+| onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/api/general/s2-options/#layoutresult) ) => void; |  |  |
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | onLayoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({ collapseFields: `Record<string, boolean>`, meta: [Node](/api/basic-class/node) }) => void; |  |  |

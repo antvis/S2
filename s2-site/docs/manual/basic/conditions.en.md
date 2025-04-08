@@ -17,7 +17,7 @@ The figure below visually shows the form of the four field tags:
 
 ## Get started quickly
 
-The `S2` field marking feature is configured by configuring the [`Conditions`](/docs/api/general/s2-options#conditions) attribute in `s2Options` .
+The `S2` field marking feature is configured by configuring the [`Conditions`](/en/api/general/s2-options#conditions) attribute in `s2Options` .
 
 ```ts
 // 构建 options
@@ -43,14 +43,14 @@ const s2Options = {
 
 ## configuration explanation
 
-The [Conditions attribute](/docs/api/general/s2-options#conditions) can configure four different fields, corresponding to four different field tags.
+The [Conditions attribute](/en/api/general/s2-options#conditions) can configure four different fields, corresponding to four different field tags.
 
-* `text` , `background` and `interval` are all of [Condition](/docs/api/general/s2-options#condition) array type
+* `text` , `background` and `interval` are all of [Condition](/en/api/general/s2-options#condition) array type
 
   * Contains `field` and `mapping` two fields
   * If a field ID matches multiple field marking rules in the same scope, the last rule shall prevail.
 
-* `icon` is slightly different, it is [IconCondition](/docs/api/general/s2-options#iconcondition) array type
+* `icon` is slightly different, it is [IconCondition](/en/api/general/s2-options#iconcondition) array type
 
   * One more `position` field is used to specify the position of the icon relative to the text
 
@@ -108,7 +108,7 @@ Focus on explaining the two fields of `field` and `mapping` :
 
 <embed src="@/docs/common/icon.en.md"></embed>​
 
-🎨 field mark detailed configuration refer to [Conditions API](/docs/api/general/s2-options#conditions) documentation.
+🎨 field mark detailed configuration refer to [Conditions API](/en/api/general/s2-options#conditions) documentation.
 
 ## characteristic
 
