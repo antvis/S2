@@ -38,8 +38,8 @@ s2.isPivotMode()
 | isTableMode | 是否是明细表                                                                                                                 | `() => boolean` |    |
 | isValueInCols | 是否是数值置于行头                                                                                                              | `() => boolean` |    |
 | clearDrillDownData | 清除下钻数据  | (rowNodeId?: `string`) => `Promise<void>` |    |
-| showTooltip | 显示 tooltip   （别名 `tooltip.show`   | (showOptions: [TooltipShowOptions](/api/common/custom-tooltip)) => void |    |
-| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) \| MouseEvent, data: [TooltipData[]](/api/common/custom-tooltip), options?: [TooltipOptions](/api/common/custom-tooltip)) => void |
+| showTooltip | 显示 tooltip   （别名 `tooltip.show`   | (showOptions: [TooltipShowOptions](/api/basic-class/base-tooltip#tooltipshowoptions)) => void |    |
+| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) \| MouseEvent, data: [TooltipData[]](/api/basic-class/base-tooltip#tooltipdata), options?: [TooltipOptions](/api/basic-class/base-tooltip#tooltipoptions)) => void |
 | hideTooltip | 隐藏 tooltip （别名：`tooltip.hide`   | `() => void` |    |
 | destroyTooltip | 销毁 tooltip     （别名 `tooltip.destroy`   | `() => void` |    |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`   | `() => void` |    |
