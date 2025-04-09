@@ -171,11 +171,11 @@ describe('Interaction Event Controller Tests', () => {
     const canvasEventTypes: string[] = [
       OriginEventType.MOUSE_DOWN,
       OriginEventType.POINTER_MOVE,
+      OriginEventType.POINTER_UP,
       OriginEventType.MOUSE_OUT,
       OriginEventType.RIGHT_DOWN,
       OriginEventType.CLICK,
       OriginEventType.TOUCH_START,
-      OriginEventType.MOUSE_UP,
     ];
 
     expect(eventController.canvasEventHandlers).toHaveLength(
