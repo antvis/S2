@@ -3,7 +3,7 @@
     "rows": ["province", "city"],
     "columns": ["type", "sub_type"],
     "values": ["number", "price"],
-    "valueInCols": true
+    "valueLocation": "row"
   },
   "meta": [
     {

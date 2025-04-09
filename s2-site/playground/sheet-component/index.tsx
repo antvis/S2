@@ -80,7 +80,12 @@ export const CustomSheet: React.FC<Props> = (props) => {
     const dataCfg = getExampleDataCfg();
 
     setDataCfg(dataCfg);
-  }, [sheetConfig?.rows, sheetConfig?.columns, sheetConfig?.values]);
+  }, [
+    sheetConfig?.rows,
+    sheetConfig?.columns,
+    sheetConfig?.values,
+    sheetConfig?.valueLocation,
+  ]);
 
   useEffect(() => {
     if (
@@ -89,7 +94,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
       isEmpty(sheetConfig?.importData)
     ) {
       const dataCfg = getExampleDataCfg();
-
+      debugger;
       setDataCfg(dataCfg);
     } else if (!isEmpty(sheetConfig?.importData)) {
       const dataCfg = getImportDataCfg();
@@ -220,24 +225,26 @@ export const CustomSheet: React.FC<Props> = (props) => {
 
   return (
     <div className="sheet-container" ref={containerRef}>
-      <SheetComponent
-        dataCfg={dataCfg}
-        options={options}
-        themeCfg={themeCfg}
-        sheetType={sheetType}
-        adaptive={adaptive}
-      >
-        {({ pagination }) =>
-          showPagination && (
-            <Pagination
-              showQuickJumper
-              showSizeChanger
-              showTotal={(total) => `共计 ${total} 条`}
-              {...pagination}
-            />
-          )
-        }
-      </SheetComponent>
+      {dataCfg && (
+        <SheetComponent
+          dataCfg={dataCfg}
+          options={options}
+          themeCfg={themeCfg}
+          sheetType={sheetType}
+          adaptive={adaptive}
+        >
+          {({ pagination }) =>
+            showPagination && (
+              <Pagination
+                showQuickJumper
+                showSizeChanger
+                showTotal={(total) => `共计 ${total} 条`}
+                {...pagination}
+              />
+            )
+          }
+        </SheetComponent>
+      )}
     </div>
   );
 };
