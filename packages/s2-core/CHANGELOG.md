@@ -1,3 +1,10 @@
+# [@antv/s2-v2.3.1](https://github.com/antvis/S2/compare/@antv/s2-v2.3.0...@antv/s2-v2.3.1) (2025-04-10)
+
+
+### Bug Fixes
+
+* 明细表自定义列头prefix重复展示异常 ([#3142](https://github.com/antvis/S2/issues/3142)) ([986bdc2](https://github.com/antvis/S2/commit/986bdc254902162ec27803375377e585bbbd9dfd))
+
 # [@antv/s2-v2.3.0](https://github.com/antvis/S2/compare/@antv/s2-v2.2.4...@antv/s2-v2.3.0) (2025-03-17)
 
 
