@@ -94,7 +94,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
       isEmpty(sheetConfig?.importData)
     ) {
       const dataCfg = getExampleDataCfg();
-      debugger;
+
       setDataCfg(dataCfg);
     } else if (!isEmpty(sheetConfig?.importData)) {
       const dataCfg = getImportDataCfg();
