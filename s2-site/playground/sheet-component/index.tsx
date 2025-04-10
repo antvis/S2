@@ -1,16 +1,16 @@
-import type { Adaptive, SheetType } from '@antv/s2';
+import type {Adaptive, SheetType} from '@antv/s2';
 import {
   generatePalette,
   getPalette,
   type S2DataConfig,
   type ThemeCfg,
 } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import {SheetComponent, SheetComponentOptions} from '@antv/s2-react';
 import '@antv/s2-react/dist/s2-react.min.css';
-import { Pagination } from 'antd';
-import { concat, isEmpty, merge } from 'lodash';
-import React, { useEffect } from 'react';
-import { sheetDataCfg, subTotalsDimensions } from './config';
+import {Pagination} from 'antd';
+import {concat, isEmpty, merge} from 'lodash';
+import React, {useEffect} from 'react';
+import {sheetDataCfg, subTotalsDimensions} from './config';
 import './index.less';
 
 type Props = {
@@ -28,10 +28,10 @@ export const CustomSheet: React.FC<Props> = (props) => {
   const [showPagination, setShowPagination] = React.useState<boolean>(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const { sheetConfig } = props;
+  const {sheetConfig} = props;
 
   const getExampleDataCfg = () => {
-    const { rows, columns, values, valueLocation } = sheetConfig;
+    const {rows, columns, values, valueLocation} = sheetConfig;
     const pivotFields = {
       rows,
       columns,
@@ -43,29 +43,29 @@ export const CustomSheet: React.FC<Props> = (props) => {
     };
 
     if (sheetType === 'pivot') {
-      return { ...sheetDataCfg, fields: pivotFields };
+      return {...sheetDataCfg, fields: pivotFields};
     }
 
-    return { ...sheetDataCfg, fields: tableFields };
+    return {...sheetDataCfg, fields: tableFields};
   };
 
   const getImportDataCfg = () => {
-    const { importData, valueLocation } = sheetConfig;
-    const { fields } = importData;
+    const {importData, valueLocation} = sheetConfig;
+    const {fields} = importData;
     const pivotFields = {
       ...fields,
       valueInCols: valueLocation && valueLocation === 'column',
     };
-    const { rows, columns, values } = fields;
+    const {rows, columns, values} = fields;
     const tableFields = {
       columns: concat([], rows || [], columns || [], values || []),
     };
 
     if (sheetType === 'pivot') {
-      return { ...importData, fields: pivotFields };
+      return {...importData, fields: pivotFields};
     }
 
-    return { ...importData, fields: tableFields };
+    return {...importData, fields: tableFields};
   };
 
   useEffect(() => {
@@ -120,9 +120,11 @@ export const CustomSheet: React.FC<Props> = (props) => {
       columnSubTotals,
       columnGrandTotals,
     } = sheetConfig;
-    const mergedOptions = merge(options, {
+
+    setOptions(op => ({
+      ...op,
       hierarchyType,
-      style: { layoutWidthType: widthChange },
+      style: {layoutWidthType: widthChange},
       width: sheetWidth,
       height: sheetHeight,
       frozen: {
@@ -148,9 +150,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
           subTotalsDimensions: subTotalsDimensions.colSubTotalsDimensions,
         },
       },
-    });
-
-    setOptions({ ...mergedOptions });
+    }));
   }, [
     sheetConfig?.hierarchyType,
     sheetConfig?.widthChange,
@@ -165,9 +165,9 @@ export const CustomSheet: React.FC<Props> = (props) => {
   ]);
 
   useEffect(() => {
-    const { theme } = sheetConfig;
+    const {theme} = sheetConfig;
 
-    setThemeCfg({ name: theme });
+    setThemeCfg({name: theme});
   }, [sheetConfig?.theme]);
 
   useEffect(() => {
@@ -175,18 +175,18 @@ export const CustomSheet: React.FC<Props> = (props) => {
       return;
     }
 
-    const { theme, themeColor } = sheetConfig;
+    const {theme, themeColor} = sheetConfig;
     const palette = getPalette(theme || 'default');
     const newPalette = generatePalette({
       ...palette,
       brandColor: themeColor?.hex || '#E0E9FD',
     });
 
-    setThemeCfg({ name: theme, palette: newPalette });
+    setThemeCfg({name: theme, palette: newPalette});
   }, [sheetConfig?.themeColor]);
 
   useEffect(() => {
-    const { adaptive } = sheetConfig;
+    const {adaptive} = sheetConfig;
 
     if (adaptive) {
       setAdaptive({
@@ -196,23 +196,25 @@ export const CustomSheet: React.FC<Props> = (props) => {
       });
     } else {
       setAdaptive(false);
-      setOptions({
-        width: sheetConfig?.sheetWidth ?? 600,
-        height: sheetConfig?.sheetHeight ?? 480,
-      });
+      setOptions(op => ({
+        ...op,
+        width: (sheetConfig?.sheetWidth ?? 600) + Math.random(),
+        height: (sheetConfig?.sheetHeight ?? 480) + Math.random(),
+      }));
     }
   }, [sheetConfig?.adaptive]);
 
   useEffect(() => {
-    const { showPagination } = sheetConfig;
+    const {showPagination} = sheetConfig;
 
     setShowPagination(showPagination);
   }, [sheetConfig?.showPagination]);
 
   useEffect(() => {
-    const { showSeriesNumber, showPagination } = sheetConfig;
+    const {showSeriesNumber, showPagination} = sheetConfig;
 
-    setOptions({
+    setOptions(op => ({
+      ...op,
       seriesNumber: {
         enable: showSeriesNumber,
       },
@@ -220,7 +222,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
         pageSize: 10,
         current: 1,
       },
-    });
+    }));
   }, [sheetConfig?.showSeriesNumber]);
 
   return (
@@ -233,7 +235,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
           sheetType={sheetType}
           adaptive={adaptive}
         >
-          {({ pagination }) =>
+          {({pagination}) =>
             showPagination && (
               <Pagination
                 showQuickJumper

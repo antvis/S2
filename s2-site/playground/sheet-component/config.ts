@@ -9,8 +9,7 @@ import {
 } from '../dataset/mock-dataset.json';
 
 export const sheetDataCfg: S2DataConfig = {
-  data,
-  totalData,
+  data: [...data, ...totalData],
   meta,
   fields,
 };
