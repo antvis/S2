@@ -1,5 +1,5 @@
-import React from 'react';
 import { Layout } from 'antd';
+import React from 'react';
 import { ConfigPanel } from '../../playground/config-panel';
 import { CustomSheet } from '../sheet-component';
 import { sheetDataCfg } from '../sheet-component/config';

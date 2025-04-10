@@ -1,4 +1,4 @@
-if (window) {
+if (typeof window !== "undefined" && window) {
   (window as any).react = require('react');
   // 如果写成 reactDOM 会导致在 playground 运行时找不到 (应该是 dumi 还有主题包存在多版本 React 导致的),
   (window as any).reactDom = require('react-dom');
@@ -6,6 +6,7 @@ if (window) {
   (window as any).lodash = require('lodash');
   (window as any).reactColor = require('react-color');
   (window as any).copyToClipboard = require('copy-to-clipboard');
+  (window as any).insertCss = require('insert-css');
 
   (window as any).antd = require('antd');
   (window as any).antdIcons = require('@ant-design/icons');

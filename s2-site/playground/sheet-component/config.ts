@@ -1,7 +1,6 @@
 import type { S2DataConfig } from '@antv/s2';
 import {
   data,
-  totalData,
   meta,
   fields,
   rowSubTotalsDimensions,
@@ -10,7 +9,6 @@ import {
 
 export const sheetDataCfg: S2DataConfig = {
   data,
-  totalData,
   meta,
   fields,
 };
