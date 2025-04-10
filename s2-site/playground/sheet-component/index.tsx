@@ -141,6 +141,12 @@ export const CustomSheet: React.FC<Props> = (props) => {
           reverseGrandTotalsLayout: true,
           reverseSubTotalsLayout: true,
           subTotalsDimensions: subTotalsDimensions.rowSubTotalsDimensions,
+          calcGrandTotals: {
+            aggregation: 'SUM',
+          },
+          calcSubTotals: {
+            aggregation: 'SUM',
+          },
         },
         col: {
           showGrandTotals: columnGrandTotals,
@@ -148,6 +154,12 @@ export const CustomSheet: React.FC<Props> = (props) => {
           reverseGrandTotalsLayout: true,
           reverseSubTotalsLayout: true,
           subTotalsDimensions: subTotalsDimensions.colSubTotalsDimensions,
+          calcGrandTotals: {
+            aggregation: 'SUM',
+          },
+          calcSubTotals: {
+            aggregation: 'SUM',
+          },
         },
       },
     }));

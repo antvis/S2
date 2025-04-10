@@ -1,7 +1,6 @@
 import type { S2DataConfig } from '@antv/s2';
 import {
   data,
-  totalData,
   meta,
   fields,
   rowSubTotalsDimensions,
@@ -9,7 +8,7 @@ import {
 } from '../dataset/mock-dataset.json';
 
 export const sheetDataCfg: S2DataConfig = {
-  data: [...data, ...totalData],
+  data,
   meta,
   fields,
 };
