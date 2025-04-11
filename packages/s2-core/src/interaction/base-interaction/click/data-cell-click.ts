@@ -15,6 +15,7 @@ import {
   afterSelectDataCells,
   getCellMeta,
 } from '../../../utils/interaction/select-event';
+import { isMobile } from '../../../utils/is-mobile';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
@@ -54,7 +55,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         if (
           event.detail === 1 ||
           event.nativeEvent?.detail === 1 ||
-          event.originalEvent?.detail === 1
+          event.originalEvent?.detail === 1 ||
+          isMobile()
         ) {
           interaction.reset();
 
