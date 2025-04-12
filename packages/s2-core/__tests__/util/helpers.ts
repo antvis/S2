@@ -379,6 +379,10 @@ export const createFederatedPointerEvent = (
   evt.type = eventType;
   evt.pointerType = 'mouse';
 
+  if (eventType === 'click') {
+    evt.detail = 1;
+  }
+
   return evt;
 };
 
@@ -389,6 +393,10 @@ export const createFederatedMouseEvent = (
   const evt = new FederatedMouseEvent(spreadsheet.container.getEventService());
 
   evt.type = eventType;
+
+  if (eventType === 'click') {
+    evt.detail = 1;
+  }
 
   return evt;
 };

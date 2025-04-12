@@ -938,7 +938,7 @@ describe('Interaction Event Controller Tests', () => {
         writable: true,
       });
       spreadsheet.container.dispatchEvent(
-        createFederatedPointerEvent(spreadsheet, OriginEventType.POINTER_UP),
+        createFederatedPointerEvent(spreadsheet, OriginEventType.CLICK),
       );
 
       expect(handler).toHaveBeenCalledTimes(1);
@@ -981,7 +981,7 @@ describe('Interaction Event Controller Tests', () => {
       spreadsheet.on(event, handler);
 
       image.dispatchEvent(
-        createFederatedMouseEvent(spreadsheet, OriginEventType.POINTER_UP),
+        createFederatedMouseEvent(spreadsheet, OriginEventType.CLICK),
       );
 
       expect(handler).toHaveBeenCalledTimes(1);
@@ -1026,7 +1026,7 @@ describe('Interaction Event Controller Tests', () => {
         writable: true,
       });
       iconImageShape.dispatchEvent(
-        createFederatedPointerEvent(spreadsheet, OriginEventType.POINTER_UP),
+        createFederatedPointerEvent(spreadsheet, OriginEventType.CLICK),
       );
 
       expect(handler).toHaveBeenCalledTimes(1);
