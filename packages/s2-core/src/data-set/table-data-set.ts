@@ -1,4 +1,13 @@
-import { each, filter, hasIn, isFunction, isObject, orderBy } from 'lodash';
+import {
+  each,
+  filter,
+  hasIn,
+  isBoolean,
+  isFunction,
+  isObject,
+  noop,
+  orderBy,
+} from 'lodash';
 import type { CellMeta } from '../common';
 import type {
   Data,
@@ -20,6 +29,7 @@ export class TableDataSet extends BaseDataSet {
     super.setDataCfg(dataCfg);
     this.handleDimensionValueFilter();
     this.handleDimensionValuesSort();
+    this.handleTotals();
   }
 
   /**
@@ -165,6 +175,36 @@ export class TableDataSet extends BaseDataSet {
       this.displayData = this.getDisplayData(sortedData);
     });
   };
+
+  private handleTotals() {
+    const {
+      showGrandTotals,
+      reverseGrandTotalsLayout,
+      isTotalData = noop,
+    } = this.spreadsheet.options.totals?.row || {};
+
+    let totalData: RawData | undefined;
+
+    if (isBoolean(showGrandTotals)) {
+      const totalIndex = this.displayData.findIndex(isTotalData);
+
+      if (totalIndex > 0) {
+        // 先判断有没有数据传入
+        totalData = this.displayData.splice(totalIndex, 1)[0];
+      } else if (showGrandTotals) {
+        // 再看计算方式
+      }
+
+      if (totalData && showGrandTotals) {
+        // 判断放到数值最前面还是最后面
+        if (reverseGrandTotalsLayout) {
+          this.displayData.unshift(totalData);
+        } else {
+          this.displayData.push(totalData);
+        }
+      }
+    }
+  }
 
   public getDimensionValues(): SimpleData[] {
     return [];

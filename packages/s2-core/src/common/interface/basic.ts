@@ -100,6 +100,9 @@ export interface Meta {
 
   /** 渲染器配置 */
   renderer?: CustomRendererConfig;
+
+  /** 明细表每列特定的总计配置，透视表暂不生效 */
+  totals?: CalcTotals;
 }
 
 export type CustomHeaderField = CustomTreeNode | string;
@@ -213,6 +216,12 @@ export interface Total {
    * @default "小计"
    */
   subTotalsLabel?: string;
+
+  /**
+   * 是否是总计数据，明细表生效
+   * @param data
+   */
+  isTotalData?: (data: RawData) => boolean;
 }
 
 export interface Totals {
