@@ -15,7 +15,7 @@ import {
   type CanvasConfig,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
-import { dsvFormat } from 'd3-dsv';
+import { dsvFormat } from '@antv/vendor/d3-dsv';
 import fs from 'fs';
 import { omit } from 'lodash';
 import path from 'path';

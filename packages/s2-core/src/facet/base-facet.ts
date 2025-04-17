@@ -4,8 +4,8 @@ import {
   Rect,
   type FederatedPointerEvent,
 } from '@antv/g';
-import { interpolateArray } from 'd3-interpolate';
-import { timer, type Timer } from 'd3-timer';
+import { interpolateArray } from '@antv/vendor/d3-interpolate';
+import { timer, type Timer } from '@antv/vendor/d3-timer';
 import {
   clamp,
   compact,
