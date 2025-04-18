@@ -535,9 +535,7 @@ export default defineConfig({
   styles: ['/site.css'],
   links: [],
   scripts: [],
-  // TODO: S2用的 antd@5.x @antv/dumi-theme-antv 是 4.x, 导致本地跑不起来
-  // monorepoRedirect: {
-  //   peerDeps: true,
-  //   srcDir: ['src', 'esm', 'lib'],
-  // },
+  analytics: {
+    ga_v2: 'G-SJ4N89WC85',
+  },
 });
