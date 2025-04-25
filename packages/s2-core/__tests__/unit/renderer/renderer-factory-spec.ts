@@ -41,6 +41,26 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     expect(createdElement.style.opacity).toBe(0.8);
   });
 
+  test('应该正确创建prepareText中的元素', async () => {
+    // 测试图片渲染类型
+    const config: CustomRendererConfig = {
+      type: 'IMAGE',
+      config: { opacity: 0.8 },
+      prepareText: () => Promise.resolve(fallbackImageURL),
+    };
+
+    mockCell.getFieldValue.mockReturnValue(validImageURL);
+
+    await SingletonRenderer.render(config, mockCell);
+
+    // 验证元素创建参数
+    expect(mockCell.appendChild).toHaveBeenCalledWith(expect.any(GImage));
+    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[1][0];
+
+    expect(createdElement.style.opacity).toBe(0.8);
+    expect(createdElement.style.src.src).toBe(fallbackImageURL);
+  });
+
   test('应该正确创建视频元素', async () => {
     // 测试视频渲染类型
     const config: VideoRendererConfig = {
