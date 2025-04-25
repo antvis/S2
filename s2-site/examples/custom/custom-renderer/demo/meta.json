@@ -10,7 +10,15 @@
         "zh": "图片",
         "en": "image"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7CEdSqFhjQQAAAAAAAAAAAAAemJ7AQ/fmt.webp",
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7CEdSqFhjQQAAAAAAAAAAAAAemJ7AQ/fmt.webp"
+    },
+    {
+      "filename": "qrcode.ts",
+      "title": {
+        "zh": "二维码",
+        "en": "qrcode"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Rt9yRoL4lAUAAAAAAAAAAAAAemJ7AQ/fmt.webp",
       "new": true
     },
     {
@@ -19,8 +27,7 @@
         "zh": "视频",
         "en": "video"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*eznwSJwKRdoAAAAAAAAAAAAAemJ7AQ/fmt.webp",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*eznwSJwKRdoAAAAAAAAAAAAAemJ7AQ/fmt.webp"
     }
   ]
 }

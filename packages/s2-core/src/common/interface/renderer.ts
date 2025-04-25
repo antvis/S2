@@ -1,6 +1,5 @@
 import { ImageStyleProps, RectStyleProps } from '@antv/g';
 import { CellRendererType } from '../constant/renderer';
-import { ViewMeta } from './basic';
 import { SimpleData } from './s2DataConfig';
 
 type RendererType = keyof typeof CellRendererType;
@@ -15,7 +14,7 @@ interface BaseRendererConfig<T extends RendererType | CellRendererType> {
   /** 是否开启点击预览 */
   clickToPreview?: boolean;
   timeout?: number;
-  prepareText?: (value: SimpleData, meta?: ViewMeta | null) => Promise<string>;
+  prepareText?: (value: SimpleData) => Promise<string>;
 }
 
 // 图片渲染配置

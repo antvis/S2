@@ -83,8 +83,13 @@ export abstract class BaseRenderer {
   ) {
     let { text } = this.getCellInfo(cell);
 
-    if (renderer.prepareText) {
-      text = await renderer.prepareText(text);
+    try {
+      if (renderer.prepareText) {
+        text = await renderer.prepareText(text);
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(`fail to prepareText`, e);
     }
 
     return text;
