@@ -1,3 +1,17 @@
+# [@antv/s2-v2.4.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.3.1...@antv/s2-v2.4.0-beta.1) (2025-04-25)
+
+
+### Bug Fixes
+
+* 修复移动端点击事件触发多次 ([#3141](https://github.com/antvis/S2/issues/3141)) ([48cb5ee](https://github.com/antvis/S2/commit/48cb5ee5f7607cdd5489d32db01f57c25e351a40))
+* 兜底图片正常加载 ([ea75e62](https://github.com/antvis/S2/commit/ea75e6290a44a97f86ea3a88405469a591dc26f2))
+* 跨域图片正常加载 ([49da47a](https://github.com/antvis/S2/commit/49da47a9ffbb4606e6e48d17d02ed24ac66a9ab4))
+
+
+### Features
+
+* 渲染多媒体前异步转化 ([95e5290](https://github.com/antvis/S2/commit/95e5290dff79c7db8450c0504ef80cc4f36fd34a))
+
 # [@antv/s2-v2.3.1](https://github.com/antvis/S2/compare/@antv/s2-v2.3.0...@antv/s2-v2.3.1) (2025-04-10)
 
 
