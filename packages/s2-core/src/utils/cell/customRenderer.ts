@@ -38,19 +38,8 @@ export function asyncDrawImage(options: {
       reject(error);
     };
 
-    const img = new Image();
-    const onerror = () => {
-      if (crossOrigin) {
-        // 第二次加载不再使用跨域请求，但会因浏览器安全策略导致Canvas的toDataUrl失败（不推荐）
-        asyncDrawImage({
-          src,
-          timeout,
-          mediaCache,
-          crossOrigin: null,
-        })
-          .then(cacheResolve)
-          .catch(cacheReject);
-      } else if (fallback) {
+    const processFallback = () => {
+      if (fallback) {
         // 如果仍然加载失败，尝试 fallback
         asyncDrawImage({
           src: fallback,
@@ -64,6 +53,23 @@ export function asyncDrawImage(options: {
         cacheReject(loadError);
       }
     };
+    const onerror = () => {
+      if (crossOrigin) {
+        // 第二次加载不再使用跨域请求，但会因浏览器安全策略导致Canvas的toDataUrl失败（不推荐）
+        asyncDrawImage({
+          src,
+          timeout,
+          mediaCache,
+          crossOrigin: null,
+        })
+          .then(cacheResolve)
+          .catch(processFallback);
+      } else {
+        processFallback();
+      }
+    };
+
+    const img = new Image();
 
     img.src = src;
     img.crossOrigin = crossOrigin;
