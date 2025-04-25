@@ -76,4 +76,17 @@ export abstract class BaseRenderer {
       ...cell.getBBoxByType(CellClipBox.CONTENT_BOX),
     };
   }
+
+  protected async prepareText(
+    renderer: CustomRendererConfig,
+    cell: BaseCell<SimpleBBox>,
+  ) {
+    let { text } = this.getCellInfo(cell);
+
+    if (renderer.prepareText) {
+      text = await renderer.prepareText(text);
+    }
+
+    return text;
+  }
 }
