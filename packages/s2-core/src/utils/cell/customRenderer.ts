@@ -5,8 +5,15 @@ export function asyncDrawImage(options: {
   fallback?: string;
   timeout?: number;
   mediaCache?: Map<string, HTMLElement | null>;
+  crossOrigin?: string | null;
 }): Promise<HTMLImageElement> {
-  const { src, fallback, timeout = 10000, mediaCache } = options;
+  const {
+    src,
+    fallback,
+    timeout = 10000,
+    mediaCache,
+    crossOrigin = 'Anonymous',
+  } = options;
 
   return new Promise((resolve, reject) => {
     if (mediaCache?.has(src)) {
@@ -33,9 +40,23 @@ export function asyncDrawImage(options: {
 
     const img = new Image();
     const onerror = () => {
-      if (fallback) {
-        // 如果加载失败，尝试 fallback
-        asyncDrawImage({ src: fallback, timeout, mediaCache })
+      if (crossOrigin) {
+        // 第二次加载不再使用跨域请求，但会因浏览器安全策略导致Canvas的toDataUrl失败（不推荐）
+        asyncDrawImage({
+          src,
+          timeout,
+          mediaCache,
+          crossOrigin: null,
+        })
+          .then(cacheResolve)
+          .catch(cacheReject);
+      } else if (fallback) {
+        // 如果仍然加载失败，尝试 fallback
+        asyncDrawImage({
+          src: fallback,
+          timeout,
+          mediaCache,
+        })
           .then(cacheResolve)
           .catch(cacheReject);
       } else {
@@ -45,7 +66,7 @@ export function asyncDrawImage(options: {
     };
 
     img.src = src;
-    img.crossOrigin = 'Anonymous';
+    img.crossOrigin = crossOrigin;
 
     // 设置超时
     const timeoutId = setTimeout(onerror, timeout);
