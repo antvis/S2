@@ -97,7 +97,7 @@ All results are **grouped by dimension** , and each set of fields is **flattened
 
 You can see the detailed result data types with the following example:
 
-<Playground path="analysis/switcher/demo/pivot.tsx" rid="result"></Playground>
+<Playground path="react-component/switcher/demo/pivot.tsx" rid="result"></Playground>
 
 ❗️ Note: In order to reduce the outdated state of the internal state, the `Switcher` component does **not persist the state after the operation** . That is to say, after each pop-up window is closed, the internal state of Switcher will be cleared, and when it is opened again, the configuration of each dimension in `Props` will still prevail.
 

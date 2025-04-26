@@ -6,7 +6,7 @@ tag: Updated
 
 默认情况下，表格只会展示排序 icon, 但在很多情况下，会需要展示其他的操作 `icon`，例如：`筛选`、`下钻`、 `提示信息` 等，`S2` 提供了 `headerActionIcons` 参数让你可以通过简单的配置项快速实现行头、列头、角头的操作 `icon` 自定义。
 
-<Playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='custom-header-action-icon' height='400'></playground>
+<Playground path='custom/custom-icon/demo/custom-header-action-icon.ts' rid='custom-header-action-icon' height='400'></playground>
 
 ### 关闭默认排序 icon
 
