@@ -135,3 +135,19 @@ export function calculateImageSize(
     height: Math.floor(naturalHeight * scale),
   };
 }
+
+export async function getPreparedText(
+  prepareText?: (text: string) => Promise<string>,
+  text: string = '',
+) {
+  try {
+    if (prepareText) {
+      text = (await prepareText(text)) || text;
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn(`fail to prepareText`, e);
+  }
+
+  return text;
+}

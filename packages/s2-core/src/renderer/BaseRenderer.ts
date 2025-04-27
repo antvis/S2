@@ -3,6 +3,7 @@ import type { BaseCell } from '../cell';
 import { CellClipBox } from '../common/interface';
 import { CustomRendererConfig } from '../common/interface/renderer';
 import { SimpleBBox } from '../engine';
+import { getPreparedText } from '../utils/cell/customRenderer';
 
 export abstract class BaseRenderer {
   static mediaCache = new Map<string, HTMLElement | null>();
@@ -77,21 +78,12 @@ export abstract class BaseRenderer {
     };
   }
 
-  protected async prepareText(
+  protected prepareText(
     renderer: CustomRendererConfig,
     cell: BaseCell<SimpleBBox>,
   ) {
-    let { text } = this.getCellInfo(cell);
+    const { text } = this.getCellInfo(cell);
 
-    try {
-      if (renderer.prepareText) {
-        text = await renderer.prepareText(text);
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(`fail to prepareText`, e);
-    }
-
-    return text;
+    return getPreparedText(renderer.prepareText, text);
   }
 }
