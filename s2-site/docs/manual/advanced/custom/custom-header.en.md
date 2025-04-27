@@ -8,7 +8,7 @@ By default, `S2` provides two **row header** layout modes [: tile mode (grid)](h
 
 By default **, the hierarchical structure is generated through the data obtained after crossing** . If you are not satisfied, you can customize your directory structure by customizing the row and column headers. These two layout methods are also supported.
 
-<Playground path="custom/custom-tree/demo/custom-header.ts" rid="container" height="400"></Playground>
+<Playground path='layout/custom-header-group/demo/custom-pivot-row-header.ts' rid='custom-pivot-row-header' height='400'></playground>
 
 ### data structure
 
