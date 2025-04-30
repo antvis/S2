@@ -241,7 +241,7 @@ s2.setTheme({
 
 #### MiniChartTheme
 
-功能描述：迷你图配置。查看 [文档](/manual/advanced/chart-in-cell) 和 [示例](examples/custom/custom-cell/#mini-chart)
+功能描述：迷你图配置。查看 [文档](/manual/advanced/cell-render/chart-in-cell) 和 [示例](/examples/custom/custom-cell/#mini-chart)
 
 | 参数     | 说明           | 类型                            | 默认值 | 必选 |
 | -------- | -------------- | ------------------------------- | ------ | ---- |
