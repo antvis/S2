@@ -161,7 +161,7 @@ export class BaseTooltip<
     this.position = { x: 0, y: 0 };
   }
 
-  private getContainer(): HTMLElement {
+  protected getContainer(): HTMLElement {
     if (!this.container) {
       const { tooltip } = this.spreadsheet.options;
       const rootContainer = tooltip?.getContainer?.() || document.body;
