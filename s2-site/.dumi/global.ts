@@ -7,7 +7,7 @@ if (typeof window !== "undefined" && window) {
   (window as any).reactColor = require('react-color');
   (window as any).copyToClipboard = require('copy-to-clipboard');
   (window as any).insertCss = require('insert-css');
-
+  (window as any).QRCode = require('qrcode');
   (window as any).antd = require('antd');
   (window as any).antdIcons = require('@ant-design/icons');
 

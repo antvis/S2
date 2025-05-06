@@ -43,6 +43,7 @@
     "gh-pages": "^6.3.0",
     "insert-css": "^2.0.0",
     "lodash": "^4.17.21",
+    "qrcode": "^1.5.4",
     "react": "^19.1.0",
     "react-color": "^2.19.3",
     "react-dom": "^19.1.0"

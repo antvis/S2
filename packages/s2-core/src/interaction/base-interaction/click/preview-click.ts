@@ -8,7 +8,10 @@ import { CellRendererType } from '../../../common/constant/renderer';
 import type { PreviewTheme } from '../../../common/interface';
 import { ImageRendererConfig } from '../../../common/interface';
 import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
-import { asyncDrawImage } from '../../../utils/cell/customRenderer';
+import {
+  asyncDrawImage,
+  getPreparedText,
+} from '../../../utils/cell/customRenderer';
 
 // 1. 创建蒙版层
 const createPreviewOverlay = (
@@ -101,8 +104,11 @@ const createVideoElement = (
 // ==================== 主逻辑 ====================
 export const bindMediaClick = async (cell: BaseCell<any>) => {
   const renderer = cell.getRenderer()!;
-  const { type } = renderer;
-  const src = cell.getFieldValue()!.toString();
+  const { type, prepareText } = renderer;
+  const src = await getPreparedText(
+    prepareText,
+    cell.getFieldValue()!.toString(),
+  );
 
   if (
     renderer!.clickToPreview === false ||

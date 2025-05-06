@@ -122,6 +122,7 @@ Function description: Field metadata, configurable field alias and value formatt
 | -------------- | --------------------------------------------------- | -------------------------------------------------------- | -------- | -------- |
 | type           | Render Type                                         | `IMAGE \| VIDEO`                                     |          | ✓        |
 | clickToPreview | This parameter is valid when type is image or video | boolean                                                  | true     |          |
+| prepareText | Perform asynchronous processing on the text before rendering           | (value: SimpleData) => Promise<string>                                                  |    |      |
 | fallback       | Fallback display for image loading failure          | string                                                   |          |          |
 | timeout        |                                                     | number                                                   | 10000    |          |
 | config         |                                                     | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |          |          |
