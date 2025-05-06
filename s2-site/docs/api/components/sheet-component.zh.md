@@ -29,7 +29,6 @@ import '@antv/s2-react/dist/s2-react.min.css';
 | adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/api/general/s2-theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
-| header | 表头配置项 | [HeaderCfgProps](/api/components/header) |  |  |
 | onRangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | onRowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |

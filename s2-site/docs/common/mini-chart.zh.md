@@ -3,7 +3,7 @@ title: mini 图
 order: 6
 ---
 
-功能描述：在单元格内绘制 `mini` 图（支持 折线图、子弹图、柱状图）. 查看 [文档](/manual/advanced/custom/custom-chart#1-%E7%BB%98%E5%88%B6-mini-%E5%9B%BE%E8%A1%A8) 和 [示例](/zh/examples/custom/custom-cell/#mini-chart)
+功能描述：在单元格内绘制 `mini` 图（支持 折线图、子弹图、柱状图）. 查看 [文档](/manual/advanced/cell-render/chart-in-cell) 和 [示例](/zh/examples/custom/custom-cell/#mini-chart)
 
 #### BaseChartData
 

@@ -21,7 +21,6 @@ Function description: The props parameter of the React SheetComponent component
 | adaptive | Whether to adapt to the window size | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
 | themeCfg | Custom pivot table theme styles | [ThemeCfg](/en/api/general/s2-theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
-| header | header configuration items | [HeaderCfgProps](/docs/api/components/header) | | |
 | onRangeSort | Callback event triggered when sorting within a group | (params: [SortParam[]](#sortparam) ) => void; | | |
 | onRowCellHover | Row header mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellClick | row head mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -134,7 +133,6 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | showPagination | whether to show the default pagination | boolean | | |
 | themeCfg | Custom pivot table theme styles | [ThemeCfg](/en/api/general/s2-theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
-| header | header configuration items | [HeaderCfgProps](/docs/api/components/header) | | |
 | onRangeSort | Callback event triggered when sorting within a group | (params: [SortParam[]](#sortparam) ) => void; | | |
 | onRowCellHover | Row header mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellClick | row head mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
