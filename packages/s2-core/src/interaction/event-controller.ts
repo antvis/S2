@@ -89,7 +89,7 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(realClickEvent, this.onCanvasMouseup);
-    this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasDoubleClick);
+    this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasClick);
     /**
      * 如果监听 G Canvas, 右键对应的是 rightup/rightdown 事件, 如需禁用右键菜单 (preventDefault), 需要监听 DOM
      * https://g.antv.antgroup.com/api/event/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95
@@ -518,43 +518,60 @@ export class EventController {
         default:
           break;
       }
-      // target 相同，说明是一个 cell 内的 click 事件
-      if (this.target === event.target) {
-        // 屏蔽 actionIcons 的点击，字段标记增加的 icon 除外.
-        if (
-          this.isGuiIconShape(event.target) &&
-          !this.isConditionIconShape(event.target, cell)
-        ) {
-          return;
-        }
 
-        this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
-
-        switch (cellType) {
-          case CellType.DATA_CELL:
-            this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
-            break;
-          case CellType.ROW_CELL:
-            this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
-            break;
-          case CellType.COL_CELL:
-            this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
-            break;
-          case CellType.CORNER_CELL:
-            this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
-            break;
-          case CellType.MERGED_CELL:
-            this.spreadsheet.emit(S2Event.MERGED_CELLS_CLICK, event);
-            break;
-          default:
-            break;
-        }
+      if (isMobile()) {
+        // Mobile场景下单击走这里
+        this.onCanvasSingleClick(event);
       }
     }
   };
 
-  private onCanvasDoubleClick = (event: CanvasEvent) => {
+  private onCanvasSingleClick(event: CanvasEvent) {
+    const cell = this.spreadsheet.getCell(event.target);
+
+    // target 相同，说明是一个 cell 内的 click 事件
+    if (this.target === event.target && cell) {
+      // 屏蔽 actionIcons 的点击，字段标记增加的 icon 除外.
+      if (
+        this.isGuiIconShape(event.target) &&
+        !this.isConditionIconShape(event.target, cell)
+      ) {
+        return;
+      }
+
+      this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
+
+      switch (cell.cellType) {
+        case CellType.DATA_CELL:
+          this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
+          break;
+        case CellType.ROW_CELL:
+          this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
+          break;
+        case CellType.COL_CELL:
+          this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
+          break;
+        case CellType.CORNER_CELL:
+          this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
+          break;
+        case CellType.MERGED_CELL:
+          this.spreadsheet.emit(S2Event.MERGED_CELLS_CLICK, event);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  private onCanvasClick = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
+
+    if (event.detail === 1 && !isMobile()) {
+      // PC场景下单击走这里
+      this.onCanvasSingleClick(event);
+
+      return;
+    }
 
     if (event.detail !== 2) {
       return;
