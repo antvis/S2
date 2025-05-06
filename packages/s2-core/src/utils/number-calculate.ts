@@ -118,6 +118,14 @@ export const getDataAvgByField = (
 };
 
 /**
+ *
+ * @param data
+ */
+export const getDataCountByField = (data: ViewMetaData[]): number => {
+  return data?.length || 0;
+};
+
+/**
  * totals 计算方法集合
  */
 export const calcActionByType: {
@@ -132,4 +140,5 @@ export const calcActionByType: {
   [Aggregation.MAX]: (data, field) =>
     getDataExtremumByField('max', data, field),
   [Aggregation.AVG]: getDataAvgByField,
+  [Aggregation.COUNT]: getDataCountByField,
 };
