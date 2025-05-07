@@ -30,6 +30,7 @@ import {
   sumBy,
 } from 'lodash';
 import {
+  BaseCell,
   ColCell,
   CornerCell,
   DataCell,
@@ -2473,26 +2474,54 @@ export abstract class BaseFacet {
       return;
     }
 
-    const { duration = 500 } = enterAnimation === true ? {} : enterAnimation;
+    const { duration = 300 } = enterAnimation === true ? {} : enterAnimation;
 
-    this.getCells().forEach((cell) => {
-      cell.getChildren().forEach((child) => {
-        child.style.opacity = 0;
-        child.animate(
-          [
+    function handleAnimation(cell: BaseCell<any>, baseIndex = 0) {
+      cell
+        .getChildren()
+        .filter((child) => child.config.type === 'text')
+        .forEach((child) => {
+          child.animate(
+            [
+              {
+                opacity: 0,
+              },
+              {
+                opacity: 1,
+              },
+            ],
             {
-              opacity: 0,
+              delay: (baseIndex + cell.getMeta().rowIndex) * duration,
+              duration,
+              fill: 'both',
             },
-            {
-              opacity: 1,
-            },
-          ],
-          {
-            duration,
-            fill: 'both',
-          },
-        );
-      });
+          );
+        });
+    }
+
+    this.getCornerCells().forEach((cell) => {
+      handleAnimation(cell);
+    });
+    this.getColCells().forEach((cell) => {
+      handleAnimation(cell);
+    });
+    this.getRowCells().forEach((cell) => {
+      handleAnimation(
+        cell,
+        Math.max(...this.getCornerNodes().map((d) => d.rowIndex)),
+      );
+    });
+    this.getDataCells().forEach((cell) => {
+      handleAnimation(
+        cell,
+        Math.max(...this.getCornerNodes().map((d) => d.rowIndex)),
+      );
+    });
+    this.getSeriesNumberCells().forEach((cell) => {
+      handleAnimation(
+        cell,
+        Math.max(...this.getCornerNodes().map((d) => d.rowIndex)),
+      );
     });
   }
 }
