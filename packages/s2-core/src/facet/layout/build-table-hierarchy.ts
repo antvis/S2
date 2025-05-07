@@ -32,5 +32,6 @@ export const buildTableHierarchy = (params: HeaderParams) => {
     addMeasureInTotalQuery: false,
     addTotalMeasureInTotal: false,
     handler: buildGridHierarchy,
+    isRowHeader: false,
   });
 };
