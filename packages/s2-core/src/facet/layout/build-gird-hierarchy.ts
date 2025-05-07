@@ -58,7 +58,7 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
     // 如果最后一级没有分组维度，则将上一个结点设为叶子节点
     parentNode.isLeaf = true;
     hierarchy.pushIndexNode(parentNode);
-    parentNode.rowIndex = hierarchy.getIndexNodes().length - 1;
+    // parentNode.rowIndex = hierarchy.getIndexNodes().length - 1;
 
     return;
   } else {

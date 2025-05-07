@@ -34,6 +34,7 @@ export const getSeriesNumberNodes = (
     sNode.isLeaf = true;
     sNode.relatedNode = node;
     sNode.spreadsheet = spreadsheet;
+    sNode.colIndex = 0;
 
     return sNode;
   });

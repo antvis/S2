@@ -71,6 +71,7 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
       currentField: (fields as string[])[0],
       fields: fields as string[],
       hierarchy,
+      isRowHeader,
     });
   }
 };

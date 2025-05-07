@@ -132,6 +132,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const { colCell } = spreadsheet.options.style!;
     const cornerNodes: Node[] = [];
     const leafNode = colsHierarchy?.sampleNodeForLastLevel;
+    const columnNodes = colsHierarchy.sampleNodesForAllLevels || [];
 
     if (seriesNumberWidth) {
       const sNode: Node = new Node({
@@ -149,6 +150,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       sNode.isPivotMode = true;
       sNode.spreadsheet = spreadsheet;
       sNode.cornerType = CornerNodeType.Series;
+      sNode.colIndex = 0;
+      sNode.rowIndex = columnNodes.length - 1;
       cornerNodes.push(sNode);
     }
 
@@ -169,6 +172,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerNode.isPivotMode = true;
       cornerNode.spreadsheet = spreadsheet;
       cornerNode.cornerType = CornerNodeType.Row;
+      cornerNode.rowIndex = columnNodes.length - 1;
+      cornerNode.colIndex = cornerNodes.length;
       cornerNodes.push(cornerNode);
     } else {
       const rowNodes = rowsHierarchy.sampleNodesForAllLevels || [];
@@ -197,14 +202,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cornerNode.isPivotMode = true;
         cornerNode.cornerType = CornerNodeType.Row;
         cornerNode.spreadsheet = spreadsheet;
+        cornerNode.colIndex = cornerNodes.length;
+        cornerNode.rowIndex = columnNodes.length - 1;
         cornerNodes.push(cornerNode);
       });
     }
 
-    const columnNodes = colsHierarchy.sampleNodesForAllLevels || [];
     const isCustomColumn = spreadsheet.isCustomColumnFields();
 
-    columnNodes.forEach((colNode) => {
+    columnNodes.forEach((colNode, colNodeIndex) => {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
         const field = isCustomColumn
@@ -225,6 +231,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Col;
         cNode.spreadsheet = spreadsheet;
+        cNode.colIndex = 0;
+        cNode.rowIndex = colNodeIndex;
         cornerNodes.push(cNode);
       }
     });

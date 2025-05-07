@@ -759,6 +759,7 @@ export abstract class BaseFacet {
     this.renderScrollBars();
     this.renderBackground();
     this.dynamicRenderCell(true);
+    this.handleEnterAnimation();
   }
 
   /**
@@ -2463,5 +2464,35 @@ export abstract class BaseFacet {
     return (
       Math.ceil(this.spreadsheet.measureTextWidth(text, font)) + EXTRA_PIXEL
     );
+  }
+
+  protected handleEnterAnimation() {
+    const enterAnimation = this.spreadsheet.options.enterAnimation;
+
+    if (!enterAnimation) {
+      return;
+    }
+
+    const { duration = 500 } = enterAnimation === true ? {} : enterAnimation;
+
+    this.getCells().forEach((cell) => {
+      cell.getChildren().forEach((child) => {
+        child.style.opacity = 0;
+        child.animate(
+          [
+            {
+              opacity: 0,
+            },
+            {
+              opacity: 1,
+            },
+          ],
+          {
+            duration,
+            fill: 'both',
+          },
+        );
+      });
+    });
   }
 }

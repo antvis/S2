@@ -22,6 +22,7 @@ export interface GridHeaderParams {
   currentField: string;
   fields: string[];
   hierarchy: Hierarchy;
+  isRowHeader: boolean;
 }
 
 export interface BuildHeaderResult {

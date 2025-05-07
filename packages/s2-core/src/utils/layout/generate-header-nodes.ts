@@ -25,9 +25,13 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addTotalMeasureInTotal,
     spreadsheet,
     handler,
+    isRowHeader,
   } = params;
 
   const isTableMode = spreadsheet.isTableMode();
+  const levelIndex = isRowHeader ? `colIndex` : `rowIndex`;
+  const widthIndex = isRowHeader ? `rowIndex` : `colIndex`;
+  let accumulationWidth = -1;
 
   for (const [index, originalFieldValue] of fieldValues.entries()) {
     const fieldValue = resolveNillString(
@@ -112,6 +116,11 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       query: nodeQuery,
       spreadsheet,
       isLeaf: isLeaf || isCollapsed,
+      [levelIndex]: level,
+      [widthIndex]:
+        parentNode[widthIndex] >= 0
+          ? parentNode[widthIndex] + index
+          : accumulationWidth + 1,
     });
 
     const expandCurrentNode = layoutHierarchy(
@@ -144,7 +153,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     if (isLeafNode) {
       node.isLeaf = true;
       hierarchy.pushIndexNode(node);
-      node.rowIndex = hierarchy.getIndexNodes().length - 1;
+      // node[widthIndex] = hierarchy.getIndexNodes().length - 1;
     } else {
       handler?.({
         addTotalMeasureInTotal,
@@ -154,7 +163,13 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
         fields,
         hierarchy,
         spreadsheet,
+        isRowHeader,
       } as HeaderNodesParams);
+      if (node.children.length) {
+        accumulationWidth = node.children[node.children.length - 1][widthIndex];
+      } else {
+        accumulationWidth = node[widthIndex];
+      }
     }
   }
 };

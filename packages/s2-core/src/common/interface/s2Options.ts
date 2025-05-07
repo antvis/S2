@@ -291,6 +291,11 @@ export interface S2BasicOptions<
    * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-facet
    */
   facet?: (spreadsheet: SpreadSheet) => BaseFacet;
+
+  /**
+   * 入场动画
+   */
+  enterAnimation?: boolean | EnterAnimation;
 }
 
 // 设备，pc || mobile
@@ -393,4 +398,11 @@ export interface S2RenderOptions {
    * 是否重新生成列头隐藏信息
    */
   rebuildHiddenColumnsDetail?: boolean;
+}
+
+export interface EnterAnimation {
+  duration?: number;
+  delay?: number;
+  easing?: string;
+  keyframes?: Keyframe[];
 }
