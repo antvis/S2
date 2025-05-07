@@ -1,3 +1,17 @@
+# [@antv/s2-v2.4.0](https://github.com/antvis/S2/compare/@antv/s2-v2.3.1...@antv/s2-v2.4.0) (2025-05-07)
+
+
+### Bug Fixes
+
+* 修复移动端点击事件触发多次 ([#3141](https://github.com/antvis/S2/issues/3141)) ([48cb5ee](https://github.com/antvis/S2/commit/48cb5ee5f7607cdd5489d32db01f57c25e351a40))
+* 单元格二次选中不生效 ([#3144](https://github.com/antvis/S2/issues/3144)) ([c2789a0](https://github.com/antvis/S2/commit/c2789a0ee8b9e712167192d770cbc20866ec64a5))
+
+
+### Features
+
+* 图片渲染支持二维码 ([#3150](https://github.com/antvis/S2/issues/3150)) ([731a290](https://github.com/antvis/S2/commit/731a290a710cf69309aa0b45dc9922892799d374))
+* 聚合方式支持count ([#3143](https://github.com/antvis/S2/issues/3143)) ([129bffe](https://github.com/antvis/S2/commit/129bffe7f8e1491f90766040eee89a8bf077a66a))
+
 # [@antv/s2-v2.3.1](https://github.com/antvis/S2/compare/@antv/s2-v2.3.0...@antv/s2-v2.3.1) (2025-04-10)
 
 
