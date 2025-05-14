@@ -527,4 +527,9 @@ export abstract class HeaderCell<
   public getMetaField() {
     return this.meta.field;
   }
+
+  destroy() {
+    this.meta.belongsCell = null;
+    super.destroy();
+  }
 }
