@@ -1,3 +1,12 @@
+# [@antv/s2-v2.4.1-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.0...@antv/s2-v2.4.1-beta.1) (2025-05-15)
+
+
+### Performance Improvements
+
+* 数值单元格销毁用destroy ([8e653ba](https://github.com/antvis/S2/commit/8e653ba057be296668a4d83b25e51c8a1d62b765))
+* 清空belongsCell使得Cell能够真正被GC ([9a7f2bd](https://github.com/antvis/S2/commit/9a7f2bd05217f8cec953bdccc56574c10eca9eae))
+* 滚动场景icon缓存导致内存泄露 ([259266e](https://github.com/antvis/S2/commit/259266e93c1e33921298f67895a565a78926bef7))
+
 # [@antv/s2-v2.4.0](https://github.com/antvis/S2/compare/@antv/s2-v2.3.1...@antv/s2-v2.4.0) (2025-05-07)
 
 
