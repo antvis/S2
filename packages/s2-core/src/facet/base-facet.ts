@@ -1655,7 +1655,7 @@ export abstract class BaseFacet {
           (cell) => cell.name === `${rowIndex}-${colIndex}`,
         );
 
-        mountedDataCell?.remove();
+        mountedDataCell?.destroy();
       });
 
       DebuggerUtil.getInstance().logger(
