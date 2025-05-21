@@ -13,30 +13,33 @@ fetch(
         values: ['number'],
       },
       meta: res.meta,
-      data: res.data.map((item, i) => {
+      data: [{
+        number: 7789,
+        province: null,
+        city: null,
+        type: null,
+        sub_type: null,
+      }].concat(res.data.map((item, i) => {
         return {
           ...item,
           number: i < 5 ? item.number : null,
         };
-      }),
+      })),
     };
 
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      // 默认 "-"
+      // 默认配置影响所有单元格
       // placeholder: {
       //   cell: '',
       // },
       placeholder: {
-        cell: (cell) => {
-          // 或者根据当前单元格动态设置
-          console.log('cell: ', cell);
-          if (cell.cellType === 'dataCell') {
+        cell: (meta) => {
+          // 仅影响数值单元格
+          if (meta.valueField) {
             return '*****';
           }
-
-          // 返回 null, 使用默认值 ("-")
           return null;
         },
       },
