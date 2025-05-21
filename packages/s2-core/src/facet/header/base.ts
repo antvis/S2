@@ -91,13 +91,13 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     const foregroundGroup = this.parentNode as Group;
     const resizerGroup = foregroundGroup?.getElementById<Group>(type);
 
-    resizerGroup?.removeChildren();
+    resizerGroup?.destroyChildren();
   }
 
   public clear() {
-    this.scrollGroup?.removeChildren();
-    this.frozenGroup?.removeChildren();
-    this.frozenTrailingGroup?.removeChildren();
+    this.scrollGroup?.destroyChildren();
+    this.frozenGroup?.destroyChildren();
+    this.frozenTrailingGroup?.destroyChildren();
   }
 
   /**
