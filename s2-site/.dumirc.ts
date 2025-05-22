@@ -3,7 +3,6 @@ import { defineConfig } from 'dumi';
 import { repository } from './package.json';
 
 export default defineConfig({
-  ...(process.env.NODE_ENV === 'production' ? { ssr: { builder: 'webpack', mako: false } } : { ssr: false, mako: {} }),
   locales: [
     { id: 'zh', name: '中文' },
     { id: 'en', name: 'English' },
