@@ -1,3 +1,11 @@
+# [@antv/s2-v2.4.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.0...@antv/s2-v2.4.1) (2025-05-22)
+
+
+### Performance Improvements
+
+* 仅自定义行列头场景执行耗时长的遍历，滚动场景提升至少30%性能 ([#3157](https://github.com/antvis/S2/issues/3157)) ([60f6aab](https://github.com/antvis/S2/commit/60f6aab786b4ae6f68d06b532f6719a9e25741eb))
+* 滚动场景不再出现内存泄露 ([#3155](https://github.com/antvis/S2/issues/3155)) ([03853ea](https://github.com/antvis/S2/commit/03853ea0b9c4134e784749872d238a4aaeb407e0))
+
 # [@antv/s2-v2.4.0](https://github.com/antvis/S2/compare/@antv/s2-v2.3.1...@antv/s2-v2.4.0) (2025-05-07)
 
 
