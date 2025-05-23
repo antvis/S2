@@ -121,7 +121,7 @@ describe('RootInteraction Tests', () => {
     });
   });
 
-  test('should clear interaction state correct', () => {
+  test('should clear interaction state correct', async () => {
     const icon = new GuiIcon({
       name: '',
       x: 0,
@@ -156,6 +156,7 @@ describe('RootInteraction Tests', () => {
     // hide interaction shape
     expect(mockCell.hideInteractionShape).toHaveBeenCalledTimes(1);
     // draw call
+    await sleep(20);
     expect(mockSpreadSheetInstance.container.render).toHaveBeenCalledTimes(1);
   });
 
@@ -371,13 +372,14 @@ describe('RootInteraction Tests', () => {
   });
 
   describe('RootInteraction Change State', () => {
-    test('should update cell style when update interaction state', () => {
+    test('should update cell style when update interaction state', async () => {
       const cells = [mockCell, mockCell, mockCell];
 
       rootInteraction.changeState({
         cells: cells.map((item) => getCellMeta(item)),
         stateName: InteractionStateName.SELECTED,
       });
+      await sleep(20);
       expect(mockSpreadSheetInstance.container.render).toHaveBeenCalled();
       panelGroupAllDataCells.forEach((cell) => {
         expect(cell.update).toHaveBeenCalled();
@@ -399,20 +401,22 @@ describe('RootInteraction Tests', () => {
       );
     });
 
-    test('should skip draw container when active cells is empty', () => {
+    test('should skip draw container when active cells is empty', async () => {
       rootInteraction.changeState({
         cells: [],
         stateName: InteractionStateName.SELECTED,
       });
+      await sleep(20);
       expect(mockSpreadSheetInstance.container.render).not.toHaveBeenCalled();
     });
 
-    test('should draw container when active cells is empty and enable force update', () => {
+    test('should draw container when active cells is empty and enable force update', async () => {
       rootInteraction.changeState({
         cells: [],
         stateName: InteractionStateName.SELECTED,
         force: true,
       });
+      await sleep(20);
       expect(mockSpreadSheetInstance.container.render).toHaveBeenCalled();
     });
 
