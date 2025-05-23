@@ -83,6 +83,8 @@ export class RootInteraction {
    */
   private hoverTimer: number | null = null;
 
+  private drawRafId: number | null = null;
+
   public eventController: EventController;
 
   private defaultState: InteractionStateInfo = {
@@ -858,7 +860,17 @@ export class RootInteraction {
   }
 
   public draw() {
-    this.spreadsheet.container.render();
+    // 每次调用前取消上一帧的未执行任务
+    if (this.drawRafId !== null) {
+      cancelAnimationFrame(this.drawRafId);
+    }
+
+    // 存储新请求ID
+    this.drawRafId = requestAnimationFrame(() => {
+      this.spreadsheet.container.render();
+      // 渲染完成后重置ID
+      this.drawRafId = null;
+    });
   }
 
   public clearState() {
