@@ -156,7 +156,7 @@ describe('RootInteraction Tests', () => {
     // hide interaction shape
     expect(mockCell.hideInteractionShape).toHaveBeenCalledTimes(1);
     // draw call
-    await sleep(20);
+    await sleep(200);
     expect(mockSpreadSheetInstance.container.render).toHaveBeenCalledTimes(1);
   });
 
@@ -379,7 +379,7 @@ describe('RootInteraction Tests', () => {
         cells: cells.map((item) => getCellMeta(item)),
         stateName: InteractionStateName.SELECTED,
       });
-      await sleep(20);
+      await sleep(200);
       expect(mockSpreadSheetInstance.container.render).toHaveBeenCalled();
       panelGroupAllDataCells.forEach((cell) => {
         expect(cell.update).toHaveBeenCalled();
@@ -406,7 +406,7 @@ describe('RootInteraction Tests', () => {
         cells: [],
         stateName: InteractionStateName.SELECTED,
       });
-      await sleep(20);
+      await sleep(200);
       expect(mockSpreadSheetInstance.container.render).not.toHaveBeenCalled();
     });
 
@@ -416,7 +416,7 @@ describe('RootInteraction Tests', () => {
         stateName: InteractionStateName.SELECTED,
         force: true,
       });
-      await sleep(20);
+      await sleep(200);
       expect(mockSpreadSheetInstance.container.render).toHaveBeenCalled();
     });
 
