@@ -11,6 +11,15 @@ describe('is-mobile test', () => {
     });
 
     expect(isMobile()).toEqual(true);
+
+    // 鸿蒙5.0手机浏览器UA
+    Object.defineProperty(navigator, 'userAgent', {
+      value:
+        'Mozilla/5.0 (Phone; OpenHarmony 5.0; HarmonyOS 5.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 ArkWeb/4.1.6.1 Mobile',
+      configurable: true,
+    });
+
+    expect(isMobile()).toEqual(true);
   });
 
   test('should get iPhoneX status', () => {
