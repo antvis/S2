@@ -107,7 +107,7 @@ s2.facet.getRealWidth()
 | getRowCells | 获取行头单元格 （仅可视区域） | () => [RowCell](/api/basic-class/base-cell)[]  |  |
 | getRowLeafCells | 获取行头叶子节点单元格 （仅可视区域） | () => [RowCell](/api/basic-class/base-cell)[]  |  |
 | getColCells | 获取列头单元格 （仅可视区域） | () => [ColCell](/api/basic-class/base-cell)[]  |  |
-| getColCells | 获取列头叶子节点单元格 （仅可视区域） | () => [ColCell](/api/basic-class/base-cell)[]  |  |
+| getColLeafCells | 获取列头叶子节点单元格 （仅可视区域） | () => [ColCell](/api/basic-class/base-cell)[]  |  |
 | getMergedCells | 获取合并单元格 （仅可视区域） | () => [MergedCell](/api/basic-class/base-cell)[]  |  |
 | getCornerCells | 获取角头单元格 （仅可视区域） | () => [CornerCell](/api/basic-class/base-cell)[]  |  |
 | getSeriesNumberCells | 获取序号单元格 （仅可视区域） | () => [SeriesNumberCell](/api/basic-class/base-cell)[]  |  |
