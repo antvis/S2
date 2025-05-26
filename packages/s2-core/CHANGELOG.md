@@ -1,3 +1,15 @@
+# [@antv/s2-v2.4.2](https://github.com/antvis/S2/compare/@antv/s2-v2.4.1...@antv/s2-v2.4.2) (2025-05-26)
+
+
+### Bug Fixes
+
+* 兼容鸿蒙5.0 ([#3175](https://github.com/antvis/S2/issues/3175)) ([85c98a1](https://github.com/antvis/S2/commit/85c98a1bd8b6ea7719c72d7c1aacf66abb13bed6))
+
+
+### Performance Improvements
+
+* 使用RAF提升hover性能 ([#3169](https://github.com/antvis/S2/issues/3169)) ([d78c142](https://github.com/antvis/S2/commit/d78c142d563dd425ddf6005909c0df686650be5d))
+
 # [@antv/s2-v2.4.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.0...@antv/s2-v2.4.1) (2025-05-22)
 
 
