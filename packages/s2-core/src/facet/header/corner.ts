@@ -237,8 +237,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
    * @param scrollX
    */
   public onCorScroll(scrollX: number, type?: string): void {
-    this.headerConfig.scrollX = scrollX;
-    this.render(type);
+    if (this.headerConfig.scrollX !== scrollX) {
+      this.headerConfig.scrollX = scrollX;
+      this.render(type);
+    }
   }
 
   protected layout() {
