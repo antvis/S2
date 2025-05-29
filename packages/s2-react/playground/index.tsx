@@ -1704,7 +1704,7 @@ function MainLayout() {
               },
               {
                 key: 'bigData',
-                label: '100w 数据',
+                label: '100万数据',
                 children: <BigDataSheet />,
               },
             ]}
