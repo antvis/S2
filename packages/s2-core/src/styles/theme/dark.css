@@ -1,0 +1,30 @@
+.antv-s2-dark-theme {
+    --antv-s2-background: #000;
+    --antv-s2-tooltip-background: rgba(43, 43, 43, .95);
+    --antv-s2-tooltip-operator-background: rgba(43, 43, 43, .95);
+    --antv-s2-tooltip-operator-menu-selected-background: #1677ff;
+    --antv-s2-container-background: #191919;
+    --antv-s2-block-background: #232323;
+    --antv-s2-font: #fff;
+    --antv-s2-font-95: hsla(0, 0%, 100%, .95);
+    --antv-s2-font-90: hsla(0, 0%, 100%, .9);
+    --antv-s2-font-85: hsla(0, 0%, 100%, .85);
+    --antv-s2-font-80: hsla(0, 0%, 100%, .8);
+    --antv-s2-font-75: hsla(0, 0%, 100%, .75);
+    --antv-s2-font-70: hsla(0, 0%, 100%, .7);
+    --antv-s2-font-65: hsla(0, 0%, 100%, .65);
+    --antv-s2-font-60: hsla(0, 0%, 100%, .6);
+    --antv-s2-font-55: hsla(0, 0%, 100%, .55);
+    --antv-s2-font-50: hsla(0, 0%, 100%, .5);
+    --antv-s2-font-45: hsla(0, 0%, 100%, .45);
+    --antv-s2-font-40: hsla(0, 0%, 100%, .4);
+    --antv-s2-font-35: hsla(0, 0%, 100%, .35);
+    --antv-s2-font-30: hsla(0, 0%, 100%, .3);
+    --antv-s2-font-25: hsla(0, 0%, 100%, .25);
+    --antv-s2-font-20: hsla(0, 0%, 100%, .2);
+    --antv-s2-font-15: hsla(0, 0%, 100%, .15);
+    --antv-s2-font-10: hsla(0, 0%, 100%, .1);
+    --antv-s2-font-5: hsla(0, 0%, 100%, .05);
+    --antv-s2-border: hsla(0, 0%, 100%, .15);
+    --antv-s2-divider: hsla(0, 0%, 100%, .1)
+}

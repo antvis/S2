@@ -23,7 +23,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
-import '@antv/s2/src/styles/theme/dark.less';
+import '@antv/s2/src/styles/theme/dark.css';
 import { useUpdateEffect } from 'ahooks';
 import {
   Button,
