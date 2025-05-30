@@ -1,3 +1,5 @@
+# [@antv/s2-v2.4.3-beta.2](https://github.com/antvis/S2/compare/@antv/s2-v2.4.3-beta.1...@antv/s2-v2.4.3-beta.2) (2025-05-30)
+
 # [@antv/s2-v2.4.3-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.2...@antv/s2-v2.4.3-beta.1) (2025-05-30)
 
 # [@antv/s2-v2.4.2](https://github.com/antvis/S2/compare/@antv/s2-v2.4.1...@antv/s2-v2.4.2) (2025-05-26)
