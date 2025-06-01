@@ -478,10 +478,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return this.textShape;
     }
 
-    // 兼容多行文本
-    const actualText = this.getMultiLineActualTexts().join('');
+    if (style.maxLines && style.maxLines > 1) {
+      // 兼容多行文本
+      this.actualText = this.getMultiLineActualTexts().join('');
+    } else {
+      this.actualText = text!;
+    }
 
-    this.actualText = actualText;
     this.originalText = text;
 
     return this.textShape;
