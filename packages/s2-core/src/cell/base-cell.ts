@@ -478,7 +478,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return this.textShape;
     }
 
-    if (style.maxLines && style.maxLines > 1) {
+    if (style.maxLines) {
       // 兼容多行文本
       this.actualText = this.getMultiLineActualTexts().join('');
     } else {
