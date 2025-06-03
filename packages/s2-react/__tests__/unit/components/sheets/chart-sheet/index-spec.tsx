@@ -48,7 +48,7 @@ describe('<ChartSheet/> Tests', () => {
 
     await waitFor(() => {
       s2.facet.getDataCells().forEach((cell) => {
-        expect(cell.getActualText()).toBeUndefined();
+        expect(cell.getActualText()).toBe('');
         expect(cell.getTextShapes()).toBeEmpty();
       });
     });
@@ -59,7 +59,7 @@ describe('<ChartSheet/> Tests', () => {
 
     await waitFor(() => {
       s2.facet.getDataCells().forEach((cell) => {
-        expect(cell.getActualText()).toBeUndefined();
+        expect(cell.getActualText()).toBe('');
         expect(cell.getTextShapes()).toBeEmpty();
       });
     });
