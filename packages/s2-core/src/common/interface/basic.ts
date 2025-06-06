@@ -207,13 +207,13 @@ export interface Total {
    * 总计展示名
    * @default "总计"
    */
-  grandTotalsLabel?: string;
+  grandTotalsLabel?: string | null;
 
   /**
    * 小计展示名
    * @default "小计"
    */
-  subTotalsLabel?: string;
+  subTotalsLabel?: string | null;
 }
 
 export interface Totals {

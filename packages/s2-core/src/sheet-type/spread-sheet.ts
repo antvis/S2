@@ -16,6 +16,7 @@ import {
   isString,
   last,
   memoize,
+  omit,
   some,
   values,
 } from 'lodash';
@@ -699,11 +700,11 @@ export abstract class SpreadSheet extends EE {
         : false;
 
     return {
-      grandTotalsLabel: i18n('总计'),
-      subTotalsLabel: i18n('小计'),
+      grandTotalsLabel: totalConfig.grandTotalsLabel ?? i18n('总计'),
+      subTotalsLabel: totalConfig.subTotalsLabel ?? i18n('小计'),
       grandTotalsGroupDimensions: [],
       subTotalsGroupDimensions: [],
-      ...totalConfig,
+      ...omit(totalConfig, 'grandTotalsLabel', 'subTotalsLabel'),
       showSubTotals,
     };
   }

@@ -187,4 +187,53 @@ describe('Spreadsheet Totals Tests', () => {
       expect(spreadsheet.facet.getCellById(d).actualText).toEqual('8');
     });
   });
+
+  test('should update grandTotalsLabel after reset S2Options', async () => {
+    const s2Options = {
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['province'],
+          grandTotalsLabel: '总计1234',
+          subTotalsLabel: '小计3432',
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['type'],
+          // grandTotalsLabel: '总计',
+          // subTotalsLabel: '小计',
+        },
+      },
+    };
+
+    spreadsheet.setOptions(s2Options);
+    await spreadsheet.render();
+    const totalNodes = spreadsheet.facet.getRowTotalsNodes();
+
+    expect(totalNodes.map((node) => node.value)).toEqual([
+      '总计1234',
+      '小计3432',
+      '小计3432',
+    ]);
+
+    s2Options.totals.row.grandTotalsLabel = null;
+    s2Options.totals.row.subTotalsLabel = null;
+    s2Options.totals.col.showGrandTotals = false;
+    s2Options.totals.col.showSubTotals = false;
+    spreadsheet.setOptions(s2Options);
+    await spreadsheet.render();
+    const totalNodesAfterReset = spreadsheet.facet.getRowTotalsNodes();
+
+    expect(totalNodesAfterReset.map((node) => node.value)).toEqual([
+      '总计',
+      '小计',
+      '小计',
+    ]);
+  });
 });
