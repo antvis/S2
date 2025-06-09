@@ -58,7 +58,7 @@
     "build:esm": "tsc --module ESNext --outDir esm -p tsconfig.build.json && pnpm build:sync-assets esm/",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
-    "build:sync-assets": "copyfiles -u 1 \"src/**/*.{less,svg}\"",
+    "build:sync-assets": "copyfiles -u 1 \"src/**/*.{css,less,svg}\"",
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.mjs",
     "clean": "rimraf lib esm dist temp",
     "start": "pnpm test:live",
