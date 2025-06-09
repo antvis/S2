@@ -45,6 +45,21 @@ describe('SpreadSheet Tests', () => {
       s2.destroy();
     });
 
+    test('should init sheet by shadow dom container', async () => {
+      const shadowRoot = container.attachShadow({ mode: 'open' });
+      const shadowDiv = document.createElement('div');
+
+      // 将其添加到 shadow root 上
+      shadowRoot.appendChild(shadowDiv);
+      const s2 = new PivotSheet(shadowDiv, mockDataConfig, s2Options);
+
+      await s2.render();
+
+      expect(s2.facet).toBeDefined();
+
+      s2.destroy();
+    });
+
     test('should generate header node by field value', async () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
 
