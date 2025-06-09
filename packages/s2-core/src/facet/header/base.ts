@@ -64,9 +64,14 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param type
    */
   public onScrollXY(scrollX: number, scrollY: number, type?: string): void {
-    this.headerConfig.scrollX = scrollX;
-    this.headerConfig.scrollY = scrollY;
-    this.render(type);
+    if (
+      this.headerConfig.scrollX !== scrollX ||
+      this.headerConfig.scrollY !== scrollY
+    ) {
+      this.headerConfig.scrollX = scrollX;
+      this.headerConfig.scrollY = scrollY;
+      this.render(type);
+    }
   }
 
   /**
@@ -75,8 +80,10 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param type
    */
   public onRowScrollX(rowHeaderScrollX: number, type?: string): void {
-    this.headerConfig.scrollX = rowHeaderScrollX;
-    this.render(type);
+    if (this.headerConfig.scrollX !== rowHeaderScrollX) {
+      this.headerConfig.scrollX = rowHeaderScrollX;
+      this.render(type);
+    }
   }
 
   /**

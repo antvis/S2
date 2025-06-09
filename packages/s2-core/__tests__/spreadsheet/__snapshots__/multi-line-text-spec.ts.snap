@@ -2262,7 +2262,7 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should adjust col cell height if corner cell height > col cell height by tree mode 5`] = `
 Array [
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2315,7 +2315,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2335,7 +2335,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2388,7 +2388,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2441,7 +2441,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2461,7 +2461,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2514,7 +2514,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2567,7 +2567,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2587,7 +2587,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2640,7 +2640,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2693,7 +2693,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2713,7 +2713,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2766,7 +2766,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2819,7 +2819,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -2839,7 +2839,7 @@ Array [
     "width": 113,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -11013,7 +11013,7 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if hidden col cell 1`] = `
 Array [
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11022,7 +11022,7 @@ Array [
     "width": 80,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11031,7 +11031,7 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11040,7 +11040,7 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11049,7 +11049,7 @@ Array [
     "width": 272,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11101,7 +11101,7 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if hidden col cell 3`] = `
 Array [
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11110,7 +11110,7 @@ Array [
     "width": 192,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11119,7 +11119,7 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11128,7 +11128,7 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -11137,7 +11137,7 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 0,
@@ -16021,7 +16021,7 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines for tree mode 5`] = `
 Array [
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16041,7 +16041,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -16094,7 +16094,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16114,7 +16114,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16134,7 +16134,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -16188,7 +16188,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16208,7 +16208,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16228,7 +16228,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -16281,7 +16281,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16301,7 +16301,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16321,7 +16321,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -16374,7 +16374,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16396,7 +16396,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16416,7 +16416,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -16469,7 +16469,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16489,7 +16489,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -16509,7 +16509,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 30,
@@ -16562,7 +16562,7 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 64,
@@ -43892,7 +43892,7 @@ Array [
     "width": 80,
   },
   Object {
-    "actualText": undefined,
+    "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
     "height": 96,
