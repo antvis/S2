@@ -310,6 +310,7 @@ export default defineConfig({
         },
       },
     ],
+    exampleDestroySource: `document.getElementById(containerId)?.querySelector('canvas')?.__s2_instance__?.destroy();`,
     // https://github.com/antvis/dumi-theme-antv/blob/v3/src/slots/CodeEditor/Toolbar.tsx#L116-L120
     playground: {
       extraLib: '',
