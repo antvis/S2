@@ -310,7 +310,6 @@ export default defineConfig({
         },
       },
     ],
-    exampleDestroySource: `document.getElementById(containerId)?.querySelector('canvas')?.__s2_instance__?.destroy();`,
     // https://github.com/antvis/dumi-theme-antv/blob/v3/src/slots/CodeEditor/Toolbar.tsx#L116-L120
     playground: {
       extraLib: '',
@@ -319,6 +318,7 @@ export default defineConfig({
         react: '18.3.1',
         'react-dom': '18.3.1',
       },
+      playgroundBeforeExecute: `document.getElementById(containerId)?.querySelector('canvas')?.__s2_instance__?.destroy();`,
       dependencies: {
         antd: 'latest',
         '@ant-design/icons': '^5.3.7',
