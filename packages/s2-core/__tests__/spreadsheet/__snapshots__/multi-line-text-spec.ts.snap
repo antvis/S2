@@ -6436,11 +6436,12 @@ exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly
 Array [
   Object {
     "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
+    "actualTextHeight": 32,
+    "actualTextWidth": 26,
     "height": 144,
     "multiLineActualTexts": Array [
-      "序号",
+      "序",
+      "号",
     ],
     "originalText": "序号",
     "width": 80,
@@ -15625,7 +15626,7 @@ Array [
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -15636,7 +15637,7 @@ Array [
     "actualText": "省份/城市城市城市城市城市城市...",
     "actualTextHeight": 48,
     "actualTextWidth": 184,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "省份/城市城",
       "市城市城市",
@@ -15738,7 +15739,7 @@ Array [
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "数量数量数量数",
       "量数量数量数量",
@@ -15773,7 +15774,7 @@ Array [
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "数量数量数量数",
       "量数量数量数量",
@@ -15797,7 +15798,7 @@ Array [
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "数量数量数量数",
       "量数量数量数量",
@@ -15836,7 +15837,7 @@ Array [
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "数量数量数量数",
       "量数量数量数量",
@@ -15871,7 +15872,7 @@ Array [
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "数量数量数量数",
       "量数量数量数量",
@@ -15895,7 +15896,7 @@ Array [
     "actualText": "数量数量数量数量数量数量数量数量数量数量...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 64,
+    "height": 61,
     "multiLineActualTexts": Array [
       "数量数量数量数",
       "量数量数量数量",
@@ -22154,11 +22155,12 @@ exports[`SpreadSheet Multi Line Text Tests TableSheet should calculate correctly
 Array [
   Object {
     "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
+    "actualTextHeight": 32,
+    "actualTextWidth": 26,
     "height": 144,
     "multiLineActualTexts": Array [
-      "序号",
+      "序",
+      "号",
     ],
     "originalText": "序号",
     "width": 80,
@@ -34938,7 +34940,7 @@ Array [
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 80,
+    "height": 30,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -34954,7 +34956,7 @@ Array [
     "actualText": "1",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "1",
     ],
@@ -34965,7 +34967,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -34976,7 +34978,7 @@ Array [
     "actualText": "3",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "3",
     ],
@@ -34992,7 +34994,7 @@ Array [
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 80,
+    "height": 30,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -35000,15 +35002,12 @@ Array [
     "width": 80,
   },
   Object {
-    "actualText": "测试数据",
-    "actualTextHeight": 64,
-    "actualTextWidth": 52,
-    "height": 80,
+    "actualText": "",
+    "actualTextHeight": 16,
+    "actualTextWidth": 1,
+    "height": 30,
     "multiLineActualTexts": Array [
-      "测",
-      "试",
-      "数",
-      "据",
+      "",
     ],
     "originalText": "测试数据",
     "width": 20,
@@ -35017,7 +35016,7 @@ Array [
     "actualText": "city",
     "actualTextHeight": 16,
     "actualTextWidth": 21,
-    "height": 80,
+    "height": 30,
     "multiLineActualTexts": Array [
       "city",
     ],
@@ -35028,7 +35027,7 @@ Array [
     "actualText": "type",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 80,
+    "height": 30,
     "multiLineActualTexts": Array [
       "type",
     ],
@@ -35039,7 +35038,7 @@ Array [
     "actualText": "price",
     "actualTextHeight": 16,
     "actualTextWidth": 29,
-    "height": 80,
+    "height": 30,
     "multiLineActualTexts": Array [
       "price",
     ],
@@ -35050,7 +35049,7 @@ Array [
     "actualText": "cost",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 80,
+    "height": 30,
     "multiLineActualTexts": Array [
       "cost",
     ],
@@ -35068,7 +35067,7 @@ Array [
     "actualText": "1",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "1",
     ],
@@ -35079,7 +35078,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -35090,7 +35089,7 @@ Array [
     "actualText": "3",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "3",
     ],
@@ -35098,37 +35097,34 @@ Array [
     "width": 80,
   },
   Object {
-    "actualText": "浙江",
-    "actualTextHeight": 30,
-    "actualTextWidth": 26,
-    "height": 46,
+    "actualText": "",
+    "actualTextHeight": 15,
+    "actualTextWidth": 1,
+    "height": 30,
     "multiLineActualTexts": Array [
-      "浙",
-      "江",
+      "",
     ],
     "originalText": "浙江",
     "width": 20,
   },
   Object {
-    "actualText": "浙江",
-    "actualTextHeight": 30,
-    "actualTextWidth": 26,
-    "height": 46,
+    "actualText": "",
+    "actualTextHeight": 15,
+    "actualTextWidth": 1,
+    "height": 30,
     "multiLineActualTexts": Array [
-      "浙",
-      "江",
+      "",
     ],
     "originalText": "浙江",
     "width": 20,
   },
   Object {
-    "actualText": "浙江",
-    "actualTextHeight": 30,
-    "actualTextWidth": 26,
-    "height": 46,
+    "actualText": "",
+    "actualTextHeight": 15,
+    "actualTextWidth": 1,
+    "height": 30,
     "multiLineActualTexts": Array [
-      "浙",
-      "江",
+      "",
     ],
     "originalText": "浙江",
     "width": 20,
@@ -35137,7 +35133,7 @@ Array [
     "actualText": "义乌",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "义乌",
     ],
@@ -35148,7 +35144,7 @@ Array [
     "actualText": "义乌",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "义乌",
     ],
@@ -35159,7 +35155,7 @@ Array [
     "actualText": "杭州",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "杭州",
     ],
@@ -35170,7 +35166,7 @@ Array [
     "actualText": "笔",
     "actualTextHeight": 15,
     "actualTextWidth": 13,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "笔",
     ],
@@ -35181,7 +35177,7 @@ Array [
     "actualText": "笔",
     "actualTextHeight": 15,
     "actualTextWidth": 13,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "笔",
     ],
@@ -35192,7 +35188,7 @@ Array [
     "actualText": "笔",
     "actualTextHeight": 15,
     "actualTextWidth": 13,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "笔",
     ],
@@ -35203,7 +35199,7 @@ Array [
     "actualText": "1",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "1",
     ],
@@ -35214,7 +35210,7 @@ Array [
     "actualText": "1",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "1",
     ],
@@ -35225,7 +35221,7 @@ Array [
     "actualText": "1",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "1",
     ],
@@ -35236,7 +35232,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -35247,7 +35243,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -35258,7 +35254,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "2",
     ],
