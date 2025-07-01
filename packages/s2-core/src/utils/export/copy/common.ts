@@ -240,3 +240,5 @@ export const getHeaderNodeFromMeta = (
 
   return [facet.getRowNodeByIndex(rowIndex), facet.getColNodeByIndex(colIndex)];
 };
+
+export const ricOptions = { timeout: 3000 };
