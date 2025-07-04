@@ -619,6 +619,8 @@ describe('Pivot Chart Tests', () => {
 
       canvas.dispatchEvent(mousemoveEvent);
 
+      await sleep(3000);
+
       expect(
         document.querySelector<HTMLDivElement>('.g2-tooltip-title')!.innerText,
       ).toEqual('小计');
@@ -627,14 +629,14 @@ describe('Pivot Chart Tests', () => {
         document.querySelector<HTMLDivElement>('.g2-tooltip-list')!.innerText,
       ).toEqual('数量\n18375.00');
 
-      await sleep(3000);
-
       mousemoveEvent = new MouseEvent(OriginEventType.POINTER_MOVE, {
         clientX: bbox.left + 460,
         clientY: bbox.top + 200,
       });
 
       canvas.dispatchEvent(mousemoveEvent);
+
+      await sleep(3000);
 
       expect(
         document.querySelector<HTMLDivElement>('.g2-tooltip-title')!.innerText,
