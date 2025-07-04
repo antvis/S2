@@ -11,7 +11,7 @@ import {
   getAutoAdjustPosition,
   setTooltipContainerStyle,
 } from '../../utils/tooltip';
-import './index.less';
+import './index.css';
 
 /**
  * Tooltip 基类

@@ -3,6 +3,7 @@ import { defineConfig } from 'dumi';
 import { repository } from './package.json';
 
 export default defineConfig({
+  ...(process.env.NODE_ENV === 'production' ? { ssr: { builder: 'webpack', mako: false } } : { ssr: false, mako: {} }),
   locales: [
     { id: 'zh', name: '中文' },
     { id: 'en', name: 'English' },
@@ -317,6 +318,7 @@ export default defineConfig({
         react: '18.3.1',
         'react-dom': '18.3.1',
       },
+      playgroundBeforeExecute: `document.getElementById(containerId)?.querySelector('canvas')?.__s2_instance__?.destroy();`,
       dependencies: {
         antd: 'latest',
         '@ant-design/icons': '^5.3.7',

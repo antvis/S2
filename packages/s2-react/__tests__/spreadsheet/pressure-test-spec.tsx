@@ -12,7 +12,7 @@ import { renderComponent } from '../util/helpers';
 
 const data: RawData[] = [];
 
-// 100W 条数据
+// 100万条数据
 for (let i = 0; i < 1000; i++) {
   for (let j = 0; j < 1000; j++) {
     data.push({

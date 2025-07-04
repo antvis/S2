@@ -106,7 +106,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // link text underline shape
   protected linkFieldShape: Line;
 
-  protected actualText: string;
+  protected get actualText(): string {
+    return this.getMultiLineActualTexts().join('');
+  }
 
   protected originalText: SimpleData;
 
@@ -237,7 +239,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * 获取实际渲染的文本 (含省略号)
    */
   public getActualText(): string {
-    return this.actualText;
+    return this.getMultiLineActualTexts().join('');
   }
 
   /**
@@ -478,10 +480,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return this.textShape;
     }
 
-    // 兼容多行文本
-    const actualText = this.getMultiLineActualTexts().join('');
-
-    this.actualText = actualText;
     this.originalText = text;
 
     return this.textShape;

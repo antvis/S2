@@ -23,7 +23,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
-import '@antv/s2/src/styles/theme/dark.less';
+import '@antv/s2/src/styles/theme/dark.css';
 import { useUpdateEffect } from 'ahooks';
 import {
   Button,
@@ -1704,7 +1704,7 @@ function MainLayout() {
               },
               {
                 key: 'bigData',
-                label: '100w 数据',
+                label: '100万数据',
                 children: <BigDataSheet />,
               },
             ]}

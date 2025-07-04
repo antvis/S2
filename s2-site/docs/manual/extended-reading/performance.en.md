@@ -198,7 +198,7 @@ Table data calculation and layout settings involve a lot of calculations. In the
 
 ### Table frame rendering time comparison
 
-View the actual performance of `100w` pieces of data:
+View the actual performance of `1 million` pieces of data:
 
 * [pivot table](/examples/case/performance-compare#pivot)
 * [list](/examples/case/performance-compare#table)
@@ -208,7 +208,7 @@ The detailed performance comparison data is as follows: ![performance](https://g
 > Remark:
 >
 > * Where the column header is the number of experiments and the total is the average rendering time.
-> * `100w` scene orb and ReactPivot stuck, no data.
+> * `1 million` scene orb and ReactPivot stuck, no data.
 
 ## Summarize
 
