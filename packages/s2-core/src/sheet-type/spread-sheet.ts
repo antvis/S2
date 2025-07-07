@@ -423,10 +423,10 @@ export abstract class SpreadSheet extends EE {
 
   private async doRender(options?: S2RenderOptions) {
     // 防止表格卸载后, 再次调用 render 函数的报错
-    if (
-      !this.getCanvasElement() ||
-      !window.document.body.contains(this.getCanvasElement())
-    ) {
+    const canvasElement = this.getCanvasElement();
+
+    // 使用 isConnected 替代 body.contains 检查 DOM 连接状态，兼容Shadow DOM
+    if (!canvasElement || !canvasElement.isConnected) {
       return;
     }
 
@@ -734,6 +734,11 @@ export abstract class SpreadSheet extends EE {
       height,
       renderer,
       supportsPointerEvents,
+      future: {
+        experimentalRICSyncRTree: true,
+        experimentalCancelEventPropagation: true,
+        // experimentalAttributeUpdateOptimization: true,
+      },
       ...canvasConfig,
     });
 

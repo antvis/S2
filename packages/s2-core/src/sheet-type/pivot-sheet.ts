@@ -13,6 +13,7 @@ import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
+import type { TableSheet } from './table-sheet';
 
 export class PivotSheet extends SpreadSheet {
   public isCustomRowFields(): boolean {
@@ -40,11 +41,11 @@ export class PivotSheet extends SpreadSheet {
   /**
    * Check if is pivot mode
    */
-  public isPivotMode(): boolean {
+  public isPivotMode(): this is PivotSheet {
     return true;
   }
 
-  public isTableMode(): boolean {
+  public isTableMode(): this is TableSheet {
     return false;
   }
 

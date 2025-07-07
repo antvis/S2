@@ -97,7 +97,7 @@ resizeObserver.observe(parent);
 
 如果是使用 `@antv/s2-react` 的方式，可以配置 `adaptive` 参数开启自适应。
 
-<Playground path="layout/adaptive/demo/react-adaptive.ts" rid='react-adaptive' height='300'></playground>
+<Playground path="layout/adaptive/demo/react-adaptive.tsx" rid='react-adaptive' height='300'></playground>
 
 #### Adaptive 参数类型
 

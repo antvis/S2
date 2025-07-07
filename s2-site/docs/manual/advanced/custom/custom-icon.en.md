@@ -60,7 +60,7 @@ const s2Options = {
 
 ### Custom row and column header icon example
 
-<Playground path="custom/custom-icon/demo/custom-header-action-icon.tsx" rid="container" height="400"></Playground>
+<Playground path="custom/custom-icon/demo/custom-header-action-icon.ts" rid="container" height="400"></Playground>
 
 ### Custom cell icon example
 

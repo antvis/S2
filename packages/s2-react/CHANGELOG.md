@@ -1,3 +1,15 @@
+# [@antv/s2-react-v2.2.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.0...@antv/s2-react-v2.2.1) (2025-06-09)
+
+
+### Bug Fixes
+
+* 兼容不支持less的项目 ([#3181](https://github.com/antvis/S2/issues/3181)) ([26dbcf8](https://github.com/antvis/S2/commit/26dbcf8348b99d3333ab99a8fd62a70dbed62301))
+
+
+### Performance Improvements
+
+* 仅必要时执行角/行头的滚动重绘以提升14%的滚动性能 ([#3180](https://github.com/antvis/S2/issues/3180)) ([629d51f](https://github.com/antvis/S2/commit/629d51f6e76e63675bb1dad5590ff9cd163c4d7c))
+
 # [@antv/s2-react-v2.2.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.1.7...@antv/s2-react-v2.2.0) (2025-02-25)
 
 

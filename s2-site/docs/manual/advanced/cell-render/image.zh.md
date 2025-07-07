@@ -25,12 +25,17 @@ const s2DataConfig = {
       type: 'IMAGE',  // 单元格渲染为图片
       fallback?: string, // 渲染失败时的兜底图片地址
       clickToPreview?: boolean, // 是否开启点击预览
+      prepareText?: (value: SimpleData) => Promise<string>, // 渲染前对文本进行异步处理
       timeout?: number, // 图片加载超时时间，默认为10秒
       config?: Partial<ImageStyleProps> // G的图片配置，https://g.antv.antgroup.com/api/basic/image
     }
   }
 }
 ```
+
+使用qrcode，通过prepareText将网址/链接转化为二维码，方便在手机扫码跳转
+
+<Playground path="/custom/custom-renderer/demo/qrcode.ts" rid='custom-renderer-qrcode' height='300'></playground>
 
 ## 交互
 

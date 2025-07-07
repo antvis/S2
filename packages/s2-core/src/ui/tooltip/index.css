@@ -1,0 +1,33 @@
+.antv-s2-tooltip-container {
+  position: fixed;
+  user-select: text;
+  min-width: 200px;
+  max-width: 640px;
+  max-height: 100vh;
+  overflow: auto;
+  z-index: 1024;
+  display: inline-block;
+  background: var(--antv-s2-tooltip-background, rgba(255, 255, 255, 0.95));
+  border-radius: 4px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  font-family: Roboto, 'PingFang SC', 'Chinese Quote', 'Segoe UI',
+  'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
+  sans-serif;
+}
+
+.antv-s2-tooltip-container-hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.antv-s2-tooltip-container-hide * {
+  transition: none;
+}
+
+.antv-s2-tooltip-container-show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}

@@ -1,13 +1,17 @@
+import ClientOnly from '@antv/dumi-theme-antv/dist/common/ClientOnly';
+import Footer from '@antv/dumi-theme-antv/dist/slots/Footer';
+import Header from '@antv/dumi-theme-antv/dist/slots/Header';
 import React from 'react';
-import Page from '../../playground/layouts';
-import { Header } from '@antv/dumi-theme-antv/dist/slots/Header';
-import { Footer } from '@antv/dumi-theme-antv/dist/slots/Footer';
+
+const Page = React.lazy(() => import('../../playground/layouts'));
 
 const Playground: React.FC = () => {
   return (
     <>
       <Header />
-      <Page />
+      <ClientOnly>
+        <Page />
+      </ClientOnly>
       <Footer />
     </>
   );

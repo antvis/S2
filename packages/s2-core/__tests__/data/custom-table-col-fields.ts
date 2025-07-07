@@ -113,3 +113,22 @@ export const customColMultipleColumns2: CustomTreeNode[] = [
     ],
   },
 ];
+
+export const duplicatePrefixColumns: CustomTreeNode[] = [
+  {
+    field: 'area_xx',
+    title: 'bug',
+  },
+  {
+    field: 'area',
+    title: '地区',
+  },
+  {
+    field: 'type',
+    title: '类型',
+  },
+  {
+    field: 'price',
+    title: '金额',
+  },
+];
