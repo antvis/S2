@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.4](https://github.com/antvis/S2/compare/@antv/s2-v2.4.3...@antv/s2-v2.4.4) (2025-07-08)
+
+
+### Bug Fixes
+
+* showTreeLeafNodeAlignDot导致空指针 ([#3195](https://github.com/antvis/S2/issues/3195)) ([28d92eb](https://github.com/antvis/S2/commit/28d92ebc447de7dc4c2c144f17139b0b9171659b))
+
 # [@antv/s2-v2.4.3](https://github.com/antvis/S2/compare/@antv/s2-v2.4.2...@antv/s2-v2.4.3) (2025-06-09)
 
 
