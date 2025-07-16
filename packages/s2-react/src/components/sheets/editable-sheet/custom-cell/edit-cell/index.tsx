@@ -204,7 +204,7 @@ export const EditCell: React.FC<EditCellProps> = React.memo((props) => {
           cell: s2.getCell(event.target) as TableDataCell,
           CustomComponent,
           onDataCellEditStart: props.onDataCellEditStart,
-          onDataCellEditEnd: props.onDataCellEditEnd
+          onDataCellEditEnd: props.onDataCellEditEnd,
         },
         s2,
       });
