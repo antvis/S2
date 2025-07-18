@@ -14,8 +14,8 @@ import { BaseRenderer } from './BaseRenderer';
 
 // 图片渲染器
 export class ImageRenderer extends BaseRenderer {
-  prepare(renderer: ImageRendererConfig, cell: BaseCell<SimpleBBox>) {
-    const { text } = this.getCellInfo(cell);
+  async prepare(renderer: ImageRendererConfig, cell: BaseCell<SimpleBBox>) {
+    const text = await this.prepareText(renderer, cell);
 
     return asyncDrawImage({
       src: text,

@@ -210,7 +210,7 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 
 ### 表框架渲染时间对比
 
-查看 `100w` 条数据实际性能表现：
+查看 `100万` 条数据实际性能表现：
 
 * [透视表](/examples/case/performance-compare#pivot)
 * [明细表](/examples/case/performance-compare#table)
@@ -222,7 +222,7 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 > 备注：
 >
 > * 其中列头是实验次数，总计是平均渲染时间。
-> * `100w` 场景 orb 和 ReactPivot 卡死，无数据。
+> * `100万` 场景 orb 和 ReactPivot 卡死，无数据。
 
 ## 总结
 

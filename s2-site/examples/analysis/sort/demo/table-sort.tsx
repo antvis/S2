@@ -2,7 +2,7 @@
 import React from 'react';
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { Button } from 'antd';
+import { Button, Menu } from 'antd';
 import insertCSS from 'insert-css';
 import { orderBy } from 'lodash';
 import '@antv/s2-react/dist/s2-react.min.css';
@@ -13,6 +13,24 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
+      showDefaultHeaderActionIcon: true,
+
+      /**
+       * `@antv/s2` 提供组内排序的能力，如果不使用 `@antv/s2-react` 的话, 可以自行实现 Tooltip 排序菜单，然后调用相关 API.
+       * 详情请查看: https://s2.antv.antgroup.com/manual/basic/sort/group
+       */
+      tooltip: {
+        enable: true,
+        operation: {
+          // 开启组内排序
+          sort: true,
+          menu: {
+            render: (props) => {
+              return <Menu {...props} />;
+            },
+          },
+        },
+      },
     };
 
     const s2DataConfig: S2DataConfig = {

@@ -62,7 +62,7 @@ s2.on(S2Event.LAYOUT_AFTER_RENDER, () => {
 [查看更多](/api/basic-class/base-facet)
 
 :::warning{title="注意"}
-由于虚拟滚动的特性，获取到为不含可视区域外的单元格。
+由于虚拟滚动的特性，仅能获取可视区域内的单元格。
 :::
 
 ### 获取行头单元格

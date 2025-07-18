@@ -4,8 +4,8 @@ import {
   Rect,
   type FederatedPointerEvent,
 } from '@antv/g';
-import { interpolateArray } from 'd3-interpolate';
-import { timer, type Timer } from 'd3-timer';
+import { interpolateArray } from '@antv/vendor/d3-interpolate';
+import { timer, type Timer } from '@antv/vendor/d3-timer';
 import {
   clamp,
   compact,
@@ -1994,9 +1994,14 @@ export abstract class BaseFacet {
       return;
     }
 
+    const levelIds =
+      colsHierarchy.sampleNodeForLastLevel?.id.split(NODE_ID_SEPARATOR) || [];
     // 每一列层级不定, 用层级最深的那一列采样高度
     const nodes = colsHierarchy.getNodes().filter((node) => {
-      return colsHierarchy.sampleNodeForLastLevel?.id.includes(node.id);
+      return (
+        colsHierarchy.sampleNodeForLastLevel?.id.includes(node.id) &&
+        levelIds.includes(node.field)
+      );
     });
 
     colsHierarchy.sampleNodesForAllLevels = nodes;

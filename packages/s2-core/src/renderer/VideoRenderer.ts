@@ -15,9 +15,11 @@ const defaultVideoConfig = {
 };
 
 export class VideoRenderer extends BaseRenderer {
-  prepare(renderer: VideoRendererConfig, cell: BaseCell<SimpleBBox>) {
+  async prepare(renderer: VideoRendererConfig, cell: BaseCell<SimpleBBox>) {
+    const text = await this.prepareText(renderer, cell);
+
     return new Promise<HTMLVideoElement | string>((resolve) => {
-      const { text, height, width } = this.getCellInfo(cell);
+      const { height, width } = this.getCellInfo(cell);
       const { timeout = 10000, fallback = '' } = renderer;
 
       if (BaseRenderer.mediaCache.has(text)) {

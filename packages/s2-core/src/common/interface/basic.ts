@@ -129,6 +129,7 @@ export enum Aggregation {
   MIN = 'MIN',
   MAX = 'MAX',
   AVG = 'AVG',
+  COUNT = 'COUNT',
 }
 
 export interface CalcTotals {

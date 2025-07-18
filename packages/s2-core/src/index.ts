@@ -10,6 +10,7 @@ export * from './facet';
 export * from './interaction';
 export * from './shared';
 export * from './sheet-type';
+export * from './styles';
 export * from './theme';
 export * from './ui/scrollbar';
 export * from './ui/tooltip';

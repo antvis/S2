@@ -34,7 +34,7 @@ order: 3
 
 功能描述： 小计总计计算方式配置。查看 [文档](/manual/basic/totals) 和 [示例](/examples/analysis/totals/#calculate)
 
-| 参数        | 说明       | 类型                                                                 | 必选  | 默认值 |
-| ----------- | ---------- | -------------------------------------------------------------------- | --- | ------ |
-| aggregation | 聚合方式   | `SUM \| MIN \| MAX \| AVG`            |       |        |
+| 参数        | 说明       | 类型                                                                                              | 必选  | 默认值 |
+| ----------- | ---------- |-------------------------------------------------------------------------------------------------| --- | ------ |
+| aggregation | 聚合方式   | `SUM \| MIN \| MAX \| AVG \| COUNT`                                                             |       |        |
 | calcFunc    | 自定义方法 | `(query: Record<string, any>, data: Record<string, any>[], spreadsheet: SpreadSheet) => number` |       |        |

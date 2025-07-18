@@ -1,3 +1,64 @@
+# [@antv/s2-v2.4.4](https://github.com/antvis/S2/compare/@antv/s2-v2.4.3...@antv/s2-v2.4.4) (2025-07-08)
+
+
+### Bug Fixes
+
+* showTreeLeafNodeAlignDot导致空指针 ([#3195](https://github.com/antvis/S2/issues/3195)) ([28d92eb](https://github.com/antvis/S2/commit/28d92ebc447de7dc4c2c144f17139b0b9171659b))
+
+# [@antv/s2-v2.4.3](https://github.com/antvis/S2/compare/@antv/s2-v2.4.2...@antv/s2-v2.4.3) (2025-06-09)
+
+
+### Bug Fixes
+
+* 兼容Shadow DOM ([#3186](https://github.com/antvis/S2/issues/3186)) ([58072d0](https://github.com/antvis/S2/commit/58072d0cc140e62e288b010716c071495d341632))
+* 兼容不支持less的项目 ([#3181](https://github.com/antvis/S2/issues/3181)) ([26dbcf8](https://github.com/antvis/S2/commit/26dbcf8348b99d3333ab99a8fd62a70dbed62301))
+
+
+### Performance Improvements
+
+* 仅必要时执行角/行头的滚动重绘以提升14%的滚动性能 ([#3180](https://github.com/antvis/S2/issues/3180)) ([629d51f](https://github.com/antvis/S2/commit/629d51f6e76e63675bb1dad5590ff9cd163c4d7c))
+
+# [@antv/s2-v2.4.2](https://github.com/antvis/S2/compare/@antv/s2-v2.4.1...@antv/s2-v2.4.2) (2025-05-26)
+
+
+### Bug Fixes
+
+* 兼容鸿蒙5.0 ([#3175](https://github.com/antvis/S2/issues/3175)) ([85c98a1](https://github.com/antvis/S2/commit/85c98a1bd8b6ea7719c72d7c1aacf66abb13bed6))
+
+
+### Performance Improvements
+
+* 使用RAF提升hover性能 ([#3169](https://github.com/antvis/S2/issues/3169)) ([d78c142](https://github.com/antvis/S2/commit/d78c142d563dd425ddf6005909c0df686650be5d))
+
+# [@antv/s2-v2.4.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.0...@antv/s2-v2.4.1) (2025-05-22)
+
+
+### Performance Improvements
+
+* 仅自定义行列头场景执行耗时长的遍历，滚动场景提升至少30%性能 ([#3157](https://github.com/antvis/S2/issues/3157)) ([60f6aab](https://github.com/antvis/S2/commit/60f6aab786b4ae6f68d06b532f6719a9e25741eb))
+* 滚动场景不再出现内存泄露 ([#3155](https://github.com/antvis/S2/issues/3155)) ([03853ea](https://github.com/antvis/S2/commit/03853ea0b9c4134e784749872d238a4aaeb407e0))
+
+# [@antv/s2-v2.4.0](https://github.com/antvis/S2/compare/@antv/s2-v2.3.1...@antv/s2-v2.4.0) (2025-05-07)
+
+
+### Bug Fixes
+
+* 修复移动端点击事件触发多次 ([#3141](https://github.com/antvis/S2/issues/3141)) ([48cb5ee](https://github.com/antvis/S2/commit/48cb5ee5f7607cdd5489d32db01f57c25e351a40))
+* 单元格二次选中不生效 ([#3144](https://github.com/antvis/S2/issues/3144)) ([c2789a0](https://github.com/antvis/S2/commit/c2789a0ee8b9e712167192d770cbc20866ec64a5))
+
+
+### Features
+
+* 图片渲染支持二维码 ([#3150](https://github.com/antvis/S2/issues/3150)) ([731a290](https://github.com/antvis/S2/commit/731a290a710cf69309aa0b45dc9922892799d374))
+* 聚合方式支持count ([#3143](https://github.com/antvis/S2/issues/3143)) ([129bffe](https://github.com/antvis/S2/commit/129bffe7f8e1491f90766040eee89a8bf077a66a))
+
+# [@antv/s2-v2.3.1](https://github.com/antvis/S2/compare/@antv/s2-v2.3.0...@antv/s2-v2.3.1) (2025-04-10)
+
+
+### Bug Fixes
+
+* 明细表自定义列头prefix重复展示异常 ([#3142](https://github.com/antvis/S2/issues/3142)) ([986bdc2](https://github.com/antvis/S2/commit/986bdc254902162ec27803375377e585bbbd9dfd))
+
 # [@antv/s2-v2.3.0](https://github.com/antvis/S2/compare/@antv/s2-v2.2.4...@antv/s2-v2.3.0) (2025-03-17)
 
 

@@ -3,6 +3,7 @@ import type { BaseCell } from '../cell';
 import { CellClipBox } from '../common/interface';
 import { CustomRendererConfig } from '../common/interface/renderer';
 import { SimpleBBox } from '../engine';
+import { getPreparedText } from '../utils/cell/customRenderer';
 
 export abstract class BaseRenderer {
   static mediaCache = new Map<string, HTMLElement | null>();
@@ -75,5 +76,14 @@ export abstract class BaseRenderer {
       text,
       ...cell.getBBoxByType(CellClipBox.CONTENT_BOX),
     };
+  }
+
+  protected prepareText(
+    renderer: CustomRendererConfig,
+    cell: BaseCell<SimpleBBox>,
+  ) {
+    const { text } = this.getCellInfo(cell);
+
+    return getPreparedText(renderer.prepareText, text);
   }
 }

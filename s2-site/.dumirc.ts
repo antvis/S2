@@ -3,6 +3,7 @@ import { defineConfig } from 'dumi';
 import { repository } from './package.json';
 
 export default defineConfig({
+  ...(process.env.NODE_ENV === 'production' ? { ssr: { builder: 'webpack', mako: false } } : { ssr: false, mako: {} }),
   locales: [
     { id: 'zh', name: '中文' },
     { id: 'en', name: 'English' },
@@ -17,6 +18,20 @@ export default defineConfig({
     { name: 'description', content: '多维交叉分析表格 2.0, S2 Next' },
   ],
   themeConfig: {
+    /** 死链检查配置  */
+    deadLinkChecker: {}, // 开启并采用默认配置
+    /** 站点地图配置 */
+    sitemap: {}, // 开启并采用默认配置
+    metas: {
+      title: {
+        zh: "S2 多维交叉分析表格 2.0",
+        en: "S2 Multi Cross Analysis Table 2.0"
+      },
+      description: {
+        zh: "S2 是多维交叉分析领域的表格解决方案，数据驱动视图，提供底层核心库、基础组件库、业务场景库，具备自由扩展的能力，让开发者既能开箱即用，也能基于自身场景自由发挥。",
+        en: "S2 is a table solution in the field of multidimensional cross analysis. It is data-driven view, provides the underlying core library, basic component library and business scenario library, and has the ability of free expansion, allowing developers to use it out of the box and freely play based on their own scenarios."
+      }
+    },
     title: 'S2',
     description: '多维交叉分析表格 2.0',
     defaultLanguage: 'zh', // 默认语言
@@ -303,6 +318,7 @@ export default defineConfig({
         react: '18.3.1',
         'react-dom': '18.3.1',
       },
+      playgroundBeforeExecute: `document.getElementById(containerId)?.querySelector('canvas')?.__s2_instance__?.destroy();`,
       dependencies: {
         antd: 'latest',
         '@ant-design/icons': '^5.3.7',
@@ -324,20 +340,6 @@ export default defineConfig({
             </script>
           </body>
         </html>`,
-    },
-    announcement: {
-      // icon: 'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
-      title: {
-        zh: '参与 AntV 文档体验问卷，助力打造更友好的开发者文档，有机会赢取 AntV 限定周边！👉',
-        en: 'Join in the AntV Documentation Experience Survey to help us create more developer-friendly documentation, and stand a chance to win exclusive AntV merchandise! 👉',
-      },
-      link: {
-        text: {
-          zh: '立即填写',
-          en: 'Fill in now',
-        },
-        url: 'https://www.wjx.cn/vm/Pf0XYWM.aspx#',
-      },
     },
     /** 首页技术栈介绍 */
     detail: {
@@ -534,9 +536,7 @@ export default defineConfig({
   styles: ['/site.css'],
   links: [],
   scripts: [],
-  // TODO: S2用的 antd@5.x @antv/dumi-theme-antv 是 4.x, 导致本地跑不起来
-  // monorepoRedirect: {
-  //   peerDeps: true,
-  //   srcDir: ['src', 'esm', 'lib'],
-  // },
+  analytics: {
+    ga_v2: 'G-SJ4N89WC85',
+  },
 });

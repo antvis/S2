@@ -553,6 +553,11 @@ export abstract class HeaderCell<
     return this.meta.field;
   }
 
+  destroy() {
+    this.meta.belongsCell = null;
+    super.destroy();
+  }
+
   public reInitCell(node: Node, headerConfig: T) {
     this.setMeta(node);
     this.handleRestOptions(headerConfig, undefined);

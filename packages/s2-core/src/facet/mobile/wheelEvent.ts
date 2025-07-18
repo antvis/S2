@@ -4,7 +4,7 @@ import type {
   FederatedPointerEvent,
   FederatedWheelEvent,
 } from '@antv/g';
-import { easeCubicIn as easeFunc } from 'd3-ease';
+import { easeCubicIn as easeFunc } from '@antv/vendor/d3-ease';
 import { OriginEventType } from '../../common';
 
 /** 获取执行时间戳 */
