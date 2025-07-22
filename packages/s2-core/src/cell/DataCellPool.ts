@@ -4,7 +4,7 @@ export class DataCellPool {
   static pool: DataCell[] = [];
 
   static acquire(): DataCell | undefined {
-    return DataCellPool.pool.shift();
+    return DataCellPool.pool.pop();
   }
 
   static release(cell: DataCell) {
