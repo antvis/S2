@@ -79,6 +79,7 @@
     "@antv/g-lite": "^2.2.16",
     "@antv/vendor": "^1.0.11",
     "decimal.js": "^10.4.3",
+    "flru": "^1.0.2",
     "lodash": "^4.17.21",
     "tinycolor2": "^1.6.0"
   },
