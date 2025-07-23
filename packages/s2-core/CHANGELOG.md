@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.5](https://github.com/antvis/S2/compare/@antv/s2-v2.4.4...@antv/s2-v2.4.5) (2025-07-23)
+
+
+### Bug Fixes
+
+* 相同长度的字符串，其渲染后的实际宽度可能完全不同 ([#3202](https://github.com/antvis/S2/issues/3202)) ([544aa4c](https://github.com/antvis/S2/commit/544aa4c5c60cc97c2316472524ac3a0bbc8bb269))
+
 # [@antv/s2-v2.4.4](https://github.com/antvis/S2/compare/@antv/s2-v2.4.3...@antv/s2-v2.4.4) (2025-07-08)
 
 
