@@ -942,6 +942,8 @@ export class PivotFacet extends FrozenFacet {
           const formattedValue =
             this.spreadsheet.dataSet.getFieldFormatter(cellData[EXTRA_FIELD])?.(
               valueData,
+              cellData,
+              colNode
             ) ?? valueData;
           const cellLabel = formattedValue;
           // 考虑字段标记 icon 的宽度: https://github.com/antvis/S2/pull/2673
