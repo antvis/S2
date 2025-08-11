@@ -257,6 +257,7 @@ export abstract class BaseDataSet {
    * @param dataCfg
    */
   public setDataCfg(dataCfg: S2DataConfig) {
+    this.displayFormattedValueMap.clear();
     this.getFieldMeta?.cache?.clear?.();
     const { fields, meta, data, sortParams, filterParams } =
       this.processDataCfg(dataCfg);
