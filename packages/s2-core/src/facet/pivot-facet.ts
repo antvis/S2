@@ -859,8 +859,11 @@ export class PivotFacet extends FrozenFacet {
       ?.slice(0, LAYOUT_SAMPLE_COUNT)
       .map(
         (dimValue) =>
-          this.spreadsheet.dataSet.getFieldFormatter(field)?.(dimValue) ??
-          dimValue,
+          this.spreadsheet.dataSet.getFieldFormatter(field)?.(
+            dimValue,
+            undefined,
+            node,
+          ) ?? dimValue,
       );
     const maxLabel = maxBy(allLabels, (label) => `${label}`.length);
     const rowNodeWidth =
@@ -905,7 +908,8 @@ export class PivotFacet extends FrozenFacet {
     const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
       colNode.field,
     );
-    const leafNodeLabel = cellFormatter?.(colNode.value) ?? colNode.value;
+    const leafNodeLabel =
+      cellFormatter?.(colNode.value, undefined, colNode) ?? colNode.value;
     const colIconWidth = this.getExpectedCellIconWidth(
       CellType.COL_CELL,
       this.spreadsheet.isValueInCols() &&
@@ -946,6 +950,8 @@ export class PivotFacet extends FrozenFacet {
           const cellLabel =
             this.spreadsheet.dataSet.getFieldFormatter(cellData[EXTRA_FIELD])?.(
               valueData,
+              cellData,
+              colNode,
             ) ?? valueData;
           // 考虑字段标记 icon 的宽度: https://github.com/antvis/S2/pull/2673
           const hasIcon = findFieldCondition(
