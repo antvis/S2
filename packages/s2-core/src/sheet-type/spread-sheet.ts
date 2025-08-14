@@ -735,6 +735,7 @@ export abstract class SpreadSheet extends EE {
       renderer,
       supportsPointerEvents,
       future: {
+        // https://github.com/antvis/G/blob/master/packages/g-lite/src/types.ts#L563
         experimentalRICSyncRTree: true,
         experimentalCancelEventPropagation: true,
         // experimentalAttributeUpdateOptimization: true,
