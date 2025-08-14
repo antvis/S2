@@ -15,6 +15,9 @@ const s2Options: SheetComponentOptions = {
       horizontal: 1,
     },
   },
+  future: {
+    experimentalReuseDataCell: true,
+  },
 };
 
 export function generateRawData(

@@ -12,6 +12,7 @@ import {
   compact,
   concat,
   debounce,
+  each,
   filter,
   find,
   get,
@@ -1611,7 +1612,10 @@ export abstract class BaseFacet {
 
     let cell;
 
-    if (DataCellPool.pool.length > 0) {
+    if (
+      DataCellPool.pool.length > 0 &&
+      this.spreadsheet.options.future?.experimentalReuseDataCell
+    ) {
       cell = DataCellPool.acquire()!;
       cell.setMeta(viewMeta);
     } else {
@@ -1642,42 +1646,72 @@ export abstract class BaseFacet {
       diffPanelIndexes(this.preCellIndexes!, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-      const allDataCells = this.getDataCells();
-      const maxLength = Math.max(
-        willRemoveDataCells.length,
-        willAddDataCells.length,
-      );
+      if (this.spreadsheet.options.future?.experimentalReuseDataCell) {
+        const allDataCells = this.getDataCells();
+        const maxLength = Math.max(
+          willRemoveDataCells.length,
+          willAddDataCells.length,
+        );
 
-      // 交替执行删除和添加操作
-      for (let i = 0; i < maxLength; i++) {
-        // 删除单元格
-        if (i < willRemoveDataCells.length) {
-          const [colIndex, rowIndex] = willRemoveDataCells[i];
+        // 交替执行删除和添加操作
+        for (let i = 0; i < maxLength; i++) {
+          // 删除单元格
+          if (i < willRemoveDataCells.length) {
+            const [colIndex, rowIndex] = willRemoveDataCells[i];
+            const mountedDataCell = find(
+              allDataCells,
+              (cell) => cell.name === `${rowIndex}-${colIndex}`,
+            );
+
+            if (mountedDataCell) {
+              DataCellPool.release(mountedDataCell);
+            }
+          }
+
+          // 添加单元格
+          if (i < willAddDataCells.length) {
+            const [colIndex, rowIndex] = willAddDataCells[i];
+            const viewMeta = this.getCellMeta(rowIndex, colIndex);
+            const cell = this.createDataCell(viewMeta);
+
+            if (cell) {
+              this.addDataCell(cell);
+            }
+          }
+        }
+
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
+      } else {
+        // add new cell in panelCell
+        each(willAddDataCells, ([colIndex, rowIndex]) => {
+          const viewMeta = this.getCellMeta(rowIndex, colIndex);
+          const cell = this.createDataCell(viewMeta);
+
+          if (!cell) {
+            return;
+          }
+
+          this.addDataCell(cell);
+        });
+
+        const allDataCells = this.getDataCells();
+
+        // remove cell from panelCell
+        each(willRemoveDataCells, ([colIndex, rowIndex]) => {
           const mountedDataCell = find(
             allDataCells,
             (cell) => cell.name === `${rowIndex}-${colIndex}`,
           );
 
-          if (mountedDataCell) {
-            DataCellPool.release(mountedDataCell);
-          }
-        }
+          mountedDataCell?.destroy();
+        });
 
-        // 添加单元格
-        if (i < willAddDataCells.length) {
-          const [colIndex, rowIndex] = willAddDataCells[i];
-          const viewMeta = this.getCellMeta(rowIndex, colIndex);
-          const cell = this.createDataCell(viewMeta);
-
-          if (cell) {
-            this.addDataCell(cell);
-          }
-        }
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
       }
-
-      DebuggerUtil.getInstance().logger(
-        `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
-      );
     });
 
     this.preCellIndexes = indexes;

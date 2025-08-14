@@ -291,6 +291,21 @@ export interface S2BasicOptions<
    * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-facet
    */
   facet?: (spreadsheet: SpreadSheet) => BaseFacet;
+  /**
+   * Enabling some features for the future.
+   *
+   * ! These are some experimental functional features that are currently unstable.
+   *
+   * future flag, concept referenced from:
+   * - https://remix.run/docs/en/main/guides/api-development-strategy#unstable-apis-and-future-flags,
+   * - https://remix.run/blog/future-flags
+   */
+  future?: {
+    /**
+     * 是否复用数据单元格
+     */
+    experimentalReuseDataCell?: boolean;
+  };
 }
 
 // 设备，pc || mobile
