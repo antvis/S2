@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "2.4.3",
+  "version": "2.4.5",
   "private": false,
   "description": "effective spreadsheet render core lib",
   "keywords": [
@@ -79,6 +79,7 @@
     "@antv/g-lite": "^2.2.19",
     "@antv/vendor": "^1.0.11",
     "decimal.js": "^10.5.0",
+    "flru": "^1.0.2",
     "lodash": "^4.17.21",
     "tinycolor2": "^1.6.0"
   },

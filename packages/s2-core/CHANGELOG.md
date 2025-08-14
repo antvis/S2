@@ -1,3 +1,17 @@
+# [@antv/s2-v2.4.5](https://github.com/antvis/S2/compare/@antv/s2-v2.4.4...@antv/s2-v2.4.5) (2025-07-23)
+
+
+### Bug Fixes
+
+* 相同长度的字符串，其渲染后的实际宽度可能完全不同 ([#3202](https://github.com/antvis/S2/issues/3202)) ([544aa4c](https://github.com/antvis/S2/commit/544aa4c5c60cc97c2316472524ac3a0bbc8bb269))
+
+# [@antv/s2-v2.4.4](https://github.com/antvis/S2/compare/@antv/s2-v2.4.3...@antv/s2-v2.4.4) (2025-07-08)
+
+
+### Bug Fixes
+
+* showTreeLeafNodeAlignDot导致空指针 ([#3195](https://github.com/antvis/S2/issues/3195)) ([28d92eb](https://github.com/antvis/S2/commit/28d92ebc447de7dc4c2c144f17139b0b9171659b))
+
 # [@antv/s2-v2.4.3](https://github.com/antvis/S2/compare/@antv/s2-v2.4.2...@antv/s2-v2.4.3) (2025-06-09)
 
 

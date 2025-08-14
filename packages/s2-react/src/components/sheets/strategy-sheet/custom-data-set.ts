@@ -7,7 +7,7 @@ import {
   type RawData,
   type S2DataConfig,
 } from '@antv/s2';
-import { isEmpty, isObject, keys, size } from 'lodash';
+import { isEmpty, isObject, keys } from 'lodash';
 
 export class StrategySheetDataSet extends CustomGridPivotDataSet {
   getExistValuesByDataItem(data: RawData) {
@@ -22,8 +22,6 @@ export class StrategySheetDataSet extends CustomGridPivotDataSet {
 
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const updatedDataCfg = super.processDataCfg(dataCfg);
-    // 多指标数值挂行头，单指标挂列头
-    const valueInCols = size(updatedDataCfg?.fields?.values) <= 1;
 
     const newMeta: Meta[] = this.processMeta(dataCfg.meta, i18n('数值'));
 
@@ -33,7 +31,6 @@ export class StrategySheetDataSet extends CustomGridPivotDataSet {
       fields: {
         ...updatedDataCfg.fields,
         rows: [...(dataCfg.fields.rows || []), EXTRA_FIELD],
-        valueInCols,
       },
     };
   }
