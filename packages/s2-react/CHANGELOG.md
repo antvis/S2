@@ -1,3 +1,11 @@
+# [@antv/s2-react-v2.2.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.1...@antv/s2-react-v2.2.2) (2025-07-21)
+
+
+### Bug Fixes
+
+* 修复onDataCellEditStart / End 不能触发的问题 ([#3197](https://github.com/antvis/S2/issues/3197)) ([cfd43f5](https://github.com/antvis/S2/commit/cfd43f5fe58bac8c0e33682fe278ddb1d65c4bc3))
+* 单数值时，趋势分析表数值显示为空 ([#3201](https://github.com/antvis/S2/issues/3201)) ([15e76ba](https://github.com/antvis/S2/commit/15e76ba7a85fbfa2ee56add70d7d88ea0fd0cbfc))
+
 # [@antv/s2-react-v2.2.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.0...@antv/s2-react-v2.2.1) (2025-06-09)
 
 
