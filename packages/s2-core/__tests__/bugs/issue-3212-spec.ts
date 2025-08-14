@@ -5,7 +5,7 @@
 import { createPivotSheet } from '../util/helpers';
 
 describe('PivotSheet', () => {
-  test('should render correctly borders after scroll out of view', async () => {
+  test('should keep column width after hiding value in compact mode', async () => {
     const dataCfg = await fetch(
       'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
     ).then((res) => res.json());
@@ -30,11 +30,13 @@ describe('PivotSheet', () => {
 
     const colWidth = s2.facet.getColCells()[0].getMeta().width;
 
-    s2Options!.style!.colCell = {
-      hideValue: true,
-    };
-
-    s2.setOptions(s2Options);
+    s2.setOptions({
+      style: {
+        colCell: {
+          hideValue: true,
+        },
+      },
+    });
 
     await s2.render();
 
