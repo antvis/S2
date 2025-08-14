@@ -734,6 +734,11 @@ export abstract class SpreadSheet extends EE {
       height,
       renderer,
       supportsPointerEvents,
+      future: {
+        experimentalRICSyncRTree: true,
+        experimentalCancelEventPropagation: true,
+        // experimentalAttributeUpdateOptimization: true,
+      },
       ...canvasConfig,
     });
 

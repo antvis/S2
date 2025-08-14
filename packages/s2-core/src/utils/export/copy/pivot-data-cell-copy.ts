@@ -40,6 +40,7 @@ import {
   getHeaderNodeFromMeta,
   getMaxRowLen,
   getNodeFormatData,
+  ricOptions,
 } from './common';
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
@@ -190,11 +191,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
             // 重置 idleCallbackCount，避免下次 requestIdleCallback 时 idleCallbackCount 为 0
             this.initIdleCallbackCount(rowLength);
 
-            requestIdleCallback(dataMatrixIdleCallback);
+            requestIdleCallback(dataMatrixIdleCallback, ricOptions);
           }
         };
 
-        requestIdleCallback(dataMatrixIdleCallback);
+        requestIdleCallback(dataMatrixIdleCallback, ricOptions);
       } catch (e) {
         reject(e);
       }

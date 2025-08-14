@@ -74,9 +74,9 @@
   },
   "dependencies": {
     "@antv/event-emitter": "^0.1.3",
-    "@antv/g": "^6.1.25",
-    "@antv/g-canvas": "^2.0.44",
-    "@antv/g-lite": "^2.2.19",
+    "@antv/g": "^6.1.26",
+    "@antv/g-canvas": "^2.0.45",
+    "@antv/g-lite": "^2.3.0",
     "@antv/vendor": "^1.0.11",
     "decimal.js": "^10.5.0",
     "flru": "^1.0.2",
