@@ -17,7 +17,7 @@ import {
   getSelectedRows,
 } from '../method';
 import { BaseDataCellCopy } from './base-data-cell-copy';
-import { assembleMatrix, getHeaderNodeFromMeta } from './common';
+import { assembleMatrix, getHeaderNodeFromMeta, ricOptions } from './common';
 
 class TableDataCellCopy extends BaseDataCellCopy {
   private displayData: RawData[];
@@ -142,11 +142,11 @@ class TableDataCellCopy extends BaseDataCellCopy {
             // 重置 idleCallbackCount，避免下次 requestIdleCallback 时 idleCallbackCount 为 0
             this.initIdleCallbackCount(rowLength);
 
-            requestIdleCallback(dataMatrixIdleCallback);
+            requestIdleCallback(dataMatrixIdleCallback, ricOptions);
           }
         };
 
-        requestIdleCallback(dataMatrixIdleCallback);
+        requestIdleCallback(dataMatrixIdleCallback, ricOptions);
       } catch (e) {
         reject(e);
       }
