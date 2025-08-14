@@ -924,9 +924,13 @@ export class PivotFacet extends FrozenFacet {
       const rowNode = rowLeafNodes[index];
 
       if (rowNode) {
+        const { valueField, dataQuery } = this.getDataQueryInfo(
+          rowNode.query!,
+          colNode.query!,
+        );
         const cellData = (this.spreadsheet.dataSet as PivotDataSet).getCellData(
           {
-            query: { ...colNode.query, ...rowNode.query },
+            query: dataQuery,
             rowNode,
             isTotals:
               colNode.isTotals ||
@@ -939,16 +943,11 @@ export class PivotFacet extends FrozenFacet {
         if (cellData) {
           // 总小计格子不一定有数据
           const valueData = cellData?.[VALUE_FIELD];
-          const formattedValue =
+          const cellLabel =
             this.spreadsheet.dataSet.getFieldFormatter(cellData[EXTRA_FIELD])?.(
               valueData,
             ) ?? valueData;
-          const cellLabel = formattedValue;
           // 考虑字段标记 icon 的宽度: https://github.com/antvis/S2/pull/2673
-          const { valueField } = this.getDataQueryInfo(
-            rowNode.query!,
-            colNode.query!,
-          );
           const hasIcon = findFieldCondition(
             this.spreadsheet.options.conditions?.icon,
             valueField!,
