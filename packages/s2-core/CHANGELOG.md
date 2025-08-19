@@ -1,3 +1,16 @@
+# [@antv/s2-v2.4.6](https://github.com/antvis/S2/compare/@antv/s2-v2.4.5...@antv/s2-v2.4.6) (2025-08-19)
+
+
+### Bug Fixes
+
+* 修复格式化值时缺少参数，确保宽度正确计算 ([#3206](https://github.com/antvis/S2/issues/3206)) ([1fb4c8d](https://github.com/antvis/S2/commit/1fb4c8d57b591404cd9480126374e7a8b62e42dc))
+* 透视表紧凑模式下，数值挂列头时隐藏数值，会导致紧凑模式下列头自适应宽度失效 ([#3213](https://github.com/antvis/S2/issues/3213)) ([90b3611](https://github.com/antvis/S2/commit/90b361120ec4762827b79629410eaf48337273c7))
+
+
+### Performance Improvements
+
+* 使用新版g优化性能 ([#3194](https://github.com/antvis/S2/issues/3194)) ([4ad28fa](https://github.com/antvis/S2/commit/4ad28fa1f94ba802b969f37c103c1142037da3d5))
+
 # [@antv/s2-v2.4.5](https://github.com/antvis/S2/compare/@antv/s2-v2.4.4...@antv/s2-v2.4.5) (2025-07-23)
 
 
