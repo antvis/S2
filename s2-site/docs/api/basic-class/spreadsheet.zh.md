@@ -23,7 +23,7 @@ s2.isPivotMode()
 | facet | 当前可视渲染区域                                                                                                               | [BaseFacet](/api/basic-class/base-facet) |    |
 | tooltip | 提示信息                                                                                                                | [BaseTooltip](/api/basic-class/base-tooltip) |    |
 | container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.antgroup.com/api/renderer/canvas) |    |
-| interaction | 交互                                                                                                                     |  [Interaction](/zh/docs/api/basic-class/interaction) |    |
+| interaction | 交互                                                                                                                     |  [Interaction](/api/basic-class/interaction) |    |
 | hdAdapter | 高清适配器                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
 | destroyed | 表格是否已销毁                                                                                                                   | `boolean` |    |
 | on | 事件订阅                                                                                                                   | (event: [S2Event](/manual/advanced/interaction/basic), listener: () => void) => void |    |
@@ -38,8 +38,8 @@ s2.isPivotMode()
 | isTableMode | 是否是明细表                                                                                                                 | `() => boolean` |    |
 | isValueInCols | 是否是数值置于行头                                                                                                              | `() => boolean` |    |
 | clearDrillDownData | 清除下钻数据  | (rowNodeId?: `string`) => `Promise<void>` |    |
-| showTooltip | 显示 tooltip   （别名 `tooltip.show`   | (showOptions: [TooltipShowOptions](/api/common/custom-tooltip)) => void |    |
-| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) \| MouseEvent, data: [TooltipData[]](/api/common/custom-tooltip), options?: [TooltipOptions](/api/common/custom-tooltip)) => void |
+| showTooltip | 显示 tooltip   （别名 `tooltip.show`   | (showOptions: [TooltipShowOptions](/api/basic-class/base-tooltip#tooltipshowoptions)) => void |    |
+| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) \| MouseEvent, data: [TooltipData[]](/api/basic-class/base-tooltip#tooltipdata), options?: [TooltipOptions](/api/basic-class/base-tooltip#tooltipoptions)) => void |
 | hideTooltip | 隐藏 tooltip （别名：`tooltip.hide`   | `() => void` |    |
 | destroyTooltip | 销毁 tooltip     （别名 `tooltip.destroy`   | `() => void` |    |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`   | `() => void` |    |

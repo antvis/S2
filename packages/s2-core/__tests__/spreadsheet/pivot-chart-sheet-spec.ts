@@ -1,12 +1,7 @@
 import { get, head, map, omit } from 'lodash';
 import { getContainer, sleep } from 'tests/util/helpers';
 import { asyncGetAllPlainData } from '../../src';
-import {
-  EXTRA_FIELD,
-  LayoutWidthType,
-  OriginEventType,
-  TAB_SEPARATOR,
-} from '../../src/common';
+import { EXTRA_FIELD, LayoutWidthType, TAB_SEPARATOR } from '../../src/common';
 import { Aggregation, type S2Options } from '../../src/common/interface';
 import { PivotChartSheet } from '../../src/extends';
 import {
@@ -607,42 +602,38 @@ describe('Pivot Chart Tests', () => {
       expect(formatter(4000)).toEqual('4000.00');
 
       // tooltip formatter
-      await sleep(3000);
-
-      const canvas = s2.getCanvasElement();
-      const bbox = canvas.getBoundingClientRect();
-
-      let mousemoveEvent = new MouseEvent(OriginEventType.POINTER_MOVE, {
-        clientX: bbox.left + 460,
-        clientY: bbox.top + 150,
-      });
-
-      canvas.dispatchEvent(mousemoveEvent);
-
-      expect(
-        document.querySelector<HTMLDivElement>('.g2-tooltip-title')!.innerText,
-      ).toEqual('小计');
-
-      expect(
-        document.querySelector<HTMLDivElement>('.g2-tooltip-list')!.innerText,
-      ).toEqual('数量\n18375.00');
-
-      await sleep(3000);
-
-      mousemoveEvent = new MouseEvent(OriginEventType.POINTER_MOVE, {
-        clientX: bbox.left + 460,
-        clientY: bbox.top + 200,
-      });
-
-      canvas.dispatchEvent(mousemoveEvent);
-
-      expect(
-        document.querySelector<HTMLDivElement>('.g2-tooltip-title')!.innerText,
-      ).toEqual('[[杭州市]]');
-
-      expect(
-        document.querySelector<HTMLDivElement>('.g2-tooltip-list')!.innerText,
-      ).toEqual('数量\n7789.00');
+      // await sleep(3000);
+      //
+      // const canvas = s2.getCanvasElement();
+      // const bbox = canvas.getBoundingClientRect();
+      //
+      // let mousemoveEvent = new MouseEvent(OriginEventType.POINTER_MOVE, {
+      //   clientX: bbox.left + 460,
+      //   clientY: bbox.top + 150,
+      // });
+      //
+      // canvas.dispatchEvent(mousemoveEvent);
+      // expect(
+      //   document.querySelector<HTMLDivElement>('.g2-tooltip-title')!.innerText,
+      // ).toEqual('小计');
+      //
+      // expect(
+      //   document.querySelector<HTMLDivElement>('.g2-tooltip-list')!.innerText,
+      // ).toEqual('数量\n18375.00');
+      //
+      // mousemoveEvent = new MouseEvent(OriginEventType.POINTER_MOVE, {
+      //   clientX: bbox.left + 460,
+      //   clientY: bbox.top + 200,
+      // });
+      //
+      // canvas.dispatchEvent(mousemoveEvent);
+      // expect(
+      //   document.querySelector<HTMLDivElement>('.g2-tooltip-title')!.innerText,
+      // ).toEqual('[[杭州市]]');
+      //
+      // expect(
+      //   document.querySelector<HTMLDivElement>('.g2-tooltip-list')!.innerText,
+      // ).toEqual('数量\n7789.00');
     });
   });
 

@@ -67,11 +67,13 @@ export class Frame extends Group {
   }
 
   public onBorderScroll(scrollX: number): void {
-    this.cfg.scrollX = scrollX;
-    const { position } = this.cfg;
+    if (scrollX !== this.cfg.scrollX) {
+      this.cfg.scrollX = scrollX;
+      const { position } = this.cfg;
 
-    translateGroup(this, position.x - scrollX, 0);
-    this.render();
+      translateGroup(this, position.x - scrollX, 0);
+      this.render();
+    }
   }
 
   public onChangeShadowVisibility(scrollX: number, maxScrollX: number) {
@@ -79,12 +81,20 @@ export class Frame extends Group {
       this.cfg.spreadsheet.facet as FrozenFacet
     ).getFrozenOptions();
 
-    this.cfg.showViewportLeftShadow = colCount === 0 && scrollX > 0;
-    // baseFacet#renderHScrollBar render condition
-    this.cfg.showViewportRightShadow =
+    const showViewportLeftShadow = colCount === 0 && scrollX > 0;
+    const showViewportRightShadow =
       trailingColCount === 0 && floor(scrollX) < floor(maxScrollX);
 
-    this.render();
+    if (
+      this.cfg.showViewportLeftShadow !== showViewportLeftShadow ||
+      this.cfg.showViewportRightShadow !== showViewportRightShadow
+    ) {
+      this.cfg.showViewportLeftShadow = showViewportLeftShadow;
+      // baseFacet#renderHScrollBar render condition
+      this.cfg.showViewportRightShadow = showViewportRightShadow;
+
+      this.render();
+    }
   }
 
   protected getCornerRightBorderSizeForPivotMode() {

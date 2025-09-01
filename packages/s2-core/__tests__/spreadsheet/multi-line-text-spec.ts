@@ -1465,5 +1465,178 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       expect(actualText1).toEqual(actualText2);
     });
+
+    test('should render maxLines text correctly with icon', async () => {
+      const pivotSheet = new PivotSheet(
+        getContainer(),
+        {
+          fields: {
+            rows: ['dimValue'],
+            columns: ['indicatorName'],
+            values: ['value'],
+            valueInCols: true,
+          },
+          meta: [
+            {
+              field: 'dimValue',
+              name: '当日自',
+            },
+            {
+              field: 'indicatorName',
+              name: '指标名称',
+            },
+            {
+              field: 'value',
+              name: '值',
+            },
+          ],
+          data: [
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              dimValueDetail: {
+                dim_f01aa4ca_202406131000000000004274951: '测试数据',
+              },
+              value: '--',
+              indicatorName: '当日自证任务且数据采集用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日自证任务且数据采集用户数[#]',
+              maxValue: 37041,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额提额申请用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日主动提额提额申请用户数[#]',
+              maxValue: 1849575,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额提额成功用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日主动提额提额成功用户数[#]',
+              maxValue: 414581,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额提额后授信额度',
+              format: 'cent',
+              id: '[#]当日自[#]测试数据[#]当日主动提额提额后授信额度[#]',
+              maxValue: 211008545.95,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额授信提升额度',
+              format: 'yuan',
+              id: '[#]当日自[#]测试数据[#]当日主动提额授信提升额度[#]',
+              maxValue: 4721735188.31,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额额度提升提额成功用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日主动提额额度提升提额成功用户数[#]',
+              maxValue: 34536,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日cy25业绩客群支用用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日cy25业绩客群支用用户数[#]',
+              maxValue: 935010,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日cy25业绩客群支用金额',
+              format: 'cent',
+              id: '[#]当日自[#]测试数据[#]当日cy25业绩客群支用金额[#]',
+              maxValue: 31536381479.07,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当前CY25业绩客群余额用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当前CY25业绩客群余额用户数[#]',
+              maxValue: 9331634,
+            },
+          ],
+          sortParams: [],
+        },
+        {
+          width: 1920,
+          height: 480,
+          showDefaultHeaderActionIcon: true,
+          style: {
+            colCell: {
+              hideValue: true,
+              maxLines: 2,
+              wordWrap: true,
+              textOverflow: 'ellipsis',
+              // "height": 30
+            },
+            cornerCell: {
+              maxLines: 2,
+              wordWrap: true,
+              textOverflow: 'ellipsis',
+            },
+            rowCell: {
+              maxLines: 2,
+              wordWrap: true,
+              textOverflow: 'ellipsis',
+              collapseAll: false,
+            },
+            layoutWidthType: 'adaptive',
+          },
+        },
+      );
+
+      await pivotSheet.render();
+      expect(
+        pivotSheet.facet.getCornerCells()[0].getHeaderConfig().height,
+      ).toEqual(46);
+    });
   });
 });

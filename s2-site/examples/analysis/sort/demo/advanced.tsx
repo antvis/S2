@@ -1,7 +1,8 @@
 // organize-imports-ignore
 import React from 'react';
-import { S2DataConfig } from '@antv/s2';
+import {S2DataConfig, SpreadSheet} from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { AdvancedSort } from '@antv/s2-react-components';
 import insertCSS from 'insert-css';
 
 import '@antv/s2-react/dist/s2-react.min.css';
@@ -54,25 +55,23 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
 
     const AdvancedSortDemo = () => {
       const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
-      const [sortParams, setSortParams] = React.useState(defaultSortParams);
+      const [sheetInstance, setSheetInstance] = React.useState<SpreadSheet>();
+
+      const onMounted = (s2: SpreadSheet) => {
+        setSheetInstance(s2);
+      };
 
       return (
         <div>
+          <AdvancedSort sheetInstance={sheetInstance} onSortConfirm={(ruleValues, sortParams) => {
+            setDataCfg({ ...dataCfg, sortParams });
+          }} />
           <SheetComponent
             sheetType={'pivot'}
             adaptive={false}
             dataCfg={dataCfg}
             options={s2Options}
-            header={{
-              advancedSort: {
-                open: true,
-                sortParams,
-                onSortConfirm: (ruleValues, sortParams) => {
-                  setDataCfg({ ...dataCfg, sortParams });
-                  setSortParams(sortParams);
-                },
-              },
-            }}
+            onMounted={onMounted}
           />
         </div>
       );

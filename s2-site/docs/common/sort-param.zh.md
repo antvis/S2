@@ -19,7 +19,7 @@ order: 7
 
 #### SortFuncParam
 
-功能描述：自定义排序函数参数。查看 [文档](/manual/basic/sort/custom) 和 [示例](/examples/analysis/sort/#custom-sort-func)
+功能描述：自定义排序函数参数。查看 [文档](/manual/basic/sort/basic#4-自定义方法sortfunc) 和 [示例](/examples/analysis/sort/#custom-sort-func)
 
 | 参数          | 说明                                        | 类型                                  | 默认值 | 必选 |
 | ------------ | ------------------------------------------ | ------------------------------------ | ------ | --- |

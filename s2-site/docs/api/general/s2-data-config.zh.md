@@ -52,13 +52,14 @@ const s2DataConfig = {
 
 #### Renderer
 
-| 参数           | 说明                 | 类型                                                     | 默认值 | 必选 |
-| -------------- |--------------------| -------------------------------------------------------- | ------ | ---- |
-| type           | 渲染类型               | `IMAGE \| VIDEO`                                     |        | ✓    |
+| 参数           | 说明                     | 类型                                                     | 默认值 | 必选 |
+| -------------- |------------------------| -------------------------------------------------------- | ------ | ---- |
+| type           | 渲染类型                   | `IMAGE \| VIDEO`                                     |        | ✓    |
 | clickToPreview | 是否开启点击预览。type为图片、视频时生效 | boolean                                                  | true   |      |
-| fallback       | 图片、视频加载失败的兜底展示     | string                                                   |        |      |
-| timeout        | 图片、视频加载超时时间           | number                                                   | 10000  |      |
-| config         | 图片、视频的配置项          | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |        |      |
+| prepareText | 渲染前对文本进行异步处理           | (value: SimpleData) => Promise<string>                                                  |    |      |
+| fallback       | 图片、视频加载失败的兜底展示         | string                                                   |        |      |
+| timeout        | 图片、视频加载超时时间            | number                                                   | 10000  |      |
+| config         | 图片、视频的配置项              | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |        |      |
 
 <embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
 <embed src="@/docs/common/view-meta.zh.md"></embed>

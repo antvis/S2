@@ -859,8 +859,11 @@ export class PivotFacet extends FrozenFacet {
       ?.slice(0, LAYOUT_SAMPLE_COUNT)
       .map(
         (dimValue) =>
-          this.spreadsheet.dataSet.getFieldFormatter(field)?.(dimValue) ??
-          dimValue,
+          this.spreadsheet.dataSet.getFieldFormatter(field)?.(
+            dimValue,
+            undefined,
+            node,
+          ) ?? dimValue,
       );
     const maxLabel = maxBy(allLabels, (label) => `${label}`.length);
     const rowNodeWidth =
@@ -905,7 +908,8 @@ export class PivotFacet extends FrozenFacet {
     const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
       colNode.field,
     );
-    const leafNodeLabel = cellFormatter?.(colNode.value) ?? colNode.value;
+    const leafNodeLabel =
+      cellFormatter?.(colNode.value, undefined, colNode) ?? colNode.value;
     const colIconWidth = this.getExpectedCellIconWidth(
       CellType.COL_CELL,
       this.spreadsheet.isValueInCols() &&
@@ -924,9 +928,13 @@ export class PivotFacet extends FrozenFacet {
       const rowNode = rowLeafNodes[index];
 
       if (rowNode) {
+        const { valueField, dataQuery } = this.getDataQueryInfo(
+          rowNode.query!,
+          colNode.query!,
+        );
         const cellData = (this.spreadsheet.dataSet as PivotDataSet).getCellData(
           {
-            query: { ...colNode.query, ...rowNode.query },
+            query: dataQuery,
             rowNode,
             isTotals:
               colNode.isTotals ||
@@ -939,16 +947,13 @@ export class PivotFacet extends FrozenFacet {
         if (cellData) {
           // 总小计格子不一定有数据
           const valueData = cellData?.[VALUE_FIELD];
-          const formattedValue =
+          const cellLabel =
             this.spreadsheet.dataSet.getFieldFormatter(cellData[EXTRA_FIELD])?.(
               valueData,
+              cellData,
+              colNode,
             ) ?? valueData;
-          const cellLabel = formattedValue;
           // 考虑字段标记 icon 的宽度: https://github.com/antvis/S2/pull/2673
-          const { valueField } = this.getDataQueryInfo(
-            rowNode.query!,
-            colNode.query!,
-          );
           const hasIcon = findFieldCondition(
             this.spreadsheet.options.conditions?.icon,
             valueField!,

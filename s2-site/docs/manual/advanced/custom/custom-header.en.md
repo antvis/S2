@@ -8,7 +8,7 @@ By default, `S2` provides two **row header** layout modes [: tile mode (grid)](h
 
 By default **, the hierarchical structure is generated through the data obtained after crossing** . If you are not satisfied, you can customize your directory structure by customizing the row and column headers. These two layout methods are also supported.
 
-<Playground path="custom/custom-tree/demo/custom-header.ts" rid="container" height="400"></Playground>
+<Playground path='layout/custom-header-group/demo/custom-pivot-row-header.ts' rid='custom-pivot-row-header' height='400'></playground>
 
 ### data structure
 
@@ -154,7 +154,7 @@ const s2Options = {
 
 #### tile mode
 
-For the tiling mode, the corner header corresponds **to the first cell of each column of the row header.** Like ordinary fields, you can configure [meta](/zh/docs/api/general/s2-data-config#meta) to format the cell text. At this time, the `field` corresponds to the `key` value of [CustomTreeNode](#customtreenode)
+For the tiling mode, the corner header corresponds **to the first cell of each column of the row header.** Like ordinary fields, you can configure [meta](/en/api/general/s2-data-config#meta) to format the cell text. At this time, the `field` corresponds to the `key` value of [CustomTreeNode](#customtreenode)
 
 ```ts
 const meta = [
@@ -177,7 +177,7 @@ const meta = [
 
 #### tree mode
 
-For the tree mode, the corner headers correspond to **all first-level nodes and values** . You can configure [meta](/zh/docs/api/general/s2-data-config#meta) to format the cell text just like ordinary fields, or you can configure [s2Options.cornerText](/zh/docs/api/general/s2-options) to customize the corner header text
+For the tree mode, the corner headers correspond to **all first-level nodes and values** . You can configure [meta](/en/api/general/s2-data-config#meta) to format the cell text just like ordinary fields, or you can configure [s2Options.cornerText](/en/api/general/s2-options) to customize the corner header text
 
 ```ts
 const meta = [

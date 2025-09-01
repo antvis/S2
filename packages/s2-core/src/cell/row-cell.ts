@@ -103,7 +103,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const treeIcon = (
       this.meta.parent?.belongsCell as HeaderCell
-    ).getTreeIcon();
+    )?.getTreeIcon();
 
     return treeIcon?.style;
   }

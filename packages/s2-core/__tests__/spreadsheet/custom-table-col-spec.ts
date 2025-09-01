@@ -10,6 +10,7 @@ import {
   customColMultipleColumns,
   customColMultipleColumns2,
   customColSimpleColumns,
+  duplicatePrefixColumns,
 } from '../data/custom-table-col-fields';
 import { data } from '../data/mock-dataset.json';
 import {
@@ -363,5 +364,20 @@ describe('TableSheet Custom Tests', () => {
       .map((node) => pick(node, ['x', 'y', 'width', 'height']));
 
     expect(colNodes).toMatchSnapshot();
+  });
+
+  test('should calc correctly col Height with duplicate prefix columns', async () => {
+    s2.setDataCfg({
+      ...baseDataConfig,
+      fields: {
+        columns: duplicatePrefixColumns,
+      },
+    });
+
+    await s2.render();
+
+    const colHeight = s2.facet.getColNodes().map((node) => node.height);
+
+    expect(colHeight).toEqual([30, 30, 30, 30]);
   });
 });

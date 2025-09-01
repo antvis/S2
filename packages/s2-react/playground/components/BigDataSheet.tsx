@@ -15,10 +15,9 @@ const s2Options: SheetComponentOptions = {
       horizontal: 1,
     },
   },
-  transformCanvasConfig(renderer) {
-    renderer.setConfig({
-      enableCulling: true,
-    });
+  showDefaultHeaderActionIcon: false,
+  future: {
+    experimentalReuseDataCell: true,
   },
 };
 

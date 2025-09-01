@@ -14,7 +14,7 @@ tag: Updated
 
 ## React 下钻组件 <Badge>@antv/s2-react</Badge> <Badge>@antv/s2-react-components</Badge>
 
-[​查看示例](/examples/react-component/drill-dwon#for-pivot)
+[​查看示例](/examples/react-component/drill-down/#for-pivot)
 
 ```tsx | pure
 import { DrillDown } from '@antv/s2-react-components';

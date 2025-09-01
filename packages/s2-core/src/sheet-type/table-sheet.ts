@@ -4,6 +4,7 @@ import type { SortMethod, SortParam, ViewMeta } from '../common/interface';
 import { BaseDataSet, TableDataSet } from '../data-set';
 import { TableFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
+import type { PivotSheet } from './pivot-sheet';
 import { SpreadSheet } from './spread-sheet';
 
 export class TableSheet extends SpreadSheet {
@@ -24,14 +25,14 @@ export class TableSheet extends SpreadSheet {
   /**
    * Check if is pivot mode
    */
-  public isPivotMode(): boolean {
+  public isPivotMode(): this is PivotSheet {
     return false;
   }
 
   /**
    * Check if is pivot mode
    */
-  public isTableMode(): boolean {
+  public isTableMode(): this is TableSheet {
     return true;
   }
 

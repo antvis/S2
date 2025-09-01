@@ -147,7 +147,7 @@ const s2DataConfig = {
 
 ##### 2.1. 配置聚合方式
 
-通过配置 `aggregation` 来实现，聚合方式目前支持 `SUM` （求和）、 `MIN` （最小值）、 `MAX` （最大值）和 `AVG` （算术平均）。 [查看示例](https://s2.antv.antgroup.com/zh/examples/analysis/totals/#calculate)
+通过配置 `aggregation` 来实现，聚合方式目前支持 `SUM` （求和）、 `MIN` （最小值）、 `MAX` （最大值）、 `AVG` （算术平均）和 `COUNT` （计数）。 [查看示例](https://s2.antv.antgroup.com/zh/examples/analysis/totals/#calculate)
 
 ```ts
 const s2Options = {

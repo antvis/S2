@@ -55,7 +55,7 @@ s2.interaction.reset()
 | scrollTo | 滚动至指定位置   | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |    |
 | scrollToNode | 滚动至指定单元格节点   | (node: [Node](/api/basic-class/node), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToCell | 滚动至指定单元格   | (cell: [S2CellType](#s2celltype), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
-| scrollToCellById | 滚动至指定单元格 id 对应的位置，如果不在可视化范围内，则会自动滚动   | (id: string, options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToCellById | 滚动至指定单元格 id 对应的位置，确保目标单元格进入可视区域   | (id: string, options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToTop | 滚动至顶部  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToRight | 滚动至右边  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
 | scrollToBottom | 滚动至底部  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |

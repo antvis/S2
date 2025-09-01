@@ -9,8 +9,8 @@ object is **required** , *default: null* Function description: subtotal total co
 
 | parameter | illustrate   | type                                       | required | Defaults |
 | --------- | ------------ | ------------------------------------------ | -------- | -------- |
-| row       | row total    | [Total](/docs/api/general/s2-options#total) |          |          |
-| col       | column total | [Total](/docs/api/general/s2-options#total) |          |          |
+| row       | row total    | [Total](/en/api/general/s2-options#total) |          |          |
+| col       | column total | [Total](/en/api/general/s2-options#total) |          |          |
 
 ## Total
 
@@ -32,7 +32,7 @@ object is **required** , *default: null* Function description: subtotal total co
 
 object **optional** , *default: null* Function description: calculate subtotal total configuration
 
-| parameter   | illustrate         | type                                                                             | required | Defaults |
-| ----------- | ------------------ | -------------------------------------------------------------------------------- | -------- | -------- |
-| aggregation | aggregation method | `Aggregation.SUM` \| `Aggregation.MIN` \| `Aggregation.MAX` \| `Aggregation.AVG` |          |          |
-| calcFunc    | custom method      | `(query: Record<string, any>, arr: Record<string, any>[]) => number`             |          |          |
+| parameter   | illustrate         | type                                                                                                    | required | Defaults |
+| ----------- | ------------------ |---------------------------------------------------------------------------------------------------------| -------- | -------- |
+| aggregation | aggregation method | `Aggregation.SUM` \| `Aggregation.MIN` \| `Aggregation.MAX` \| `Aggregation.AVG` \| `Aggregation.COUNT` |          |          |
+| calcFunc    | custom method      | `(query: Record<string, any>, arr: Record<string, any>[]) => number`                                    |          |          |

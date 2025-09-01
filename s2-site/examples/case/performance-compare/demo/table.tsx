@@ -6,12 +6,6 @@ const s2Options: S2Options = {
   seriesNumber: {
     enable: true,
   },
-  // 提高滚动性能
-  transformCanvasConfig(renderer) {
-    renderer.setConfig({
-      enableCulling: true,
-    });
-  },
 };
 
 export function generateRawData(

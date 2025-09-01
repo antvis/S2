@@ -2,7 +2,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line prettier/prettier
 import { PivotSheet, SpreadSheet, type ViewMeta } from '@antv/s2';
-import { dsvFormat } from 'd3-dsv';
+import { dsvFormat } from '@antv/vendor/d3-dsv';
 import fs from 'fs';
 import { omit } from 'lodash';
 import path from 'path';
