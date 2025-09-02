@@ -9,6 +9,7 @@ import {
   Polygon,
   Polyline,
   Rect,
+  type BaseStyleProps,
   type CircleStyleProps,
   type DisplayObject,
   type LineStyleProps,
@@ -143,4 +144,13 @@ export function renderTreeIcon(options: {
   }
 
   return iconShape;
+}
+
+export function batchSetStyle<
+  T extends DisplayObject,
+  S extends BaseStyleProps,
+>(obj: T, style: S) {
+  for (const styleKey in style) {
+    obj.style[styleKey] = style[styleKey];
+  }
 }
