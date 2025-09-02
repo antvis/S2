@@ -1,5 +1,5 @@
-import { Group, Rect, type LineStyleProps } from '@antv/g';
-import { last } from 'lodash';
+import { Group, Rect, RectStyleProps, type LineStyleProps } from '@antv/g';
+import { get, last, set } from 'lodash';
 import type { DataCell } from '../cell';
 import type { S2BaseFrozenOptions, SplitLine } from '../common';
 import {
@@ -19,6 +19,7 @@ import type {
 import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
 import {
+  batchSetStyle,
   getValidFrozenOptions,
   renderLine,
   waitForCellMounted,
@@ -740,7 +741,19 @@ export abstract class FrozenFacet extends BaseFacet {
     return `l (${angle}) 0:${splitLine?.shadowColors?.left} 1:${splitLine?.shadowColors?.right}`;
   };
 
+  private createOrUpdate(propertyPath: string, style: RectStyleProps) {
+    const obj = get(this, propertyPath);
+
+    if (!obj) {
+      set(this, propertyPath, new Rect({ style }));
+    } else {
+      batchSetStyle(obj, style);
+    }
+  }
+
   protected clip() {
+    const { colCount, rowCount, trailingColCount, trailingRowCount } =
+      this.getFrozenOptions();
     const { scrollX } = this.getScrollOffset();
 
     const { x: panelScrollGroupClipX, width: panelScrollGroupClipWidth } =
@@ -762,58 +775,67 @@ export abstract class FrozenFacet extends BaseFacet {
       frozenRowGroupHeight -
       frozenTrailingRowHeight;
 
-    this.panelScrollGroup.style.clipPath = new Rect({
-      style: {
-        x: panelScrollGroupClipX,
-        y: panelScrollGroupClipY,
-        width: panelScrollGroupClipWidth,
-        height: panelScrollGroupClipHeight,
-      },
+    this.createOrUpdate('panelScrollGroup.style.clipPath', {
+      x: panelScrollGroupClipX,
+      y: panelScrollGroupClipY,
+      width: panelScrollGroupClipWidth,
+      height: panelScrollGroupClipHeight,
     });
 
-    /* frozen groups clip */
-    this.frozenGroups[FrozenGroupType.Col].style.clipPath = new Rect({
-      style: {
-        x:
-          this.panelBBox.x -
-          getFrozenColOffset(this, this.cornerBBox.width, scrollX),
-        y: panelScrollGroupClipY,
-        width: frozenColGroupWidth,
-        height: panelScrollGroupClipHeight,
-      },
-    });
+    if (colCount > 0) {
+      this.createOrUpdate(
+        `frozenGroups.${FrozenGroupType.Col}.style.clipPath`,
+        {
+          x:
+            this.panelBBox.x -
+            getFrozenColOffset(this, this.cornerBBox.width, scrollX),
+          y: panelScrollGroupClipY,
+          width: frozenColGroupWidth,
+          height: panelScrollGroupClipHeight,
+        },
+      );
+    }
 
-    this.frozenGroups[FrozenGroupType.TrailingCol].style.clipPath = new Rect({
-      style: {
-        x:
-          this.panelBBox.x +
-          this.panelBBox.viewportWidth -
-          frozenTrailingColWidth,
-        y: panelScrollGroupClipY,
-        width: frozenTrailingColWidth,
-        height: panelScrollGroupClipHeight,
-      },
-    });
+    if (trailingColCount > 0) {
+      this.createOrUpdate(
+        `frozenGroups.${FrozenGroupType.TrailingCol}.style.clipPath`,
+        {
+          x:
+            this.panelBBox.x +
+            this.panelBBox.viewportWidth -
+            frozenTrailingColWidth,
+          y: panelScrollGroupClipY,
+          width: frozenTrailingColWidth,
+          height: panelScrollGroupClipHeight,
+        },
+      );
+    }
 
-    this.frozenGroups[FrozenGroupType.Row].style.clipPath = new Rect({
-      style: {
-        x: panelScrollGroupClipX,
-        y: this.panelBBox.y,
-        width: panelScrollGroupClipWidth,
-        height: frozenRowGroupHeight,
-      },
-    });
+    if (rowCount > 0) {
+      this.createOrUpdate(
+        `frozenGroups.${FrozenGroupType.Row}.style.clipPath`,
+        {
+          x: panelScrollGroupClipX,
+          y: this.panelBBox.y,
+          width: panelScrollGroupClipWidth,
+          height: frozenRowGroupHeight,
+        },
+      );
+    }
 
-    this.frozenGroups[FrozenGroupType.TrailingRow].style.clipPath = new Rect({
-      style: {
-        x: panelScrollGroupClipX,
-        y:
-          this.panelBBox.y +
-          this.panelBBox.viewportHeight -
-          frozenTrailingRowHeight,
-        width: panelScrollGroupClipWidth,
-        height: frozenTrailingRowHeight,
-      },
-    });
+    if (trailingRowCount > 0) {
+      this.createOrUpdate(
+        `frozenGroups.${FrozenGroupType.TrailingRow}.style.clipPath`,
+        {
+          x: panelScrollGroupClipX,
+          y:
+            this.panelBBox.y +
+            this.panelBBox.viewportHeight -
+            frozenTrailingRowHeight,
+          width: panelScrollGroupClipWidth,
+          height: frozenTrailingRowHeight,
+        },
+      );
+    }
   }
 }
