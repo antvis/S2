@@ -220,9 +220,10 @@ export const getNodeFormatData = (leafNode: Node) => {
       node.field,
     );
 
-    const value = node.isTotals
-      ? node.value
-      : formatter?.(node.value) ?? node.value;
+    const value =
+      node.isTotals || !formatter
+        ? node.value
+        : (formatter(node.value) as string);
 
     line.unshift(value);
 
