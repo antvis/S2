@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.7](https://github.com/antvis/S2/compare/@antv/s2-v2.4.6...@antv/s2-v2.4.7) (2025-09-03)
+
+
+### Bug Fixes
+
+* 配置hideValue后复制数据缺失角头 ([#3220](https://github.com/antvis/S2/issues/3220)) ([d7a22b7](https://github.com/antvis/S2/commit/d7a22b73427047aef4adc0f4dd38b5fb27e98735))
+
 # [@antv/s2-v2.4.6](https://github.com/antvis/S2/compare/@antv/s2-v2.4.5...@antv/s2-v2.4.6) (2025-08-19)
 
 
