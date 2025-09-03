@@ -219,7 +219,10 @@ export const getNodeFormatData = (leafNode: Node) => {
     const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(
       node.field,
     );
-    const value = formatter?.(node.value) as string;
+
+    const value = node.isTotals
+      ? node.value
+      : (formatter?.(node.value) as string);
 
     line.unshift(value);
 

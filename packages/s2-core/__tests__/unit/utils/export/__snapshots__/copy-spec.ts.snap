@@ -154,7 +154,7 @@ exports[`Pivot Table Core Data Process should copy normal data with format heade
 "		家具-类
 		桌子-子类
 		数量
-浙江省-省	小计-市	18375元"
+浙江省-省	小计	18375元"
 `;
 
 exports[`Pivot Table Core Data Process should copy row data with format header in grid mode 1`] = `
@@ -301,8 +301,8 @@ exports[`Pivot Table getBrushHeaderCopyable should copy all row data in tree mod
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy all row data in tree mode for custom row cell 1`] = `
-"层级1	自定义节点 a-1-1	指标1
-层级1	自定义节点 a-1-1	指标2"
+"自定义节点 a-1	自定义节点 a-1-1	指标1
+自定义节点 a-1	自定义节点 a-1-1	指标2"
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy col total data in grid mode 1`] = `
@@ -310,11 +310,11 @@ Array [
   Object {
     "content": "家具	家具	家具	办公用品	办公用品
 桌子	沙发	小计	笔	纸张
-number	number	小计	number	number",
+number	number		number	number",
     "type": "text/plain",
   },
   Object {
-    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>小计</td><td>笔</td><td>纸张</td></tr><tr><td>number</td><td>number</td><td>小计</td><td>number</td><td>number</td></tr></tbody></table>",
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>小计</td><td>笔</td><td>纸张</td></tr><tr><td>number</td><td>number</td><td></td><td>number</td><td>number</td></tr></tbody></table>",
     "type": "text/html",
   },
 ]
@@ -331,7 +331,7 @@ exports[`Pivot Table getBrushHeaderCopyable should copy row total data in grid m
 四川省	南充市
 四川省	乐山市
 四川省	小计
-总计	总计"
+总计"
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy selection col data in grid mode 1`] = `
