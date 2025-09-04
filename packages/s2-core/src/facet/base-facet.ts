@@ -726,7 +726,7 @@ export abstract class BaseFacet {
   onContainerWheelForPc = () => {
     const canvas = this.spreadsheet.getCanvasElement();
 
-    canvas?.addEventListener('wheel', this.onWheel, { passive: true });
+    canvas?.addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
