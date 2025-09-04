@@ -132,6 +132,6 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   }
 
   protected createOrUpdate(propertyPath: string, style: RectStyleProps) {
-    createOrUpdateRect(this, propertyPath, style);
+    createOrUpdateRect.call(this, propertyPath, style);
   }
 }

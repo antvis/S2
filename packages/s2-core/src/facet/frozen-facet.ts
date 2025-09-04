@@ -742,7 +742,7 @@ export abstract class FrozenFacet extends BaseFacet {
   };
 
   private createOrUpdate(propertyPath: string, style: RectStyleProps) {
-    createOrUpdateRect(this, propertyPath, style);
+    createOrUpdateRect.call(this, propertyPath, style);
   }
 
   protected clip() {

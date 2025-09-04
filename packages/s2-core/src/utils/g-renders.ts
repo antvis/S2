@@ -156,10 +156,11 @@ export function batchSetStyle<
 }
 
 export function createOrUpdateRect(
-  context: any,
   propertyPath: string,
   style: RectStyleProps,
 ) {
+  // @ts-ignore
+  const context = this as any;
   const obj = get(context, propertyPath);
 
   if (!obj) {
