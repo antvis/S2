@@ -15,9 +15,6 @@ const s2Options: SheetComponentOptions = {
       horizontal: 1,
     },
   },
-  rendererConfig: {
-    enableRenderingOptimization: true,
-  },
 };
 
 export function generateRawData(
