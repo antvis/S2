@@ -1,5 +1,5 @@
 import { Group, Rect, RectStyleProps, type LineStyleProps } from '@antv/g';
-import { get, last, set } from 'lodash';
+import { last } from 'lodash';
 import type { DataCell } from '../cell';
 import type { S2BaseFrozenOptions, SplitLine } from '../common';
 import {
@@ -19,7 +19,7 @@ import type {
 import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
 import {
-  batchSetStyle,
+  createOrUpdateRect,
   getValidFrozenOptions,
   renderLine,
   waitForCellMounted,
@@ -742,13 +742,7 @@ export abstract class FrozenFacet extends BaseFacet {
   };
 
   private createOrUpdate(propertyPath: string, style: RectStyleProps) {
-    const obj = get(this, propertyPath);
-
-    if (!obj) {
-      set(this, propertyPath, new Rect({ style }));
-    } else {
-      batchSetStyle(obj, style);
-    }
+    createOrUpdateRect(this, propertyPath, style);
   }
 
   protected clip() {

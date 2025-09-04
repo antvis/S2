@@ -1,7 +1,6 @@
-import { Group, Rect, RectStyleProps } from '@antv/g';
-import { get, set } from 'lodash';
+import { Group, RectStyleProps } from '@antv/g';
 import type { S2CellType } from '../../common';
-import { batchSetStyle } from '../../utils';
+import { createOrUpdateRect } from '../../utils';
 import type { Node } from '../layout/node';
 import type { BaseHeaderConfig } from './interface';
 
@@ -133,12 +132,6 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   }
 
   protected createOrUpdate(propertyPath: string, style: RectStyleProps) {
-    const obj = get(this, propertyPath);
-
-    if (!obj) {
-      set(this, propertyPath, new Rect({ style }));
-    } else {
-      batchSetStyle(obj, style);
-    }
+    createOrUpdateRect(this, propertyPath, style);
   }
 }
