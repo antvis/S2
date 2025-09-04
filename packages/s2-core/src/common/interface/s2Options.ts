@@ -1,5 +1,6 @@
 import type { CanvasConfig } from '@antv/g';
 import type { Renderer } from '@antv/g-canvas';
+import type { RendererConfig } from '@antv/g-lite';
 import type {
   ColCell,
   CornerCell,
@@ -198,6 +199,11 @@ export interface S2BasicOptions<
         | undefined
       )
     | void;
+
+  /**
+   * 自定义 AntV/G 渲染引擎配置参数
+   */
+  rendererConfig?: Partial<RendererConfig>;
 
   /** *********** 自定义单元格 hooks **************** */
   /**
