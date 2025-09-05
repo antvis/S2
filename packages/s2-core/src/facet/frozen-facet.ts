@@ -788,6 +788,8 @@ export abstract class FrozenFacet extends BaseFacet {
           height: panelScrollGroupClipHeight,
         },
       );
+    } else {
+      this.frozenGroups[FrozenGroupType.Col].style.clipPath = null;
     }
 
     if (trailingColCount > 0) {
@@ -803,6 +805,8 @@ export abstract class FrozenFacet extends BaseFacet {
           height: panelScrollGroupClipHeight,
         },
       );
+    } else {
+      this.frozenGroups[FrozenGroupType.TrailingCol].style.clipPath = null;
     }
 
     if (rowCount > 0) {
@@ -815,6 +819,8 @@ export abstract class FrozenFacet extends BaseFacet {
           height: frozenRowGroupHeight,
         },
       );
+    } else {
+      this.frozenGroups[FrozenGroupType.Row].style.clipPath = null;
     }
 
     if (trailingRowCount > 0) {
@@ -830,6 +836,8 @@ export abstract class FrozenFacet extends BaseFacet {
           height: frozenTrailingRowHeight,
         },
       );
+    } else {
+      this.frozenGroups[FrozenGroupType.TrailingRow].style.clipPath = null;
     }
   }
 }
