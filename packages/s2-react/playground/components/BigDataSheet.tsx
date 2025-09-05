@@ -15,6 +15,7 @@ const s2Options: SheetComponentOptions = {
       horizontal: 1,
     },
   },
+  showDefaultHeaderActionIcon: false,
 };
 
 export function generateRawData(
