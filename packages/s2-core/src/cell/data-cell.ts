@@ -9,6 +9,7 @@ import {
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
 import type {
+  BackgroundColor,
   CellMeta,
   Condition,
   ConditionMappingResult,
@@ -65,6 +66,11 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // condition icon 坐标
   iconPosition: PointLike;
+
+  // 添加私有属性用于缓存
+  protected shouldHideData: boolean;
+
+  protected conditionFill: BackgroundColor;
 
   public get cellType() {
     return CellType.DATA_CELL;
@@ -241,14 +247,18 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected initCell() {
     this.resetTextAndConditionIconShapes();
     this.generateIconConfig();
+
+    this.shouldHideData = !!this.shouldHideRowSubtotalData();
+    this.conditionFill = this.getBackgroundConditionFill();
+
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
 
-    if (!this.shouldHideRowSubtotalData()) {
+    if (!this.shouldHideData) {
       this.drawConditionIntervalShape();
     }
 
-    if (!this.shouldHideRowSubtotalData()) {
+    if (!this.shouldHideData) {
       this.drawTextOrCustomRenderer();
     } else {
       this.afterDrawText();
@@ -256,7 +266,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected afterDrawText() {
-    if (!this.shouldHideRowSubtotalData()) {
+    if (!this.shouldHideData) {
       this.drawConditionIconShapes();
     }
 
@@ -303,6 +313,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected shouldHideRowSubtotalData() {
+    if (!this.spreadsheet.isHierarchyTreeType()) {
+      return false;
+    }
+
     const { rowId, rowIndex } = this.meta;
     // 如果该格子是被下钻的格子，下钻格子本身来说是明细格子，因为下钻变成了小计格子，是应该展示的
     const drillDownIdPathMap = this.spreadsheet.store.get('drillDownIdPathMap');
@@ -319,15 +333,11 @@ export class DataCell extends BaseCell<ViewMeta> {
      * 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
      * 不管能否查到实际的数据，都不应该展示
      */
-    return (
-      this.spreadsheet.isHierarchyTreeType() &&
-      !row.showSubTotals &&
-      isRowSubTotal
-    );
+    return !row.showSubTotals && isRowSubTotal;
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    if (this.shouldHideRowSubtotalData()) {
+    if (this.shouldHideData) {
       return {
         value: null,
 
@@ -410,7 +420,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const backgroundColorOpacity =
       backgroundColorByCross.backgroundColorOpacity;
 
-    if (this.shouldHideRowSubtotalData()) {
+    if (this.shouldHideData) {
       return {
         backgroundColor,
         backgroundColorOpacity,
@@ -420,7 +430,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     return merge(
       { backgroundColor, backgroundColorOpacity },
-      this.getBackgroundConditionFill(),
+      this.conditionFill,
     );
   }
 

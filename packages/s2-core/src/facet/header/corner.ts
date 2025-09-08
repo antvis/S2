@@ -1,4 +1,4 @@
-import { Group, Rect, type PointLike } from '@antv/g';
+import { Group, type PointLike } from '@antv/g';
 import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { S2Event } from '../../common';
@@ -279,13 +279,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   protected clip(): void {
     const { width, height, position } = this.getHeaderConfig();
 
-    this.scrollGroup.style.clipPath = new Rect({
-      style: {
-        x: position.x,
-        y: position.y,
-        width,
-        height,
-      },
+    this.createOrUpdate('scrollGroup.style.clipPath', {
+      x: position.x,
+      y: position.y,
+      width,
+      height,
     });
   }
 }

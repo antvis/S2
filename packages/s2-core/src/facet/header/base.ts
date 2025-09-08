@@ -1,5 +1,6 @@
-import { Group } from '@antv/g';
+import { Group, RectStyleProps } from '@antv/g';
 import type { S2CellType } from '../../common';
+import { createOrUpdateRect } from '../../utils';
 import type { Node } from '../layout/node';
 import type { BaseHeaderConfig } from './interface';
 
@@ -128,5 +129,9 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     const { nodes } = this.getHeaderConfig();
 
     return nodes || [];
+  }
+
+  protected createOrUpdate(propertyPath: string, style: RectStyleProps) {
+    createOrUpdateRect.call(this, propertyPath, style);
   }
 }

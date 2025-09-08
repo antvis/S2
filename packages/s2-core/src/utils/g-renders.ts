@@ -18,7 +18,7 @@ import {
   type RectStyleProps,
   type TextStyleProps,
 } from '@antv/g';
-import { isArray, isEmpty, isFunction } from 'lodash';
+import { get, isArray, isEmpty, isFunction, set } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import { CustomText } from '../engine/CustomText';
 
@@ -152,5 +152,20 @@ export function batchSetStyle<
 >(obj: T, style: S) {
   for (const styleKey in style) {
     obj.style[styleKey] = style[styleKey];
+  }
+}
+
+export function createOrUpdateRect(
+  propertyPath: string,
+  style: RectStyleProps,
+) {
+  // @ts-ignore
+  const context = this as any;
+  const obj = get(context, propertyPath);
+
+  if (!obj) {
+    set(context, propertyPath, new Rect({ style }));
+  } else {
+    batchSetStyle(obj, style);
   }
 }
