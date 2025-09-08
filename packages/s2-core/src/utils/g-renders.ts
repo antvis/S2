@@ -150,9 +150,7 @@ export function batchSetStyle<
   T extends DisplayObject,
   S extends BaseStyleProps,
 >(obj: T, style: S) {
-  for (const styleKey in style) {
-    obj.style[styleKey] = style[styleKey];
-  }
+  obj.setAttributes(style, { skipDispatchAttrModifiedEvent: true });
 }
 
 export function createOrUpdateRect(
