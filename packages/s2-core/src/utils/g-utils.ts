@@ -8,7 +8,10 @@ import { get, set } from 'lodash';
 
 export function batchSetStyle<
   T extends DisplayObject,
-  S extends BaseStyleProps,
+  S extends BaseStyleProps & {
+    x?: number | string;
+    y?: number | string;
+  },
 >(obj: T, style: S) {
   obj.setAttributes(style, { skipDispatchAttrModifiedEvent: true });
 }
