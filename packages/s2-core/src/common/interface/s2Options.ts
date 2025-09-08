@@ -1,5 +1,6 @@
 import type { CanvasConfig } from '@antv/g';
 import type { Renderer } from '@antv/g-canvas';
+import type { RendererConfig } from '@antv/g-lite';
 import type {
   ColCell,
   CornerCell,
@@ -199,6 +200,11 @@ export interface S2BasicOptions<
       )
     | void;
 
+  /**
+   * 自定义 AntV/G 渲染引擎配置参数
+   */
+  rendererConfig?: Partial<RendererConfig>;
+
   /** *********** 自定义单元格 hooks **************** */
   /**
    * 自定义数值单元格
@@ -291,6 +297,21 @@ export interface S2BasicOptions<
    * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-facet
    */
   facet?: (spreadsheet: SpreadSheet) => BaseFacet;
+  /**
+   * Enabling some features for the future.
+   *
+   * ! These are some experimental functional features that are currently unstable.
+   *
+   * future flag, concept referenced from:
+   * - https://remix.run/docs/en/main/guides/api-development-strategy#unstable-apis-and-future-flags,
+   * - https://remix.run/blog/future-flags
+   */
+  future?: {
+    /**
+     * 是否复用数据单元格
+     */
+    experimentalReuseDataCell?: boolean;
+  };
 }
 
 // 设备，pc || mobile

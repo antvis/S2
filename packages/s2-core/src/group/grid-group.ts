@@ -1,4 +1,4 @@
-import { Group } from '@antv/g';
+import { Group, Line } from '@antv/g';
 import { last } from 'lodash';
 import {
   KEY_GROUP_GRID_GROUP,
@@ -7,7 +7,7 @@ import {
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
-import { renderLine } from '../utils/g-renders';
+import { batchSetStyle, renderLine } from '../utils/g-renders';
 
 export class GridGroup extends Group {
   protected s2: SpreadSheet;
@@ -39,46 +39,86 @@ export class GridGroup extends Group {
           },
         }),
       );
-    } else {
-      this.gridGroup.removeChildren();
     }
 
     const width = last(gridInfo.cols) ?? 0;
     const height = last(gridInfo.rows) ?? 0;
     const { theme } = this.s2;
-
     const style = theme.dataCell!.cell;
 
-    const verticalBorderWidth = style?.verticalBorderWidth;
+    const verticalBorderWidth = style?.verticalBorderWidth ?? 1;
+    const halfVerticalBorderWidth = verticalBorderWidth / 2;
+    const verticalBorderStyle = {
+      stroke: style!.verticalBorderColor,
+      strokeOpacity: style!.verticalBorderColorOpacity,
+      lineWidth: verticalBorderWidth,
+    };
 
-    this.gridInfo = gridInfo;
-    const halfVerticalBorderWidthBorderWidth = verticalBorderWidth! / 2;
+    const horizontalBorderWidth = style?.horizontalBorderWidth ?? 1;
+    const halfHorizontalBorderWidth = horizontalBorderWidth / 2;
+    const horizontalBorderStyle = {
+      stroke: style!.horizontalBorderColor,
+      strokeOpacity: style!.horizontalBorderColorOpacity,
+      lineWidth: horizontalBorderWidth,
+    };
 
-    this.gridInfo.cols.forEach((x) => {
-      renderLine(this.gridGroup, {
-        x1: x - halfVerticalBorderWidthBorderWidth,
-        x2: x - halfVerticalBorderWidthBorderWidth,
+    const children = this.gridGroup.children as Line[];
+    let childIndex = 0;
+
+    // 复用或新增垂直线
+    gridInfo.cols.forEach((x) => {
+      const attrs = {
+        x1: x - halfVerticalBorderWidth,
+        x2: x - halfVerticalBorderWidth,
         y1: 0,
         y2: height,
-        stroke: style!.verticalBorderColor,
-        strokeOpacity: style!.verticalBorderColorOpacity,
-        lineWidth: verticalBorderWidth,
-      });
+        ...verticalBorderStyle,
+      };
+
+      if (childIndex < children.length) {
+        // 复用已有的 Line 对象
+        batchSetStyle(children[childIndex], attrs);
+      } else {
+        // 创建新的 Line 对象
+        renderLine(this.gridGroup, attrs);
+      }
+
+      childIndex++;
     });
 
-    const horizontalBorderWidth = style?.horizontalBorderWidth;
-    const halfHorizontalBorderWidth = horizontalBorderWidth! / 2;
-
-    this.gridInfo.rows.forEach((y) => {
-      renderLine(this.gridGroup, {
+    // 复用或新增水平线
+    gridInfo.rows.forEach((y) => {
+      const attrs = {
         x1: 0,
         x2: width,
         y1: y - halfHorizontalBorderWidth,
         y2: y - halfHorizontalBorderWidth,
-        stroke: style!.horizontalBorderColor,
-        strokeOpacity: style!.horizontalBorderColorOpacity,
-        lineWidth: horizontalBorderWidth,
-      });
+        ...horizontalBorderStyle,
+      };
+
+      if (childIndex < children.length) {
+        // 复用已有的 Line 对象
+        batchSetStyle(children[childIndex], attrs);
+      } else {
+        // 创建新的 Line 对象
+        renderLine(this.gridGroup, attrs);
+      }
+
+      childIndex++;
     });
+
+    // 移除多余的 Line 对象
+    const requiredCount = childIndex;
+    const currentCount = children.length;
+
+    if (requiredCount < currentCount) {
+      // 从后往前删除，避免在循环中改变数组长度导致索引错乱
+      for (let i = currentCount - 1; i >= requiredCount; i--) {
+        children[i].destroy();
+      }
+    }
+
+    // 更新 gridInfo 供下次使用
+    this.gridInfo = gridInfo;
   };
 }

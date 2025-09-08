@@ -77,7 +77,9 @@ export const assembleMatrix = ({
   const dataWidth = dataMatrix[0]?.length ?? 0;
   const dataHeight = dataMatrix.length ?? 0;
   const matrixWidth = rowWidth + dataWidth;
-  const matrixHeight = colHeight + dataHeight;
+  // 存在行头节点时，则必然存在行头标题的角头
+  const cornerHeight = colHeight || (rowWidth > 0 ? 1 : 0);
+  const matrixHeight = cornerHeight + dataHeight;
 
   let matrix: SimpleData[][] = Array.from(
     Array(matrixHeight),
@@ -86,7 +88,7 @@ export const assembleMatrix = ({
 
   matrix = map(matrix, (heightArr, y) =>
     map(heightArr, (_, x) => {
-      if (x >= 0 && x < rowWidth && y >= 0 && y < colHeight) {
+      if (x >= 0 && x < rowWidth && y >= 0 && y < cornerHeight) {
         return cornerMatrix?.[y]?.[x] ?? '';
       }
 
@@ -94,17 +96,17 @@ export const assembleMatrix = ({
         return colMatrix[y][x - rowWidth];
       }
 
-      if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
-        return rowMatrix?.[y - colHeight][x];
+      if (x >= 0 && x < rowWidth && y >= cornerHeight && y < matrixHeight) {
+        return rowMatrix?.[y - cornerHeight][x];
       }
 
       if (
         x >= rowWidth &&
         x <= matrixWidth &&
-        y >= colHeight &&
+        y >= cornerHeight &&
         y < matrixHeight
       ) {
-        return dataMatrix[y - colHeight][x - rowWidth];
+        return dataMatrix[y - cornerHeight][x - rowWidth];
       }
 
       return undefined;

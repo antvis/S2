@@ -248,7 +248,7 @@ export class TableFacet extends FrozenFacet {
     if (keys(heightByField!).length || isEnableHeightAdaptive) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
-      this.textWrapNodeHeightCache.clear();
+      this.textWrapNodeHeightCache.clear(false);
       this.customRowHeightStatusMap = {};
       this.rowOffsets = [0];
       this.lastRowOffset = 0;
