@@ -9,6 +9,7 @@ import {
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
 import type {
+  BackgroundColor,
   CellMeta,
   Condition,
   ConditionMappingResult,
@@ -69,7 +70,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   // 添加私有属性用于缓存
   protected shouldHideData: boolean;
 
-  protected conditionFill: any;
+  protected conditionFill: BackgroundColor;
 
   public get cellType() {
     return CellType.DATA_CELL;
