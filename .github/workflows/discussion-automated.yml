@@ -1,0 +1,65 @@
+name: Discussion Automated Processing
+
+on:
+  discussion:
+    types: [created, edited]
+  workflow_dispatch:
+    inputs:
+      discussion_number:
+        description: 'Discussion number to process'
+        required: true
+        type: number
+
+permissions:
+  discussions: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  discussion-response:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: |
+          pnpm bootstrap:ci
+          pnpm add openai @antv/mcp-server-antv -w
+      - name: Process Discussion
+        uses: actions/github-script@v7
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // 1. 从 context 中获取 discussion 对象
+            let discussion = context.payload.discussion;
+            
+            // 2. 处理手动触发的情况
+            if (context.eventName === 'workflow_dispatch') {
+              const discussionNumber = context.payload.inputs.discussion_number;
+              const { data: discussionData } = await github.rest.discussions.get({ // 调用 discussions.get
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                discussion_number: discussionNumber
+              });
+              discussion = discussionData;
+            }
+            
+            // 3. 调用外部 JS 脚本，并传递 discussion 对象
+            // 建议创建一个新的 JS 文件以保持清晰
+            const script = require('./.github/workflows/scripts/discussion-automated.js');
+            await script({
+              github,
+              core,
+              context,
+              discussion // 传递 discussion 对象
+            });
