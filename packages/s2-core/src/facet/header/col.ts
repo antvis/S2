@@ -69,7 +69,10 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected getCellInstance(node: Node) {
-    if (this.colCellPool.pool.length > 0) {
+    if (
+      this.colCellPool.pool.length > 0 &&
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+    ) {
       const colCell = this.colCellPool.acquire()!;
 
       colCell.reInitCell(node, this.getHeaderConfig());
@@ -241,13 +244,19 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   public clear() {
-    // @ts-ignore
-    this.scrollGroup.childNodes.forEach((colCell: ColCell) => {
-      if (!this.isColCellInRect(colCell.getMeta())) {
-        colCell.getMeta().belongsCell = null;
-        this.colCellPool.release(colCell);
-      }
-    });
+    if (
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+    ) {
+      // @ts-ignore
+      this.scrollGroup.childNodes.forEach((colCell: ColCell) => {
+        if (!this.isColCellInRect(colCell.getMeta())) {
+          colCell.getMeta().belongsCell = null;
+          this.colCellPool.release(colCell);
+        }
+      });
+    } else {
+      super.clear();
+    }
   }
 
   protected clearResizeAreaGroup() {}

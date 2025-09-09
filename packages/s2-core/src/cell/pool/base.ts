@@ -2,7 +2,7 @@ export class BaseCellPool<T> {
   pool: T[] = [];
 
   acquire(): T | undefined {
-    return this.pool.shift();
+    return this.pool.pop();
   }
 
   release(cell: T) {

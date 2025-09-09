@@ -53,7 +53,10 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   public getCellInstance(node: Node): RowCell | SeriesNumberCell {
-    if (this.rowCellPool.pool.length > 0) {
+    if (
+      this.rowCellPool.pool.length > 0 &&
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+    ) {
       const rowCell = this.rowCellPool.acquire()!;
 
       rowCell.reInitCell(node, this.headerConfig);
@@ -230,12 +233,18 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   public clear() {
-    // @ts-ignore
-    this.scrollGroup.childNodes.forEach((rowCell: RowCell) => {
-      if (!this.isCellInRect(rowCell.getMeta())) {
-        rowCell.getMeta().belongsCell = null;
-        this.rowCellPool.release(rowCell);
-      }
-    });
+    if (
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+    ) {
+      // @ts-ignore
+      this.scrollGroup.childNodes.forEach((rowCell: RowCell) => {
+        if (!this.isCellInRect(rowCell.getMeta())) {
+          rowCell.getMeta().belongsCell = null;
+          this.rowCellPool.release(rowCell);
+        }
+      });
+    } else {
+      super.clear();
+    }
   }
 }
