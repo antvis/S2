@@ -103,6 +103,7 @@ async function getAIResponse(core, userQuestion) {
     });
 
     core.info('成功获取 AI 响应');
+    core.info(JSON.stringify(response));
     return response.choices[0].message.content;
     
   } catch (error) {
