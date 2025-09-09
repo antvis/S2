@@ -1,4 +1,4 @@
-import { Group, Rect } from '@antv/g';
+import { Group } from '@antv/g';
 import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
 import {
@@ -136,31 +136,25 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
     const { x, width } = getScrollGroupClip(facet, position);
 
-    this.scrollGroup.style.clipPath = new Rect({
-      style: {
-        x,
-        y: position.y,
-        width,
-        height,
-      },
+    this.createOrUpdate('scrollGroup.style.clipPath', {
+      x,
+      y: position.y,
+      width,
+      height,
     });
 
-    this.frozenGroup.style.clipPath = new Rect({
-      style: {
-        x: position.x - getFrozenColOffset(facet, cornerWidth, scrollX),
-        y: position.y,
-        width: frozenColGroupWidth,
-        height,
-      },
+    this.createOrUpdate('frozenGroup.style.clipPath', {
+      x: position.x - getFrozenColOffset(facet, cornerWidth, scrollX),
+      y: position.y,
+      width: frozenColGroupWidth,
+      height,
     });
 
-    this.frozenTrailingGroup.style.clipPath = new Rect({
-      style: {
-        x: position.x + viewportWidth - frozenTrailingColGroupWidth,
-        y: position.y,
-        width: frozenTrailingColGroupWidth,
-        height,
-      },
+    this.createOrUpdate('frozenTrailingGroup.style.clipPath', {
+      x: position.x + viewportWidth - frozenTrailingColGroupWidth,
+      y: position.y,
+      width: frozenTrailingColGroupWidth,
+      height,
     });
   }
 

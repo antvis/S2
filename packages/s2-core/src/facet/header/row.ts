@@ -1,4 +1,4 @@
-import { Group, Rect } from '@antv/g';
+import { Group } from '@antv/g';
 import { each } from 'lodash';
 import { RowCell, SeriesNumberCell } from '../../cell';
 import {
@@ -183,32 +183,26 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     const frozenTrailingRowGroupHeight =
       frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
-    this.scrollGroup.style.clipPath = new Rect({
-      style: {
-        x: spreadsheet.facet.cornerBBox.x,
-        y: position.y + frozenRowGroupHeight,
-        width,
-        height:
-          viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
-      },
+    this.createOrUpdate('scrollGroup.style.clipPath', {
+      x: spreadsheet.facet.cornerBBox.x,
+      y: position.y + frozenRowGroupHeight,
+      width,
+      height:
+        viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
     });
 
-    this.frozenGroup.style.clipPath = new Rect({
-      style: {
-        x: spreadsheet.facet.cornerBBox.x,
-        y: position.y,
-        width,
-        height: frozenRowGroupHeight,
-      },
+    this.createOrUpdate('frozenGroup.style.clipPath', {
+      x: spreadsheet.facet.cornerBBox.x,
+      y: position.y,
+      width,
+      height: frozenRowGroupHeight,
     });
 
-    this.frozenTrailingGroup.style.clipPath = new Rect({
-      style: {
-        x: spreadsheet.facet.cornerBBox.x,
-        y: position.y + viewportHeight - frozenTrailingRowGroupHeight,
-        width,
-        height: frozenTrailingRowGroupHeight,
-      },
+    this.createOrUpdate('frozenTrailingGroup.style.clipPath', {
+      x: spreadsheet.facet.cornerBBox.x,
+      y: position.y + viewportHeight - frozenTrailingRowGroupHeight,
+      width,
+      height: frozenTrailingRowGroupHeight,
     });
   }
 }
