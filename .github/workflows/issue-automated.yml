@@ -26,12 +26,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
       - name: Install dependencies
         run: |
-          yarn install
-          yarn add openai @antv/mcp-server-antv -W
-          
+          pnpm bootstrap:ci
+          pnpm add openai @antv/mcp-server-antv -w
       - name: Process Issue
         uses: actions/github-script@v7
         env:
