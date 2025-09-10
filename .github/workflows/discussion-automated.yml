@@ -72,24 +72,24 @@ jobs:
             
               // 将返回的数据结构调整为与 webhook payload 一致，以兼容后续脚本
               discussion = {
-              ...repository.discussion,
-            node_id: repository.discussion.id, // GraphQL 返回 `id`，即 `node_id`
-            user: repository.discussion.author // GraphQL 返回 `author`，将其映射为 `user`
-            };
-              
+                ...repository.discussion,
+                node_id: repository.discussion.id, // GraphQL 返回 `id`，即 `node_id`
+                user: repository.discussion.author // GraphQL 返回 `author`，将其映射为 `user`
+              };
+
               if (!discussion) {
-              throw new Error(`无法找到 Discussion #${discussionNumber}`);
-            }
-              console.log(`成功获取 Discussion #${discussionNumber} 的数据。`);
-            }
+                throw new Error(`无法找到 Discussion #${discussionNumber}`);
+              }
+                console.log(`成功获取 Discussion #${discussionNumber} 的数据。`);
+              }
               
               console.log('将处理的 Discussion 对象:', discussion);
               
               // 3. 调用外部 JS 脚本，并传递 discussion 对象 (此部分不变)
               const script = require('./.github/workflows/scripts/discussion-automated.js');
               await script({
-              github,
-              core,
-              context,
-              discussion // 传递 discussion 对象
-            });
+                github,
+                core,
+                context,
+                discussion // 传递 discussion 对象
+              });
