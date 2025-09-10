@@ -53,7 +53,8 @@ jobs:
               });
               discussion = discussionData;
             }
-            
+            console.log('discussion', discussion);
+            console.log('github.rest.discussions', github.rest.discussions);
             // 3. 调用外部 JS 脚本，并传递 discussion 对象
             // 建议创建一个新的 JS 文件以保持清晰
             const script = require('./.github/workflows/scripts/discussion-automated.js');
