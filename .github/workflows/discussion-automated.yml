@@ -40,26 +40,56 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // 1. 从 context 中获取 discussion 对象
-            let discussion = context.payload.discussion;
+              // 1. 从 context 中获取 discussion 对象
+              let discussion = context.payload.discussion;
+              
+              // 2. 处理手动触发的情况
+              if (context.eventName === 'workflow_dispatch') {
+              console.log('手动触发模式，正在通过 GraphQL 获取 Discussion 详情...');
+              const discussionNumber = parseInt(context.payload.inputs.discussion_number, 10);
             
-            // 2. 处理手动触发的情况
-            if (context.eventName === 'workflow_dispatch') {
-              const discussionNumber = context.payload.inputs.discussion_number;
-              const { data: discussionData } = await github.rest.discussions.get({ // 调用 discussions.get
+              // 使用 GraphQL 查询代替 REST API
+              const { repository } = await github.graphql(
+              `query($owner: String!, $repo: String!, $number: Int!) {
+                                             repository(owner: $owner, name: $repo) {
+                                                                 discussion(number: $number) {
+                                                                   id
+                                                                   number
+                                                                   title
+                                                                   body
+                                                                   author {
+                                                                   login
+                                                                   }
+                                                               }
+                             }
+              }`,
+              {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                discussion_number: discussionNumber
-              });
-              discussion = discussionData;
-            }
+                number: discussionNumber,
+              }
+              );
             
-            // 3. 调用外部 JS 脚本，并传递 discussion 对象
-            // 建议创建一个新的 JS 文件以保持清晰
-            const script = require('./.github/workflows/scripts/discussion-automated.js');
-            await script({
-              github,
-              core,
-              context,
-              discussion // 传递 discussion 对象
-            });
+              // 将返回的数据结构调整为与 webhook payload 一致，以兼容后续脚本
+              discussion = {
+                ...repository.discussion,
+                node_id: repository.discussion.id, // GraphQL 返回 `id`，即 `node_id`
+                user: repository.discussion.author // GraphQL 返回 `author`，将其映射为 `user`
+              };
+
+              if (!discussion) {
+                throw new Error(`无法找到 Discussion #${discussionNumber}`);
+              }
+                console.log(`成功获取 Discussion #${discussionNumber} 的数据。`);
+              }
+              
+              console.log('将处理的 Discussion 对象:', discussion);
+              
+              // 3. 调用外部 JS 脚本，并传递 discussion 对象 (此部分不变)
+              const script = require('./.github/workflows/scripts/discussion-automated.js');
+              await script({
+                github,
+                core,
+                context,
+                discussion // 传递 discussion 对象
+              });
