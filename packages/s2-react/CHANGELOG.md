@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.2.3](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.2...@antv/s2-react-v2.2.3) (2025-09-15)
+
+
+### Performance Improvements
+
+* 复用网格线和ClipPath，优化getBackgroundColor以提升6%的滚动性能 ([#3219](https://github.com/antvis/S2/issues/3219)) ([1a94f17](https://github.com/antvis/S2/commit/1a94f175b0ec36dc4ee214f0119d6620598632cd))
+
 # [@antv/s2-react-v2.2.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.1...@antv/s2-react-v2.2.2) (2025-07-21)
 
 
