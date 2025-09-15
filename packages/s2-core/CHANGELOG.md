@@ -1,3 +1,15 @@
+# [@antv/s2-v2.4.8](https://github.com/antvis/S2/compare/@antv/s2-v2.4.7...@antv/s2-v2.4.8) (2025-09-15)
+
+
+### Bug Fixes
+
+* 配置了copy.withFormat但是在复制行头的时候未生效 ([#3221](https://github.com/antvis/S2/issues/3221)) ([7240bd5](https://github.com/antvis/S2/commit/7240bd569f0d0fbd486f6724ccbe3f89a64fc653))
+
+
+### Performance Improvements
+
+* 复用网格线和ClipPath，优化getBackgroundColor以提升6%的滚动性能 ([#3219](https://github.com/antvis/S2/issues/3219)) ([1a94f17](https://github.com/antvis/S2/commit/1a94f175b0ec36dc4ee214f0119d6620598632cd))
+
 # [@antv/s2-v2.4.7](https://github.com/antvis/S2/compare/@antv/s2-v2.4.6...@antv/s2-v2.4.7) (2025-09-03)
 
 
