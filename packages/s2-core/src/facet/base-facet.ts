@@ -541,10 +541,7 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height =
-      cell.isMultiLineText() && textHeight >= defaultHeight
-        ? adaptiveHeight
-        : defaultHeight;
+    const height = textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 
