@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.9-beta.2](https://github.com/antvis/S2/compare/@antv/s2-v2.4.9-beta.1...@antv/s2-v2.4.9-beta.2) (2025-09-19)
+
+
+### Bug Fixes
+
+* fontSize变化时需要自动适配 ([b9684c9](https://github.com/antvis/S2/commit/b9684c9c64ed7afd992c68510a2a33a379531cdb))
+
 # [@antv/s2-v2.4.9-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.8...@antv/s2-v2.4.9-beta.1) (2025-09-19)
 
 
