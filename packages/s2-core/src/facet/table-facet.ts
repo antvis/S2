@@ -219,7 +219,9 @@ export class TableFacet extends FrozenFacet {
     // 不超过一行或者用户已经配置过当前行高则无需预设
     if (
       (isEmpty(colLeafNodes) || style?.dataCell?.maxLines! <= 1) &&
-      this.spreadsheet.theme.dataCell.measureText.fontSize <= DEFAULT_FONTSIZE
+      (!this.spreadsheet.theme.dataCell.measureText?.fontSize ||
+        this.spreadsheet.theme.dataCell.measureText.fontSize <=
+          DEFAULT_FONTSIZE)
     ) {
       return;
     }
