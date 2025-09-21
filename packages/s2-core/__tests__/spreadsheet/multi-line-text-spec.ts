@@ -800,6 +800,36 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         s2.facet.getLayoutResult().colNodes.every((node) => node.height <= 64),
       ).toBe(true);
     });
+
+    test('should render Cell Height correct after set large font', async () => {
+      s2.setDataCfg(SimpleDataCfg);
+      const cell = {
+        bolderText: {
+          fontSize: 36,
+        },
+        measureText: {
+          fontSize: 56,
+        },
+        text: {
+          fontSize: 56,
+        },
+        seriesText: {
+          fontSize: 56,
+        },
+      };
+
+      s2.setTheme({
+        colCell: cell,
+        rowCell: cell,
+        dataCell: cell,
+        cornerCell: cell,
+      });
+
+      await s2.render();
+
+      expect(s2.facet.getLayoutResult().colNodes[0].height).toBe(58);
+      expect(s2.facet.getDataCells()[0].getMeta().height).toBe(80);
+    });
   });
 
   describe('TableSheet', () => {
@@ -1637,6 +1667,36 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expect(
         pivotSheet.facet.getCornerCells()[0].getHeaderConfig().height,
       ).toEqual(46);
+    });
+
+    test('should render Cell Height correct after set large font', async () => {
+      s2.setDataCfg(SimpleDataCfg);
+      const cell = {
+        bolderText: {
+          fontSize: 36,
+        },
+        measureText: {
+          fontSize: 56,
+        },
+        text: {
+          fontSize: 56,
+        },
+        seriesText: {
+          fontSize: 56,
+        },
+      };
+
+      s2.setTheme({
+        colCell: cell,
+        rowCell: cell,
+        dataCell: cell,
+        cornerCell: cell,
+      });
+
+      await s2.render();
+
+      expect(s2.facet.getLayoutResult().colNodes[0].height).toBe(58);
+      expect(s2.facet.getDataCells()[0].getMeta().height).toBe(80);
     });
   });
 });
