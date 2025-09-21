@@ -419,12 +419,12 @@ export abstract class BaseFacet {
 
     const isEnableColNodeHeightAdaptive =
       (colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap) ||
-      this.spreadsheet.theme.colCell.text?.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.colCell.text.fontSize > DEFAULT_FONTSIZE ||
       this.spreadsheet.theme.colCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const isEnableCornerNodeHeightAdaptive =
       (cornerCellStyle?.maxLines! > 1 && cornerCellStyle?.wordWrap) ||
-      this.spreadsheet.theme.cornerCell.text?.fontSize > DEFAULT_FONTSIZE ||
-      this.spreadsheet.theme.cornerCell.bolderText?.fontSize > DEFAULT_FONTSIZE;
+      this.spreadsheet.theme.cornerCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.cornerCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     let colAdaptiveHeight = defaultHeight;

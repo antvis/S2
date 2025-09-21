@@ -21,6 +21,38 @@ import {
 } from '../data/data-multi-line-text';
 import SimpleDataCfg from '../data/simple-data.json';
 
+function runLargeFontCellHeightTest(s2: SpreadSheet) {
+  return async () => {
+    s2.setDataCfg(SimpleDataCfg);
+    const cell = {
+      bolderText: {
+        fontSize: 36,
+      },
+      measureText: {
+        fontSize: 56,
+      },
+      text: {
+        fontSize: 56,
+      },
+      seriesText: {
+        fontSize: 56,
+      },
+    };
+
+    s2.setTheme({
+      colCell: cell,
+      rowCell: cell,
+      dataCell: cell,
+      cornerCell: cell,
+    });
+
+    await s2.render();
+
+    expect(s2.facet.getLayoutResult().colNodes[0].height).toBe(58);
+    expect(s2.facet.getDataCells()[0].getMeta().height).toBe(80);
+  };
+}
+
 describe('SpreadSheet Multi Line Text Tests', () => {
   let s2: SpreadSheet;
 
@@ -802,33 +834,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should render Cell Height correct after set large font', async () => {
-      s2.setDataCfg(SimpleDataCfg);
-      const cell = {
-        bolderText: {
-          fontSize: 36,
-        },
-        measureText: {
-          fontSize: 56,
-        },
-        text: {
-          fontSize: 56,
-        },
-        seriesText: {
-          fontSize: 56,
-        },
-      };
-
-      s2.setTheme({
-        colCell: cell,
-        rowCell: cell,
-        dataCell: cell,
-        cornerCell: cell,
-      });
-
-      await s2.render();
-
-      expect(s2.facet.getLayoutResult().colNodes[0].height).toBe(58);
-      expect(s2.facet.getDataCells()[0].getMeta().height).toBe(80);
+      await runLargeFontCellHeightTest(s2);
     });
   });
 
@@ -1670,33 +1676,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should render Cell Height correct after set large font', async () => {
-      s2.setDataCfg(SimpleDataCfg);
-      const cell = {
-        bolderText: {
-          fontSize: 36,
-        },
-        measureText: {
-          fontSize: 56,
-        },
-        text: {
-          fontSize: 56,
-        },
-        seriesText: {
-          fontSize: 56,
-        },
-      };
-
-      s2.setTheme({
-        colCell: cell,
-        rowCell: cell,
-        dataCell: cell,
-        cornerCell: cell,
-      });
-
-      await s2.render();
-
-      expect(s2.facet.getLayoutResult().colNodes[0].height).toBe(58);
-      expect(s2.facet.getDataCells()[0].getMeta().height).toBe(80);
+      await runLargeFontCellHeightTest(s2);
     });
   });
 });
