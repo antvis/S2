@@ -7,7 +7,6 @@ import {
   intersection,
   isArray,
   isEmpty,
-  isNull,
   isString,
   last,
   set,
@@ -36,6 +35,7 @@ import type {
   TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
+import { getByPath, hasByPath } from '../accessor';
 import { generateNillString } from '../layout/generate-id';
 
 export function filterExtraDimension(dimensions: CustomHeaderFields = []) {
@@ -68,9 +68,10 @@ export function transformDimensionsValues(
   placeholder = TOTAL_VALUE,
 ): string[] {
   return dimensions.reduce((res: string[], dimension: string) => {
-    const value = record[dimension];
+    const exists = hasByPath(record, dimension);
+    const value = exists ? (getByPath(record, dimension) as string) : undefined;
 
-    if (!(dimension in record)) {
+    if (!exists) {
       res.push(placeholder);
     } else {
       res.push(generateNillString(value as string));
@@ -81,7 +82,7 @@ export function transformDimensionsValues(
 }
 
 export function getExistValues(data: RawData, values: string[]) {
-  const result = values.filter((v) => v in data);
+  const result = values.filter((v) => hasByPath(data, v));
 
   if (isEmpty(result)) {
     result.push(EMPTY_EXTRA_FIELD_PLACEHOLDER);
@@ -99,9 +100,10 @@ function transformDimensionsValuesWithExtraFields(
 
   function transform(data: RawData, fields: string[], valueField?: string) {
     return fields.reduce((res: string[], dimension: string) => {
-      const value = data[dimension];
+      const exists = hasByPath(data, dimension);
+      const value = exists ? (getByPath(data, dimension) as string) : undefined;
 
-      if (!(dimension in data)) {
+      if (!exists) {
         if (dimension === EXTRA_FIELD && valueField) {
           res.push(valueField);
         } else {
@@ -406,7 +408,7 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
   const deletePath = last(paths);
   let currentMeta = meta;
 
-  forEach(paths, (path, idx) => {
+  forEach(paths, (path: string, idx: number) => {
     const pathMeta = currentMeta.get(path);
 
     if (pathMeta) {
@@ -467,14 +469,14 @@ export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
  *    需要将其拓展成多个结构 =>  [MULTI_VALUE, 女] => [[四川，女], [北京，女], ....] => [[1,1],[2,1],[3,2]....]
  */
 export function existDimensionTotalGroup(path: string[]) {
-  let multiIdx = null;
+  let multiIdx: number | null = null;
 
   for (let i = 0; i < path.length; i++) {
     const element = path[i];
 
     if (isMultiValue(element)) {
       multiIdx = i;
-    } else if (!isNull(multiIdx) && multiIdx < i) {
+    } else if (multiIdx !== null && multiIdx < i) {
       return true;
     }
   }
@@ -505,7 +507,7 @@ export function getSatisfiedPivotMetaValues(params: {
   let metaValueList = [rootContainer];
 
   function flattenMetaValue(list: PivotMetaValue[], field: string) {
-    const allValues = flatMap(list, (metaValue) => {
+    const allValues = flatMap(list, (metaValue: PivotMetaValue) => {
       const values: PivotMetaValue[] = [];
 
       for (const v of metaValue.children.values()) {
@@ -528,7 +530,8 @@ export function getSatisfiedPivotMetaValues(params: {
       );
 
       allValues.sort(
-        (a, b) => (indexMap.get(a.id) ?? 0) - (indexMap.get(b.id) ?? 0),
+        (a: PivotMetaValue, b: PivotMetaValue) =>
+          (indexMap.get(a.id) ?? 0) - (indexMap.get(b.id) ?? 0),
       );
 
       return allValues;

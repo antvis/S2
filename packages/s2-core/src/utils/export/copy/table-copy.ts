@@ -11,6 +11,7 @@ import type {
 } from '../../../common/interface/export';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
+import { getByPath } from '../../accessor';
 import {
   getColNodeFieldFromNode,
   getSelectedCols,
@@ -74,9 +75,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
           rowIndex: i,
           colIndex: j,
         });
-        const value = row?.[field];
+        const value = getByPath(row, field);
 
-        return formatter(value);
+        return formatter(value as any);
       }),
     ) as string[][];
   }
@@ -124,8 +125,8 @@ class TableDataCellCopy extends BaseDataCellCopy {
                   rowIndex,
                   colIndex: i,
                 });
-                const value = rowData[field];
-                const dataItem = formatter(value);
+                const value = getByPath(rowData, field);
+                const dataItem = formatter(value as any);
 
                 row.push(dataItem as string);
               }
@@ -174,7 +175,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
     )!;
     const value = this.isSeriesNumberField(field)
       ? meta.rowIndex + 1
-      : this.displayData[meta.rowIndex]?.[field];
+      : getByPath(this.displayData[meta.rowIndex], field);
 
     const formatter = this.getFormatter({
       field,
@@ -182,7 +183,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
       colIndex: meta.colIndex,
     });
 
-    return formatter(value);
+    return formatter(value as any);
   };
 
   getDataMatrixByDataCell(cellMetaMatrix: CellMeta[][]): CopyableList {

@@ -31,6 +31,7 @@ import type {
 import type { ValueRange } from '../common/interface/condition';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
+import { getByPath } from '../utils/accessor';
 import {
   getValueRangeState,
   setValueRangeState,
@@ -317,7 +318,7 @@ export abstract class BaseDataSet {
 
     const fieldValues = compact(
       map(this.originData, (item) => {
-        const value = item[field] as string;
+        const value = getByPath<string>(item, field);
 
         return isNil(value) ? null : Number.parseFloat(value);
       }),
