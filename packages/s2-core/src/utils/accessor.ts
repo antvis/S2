@@ -22,7 +22,7 @@ export function hasByPath(record: Record<string, any>, field: string): boolean {
   }
 
   if (field.indexOf('.') === -1 && field.indexOf('[') === -1) {
-    return Object.prototype.hasOwnProperty.call(record, field);
+    return field in record;
   }
 
   return has(record, field);
