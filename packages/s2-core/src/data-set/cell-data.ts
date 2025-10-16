@@ -35,9 +35,12 @@ export class CellData {
   }
 
   get [VALUE_FIELD]() {
-    // 为保持向后兼容：当 extraField 为嵌套路径（如 a.b.c）时，不将其暴露为 $$value$$
+    // 为保持向后兼容：当 extraField 为嵌套路径（如 a.b.c 或 a.b[0].c）时，不将其暴露为 $$value$$
     // 仅当 extraField 为顶层字段时，才通过 $$value$$ 快捷访问
-    if (this.extraField && this.extraField.includes('.')) {
+    if (
+      this.extraField &&
+      (this.extraField.includes('.') || this.extraField.includes('['))
+    ) {
       return undefined;
     }
 

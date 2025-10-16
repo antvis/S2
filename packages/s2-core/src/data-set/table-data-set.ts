@@ -106,7 +106,7 @@ export class TableDataSet extends BaseDataSet {
           for (let index = 0; index < keys.length; index++) {
             const k = keys[index];
 
-            if (getByPath(record, k) !== (query as any)[k]) {
+            if (getByPath(record, k) !== query[k]) {
               inScope = false;
               restData.push(record);
               break;

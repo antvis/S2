@@ -77,7 +77,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
         });
         const value = getByPath(row, field);
 
-        return formatter(value as any);
+        return formatter(value);
       }),
     ) as string[][];
   }
@@ -183,7 +183,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
       colIndex: meta.colIndex,
     });
 
-    return formatter(value as any);
+    return formatter(value);
   };
 
   getDataMatrixByDataCell(cellMetaMatrix: CellMeta[][]): CopyableList {
