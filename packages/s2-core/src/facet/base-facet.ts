@@ -91,6 +91,7 @@ import type {
 } from '../common/interface/scroll';
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
+import { DEFAULT_FONTSIZE } from '../theme';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import type { SelectedIds } from '../utils';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
@@ -417,9 +418,13 @@ export abstract class BaseFacet {
     }
 
     const isEnableColNodeHeightAdaptive =
-      colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap;
+      (colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap) ||
+      this.spreadsheet.theme.colCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.colCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const isEnableCornerNodeHeightAdaptive =
-      cornerCellStyle?.maxLines! > 1 && cornerCellStyle?.wordWrap;
+      (cornerCellStyle?.maxLines! > 1 && cornerCellStyle?.wordWrap) ||
+      this.spreadsheet.theme.cornerCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.cornerCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     let colAdaptiveHeight = defaultHeight;
@@ -541,10 +546,7 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height =
-      cell.isMultiLineText() && textHeight >= defaultHeight
-        ? adaptiveHeight
-        : defaultHeight;
+    const height = textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 
