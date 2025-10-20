@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.9](https://github.com/antvis/S2/compare/@antv/s2-v2.4.8...@antv/s2-v2.4.9) (2025-10-20)
+
+
+### Bug Fixes
+
+* 字体变大时行高自适应变高 ([#3230](https://github.com/antvis/S2/issues/3230)) ([e74bd3c](https://github.com/antvis/S2/commit/e74bd3c9262a4987976339b956ce7336bda1aa62))
+
 # [@antv/s2-v2.4.8](https://github.com/antvis/S2/compare/@antv/s2-v2.4.7...@antv/s2-v2.4.8) (2025-09-15)
 
 
