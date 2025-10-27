@@ -5,6 +5,7 @@
 import { version } from 'react';
 import * as ReactDOM from 'react-dom';
 import type { Root } from 'react-dom/client';
+import * as ReactDOMClient from 'react-dom/client';
 
 export const S2_REACT_ROOT_SYMBOL_ID = `__s2_react_root__`;
 
@@ -31,7 +32,7 @@ try {
   const mainVersion = Number((version || '').split('.')[0]);
 
   if (mainVersion >= 18) {
-    createRoot = ReactDOMClone.createRoot!;
+    createRoot = ReactDOMClient.createRoot!;
   }
 } catch (e) {
   // < React 18
