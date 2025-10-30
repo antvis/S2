@@ -143,6 +143,25 @@ exports[`Pivot Table Core Data Process should copy format total data in grid mod
 四川省	乐山市	number	7585元	4775元	2330元	2445元"
 `;
 
+exports[`Pivot Table Core Data Process should copy format total(root) data in grid mode 1`] = `
+"			总计	家具	家具	办公用品
+				桌子	沙发	笔
+总计	杭州市-aa		15420	7789	5343	945
+总计	绍兴市-aa		5657	2367	632	1304
+总计	宁波市-aa		13779	3877	7234	1145
+总计	舟山市-aa		8242	4342	834	1432
+总计	成都市-aa		10513	1723	2451	2335
+总计	绵阳市-aa		7388	1822	2244	245
+总计	南充市-aa		10284	1943	2333	2457
+总计	乐山市-aa		7585	2330	2445	2458
+浙江省	小计		43098	18375	14043	4826
+浙江省	杭州市-aa	number	15420	7789	5343	945
+浙江省	绍兴市-aa	number	5657	2367	632	1304
+浙江省	宁波市-aa	number	13779	3877	7234	1145
+浙江省	舟山市-aa	number	8242	4342	834	1432
+四川省	小计		35770	7818	9473	7495"
+`;
+
 exports[`Pivot Table Core Data Process should copy normal data with format header in grid mode 1`] = `
 "		家具-类
 		桌子-子类
