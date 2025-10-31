@@ -221,7 +221,7 @@ export const getNodeFormatData = (leafNode: Node) => {
     );
 
     const value =
-      node.isTotals || !formatter
+      node.isTotalRoot || !formatter
         ? node.value
         : (formatter(node.value) as string);
 

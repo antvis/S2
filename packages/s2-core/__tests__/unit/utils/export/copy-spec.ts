@@ -750,6 +750,89 @@ describe('Pivot Table Core Data Process', () => {
     expect(copyContent).toMatchSnapshot();
   });
 
+  it('should copy format total(root) data in grid mode', async () => {
+    s2.setOptions({
+      width: 600,
+      height: 480,
+      hierarchyType: 'grid',
+      // 数值挂行头时, 自定义角头虚拟数值字段文本, 默认 "数值"
+      cornerExtraFieldText: '自定义',
+      interaction: {
+        copy: {
+          enable: true,
+          withFormat: true,
+          withHeader: true,
+        },
+      },
+      // 配置行小计总计显示,且按维度分组（列小计总计同理）
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['province'],
+          calcGrandTotals: {
+            // 设置总计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            // 设置小计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          // 总计分组下，city 城市维度会出现分组
+          grandTotalsGroupDimensions: ['city'],
+          // 小计维度下，type 类别维度下会出现分组
+          subTotalsGroupDimensions: ['type'],
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['province'],
+          calcGrandTotals: {
+            // 设置总计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            // 设置小计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          // 总计分组下，city 城市维度会出现分组
+          grandTotalsGroupDimensions: ['city'],
+          // 小计维度下，type 类别维度下会出现分组
+          subTotalsGroupDimensions: ['type'],
+        },
+      },
+      frozen: {
+        // 默认冻结行头, 行头和数值区域都会展示滚动条
+        // rowHeader: false,
+        // 冻结行头时, 行头宽度占表格的 1/2, 支持动态调整 (0 - 1)
+        // rowHeader: 0.2,
+      },
+    });
+
+    const meta = [
+      { field: 'city', formatter: (v: string) => `${v}-aa` },
+    ] as Meta[];
+
+    s2.setDataCfg(getDataCfg(meta, false));
+
+    await s2.render();
+    const allDataCells = s2.facet.getDataCells();
+
+    s2.interaction.changeState({
+      cells: map(allDataCells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const copyContent = getCopyPlainContent(s2);
+
+    // 主要查看行列小计总计对应的值都格式化成功了
+    expect(copyContent).toMatchSnapshot();
+  });
+
   it('should copy col data in grid mode', () => {
     const cell = s2.facet.getColCells()[0];
 
