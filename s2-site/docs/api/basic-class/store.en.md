@@ -68,4 +68,4 @@ export interface ValueRange {
 export type ValueRanges = Record<string, ValueRange>;
 ```
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>

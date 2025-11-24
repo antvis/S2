@@ -3,4 +3,4 @@ title: API
 order: 3
 ---
 
-<embed src="@/docs/common/sort-param.zh.md"></embed>
+<embed src="@/common/sort-param.zh.md"></embed>

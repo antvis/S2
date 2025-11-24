@@ -106,7 +106,7 @@ Focus on explaining the two fields of `field` and `mapping` :
 
 > If the return value of the `mapping` function is empty, it means that the field mark of the cell is not rendered
 
-<embed src="@/docs/common/icon.en.md"></embed>​
+<embed src="@/common/icon.en.md"></embed>​
 
 🎨 field mark detailed configuration refer to [Conditions API](/en/api/general/s2-options#conditions) documentation.
 

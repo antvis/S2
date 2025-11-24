@@ -348,7 +348,7 @@ s2.render();
 
 ### MergedCellInfo
 
-<embed src="@/docs/common/merged-cell.en.md"></embed>
+<embed src="@/common/merged-cell.en.md"></embed>
 
 ![Merge Cells](https://gw.alipayobjects.com/zos/antfincdn/kHAYfFaJA/ae92e636-6574-487b-8d78-57dcae21e1d4.png)
 

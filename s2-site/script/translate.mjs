@@ -56,5 +56,5 @@ allFilePath.forEach((fileName) => {
 /**
  * todo:
  * 1. <Playground > </Playground> 这类 web Component 无法识别，并进行翻译。
- * 2. markdown 引入文档：`markdown:docs/common/custom/customTreeNode.zh.md` 替换为  en.md
+ * 2. markdown 引入文档：`markdown:common/custom/customTreeNode.zh.md` 替换为  en.md
  */

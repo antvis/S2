@@ -129,7 +129,7 @@ Function description: Field metadata, configurable field alias and value formatt
 
 ### MiniChartData
 
-<embed src="@/docs/common/mini-chart.en.md"></embed>
+<embed src="@/common/mini-chart.en.md"></embed>
 
 ### MultiData
 
@@ -144,9 +144,9 @@ Function description: used to support custom data cell rendering of multiple ind
 | label                   | Used as a cell subtitle, displayed on a separate line           | `string`                 |          |          |
 | \[key: string]          | Other transparent fields for customized display of custom cells | `unknown`                | \`\`     |          |
 
-<embed src="@/docs/common/sort-param.en.md"></embed>
+<embed src="@/common/sort-param.en.md"></embed>
 
-<embed src="@/docs/common/custom/customTreeNode.en.md"></embed>
+<embed src="@/common/custom/customTreeNode.en.md"></embed>
 
 ### Columns
 

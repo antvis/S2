@@ -145,4 +145,4 @@ type ViewMetaData = Data | CellData;
 
 ### MiniChartData
 
-<embed src="@/docs/common/mini-chart.zh.md"></embed>
+<embed src="@/common/mini-chart.zh.md"></embed>

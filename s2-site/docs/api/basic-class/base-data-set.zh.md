@@ -160,5 +160,5 @@ interface FilterParam {
 }
 ```
 
-<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/custom/customTreeNode.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>
