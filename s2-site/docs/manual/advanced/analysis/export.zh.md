@@ -125,4 +125,4 @@ import { Export } from '@antv/s2-react-components'
 本质上，`@antv/s2-react-components` 的导出组件，只是基于 `@antv/s2` 提供的能力，封装了**相应的 UI**, 如果不希望依赖框架，或者希望在 `Vue` 等框架中使用，都是可以的。
 :::
 
-<embed src="@/docs/common/copy-export.zh.md"></embed>
+<embed src="@/common/copy-export.zh.md"></embed>

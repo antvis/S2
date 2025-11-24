@@ -46,9 +46,9 @@ tag: New
 
 ## 📦 安装
 
-<embed src="@/docs/common/install.zh.md"></embed>
+<embed src="@/common/install.zh.md"></embed>
 
-<embed src="@/docs/common/packages.zh.md"></embed>
+<embed src="@/common/packages.zh.md"></embed>
 
 ## ⭐ 新增功能
 

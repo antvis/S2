@@ -53,7 +53,7 @@ tag: Updated
 
 ## ⌨️ 本地开发
 
-<embed src="@/docs/common/development.zh.md#L4-L100"></embed>
+<embed src="@/common/development.zh.md#L4-L100"></embed>
 
 ### 调试功能
 
@@ -137,4 +137,4 @@ pnpm site:preview
 
 ## 📦 版本
 
-<embed src="@/docs/common/packages.zh.md"></embed>
+<embed src="@/common/packages.zh.md"></embed>

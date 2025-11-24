@@ -43,4 +43,4 @@ CellData.getCellDataList(raw: RawData, extraFields: string[])
 CellData.getFieldValue(data: ViewMetaData, field?: string)
 ```
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>

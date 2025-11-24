@@ -33,4 +33,4 @@ import '@antv/s2-react-components/dist/s2-react-components.min.css'
 | onDownloadSuccess | 下载成功 | (data: `string`) => void | | |
 | onDownloadError | 下载失败 | (error: `unknown`) => void | | |
 
-<embed src="@/docs/common/copy-export.zh.md"></embed>
+<embed src="@/common/copy-export.zh.md"></embed>

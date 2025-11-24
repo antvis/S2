@@ -19,7 +19,7 @@ tag: New
 
 ## 数据结构
 
-<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
+<embed src="@/common/custom/customTreeNode.zh.md"></embed>
 
 ```ts
 const customTree = [

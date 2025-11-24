@@ -67,7 +67,7 @@ s2.interaction.reset()
 | updateDataCellRelevantRowCells | 高亮数值单元格和所对应行头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 | updateDataCellRelevantColCells | 高亮数值单元格和所对应列头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 
-<embed src="@/docs/common/interaction.zh.md"></embed>
+<embed src="@/common/interaction.zh.md"></embed>
 
 ### CellScrollToOptions
 
@@ -294,4 +294,4 @@ interface EventHandler {
 }
 ```
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>

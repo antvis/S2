@@ -240,4 +240,4 @@ S2 内置了一些基于 [`AntV/G`](https://g.antv.antgroup.com/) 简单的图�
 
 #### 1.5 数据格式
 
-<embed src="@/docs/common/mini-chart.zh.md"></embed>
+<embed src="@/common/mini-chart.zh.md"></embed>

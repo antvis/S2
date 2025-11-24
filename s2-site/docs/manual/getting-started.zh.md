@@ -6,17 +6,17 @@ tag: Updated
 
 ## 📦 安装
 
-<embed src="@/docs/common/install.zh.md"></embed>
+<embed src="@/common/install.zh.md"></embed>
 
 ### 浏览器引入 <Badge type="error">不推荐</Badge>
 
-<embed src="@/docs/common/browser.zh.md"></embed>
+<embed src="@/common/browser.zh.md"></embed>
 
 ## 🔨 使用
 
 ### 版本
 
-<embed src="@/docs/common/packages.zh.md"></embed>
+<embed src="@/common/packages.zh.md"></embed>
 
 ### 基础类
 
@@ -317,4 +317,4 @@ import "@antv/s2-vue/dist/s2-vue.min.css";
 
 ## ⌨️ 本地开发
 
-<embed src="@/docs/common/development.zh.md"></embed>
+<embed src="@/common/development.zh.md"></embed>
