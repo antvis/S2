@@ -786,6 +786,20 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       matchCellStyleSnapshot();
     });
 
+    test('should calculate correctly max text width for default sort header action icons and layoutWidthType === compact', async () => {
+      updateStyle(Infinity);
+      s2.changeSheetSize(800, 600);
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+        style: {
+          layoutWidthType: 'compact',
+        },
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
     test('should render Col Height correct after hide Sample Nodes', async () => {
       const cellTextWordWrapStyle: CellTextWordWrapStyle = {
         heightByField: null,
