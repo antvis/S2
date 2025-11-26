@@ -50,8 +50,8 @@ describe('React 16 Render Tests', () => {
     expect(ReactDOM.unmountComponentAtNode).toHaveBeenCalledTimes(1);
   });
 
-  test('should only call modern render for force clear content', () => {
-    const root = reactRender(element, container);
+  test('should only call modern render for force clear content', async () => {
+    const root = await reactRender(element, container);
 
     forceClearContent(container);
 
