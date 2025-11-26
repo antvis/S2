@@ -80,7 +80,9 @@
     "vite-plugin-svgr": "^2.2.2"
   },
   "peerDependencies": {
+    "@antv/g2": ">=5.1.21",
     "@antv/s2": "^2.0.0",
+    "less": ">=4.0.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
