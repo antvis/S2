@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.3.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.3...@antv/s2-react-v2.3.0-beta.1) (2025-11-26)
+
+
+### Features
+
+* 兼容React19 ([413ece8](https://github.com/antvis/S2/commit/413ece873a7834a1081fe7737dd80a9477be8aa7))
+
 # [@antv/s2-react-v2.2.3](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.2...@antv/s2-react-v2.2.3) (2025-09-15)
 
 
