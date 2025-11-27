@@ -1,6 +1,5 @@
 /**
- * 参考 react-component/util 同时兼容 React 16/17/18 的挂载和卸载
- * @link https://github.com/react-component/util/blob/677d3ac177d147572b65af63e67a7796a5104f4c/src/React/render.ts
+ * 兼容 React 16/17/18/19 的挂载和卸载
  */
 import { version } from 'react';
 import * as ReactDOM from 'react-dom';
@@ -14,6 +13,8 @@ type ContainerType = (Element | DocumentFragment) & {
 
 type CreateRoot = (container: ContainerType) => Root;
 
+// 1. 避免直接解构 render，防止 React 19 报错
+// 仅保留类型定义和必要的静态属性引用
 const ReactDOMClone = {
   ...ReactDOM,
 } as typeof ReactDOM & {
@@ -21,24 +22,46 @@ const ReactDOMClone = {
     usingClientEntryPoint?: boolean;
   };
   createRoot?: CreateRoot;
+  // 声明可能存在的 Legacy 方法
+  render?: (node: React.ReactElement | null, container: ContainerType) => void;
+  unmountComponentAtNode?: (container: ContainerType) => boolean;
 };
 
-const { render: reactOriginalRender, unmountComponentAtNode } = ReactDOMClone;
+let createRootFn: CreateRoot | undefined;
 
-let createRoot: CreateRoot;
-
-try {
-  const mainVersion = Number((version || '').split('.')[0]);
-
-  if (mainVersion >= 18) {
-    createRoot = ReactDOMClone.createRoot!;
+// 2. 异步获取 createRoot
+// 这是一个懒加载单例，只在第一次渲染时执行
+async function getCreateRoot(): Promise<CreateRoot> {
+  if (createRootFn) {
+    return createRootFn;
   }
-} catch (e) {
-  // < React 18
+
+  // 优先尝试 React 18 的同步入口 (如果有)
+  if (ReactDOMClone.createRoot) {
+    createRootFn = ReactDOMClone.createRoot;
+
+    return createRootFn;
+  }
+
+  // React 19+ 或 React 18 Client 模式
+  try {
+    const client = await import('react-dom/client');
+
+    createRootFn = client.createRoot;
+
+    return createRootFn!;
+  } catch (e) {
+    throw new Error(
+      '[S2] React 18+ detected but failed to load createRoot. Please ensure react-dom is installed correctly.',
+      { cause: e },
+    );
+  }
 }
 
 export const isLegacyReactVersion = () => {
-  return !createRoot;
+  const mainVersion = Number((version || '').split('.')[0]);
+
+  return mainVersion < 18;
 };
 
 /**
@@ -59,18 +82,25 @@ function toggleWarning(skip: boolean) {
 
 // ========================== Render ==========================
 
-function modernRender(
+async function modernRender(
   node: React.ReactElement | null,
   container: ContainerType,
-): Root {
+) {
   toggleWarning(true);
-  const root = container[S2_REACT_ROOT_SYMBOL_ID] || createRoot(container);
+
+  let root = container[S2_REACT_ROOT_SYMBOL_ID];
+
+  if (!root) {
+    // 异步等待 createRoot 加载完成
+    const createRoot = await getCreateRoot();
+
+    root = createRoot(container);
+    container[S2_REACT_ROOT_SYMBOL_ID] = root;
+  }
 
   toggleWarning(false);
 
   root.render(node);
-
-  container[S2_REACT_ROOT_SYMBOL_ID] = root;
 
   return root;
 }
@@ -79,15 +109,24 @@ function legacyRender(
   node: React.ReactElement | null,
   container: ContainerType,
 ) {
-  reactOriginalRender(node!, container);
+  const reactRender = ReactDOMClone.render;
+
+  if (reactRender) {
+    reactRender(node, container);
+  } else {
+    throw new Error(
+      '[S2] Failed to render. React 16/17 detected but ReactDOM.render is empty',
+    );
+  }
 }
 
-export function reactRender(
+// 注意：这里变成了 async 函数
+export async function reactRender(
   node: React.ReactElement | null,
   container: ContainerType,
 ) {
   if (!isLegacyReactVersion()) {
-    modernRender(node, container);
+    await modernRender(node, container);
 
     return;
   }
@@ -96,18 +135,19 @@ export function reactRender(
 }
 
 // ========================= Unmount ==========================
+
 function modernUnmount(container: ContainerType) {
-  // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
   return Promise.resolve().then(() => {
     container?.[S2_REACT_ROOT_SYMBOL_ID]?.unmount();
-
     delete container?.[S2_REACT_ROOT_SYMBOL_ID];
   });
 }
 
 function legacyUnmount(container: ContainerType) {
-  if (container) {
-    unmountComponentAtNode(container);
+  const unmount = ReactDOMClone.unmountComponentAtNode;
+
+  if (container && unmount) {
+    unmount(container);
   }
 }
 
@@ -119,7 +159,9 @@ export function reactUnmount(container: ContainerType) {
   return legacyUnmount(container);
 }
 
-export function forceClearContent(container: ContainerType) {
+export function forceClearContent(
+  container: ContainerType,
+): void | Promise<Root> {
   if (isLegacyReactVersion()) {
     return legacyUnmount(container);
   }
