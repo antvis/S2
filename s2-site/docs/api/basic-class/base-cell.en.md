@@ -36,7 +36,7 @@ cell.getActualText()
 | getConditionIconShapes | Get all icon layers                    | `() => GuiIcon[]`                                                     |
 | addConditionIconShape  | Add icon layer                         | `(shape: GuiIcon) => void`                                            |
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>
 
 ### point
 

@@ -28,7 +28,7 @@ $ yarn add @antv/s2 @antv/s2-vue
 
 ### Browser introduction (deprecated)
 
-<embed src="@/docs/common/browser.en.md"></embed>
+<embed src="@/common/browser.en.md"></embed>
 
 If you need to be compatible with `IE` , you need to introduce `polyfill` compatibility.
 
@@ -36,7 +36,7 @@ If you need to be compatible with `IE` , you need to introduce `polyfill` compat
 
 There are three ways to create an `S2` table, the basic class version `(s2-core)` and the `React` and `Vue3` version based on the `core` layer package
 
-<embed src="@/docs/common/packages.en.md"></embed>
+<embed src="@/common/packages.en.md"></embed>
 
 ### basic class
 
@@ -277,4 +277,4 @@ import "@antv/s2-vue/dist/s2-vue.min.css";
 
 ## ⌨️ Local development
 
-<embed src="@/docs/common/development.en.md"></embed>
+<embed src="@/common/development.en.md"></embed>

@@ -50,7 +50,7 @@ cell.getActualText()
 | getTextLineHeight | 获取文本行高 | `() => number` |
 | getFieldValue | 获取单元格展示的数值 | `() => string` |
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>
 
 ### Point
 

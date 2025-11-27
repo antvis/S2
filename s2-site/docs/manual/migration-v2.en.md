@@ -46,9 +46,9 @@ If you are using the beta version `2.0.0-next.x`, pay attention to these additio
 
 ## 📦 Installation
 
-<embed src="@/docs/common/install.en.md"></embed>
+<embed src="@/common/install.en.md"></embed>
 
-<embed src="@/docs/common/packages.en.md"></embed>
+<embed src="@/common/packages.en.md"></embed>
 
 ## ⭐ New Features
 
