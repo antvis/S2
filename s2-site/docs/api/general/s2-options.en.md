@@ -51,23 +51,23 @@ const s2Options = {
 | supportsCSSTransform        | `boolean`                                           |          | `false`                   | After enabling it, CSS transform is supported, which solves the problem that the mouse coordinates respond incorrectly after the parent element is set to `transform`                                                 |
 | devicePixelRatio            | `number`                                            |          | `window.devicePixelRatio` | Custom Device Pixel Ratio                                                                                                                                                                                             |
 
-<embed src="@/docs/common/series-number.en.md"></embed>
+<embed src="@/common/series-number.en.md"></embed>
 
-<embed src="@/docs/common/frozen.en.md"></embed>
+<embed src="@/common/frozen.en.md"></embed>
 
-<embed src="@/docs/common/interaction.en.md"></embed>
+<embed src="@/common/interaction.en.md"></embed>
 
-<embed src="@/docs/common/conditions.en.md"></embed>
+<embed src="@/common/conditions.en.md"></embed>
 
-<embed src="@/docs/common/totals.en.md"></embed>
+<embed src="@/common/totals.en.md"></embed>
 
-<embed src="@/docs/common/tooltip.en.md"></embed>
+<embed src="@/common/tooltip.en.md"></embed>
 
-<embed src="@/docs/common/custom-tooltip.en.md"></embed>
+<embed src="@/common/custom-tooltip.en.md"></embed>
 
-<embed src="@/docs/common/pagination.en.md"></embed>
+<embed src="@/common/pagination.en.md"></embed>
 
-<embed src="@/docs/common/style.en.md"></embed>
+<embed src="@/common/style.en.md"></embed>
 
 ## DataCellCallback
 
@@ -77,7 +77,7 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 Function description: custom value cell, [ViewMeta](#viewmeta)
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>
 
 ## Cell Callback
 
@@ -107,15 +107,15 @@ Function description: custom corner head
 | spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/docs/api/basic-class/spreadsheet) | -        | ✓        |
 | restOptions | Indeterminate parameters, pass additional information                | `unknown[]`                                      | -        |          |
 
-<embed src="@/docs/common/custom/layoutHierarchy.en.md"></embed>
+<embed src="@/common/custom/layoutHierarchy.en.md"></embed>
 
-<embed src="@/docs/common/custom/layoutArrange.en.md"></embed>
+<embed src="@/common/custom/layoutArrange.en.md"></embed>
 
-<embed src="@/docs/common/custom/layoutCoordinate.en.md"></embed>
+<embed src="@/common/custom/layoutCoordinate.en.md"></embed>
 
-<embed src="@/docs/common/custom/layoutCellMeta.en.md"></embed>
+<embed src="@/common/custom/layoutCellMeta.en.md"></embed>
 
-<embed src="@/docs/common/custom/headerActionIcons.en.md"></embed>
+<embed src="@/common/custom/headerActionIcons.en.md"></embed>
 
 ## HeaderActionIconProps
 
@@ -127,7 +127,7 @@ Function description: After clicking the custom operation icon, the current icon
 | meta      | The meta information of the current cell | node   | -        | ✓        |
 | event     | Current click event information          | event  | false    | ✓        |
 
-<embed src="@/docs/common/custom/customSvgIcons.en.md"></embed>
+<embed src="@/common/custom/customSvgIcons.en.md"></embed>
 
 ## DataItem
 
@@ -166,4 +166,4 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 
 ## MergedCellInfo
 
-<embed src="@/docs/common/merged-cell.en.md"></embed>
+<embed src="@/common/merged-cell.en.md"></embed>

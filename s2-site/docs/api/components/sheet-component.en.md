@@ -357,7 +357,7 @@ Function description: The return information of the interactive callback functio
 | event | event | [Event](#) | | |
 | viewMeta | current node information | [Node](/docs/api/basic-class/node) | | |
 
-<embed src="@/docs/common/sort-param.en.md"></embed>
+<embed src="@/common/sort-param.en.md"></embed>
 
 ## CellScrollPosition
 
@@ -406,4 +406,4 @@ Function description: Table resize (drag to change cell row height and column wi
 | resizedWidth | Width after dragging | `number` | | |
 | resizedHeight | Height after dragging | `number` | | |
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>

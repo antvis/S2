@@ -11,9 +11,9 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 Function description: custom value cell, [ViewMeta](#viewmeta)
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>
 
-<embed src="@/docs/common/custom/cellCallBack.en.md"></embed>
+<embed src="@/common/custom/cellCallBack.en.md"></embed>
 
 ## CornerHeaderCallback
 

@@ -162,4 +162,4 @@ const s2Options = {
 
 ## API documentation
 
-<embed src="@/docs/common/style.en.md"></embed>
+<embed src="@/common/style.en.md"></embed>

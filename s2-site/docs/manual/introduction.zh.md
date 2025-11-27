@@ -67,7 +67,7 @@ redirect_from:
 
 ## 📦 安装
 
-<embed src="@/docs/common/install.zh.md"></embed>
+<embed src="@/common/install.zh.md"></embed>
 
 ## 🔨 使用
 
@@ -243,11 +243,11 @@ bootstrap();
 
 ## 📦 版本
 
-<embed src="@/docs/common/packages.zh.md"></embed>
+<embed src="@/common/packages.zh.md"></embed>
 
 ### 🖥️ 浏览器兼容性
 
-<embed src="@/docs/common/env.zh.md"></embed>
+<embed src="@/common/env.zh.md"></embed>
 
 ## 🙋‍♂️ 问题反馈
 
@@ -257,7 +257,7 @@ bootstrap();
 
 ## ⌨️ 本地开发
 
-<embed src="@/docs/common/development.zh.md"></embed>
+<embed src="@/common/development.zh.md"></embed>
 
 ## 🤝 参与贡献
 

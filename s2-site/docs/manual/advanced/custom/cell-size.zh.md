@@ -323,4 +323,4 @@ s2.setTheme({
 
 ## API 文档
 
-<embed src="@/docs/common/style.zh.md"></embed>
+<embed src="@/common/style.zh.md"></embed>

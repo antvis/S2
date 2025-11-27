@@ -3,4 +3,4 @@ title: API
 order: 0
 ---
 
-<embed src="@/docs/common/interaction.zh.md"></embed>
+<embed src="@/common/interaction.zh.md"></embed>

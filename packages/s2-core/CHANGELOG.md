@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.10](https://github.com/antvis/S2/compare/@antv/s2-v2.4.9...@antv/s2-v2.4.10) (2025-11-03)
+
+
+### Bug Fixes
+
+* 总小计的分组维度在copy时没有正确formatter ([#3238](https://github.com/antvis/S2/issues/3238)) ([8c63b3c](https://github.com/antvis/S2/commit/8c63b3cb225a0643c0a80650e4a8d4184daa219a))
+
 # [@antv/s2-v2.4.9](https://github.com/antvis/S2/compare/@antv/s2-v2.4.8...@antv/s2-v2.4.9) (2025-10-20)
 
 

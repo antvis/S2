@@ -6,7 +6,7 @@ tag: Updated
 
 <Badge>@antv/s2-react</Badge> <Badge>@antv/s2-react-components</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
-<embed src="@/docs/common/pagination.zh.md"></embed>
+<embed src="@/common/pagination.zh.md"></embed>
 
 ### 在 React 中使用 <Badge>@antv/s2</Badge>
 
