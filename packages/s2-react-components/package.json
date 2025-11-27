@@ -65,6 +65,7 @@
     "classnames": "^2.5.1",
     "lodash": "^4.17.21",
     "react-beautiful-dnd": "^13.1.1",
+    "react-color": "^2.19.3",
     "tinycolor2": "^1.6.0",
     "tinygradient": "^1.1.5"
   },
@@ -81,7 +82,6 @@
     "@types/tinycolor2": "^1.4.6",
     "antd": "^5.17.4",
     "react": "^18.3.1",
-    "react-color": "^2.19.3",
     "react-dom": "^18.3.1",
     "vite-plugin-svgr": "^2.2.2"
   },
@@ -89,6 +89,7 @@
     "@ant-design/icons": ">=4.7.0",
     "@antv/s2": "^2.0.0",
     "antd": ">=4.16.13",
+    "less": ">=4.0.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
