@@ -23,7 +23,7 @@ const ReactDOMClone = {
   };
   createRoot?: CreateRoot;
   // 声明可能存在的 Legacy 方法
-  render?: (node: React.ReactElement, container: ContainerType) => void;
+  render?: (node: React.ReactElement | null, container: ContainerType) => void;
   unmountComponentAtNode?: (container: ContainerType) => boolean;
 };
 
@@ -112,7 +112,7 @@ function legacyRender(
   const reactRender = ReactDOMClone.render;
 
   if (reactRender) {
-    reactRender(node!, container);
+    reactRender(node, container);
   } else {
     throw new Error(
       '[S2] Failed to render. React 16/17 detected but ReactDOM.render is empty',
