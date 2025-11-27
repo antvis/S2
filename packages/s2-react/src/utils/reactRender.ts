@@ -159,7 +159,9 @@ export function reactUnmount(container: ContainerType) {
   return legacyUnmount(container);
 }
 
-export function forceClearContent(container: ContainerType) {
+export function forceClearContent(
+  container: ContainerType,
+): void | Promise<Root> {
   if (isLegacyReactVersion()) {
     return legacyUnmount(container);
   }
