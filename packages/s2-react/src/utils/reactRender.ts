@@ -45,10 +45,7 @@ async function getCreateRoot(): Promise<CreateRoot> {
 
   // React 19+ 或 React 18 Client 模式
   try {
-    // 使用动态 import，这是浏览器原生支持的标准
-    // 使用字符串变量 trick 防止某些打包工具在 React 16 环境下构建时报 "Module not found"
-    const moduleName = 'react-dom/client';
-    const client = await import(moduleName);
+    const client = await import('react-dom/client');
 
     createRootFn = client.createRoot;
 
@@ -56,6 +53,7 @@ async function getCreateRoot(): Promise<CreateRoot> {
   } catch (e) {
     throw new Error(
       '[S2] React 18+ detected but failed to load createRoot. Please ensure react-dom is installed correctly.',
+      { cause: e },
     );
   }
 }
