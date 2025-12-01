@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.11](https://github.com/antvis/S2/compare/@antv/s2-v2.4.10...@antv/s2-v2.4.11) (2025-12-01)
+
+
+### Bug Fixes
+
+* 多行文本紧凑模式shouldShowDefaultHeaderActionIcon导致数值单元格高度不对 ([#3245](https://github.com/antvis/S2/issues/3245)) ([b1eb7f6](https://github.com/antvis/S2/commit/b1eb7f669890dfb367abd69708b69eddd3bd17e1))
+
 # [@antv/s2-v2.4.10](https://github.com/antvis/S2/compare/@antv/s2-v2.4.9...@antv/s2-v2.4.10) (2025-11-03)
 
 
