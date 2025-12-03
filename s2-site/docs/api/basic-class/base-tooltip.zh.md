@@ -28,4 +28,4 @@ s2.tooltip.show({
 | `clearContent` | 清空 tooltip 内容 | `() => void` |
 | `disablePointerEvent` | 禁用 tooltip 鼠标响应 | `() => void` |
 
-<embed src="@/docs/common/custom-tooltip.zh.md"></embed>
+<embed src="@/common/custom-tooltip.zh.md"></embed>

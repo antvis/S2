@@ -7,8 +7,7 @@ import {
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
-import { renderLine } from '../utils/g-renders';
-import { batchSetStyle } from '../utils/g-utils';
+import { batchSetStyle, renderLine } from '../utils/g-renders';
 
 export class GridGroup extends Group {
   protected s2: SpreadSheet;

@@ -21,7 +21,7 @@ If there is a compatibility problem, please use it in combination with `babel` a
 
 ### browser introduction
 
-<embed src="@/docs/common/browser.en.md"></embed>
+<embed src="@/common/browser.en.md"></embed>
 
 ### The access to the official website is a bit slow, or it cannot be opened. Is there a domestic mirror?
 
@@ -178,7 +178,7 @@ That is to say, `@antv/s2` **has nothing to do with the framework** , you can us
 
 Here is an overview of the releases:
 
-<embed src="@/docs/common/packages.en.md"></embed>
+<embed src="@/common/packages.en.md"></embed>
 
 Supporting [analysis components](/examples/gallery#category-%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6) , currently there is no development plan for `@antv/s2-angular` , the community is welcome to build together 👏🏻.
 
@@ -235,6 +235,6 @@ It is recommended to use `codesandbox` , we provide various versions of template
 
 ### Is there a discussion group?
 
-<embed src="@/docs/common/contact-us.en.md"></embed>
+<embed src="@/common/contact-us.en.md"></embed>
 
 ## 2. Errors and Warnings

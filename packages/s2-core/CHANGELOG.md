@@ -1,3 +1,36 @@
+# [@antv/s2-v2.4.11](https://github.com/antvis/S2/compare/@antv/s2-v2.4.10...@antv/s2-v2.4.11) (2025-12-01)
+
+
+### Bug Fixes
+
+* 多行文本紧凑模式shouldShowDefaultHeaderActionIcon导致数值单元格高度不对 ([#3245](https://github.com/antvis/S2/issues/3245)) ([b1eb7f6](https://github.com/antvis/S2/commit/b1eb7f669890dfb367abd69708b69eddd3bd17e1))
+
+# [@antv/s2-v2.4.10](https://github.com/antvis/S2/compare/@antv/s2-v2.4.9...@antv/s2-v2.4.10) (2025-11-03)
+
+
+### Bug Fixes
+
+* 总小计的分组维度在copy时没有正确formatter ([#3238](https://github.com/antvis/S2/issues/3238)) ([8c63b3c](https://github.com/antvis/S2/commit/8c63b3cb225a0643c0a80650e4a8d4184daa219a))
+
+# [@antv/s2-v2.4.9](https://github.com/antvis/S2/compare/@antv/s2-v2.4.8...@antv/s2-v2.4.9) (2025-10-20)
+
+
+### Bug Fixes
+
+* 字体变大时行高自适应变高 ([#3230](https://github.com/antvis/S2/issues/3230)) ([e74bd3c](https://github.com/antvis/S2/commit/e74bd3c9262a4987976339b956ce7336bda1aa62))
+
+# [@antv/s2-v2.4.8](https://github.com/antvis/S2/compare/@antv/s2-v2.4.7...@antv/s2-v2.4.8) (2025-09-15)
+
+
+### Bug Fixes
+
+* 配置了copy.withFormat但是在复制行头的时候未生效 ([#3221](https://github.com/antvis/S2/issues/3221)) ([7240bd5](https://github.com/antvis/S2/commit/7240bd569f0d0fbd486f6724ccbe3f89a64fc653))
+
+
+### Performance Improvements
+
+* 复用网格线和ClipPath，优化getBackgroundColor以提升6%的滚动性能 ([#3219](https://github.com/antvis/S2/issues/3219)) ([1a94f17](https://github.com/antvis/S2/commit/1a94f175b0ec36dc4ee214f0119d6620598632cd))
+
 # [@antv/s2-v2.4.7](https://github.com/antvis/S2/compare/@antv/s2-v2.4.6...@antv/s2-v2.4.7) (2025-09-03)
 
 

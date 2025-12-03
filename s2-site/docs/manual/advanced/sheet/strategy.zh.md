@@ -178,7 +178,7 @@ const s2DataConfig = {
 
 :::
 
-<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
+<embed src="@/common/custom/customTreeNode.zh.md"></embed>
 
 ## Tooltip
 
@@ -266,7 +266,7 @@ const s2Options = {
 
 ### API
 
-<embed src="@/docs/common/mini-chart.zh.md"></embed>
+<embed src="@/common/mini-chart.zh.md"></embed>
 
 ## 数据导出
 

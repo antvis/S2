@@ -19,11 +19,11 @@ import type {
 import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
 import {
+  createOrUpdateRect,
   getValidFrozenOptions,
   renderLine,
   waitForCellMounted,
 } from '../utils';
-import { createOrUpdateRect } from '../utils/g-utils';
 import {
   getColsForGrid,
   getFrozenRowsForGrid,

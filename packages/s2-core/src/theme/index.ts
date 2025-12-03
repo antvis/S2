@@ -15,6 +15,8 @@ import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
 
+export const DEFAULT_FONTSIZE = 12;
+
 export const getCornerCellTheme = (
   palette: SimplePalette,
   spreadsheet?: SpreadSheet,
@@ -27,7 +29,7 @@ export const getCornerCellTheme = (
   return {
     text: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: boldTextDefaultFontWeight,
       fill: basicColors[0],
       opacity: 1,
@@ -36,7 +38,7 @@ export const getCornerCellTheme = (
     },
     bolderText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: boldTextDefaultFontWeight,
       fill: basicColors[0],
       opacity: 1,
@@ -45,7 +47,7 @@ export const getCornerCellTheme = (
     },
     measureText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: boldTextDefaultFontWeight,
       fill: basicColors[0],
       opacity: 1,
@@ -133,7 +135,7 @@ export const getRowCellTheme = (
   return {
     seriesText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: 'normal',
       fill: basicColors[14],
       linkTextFill: basicColors[6],
@@ -143,7 +145,7 @@ export const getRowCellTheme = (
     },
     measureText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: 'normal',
       fill: basicColors[14],
       linkTextFill: basicColors[6],
@@ -153,7 +155,7 @@ export const getRowCellTheme = (
     },
     bolderText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: boldTextDefaultFontWeight,
       fill: basicColors[14],
       linkTextFill: basicColors[6],
@@ -163,7 +165,7 @@ export const getRowCellTheme = (
     },
     text: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: 'normal',
       fill: basicColors[14],
       linkTextFill: basicColors[6],
@@ -249,7 +251,7 @@ export const getColCellTheme = (palette: SimplePalette): DefaultCellTheme => {
   return {
     measureText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: 'normal',
       fill: basicColors[0],
       opacity: 1,
@@ -260,7 +262,7 @@ export const getColCellTheme = (palette: SimplePalette): DefaultCellTheme => {
     },
     bolderText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: boldTextDefaultFontWeight,
       fill: basicColors[0],
       opacity: 1,
@@ -270,7 +272,7 @@ export const getColCellTheme = (palette: SimplePalette): DefaultCellTheme => {
     },
     text: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: 'normal',
       fill: basicColors[0],
       opacity: 1,
@@ -357,7 +359,7 @@ export const getDataCellTheme = (palette: SimplePalette): DefaultCellTheme => {
   return {
     bolderText: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: boldTextDefaultFontWeight,
       fill: basicColors[13],
       opacity: 1,
@@ -367,7 +369,7 @@ export const getDataCellTheme = (palette: SimplePalette): DefaultCellTheme => {
     },
     text: {
       fontFamily: FONT_FAMILY,
-      fontSize: 12,
+      fontSize: DEFAULT_FONTSIZE,
       fontWeight: 'normal',
       fill: basicColors[13],
       opacity: 1,
@@ -595,7 +597,7 @@ export const getTheme = (
         },
         description: {
           fontFamily: FONT_FAMILY,
-          fontSize: 12,
+          fontSize: DEFAULT_FONTSIZE,
           fontWeight: 'normal',
           fill: basicColors[14],
           opacity: 1,

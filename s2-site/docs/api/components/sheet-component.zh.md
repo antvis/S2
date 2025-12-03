@@ -304,7 +304,7 @@ type SheetComponentOptions = S2Options<
 | event | AntV/G Event 事件 | [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) |  |  |
 | viewMeta | 当前节点信息 | [Node](/api/basic-class/node) |  |  |
 
-<embed src="@/docs/common/sort-param.zh.md"></embed>
+<embed src="@/common/sort-param.zh.md"></embed>
 
 ### CellScrollPosition
 
@@ -364,5 +364,5 @@ type SheetComponentOptions = S2Options<
 | rebuildDataSet | 是否重新生成数据集 | `boolean` |  |  |
 | rebuildHiddenColumnsDetail | 是否重新生成列头隐藏信息 | `boolean` |  |  |
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
-<embed src="@/docs/common/interaction.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>
+<embed src="@/common/interaction.zh.md"></embed>

@@ -53,7 +53,7 @@ s2.interaction.reset()
 | removeIntercepts                    | Remove specified interaction interception                                                                                 | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                     |
 | highlightNodes                      | Highlight the cell corresponding to the node                                                                              | (nodes: [Node](/docs/api/basic-class/node) \[]) => void                           |
 
-<embed src="@/docs/common/interaction.en.md"></embed>
+<embed src="@/common/interaction.en.md"></embed>
 
 ### Interaction Constructor
 
@@ -136,4 +136,4 @@ interface InteractionStateInfo {
 }
 ```
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>

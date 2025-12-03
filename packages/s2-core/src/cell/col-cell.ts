@@ -656,6 +656,13 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     );
   }
 
+  protected shouldShowDefaultHeaderActionIcon() {
+    return (
+      this.spreadsheet.options.showDefaultHeaderActionIcon &&
+      this.spreadsheet.isValueInCols()
+    );
+  }
+
   public setHeaderConfig(headerConfig: ColHeaderConfig) {
     super.setHeaderConfig(headerConfig);
     // this.drawResizeArea();

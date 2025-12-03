@@ -21,6 +21,38 @@ import {
 } from '../data/data-multi-line-text';
 import SimpleDataCfg from '../data/simple-data.json';
 
+function runLargeFontCellHeightTest(s2: SpreadSheet) {
+  return async () => {
+    s2.setDataCfg(SimpleDataCfg);
+    const cell = {
+      bolderText: {
+        fontSize: 36,
+      },
+      measureText: {
+        fontSize: 56,
+      },
+      text: {
+        fontSize: 56,
+      },
+      seriesText: {
+        fontSize: 56,
+      },
+    };
+
+    s2.setTheme({
+      colCell: cell,
+      rowCell: cell,
+      dataCell: cell,
+      cornerCell: cell,
+    });
+
+    await s2.render();
+
+    expect(s2.facet.getLayoutResult().colNodes[0].height).toBe(58);
+    expect(s2.facet.getDataCells()[0].getMeta().height).toBe(80);
+  };
+}
+
 describe('SpreadSheet Multi Line Text Tests', () => {
   let s2: SpreadSheet;
 
@@ -754,6 +786,20 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       matchCellStyleSnapshot();
     });
 
+    test('should calculate correctly max text width for default sort header action icons and layoutWidthType === compact', async () => {
+      updateStyle(Infinity);
+      s2.changeSheetSize(800, 600);
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+        style: {
+          layoutWidthType: 'compact',
+        },
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
     test('should render Col Height correct after hide Sample Nodes', async () => {
       const cellTextWordWrapStyle: CellTextWordWrapStyle = {
         heightByField: null,
@@ -799,6 +845,10 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expect(
         s2.facet.getLayoutResult().colNodes.every((node) => node.height <= 64),
       ).toBe(true);
+    });
+
+    test('should render Cell Height correct after set large font', async () => {
+      await runLargeFontCellHeightTest(s2);
     });
   });
 
@@ -1637,6 +1687,10 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expect(
         pivotSheet.facet.getCornerCells()[0].getHeaderConfig().height,
       ).toEqual(46);
+    });
+
+    test('should render Cell Height correct after set large font', async () => {
+      await runLargeFontCellHeightTest(s2);
     });
   });
 });

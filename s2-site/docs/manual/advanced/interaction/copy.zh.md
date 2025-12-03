@@ -4,4 +4,4 @@ order: 7
 tag: New
 ---
 
-<embed src="@/docs/common/copy-export.zh.md"></embed>
+<embed src="@/common/copy-export.zh.md"></embed>

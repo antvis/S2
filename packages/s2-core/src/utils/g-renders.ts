@@ -9,6 +9,7 @@ import {
   Polygon,
   Polyline,
   Rect,
+  type BaseStyleProps,
   type CircleStyleProps,
   type DisplayObject,
   type LineStyleProps,
@@ -17,7 +18,7 @@ import {
   type RectStyleProps,
   type TextStyleProps,
 } from '@antv/g';
-import { isArray, isEmpty, isFunction } from 'lodash';
+import { get, isArray, isEmpty, isFunction, set } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import { CustomText } from '../engine/CustomText';
 
@@ -143,4 +144,28 @@ export function renderTreeIcon(options: {
   }
 
   return iconShape;
+}
+
+export function batchSetStyle<
+  T extends DisplayObject,
+  S extends BaseStyleProps,
+>(obj: T, style: S) {
+  for (const styleKey in style) {
+    obj.style[styleKey] = style[styleKey];
+  }
+}
+
+export function createOrUpdateRect(
+  propertyPath: string,
+  style: RectStyleProps,
+) {
+  // @ts-ignore
+  const context = this as any;
+  const obj = get(context, propertyPath);
+
+  if (!obj) {
+    set(context, propertyPath, new Rect({ style }));
+  } else {
+    batchSetStyle(obj, style);
+  }
 }

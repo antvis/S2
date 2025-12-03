@@ -173,4 +173,4 @@ const s2Options = {
 
 ## API 文档
 
-<embed src="@/docs/common/style.zh.md"></embed>
+<embed src="@/common/style.zh.md"></embed>

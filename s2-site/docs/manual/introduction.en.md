@@ -174,7 +174,7 @@ run();
 
 ## 📦 version
 
-<embed src="@/docs/common/packages.en.md"></embed>
+<embed src="@/common/packages.en.md"></embed>
 
 ## 👤 author
 
@@ -182,11 +182,11 @@ run();
 
 ## 🤝 Participate and contribute
 
-<embed src="@/docs/common/development.en.md"></embed>
+<embed src="@/common/development.en.md"></embed>
 
 ## 📧 Contact us
 
-<embed src="@/docs/common/contact-us.en.md"></embed>
+<embed src="@/common/contact-us.en.md"></embed>
 
 ## 👬 Contributors
 

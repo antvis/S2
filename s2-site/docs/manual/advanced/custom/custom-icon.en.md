@@ -50,13 +50,13 @@ const s2Options = {
 }
 ```
 
-<embed src="@/docs/common/icon.en.md"></embed>​
+<embed src="@/common/icon.en.md"></embed>​
 
 2\. Configure `headerActionIcons` parameter ​ ⚠️ Note: To register a custom row and column header action icon, you need to set the `showDefaultHeaderActionIcon` of `options` to `false` first, otherwise the sorting icon displayed in the indicator column header by default will not disappear
 
 ### configuration parameters
 
-<embed src="@/docs/common/header-action-icon.en.md"></embed>
+<embed src="@/common/header-action-icon.en.md"></embed>
 
 ### Custom row and column header icon example
 

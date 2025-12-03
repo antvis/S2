@@ -35,6 +35,7 @@ import type {
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import type { SpreadSheet } from '../sheet-type';
+import { DEFAULT_FONTSIZE } from '../theme';
 import { renderIcon, renderText } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
@@ -216,7 +217,11 @@ export class TableFacet extends FrozenFacet {
     const colLeafNodes = this.getColLeafNodes();
 
     // 不超过一行或者用户已经配置过当前行高则无需预设
-    if (isEmpty(colLeafNodes) || style?.dataCell?.maxLines! <= 1) {
+    if (
+      (isEmpty(colLeafNodes) || style?.dataCell?.maxLines! <= 1) &&
+      this.spreadsheet.theme.dataCell.text.fontSize <= DEFAULT_FONTSIZE &&
+      this.spreadsheet.theme.dataCell.bolderText.fontSize <= DEFAULT_FONTSIZE
+    ) {
       return;
     }
 
@@ -243,7 +248,9 @@ export class TableFacet extends FrozenFacet {
     const { style } = this.spreadsheet.options;
     const heightByField = style?.rowCell?.heightByField;
     const isEnableHeightAdaptive =
-      style?.dataCell?.maxLines! > 1 && style?.dataCell?.wordWrap;
+      (style?.dataCell?.maxLines! > 1 && style?.dataCell?.wordWrap) ||
+      this.spreadsheet.theme.dataCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.dataCell.bolderText.fontSize > DEFAULT_FONTSIZE;
 
     if (keys(heightByField!).length || isEnableHeightAdaptive) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();

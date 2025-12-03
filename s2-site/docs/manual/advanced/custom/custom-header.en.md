@@ -12,7 +12,7 @@ By default **, the hierarchical structure is generated through the data obtained
 
 ### data structure
 
-`markdown:docs/common/custom/customTreeNode.en.md`
+`markdown:common/custom/customTreeNode.en.md`
 
 ```ts
 const customTree: CustomTreeNode[] = [

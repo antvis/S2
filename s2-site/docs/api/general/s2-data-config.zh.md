@@ -61,8 +61,8 @@ const s2DataConfig = {
 | timeout        | 图片、视频加载超时时间            | number                                                   | 10000  |      |
 | config         | 图片、视频的配置项              | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |        |      |
 
-<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/custom/customTreeNode.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>
 
 ### FilterParam
 
@@ -74,4 +74,4 @@ const s2DataConfig = {
 | `filteredValues` | 不包含的维度值                                                                 | `unknown[]`               |        |      |
 | `customFilter`   | 自定义筛选函数，最终筛选的结果是同时满足 customFilter 且不在 filteredValues 中 | `(raw: Record<string, string>) => boolean` |        |      |
 
-<embed src="@/docs/common/sort-param.zh.md"></embed>
+<embed src="@/common/sort-param.zh.md"></embed>

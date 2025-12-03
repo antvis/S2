@@ -52,25 +52,25 @@ const s2Options = {
 | facet                       | (spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => [BaseFacet](/api/basic-class/base-facet)                                                                                                                       |      |         | 自定义分面                                                                                                                                |
 | transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | 自定义 AntV/G 渲染引擎 [配置参数](https://g.antv.antgroup.com/api/canvas/options) & [插件注册](https://g.antv.antgroup.com/plugins/intro) |
 
-<embed src="@/docs/common/conditions.zh.md"></embed>
+<embed src="@/common/conditions.zh.md"></embed>
 
-<embed src="@/docs/common/series-number.zh.md"></embed>
+<embed src="@/common/series-number.zh.md"></embed>
 
-<embed src="@/docs/common/frozen.zh.md"></embed>
+<embed src="@/common/frozen.zh.md"></embed>
 
-<embed src="@/docs/common/interaction.zh.md"></embed>
+<embed src="@/common/interaction.zh.md"></embed>
 
-<embed src="@/docs/common/totals.zh.md"></embed>
+<embed src="@/common/totals.zh.md"></embed>
 
-<embed src="@/docs/common/tooltip.zh.md"></embed>
+<embed src="@/common/tooltip.zh.md"></embed>
 
-<embed src="@/docs/common/custom-tooltip.zh.md"></embed>
+<embed src="@/common/custom-tooltip.zh.md"></embed>
 
-<embed src="@/docs/common/pagination.zh.md"></embed>
+<embed src="@/common/pagination.zh.md"></embed>
 
-<embed src="@/docs/common/style.zh.md"></embed>
+<embed src="@/common/style.zh.md"></embed>
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>
 
 ## DataCellCallback
 
@@ -116,17 +116,17 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | spreadsheet | 表格实例                 | [SpreadSheet](/api/basic-class/spreadsheet) | -      | ✓    |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]`                                      | -      |      |
 
-<embed src="@/docs/common/custom/layoutHierarchy.zh.md"></embed>
+<embed src="@/common/custom/layoutHierarchy.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutArrange.zh.md"></embed>
+<embed src="@/common/custom/layoutArrange.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutCoordinate.zh.md"></embed>
+<embed src="@/common/custom/layoutCoordinate.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutCellMeta.zh.md"></embed>
+<embed src="@/common/custom/layoutCellMeta.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutSeriesNumberNodes.zh.md"></embed>
+<embed src="@/common/custom/layoutSeriesNumberNodes.zh.md"></embed>
 
-<embed src="@/docs/common/custom/headerActionIcons.zh.md"></embed>
+<embed src="@/common/custom/headerActionIcons.zh.md"></embed>
 
 ## HeaderActionIconProps
 
@@ -138,7 +138,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | meta     | 当前 cell 的 meta 信息 | Node   | -      | ✓    |
 | event    | 当前点击事件信息       | Event  | false  | ✓    |
 
-<embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
+<embed src="@/common/custom/customSvgIcons.zh.md"></embed>
 
 ## LayoutResult
 
@@ -165,4 +165,4 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 
 ## MergedCellInfo
 
-<embed src="@/docs/common/merged-cell.zh.md"></embed>
+<embed src="@/common/merged-cell.zh.md"></embed>

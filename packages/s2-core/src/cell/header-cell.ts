@@ -178,11 +178,15 @@ export abstract class HeaderCell<
     };
   }
 
+  protected shouldShowDefaultHeaderActionIcon() {
+    return this.spreadsheet.options.showDefaultHeaderActionIcon;
+  }
+
   protected showSortIcon() {
-    const { options, dataCfg } = this.spreadsheet;
+    const { dataCfg } = this.spreadsheet;
     const isEmptyValues = isEmpty(dataCfg.fields.values);
 
-    if (options.showDefaultHeaderActionIcon && !isEmptyValues) {
+    if (this.shouldShowDefaultHeaderActionIcon() && !isEmptyValues) {
       const { sortParam } = this.getHeaderConfig();
       const query = this.meta.query;
 

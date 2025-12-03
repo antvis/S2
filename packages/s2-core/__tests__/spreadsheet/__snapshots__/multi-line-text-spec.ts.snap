@@ -5793,13 +5793,13 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons and valuesInCols=false 1`] = `
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons and layoutWidthType === compact 1`] = `
 Array [
   Object {
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 106,
+    "height": 30,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -5810,7 +5810,406 @@ Array [
     "actualText": "省份",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 106,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "省份",
+    ],
+    "originalText": "省份",
+    "width": 378,
+  },
+  Object {
+    "actualText": "城市城市城市城市城市城市城市城市城市城市城市城市",
+    "actualTextHeight": 16,
+    "actualTextWidth": 289,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "城市城市城市城市城市城市城市城市城市城市城市城市",
+    ],
+    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
+    "width": 378,
+  },
+  Object {
+    "actualText": "类别类别类别类别类别类别类别类别类别类别",
+    "actualTextHeight": 16,
+    "actualTextWidth": 241,
+    "height": 48,
+    "multiLineActualTexts": Array [
+      "类别类别类别类别类别类别类别类别类别类别",
+    ],
+    "originalText": "类别类别类别类别类别类别类别类别类别类别",
+    "width": 836,
+  },
+  Object {
+    "actualText": "子类别",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 48,
+    "multiLineActualTexts": Array [
+      "子类别",
+    ],
+    "originalText": "子类别",
+    "width": 836,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons and layoutWidthType === compact 2`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": "1",
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": "2",
+    "width": 80,
+  },
+  Object {
+    "actualText": "3",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "3",
+    ],
+    "originalText": "3",
+    "width": 80,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons and layoutWidthType === compact 3`] = `
+Array [
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 48,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 602,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 48,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 301,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "actualTextHeight": 15,
+    "actualTextWidth": 265,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "数量数量数量数量数量数量数量数量数量数量数量",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 301,
+  },
+  Object {
+    "actualText": "沙发",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 48,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 301,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "actualTextHeight": 15,
+    "actualTextWidth": 265,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "数量数量数量数量数量数量数量数量数量数量数量",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 301,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons and layoutWidthType === compact 4`] = `
+Array [
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 378,
+  },
+  Object {
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 361,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    ],
+    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "width": 378,
+  },
+  Object {
+    "actualText": "四川省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "四川省",
+    ],
+    "originalText": "四川省",
+    "width": 378,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons and layoutWidthType === compact 5`] = `
+Array [
+  Object {
+    "actualText": "236723672361111",
+    "actualTextHeight": 15,
+    "actualTextWidth": 98,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "236723672361111",
+    ],
+    "originalText": 236723672361111,
+    "width": 301,
+  },
+  Object {
+    "actualText": "3877",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "3877",
+    ],
+    "originalText": 3877,
+    "width": 301,
+  },
+  Object {
+    "actualText": "4342",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "4342",
+    ],
+    "originalText": 4342,
+    "width": 301,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 301,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 301,
+  },
+  Object {
+    "actualText": "1723",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1723",
+    ],
+    "originalText": 1723,
+    "width": 301,
+  },
+  Object {
+    "actualText": "1822",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1822",
+    ],
+    "originalText": 1822,
+    "width": 301,
+  },
+  Object {
+    "actualText": "1943",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1943",
+    ],
+    "originalText": 1943,
+    "width": 301,
+  },
+  Object {
+    "actualText": "2330",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2330",
+    ],
+    "originalText": 2330,
+    "width": 301,
+  },
+  Object {
+    "actualText": "632",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "632",
+    ],
+    "originalText": 632,
+    "width": 301,
+  },
+  Object {
+    "actualText": "7234",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "7234",
+    ],
+    "originalText": 7234,
+    "width": 301,
+  },
+  Object {
+    "actualText": "834",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "834",
+    ],
+    "originalText": 834,
+    "width": 301,
+  },
+  Object {
+    "actualText": "5343",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "5343",
+    ],
+    "originalText": 5343,
+    "width": 301,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 301,
+  },
+  Object {
+    "actualText": "2451",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2451",
+    ],
+    "originalText": 2451,
+    "width": 301,
+  },
+  Object {
+    "actualText": "2244",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2244",
+    ],
+    "originalText": 2244,
+    "width": 301,
+  },
+  Object {
+    "actualText": "2333",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2333",
+    ],
+    "originalText": 2333,
+    "width": 301,
+  },
+  Object {
+    "actualText": "2445",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2445",
+    ],
+    "originalText": 2445,
+    "width": 301,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons and valuesInCols=false 1`] = `
+Array [
+  Object {
+    "actualText": "序号",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 91,
+    "multiLineActualTexts": Array [
+      "序号",
+    ],
+    "originalText": "序号",
+    "width": 80,
+  },
+  Object {
+    "actualText": "省份",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 91,
     "multiLineActualTexts": Array [
       "省份",
     ],
@@ -5821,7 +6220,7 @@ Array [
     "actualText": "城市城市城市城市城市城市城市城市城市城市城市城市",
     "actualTextHeight": 64,
     "actualTextWidth": 292,
-    "height": 106,
+    "height": 91,
     "multiLineActualTexts": Array [
       "城市城市城市",
       "城市城市城市",
@@ -5835,7 +6234,7 @@ Array [
     "actualText": "数值",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 106,
+    "height": 91,
     "multiLineActualTexts": Array [
       "数值",
     ],
@@ -5846,7 +6245,7 @@ Array [
     "actualText": "类别类别类别类别类别类别类别类别类别类别",
     "actualTextHeight": 16,
     "actualTextWidth": 241,
-    "height": 112,
+    "height": 96,
     "multiLineActualTexts": Array [
       "类别类别类别类别类别类别类别类别类别类别",
     ],
@@ -5889,7 +6288,7 @@ Array [
     "actualText": "家具",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 112,
+    "height": 96,
     "multiLineActualTexts": Array [
       "家具",
     ],
@@ -5900,7 +6299,7 @@ Array [
     "actualText": "桌子",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 106,
+    "height": 91,
     "multiLineActualTexts": Array [
       "桌子",
     ],
@@ -5911,7 +6310,7 @@ Array [
     "actualText": "沙发",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 106,
+    "height": 91,
     "multiLineActualTexts": Array [
       "沙发",
     ],
@@ -5922,7 +6321,7 @@ Array [
     "actualText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "actualTextHeight": 80,
     "actualTextWidth": 341,
-    "height": 112,
+    "height": 96,
     "multiLineActualTexts": Array [
       "家具家具家具",
       "家具家具家具",
@@ -5937,7 +6336,7 @@ Array [
     "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "actualTextHeight": 75,
     "actualTextWidth": 365,
-    "height": 106,
+    "height": 91,
     "multiLineActualTexts": Array [
       "桌子桌子桌子",
       "桌子桌子桌子",
@@ -5952,7 +6351,7 @@ Array [
     "actualText": "办公用品",
     "actualTextHeight": 16,
     "actualTextWidth": 49,
-    "height": 112,
+    "height": 96,
     "multiLineActualTexts": Array [
       "办公用品",
     ],
@@ -5963,7 +6362,7 @@ Array [
     "actualText": "笔",
     "actualTextHeight": 15,
     "actualTextWidth": 13,
-    "height": 106,
+    "height": 91,
     "multiLineActualTexts": Array [
       "笔",
     ],
@@ -5974,7 +6373,7 @@ Array [
     "actualText": "纸张",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 106,
+    "height": 91,
     "multiLineActualTexts": Array [
       "纸张",
     ],
