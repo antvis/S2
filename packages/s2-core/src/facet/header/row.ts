@@ -1,4 +1,4 @@
-import { Group, Rect } from '@antv/g';
+import { Group } from '@antv/g';
 import { each } from 'lodash';
 import { RowCell, SeriesNumberCell } from '../../cell';
 import { RowCellPool } from '../../cell/pool';
@@ -53,7 +53,10 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   public getCellInstance(node: Node): RowCell | SeriesNumberCell {
-    if (this.rowCellPool.pool.length > 0) {
+    if (
+      this.rowCellPool.pool.length > 0 &&
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+    ) {
       const rowCell = this.rowCellPool.acquire()!;
 
       rowCell.reInitCell(node, this.headerConfig);
@@ -206,42 +209,42 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     const frozenTrailingRowGroupHeight =
       frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
-    this.scrollGroup.style.clipPath = new Rect({
-      style: {
-        x: spreadsheet.facet.cornerBBox.x,
-        y: position.y + frozenRowGroupHeight,
-        width,
-        height:
-          viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
-      },
+    this.createOrUpdate('scrollGroup.style.clipPath', {
+      x: spreadsheet.facet.cornerBBox.x,
+      y: position.y + frozenRowGroupHeight,
+      width,
+      height:
+        viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
     });
 
-    this.frozenGroup.style.clipPath = new Rect({
-      style: {
-        x: spreadsheet.facet.cornerBBox.x,
-        y: position.y,
-        width,
-        height: frozenRowGroupHeight,
-      },
+    this.createOrUpdate('frozenGroup.style.clipPath', {
+      x: spreadsheet.facet.cornerBBox.x,
+      y: position.y,
+      width,
+      height: frozenRowGroupHeight,
     });
 
-    this.frozenTrailingGroup.style.clipPath = new Rect({
-      style: {
-        x: spreadsheet.facet.cornerBBox.x,
-        y: position.y + viewportHeight - frozenTrailingRowGroupHeight,
-        width,
-        height: frozenTrailingRowGroupHeight,
-      },
+    this.createOrUpdate('frozenTrailingGroup.style.clipPath', {
+      x: spreadsheet.facet.cornerBBox.x,
+      y: position.y + viewportHeight - frozenTrailingRowGroupHeight,
+      width,
+      height: frozenTrailingRowGroupHeight,
     });
   }
 
   public clear() {
-    // @ts-ignore
-    this.scrollGroup.childNodes.forEach((rowCell: RowCell) => {
-      if (!this.isCellInRect(rowCell.getMeta())) {
-        rowCell.getMeta().belongsCell = null;
-        this.rowCellPool.release(rowCell);
-      }
-    });
+    if (
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+    ) {
+      // @ts-ignore
+      this.scrollGroup.childNodes.forEach((rowCell: RowCell) => {
+        if (!this.isCellInRect(rowCell.getMeta())) {
+          rowCell.getMeta().belongsCell = null;
+          this.rowCellPool.release(rowCell);
+        }
+      });
+    } else {
+      super.clear();
+    }
   }
 }

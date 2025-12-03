@@ -55,6 +55,30 @@ exports[`PivotSheet Export Test should export correct data in grid mode by custo
 总计		78868	78868"
 `;
 
+exports[`PivotSheet Export Test should export correct data in grid mode with hideValue 1`] = `
+"省份	城市
+浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市"
+`;
+
+exports[`PivotSheet Export Test should export correct data in grid mode with hideValue 2`] = `
+"省份	城市
+浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市"
+`;
+
 exports[`PivotSheet Export Test should export correct data in grid mode with totals in col 1`] = `
 "	类别	家具	家具	家具	办公用品	办公用品	办公用品	总计
 	子类别	桌子	沙发	小计	笔	纸张	小计	
@@ -149,12 +173,52 @@ exports[`PivotSheet Export Test should export correct data in tree mode and coll
 四川省	乐山市	2330	2445	2458	352"
 `;
 
+exports[`PivotSheet Export Test should export correct data in tree mode and collapseAll is false with hideValue 1`] = `
+"省份	城市
+浙江省	
+浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市"
+`;
+
+exports[`PivotSheet Export Test should export correct data in tree mode and collapseAll is false with hideValue 2`] = `
+"省份	城市
+浙江省	
+浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市"
+`;
+
 exports[`PivotSheet Export Test should export correct data in tree mode and collapseAll is true 1`] = `
 "类别	家具	家具	办公用品	办公用品
 子类别	桌子	沙发	笔	纸张
 省份	数量	数量	数量	数量
 浙江省	18375	14043	4826	5854
 四川省	7818	9473	7495	10984"
+`;
+
+exports[`PivotSheet Export Test should export correct data in tree mode and collapseAll is true with hideValue 1`] = `
+"省份
+浙江省
+四川省"
+`;
+
+exports[`PivotSheet Export Test should export correct data in tree mode and collapseAll is true with hideValue 2`] = `
+"省份
+浙江省
+四川省"
 `;
 
 exports[`PivotSheet Export Test should export correct data when by {formatData: true} 1`] = `

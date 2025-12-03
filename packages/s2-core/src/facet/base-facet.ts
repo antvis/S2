@@ -40,7 +40,7 @@ import {
   TableSeriesNumberCell,
   type HeaderCell,
 } from '../cell';
-import { ColCellPool, DataCellPool, RowCellPool } from '../cell/pool';
+import { DataCellPool } from '../cell/pool';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
@@ -185,10 +185,6 @@ export abstract class BaseFacet {
   protected textWrapTempColCell: ColCell | TableColCell;
 
   protected dataCellPool: DataCellPool;
-
-  protected colCellPool: ColCellPool;
-
-  protected rowCellPool: RowCellPool;
 
   public customRowHeightStatusMap: Record<string, boolean>;
 
@@ -732,7 +728,7 @@ export abstract class BaseFacet {
   onContainerWheelForPc = () => {
     const canvas = this.spreadsheet.getCanvasElement();
 
-    canvas?.addEventListener('wheel', this.onWheel, { passive: true });
+    canvas?.addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {

@@ -7,7 +7,8 @@ import {
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
-import { batchSetStyle, renderLine } from '../utils/g-renders';
+import { renderLine } from '../utils/g-renders';
+import { batchSetStyle } from '../utils/g-utils';
 
 export class GridGroup extends Group {
   protected s2: SpreadSheet;
@@ -114,7 +115,7 @@ export class GridGroup extends Group {
     if (requiredCount < currentCount) {
       // 从后往前删除，避免在循环中改变数组长度导致索引错乱
       for (let i = currentCount - 1; i >= requiredCount; i--) {
-        children[i].remove();
+        children[i].destroy();
       }
     }
 

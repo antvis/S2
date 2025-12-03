@@ -1,6 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { CopyMIMEType } from '@/common/interface/export';
 import { clone, map, omit } from 'lodash';
+import dataCfg from 'tests/data/empty-column-data.json';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
@@ -80,6 +81,111 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({
         hierarchyType: 'tree',
+      }),
+    );
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+    });
+
+    expect(data).toMatchSnapshot();
+
+    const asyncData = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+      async: true,
+    });
+
+    expect(asyncData).toMatchSnapshot();
+  });
+
+  it('should export correct data in grid mode with hideValue', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(dataCfg),
+      assembleOptions({
+        hierarchyType: 'grid',
+        style: {
+          colCell: {
+            hideValue: true,
+          },
+        },
+      }),
+    );
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+    });
+
+    expect(data).toMatchSnapshot();
+
+    const asyncData = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+      async: true,
+    });
+
+    expect(asyncData).toMatchSnapshot();
+  });
+
+  it('should export correct data in tree mode and collapseAll is true with hideValue', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(dataCfg),
+      assembleOptions({
+        hierarchyType: 'tree',
+        style: {
+          colCell: {
+            hideValue: true,
+          },
+          rowCell: {
+            collapseAll: true,
+          },
+        },
+      }),
+    );
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+    });
+
+    expect(data).toMatchSnapshot();
+
+    const asyncData = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+      async: true,
+    });
+
+    expect(asyncData).toMatchSnapshot();
+  });
+
+  it('should export correct data in tree mode and collapseAll is false with hideValue', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(dataCfg),
+      assembleOptions({
+        hierarchyType: 'tree',
+        style: {
+          colCell: {
+            hideValue: true,
+          },
+          rowCell: {
+            collapseAll: false,
+          },
+        },
       }),
     );
 

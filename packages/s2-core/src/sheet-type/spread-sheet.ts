@@ -718,9 +718,10 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initContainer(dom: S2MountContainer) {
-    const { width, height, device, transformCanvasConfig } = this.options;
+    const { width, height, device, transformCanvasConfig, rendererConfig } =
+      this.options;
 
-    const renderer = new Renderer();
+    const renderer = new Renderer(rendererConfig);
     const canvasConfig = transformCanvasConfig?.(renderer, this);
     /**
      * https://github.com/antvis/S2/issues/2857
