@@ -5,7 +5,7 @@ English
 
 <div align="center">
 
-A practical visualization library for tabular analysis.
+A practical visualization library for tabular analysis.[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/antvis/S2)
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
