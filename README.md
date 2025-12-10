@@ -46,6 +46,7 @@
   <a href="https://github.com/antvis/S2/pulls" target="_blank">
     <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg" alt="pr welcome"/>
   <a/>
+  <a href="https://deepwiki.com/antvis/S2"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 </div>
