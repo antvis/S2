@@ -119,7 +119,7 @@ export class AxisColCell extends ColCell {
 
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
-        group: this.axisShape,
+        group: this.axisShape as any,
         library: corelib(),
       });
     });

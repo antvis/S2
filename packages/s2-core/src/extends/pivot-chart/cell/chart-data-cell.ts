@@ -34,7 +34,7 @@ export class ChartDataCell extends DataCell {
 
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
-        group: this.chartShape,
+        group: this.chartShape as any,
         library: corelib(),
       });
     });
