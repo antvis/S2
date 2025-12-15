@@ -67,6 +67,7 @@ jobs:
       - name: Release
         env:
           npm_config_legacy_peer_deps: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm release
 
       # 发布失败通知内部开发群
