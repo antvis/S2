@@ -25,7 +25,12 @@ module.exports = {
     ],
     '@semantic-release/release-notes-generator',
     '@semantic-release/changelog',
-    '@semantic-release/npm',
+    [
+      "@semantic-release/npm",
+      {
+        "provenance": true
+      }
+    ],
     [
       '@semantic-release/git',
       {
