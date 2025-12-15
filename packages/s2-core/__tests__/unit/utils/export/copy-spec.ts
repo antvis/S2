@@ -1880,4 +1880,106 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
+
+  test('should copy correct row in grid mode with same prefix', async () => {
+    const samePrefixDataCfg = {
+      describe: '标准交叉表数据。',
+      fields: {
+        rows: ['province'],
+        columns: ['type'],
+        values: ['number'],
+        valueInCols: true,
+      },
+      meta: [
+        {
+          field: 'number',
+          name: '数量',
+        },
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '类别',
+        },
+        {
+          field: 'sub_type',
+          name: '子类别',
+        },
+      ],
+      data: [
+        {
+          number: 7789,
+          province: '浙江省',
+          city: '杭州市',
+          type: '家具',
+          sub_type: '桌子',
+        },
+        {
+          number: 3551,
+          province: '四川省',
+          city: '南充市',
+          type: '办公用品',
+          sub_type: '纸张',
+        },
+        {
+          number: 3551,
+          province: '四川省省',
+          city: '南充市',
+          type: '办公用品',
+          sub_type: '纸张',
+        },
+        {
+          number: 3551,
+          province: '湖南省',
+          city: '南充市',
+          type: '办公用品',
+          sub_type: '纸张',
+        },
+      ],
+    };
+    const sheet = new PivotSheet(
+      getContainer(),
+      samePrefixDataCfg,
+      assembleOptions({
+        hierarchyType: 'grid',
+        interaction: {
+          // 悬停高亮
+          hoverHighlight: true,
+
+          copy: {
+            // 允许复制
+            enable: true,
+            // 是否携带行列头数据
+            withHeader: true,
+            // 是否使用格式化数据
+            withFormat: true,
+          },
+          // 刷选
+          brushSelection: {
+            rowCell: true,
+            colCell: true,
+            dataCell: true,
+          },
+          // 多选
+          multiSelection: true,
+        },
+      }),
+    );
+
+    await sheet.render();
+
+    const cells = sheet.facet.getDataCells();
+
+    selectCells(cells, sheet);
+
+    const copyableList = getSelectedData(sheet);
+
+    expect(copyableList).toMatchSnapshot();
+  });
 });
