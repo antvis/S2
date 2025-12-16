@@ -1,6 +1,6 @@
 import { Group, RectStyleProps } from '@antv/g';
 import type { S2CellType } from '../../common';
-import { createOrUpdateRect } from '../../utils';
+import { createOrUpdateRect } from '../../utils/g-utils';
 import type { Node } from '../layout/node';
 import type { BaseHeaderConfig } from './interface';
 

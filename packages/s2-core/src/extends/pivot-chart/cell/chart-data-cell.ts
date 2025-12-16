@@ -21,7 +21,9 @@ export class ChartDataCell extends DataCell {
       return;
     }
 
-    this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    if (!this.chartShape) {
+      this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    }
 
     const chartOptions = this.getChartOptions();
 
@@ -32,7 +34,7 @@ export class ChartDataCell extends DataCell {
 
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
-        group: this.chartShape,
+        group: this.chartShape as any,
         library: corelib(),
       });
     });

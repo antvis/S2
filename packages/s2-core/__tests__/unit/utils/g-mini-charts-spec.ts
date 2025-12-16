@@ -16,8 +16,7 @@ import {
   scale,
   transformRatioToPercent,
 } from '@/utils/g-mini-charts';
-import type { IElement } from '@antv/g-lite';
-import { forEach, last, map } from 'lodash';
+import { forEach, map } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
@@ -411,7 +410,7 @@ describe('Render Chart Shape Tests', () => {
       cell,
     );
 
-    const text = last(cell.getChildren()) as IElement;
+    const text = cell.children.find((child) => child.style.text);
 
     expect(text.attr('text')).toEqual('10.00%');
   });

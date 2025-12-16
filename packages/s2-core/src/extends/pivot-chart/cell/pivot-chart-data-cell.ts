@@ -65,7 +65,9 @@ export class PivotChartDataCell extends ChartDataCell {
   public drawTextShape(): void {
     const chartOptions = this.getChartOptions();
 
-    this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    if (!this.chartShape) {
+      this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    }
 
     waitForCellMounted(() => {
       if (this.destroyed) {
@@ -74,7 +76,7 @@ export class PivotChartDataCell extends ChartDataCell {
 
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
-        group: this.chartShape,
+        group: this.chartShape as any,
         library: corelib(),
       });
     });
