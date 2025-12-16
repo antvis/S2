@@ -25,7 +25,12 @@ module.exports = {
     ],
     '@semantic-release/release-notes-generator',
     '@semantic-release/changelog',
-    '@semantic-release/npm',
+    [
+      "@semantic-release/npm",
+      {
+        "provenance": true
+      }
+    ],
     [
       '@semantic-release/git',
       {
@@ -42,5 +47,12 @@ module.exports = {
       },
     ],
   ],
+  verifyConditions: ["@semantic-release/changelog",
+    "@semantic-release/git",
+    "@semantic-release/github",
+    "@semantic-release/exec"],
+  prepare: ["@semantic-release/changelog",
+    "@semantic-release/git",
+    "@semantic-release/exec"],
   preset: 'angular',
 };
