@@ -28,7 +28,6 @@ module.exports = {
     [
       "@semantic-release/npm",
       {
-        "verifyConditions": false,
         "provenance": true
       }
     ],
@@ -48,5 +47,9 @@ module.exports = {
       },
     ],
   ],
+  verifyConditions: ["@semantic-release/changelog",
+    "@semantic-release/git",
+    "@semantic-release/github",
+    "@semantic-release/exec"],
   preset: 'angular',
 };
