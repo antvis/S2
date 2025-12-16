@@ -1,3 +1,15 @@
+# [@antv/s2-v2.4.12-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.11...@antv/s2-v2.4.12-beta.1) (2025-12-16)
+
+
+### Bug Fixes
+
+* 复制时相同前缀判断不准确 ([#3255](https://github.com/antvis/S2/issues/3255)) ([171841d](https://github.com/antvis/S2/commit/171841d93da2b62a9e4c9088defa0102ed68a81a))
+
+
+### Performance Improvements
+
+* 性能优化合入 ([#3258](https://github.com/antvis/S2/issues/3258)) ([c92af9f](https://github.com/antvis/S2/commit/c92af9fd3f34a553e41ccdd376f6c65d54983ddc))
+
 # [@antv/s2-v2.4.11](https://github.com/antvis/S2/compare/@antv/s2-v2.4.10...@antv/s2-v2.4.11) (2025-12-01)
 
 
