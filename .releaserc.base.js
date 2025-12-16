@@ -28,6 +28,7 @@ module.exports = {
     [
       "@semantic-release/npm",
       {
+        "verifyConditions": false,
         "provenance": true
       }
     ],
