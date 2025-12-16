@@ -51,5 +51,8 @@ module.exports = {
     "@semantic-release/git",
     "@semantic-release/github",
     "@semantic-release/exec"],
+  prepare: ["@semantic-release/changelog",
+    "@semantic-release/git",
+    "@semantic-release/exec"],
   preset: 'angular',
 };
