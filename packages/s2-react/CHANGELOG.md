@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.3.1-beta.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.3.0...@antv/s2-react-v2.3.1-beta.1) (2025-12-17)
+
+
+### Performance Improvements
+
+* 性能优化合入 ([#3258](https://github.com/antvis/S2/issues/3258)) ([c92af9f](https://github.com/antvis/S2/commit/c92af9fd3f34a553e41ccdd376f6c65d54983ddc))
+
 # [@antv/s2-react-v2.3.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.3...@antv/s2-react-v2.3.0) (2025-12-01)
 
 
