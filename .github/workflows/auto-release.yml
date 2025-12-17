@@ -15,6 +15,8 @@ jobs:
     permissions:
       contents: write  # semantic-release 需要推送到仓库 (tags/changelog)
       id-token: write  # npm Trusted Publisher 需要用来生成 OIDC token
+      issues: write
+      pull-requests: write
 
     strategy:
       matrix:
