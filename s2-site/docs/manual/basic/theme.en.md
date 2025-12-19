@@ -1,7 +1,7 @@
 ---
 title: Theme
 order: 6
-tag: Updated
+
 ---
 
 ## Introduction

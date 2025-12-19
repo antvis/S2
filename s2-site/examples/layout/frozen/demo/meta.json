@@ -10,8 +10,7 @@
         "zh": "明细表 - 行列冻结",
         "en": "TableSheet - Frozen Rows And Cols"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24a16EsOCR8/frozeb.gif",
-      "new": true
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24a16EsOCR8/frozeb.gif"
     },
     {
       "filename": "pivot-frozen-row-header.ts",
@@ -19,8 +18,7 @@
         "zh": "透视表 - 行头冻结",
         "en": "PivotSheet - Frozen Row Header"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "frozen-pivot-grid.ts",
@@ -28,8 +26,7 @@
         "zh": "透视表 - 平铺模式冻结",
         "en": "pivot mode freezes"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*zhWJT5qdlPUAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*zhWJT5qdlPUAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "frozen-pivot-tree.ts",
@@ -37,8 +34,7 @@
         "zh": "透视表 - 树状模式冻结",
         "en": "tree mode freezes"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*BVmlRZ2ga5sAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*BVmlRZ2ga5sAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "frozen-pivot-series.ts",
@@ -46,8 +42,7 @@
         "zh": "透视表 - 序号列冻结",
         "en": "pivot mode series number freezes"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*MHR_TLO1s2wAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*MHR_TLO1s2wAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

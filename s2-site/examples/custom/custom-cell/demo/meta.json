@@ -50,8 +50,7 @@
         "zh": "自定义序号单元格",
         "en": "custom series number cell"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*-IXnSaGqY1EAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*-IXnSaGqY1EAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "totals-cell.ts",
@@ -91,8 +90,7 @@
         "zh": "自定义 mini 图",
         "en": "custom mini chart"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*apnIT4KXP3YAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*apnIT4KXP3YAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "data-cell-placeholder.ts",
@@ -100,8 +98,7 @@
         "zh": "自定义单元格空数据占位符",
         "en": "custom cell empty placeholder"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*B-VMT7kCWL0AAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*B-VMT7kCWL0AAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "empty-placeholder.ts",
@@ -109,8 +106,7 @@
         "zh": "自定义明细表空数据占位符",
         "en": "custom empty placeholder"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pejXR4SODQMAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pejXR4SODQMAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

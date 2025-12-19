@@ -1,7 +1,7 @@
 ---
 title: Quick Start
 order: 1
-tag: Updated
+
 ---
 
 ## 📦 install

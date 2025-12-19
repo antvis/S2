@@ -1,7 +1,7 @@
 ---
 title: Interaction
 order: 2
-tag: Updated
+
 ---
 
 Functional description: properties and methods related to the interaction class. [details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/interaction/root.ts)

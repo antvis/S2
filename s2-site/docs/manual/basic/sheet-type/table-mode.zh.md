@@ -1,7 +1,7 @@
 ---
 title: 明细表
 order: 2
-tag: Updated
+
 ---
 
 ## 简介

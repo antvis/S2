@@ -1,7 +1,7 @@
 ---
 title: 隐藏列头
 order: 2
-tag: Updated
+
 ---
 
 :::warning{title="注意"}

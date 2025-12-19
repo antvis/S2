@@ -29,30 +29,6 @@ The original domestic mirror [https://antv-s2.gitee.io](https://antv-s2.gitee.io
 
 [Old official](https://s2.antv.vision/) website New [official website](https://s2.antv.antgroup.com/)
 
-### After the parent element uses `transform: scale` , the mouse coordinates of the chart respond incorrectly
-
-`supportsCSSTransform` property can be turned on
-
-```ts
-const s2Options = {
-  transformCanvasConfig() {
-    return {
-      supportsCSSTransform: true
-    }
-  }
-}
-```
-
-You can also manually call `s2.changeSheetSize` to change the size of the chart according to the zoom ratio, so that the zoom ratio of the chart and the parent element are consistent
-
-```ts
-const scale = 0.8
-s2.changeSheetSize(width * scale, height * scale)
-s2.render(false)
-```
-
-Please refer to issue [#808](https://github.com/antvis/S2/issues/808) [#990](https://github.com/antvis/S2/pull/990) (thanks to [@cylnet](https://github.com/cylnet) [@xiaochong44](https://github.com/xiaochong44) )
-
 ### How to update table configuration?
 
 ```ts
