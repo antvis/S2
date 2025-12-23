@@ -1,7 +1,7 @@
 ---
 title: Pivot Table
 order: 1
-
+tag: Updated
 ---
 
 ## Introduction
@@ -206,6 +206,7 @@ const s2Options = {
 Unlike [row and column freezing in a detail table](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#row-and-column-freezing), pivot tables have more complex layouts due to their grouping features, which leads to the following limitation:
 
 - When the series number column is enabled and has a [custom layout](/examples/custom/custom-cell/#series-number-cell), freezing row header cells is not currently supported because the relationship between the series number column and the row header cells is unknown.
+
 :::
 
 Row and column freezing is controlled by these properties in `s2Options`:

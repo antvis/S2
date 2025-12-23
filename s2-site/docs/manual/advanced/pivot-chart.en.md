@@ -31,9 +31,9 @@ In a Pivot Composite Chart, the numerical area of a pivot table is transformed i
 
 Compared to a regular crosstab, a Pivot Composite Chart requires the configuration of coordinate axes in addition to row, column, and corner headers:
 
-1.  **Vertical Axis (`axisRowHeader`)**: Used to draw the vertical coordinate axis.
-2.  **Horizontal Axis (`axisColumnHeader`)**: Used to draw the horizontal coordinate axis.
-3.  **Intersection (`axisCornerHeader`)**: Similar to a corner header, used to draw the intersection area of the vertical and horizontal axes.
+1. **Vertical Axis (`axisRowHeader`)**: Used to draw the vertical coordinate axis.
+2. **Horizontal Axis (`axisColumnHeader`)**: Used to draw the horizontal coordinate axis.
+3. **Intersection (`axisCornerHeader`)**: Similar to a corner header, used to draw the intersection area of the vertical and horizontal axes.
 
 ## Quick Start
 
@@ -71,8 +71,8 @@ bootstrap();
 
 The two most commonly used coordinate systems in data visualization are the Cartesian and polar coordinate systems, both of which are two-dimensional:
 
-1.  **Cartesian coordinate system**: Also known as the rectangular coordinate system, it consists of two mutually perpendicular axes.
-2.  **Polar coordinate system**: Consists of a pole and a polar axis. Any point in the coordinate system can be represented by a polar radius and an angle (counterclockwise).
+1. **Cartesian coordinate system**: Also known as the rectangular coordinate system, it consists of two mutually perpendicular axes.
+2. **Polar coordinate system**: Consists of a pole and a polar axis. Any point in the coordinate system can be represented by a polar radius and an angle (counterclockwise).
 
 In a Pivot Composite Chart, you can switch between them in `s2Options`:
 
@@ -149,6 +149,6 @@ const s2Options: S2Options = {
 
 As a special form of table, the Pivot Composite Chart is not currently compatible with all the display forms of a regular pivot table. It has the following limitations:
 
-1.  Only tiled mode is supported; [tree mode](/examples/basic/pivot/#tree) is not supported.
-2.  [Custom row and column headers](/examples/layout/custom-header-group/#custom-pivot-row-header) are not supported.
-3.  [Custom order of measure dimension levels](/examples/custom/custom-layout/#custom-value-order) is not supported.
+1. Only tiled mode is supported; [tree mode](/examples/basic/pivot/#tree) is not supported.
+2. [Custom row and column headers](/examples/layout/custom-header-group/#custom-pivot-row-header) are not supported.
+3. [Custom order of measure dimension levels](/examples/custom/custom-layout/#custom-value-order) is not supported.

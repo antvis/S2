@@ -26,7 +26,8 @@
         "zh": "自定义单元格元数据",
         "en": "Custom Layout Cell Meta"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/SeGpS6Mf3p/c8b32cff-49bd-49f0-a2e8-03c5a769fa4c.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/SeGpS6Mf3p/c8b32cff-49bd-49f0-a2e8-03c5a769fa4c.png",
+      "new": true
     },
     {
       "filename": "custom-layout-hierarchy.ts",
@@ -50,7 +51,8 @@
         "zh": "自定义分面",
         "en": "Custom Facet"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Nz1qTYoOA-kAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Nz1qTYoOA-kAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }
