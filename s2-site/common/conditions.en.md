@@ -5,38 +5,53 @@ order: 2
 
 ## Conditions
 
-Describes the configuration for conditional formatting. This includes text, background, interval (bar chart), and icon formatting.
+Type: `object` , **required** , default value: `{}`
 
-| Parameter  | Description                                                         | Type                                          | Default | Required |
-| ---------- | ------------------------------------------------------------------- | --------------------------------------------- | ------- | -------- |
-| text       | Text-based conditional formatting ([View Example](/examples/analysis/conditions/#text))   | [TextCondition](#textcondition)[]             | -       |          |
-| background | Background-based conditional formatting ([View Example](/examples/analysis/conditions/#background))  | [BackgroundCondition](#backgroundcondition)[] | -       |          |
-| interval   | Interval (bar chart) conditional formatting ([View Example](/examples/analysis/conditions/#interval)) | [IntervalCondition](#intervalcondition)[]     | -       |          |
-| icon       | Icon-based conditional formatting ([View Example](/examples/analysis/conditions/#icon))  | [IconCondition](#iconcondition)[]             | -       |          |
+Function description: Configure field marking. Divided into text (text), background (background), histogram (interval), icon (icon).
 
-### Condition
+| parameter  | illustrate              | type                            | Defaults | required |
+| ---------- | ----------------------- | ------------------------------- | -------- | -------- |
+| text       | text field tag          | [Condition](#condition) \[]     | -        |          |
+| background | background field tag    | [Condition](#condition) \[]     | -        |          |
+| interval   | Histogram Field Markers | [Condition](#condition) \[]     | -        |          |
+| icon       | Icon Field Marker       | [IconCondition](#iconcondition) | -        |          |
 
-Describes the conditional formatting. `TextCondition`, `BackgroundCondition`, `IntervalCondition`, and `IconCondition` all inherit from `Condition`.
+### condition
 
-| Parameter | Description                                       | Type                                  | Default | Required |
-| --------- | ------------------------------------------------- | ------------------------------------- | ------- | -------- |
-| field     | 1. Field ID <br/> 2. Regular expression to match field IDs | `string \| RegExp`                    |         | ✓        |
-| mapping   | The mapping function for the condition            | [ConditionMapping](#conditionmapping) |         | ✓        |
+Type: `object` , **required**
 
-#### ConditionMapping
+Function description: Configure conditional formatting. Including text (text), background (background), histogram (interval).
 
-Function description: The callback function for conditional formatting. See the [documentation](/manual/basic/conditions) and [example](/examples/analysis/conditions/#interval).
+| parameter | illustrate                                                   | type               | Defaults | required |
+| --------- | ------------------------------------------------------------ | ------------------ | -------- | -------- |
+| field     | 1. Field ID<br>2. Use regular expressions to match field IDs | `string \| RegExp` |          | ✓        |
+| mapping   | role mapping function​                                       | `function`         |          | ✓        |
+
+#### MappingFunction
 
 ```ts
-// The generic type T in the return value of the mapping function differs for each of TextCondition, BackgroundCondition, IntervalCondition, and IconCondition.
-export type ConditionMapping<T = unknown> = (
-  fieldValue: number | string,
-  data: RawData,
-  cell: S2CellType,
-) => ConditionMappingResult<T>;
+type MappingFunction = (
+  fieldValue: number | string | null,
+  data: Record<string, any>,
+  node: DataCell | HeaderCell
+) => {
+  // 仅用于图标字段标记，可选
+  icon?: string;
+
+  // 背景 ｜ 文本 ｜ 柱状图 | 图标 字段标记颜色填充，必选
+  fill: string;
+
+  // 仅用于柱状图字段标记，可选
+  isCompare?: boolean;
+  minValue?: number;
+  maxValue?: number;
+
+  // 仅用于背景字段标记，可选。（当背景颜色较暗，将文本颜色设置为白色。优先级低于 文本字段标记）
+  intelligentReverseTextColor?: boolean;
+} | null | undefined // 返回值为空时，表示当前字段不显示字段标记样式
 ```
 
-**Example of `condition` usage:**
+**Example usage of condition:**
 
 ```javascript
 const options = {
@@ -44,25 +59,17 @@ const options = {
     text: [
       {
         field: "province",
-        mapping: (fieldValue, data, cell) => {
-          return {
-            fill: "green",
-            fontSize: 16,
-            opacity: 0.2,
-            textAlign: 'right'
-          };
-        },
+        mapping: () => ({
+          fill: "rgba(0, 0, 0, .65)",
+        }),
       },
     ],
     interval: [
       {
         field: "sub_type",
-        mapping: (fieldValue, data, cell) => {
+        mapping: () => {
           return {
             fill: "green",
-            isCompare: true,
-            maxValue: 8000,
-            minValue: 300,
           };
         },
       },
@@ -70,77 +77,28 @@ const options = {
     background: [
       {
         field: "count",
-        mapping: (fieldValue, data, cell) => {
-          return {
-            fill: "green",
-            intelligentReverseTextColor: true,
-          };
-        },
-      },
-    ],
-    icon: [
-      {
-        field: "number",
-        position: 'left',
-        mapping: (fieldValue, data, cell) => {
-          return {
-            icon: "InfoCircle",
-            fill: "green",
-          };
-        },
+        mapping: () => ({
+          fill: "#ff00ff",
+        }),
       },
     ],
   },
 };
 ```
 
-### TextCondition
-
-Same as [Condition](#condition). The `ConditionMappingResult` configuration is consistent with the [text theme configuration (partially effective)](/api/general/s2-theme#texttheme), which means you can control the color, opacity, alignment, font, etc., of different texts.
-
-```ts
-export type TextConditionMappingResult = TextTheme;
-```
-
-[View Example](/examples/analysis/conditions/#text)
-
-### BackgroundCondition
-
-Same as [Condition](#condition). The `ConditionMappingResult` is configured as:
-
-```ts
-export type BackgroundConditionMappingResult = {
-  fill: string;
-  intelligentReverseTextColor?: boolean;
-};
-```
-
-[View Example](/examples/analysis/conditions/#background)
-
-### IntervalCondition
-
-Same as [Condition](#condition). The `ConditionMappingResult` is configured as:
-
-```ts
-export type IntervalConditionMappingResult = {
-  fill?: string;
-  isCompare?: boolean;
-  minValue?: number;
-  maxValue?: number;
-}
-```
-
-[View Example](/examples/analysis/conditions/#interval)
-
 ### IconCondition
 
-Describes the conditional formatting for icons. The only difference from other [Condition](#condition) types is the additional `position` parameter to customize the icon's position relative to the text. See the [documentation](/manual/basic/conditions) and [example](/examples/analysis/conditions/#icon).
+Type: `object` , **required** , default value: `null`
 
-| Parameter | Description | Type | Default | Required |
-| --------- | --------------------- | --------------- | ------- | ---- |
-| position  | The position of the icon relative to the text | `left` \| `right` | `right` |      |
+Function description: Configure icon (icon) conditional formatting.
 
-**Example of `icon condition` usage:**
+| parameter | illustrate                                    | type                                | Defaults | required |
+| --------- | --------------------------------------------- | ----------------------------------- | -------- | -------- |
+| field     | Field ID                                      | `string`                            |          | ✓        |
+| position  | The position of the icon relative to the text | `left \| right`                     | `right`  |          |
+| mapping   | mapping function                              | [MappingFunction](#mappingfunction) |          | ✓        |
+
+**Example of icon condition usage:**
 
 ```javascript
  const options = {
@@ -149,7 +107,7 @@ Describes the conditional formatting for icons. The only difference from other [
       {
         field: "profit",
         position: "left",
-        mapping: (fieldValue, data, cell) => {
+        mapping: () => {
           return {
             icon: "InfoCircle",
             fill: "red",
@@ -160,14 +118,3 @@ Describes the conditional formatting for icons. The only difference from other [
   },
 };
 ```
-
-The `ConditionMappingResult` is configured as:
-
-```ts
-export type IconConditionMappingResult = {
-  fill: string;
-  icon: string;
-};
-```
-
-<embed src="@/common/icon.en.md"></embed>

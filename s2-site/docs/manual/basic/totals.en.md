@@ -1,152 +1,168 @@
 ---
-title: Subtotals and Grand Totals
+title: Totals
 order: 5
 ---
 
 ## Introduction
 
-Subtotals and grand totals are a pivoting feature of the table that allows you to configure summary capabilities for row and column headers. When [custom row and column headers](/manual/advanced/custom/custom-header) are enabled, the summary capabilities for the corresponding headers are disabled.
+Subtotals belong to the pivot function of the table, and subtotals can be configured for rows and columns.
 
-### Subtotals
+### Subtotal
 
-Summarizes the measure values for a specific dimension.
+Aggregate Measures for a Dimension
 
-#### Form 1: Adding Extra Rows/Columns
+#### Form 1: adding extra rows/columns
 
-In grid mode, an extra row/column is added for the current dimension.
+In tile mode, add an extra row/column to the current dimension
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/sK5Rx1%26Sp/c4dcee0c-af4b-4be6-b665-c810eec78101.png" width="600" alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/sK5Rx1%26Sp/c4dcee0c-af4b-4be6-b665-c810eec78101.png" width="600" alt="row">
 
-<br/>
+#### Form 2: Affiliate Node
 
-#### Form 2: Attached to a Node
+In tree mode, anchor to the row/column where the current node is located
 
-In tree mode, it is attached to the row/column of the current node.
+<img src="https://gw.alipayobjects.com/zos/antfincdn/Ljeww3JNa/543f1a66-51e3-4134-a2ec-83fd6a64f7d9.png" width="600" alt="row">
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/Ljeww3JNa/543f1a66-51e3-4134-a2ec-83fd6a64f7d9.png" width="600" alt="row" />
+### total
 
-<br/>
+Aggregate measures across all dimensions, additional rows/columns are required for both tiled and treed modes
 
-### Grand Totals
+#### 1. Single measure
 
-Summarizes the measure values for all dimensions. Both grid and tree modes require adding an extra row/column.
+Tile:
 
-#### 1. Single Measure Value
-
-Grid:
-
-<img src="https://gw.alipayobjects.com/zos/antfincdn/9GwQ67LQ%26/c11b6f7b-ff0a-4ce3-89e7-1eccb95719a3.png" width="600"  alt="row" />
-
-<br/>
+<img src="https://gw.alipayobjects.com/zos/antfincdn/9GwQ67LQ%26/c11b6f7b-ff0a-4ce3-89e7-1eccb95719a3.png" width="600" alt="row">
 
 Tree:
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/MRc64qzqf/d77ae378-4512-45a8-b2e0-9fb7e4a19c45.png" width="600" alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/MRc64qzqf/d77ae378-4512-45a8-b2e0-9fb7e4a19c45.png" width="600" alt="row">
 
-<br/>
+#### 2. Multiple metrics
 
-#### 2. Multiple Measure Values
+Tile:
 
-Grid:
-
-<img src="https://gw.alipayobjects.com/zos/antfincdn/bPhcUuHCi/6cd43952-58fb-469a-b4bb-fdd142bf3317.png" width="600" alt="row" />
-
-<br/>
+<img src="https://gw.alipayobjects.com/zos/antfincdn/bPhcUuHCi/6cd43952-58fb-469a-b4bb-fdd142bf3317.png" width="600" alt="row">
 
 Tree:
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/GekvQBQAw/8dde8830-e496-458c-b05e-bcd4f3e4bc0c.png" width="600" alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/GekvQBQAw/8dde8830-e496-458c-b05e-bcd4f3e4bc0c.png" width="600" alt="row">
 
-<br/>
+## use
 
-### Grouped Summaries
+### 1. Display configuration
 
-Performs `subtotal/grand total` calculations grouped by dimension, which is useful for comparative analysis of data for a specific dimension.
+Configure the `totals` attribute of [S2Options](/en/api/general/s2-options#total) to realize whether to display the row and column subtotals and the display position. The types are as follows:
 
-#### Row Grand Total/Subtotal Grouping
+#### Totals
 
-<Playground path='analysis/totals/demo/dimension-group-row.ts' rid='pivot-total-group-row' height='400'></playground>
+object is **required** , *default: null* Function description: subtotal total configuration
 
-<br/>
+| parameter | illustrate   | type                                       | Defaults | required |
+| --------- | ------------ | ------------------------------------------ | -------- | -------- |
+| row       | column total | [Total](/en/api/general/s2-options#total) | {}       |          |
+| col       | row total    | [Total](/en/api/general/s2-options#total) | {}       |          |
 
-#### Column Grand Total/Subtotal Grouping
+#### Total
 
-<Playground path='analysis/totals/demo/dimension-group-col.ts' rid='pivot-total-group-col' height='400'></playground>
+object is **required** , *default: null* Function description: Subtotal calculation configuration
 
-<br/>
+| parameter           | illustrate                                                                                                                                                                                 | type         | Defaults              | required |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ | --------------------- | -------- |
+| showGrandTotals     | Whether to display the total                                                                                                                                                               | `boolean`    | false                 | ✓        |
+| showSubTotals       | Whether to display subtotals. When configured as an object, always controls whether to always display subtotals when there are less than 2 subdimensions, and does not display by default. | \`boolean    | { always: boolean }\` | false    |
+| subTotalsDimensions | Summary Dimensions for Subtotals                                                                                                                                                           | `string[]`   | \[]                   | ✓        |
+| reverseGrandTotalsLayout       | total layout position, default bottom or right                                                                                                                                             | `boolean`    | false                 | ✓        |
+| reverseSubTotalsLayout    | Subtotal layout position, default bottom or right                                                                                                                                          | `boolean`    | false                 | ✓        |
+| label               | total alias                                                                                                                                                                                | `string`     |                       |          |
+| subLabel            | subtotal alias                                                                                                                                                                             | `string`     |                       |          |
+| calcGrandTotals          | calculate the total                                                                                                                                                                        | `CalcTotals` |                       |          |
+| calcSubTotals       | calculate subtotal                                                                                                                                                                         | `CalcTotals` |                       |          |
 
-## Usage
-
-### 1. Display Configuration
-
-Configure the `totals` property of [S2Options](/api/general/s2-options#total) to control the display and position of row and column subtotals and grand totals. The type is as follows:
-
-<embed src="@/common/totals.en.md"></embed>
+```ts
+const s2Options = {
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
+      subTotalsDimensions: ['province'],
+    },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
+      subTotalsDimensions: ['type'],
+    },
+  },
+};
+```
 
 ### 2. Data
 
-#### 1. Passing Data
+#### 1. Data incoming
 
-Data is passed in based on the row/column position and `key` value. The dimension `key` value does not include all row and column `keys`. For example:
+The data is imported according to the row/column position and key value, and the dimension key value does not include the keys of all rows and columns, for example:
 
 ```typescript
 [
-  // Grand Total/Grand Total
-  {
-    price: '15.5',
-  },
-  // Zhejiang/Grand Total
-  {
-    province: 'Zhejiang',
-    price: '5.5',
-  },
-  // Zhejiang-Hangzhou/Grand Total
-  {
-    province: 'Zhejiang',
-    city: 'Hangzhou',
-    price: '3',
-  },
-  // Grand Total/Pen
-  {
-    type: 'Pen',
-    price: '10',
-  },
-  // Zhejiang-Subtotal/Pen
-  {
-    province: "Zhejiang",
-    type: "Pen",
-    price: "3"
-  },
+    // 总计/总计
+    {
+        price: '15.5',
+    },
+    // 浙江/总计
+    {
+        province: '浙江',
+        price: '5.5',
+    },
+    // 浙江-杭州/总计
+    {
+        province: '浙江',
+        city: '杭州',
+        price: '3',
+    },
+    // 总计/笔
+    {
+        type: '笔',
+        price: '10',
+    },
+    // 浙江-小计/笔
+    {
+        province: "浙江",
+        type: "笔",
+        price: "3"
+    },
 ]
 ```
 
-##### Combining Grand Total and Subtotal Data into `data`
+##### Collect the total and subtotal data into data
 
 ```ts
 const s2DataConfig = {
   data: [
     {
-      province: 'Zhejiang',
-      city: 'Hangzhou',
-      type: 'Pen',
+      province: '浙江',
+      city: '杭州',
+      type: '笔',
       price: '1',
     },
-    // Grand Total/Grand Total
+    // 总计/总计
     {
       price: '15.5',
     },
   ],
   ...
-}
+};
 ```
 
-#### 2. Calculating Data
+#### 2. Calculate the data
 
-You can configure the `calcGrandTotals` and `calcSubTotals` properties for `row` and `col` under `totals` to calculate the summary data.
+You can configure attributes `calcGrandTotals` and `calcSubTotals` for `row` and `col` under `totals` respectively to realize the calculation of summary data
 
-##### 2.1. Configure Aggregation Method
+##### 1. Configure aggregation mode
 
-This is done by configuring `aggregation`. The currently supported aggregation methods are `SUM`, `MIN`, `MAX`, `AVG` (arithmetic mean), and `COUNT`. [View Example](https://s2.antv.antgroup.com/en/examples/analysis/totals/#calculate)
+It is realized by configuring `aggregation` , which currently supports `SUM` (sum), `MIN` (minimum value), `MAX` (maximum value) , `AVG` (arithmetic average) and `COUNT`.
 
 ```ts
 const s2Options = {
@@ -181,9 +197,9 @@ const s2Options = {
 };
 ```
 
-<br/>
+##### 2. Configure custom methods
 
-##### 2.2. Configure Custom Calculation Method
+Realized by configuring `calcFunc: (query: Record<string, any>, arr: Record<string, any>[]) => number`
 
 ```ts
 const s2Options = {
@@ -195,10 +211,10 @@ const s2Options = {
       reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
       calcGrandTotals: {
-        calcFunc: (query, data, spreadsheet) => {},
+        calcFunc: (query, data) => {},
       },
       calcSubTotals: {
-        calcFunc: (query, data, spreadsheet) => {},
+        calcFunc: (query, data) => {},
       },
     },
     col: {
@@ -208,40 +224,18 @@ const s2Options = {
       reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
       calcGrandTotals: {
-        calcFunc: (query, data, spreadsheet) => {},
+        calcFunc: (query, data) => {},
       },
       calcSubTotals: {
-        calcFunc: (query, data, spreadsheet) => {},
+        calcFunc: (query, data) => {},
       },
     },
   },
 };
 ```
 
-This is done by configuring `calcFunc: (query: Record<string, any>, data: Record<string, any>[], spreadsheet: SpreadSheet) => number`. [View Example](https://s2.antv.antgroup.com/en/examples/analysis/totals/#custom)
+### priority
 
-Note: `data` is the detail data. To get data that includes summaries:
-
-```ts | pure
-import { QueryDataType } from '@antv/s2';
-
-const calcFunc = (query, data, spreadsheet) => {
-  const allData = spreadsheet.dataSet.getCellMultiData({
-    query,
-    queryType: QueryDataType.All,
-  });
-
-  console.log('data (detail data):', data);
-  console.log('data (all data, including summaries):', allData);
-};
-```
-
-<Playground path='analysis/totals/demo/custom.ts' rid='pivot-total-custom' height='400'></playground>
-
-<br/>
-
-### Priority
-
-1. Data passed in has a higher priority than calculated data.
-2. Configuring a custom method has a higher priority than configuring an aggregation method, i.e., `calcFunc > aggregation`.
-3. When the same cell is a `row + col` summary value, the **priority** is: `column grand total/subtotal > row grand total/subtotal`.
+1. Data input priority is higher than calculation data
+2. Configuring custom methods takes precedence over configuring aggregation methods, that is, configuring `calcFunc > aggregation`
+3. When the same cell is a`行+列`summary value, the **priority** is:`列总计/列小计> 行总计/行小计`
