@@ -1,7 +1,7 @@
 ---
 title: Interaction
 order: 2
-tag: Updated
+
 ---
 
 功能描述：交互类相关属性和方法。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/interaction/root.ts)
@@ -254,16 +254,16 @@ interface InteractionStateInfo {
 | 参数 | 说明    | 类型 |
 | --- |--------| --- |
 | spreadsheet | 表格实例 | [SpreadSheet](/api/basic-class/spreadsheet) |
-| canvasEventHandlers | 当前已注册的交互            | [EventHandler](#eventhandler)[] |
-| s2EventHandlers | 当前已注册的交互            | [S2EventHandler](#s2eventhandler)[] |
-| domEventListeners | 当前已注册的交互            | [EventHandler](#eventhandler)[] |
-| isCanvasEffect | 是否是图表内部引起的事件            | boolean |
-| canvasMousemoveEvent | 表格鼠标移动事件            | [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) |
-| isMatchElement | 是否是表格内部的元素            | (event: MouseEvent) => boolean |
-| isMatchPoint | 是否是表格内部的坐标            | (event: MouseEvent) => boolean |
-| bindEvents | 绑定交互事件            | `() => void` |
-| clear | 清空交互事件            | `() => void` |
-| getViewportPoint | 获取表格内的鼠标坐标 （兼容 `supportsCSSTransform`)  | `(event: MouseEvent \| PointerEvent \| WheelEvent) => PointLike` |
+| canvasEventHandlers | 当前已注册的交互           | [EventHandler](#eventhandler)[] |
+| s2EventHandlers | 当前已注册的交互           | [S2EventHandler](#s2eventhandler)[] |
+| domEventListeners | 当前已注册的交互           | [EventHandler](#eventhandler)[] |
+| isCanvasEffect | 是否是图表内部引起的事件           | boolean |
+| canvasMousemoveEvent | 表格鼠标移动事件           | [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) |
+| isMatchElement | 是否是表格内部的元素           | (event: MouseEvent) => boolean |
+| isMatchPoint | 是否是表格内部的坐标           | (event: MouseEvent) => boolean |
+| bindEvents | 绑定交互事件           | `() => void` |
+| clear | 清空交互事件           | `() => void` |
+| getViewportPoint | 获取表格内的鼠标坐标  | `(event: MouseEvent \| PointerEvent \| WheelEvent) => PointLike` |
 
 ### EventListener
 

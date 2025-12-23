@@ -1,7 +1,7 @@
 ---
 title: 导出
 order: 3
-tag: Updated
+
 ---
 
 <Badge>@antv/s2</Badge> <Badge>@antv/s2-react-components</Badge>

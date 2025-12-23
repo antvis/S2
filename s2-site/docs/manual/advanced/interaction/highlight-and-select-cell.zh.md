@@ -1,7 +1,7 @@
 ---
 title: 高亮/选中单元格
 order: 8
-tag: New
+
 ---
 
 :::warning{title="注意"}

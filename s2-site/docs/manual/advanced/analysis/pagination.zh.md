@@ -1,7 +1,7 @@
 ---
 title: 分页
 order: 11
-tag: Updated
+
 ---
 
 <Badge>@antv/s2-react</Badge> <Badge>@antv/s2-react-components</Badge> <Badge type="success">@antv/s2-vue</Badge>

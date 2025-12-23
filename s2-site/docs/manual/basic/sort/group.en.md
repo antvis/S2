@@ -1,7 +1,7 @@
 ---
 title: Group Sort
 order: 1
-tag: Updated
+
 ---
 
 ## Introduction

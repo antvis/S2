@@ -1,7 +1,7 @@
 ---
 title: S2 2.0 Migration Guide
 order: 9
-tag: New
+
 ---
 
 This document will help you upgrade from S2 `1.x` to S2 `2.x`.
@@ -107,7 +107,7 @@ In `1.x`, we passed properties like `supportsCSSTransform` and `devicePixelRatio
 
 In `2.x`:
 
-- Removed `devicePixelRatio` and `supportsCSSTransform (supportCSSTransform)`.
+- Removed `devicePixelRatio` and `supportsCSSTransform (deprecated)`.
 - Added `transformCanvasConfig` to support passing `G` configurations and registering plugins. See [Register AntV/G Plugins](/manual/advanced/g-plugins) documentation for details.
 
 ```tsx | pure

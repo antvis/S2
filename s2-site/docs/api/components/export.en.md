@@ -1,7 +1,7 @@
 ---
 title: Export
 order: 5
-tag: Updated
+
 ---
 
 ## React export components

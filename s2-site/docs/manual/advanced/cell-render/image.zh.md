@@ -1,7 +1,7 @@
 ---
 title: 图片
 order: 2
-tag: New
+
 ---
 
 有时在表格中直接基于URL展示图片，会极大的优化工作流程，提高工作效率。基于 [`AntV/G`](https://g.antv.antgroup.com/) 强大的渲染能力，S2 可以在行头、列头、数据单元格内绘制图片。

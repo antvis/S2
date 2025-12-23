@@ -1,7 +1,7 @@
 ---
 title: 透视组合图拓展 S2Options
 order: 4
-tag: New
+
 ---
 
 功能描述：透视组合图对 S2Options 配置的拓展。查看 [文档](/manual/advanced/pivot-chart) 和 [示例](/examples/custom/custom-shape-and-chart#pivot-chart)

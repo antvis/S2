@@ -1,7 +1,7 @@
 ---
 title: S2 2.0 升级指南
 order: 9
-tag: New
+
 ---
 
 本文档将帮助你从 S2 `1.x` 版本升级到 S2 `2.x` 版本。
@@ -107,17 +107,15 @@ tag: New
 
 在 `2.x` 中：
 
-- 移除 `devicePixelRatio` 和 `supportsCSSTransform (supportCSSTransform)`.
+- 移除 `devicePixelRatio` 和 `supportsCSSTransform (已废弃)`.
 - 新增 `transformCanvasConfig` 支持透传 `G` 的配置，以及注册插件，具体请查阅 [注册 AntV/G 插件](/manual/advanced/g-plugins) 相关文档。
 
 ```tsx | pure
 const s2Options = {
   transformCanvasConfig(renderer) {
-    renderer.setConfig({ enableDirtyCheck: true })
     renderer.registerPlugin(new PluginA11y({ enableExtractingText: true }));
 
     return {
-      supportsCSSTransform: true,
       devicePixelRatio: 2
     };
   },
