@@ -26,11 +26,6 @@ import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
 
 const s2Options = {
   transformCanvasConfig(renderer) {
-    // Modify configuration
-    renderer.setConfig({
-      enableCulling: true,
-      enableDirtyCheck: true,
-    });
     // Register plugin
     renderer.registerPlugin(
       new PluginA11y({
@@ -41,8 +36,6 @@ const s2Options = {
     console.log('Currently registered plugins and configuration:', renderer.getPlugins(), renderer.getConfig());
 
     return {
-      // Whether to ensure correct coordinate transformation for interaction events when CSS Transform is applied to the container
-      supportsCSSTransform: true,
       devicePixelRatio: 2,
       dblClickSpeed: 500,
       cursor: 'crosshair',

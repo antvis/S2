@@ -107,8 +107,8 @@ const s2Options = {
 
 When automatic text wrapping is enabled, the cell height is adjusted based on the **actual height of the text** by default.
 
-1.  If you have configured a [custom cell height](/manual/advanced/custom/cell-size), the adaptive height will be disabled, and the custom height will take precedence.
-2.  By default, the cell height is calculated based on `maxLines`. When the height is [manually resized](/manual/advanced/interaction/resize) or a [custom cell height](/manual/advanced/custom/cell-size) is set, the maximum number of lines that can be displayed will be recalculated based on the current text line height to ensure proper display. This will **override** the default `maxLines` configuration.
+1. If you have configured a [custom cell height](/manual/advanced/custom/cell-size), the adaptive height will be disabled, and the custom height will take precedence.
+2. By default, the cell height is calculated based on `maxLines`. When the height is [manually resized](/manual/advanced/interaction/resize) or a [custom cell height](/manual/advanced/custom/cell-size) is set, the maximum number of lines that can be displayed will be recalculated based on the current text line height to ensure proper display. This will **override** the default `maxLines` configuration.
 
 :::
 

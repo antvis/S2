@@ -1,7 +1,6 @@
 ---
 title: 自定义序号节点
 order: 2
-tag: New
 ---
 
 ## LayoutSeriesNumberNodes

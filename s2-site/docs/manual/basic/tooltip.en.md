@@ -25,6 +25,7 @@ See the [React implementation](https://github.com/antvis/S2/blob/next/packages/s
   - 2. [Customizing tooltip content in @antv/s2](/examples/react-component/tooltip/#custom-content-base)
   - 3. [Customizing sorting in @antv/s2](/examples/custom/custom-order/#custom-order-base)
 - Don't forget to import the styles:
+
   ```ts
   // @antv/s2
   import "@antv/s2/dist/s2.min.css";
@@ -33,6 +34,7 @@ See the [React implementation](https://github.com/antvis/S2/blob/next/packages/s
   // @antv/s2-vue
   import "@antv/s2-vue/dist/s2-vue.min.css";
   ```
+
 :::
 
 ## Usage
@@ -281,6 +283,7 @@ const s2Options = {
 #### Custom Tooltip Display Trigger
 
 By default:
+
 - Headers show `tooltip` on **click**, or on hover if the text is truncated.
 - Data cells show `tooltip` after hovering for **800ms**.
 

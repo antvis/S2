@@ -90,8 +90,9 @@ Sorting can be categorized into two types based on the dimension's level and the
 #### Sorting by Summary Data
 
 > How to enable totals/subtotals in S2?
-> 1.  Use aggregated data from your data source.
-> 2.  Use S2's built-in aggregate calculations. 📊 [See documentation](/api/general/s2-options#totals).
+>
+> 1. Use aggregated data from your data source.
+> 2. Use S2's built-in aggregate calculations. 📊 [See documentation](/api/general/s2-options#totals).
 
 - `sortByMeasure` is `TOTAL_VALUE`.
 - `sortFieldId` can be any dimension field (e.g., non-leaf `province` or leaf `city`).
@@ -113,7 +114,7 @@ Sorting can be categorized into two types based on the dimension's level and the
 }
 ```
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*im9YR7e_wooAAAAAAAAAAAAADmJ7AQ/original" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*im9YR7e_wooAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="Sorting by Detail Data"/>
 
 #### Example 2: Sorting Non-Innermost Dimension by Summary Data
 
@@ -131,7 +132,7 @@ When `query` includes `some` column dimensions:
 }
 ```
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HthpSLAX6BYAAAAAAAAAAAAADmJ7AQ/original" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HthpSLAX6BYAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="Sorting Non-Innermost Dimension by Summary Data"/>
 
 When `query` includes `all` column dimensions:
 
@@ -148,7 +149,7 @@ When `query` includes `all` column dimensions:
 }
 ```
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*8MlDSbozN0gAAAAAAAAAAAAADmJ7AQ/original" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*8MlDSbozN0gAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="When `query` includes `all` column dimensions"/>
 
 #### Example 3: Sorting Innermost Dimension by Summary Data
 
@@ -164,7 +165,7 @@ When `query` includes `all` column dimensions:
 }
 ```
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*SiB0T7oePzEAAAAAAAAAAAAADmJ7AQ/original" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*SiB0T7oePzEAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="Sorting Innermost Dimension by Summary Data"/>
 
 ### 4. Custom Method (sortFunc)
 
@@ -236,6 +237,6 @@ const s2DataConfig = {
 
 ## Priority
 
-1.  Conditions in `sortParams` have a higher priority than the original data order.
-2.  For multiple items in `sortParams`: the later ones have higher priority.
-3.  For multiple conditions within an item: `sortFunc` > `sortBy` > `sortByMeasure` > `sortMethod`.
+1. Conditions in `sortParams` have a higher priority than the original data order.
+2. For multiple items in `sortParams`: the later ones have higher priority.
+3. For multiple conditions within an item: `sortFunc` > `sortBy` > `sortByMeasure` > `sortMethod`.

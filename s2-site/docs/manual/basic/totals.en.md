@@ -242,6 +242,6 @@ const calcFunc = (query, data, spreadsheet) => {
 
 ### Priority
 
-1.  Data passed in has a higher priority than calculated data.
-2.  Configuring a custom method has a higher priority than configuring an aggregation method, i.e., `calcFunc > aggregation`.
-3.  When the same cell is a `row + col` summary value, the **priority** is: `column grand total/subtotal > row grand total/subtotal`.
+1. Data passed in has a higher priority than calculated data.
+2. Configuring a custom method has a higher priority than configuring an aggregation method, i.e., `calcFunc > aggregation`.
+3. When the same cell is a `row + col` summary value, the **priority** is: `column grand total/subtotal > row grand total/subtotal`.

@@ -1,13 +1,12 @@
 ---
 title: High-Definition Adaptation
 order: 7
-tag: Updated
 ---
 
 S2 is rendered using `Canvas`. In real-world development, we've found that the following scenarios can cause the **table to appear blurry**:
 
-1.  **Switching between devices with different `DPR` values**: For example, moving the browser from a MacBook (with a Retina display) to an external monitor (a standard 2k screen).
-2.  **Using pinch-to-zoom on a laptop trackpad**: Zooming in with a two-finger gesture, rather than the traditional `Cmd` + `+` or `Cmd` + `-` to resize the browser window.
+1. **Switching between devices with different `DPR` values**: For example, moving the browser from a MacBook (with a Retina display) to an external monitor (a standard 2k screen).
+2. **Using pinch-to-zoom on a laptop trackpad**: Zooming in with a two-finger gesture, rather than the traditional `Cmd` + `+` or `Cmd` + `-` to resize the browser window.
 
 High-definition adaptation is enabled by default but can be manually disabled.
 

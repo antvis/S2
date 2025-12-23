@@ -1,7 +1,6 @@
 ---
 title: Basic Concepts
 order: 0
-tag: Updated
 ---
 
 This article introduces the basic concepts of a pivot table.

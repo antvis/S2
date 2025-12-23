@@ -1,7 +1,6 @@
 ---
 title: BaseDataSet
 order: 5
-tag: Updated
 ---
 
 Function description: The table's dataset. [Details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/data-set/pivot-data-set.ts)

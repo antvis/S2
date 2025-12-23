@@ -1,7 +1,6 @@
 ---
 title: Detail Table
 order: 2
-tag: Updated
 ---
 
 ## Introduction
