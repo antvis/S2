@@ -107,7 +107,7 @@ In `1.x`, we passed properties like `supportsCSSTransform` and `devicePixelRatio
 
 In `2.x`:
 
-- Removed `devicePixelRatio` and `supportsCSSTransform (deprecate)`.
+- Removed `devicePixelRatio` and `supportsCSSTransform (deprecated)`.
 - Added `transformCanvasConfig` to support passing `G` configurations and registering plugins. See [Register AntV/G Plugins](/manual/advanced/g-plugins) documentation for details.
 
 ```tsx | pure
