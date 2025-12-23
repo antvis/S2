@@ -1,7 +1,7 @@
 ---
 title: Theme Configuration
 order: 6
-tag: Updated
+
 ---
 
 ## Introduction

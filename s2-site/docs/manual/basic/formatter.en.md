@@ -1,7 +1,7 @@
 ---
 title: Data Formatting
 order: 9
-tag: New
+
 ---
 
 `s2DataConfig` supports configuring `meta` to format data.

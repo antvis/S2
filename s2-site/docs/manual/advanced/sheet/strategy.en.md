@@ -1,7 +1,7 @@
 ---
 title: Strategy Sheet
 order: 9
-tag: Updated
+
 ---
 
 In order to meet more analysis scenarios, S2 provides an out-of-the-box scenario table component - trend analysis table. With it, you can easily implement a scene table that displays multiple indicators in a cell.

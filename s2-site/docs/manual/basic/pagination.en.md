@@ -1,7 +1,7 @@
 ---
 title: Pagination
 order: 11
-tag: New
+
 ---
 
 <Badge>@antv/s2</Badge>

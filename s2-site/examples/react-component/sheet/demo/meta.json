@@ -42,8 +42,7 @@
         "zh": "mini 图表组件",
         "en": "StrategySheet with mini chart"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lLfATbGywcEAAAAAAAAAAAAAARQnAQ",
-      "new": true
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lLfATbGywcEAAAAAAAAAAAAAARQnAQ"
     },
     {
       "filename": "chart.tsx",
@@ -51,8 +50,7 @@
         "zh": "在单元格内绘制 AntV/G2 图表",
         "en": "Render AntV/G2 Charts"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

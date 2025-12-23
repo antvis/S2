@@ -1,7 +1,7 @@
 ---
 title: Conditional Formatting
 order: 4
-tag: Updated
+
 ---
 
 In data visualization and analysis, conditional formatting is a common feature that allows users to visually emphasize key information in the data. S2 is a data visualization library that supports flexible conditional formatting features:
