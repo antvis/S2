@@ -1,7 +1,7 @@
 ---
 title: 高级排序
 order: 2
-tag: Updated
+
 ---
 
 <Badge>@antv/s2-react-components</Badge>

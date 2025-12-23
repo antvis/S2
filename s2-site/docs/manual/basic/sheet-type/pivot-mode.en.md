@@ -1,7 +1,7 @@
 ---
 title: Pivot Table
 order: 1
-tag: Updated
+
 ---
 
 ## Introduction

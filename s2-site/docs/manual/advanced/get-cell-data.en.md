@@ -1,7 +1,7 @@
 ---
 title: Getting Cell Data
 order: 9
-tag: Updated
+
 ---
 
 :::warning{title='Tip'}

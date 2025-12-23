@@ -1,7 +1,7 @@
 ---
 title: BaseDataSet
 order: 5
-tag: Updated
+
 ---
 
 功能描述：表格数据集。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/data-set/pivot-data-set.ts)

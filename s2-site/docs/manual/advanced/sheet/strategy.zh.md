@@ -1,7 +1,7 @@
 ---
 title: 趋势分析表
 order: 9
-tag: Updated
+
 ---
 
 <Badge>@antv/s2-react</Badge>

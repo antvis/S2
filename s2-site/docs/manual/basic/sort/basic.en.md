@@ -1,7 +1,7 @@
 ---
 title: Basic Sorting
 order: 0
-tag: Updated
+
 ---
 
 ## Introduction

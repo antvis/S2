@@ -1,7 +1,7 @@
 ---
 title: 维度下钻
 order: 13
-tag: Updated
+
 ---
 
 <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>

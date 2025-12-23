@@ -1,7 +1,7 @@
 ---
 title: 导出
 order: 5
-tag: Updated
+
 ---
 
 ## React 导出组件 <Badge>@antv/s2-react-components</Badge>

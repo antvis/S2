@@ -1,7 +1,7 @@
 ---
 title: 滚动
 order: 6
-tag: Updated
+
 ---
 
 ## 虚拟滚动

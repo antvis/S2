@@ -1,7 +1,7 @@
 ---
 title: Registering AntV/G Plugins
 order: 10
-tag: New
+
 ---
 
 :::warning{title='Tip'}
