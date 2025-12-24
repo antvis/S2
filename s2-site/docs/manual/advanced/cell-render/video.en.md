@@ -1,7 +1,6 @@
 ---
 title: Video
 order: 5
-tag: New
 ---
 
 Rendering videos based on URLs in a table allows users to quickly understand the video content.

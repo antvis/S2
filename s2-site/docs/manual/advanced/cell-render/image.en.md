@@ -1,7 +1,6 @@
 ---
 title: Image
 order: 2
-tag: New
 ---
 
 Sometimes, displaying images directly in a table based on a URL can greatly optimize the workflow and improve work efficiency. Based on the powerful rendering capabilities of [`AntV/G`](https://g.antv.antgroup.com/), S2 can draw images in row headers, column headers, and data cells.
