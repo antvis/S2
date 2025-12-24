@@ -4,7 +4,7 @@ order: 9
 
 ---
 
-Description: Bounding box model. [Details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/bbox/baseBBox.ts)
+Description: Bounding box model. [Details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/bbox/base-bbox.ts)
 
 ```ts
 bbox.x
