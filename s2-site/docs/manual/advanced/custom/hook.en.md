@@ -48,7 +48,7 @@ To change the default implementation of corner cells, you need to inherit from [
 
 ## cornerHeader
 
-To change the default implementation of corner headers, you need to inherit from [Group](https://g.antv.vision/zh/docs/api/group) and override certain methods, such as rendering content replacement. [example](/examples/custom/custom-cell#corner-cell)
+To change the default implementation of corner headers, you need to inherit from [Group](https://g.antv.antgroup.com/api/basic/group) and override certain methods, such as rendering content replacement. [example](/examples/custom/custom-cell#corner-cell)
 
 ## frame
 

@@ -3,7 +3,7 @@ title: Graphic style
 order: 3
 ---
 
-S2 uses [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) as the graphics engine. Some graphics style configurations, such as the `fill` attribute and `stroke` attribute of cells, and the `fontFamily` and `fontSize` of drawing fonts, etc., are directly transparently transmitted to [AntV/G drawing attributes](https://g.antv.vision/zh/docs/api/shape/attrs) .
+S2 uses [AntV/G](https://g.antv.antgroup.com/guide/getting-started) as the graphics engine. Some graphics style configurations, such as the `fill` attribute and `stroke` attribute of cells, and the `fontFamily` and `fontSize` of drawing fonts, etc., are directly transparently transmitted to [AntV/G drawing attributes](https://g.antv.antgroup.com/api/basic/display-object#%E7%BB%98%E5%9B%BE%E5%B1%9E%E6%80%A7) .
 
 Here is a brief introduction to the commonly used drawing properties of S2:
 
