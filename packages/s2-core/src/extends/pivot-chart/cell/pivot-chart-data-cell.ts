@@ -76,7 +76,7 @@ export class PivotChartDataCell extends ChartDataCell {
 
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
-        group: this.chartShape as any,
+        group: this.chartShape,
         library: corelib(),
       });
     });

@@ -111,7 +111,7 @@ export class AxisRowCell extends RowCell {
 
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
-        group: this.axisShape as any,
+        group: this.axisShape,
         library: corelib(),
       });
     });
