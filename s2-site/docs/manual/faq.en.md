@@ -146,7 +146,7 @@ Please see [edit mode example](/examples/case/data-preview#excel)
 
 Currently, S2 consists of three packages
 
-* `@antv/s2` : Developed based on `canvas` and [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) , providing basic table display/interaction capabilities
+* `@antv/s2` : Developed based on `canvas` and [AntV/G](https://g.antv.antgroup.com/guide/getting-started) , providing basic table display/interaction capabilities
 * `@antv/s2-react` : Based on the `@antv/s2` package, it provides supporting analysis components
 * `@antv/s2-vue` : Based on `Vue3` and `@antv/s2` package, provide supporting analysis components
 

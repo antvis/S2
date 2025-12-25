@@ -1,28 +1,28 @@
 ---
-title: Custom Sort
+title: Basic Sorting
 order: 0
 
 ---
 
 ## Introduction
 
-Customize the sorting of table data rows, support row header/column header sorting, single row/column sorting, custom lists, functions and other functions. [Check out the examples](/examples/analysis/sort#custom-sort-func) .
+S2 supports various forms of sorting for table data, such as sorting row/column header dimension values by alphabetical order, or by their corresponding subtotals/grand totals/numerical values. In addition to providing default sorting methods, S2 also allows for custom sorting using functions. [View Example](/examples/analysis/sort#custom-sort-func)
 
-## use
+## Usage
 
-Driven by passing [sortParams](/en/api/general/s2-data-config#SortParams) data in [s2DataConfig](/en/api/general/s2-data-config)
+Sorting is enabled by passing `sortParams` in the [s2DataConfig](/api/general/s2-data-config).
 
-### sortParam
+### sortParams
 
-| parameter     | illustrate                                                                     | type                                  | Defaults | required |
-| ------------- | ------------------------------------------------------------------------------ | ------------------------------------- | -------- | -------- |
-| sortFieldId   | Measure Id, the Id to be sorted                                                | `string`                              | -        | ✓        |
-| sortMethod    | sort by                                                                        | `ASC` \| `DESC` \| `asc` \| `desc`    | -        |          |
-| sortBy        | custom sorted list                                                             | `string[]`                            | -        |          |
-| sortByMeasure | Sort by metric value (numeric value) (for pivot tables)                        | `string`                              | -        |          |
-| query         | Filter criteria, narrow the sorting range such as: `{ city: '成都' }`            | `object`                              | -        |          |
-| type          | Sorting within the group is used to display icons (applicable to pivot tables) | `string`                              | -        |          |
-| sortFunc      | Function for custom sorting                                                    | `(v: SortFuncParam) => Array<string>` | -        |          |
+| Parameter | Description | Type | Default | Required |
+| --- | --- | --- | --- | --- |
+| sortFieldId | The ID of the dimension or measure to be sorted. | `string` | - | ✓ |
+| sortMethod | The sorting method. | `ASC` \| `DESC` \| `asc` \| `desc` | - | |
+| sortBy | A custom list to sort by. | `string[]` | - | |
+| sortByMeasure | Sorts by a measure (numerical) value (for pivot tables). | `string` | - | |
+| query | A filter condition to narrow the sorting scope, e.g., `{ city: 'Chengdu' }`. | `object` | - | |
+| type | Used to display an icon for in-group sorting (for pivot tables). | `string` | - | |
+| sortFunc | A custom sorting function. | `(v: SortFuncParam) => Array<string>` | - | |
 
 ```ts
 import { EXTRA_FIELD } from "@antv/s2";
@@ -32,281 +32,211 @@ const s2DataConfig = {
     {
       sortFieldId: 'type',
       sortMethod: 'DESC',
-      // EXTRA_FIELD 是 dataCfg.fields.values 字段的虚拟 fieldId
-      query: { city: '成都', [EXTRA_FIELD]: 'price' },
+      // EXTRA_FIELD is the virtual fieldId for the dataCfg.fields.values field
+      query: { city: 'Chengdu', [EXTRA_FIELD]: 'price' },
     },
   ],
   ...
-};
+}
 ```
 
-## Way
+## Methods
 
-### 1. Ascending/descending method (sortMethod)
+### 1. Ascending/Descending (sortMethod)
 
-Row/column header dimensions are supported, and the ascending and descending order **is based on the first letter** . Examples are as follows:
-
-```ts
-sortParams: [
-  { sortFieldId: 'province', sortMethod: 'DESC' },
-  { sortFieldId: 'type', sortMethod: 'ASC' },
-]
-```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*DlG8SYEFlS8AAAAAAAAAAAAAARQnAQ" width="600" alt="row">
-
-### 2. List of dimension values ​​(sortBy)
-
-Supports setting the corresponding list in the table for the`行/列头`. If there is nesting, the sub-dimensions will be sorted within the group (as shown in `city` ), for example:
-
-```ts
-sortParams: [
-  { sortFieldId: 'province', sortBy: [ '吉林', '浙江' ] },
-  { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '长春' ] },
-  { sortFieldId: 'type', sortBy: [ '纸张', '笔' ] },
-];
-```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*5A9lSpS6uHwAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
-
-### 3. Measure field (sortByMeasure)
-
-Support`行头/列头`sorting based on metric (numeric) data
-
-#### row/column
-
-Supports sorting by`行或列`, examples are as follows:
+Supports sorting of `row/column headers`. It handles numbers, number-like strings, and regular strings. Non-numeric types fall back to **localeCompare**.
 
 ```ts
 const s2DataConfig = {
   sortParams: [
-    {
-      // type 依据 浙江-舟山-price 升序 排序
-      sortFieldId: 'type',
-      sortMethod: 'ASC',
-      sortByMeasure: 'price',
-      query: {
-        province: '浙江',
-        city: '舟山',
-        [EXTRA_FIELD]: 'price',
-      },
-    },
+    { sortFieldId: 'province', sortMethod: 'DESC' },
+    { sortFieldId: 'type', sortMethod: 'ASC' },
   ]
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*SZ04TIhCQwkAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*DlG8SYEFlS8AAAAAAAAAAAAAARQnAQ" width="500" alt="row" />
 
-#### row+column
+### 2. Dimension Value List (sortBy)
 
-Supports sorting by`行+列`, examples are as follows:
+Supports sorting `row/column headers` according to a specified list of dimension values. If there are multiple levels, each sublevel is sorted within its group (like `city` below).
 
 ```ts
 const s2DataConfig = {
   sortParams: [
-    {
-      // type 依据（ 浙江 - 舟山 ）&（ price ） 升序 排序
-      sortFieldId: 'type',
-      sortMethod: 'ASC',
-      sortByMeasure: 'price',
-      query: {
-        province: '浙江',
-        city: '舟山',
-        [EXTRA_FIELD]: 'price',
-      },
-    },
+    { sortFieldId: 'province', sortBy: ['Zhejiang', 'Jilin'] },
+    { sortFieldId: 'city', sortBy: ['Zhoushan', 'Hangzhou', 'Baishan', 'Changchun'] },
+    { sortFieldId: 'type', sortBy: ['Paper', 'Pen'] },
   ]
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wZ4fQJ5-AsMAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*jD1iTZdrUZwAAAAAAAAAAAAADmJ7AQ/original" width="500" alt="row" />
 
-### 4. Summary value
+### 3. By Measure Field (sortByMeasure)
 
-The non-leaf node of the`行/列头`. At this time, `sortByMeasure` is the summary virtual field TOTAL\_VALUE, and the value is `$$total$$` .
+Supports sorting `row/column headers` by their intersecting measure (numerical) values. In the example below, to sort the `city` dimension in the row header, you must first identify the data to sort by. The `city` dimension corresponds to 7 columns of numerical data. Using any of these columns can determine the sort order. Therefore, you must specify the `sortFieldId` and use the `query` property to define the numerical data to be used for comparison.
 
-#### Configure Data Aggregation Mode
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gAxoSaj9Z4IAAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
-1. Use aggregated data from data.
-2. Use aggregate calculations available in S2. ​📊 View document [subtotal total configuration](/en/api/general/s2-options#totals)
+Sorting can be categorized into two types based on the dimension's level and the data used for sorting:
 
-#### Row Total/Row Subtotal
+#### Sorting by Detail Data
 
-Sort column headers by`行总计/行小计`, examples are as follows:
+- `sortByMeasure` is a specific measure, e.g., `number`.
+- `sortFieldId` is the last field in the row/column dimension, e.g., `city`.
+- `query` narrows down to the lowest-level detail data, e.g., including all column dimension values for `type` and `sub_type`. (See Example 1)
 
-**Row subtotal** :
+#### Sorting by Summary Data
 
-```ts
-import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
+> How to enable totals/subtotals in S2?
+>
+> 1. Use aggregated data from your data source.
+> 2. Use S2's built-in aggregate calculations. 📊 [See documentation](/api/general/s2-options#totals).
 
-const s2DataConfig = {
-  sortParams: [
-    {
-      // type 依据 （ 浙江 - 小计 ）&（ price ）& 降序 排序
-      sortFieldId: 'type',
-      sortMethod: 'DESC',
-      sortByMeasure: TOTAL_VALUE,
-      query: {
-        province: '浙江',
-        [EXTRA_FIELD]: 'price',
-      },
-    },
-  ];
-}
+- `sortByMeasure` is `TOTAL_VALUE`.
+- `sortFieldId` can be any dimension field (e.g., non-leaf `province` or leaf `city`).
+  - If it's `province`, the `query` can limit some or all dimension values of `type` and `sub_type`, sorting by the row subtotal of `province`. (See Example 2)
+  - If it's `city`, the `query` can only limit some column dimensions, e.g., `type`, sorting by the column subtotal. (See Example 3)
 
-// 使用前端总计的聚合方法进行排序。如果 data 数据中存在聚合数据则使用
-const s2Options = {
-  totals: {
-    row: {
-      subTotalsDimensions: [ 'province' ],
-      calcSubTotals: {
-        aggregation: 'SUM'
-      }
-    }
+#### Example 1: Sorting by Detail Data
+
+```javascript
+{
+  sortFieldId: 'city',
+  sortByMeasure: 'number',
+  sortMethod: 'asc',
+  query: {
+    type: 'Office Supplies',
+    sub_type: 'Paper',
+    [EXTRA_FIELD]: 'number'
   }
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*RfN8Q5IauP8AAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*im9YR7e_wooAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="Sorting by Detail Data"/>
 
-row totals:
+#### Example 2: Sorting Non-Innermost Dimension by Summary Data
+
+When `query` includes `some` column dimensions:
+
+```javascript
+{
+  sortFieldId: 'province',
+  sortByMeasure: TOTAL_VALUE,
+  sortMethod: 'asc',
+  query: {
+    type: 'Furniture',
+    [EXTRA_FIELD]: 'number'
+  }
+}
+```
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HthpSLAX6BYAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="Sorting Non-Innermost Dimension by Summary Data"/>
+
+When `query` includes `all` column dimensions:
+
+```javascript
+{
+  sortFieldId: 'province',
+  sortByMeasure: TOTAL_VALUE,
+  sortMethod: 'asc',
+  query: {
+    type: 'Office Supplies',
+    sub_type: 'Pen',
+    [EXTRA_FIELD]: 'number'
+  }
+}
+```
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*8MlDSbozN0gAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="When `query` includes `all` column dimensions"/>
+
+#### Example 3: Sorting Innermost Dimension by Summary Data
+
+```javascript
+{
+  sortFieldId: 'city',
+  sortByMeasure: TOTAL_VALUE,
+  sortMethod: 'desc',
+  query: {
+    type: 'Office Supplies',
+    [EXTRA_FIELD]: 'number'
+  }
+}
+```
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*SiB0T7oePzEAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="Sorting Innermost Dimension by Summary Data"/>
+
+### 4. Custom Method (sortFunc)
+
+`sortFunc` receives a `SortFuncParam` object and supports sorting by both `dimension values` and `measure values`.
+
+| Parameter | Description | Type | Default | Required |
+| --- | --- | --- | --- | --- |
+| sortFieldId | The ID of the dimension or measure to be sorted. | `string` | - | ✓ |
+| sortMethod | The sorting method. | `ASC` \| `DESC` \| `asc` \| `desc` | - | |
+| sortBy | A custom list to sort by. | `string[]` | - | |
+| sortByMeasure | Sorts by a measure (numerical) value. | `string` | - | |
+| query | A filter condition to narrow the sorting scope, e.g., `{ city: 'Baishan' }`. | `object` | - | |
+| type | Used to display an icon for in-group sorting. | `string` | - | |
+| data | The current list of data to be sorted. | Array<`string` \| [`CellData`](/api/basic-class/cell-data)> | - | |
+
+#### By Dimension Value (Row/Column Header)
+
+Supports custom sorting of dimension values (row or column headers).
 
 ```ts
-import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
-
 const s2DataConfig = {
   sortParams: [
     {
-      // 对 type 中笔和纸的总计进行 降序 排序
-      sortFieldId: 'type',
-      sortMethod: 'DESC',
-      sortByMeasure: TOTAL_VALUE,
-      query: {
-        [EXTRA_FIELD]: 'price',
+      // When sortFieldId is a dimension, params.data is a list of dimension values
+      sortFieldId: 'province',
+      sortFunc: (params) => {
+        const { data } = params;
+        return data.sort((a, b) => a.localeCompare(b));
       },
     },
   ],
-  // data 中带有排序使用的数据时，S2 会优先使用 data 返回的数据进行排序
-  data:[
-    {
-      type: "笔",
-      price: "38"
-    },
-    {
-      type: "纸张",
-      price: "36"
-    }
-  ]
-}
+};
 ```
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/%26pwbU6StZ/img.png" width="600" alt="rowTotal">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7MLkQLxhliAAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
-#### Column Total/Column Subtotal
+#### By Measure Value (Numerical)
 
-Sort row headers by`列总计/列小计`, examples are as follows:
-
-```ts
-import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
-
-const s2DataConfig = {
-  sortParams: [
-    {
-      // province 依据（ province - 小计 ）&（ 总计 - price ）& 升序 排序
-      sortFieldId: 'province',
-      sortMethod: 'ASC',
-      sortByMeasure: TOTAL_VALUE,
-      query: {
-        [EXTRA_FIELD]: 'price',
-      },
-    }
-  ]
-}
-
-const s2Options = {
-  totals: {
-    row: {
-      subTotalsDimensions: ['province'],
-      calcSubTotals: {
-        aggregation: 'SUM',
-      },
-    }
-  }
-}
-```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZXBjR6fZFpQAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
-
-When there is a subtotal in the`列小计`, add the corresponding parameter in the `query` to get the corresponding cell, same`行小计`above
-
-### 5. Custom method (sortFunc)
-
-`sortFunc` will return `SortFuncParam` parameter according to the current conditions, and supports two ways of`维度值`and`度量值`
-
-| parameter     | illustrate                                                    | type                               | Defaults                | required |
-| ------------- | ------------------------------------------------------------- | ---------------------------------- | ----------------------- | -------- |
-| sortFieldId   | Measure Id, the Id to be sorted                               | `string`                           | -                       | ✓        |
-| sortMethod    | sort by                                                       | `ASC` \| `DESC` \| `asc` \| `desc` | -                       |          |
-| sortBy        | custom sorted list                                            | `string[]`                         | -                       |          |
-| sortByMeasure | Sort by metric value (numeric value)                          | `string`                           | -                       |          |
-| query         | Filter criteria, narrow the sort range such as: `{city:'白山'}` | `object`                           | -                       |          |
-| type          | Sorting within the group is used to display the icon          | `string`                           | -                       |          |
-| data          | List of currently sorted data                                 | \`Array\<string                    | Record\<string, any>>\` | -        |
-
-#### Dimension value (row/column header)
-
-Support dimension value customization, that is, row header or column header, examples are as follows:
+Supports custom calculations using measure values.
 
 ```ts
-const s2DataConfig = {
-  sortParams: [
-    {
-      // sortFieldId 为维度值时，params.data 为维度值列表
-      sortFieldId: 'province',
-      sortFunc: (params) => {
-          const { data } = params;
-          return data.sort((a, b) => a.localeCompare(b));
-      },
-    },
-  ]
-}
-```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7MLkQLxhliAAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
-
-#### measure (numeric)
-
-Supports custom calculations using metrics, for example:
-
-```ts
-
 const s2DataConfig = {
   sortParams: [
     {
       sortFieldId: 'city',
       sortByMeasure: 'price',
-      // 当使用 sortByMeasure 时，可以传入 query 定位数值列表
-      // 如下方限定 params.data 为 type=纸张，数值=price 的数据
-      query: { type: '纸张', [EXTRA_FIELD]: 'price' },
+      // When using sortByMeasure, you can pass a query to locate the list of numerical values
+      // The following limits params.data to where type='Paper' and the measure is 'price'
+      query: { type: 'Paper', [EXTRA_FIELD]: 'price' },
       sortFunc: (params) => {
         const { data, sortByMeasure, sortFieldId } = params || {};
-        return data
-          // 使用 price 做比较
-          ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
-          // map 出 city 维度的数组
-          ?.map((item) => item[sortFieldId]);
+        return (
+          data
+            .map(item => item.raw) // item is CellData, so we get the raw data object
+            // Compare using 'price'
+            ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
+            // Map to an array of the 'city' dimension
+            ?.map((item) => item[sortFieldId])
+        );
       },
     },
-  ]
-}
+  ],
+};
 ```
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width="600" alt="row" />
 
-📊 View demo [custom sorting](/examples/analysis/sort#custom-sort-func) .
+📊 [View the custom sort demo](/examples/analysis/sort#custom-sort-func).
 
-## priority
+## Priority
 
-1. The condition priority in `sortParams` is higher than the original data
-2. `sortParams` multiple `item` : according to the order priority, the priority of the latter is higher
-3. Multiple conditions in `item` : `sortByMeasure` > `sortFunc` > `sortBy` > `sortMethod`
+1. Conditions in `sortParams` have a higher priority than the original data order.
+2. For multiple items in `sortParams`: the later ones have higher priority.
+3. For multiple conditions within an item: `sortFunc` > `sortBy` > `sortByMeasure` > `sortMethod`.
