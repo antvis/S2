@@ -55,7 +55,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   public getCellInstance(node: Node): RowCell | SeriesNumberCell {
     if (
       this.rowCellPool.pool.length > 0 &&
-      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseCell
     ) {
       const rowCell = this.rowCellPool.acquire()!;
 
@@ -233,9 +233,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   public clear() {
-    if (
-      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
-    ) {
+    if (this.headerConfig.spreadsheet.options.future?.experimentalReuseCell) {
       // @ts-ignore
       this.scrollGroup.childNodes.forEach((rowCell: RowCell) => {
         if (!this.isCellInRect(rowCell.getMeta())) {

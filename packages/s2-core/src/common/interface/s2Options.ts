@@ -308,9 +308,9 @@ export interface S2BasicOptions<
    */
   future?: {
     /**
-     * 是否复用数据单元格
+     * 是否复用单元格以提升性能
      */
-    experimentalReuseDataCell?: boolean;
+    experimentalReuseCell?: boolean;
   };
 }
 

@@ -17,7 +17,7 @@ const s2Options: SheetComponentOptions = {
   },
   showDefaultHeaderActionIcon: false,
   future: {
-    experimentalReuseDataCell: true,
+    experimentalReuseCell: true,
   },
 };
 

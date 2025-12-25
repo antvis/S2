@@ -1618,7 +1618,7 @@ export abstract class BaseFacet {
 
     if (
       this.dataCellPool.pool.length > 0 &&
-      this.spreadsheet.options.future?.experimentalReuseDataCell
+      this.spreadsheet.options.future?.experimentalReuseCell
     ) {
       cell = this.dataCellPool.acquire()!;
       cell.setMeta(viewMeta);
@@ -1650,7 +1650,7 @@ export abstract class BaseFacet {
       diffPanelIndexes(this.preCellIndexes!, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-      if (this.spreadsheet.options.future?.experimentalReuseDataCell) {
+      if (this.spreadsheet.options.future?.experimentalReuseCell) {
         const allDataCells = this.getDataCells();
         const maxLength = Math.max(
           willRemoveDataCells.length,

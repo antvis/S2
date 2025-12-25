@@ -54,6 +54,7 @@ const s2Options = {
 | device                      | `"pc" \| "mobile"`                                  |          |                           | Device type                                                                                                                                                                                                           |
 | transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | Custom AntV/G rendering engine [configuration](https://g.antv.antgroup.com/api/canvas/options) & [plugin registration](https://g.antv.antgroup.com/plugins/intro) |
 | rendererConfig              | `Partial<RendererConfig>`                           |          |                           | Custom AntV/G rendering engine configuration                                                                                                                                                                          |
+| future                      | [Future](#future)                                   |          |                           | Enable some experimental features (currently unstable, may change in the future)                                                                                                                                       |
 
 <embed src="@/common/conditions.en.md"></embed>
 
@@ -199,6 +200,17 @@ Function description: Empty data placeholder configuration (for table mode)
 | ----------- | --------------------------------------------------------------------- | -------- | ------------ | -------- |
 | icon        | Custom Icon, supports customSVGIcons registration and built-in icons | `string` | `"Empty"`    |          |
 | description | Custom description content                                            | `string` | `"No Data"`  |          |
+
+## Future
+
+Function description: Enable some experimental features
+
+> [!WARNING]
+> These features are currently unstable and may change in the future
+
+| parameter                   | illustrate                  | type      | Defaults | required |
+| --------------------------- | --------------------------- | --------- | -------- | -------- |
+| experimentalReuseCell   | Whether to reuse cells to improve performance | `boolean` | `false`  |          |
 
 ## MergedCellInfo
 

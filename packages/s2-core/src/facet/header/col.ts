@@ -71,7 +71,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected getCellInstance(node: Node) {
     if (
       this.colCellPool.pool.length > 0 &&
-      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseCell
     ) {
       const colCell = this.colCellPool.acquire()!;
 
@@ -244,9 +244,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   public clear() {
-    if (
-      this.headerConfig.spreadsheet.options.future?.experimentalReuseDataCell
-    ) {
+    if (this.headerConfig.spreadsheet.options.future?.experimentalReuseCell) {
       // @ts-ignore
       this.scrollGroup.childNodes.forEach((colCell: ColCell) => {
         if (!this.isColCellInRect(colCell.getMeta())) {
