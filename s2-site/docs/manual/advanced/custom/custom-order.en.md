@@ -3,7 +3,7 @@ title: Customize Order
 order: 6
 ---
 
-Although, `S2` tables have default [sort operations](/examples/analysis/sort#group-sort) and [advanced sort](/examples/analysis/sort#advanced) functionality in `React Header` component.
+Although, `S2` tables have default [sort operations](/en/examples/analysis/sort#group-sort) and [advanced sort](/en/examples/analysis/sort#advanced) functionality in `React Header` component.
 
 But in some business scenarios, we still need custom sorting, which we divide into three parts: **custom sorting `icon`** , **custom sorting `tooltip`** , and **custom sorting operations** . Next, I will take you to realize the custom sorting function as shown in the 👇 animation.
 
@@ -11,7 +11,7 @@ But in some business scenarios, we still need custom sorting, which we divide in
 
 ## custom sort icon
 
-Related chapters: [custom icon](/examples/custom/custom-icon#custom-header-action-icon)
+Related chapters: [custom icon](/en/examples/custom/custom-icon#custom-header-action-icon)
 
 ### configuration
 
@@ -130,7 +130,7 @@ const s2Options = {
 
 ## custom sort operation
 
-Related chapter: [Custom sorting](/manual/basic/sort/basic#2-维度值列表sortBy)
+Related chapter: [Custom sorting](/en/manual/basic/sort/basic#2-维度值列表sortBy)
 
 ### configuration
 

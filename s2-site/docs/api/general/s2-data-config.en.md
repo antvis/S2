@@ -100,7 +100,7 @@ Function description: Configure the dimension field of the table, that is, the c
 | columns                 | Column dimension (column header can be customized, [see example](#TODO) )                                                                                                                                    | `string[]` \| [CustomTreeNode\[\]](#customtreenode) | `[]`     |          |
 | values                  | Indicator Dimensions                                                                                                                                                                                         | `string[]`                                          | `[]`     |          |
 | valueInCols             | Whether the indicator dimension is at the column header                                                                                                                                                      | `boolean`                                           |          |          |
-| customValueOrder        | The hierarchical order of custom indicator dimensions in the row and column headers (that is, the order of `values` , starting from `0` ) [View example](/examples/custom/custom-layout/#custom-value-order) | `number`                                            | -        |          |
+| customValueOrder        | The hierarchical order of custom indicator dimensions in the row and column headers (that is, the order of `values` , starting from `0` ) [View example](/en/examples/custom/custom-layout/#custom-value-order) | `number`                                            | -        |          |
 
 ### Meta
 

@@ -46,7 +46,7 @@ new ResizeObserver(([entry] = []) => {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
 
-​📊 Check out the [window adaptive demo](/examples/layout/adaptive#window-adaptation)
+​📊 Check out the [window adaptive demo](/en/examples/layout/adaptive#window-adaptation)
 
 ### container adaptation
 
@@ -78,7 +78,7 @@ resizeObserver.observe(parent);
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/IFNNjZ862/Kapture%2525202021-11-23%252520at%25252019.07.37.gif)
 
-​📊 View [container adaptive demo](/examples/layout/adaptive#container-adaptation)
+​📊 View [container adaptive demo](/en/examples/layout/adaptive#container-adaptation)
 
 ### React components
 
@@ -143,7 +143,7 @@ const containerId = 'containerId';
 </div>
 ```
 
-​📊 View [React component adaptive demo](/examples/layout/adaptive#react-adaptive)
+​📊 View [React component adaptive demo](/en/examples/layout/adaptive#react-adaptive)
 
 ### Vue components
 

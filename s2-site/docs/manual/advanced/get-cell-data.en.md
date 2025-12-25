@@ -5,7 +5,7 @@ order: 9
 ---
 
 :::warning{title='Tip'}
-Before reading this chapter, please ensure you have read the sections on [Basic Concepts](/manual/basic/base-concept), [Data Processing](/manual/advanced/data-process/pivot), and [Layout](/manual/advanced/layout/pivot).
+Before reading this chapter, please ensure you have read the sections on [Basic Concepts](/en/manual/basic/base-concept), [Data Processing](/en/manual/advanced/data-process/pivot), and [Layout](/en/manual/advanced/layout/pivot).
 :::
 
 In real-world scenarios, you'll often need to retrieve **cell data**. Common use cases include:
@@ -15,15 +15,15 @@ In real-world scenarios, you'll often need to retrieve **cell data**. Common use
 - Clicking a data cell to get its data or the data for the entire row.
 - Customizing `tooltip` content based on the current cell's information.
 
-S2 tables are rendered on a `Canvas`, which means there is only one `DOM` element. All cells are represented by a set of **data structures** that store information like coordinates, text, and interaction state for each cell. [Learn More](/api/basic-class/base-cell)
+S2 tables are rendered on a `Canvas`, which means there is only one `DOM` element. All cells are represented by a set of **data structures** that store information like coordinates, text, and interaction state for each cell. [Learn More](/en/api/basic-class/base-cell)
 
-S2 provides a series of [APIs](/api/basic-class/spreadsheet) for data retrieval. Here are some common scenarios:
+S2 provides a series of [APIs](/en/api/basic-class/spreadsheet) for data retrieval. Here are some common scenarios:
 
 <Playground path="analysis/get-data/demo/get-cell-data.ts" rid='get-cell-data' height='300'></playground>
 
 ### Getting Cell Nodes in a Specific Area
 
-After rendering, you can access `s2.facet.getLayoutResult()` to get all [cell nodes](/api/basic-class/node) (including those outside the visible area).
+After rendering, you can access `s2.facet.getLayoutResult()` to get all [cell nodes](/en/api/basic-class/node) (including those outside the visible area).
 
 A Node corresponds to a Cell. When a node is within the visible area, it is instantiated as a Cell, which can be accessed via `node.belongsCell`.
 
@@ -57,7 +57,7 @@ s2.on(S2Event.LAYOUT_AFTER_RENDER, () => {
 
 :::
 
-[Learn More](/api/basic-class/base-facet)
+[Learn More](/en/api/basic-class/base-facet)
 
 :::warning{title="Note"}
 Due to virtual scrolling, you can only get the cells that are currently within the visible area.
@@ -97,7 +97,7 @@ s2.facet.getSeriesNumberCells()
 
 ### Getting Data Cells
 
-See more in the [Interaction API](/api/basic-class/interaction).
+See more in the [Interaction API](/en/api/basic-class/interaction).
 
 ```ts
 // Data cells currently in the visible area
@@ -173,7 +173,7 @@ s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/GO7xii%26LQ/13b44f81-271c-4771-b7b3-45789761eab2.png" width="600" alt="preview"/>
 
-You can also call [interaction methods](/manual/advanced/interaction/basic#calling-the-api) manually:
+You can also call [interaction methods](/en/manual/advanced/interaction/basic#calling-the-api) manually:
 
 ```ts
 // Get all active cells (including those not in the visible area)
@@ -194,7 +194,7 @@ s2.interaction.getUnSelectedDataCells();
 
 ### Getting Single Cell Data
 
-[View Example](/examples/analysis/get-data/#get-single-cell-data)
+[View Example](/en/examples/analysis/get-data/#get-single-cell-data)
 
 ```ts | pure
 import { EXTRA_FIELD } from '@antv/s2'
@@ -222,7 +222,7 @@ s2.dataSet.getCellData({
 
 ### Getting Multiple Cell Data
 
-[View Example](/examples/analysis/get-data/#get-multi-cell-data)
+[View Example](/en/examples/analysis/get-data/#get-multi-cell-data)
 
 ```ts | pure
 import { EXTRA_FIELD, QueryDataType } from '@antv/s2'
@@ -248,9 +248,9 @@ s2.dataSet.getCellMultiData({
 
 ### Getting Row/Column Data
 
-When the table is initialized, the user-declared data configuration (`s2DataConfig`) is converted into an internal dataset (`dataSet`). For details, see [Data Processing](/manual/advanced/data-process/pivot).
+When the table is initialized, the user-declared data configuration (`s2DataConfig`) is converted into an internal dataset (`dataSet`). For details, see [Data Processing](/en/manual/advanced/data-process/pivot).
 
-The [dataset instance](/api/basic-class/base-data-set) is available at `s2.dataSet`, where you can access:
+The [dataset instance](/en/api/basic-class/base-data-set) is available at `s2.dataSet`, where you can access:
 
 - Raw data
 - Summarized data
@@ -387,4 +387,4 @@ s2.facet.getCellMeta(rowIndex, colIndex)
 
 ### Getting Hidden Column Data
 
-[See the Hide Column Headers section](/manual/advanced/interaction/hide-columns/#get-hidden-column-header-data).
+[See the Hide Column Headers section](/en/manual/advanced/interaction/hide-columns/#get-hidden-column-header-data).

@@ -184,7 +184,7 @@ run();
 
 ### `React` version
 
-`S2` provides an out-of-the-box `React` version \[table component] (/examples/react-component/sheet), as well as a wealth of supporting [analysis components](/examples/react-component/tooltip) to help developers quickly meet business analysis needs.
+`S2` provides an out-of-the-box `React` version \[table component] (/examples/react-component/sheet), as well as a wealth of supporting [analysis components](/en/examples/react-component/tooltip) to help developers quickly meet business analysis needs.
 
 #### Table components use
 
@@ -213,7 +213,7 @@ ReactDOM.render(
 yarn add antd @ant-design/icons
 ```
 
-​📊 Check out the [React version pivot table demo](/examples/react-component/sheet#pivot) .
+​📊 Check out the [React version pivot table demo](/en/examples/react-component/sheet#pivot) .
 
 ### `Vue3` version
 

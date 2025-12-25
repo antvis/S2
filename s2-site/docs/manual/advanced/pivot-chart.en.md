@@ -95,7 +95,7 @@ const s2Options = {
 
 In a Cartesian coordinate system layout, special `axisRowHeader` and `axisColumnHeader` are added to the row and column headers to draw the coordinate system. In a polar coordinate system layout, there is only one coordinate axis, and the row or column headers will only have either `axisRowHeader` or `axisColumnHeader`, depending on whether the data is placed in the column headers. It will display simple dimension information (text) and will be indistinguishable from regular row and column headers, without showing a coordinate system scale.
 
-[View API documentation](/api/pivot-chart).
+[View API documentation](/en/api/pivot-chart).
 
 ## Customization
 
@@ -149,6 +149,6 @@ const s2Options: S2Options = {
 
 As a special form of table, the Pivot Composite Chart is not currently compatible with all the display forms of a regular pivot table. It has the following limitations:
 
-1. Only tiled mode is supported; [tree mode](/examples/basic/pivot/#tree) is not supported.
-2. [Custom row and column headers](/examples/layout/custom-header-group/#custom-pivot-row-header) are not supported.
-3. [Custom order of measure dimension levels](/examples/custom/custom-layout/#custom-value-order) is not supported.
+1. Only tiled mode is supported; [tree mode](/en/examples/basic/pivot/#tree) is not supported.
+2. [Custom row and column headers](/en/examples/layout/custom-header-group/#custom-pivot-row-header) are not supported.
+3. [Custom order of measure dimension levels](/en/examples/custom/custom-layout/#custom-value-order) is not supported.

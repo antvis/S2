@@ -10,7 +10,7 @@ order: 3
 
 `S2` can be used to implement detailed tables, pivot tables, and trend analysis tables, etc.
 
-In order to better understand this article, before reading this article, I hope you are familiar with the use of `S2` and have a preliminary understanding of the [basic concepts](/manual/basic/base-concept) .
+In order to better understand this article, before reading this article, I hope you are familiar with the use of `S2` and have a preliminary understanding of the [basic concepts](/en/manual/basic/base-concept) .
 
 ## Performance Interpretation
 
@@ -200,8 +200,8 @@ Table data calculation and layout settings involve a lot of calculations. In the
 
 View the actual performance of `1 million` pieces of data:
 
-* [pivot table](/examples/case/performance-compare#pivot)
-* [list](/examples/case/performance-compare#table)
+* [pivot table](/en/examples/case/performance-compare#pivot)
+* [list](/en/examples/case/performance-compare#table)
 
 The detailed performance comparison data is as follows: ![performance](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*G1ITQJTTa4YAAAAAAAAAAAAAARQnAQ)
 

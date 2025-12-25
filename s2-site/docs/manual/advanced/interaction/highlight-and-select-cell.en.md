@@ -5,16 +5,16 @@ order: 8
 ---
 
 :::warning{title="Note"}
-Before reading this chapter, please make sure you have read the chapters on [Basic Interaction](/manual/advanced/interaction/basic) and [Getting Cell Data](/manual/advanced/get-cell-data), and have some understanding of the [Layout Process](/manual/extended-reading/layout/pivot).
+Before reading this chapter, please make sure you have read the chapters on [Basic Interaction](/en/manual/advanced/interaction/basic) and [Getting Cell Data](/en/manual/advanced/get-cell-data), and have some understanding of the [Layout Process](/en/manual/extended-reading/layout/pivot).
 :::
 
-We can trigger `highlighting` and `selection` of table cells by hovering and clicking. In some specific scenarios, if you want to trigger them actively, you can use the built-in [Interaction API](/api/basic-class/interaction).
+We can trigger `highlighting` and `selection` of table cells by hovering and clicking. In some specific scenarios, if you want to trigger them actively, you can use the built-in [Interaction API](/en/api/basic-class/interaction).
 
 <Playground path='interaction/basic/demo/event.ts' rid='event' height='400'></playground>
 
 ## Highlighting Cells
 
-The highlighting effect is consistent with the default [Theme Configuration](/manual/advanced/interaction/basic#adjusting-interaction-theme), and the internal state is `"hover"`.
+The highlighting effect is consistent with the default [Theme Configuration](/en/manual/advanced/interaction/basic#adjusting-interaction-theme), and the internal state is `"hover"`.
 
 ```ts | pure
 const targetCell = s2.facet.getRowCell()[0]
@@ -39,7 +39,7 @@ s2.interaction.highlightNodes(targetNodes, 'selected')
 
 ## Selecting Cells
 
-The selection effect is consistent with the default [Theme Configuration](/manual/advanced/interaction/basic#adjusting-interaction-theme), and the internal state is `"selected"`.
+The selection effect is consistent with the default [Theme Configuration](/en/manual/advanced/interaction/basic#adjusting-interaction-theme), and the internal state is `"selected"`.
 
 ```ts | pure
 const targetCell = s2.facet.getRowCell()[0]
@@ -62,7 +62,7 @@ s2.interaction.getCurrentStateName() // "allSelected"
 
 ### Getting Selected Data
 
-For details, please see [Getting Cell Data - Selected Cells](/manual/advanced/get-cell-data#getting-selected-cells).
+For details, please see [Getting Cell Data - Selected Cells](/en/manual/advanced/get-cell-data#getting-selected-cells).
 
 ## Changing Cell State
 
@@ -105,7 +105,7 @@ s2.interaction.changeState({
 
 ## Updating Cells
 
-Each [Cell Instance](/api/basic-class/base-cell) has an `update` method. Calling it can redraw the cell, thus achieving manual updates.
+Each [Cell Instance](/en/api/basic-class/base-cell) has an `update` method. Calling it can redraw the cell, thus achieving manual updates.
 
 ```ts | pure
 const targetCell = s2.facet.getRowCell()[0]

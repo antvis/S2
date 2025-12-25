@@ -138,4 +138,4 @@ targetCell.appendChild(icon);
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*X2KJSI-po1sAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
 
-[View Example](/examples/custom/custom-shape-and-chart/#custom-g-shape)
+[View Example](/en/examples/custom/custom-shape-and-chart/#custom-g-shape)

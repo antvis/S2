@@ -21,9 +21,9 @@ See the [React implementation](https://github.com/antvis/S2/blob/next/packages/s
 
 - If you need a `tooltip`, you can directly use the out-of-the-box `@antv/s2-react` or `@antv/s2-vue` to avoid secondary encapsulation.
 - If you do not want to depend on a framework, or wish to use the `tooltip` in frameworks like `Vue` or `Angular`, please refer to the [Custom Tooltip Class](#custom-tooltip-class) section and the following examples:
-  - 1. [Using in-group sorting in @antv/s2](/examples/analysis/sort/#group-sort-base)
-  - 2. [Customizing tooltip content in @antv/s2](/examples/react-component/tooltip/#custom-content-base)
-  - 3. [Customizing sorting in @antv/s2](/examples/custom/custom-order/#custom-order-base)
+  - 1. [Using in-group sorting in @antv/s2](/en/examples/analysis/sort/#group-sort-base)
+  - 2. [Customizing tooltip content in @antv/s2](/en/examples/react-component/tooltip/#custom-content-base)
+  - 3. [Customizing sorting in @antv/s2](/en/examples/custom/custom-order/#custom-order-base)
 - Don't forget to import the styles:
 
   ```ts
@@ -39,7 +39,7 @@ See the [React implementation](https://github.com/antvis/S2/blob/next/packages/s
 
 ## Usage
 
-Configure the [tooltip](/api/general/s2-options#tooltip) field in `s2Options`, which applies to **all** cells by default.
+Configure the [tooltip](/en/api/general/s2-options#tooltip) field in `s2Options`, which applies to **all** cells by default.
 
 ```ts
 const s2Options = {
@@ -83,7 +83,7 @@ const s2Options = {
 
 ### Operation Configuration <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
-Add [operation items](/api/general/s2-options#tooltipoperation) to the `Tooltip` by configuring the `operation` field. This supports [customization](#custom-tooltip-operation-items).
+Add [operation items](/en/api/general/s2-options#tooltipoperation) to the `Tooltip` by configuring the `operation` field. This supports [customization](#custom-tooltip-operation-items).
 
 ```ts
 const s2Options = {
@@ -158,7 +158,7 @@ For `@antv/s2-react`, the tooltip content can be any `JSX` element.
 
 <Playground path='react-component/tooltip/demo/custom-content-react.tsx' rid='react-custom-content' height='300'></playground>
 
-The `content` also supports a callback function, allowing you to flexibly customize content based on the [current cell information](/api/basic-class/interaction) and default tooltip details.
+The `content` also supports a callback function, allowing you to flexibly customize content based on the [current cell information](/en/api/basic-class/interaction) and default tooltip details.
 
 ```tsx
 const TooltipContent = (props) => <div>...</div>;
@@ -253,7 +253,7 @@ const s2Options = {
 
 You can also create a `Custom Tooltip Class` to integrate with any framework (`Vue`, `Angular`, `React`). Inherit from `BaseTooltip` and override methods like `show`, `hide`, and `destroy`.
 
-- [View BaseTooltip Class](/api/basic-class/base-tooltip)
+- [View BaseTooltip Class](/en/api/basic-class/base-tooltip)
 - [View React Example](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 - [View Vue Example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
@@ -287,7 +287,7 @@ By default:
 - Headers show `tooltip` on **click**, or on hover if the text is truncated.
 - Data cells show `tooltip` after hovering for **800ms**.
 
-You can customize this with custom interactions. For example, to show a tooltip on row header hover, listen for `S2Event.ROW_CELL_HOVER`. [Example](/examples/interaction/custom#row-col-hover-tooltip)
+You can customize this with custom interactions. For example, to show a tooltip on row header hover, listen for `S2Event.ROW_CELL_HOVER`. [Example](/en/examples/interaction/custom#row-col-hover-tooltip)
 
 ```tsx
 const onRowCellHover = ({ event, viewMeta }) => {

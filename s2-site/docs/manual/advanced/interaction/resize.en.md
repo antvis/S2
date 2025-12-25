@@ -6,11 +6,11 @@ order: 3
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*WdvmQ5pd4BwAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 
-S2 provides three default layout methods: [`adaptive`](/examples/layout/basic#adaptive), [`colAdaptive`](/examples/layout/basic#colAdaptive), and [`compact`](/examples/layout/basic#compact). **You can also dynamically adjust the row and column width and height by dragging the cells of the row/column headers.**
+S2 provides three default layout methods: [`adaptive`](/en/examples/layout/basic#adaptive), [`colAdaptive`](/en/examples/layout/basic#colAdaptive), and [`compact`](/en/examples/layout/basic#compact). **You can also dynamically adjust the row and column width and height by dragging the cells of the row/column headers.**
 
 ### Basic Usage
 
-You can configure `resize` to control the range of the resize hotspot for adjusting the width and height of cells. It is divided into three parts: `corner header`, `row header`, and `column header`, and is **enabled by default for all**. You can quickly enable or disable all `resize` hotspots by setting a `boolean` value, or you can configure the hotspots for each area to be enabled or disabled through an object type. [View Example](/examples/interaction/advanced#resize-active)
+You can configure `resize` to control the range of the resize hotspot for adjusting the width and height of cells. It is divided into three parts: `corner header`, `row header`, and `column header`, and is **enabled by default for all**. You can quickly enable or disable all `resize` hotspots by setting a `boolean` value, or you can configure the hotspots for each area to be enabled or disabled through an object type. [View Example](/en/examples/interaction/advanced#resize-active)
 
 :::info{title="Tip"}
 When adjusting the width and height, the tooltip will be closed to avoid obstruction, but the interaction state (such as selection) will be retained.
@@ -83,7 +83,7 @@ It supports configuring `rowCellVertical`, `cornerCellHorizontal`, `colCellHoriz
   </tbody>
 </table>
 
-In addition, it also supports `resize.visible` to dynamically control whether the hotspot is displayed. [View Example](/examples/interaction/basic#resize)
+In addition, it also supports `resize.visible` to dynamically control whether the hotspot is displayed. [View Example](/en/examples/interaction/basic#resize)
 
 1. Example: Only leaf nodes display the `resize` hotspot:
 
@@ -117,7 +117,7 @@ const s2Options = {
 
 ### Dragging Disabled
 
-Configure `resize.disable` to control the custom drag validation logic of the hotspot. [View Example](/examples/interaction/advanced#resize-disable)
+Configure `resize.disable` to control the custom drag validation logic of the hotspot. [View Example](/en/examples/interaction/advanced#resize-disable)
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600" />
 
@@ -204,7 +204,7 @@ const s2Options = {
 
 ### Theme Configuration
 
-It supports modifying the hotspot size/color, reference line color/spacing, and other configurations by adjusting the theme. For details, please see the [Theme Configuration](/manual/basic/theme) chapter.
+It supports modifying the hotspot size/color, reference line color/spacing, and other configurations by adjusting the theme. For details, please see the [Theme Configuration](/en/manual/basic/theme) chapter.
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*4fHCSaNfxvYAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 
@@ -229,7 +229,7 @@ s2.setTheme({
 
 ### Get Cell Width and Height Information After Dragging
 
-After the cell width and height are adjusted, you can get it by listening to the [S2Event.LAYOUT_RESIZE](/api/general/s2-event#drag-to-adjust-width-and-height) event.
+After the cell width and height are adjusted, you can get it by listening to the [S2Event.LAYOUT_RESIZE](/en/api/general/s2-event#drag-to-adjust-width-and-height) event.
 
 ```ts
 import { S2Event } from '@antv/s2'
@@ -246,7 +246,7 @@ s2.on(S2Event.LAYOUT_RESIZE, (data) => {
 });
 ```
 
-If you need to persist the width and height information, the usage is the same as [Custom Cell Width and Height](/manual/advanced/custom/cell-size), just update the corresponding `style`.
+If you need to persist the width and height information, the usage is the same as [Custom Cell Width and Height](/en/manual/advanced/custom/cell-size), just update the corresponding `style`.
 
 ```ts
 const style = JSON.parse(localStorage.getItem('style')) || {}

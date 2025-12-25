@@ -7,7 +7,7 @@ order: 2
 
 The Detail Table is one of the basic forms of `S2`. It is a standard table that displays each row of data directly under the column headers. It is primarily used for displaying detailed data in big data scenarios.
 
-The Detail Table shares capabilities with the Pivot Table, such as [basic interactions](/manual/advanced/interaction/basic), [theming](/manual/basic/theme), [copying](/manual/basic/analysis/export), and [custom cells](/manual/advanced/custom/hook). In addition, the Detail Table supports special features like [row and column freezing](/examples/interaction/basic#frozen). In scenarios with massive amounts of detailed data, the Detail Table can replace `DOM`-based table components to improve performance and user experience.
+The Detail Table shares capabilities with the Pivot Table, such as [basic interactions](/en/manual/advanced/interaction/basic), [theming](/en/manual/basic/theme), [copying](/en/manual/basic/analysis/export), and [custom cells](/en/manual/advanced/custom/hook). In addition, the Detail Table supports special features like [row and column freezing](/en/examples/interaction/basic#frozen). In scenarios with massive amounts of detailed data, the Detail Table can replace `DOM`-based table components to improve performance and user experience.
 
 <img alt="table-mode" src="https://gw.alipayobjects.com/zos/antfincdn/jWifHNLOsB/08db1064-bb09-4d44-b42b-26aed1766545.png" width="600" />
 
@@ -76,7 +76,7 @@ bootstrap()
 
 <Playground path='basic/table/demo/table.ts' rid='table' height='300'></playground>
 
-[View Example](/examples/basic/table) and [API documentation](/api/general/s2options).
+[View Example](/en/examples/basic/table) and [API documentation](/en/api/general/s2options).
 
 ## Usage in React
 
@@ -143,13 +143,13 @@ const App = () => {
 }
 ```
 
-[View Example](/examples/react-component/sheet/#table) and [API documentation](/api/components/sheet-component).
+[View Example](/en/examples/react-component/sheet/#table) and [API documentation](/en/api/components/sheet-component).
 
 ## Features
 
 ### Series Number
 
-You can display a built-in series number column by passing `seriesNumber` in `s2Options`. You can also customize the column title. [View Example](/examples/basic/table#table)
+You can display a built-in series number column by passing `seriesNumber` in `s2Options`. You can also customize the column title. [View Example](/en/examples/basic/table#table)
 
 ```ts
 const s2Options = {
@@ -162,7 +162,7 @@ const s2Options = {
 
 ### Row and Column Freezing
 
-Row and column freezing keeps specific rows and columns fixed during scrolling, ensuring they remain in the viewport for reference. [View Example](/examples/interaction/basic#frozen)
+Row and column freezing keeps specific rows and columns fixed during scrolling, ensuring they remain in the viewport for reference. [View Example](/en/examples/interaction/basic#frozen)
 
 <Playground path='layout/frozen/demo/table-frozen.ts' rid='table-frozen' height='300'></playground>
 
@@ -185,10 +185,10 @@ const s2Options = {
 
 ### Custom Column Header Grouping
 
-By default, the column header structure is grouped based on the provided dimension values. Custom grouping is also supported, allowing for multi-level column headers. [Learn More](/manual/advanced/custom/custom-header)
+By default, the column header structure is grouped based on the provided dimension values. Custom grouping is also supported, allowing for multi-level column headers. [Learn More](/en/manual/advanced/custom/custom-header)
 
 ### Empty Data Placeholder
 
-When the data is empty, you can display a custom icon and description. Icons can be registered via [customSVGIcons](/manual/advanced/custom/custom-icon) or use built-in icons. The size and spacing of the icon and text can be modified through [theme configuration](/api/general/s2-theme#empty).
+When the data is empty, you can display a custom icon and description. Icons can be registered via [customSVGIcons](/en/manual/advanced/custom/custom-icon) or use built-in icons. The size and spacing of the icon and text can be modified through [theme configuration](/en/api/general/s2-theme#empty).
 
 <Playground path='/custom/custom-cell/demo/empty-placeholder.ts' rid='empty-placeholder' height='300'></playground>

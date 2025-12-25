@@ -11,7 +11,7 @@ The `props` of the `AdvancedSort` component
 
 | parameter     | illustrate                                                             | type                                                                                                                           | required | Defaults |
 | ------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------- | -------- |
-| sheet         | current table instance                                                 | [SpreadSheet](/api/basic-class/spreadsheet)                                                                               | ✓        |          |
+| sheet         | current table instance                                                 | [SpreadSheet](/en/api/basic-class/spreadsheet)                                                                               | ✓        |          |
 | open          | whether to display                                                     | `boolean`                                                                                                                      | ✓        |          |
 | className     | class class name                                                       | `string`                                                                                                                       |          |          |
 | icon          | sort button icon                                                       | `React.ReactNode`                                                                                                              |          |          |

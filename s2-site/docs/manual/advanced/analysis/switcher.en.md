@@ -45,7 +45,7 @@ ReactDOM.render(
 
 ### dimension configuration
 
-Switcher can receive three types of dimension configurations, namely `rows` , `columns` and `values` . They are all of type [SwitcherField](/api/components/switcher#switcherfield) .
+Switcher can receive three types of dimension configurations, namely `rows` , `columns` and `values` . They are all of type [SwitcherField](/en/api/components/switcher#switcherfield) .
 
 > Among them, the two dimensions of `rows` and `columns` can be dragged into each other's configuration boxes, while `values` ​​can only change the field order in its own configuration box.
 
@@ -91,7 +91,7 @@ const field = {
 
 ### Submit changes
 
-The `Switcher` component will trigger the `onSubmit` callback after the popup window is closed, and this callback will receive a parameter of type [SwitcherResult](/api/components/switcher#switcherresult) , through which you can get the modified result.
+The `Switcher` component will trigger the `onSubmit` callback after the popup window is closed, and this callback will receive a parameter of type [SwitcherResult](/en/api/components/switcher#switcherresult) , through which you can get the modified result.
 
 All results are **grouped by dimension** , and each set of fields is **flattened and** sorted sequentially.
 
@@ -114,7 +114,7 @@ You can see the detailed result data types with the following example:
 <Switcher popover={{ arrowPointAtCenter: true }} />
 ```
 
-🎨 For detailed configuration of the `Switcher` component, refer to the [Switcher Props](/api/components/switcher) document.
+🎨 For detailed configuration of the `Switcher` component, refer to the [Switcher Props](/en/api/components/switcher) document.
 
 ## example
 
@@ -132,4 +132,4 @@ You can see the detailed result data types with the following example:
 
 <Playground path="react-component/switcher/demo/table.tsx" rid="table"></Playground>
 
-​📊 See more [examples of dimension switching](/examples/react-component/switcher#pure-switcher) .
+​📊 See more [examples of dimension switching](/en/examples/react-component/switcher#pure-switcher) .

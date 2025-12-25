@@ -102,6 +102,6 @@ ReactDOM.render(
 
 ## Effect
 
-[View Example](/examples/react-component/sheet#editable)
+[View Example](/en/examples/react-component/sheet#editable)
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />

@@ -51,7 +51,7 @@ const s2Options = {
 
 ### 2. Pivot table
 
-There are multiple column headers in the pivot table, and the [node id](/api/basic-class/node) corresponding to the column header needs to be specified
+There are multiple column headers in the pivot table, and the [node id](/en/api/basic-class/node) corresponding to the column header needs to be specified
 
 <details><summary>How to get column header Id?</summary><pre> <code class="language-ts">//&#x26;nbsp;/docs/api/basic-class/spreadsheet
 const&#x26;nbsp;s2&#x26;nbsp;=&#x26;nbsp;new&#x26;nbsp;PivotSheet()
@@ -104,13 +104,13 @@ In this way, **two** hidden buttons are rendered, and the buttons work independe
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/LYrMG8bf5/660aa34c-5fce-4f62-b422-ee6d3b5478d1.png)
 
-You can also integrate the analysis component, and realize dynamic hiding of column headers by changing the configuration method. For details, please refer to the [analysis component](/manual/advanced/analysis/switcher/)
+You can also integrate the analysis component, and realize dynamic hiding of column headers by changing the configuration method. For details, please refer to the [analysis component](/en/manual/advanced/analysis/switcher/)
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview">
 
 ## 3. Manual hiding - via instance method
 
-[View all APIs](/api/basic-class/interaction)
+[View all APIs](/en/api/basic-class/interaction)
 
 ```ts
 const s2 = new PivotSheet(...)
@@ -140,7 +140,7 @@ s2.on(
 );
 ```
 
-You can also access the `hiddenColumnsDetail` stored in the [`store`](/api/basic-class/store) to actively obtain
+You can also access the `hiddenColumnsDetail` stored in the [`store`](/en/api/basic-class/store) to actively obtain
 
 ```ts
 const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail')

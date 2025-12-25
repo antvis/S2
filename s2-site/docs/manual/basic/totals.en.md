@@ -5,7 +5,7 @@ order: 5
 
 ## Introduction
 
-Subtotals and grand totals are a pivoting feature of the table that allows you to configure summary capabilities for row and column headers. When [custom row and column headers](/manual/advanced/custom/custom-header) are enabled, the summary capabilities for the corresponding headers are disabled.
+Subtotals and grand totals are a pivoting feature of the table that allows you to configure summary capabilities for row and column headers. When [custom row and column headers](/en/manual/advanced/custom/custom-header) are enabled, the summary capabilities for the corresponding headers are disabled.
 
 ### Subtotals
 
@@ -79,7 +79,7 @@ Performs `subtotal/grand total` calculations grouped by dimension, which is usef
 
 ### 1. Display Configuration
 
-Configure the `totals` property of [S2Options](/api/general/s2-options#total) to control the display and position of row and column subtotals and grand totals. The type is as follows:
+Configure the `totals` property of [S2Options](/en/api/general/s2-options#total) to control the display and position of row and column subtotals and grand totals. The type is as follows:
 
 <embed src="@/common/totals.en.md"></embed>
 

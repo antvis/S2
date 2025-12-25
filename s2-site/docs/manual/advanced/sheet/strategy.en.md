@@ -8,15 +8,15 @@ In order to meet more analysis scenarios, S2 provides an out-of-the-box scenario
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png" width="600" alt="preview">
 
-As shown in the figure, the table form of this type of table is characterized by the ability to display multiple indicator data in the **same data cell** and **column header cell** , which is used for **data indicators that need to pay attention to time trends** , and to **view year-on-** year comparisons and other scenarios. Line headers can [customize the hierarchical structure](/manual/advanced/custom/custom-header) . Therefore, this component can be used directly when there is such an analysis requirement.
+As shown in the figure, the table form of this type of table is characterized by the ability to display multiple indicator data in the **same data cell** and **column header cell** , which is used for **data indicators that need to pay attention to time trends** , and to **view year-on-** year comparisons and other scenarios. Line headers can [customize the hierarchical structure](/en/manual/advanced/custom/custom-header) . Therefore, this component can be used directly when there is such an analysis requirement.
 
 ## premise
 
 The trend analysis table component uses various capabilities provided by S2 for integration, so it is recommended that you have read the following chapters before reading this chapter:
 
-* [basic concept](/manual/basic/base-concept)
-* [field tag](/manual/basic/conditions/)
-* [Customize row and column headers](/manual/advanced/custom/custom-header)
+* [basic concept](/en/manual/basic/base-concept)
+* [field tag](/en/manual/basic/conditions/)
+* [Customize row and column headers](/en/manual/advanced/custom/custom-header)
 
 ## Get started quickly
 
@@ -99,7 +99,7 @@ const data = {
 }
 ```
 
-* Row Header Hierarchy: [Custom Hierarchy](/manual/advanced/custom/custom-header)
+* Row Header Hierarchy: [Custom Hierarchy](/en/manual/advanced/custom/custom-header)
 
 ```ts
 const fields = {
@@ -158,13 +158,13 @@ const s2DataConfig = {
 
 * The trend analysis table will force the row header layout to a tree mode, that is, `hierarchyType: 'tree'`
 * The corner header text can be customized through `options.cornerText`
-* Coloring logic configuration can be configured in `options.conditions` , no need to specify the `field` parameter, the usage reference [field tag](/manual/basic/conditions) currently only supports the text color channel
+* Coloring logic configuration can be configured in `options.conditions` , no need to specify the `field` parameter, the usage reference [field tag](/en/manual/basic/conditions) currently only supports the text color channel
 
 <embed src="@/common/custom/customTreeNode.en.md"></embed>
 
 ## Tooltips
 
-The `Tooltip` of the trend analysis table uses the [customization capabilities](/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头 (row)` ,`列头 (col)` and`数值 (data)` , and can be imported separately in the `@antv/s2-react` package
+The `Tooltip` of the trend analysis table uses the [customization capabilities](/en/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头 (row)` ,`列头 (col)` and`数值 (data)` , and can be imported separately in the `@antv/s2-react` package
 
 | Configuration item name   | illustrate                             | type                            | Defaults                                                   | required |
 | ------------------------- | -------------------------------------- | ------------------------------- | ---------------------------------------------------------- | -------- |
@@ -236,4 +236,4 @@ The configuration is as follows:
 
 <embed src="@/common/mini-chart.en.md"></embed>
 
-If you want to change the Mini graph style configuration, you can refer to the [theme configuration](/api/general/s2-theme#minicharttheme)
+If you want to change the Mini graph style configuration, you can refer to the [theme configuration](/en/api/general/s2-theme#minicharttheme)

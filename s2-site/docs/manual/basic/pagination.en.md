@@ -43,7 +43,7 @@ Page 2 (`current: 2`):
 
 ### Pagination
 
-Description: Pagination configuration. See the [documentation](/manual/advanced/analysis/pagination) and [example](/examples/react-component/pagination/#pivot).
+Description: Pagination configuration. See the [documentation](/en/manual/advanced/analysis/pagination) and [example](/en/examples/react-component/pagination/#pivot).
 
 | Parameter | Description | Type | Default | Required |
 |---|---|---|---|---|

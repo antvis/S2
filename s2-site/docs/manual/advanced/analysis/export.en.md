@@ -80,7 +80,7 @@ const s2Options = {
 
 ##### 复制格式化后的数据
 
-**withFormat**: 当 `S2DataConfig` 的 `meta` 中配置了 [自定义格式函数时](/api/general/s2-data-config#meta), 是否按照 `formatter` 复制数据
+**withFormat**: 当 `S2DataConfig` 的 `meta` 中配置了 [自定义格式函数时](/en/api/general/s2-data-config#meta), 是否按照 `formatter` 复制数据
 
 ```ts
 const s2DataConfig = {

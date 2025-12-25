@@ -7,11 +7,11 @@ order: 11
 Before reading this chapter, please make sure you are familiar enough with S2 and the related content of the [`AntV/G`](https://g.antv.antgroup.com/) rendering engine.
 :::
 
-If a plain text table is not intuitive enough, S2 has built-in support for drawing [simple mini charts](/examples/custom/custom-cell/#mini-chart).
+If a plain text table is not intuitive enough, S2 has built-in support for drawing [simple mini charts](/en/examples/custom/custom-cell/#mini-chart).
 
 ### Data Format
 
-Replace the normal numeric value with { values: [G2 Chart Data (Spec)](https://g2.antv.antgroup.com/examples/general/interval/#column) }
+Replace the normal numeric value with { values: [G2 Chart Data (Spec)](https://g2.antv.antgroup.com/examples/general/interval) }
 
 ```diff
 {
@@ -199,7 +199,7 @@ S2 has some simple graphics drawing capabilities based on [`AntV/G`](https://g.a
 
 #### 1.4 Effect
 
-[View Example](/examples/custom/custom-cell/#mini-chart)
+[View Example](/en/examples/custom/custom-cell/#mini-chart)
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*apnIT4KXP3YAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="800"/>
 

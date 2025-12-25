@@ -102,23 +102,23 @@ s2.render(false)
 
 ### Can the table be filled automatically according to the width and height of the outer container?
 
-Yes, please review [this article](/manual/advanced/adaptive)
+Yes, please review [this article](/en/manual/advanced/adaptive)
 
 ### How to get cell data?
 
-Please check [this article](/manual/advanced/get-cell-data)
+Please check [this article](/en/manual/advanced/get-cell-data)
 
 ### Why is the tooltip not displayed in @antv/ `@antv/s2` , but it can be displayed normally in `@antv/s2-react` `@antv/s2-vue` ?
 
-Please see [Tooltip Notes](/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
+Please see [Tooltip Notes](/en/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
 
 ### How to customize Tooltip in Vue?
 
-You can directly use the Vue3 version of S2 `@antv/s2-vue` , or see [Customize in Vue3](/manual/basic/tooltip/#%E5%9C%A8-vue3-%E4%B8%AD%E8%87%AA%E5%AE%9A%E4%B9%89)
+You can directly use the Vue3 version of S2 `@antv/s2-vue` , or see [Customize in Vue3](/en/manual/basic/tooltip/#%E5%9C%A8-vue3-%E4%B8%AD%E8%87%AA%E5%AE%9A%E4%B9%89)
 
 ### Does the table support exporting to `Excel` ?
 
-Support, please check [this article](/manual/advanced/analysis/export) , or [example](/examples/react-component/export#export)
+Support, please check [this article](/en/manual/advanced/analysis/export) , or [example](/en/examples/react-component/export#export)
 
 ### What should I do if the table is exported with garbled characters?
 
@@ -132,15 +132,15 @@ Hold down the `Shift` key while scrolling the mouse
 
 ### How to customize the size and alignment of text?
 
-You can configure custom themes, see [documentation](/manual/basic/theme) and [examples](/examples/theme/custom#custom-manual-palette)
+You can configure custom themes, see [documentation](/en/manual/basic/theme) and [examples](/en/examples/theme/custom#custom-manual-palette)
 
 ### How to customize cell width and height?
 
-Check out [the usage docs](/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) and [examples](/examples/layout/custom)
+Check out [the usage docs](/en/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) and [examples](/en/examples/layout/custom)
 
 ### Does S2 support editing of tables?
 
-Please see [edit mode example](/examples/case/data-preview#excel)
+Please see [edit mode example](/en/examples/case/data-preview#excel)
 
 ### Does S2 have a corresponding `Vue` or `Angular` version?
 
@@ -156,11 +156,11 @@ Here is an overview of the releases:
 
 <embed src="@/common/packages.en.md"></embed>
 
-Supporting [analysis components](/examples/react-component/sheet) , currently there is no development plan for `@antv/s2-angular` , the community is welcome to build together 👏🏻.
+Supporting [analysis components](/en/examples/react-component/sheet) , currently there is no development plan for `@antv/s2-angular` , the community is welcome to build together 👏🏻.
 
 ### How to contribute code?
 
-Please review the [contribution guidelines](/manual/contribution)
+Please review the [contribution guidelines](/en/manual/contribution)
 
 ### Why can't the form be displayed on the applet?
 
@@ -192,7 +192,7 @@ Please read [the must-read before submitting an Issue](https://github.com/antvis
 
 * Try to erase some nouns and descriptions with your own business semantics
 
-Before asking a question, please make sure you have read the [official documentation](/manual/introduction) and [FAQ](/manual/faq) , and have searched and checked the related [Issues list](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed) .
+Before asking a question, please make sure you have read the [official documentation](/en/manual/introduction) and [FAQ](/en/manual/faq) , and have searched and checked the related [Issues list](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed) .
 
 Highly recommended reading:
 

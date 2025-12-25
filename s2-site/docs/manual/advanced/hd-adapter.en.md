@@ -102,7 +102,7 @@ With HD adaptation enabled:
 
 ## Custom Device Pixel Ratio
 
-By default, the table renders using the device's current pixel ratio, i.e., `window.devicePixelRatio`. If you find the initial rendering to be blurry, you can manually specify a higher device pixel ratio, such as `2`, by passing it to the underlying [G rendering engine](/manual/advanced/g-plugins) via `transformCanvasConfig`.
+By default, the table renders using the device's current pixel ratio, i.e., `window.devicePixelRatio`. If you find the initial rendering to be blurry, you can manually specify a higher device pixel ratio, such as `2`, by passing it to the underlying [G rendering engine](/en/manual/advanced/g-plugins) via `transformCanvasConfig`.
 
 ```ts
 const s2Options = {
