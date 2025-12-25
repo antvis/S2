@@ -1,7 +1,7 @@
 ---
 title: SpreadSheet
 order: 1
-tag: Updated
+
 ---
 
 功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/sheet-type/spread-sheet.ts)

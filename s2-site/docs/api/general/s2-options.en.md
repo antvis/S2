@@ -1,7 +1,7 @@
 ---
 title: S2Options
 order: 1
-tag: Updated
+
 ---
 
 Form parameter configuration
@@ -48,7 +48,6 @@ const s2Options = {
 | filterDisplayDataItem       | [FilterDataItemCallback](#filterdataitemcallback)   |          |                           | filter data                                                                                                                                                                                                           |
 | mappingDisplayDataItem      | [MappingDataItemCallback](#mappingdataitemcallback) |          |                           | Convert data for tooltip display                                                                                                                                                                                      |
 | dataSet                     | [DataSet](#dataset)                                 |          |                           | custom data set                                                                                                                                                                                                       |
-| supportsCSSTransform        | `boolean`                                           |          | `false`                   | After enabling it, CSS transform is supported, which solves the problem that the mouse coordinates respond incorrectly after the parent element is set to `transform`                                                 |
 | devicePixelRatio            | `number`                                            |          | `window.devicePixelRatio` | Custom Device Pixel Ratio                                                                                                                                                                                             |
 
 <embed src="@/common/series-number.en.md"></embed>

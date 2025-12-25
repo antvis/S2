@@ -1,7 +1,7 @@
 ---
 title: 简介
 order: 1
-tag: New
+
 ---
 
 <Badge>@antv/s2-react-components</Badge>
