@@ -1,3 +1,15 @@
+# [@antv/s2-v2.4.12](https://github.com/antvis/S2/compare/@antv/s2-v2.4.11...@antv/s2-v2.4.12) (2025-12-25)
+
+
+### Bug Fixes
+
+* 复制时相同前缀判断不准确 ([#3255](https://github.com/antvis/S2/issues/3255)) ([171841d](https://github.com/antvis/S2/commit/171841d93da2b62a9e4c9088defa0102ed68a81a))
+
+
+### Performance Improvements
+
+* 复用行列头/数值单元格 以提升百万滚动性能至50FPS ([#3222](https://github.com/antvis/S2/issues/3222)) ([3bc1ccb](https://github.com/antvis/S2/commit/3bc1ccb8006fe136989a32303d9107145914e160))
+
 # [@antv/s2-v2.4.11](https://github.com/antvis/S2/compare/@antv/s2-v2.4.10...@antv/s2-v2.4.11) (2025-12-01)
 
 
