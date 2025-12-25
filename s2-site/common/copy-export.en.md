@@ -242,7 +242,7 @@ const s2Options = {
 
 ## Export
 
-By default, only the export of `csv` plain text format is provided. If you want to export `xlsx` and retain the cell style, you can handle it yourself with tools such as [exceljs](https://github.com/exceljs/exceljs) and [sheetjs]( https://github.com/SheetJS/sheetjs).
+By default, only the export of `csv` plain text format is provided. If you want to export `xlsx` and retain the cell style, you can handle it yourself with tools such as [exceljs](https://github.com/exceljs/exceljs) and [sheetjs](https://github.com/SheetJS/sheetjs).
 
 ### 1. Export CSV
 
