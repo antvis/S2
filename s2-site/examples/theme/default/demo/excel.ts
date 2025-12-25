@@ -1,4 +1,4 @@
-import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
+import { TableSheet, S2DataConfig, S2Options } from '@antv/s2';
 
 fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
@@ -8,9 +8,7 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+        columns: ['province', 'city','type','price', 'cost'],
       },
       meta: [
         {
@@ -42,7 +40,7 @@ fetch(
       height: 480,
     };
 
-    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.setThemeCfg({ name: 'excel' });
 
