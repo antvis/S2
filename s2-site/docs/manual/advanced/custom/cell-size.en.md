@@ -6,7 +6,7 @@ tag: Updated
 
 S2 can manually drag and drop to dynamically change the width and height of cells. At the same time, there are three built-in layouts: row and column`行列等宽`,`列等宽`and`行列紧凑布局`layout ( [see examples](/examples/layout/basic/#compact) )
 
-We can modify the background color, font size and other configurations of the cell through the [theme](/docs/manual/basic/theme/) . If you want to customize the width and height of the cell, you can use the [style](/en/api/general/s2-options#style) configuration of `s2Options` to achieve it
+We can modify the background color, font size and other configurations of the cell through the [theme](/manual/basic/theme/) . If you want to customize the width and height of the cell, you can use the [style](/en/api/general/s2-options#style) configuration of `s2Options` to achieve it
 
 <Playground path="layout/custom/demo/custom-pivot-size.ts" rid="container" height="400"></Playground>
 
@@ -90,7 +90,7 @@ const s2Options = {
 
 If you want to set different widths and heights for a specific row/column, you can use `rowCell` 's `widthByField` and `heightByField` preset heights to achieve it. Two types of configurations are supported:
 
-* **fieldId** (eg: `root[&] 浙江省[&] 杭州市`): the unique ID corresponding to each row head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+* **fieldId** (eg: `root[&] 浙江省[&] 杭州市`): the unique ID corresponding to each row head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 * **field** (example: `city` ): corresponds to the `field` configured in `s2DataConfig.fields.rows` , applicable to cells accurate to a certain type of dimension value
 
 <br>
@@ -194,7 +194,7 @@ const s2Options = {
 
 If you want to set different widths and heights for a specific column, you can use `colCell` 's `widthByField` and `heightByField` preset widths and heights to achieve it. Two types of configurations are supported:
 
-* **fieldId** (example: `root[&] 家具[&] 沙发[&]number` ): the unique ID corresponding to each column head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+* **fieldId** (example: `root[&] 家具[&] 沙发[&]number` ): the unique ID corresponding to each column head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 * **field** (example: `city` ): corresponds to the `field` configured in `s2DataConfig.fields.columns` , applicable to cells accurate to a certain type of dimension value
 
 ```ts

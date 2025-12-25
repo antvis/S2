@@ -96,4 +96,4 @@ const s2 = new PivotSheet(container, dataCfg, options);
 s2.render();
 ```
 
-​📊 Check out [the class-wise perspective example](/examples/basic/pivot#grid) and [API docs](/api/general/s2options) .
+​📊 Check out [the class-wise perspective example](/examples/basic/pivot#grid) and [API docs](/api/general/s2-options) .

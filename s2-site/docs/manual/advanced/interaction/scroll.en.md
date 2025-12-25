@@ -76,7 +76,7 @@ For the`透视表`, the scrollable area is`行头单元格`and the`数值单元�
 * `S2Event.GLOBAL_SCROLL` : Cell scrolling, triggers when the value/row header cell scrolls
 * `S2Event.ROW_CELL_SCROLL` : row header cell scrolling
 
-At the same time: For the `s2-react` and `s2-vue` versions, event mapping is also provided, please refer to the [API documentation](/docs/api/components/sheet-component) for details
+At the same time: For the `s2-react` and `s2-vue` versions, event mapping is also provided, please refer to the [API documentation](/api/components/sheet-component) for details
 
 It should be noted that the row header cell will only display the scroll bar **when the row header is fixed** , and there will only be a **horizontal scroll bar** , so the `scrollY` will always be `0`
 

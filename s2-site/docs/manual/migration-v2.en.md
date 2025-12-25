@@ -963,7 +963,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 });
 ```
 
-See [Link Jump](/manual/advanced/interaction/link-jump) documentation for details.
+See [Link Jump](/manual/advanced/cell-render/link-jump) documentation for details.
 
 #### ID Generation Rule Changes for Empty Row/Column Dimension Values
 
@@ -1424,7 +1424,7 @@ In version `2.x`, if render parameters are not specified in `onUpdate`, default 
 
 ## ✍️ API Adjustments
 
-Please refer to the [`API Documentation`](/api) marked with <Badge type="success">New</Badge> and <Badge>Updated</Badge> for details.
+Please refer to the [`API Documentation`](/api/general/s2-options) marked with <Badge type="success">New</Badge> and <Badge>Updated</Badge> for details.
 
 ## 🙋 Troubleshooting
 

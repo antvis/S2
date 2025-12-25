@@ -9,7 +9,7 @@ Don't worry if the built-in interactions fail to cover actual usage scenarios. Y
 
 This is the basic format of a custom interaction class:
 
-Inherit `BaseEvent` to get the current table instance `this.spreadsheet` , implement the `bindEvents` method, combine a [series of methods](/docs/api/basic-class/spreadsheet) provided by `this.spreadsheet` , and customize the interaction. Finally, the default interaction and custom interaction will be registered when the table is initialized.
+Inherit `BaseEvent` to get the current table instance `this.spreadsheet` , implement the `bindEvents` method, combine a [series of methods](/api/basic-class/spreadsheet) provided by `this.spreadsheet` , and customize the interaction. Finally, the default interaction and custom interaction will be registered when the table is initialized.
 
 ```ts
 import { BaseEvent } from '@antv/s2';

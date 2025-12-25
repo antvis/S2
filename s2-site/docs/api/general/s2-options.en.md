@@ -89,8 +89,8 @@ Function description: custom cell
 
 | parameter   | illustrate                                                           | type                                             | Defaults | required |
 | ----------- | -------------------------------------------------------------------- | ------------------------------------------------ | -------- | -------- |
-| node        | The currently rendered node node                                     | [node](/docs/api/basic-class/node)               | -        | ✓        |
-| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/docs/api/basic-class/spreadsheet) | -        | ✓        |
+| node        | The currently rendered node node                                     | [node](/api/basic-class/node)               | -        | ✓        |
+| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/api/basic-class/spreadsheet) | -        | ✓        |
 | restOptions | Indeterminate parameters, pass additional information                | `unknown[]`                                      | -        |          |
 
 ## CornerHeaderCallback
@@ -104,7 +104,7 @@ Function description: custom corner head
 | parameter   | illustrate                                                           | type                                             | Defaults | required |
 | ----------- | -------------------------------------------------------------------- | ------------------------------------------------ | -------- | -------- |
 | parents     | parent cell                                                          | [S2CellType](#s2celltype)                        | -        | ✓        |
-| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/docs/api/basic-class/spreadsheet) | -        | ✓        |
+| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/api/basic-class/spreadsheet) | -        | ✓        |
 | restOptions | Indeterminate parameters, pass additional information                | `unknown[]`                                      | -        |          |
 
 <embed src="@/docs/common/custom/layoutHierarchy.en.md"></embed>
@@ -149,14 +149,14 @@ export type DataItem = SimpleDataItem | MultiData;
 
 | parameter      | illustrate                                                                    | type                                               | Defaults | required |
 | -------------- | ----------------------------------------------------------------------------- | -------------------------------------------------- | -------- | -------- |
-| colNodes       | all nodes in the column                                                       | [Node\[\]](/docs/api/basic-class/node)             |          |          |
+| colNodes       | all nodes in the column                                                       | [Node\[\]](/api/basic-class/node)             |          |          |
 | cols Hierarchy | column structure information                                                  | [Hierarchy](#hierarchy)                            |          |          |
 | rowNodes       | all nodes of the row                                                          | [Node\[\]](#node)                                  |          |          |
 | rows Hierarchy | row structure information                                                     | [Hierarchy](#hierarchy)                            |          | ✓        |
-| rowLeafNodes   | All leaf nodes of the row, for Cartesian intersection                         | [Node\[\]](/docs/api/basic-class/node)             |          |          |
-| colLeafNodes   | All leaf nodes of the column, for Cartesian intersection                      | [Node\[\]](/docs/api/basic-class/node)             |          |          |
+| rowLeafNodes   | All leaf nodes of the row, for Cartesian intersection                         | [Node\[\]](/api/basic-class/node)             |          |          |
+| colLeafNodes   | All leaf nodes of the column, for Cartesian intersection                      | [Node\[\]](/api/basic-class/node)             |          |          |
 | getViewMeta    | Obtain the information corresponding to the coordinates of \[x,y] crossed out | `(rowIndex: number, colIndex: number) => ViewMeta` |          |          |
-| spreadsheet    | Table class instance, which can access any configuration information          | [SpreadSheet](/docs/api/basic-class/spreadsheet)   |          |          |
+| spreadsheet    | Table class instance, which can access any configuration information          | [SpreadSheet](/api/basic-class/spreadsheet)   |          |          |
 
 ## DataSet
 

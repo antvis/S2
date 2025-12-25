@@ -10,7 +10,7 @@ The `React` version provides an advanced sorting component, optionally available
 
 ## Get started quickly
 
-Use the `SheetComponent` component of `@antv/s2-react` , and configure `advancedSort` for the `header` . For configuration details, see [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
+Use the `SheetComponent` component of `@antv/s2-react` , and configure `advancedSort` for the `header` . For configuration details, see [AdvancedSortCfgProps](/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';

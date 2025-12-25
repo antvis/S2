@@ -970,7 +970,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 });
 ```
 
-具体请查看 [链接跳转](/manual/advanced/interaction/link-jump) 相关文档。
+具体请查看 [链接跳转](/manual/advanced/cell-render/link-jump) 相关文档。
 
 #### 行列维值为空时 ID 生成规则变更
 
@@ -1446,7 +1446,7 @@ class AntdV5AliasPlugin {
 
 ## ✍️ API 调整
 
-具体请查看标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 的 [`API 文档`](/api)
+具体请查看标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 的 [`API 文档`](/api/general/s2-options)
 
 ## 🙋 遇到问题
 

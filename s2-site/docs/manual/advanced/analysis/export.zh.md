@@ -98,7 +98,7 @@ const App = () => {
 
 ## 在趋势分析表中使用
 
-由于 [趋势分析表](/manual/advanced/analysis/strategy) 数据结构的特殊性，和普通表格的导出有所不同，需要通过 `@antv/s2-react-components` 提供的 `StrategyExport` 组件， 使用方式和 `Export` 相同。
+由于 [趋势分析表](/manual/advanced/sheet/strategy) 数据结构的特殊性，和普通表格的导出有所不同，需要通过 `@antv/s2-react-components` 提供的 `StrategyExport` 组件， 使用方式和 `Export` 相同。
 
 ```tsx
 import { StrategyExport } from '@antv/s2-react-components'

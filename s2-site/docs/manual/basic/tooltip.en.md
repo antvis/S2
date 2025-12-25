@@ -142,7 +142,7 @@ const s2Options = {
 };
 ```
 
-At the same time, `content` also supports the method of callback, which can flexibly customize the content according to [current cell information](/docs/api/basic-class/interaction) and the default `tooltip` details
+At the same time, `content` also supports the method of callback, which can flexibly customize the content according to [current cell information](/api/basic-class/interaction) and the default `tooltip` details
 
 ```ts
 const TooltipContent = (props) => <div>
@@ -238,7 +238,7 @@ s2. showTooltip({
 #### Customize Tooltip action items
 
 In addition to the operation items provided by default, you can also configure `operation.menu` custom operation items, which support nesting, and you can also listen to their respective `onClick` click events, and you can get the current `tooltip`
-Corresponding [cell information](/docs/api/basic-class/base-cell)
+Corresponding [cell information](/api/basic-class/base-cell)
 
 ```ts
 const s2Options = {
@@ -281,7 +281,7 @@ const s2Options = {
 };
 ```
 
-You can also control whether the current operation item is displayed through the `visible` parameter, and support passing in a callback, which can be dynamically displayed according to the current [cell information](/docs/api/basic-class/base-cell)
+You can also control whether the current operation item is displayed through the `visible` parameter, and support passing in a callback, which can be dynamically displayed according to the current [cell information](/api/basic-class/base-cell)
 
 ```ts
 const s2Options = {
@@ -441,8 +441,8 @@ The default when `tooltip` is enabled:
 - Show `tooltip` when row and column headers **click**, and show `tooltip` when hovering cell text **omitted**
 - value cell hover over **800ms** shows `tooltip`
 
-For example, if you want to customize it to display `tooltip` when the mouse hovers over the line header, you can use custom interaction [details](/docs/manual/advanced/interaction/custom),
-Listen to the [interaction event](/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
+For example, if you want to customize it to display `tooltip` when the mouse hovers over the line header, you can use custom interaction [details](/manual/advanced/interaction/custom),
+Listen to the [interaction event](/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
 . [Example](/examples/interaction/custom#row-col-hover-tooltip)
 
 ```ts
@@ -475,7 +475,7 @@ const s2Options = {
 
 ```
 
-If you are using `React` components, you can also use [cell callback function](/docs/api/components/sheet-component)
+If you are using `React` components, you can also use [cell callback function](/api/components/sheet-component)
 to customize. [Example](/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
@@ -619,7 +619,7 @@ tooltip: {
 
 ##### Customizable display content
 
-All the following displayed content can cover all cells and events. For details of custom data, please refer to [TooltipShowOptions](/api/general/s2options#tooltipshowoptions)
+All the following displayed content can cover all cells and events. For details of custom data, please refer to [TooltipShowOptions](/api/general/s2-options#tooltipshowoptions)
 
 - display position (position)
 
@@ -658,7 +658,7 @@ All the following displayed content can cover all cells and events. For details 
 
   - List of selected item statistics ( summaries )
 
-      The statistical list of selected options is mainly distinguished by measurement value. For details, please refer to [TooltipSummaryOptions](/api/general/s2options#tooltipoptions#tooltipsummaryoptions)
+      The statistical list of selected options is mainly distinguished by measurement value. For details, please refer to [TooltipSummaryOptions](/api/general/s2-options#tooltipsummaryoptions)
 
       ```tsx
       instance.showTooltip = (tooltipOptions) => {
@@ -672,7 +672,7 @@ All the following displayed content can cover all cells and events. For details 
 
   - list of axes ( headInfo )
 
-Axis list, display `row/column header` names in data cells, see [TooltipHeadInfo](/api/general/s2options#tooltipoptions#tooltipheadinfo) for details
+Axis list, display `row/column header` names in data cells, see [TooltipHeadInfo](/api/general/s2-options#tooltipheadinfo) for details
 
        ```tsx
        instance.showTooltip = (tooltipOptions) => {
@@ -693,7 +693,7 @@ Axis list, display `row/column header` names in data cells, see [TooltipHeadInfo
 
      - Data point details (details)
 
-       Data point details, that is, the data information of the current cell, for details, please refer to [ListItem](/api/general/s2options#tooltipoptions#listitem)
+       Data point details, that is, the data information of the current cell, for details, please refer to [ListItem](/api/general/s2-options#listitem)
 
        ```tsx
        instance.showTooltip = (tooltipOptions) => {
@@ -721,11 +721,11 @@ Axis list, display `row/column header` names in data cells, see [TooltipHeadInfo
 
 - partial configuration ( options )
 
-  `tooltip` part configuration, details can be found in [TooltipOptions](/api/general/s2options#tooltipoptions)
+  `tooltip` part configuration, details can be found in [TooltipOptions](/api/general/s2-options#tooltipoptions)
 
   - Operation bar ( operator )
 
-      Operable configuration, see [TooltipOperatorOptions](/api/general/s2options#tooltipoperatoroptions) for details
+      Operable configuration, see [TooltipOperatorOptions](/api/general/s2-options#tooltipoperatoroptions) for details
 
       ```tsx
       instance.showTooltip = (tooltipOptions) => {

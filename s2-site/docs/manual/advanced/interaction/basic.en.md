@@ -28,7 +28,7 @@ Through these events, permutations and combinations, to achieve commonly used in
 | Outfit selection                                           | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables)            |
 | Column head brush selection                                | `S2Event.COL_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the column header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only pivot tables are supported)    |
 | Interval shortcut multiple selection                       | `S2Event.GLOBAL_SELECTED`                                     | Select a single cell (start), then hold down `Shift` to select a cell again (end), and select all cells in the two cell intervals                                                                                                                                                  |
-| hover                                                      | `S2Event.GLOBAL_HOVER`                                        | When the mouse hovers, the corresponding cell is highlighted. If it is a numerical cell, the [cross is highlighted](/docs/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E8%81%94%E5%8A%A8%E9%AB%98%E4%BA%AE) by default. You can set `hoverHighlight: false` to turn it off |
+| hover                                                      | `S2Event.GLOBAL_HOVER`                                        | When the mouse hovers, the corresponding cell is highlighted. If it is a numerical cell, the [cross is highlighted](/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E8%81%94%E5%8A%A8%E9%AB%98%E4%BA%AE) by default. You can set `hoverHighlight: false` to turn it off |
 | copy                                                       | `S2Event.GLOBAL_COPIED`                                       | Copy selected cell data                                                                                                                                                                                                                                                            |
 | hide column header                                         | `S2Event.COL_CELL_EXPANDED` `S2Event.COL_CELL_HIDDEN`         | Hide/expand column headers                                                                                                                                                                                                                                                         |
 | link jump                                                  | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | Row header/column header link jump                                                                                                                                                                                                                                                 |
@@ -37,7 +37,7 @@ Through these events, permutations and combinations, to achieve commonly used in
 
 ## interaction event
 
-[View full event list](/docs/api/general/s2-event)
+[View full event list](/api/general/s2-event)
 
 * `global:xx` : global chart events
 * `layout:xx` : layout change event
@@ -72,7 +72,7 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 })
 ```
 
-If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/docs/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2` .
+If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2` .
 
 ```ts
 import { S2Event, SpreadSheet } from '@antv/s2'
@@ -91,7 +91,7 @@ function App() {
 }
 ```
 
-At the same time, `React` and `Vue3` versions provide event mapping, and you can also use `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/docs/api/components/sheet-component) )
+At the same time, `React` and `Vue3` versions provide event mapping, and you can also use `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/api/components/sheet-component) )
 
 > React
 
@@ -134,7 +134,7 @@ window.addEventListener('mouseup', () => {}, true)
 
 ## Interaction related configuration
 
-[View specific API configuration details](/docs/api/basic-class/interaction#interaction)
+[View specific API configuration details](/api/basic-class/interaction#interaction)
 
 ```ts
 const s2Options = {
@@ -146,7 +146,7 @@ const s2Options = {
 
 ## built-in interaction
 
-> How to modify the interaction default style? Please check the [theme configuration](/docs/manual/basic/theme) chapter
+> How to modify the interaction default style? Please check the [theme configuration](/manual/basic/theme) chapter
 
 ### radio highlight
 
@@ -301,7 +301,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600">
 
-Both pivot tables and detailed tables are supported. After clicking the column header of a leaf node, the hide column header button will be displayed. After clicking hide, a display button and a hidden prompt line will be displayed in the adjacent sibling cell, just click the mouse Expand, you can configure `hiddenColumns` to achieve`默认隐藏`and`交互式隐藏`. See [details](/docs/manual/advanced/interaction/hide-columns/) or [specific examples](/examples/interaction/advanced#pivot-hide-columns)
+Both pivot tables and detailed tables are supported. After clicking the column header of a leaf node, the hide column header button will be displayed. After clicking hide, a display button and a hidden prompt line will be displayed in the adjacent sibling cell, just click the mouse Expand, you can configure `hiddenColumns` to achieve`默认隐藏`and`交互式隐藏`. See [details](/manual/advanced/interaction/hide-columns/) or [specific examples](/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
 const s2DataConfig = {
@@ -387,17 +387,17 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600">
 
-View [details](/docs/manual/advanced/interaction/merge-cell) or [specific examples](/examples/interaction/advanced#merge-cell)
+View [details](/manual/advanced/interaction/merge-cell) or [specific examples](/examples/interaction/advanced#merge-cell)
 
 ### link jump
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600">
 
-View [details](/docs/manual/advanced/interaction/link-jump) or [specific examples](/examples/interaction/advanced#pivot-link-jump)
+View [details](/manual/advanced/cell-render/link-jump) or [specific examples](/examples/interaction/advanced#pivot-link-jump)
 
 ### scroll
 
-view [details](/docs/manual/advanced/interaction/scroll)
+view [details](/manual/advanced/interaction/scroll)
 
 ### reset interaction
 
@@ -429,7 +429,7 @@ const s2Options = {
 
 ## call the API
 
-`S2` has built-in some interaction-related `API` , which are uniformly mounted under the `s2.interaction` namespace. You can call them to achieve your effects after getting the [SpreadSheet instance](/docs/api/basic-class/spreadsheet) , such as`选中所有单元格`,`获取列头单元格`and other common methods , please refer to the [Interaction instance class](/docs/api/basic-class/interaction) for details
+`S2` has built-in some interaction-related `API` , which are uniformly mounted under the `s2.interaction` namespace. You can call them to achieve your effects after getting the [SpreadSheet instance](/api/basic-class/spreadsheet) , such as`选中所有单元格`,`获取列头单元格`and other common methods , please refer to the [Interaction instance class](/api/basic-class/interaction) for details
 
 ```ts
 const s2 = new PivotSheet()

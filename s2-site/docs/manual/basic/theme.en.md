@@ -6,7 +6,7 @@ tag: Updated
 
 ## Introduction
 
-There are **3** out-of-the-box theme configurations built into S2, and powerful theme customization functions are also provided. [View APIs](/api/general/s2theme)
+There are **3** out-of-the-box theme configurations built into S2, and powerful theme customization functions are also provided. [View APIs](/api/general/s2-theme)
 
 ### color
 
@@ -100,7 +100,7 @@ s2.render(false);
 
 #### Customize cell alignment
 
-[View details](https://s2.antv.antgroup.com/manual/advanced/custom/cell-align) and [full API](/api/general/s2theme#s2theme)
+[View details](https://s2.antv.antgroup.com/manual/advanced/custom/cell-align) and [full API](/api/general/s2-theme#s2theme)
 
 ```ts
 s2.setTheme({
@@ -117,7 +117,7 @@ s2.setTheme({
 
 #### Custom cell background color
 
-View [full API](/api/general/s2theme#s2theme)
+View [full API](/api/general/s2-theme#s2theme)
 
 ```ts
 s2.setTheme({
@@ -131,7 +131,7 @@ s2.setTheme({
 
 #### custom scrollbar style
 
-View [full API](/api/general/s2theme#scrollbartheme)
+View [full API](/api/general/s2-theme#scrollbartheme)
 
 ```ts
 s2.setTheme({

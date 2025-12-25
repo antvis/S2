@@ -10,7 +10,7 @@ tag: Updated
 
 `S2` can be used to implement detailed tables, pivot tables, and trend analysis tables, etc.
 
-In order to better understand this article, before reading this article, I hope you are familiar with the use of `S2` and have a preliminary understanding of the [basic concepts](/docs/manual/basic/base-concept) .
+In order to better understand this article, before reading this article, I hope you are familiar with the use of `S2` and have a preliminary understanding of the [basic concepts](/manual/basic/base-concept) .
 
 ## Performance Interpretation
 

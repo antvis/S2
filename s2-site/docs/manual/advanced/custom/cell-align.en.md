@@ -3,7 +3,7 @@ title: Customize Cell Alignment
 order: 4
 ---
 
-> **Before reading this section, please make sure you have read the [theme configuration](/docs/manual/basic/theme) documentation**
+> **Before reading this section, please make sure you have read the [theme configuration](/manual/basic/theme) documentation**
 
 In order to facilitate users to view data, S2 crosstab will ensure the maximum visibility of row and column headers during the sliding process
 

@@ -391,7 +391,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600" />
 
-查看 [文档](/manual/advanced/interaction/link-jump) 和 [示例](/examples/interaction/advanced#pivot-link-jump)
+查看 [文档](/manual/advanced/cell-render/link-jump) 和 [示例](/examples/interaction/advanced#pivot-link-jump)
 
 ### 滚动
 

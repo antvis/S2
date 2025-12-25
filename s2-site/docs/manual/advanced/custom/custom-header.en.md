@@ -204,4 +204,4 @@ const s2Options = {
 
 ### more applications
 
-Based on custom row and column headers, we can derive more usage scenarios, such as based on`自定义行头`+`树状模式`, we can customize a [trend analysis table analysis component](zh/docs/manual/basic/analysis/strategy/) .
+Based on custom row and column headers, we can derive more usage scenarios, such as based on`自定义行头`+`树状模式`, we can customize a [trend analysis table analysis component](/manual/advanced/sheet/strategy) .

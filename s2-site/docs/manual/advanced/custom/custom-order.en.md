@@ -130,7 +130,7 @@ const s2Options = {
 
 ## custom sort operation
 
-Related chapter: [Custom sorting](/docs/manual/basic/sort/custom#2-%E7%BB%B4%E5%BA%A6%E5%80%BC%E5%88%97%E8%A1%A8sortby)
+Related chapter: [Custom sorting](/manual/basic/sort/basic#2-维度值列表sortBy)
 
 ### configuration
 
