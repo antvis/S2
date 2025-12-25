@@ -198,7 +198,7 @@ Function description: Empty data placeholder configuration (for table mode)
 | parameter   | illustrate                                                            | type     | Defaults     | required |
 | ----------- | --------------------------------------------------------------------- | -------- | ------------ | -------- |
 | icon        | Custom Icon, supports customSVGIcons registration and built-in icons | `string` | `"Empty"`    |          |
-| description | Custom description content                                            | `string` | `"暂无数据"` |          |
+| description | Custom description content                                            | `string` | `"No Data"`  |          |
 
 ## MergedCellInfo
 

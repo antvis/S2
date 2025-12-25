@@ -100,7 +100,7 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 ## MergedCellCallback
 
 ```js | pure
-DataCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) => MergedCell;
+MergedCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) => MergedCell;
 ```
 
 功能描述：自定义合并单元格。[查看示例](/examples/custom/custom-cell/#custom-merged-cell)
