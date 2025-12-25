@@ -9,32 +9,35 @@ Function description: layout node. [details](https://github.com/antvis/S2/blob/n
 node.isTotals // false
 ```
 
-| parameter         | illustrate                             | type                                             |
-| ----------------- | -------------------------------------- | ------------------------------------------------ |
-| id                | node id                                | `string`                                         |
-| key               | node key                               | `string`                                         |
-| value             | node value                             | `string`                                         |
-| level             | node level                             | `number`                                         |
-| rowIndex          | row header index                       | `number`                                         |
-| colIndex          | header index                           | `number`                                         |
-| parents           | parent node                            | [node](/docs/api/basic-class/node)               |
-| isTotals          | Is it summary                          | `boolean`                                        |
-| isSubTotals       | Is it a subtotal                       | `boolean`                                        |
-| isGrandTotals     | Is it total                            | `boolean`                                        |
-| isCollapsed       | Whether to expand                      | `boolean`                                        |
-| hierarchy         | hierarchical structure                 | [Hierarchy](#)                                   |
-| isPivotMode       | Is it a pivot table                    | `boolean`                                        |
-| seriesNumberWidth | Serial number width                    | `number`                                         |
-| field             | The field corresponding to dataCfg     | `string`                                         |
-| spreadsheet       | Form example                           | [SpreadSheet](/docs/api/basic-class/spreadsheet) |
-| query             | Data corresponding to the current node | `Record<string, any>`                            |
-| belongs to Cell   | corresponding cell                     | [S2CellType](/docs/api/basic-class/base-cell)    |
-| isTotalMeasure    | Is it a numerical subtotal             | `boolean`                                        |
-| inCollapseNode    | Whether to expand the node             | `boolean`                                        |
-| isLeaf            | Is it a leaf node                      | `boolean`                                        |
-| x                 | x-axis coordinate                      | `number`                                         |
-| the y             | y-axis coordinates                     | `number`                                         |
-| width             | width                                  | `number`                                         |
-| height            | high                                   | `number`                                         |
-| padding           | spacing                                | `number`                                         |
-| children          | child node                             | [Node\[\]](/docs/api/basic-class/node)           |
+| parameter | illustrate | type |
+| --- | --- | --- |
+| id | node id (if dimension value is empty, `null` will be converted to `$$null$$` for internal identification of original dimension value) | `string` |
+| field | node key | `string` |
+| value | node value | `string` |
+| level | node level | `number` |
+| rowIndex | row header index | `number` |
+| colIndex | column header index | `number` |
+| parent | parent node | [Node](/api/basic-class/node) |
+| isTotals | Is it a totals node | `boolean` |
+| isSubTotals | Is it a subtotal | `boolean` |
+| isGrandTotals | Is it a grand total | `boolean` |
+| isCollapsed | Whether is collapsed | `boolean` |
+| hierarchy | hierarchical structure | [Hierarchy](/api/basic-class/hierarchy) |
+| isPivotMode | Is it a pivot table | `boolean` |
+| seriesNumberWidth | Series number width | `number` |
+| field | The field corresponding to dataCfg | `string` |
+| spreadsheet | Table instance | [SpreadSheet](/api/basic-class/spreadsheet)  |
+| query | Query condition for current node [details](/manual/advanced/get-cell-data) | `Record<string, any>` |
+| belongsCell | Cell corresponding to current node | [S2CellType](/api/basic-class/base-cell)  |
+| isTotalMeasure | Is it a measure subtotal | `boolean` |
+| isCollapseNode | Whether is a collapse node | `boolean` |
+| isSeriesNumberNode | Whether is a series number column node | () => `boolean` |
+| isLeaf | Is it a leaf node | `boolean` |
+| x | x-axis coordinate | `number` |
+| y | y-axis coordinate | `number` |
+| width | width | `number` |
+| height | height | `number` |
+| padding | padding | `number` |
+| children | child nodes | [Node[]](/api/basic-class/node)  |
+| extra | additional node info | `Record<string, any>` |
+| relatedNode | Used for series number cells to identify the row header node corresponding to the series number cell; used in frozen row header scenarios | [Node[]](/api/basic-class/node)  |
