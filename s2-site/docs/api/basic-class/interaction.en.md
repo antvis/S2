@@ -101,7 +101,11 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
+  | SeriesNumberCell
   | MergedCell
+  | TableDataCell
+  | TableCornerCell
+  | TableSeriesNumberCell
   | BaseCell<T>;
 ```
 
