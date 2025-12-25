@@ -1,135 +1,194 @@
 ---
-title: Table Mode
+title: Detail Table
 order: 2
 ---
 
 ## Introduction
 
-The schedule is one of the basic forms of `S2` . The detailed table is an ordinary table, and the data of each row is directly displayed under the column header. It is mainly used for the display of detailed data in big data scenarios.
+The Detail Table is one of the basic forms of `S2`. It is a standard table that displays each row of data directly under the column headers. It is primarily used for displaying detailed data in big data scenarios.
 
-<img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600">
+The Detail Table shares capabilities with the Pivot Table, such as [basic interactions](/manual/advanced/interaction/basic), [theming](/manual/basic/theme), [copying](/manual/basic/analysis/export), and [custom cells](/manual/advanced/custom/hook). In addition, the Detail Table supports special features like [row and column freezing](/examples/interaction/basic#frozen). In scenarios with massive amounts of detailed data, the Detail Table can replace `DOM`-based table components to improve performance and user experience.
 
-Schedules and pivot tables share [basic interactions](/manual/advanced/interaction/basic) , [theming](/manual/basic/theme) , [replication](/manual/basic/analysis/export) , [custom cell](/manual/advanced/custom/hook) capabilities, and more. In addition, the schedule also supports special functions such as row and [column freezing](/examples/interaction/basic#froze) . In the scenario of massive detailed data rendering, the detailed table can replace the `DOM` -based table component to improve performance and user experience.
+<img alt="table-mode" src="https://gw.alipayobjects.com/zos/antfincdn/jWifHNLOsB/08db1064-bb09-4d44-b42b-26aed1766545.png" width="600" />
 
-## use
+## Usage
 
 ```html
 <div id="container" />
 ```
 
-### The React component approach
+```ts
+import { TableSheet } from "@antv/s2";
 
-```typescript
-import React from "react";
-import ReactDOM from "react-dom";
-import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/s2-react.min.css';
-
-// 1. 准备数据
+// Prepare the data
 const data = [
   {
-    province: "浙江",
-    city: "杭州",
-    type: "笔",
+    province: "Zhejiang",
+    city: "Hangzhou",
+    type: "Pen",
     price: "1",
   },
   {
-    province: "浙江",
-    city: "杭州",
-    type: "纸张",
+    province: "Zhejiang",
+    city: "Hangzhou",
+    type: "Paper",
     price: "2",
   },
 ];
 
-// 2. 配置数据
+// Configure the data
 const s2DataConfig = {
   fields: {
-    columns: ["province", "city", "type", "price"], // 要展示的列头字段 id 列表
+    columns: ["province", "city", "type", "price"], // List of column header field IDs to display
   },
   meta: [
-    // 列头字段对应的元信息，比如展示的中文名
+    // Metadata for the column header fields, e.g., for display names
     {
       field: "province",
-      name: "省份",
+      name: "Province",
     },
     {
       field: "city",
-      name: "城市",
+      name: "City",
     },
     {
       field: "type",
-      name: "类型",
+      name: "Type",
     },
     {
       field: "price",
-      name: "价格",
+      name: "Price",
     },
   ],
   data,
 };
 
-// 3. 添加配置
+// Render
+async function bootstrap() {
+  const container = document.getElementById('container');
+  const s2 = new TableSheet(container, s2DataConfig, s2Options);
+
+  await s2.render();
+}
+
+bootstrap()
+```
+
+<Playground path='basic/table/demo/table.ts' rid='table' height='300'></playground>
+
+[View Example](/examples/basic/table) and [API documentation](/api/general/s2options).
+
+## Usage in React
+
+### Using `@antv/s2`
+
+```tsx
+import React from "react";
+import { TableSheet } from '@antv/s2';
+
 const s2Options = {
   width: 400,
   height: 200,
 };
 
-// 4, 渲染
-ReactDOM.render(
-  <SheetComponent
-    sheetType="table"
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container')
-);
+const App = () => {
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const shouldInit = React.useRef(true);
+  const isDevMode = React.useMemo(() => {
+    try {
+      return process.env['NODE_ENV'] !== 'production';
+    } catch {
+      return false;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    // Workaround for React 18 StrictMode double render in dev
+    if (isDevMode && !shouldInit.current) {
+      return;
+    }
+
+    const s2 = new TableSheet(containerRef.current, s2DataConfig, s2Options);
+    shouldInit.current = false;
+
+    return () => {
+      s2?.destroy?.();
+    };
+  }, []);
+
+  return <div id="container" ref={containerRef} />
+}
 ```
 
-### TableSheet class method
+### Using `@antv/s2-react` <Badge type="success">Recommended</Badge>
 
-If you don't plan to rely on React, you can call it directly after the third step above:
+```tsx
+import React from "react";
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/s2-react.min.css';
 
-```ts
-import { TableSheet } from "@antv/s2";
+const s2Options = {
+  width: 400,
+  height: 200,
+};
 
-const container = document.getElementById('container');
-const s2 = new TableSheet(container, dataCfg, options);
-s2.render();
+const App = () => {
+  return (
+    <SheetComponent
+      sheetType="table"
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
 ```
 
-## characteristic
+[View Example](/examples/react-component/sheet/#table) and [API documentation](/api/components/sheet-component).
 
-### serial number
+## Features
 
-Pass in `s2Options` in `seriesNumber` to display the built-in serial number. [view demo](/examples/basic/table#table)
+### Series Number
+
+You can display a built-in series number column by passing `seriesNumber` in `s2Options`. You can also customize the column title. [View Example](/examples/basic/table#table)
 
 ```ts
 const s2Options = {
   seriesNumber: {
-    enable: true
+    enable: true,
+    text: 'Index'
   }
 }
 ```
 
-### ranks freeze
+### Row and Column Freezing
 
-Row and column freeze keeps a specific row and column fixed while scrolling, so that it remains within the viewport at all times, providing information for comparison and reference. [view demo](/examples/interaction/basic#frozen)
+Row and column freezing keeps specific rows and columns fixed during scrolling, ensuring they remain in the viewport for reference. [View Example](/examples/interaction/basic#frozen)
 
-Row and column freezing is controlled by passing these properties in `s2Options` :
+<Playground path='layout/frozen/demo/table-frozen.ts' rid='table-frozen' height='300'></playground>
+
+<br/>
+
+Row and column freezing is controlled by these properties in `s2Options`:
 
 ```ts
 const s2Options = {
   frozen: {
-    rowCount: number; // 冻结行的数量，从顶部开始计数
-    trailingRowCount: number; // 冻结行数量，从底部开始计数
-    colCount: number; // 冻结列的数量，从左侧开始计数
-    trailingColCount: number; // 冻结列的数量，从右侧开始计数
+    rowCount: number; // Number of rows to freeze from the top
+    trailingRowCount: number; // Number of rows to freeze from the bottom
+    colCount: number; // Number of columns to freeze from the left
+    trailingColCount: number; // Number of columns to freeze from the right
   }
 }
 ```
 
-The effect is as shown in the figure:
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
+### Custom Column Header Grouping
 
-<Playground path="layout/frozen/demo/table-frozen.ts" rid="container" height="300"></Playground>
+By default, the column header structure is grouped based on the provided dimension values. Custom grouping is also supported, allowing for multi-level column headers. [Learn More](/manual/advanced/custom/custom-header)
+
+### Empty Data Placeholder
+
+When the data is empty, you can display a custom icon and description. Icons can be registered via [customSVGIcons](/manual/advanced/custom/custom-icon) or use built-in icons. The size and spacing of the icon and text can be modified through [theme configuration](/api/general/s2-theme#empty).
+
+<Playground path='/custom/custom-cell/demo/empty-placeholder.ts' rid='empty-placeholder' height='300'></playground>

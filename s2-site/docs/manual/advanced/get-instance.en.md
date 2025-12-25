@@ -1,15 +1,22 @@
 ---
-title: Get Instance
+title: Getting the Spreadsheet Instance
 order: 8
 ---
 
-## React version
+<Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
-For scenarios such as using the `React` component `SheetComponent` , if you need to get the [table instance](/docs/api/basic-class/spreadsheet) and perform some advanced operations, you can use `React.useRef` and `onMounted` two ways
+## React Version
 
-### ref method (recommended)
+When using the `SheetComponent` in React, if you need to access the [spreadsheet instance](/api/basic-class/spreadsheet) for advanced operations, you can use `React.useRef` and `onMounted`.
+
+:::info{title="Note"}
+The spreadsheet renders asynchronously. You must wait for the `onMounted` callback to get the latest instance.
+:::
+
+### Usage
 
 ```tsx
+import React from 'react'
 import { SpreadSheet } from '@antv/s2'
 import { SheetComponent } from '@antv/s2-react'
 
@@ -26,20 +33,46 @@ function App() {
 }
 ```
 
-### Instance update when component shape changes
+### Usage with Other Components
 
-`S2` provides table forms such as`透视表`and `sheetType``明细表`corresponds to the `SheetComponent` component
+If you need to use the S2 instance with other components that depend on it, you should use `React.useState` to store the instance. This is because a `ref` change does not trigger a re-render, which could prevent dependent components from updating correctly. [View Example](/examples/react-component/export/#export)
+
+```tsx
+import React from 'react'
+import { SpreadSheet } from '@antv/s2'
+import { SheetComponent } from '@antv/s2-react'
+import { Export } from '@antv/s2-react-components';
+
+function App() {
+  const [sheetInstance, setSheetInstance] = React.useState<SpreadSheet>();
+
+  const onMounted = (s2: SpreadSheet) => {
+    setSheetInstance(s2);
+  };
+
+  return (
+    <>
+      <Export sheetInstance={sheetInstance} />
+      <SheetComponent onMounted={onMounted}/>
+    </>
+  )
+}
+```
+
+### Instance Updates on Component Type Change
+
+`S2` provides different spreadsheet types, such as `PivotSheet` and `TableSheet`. The `SheetComponent` corresponds to the `sheetType` prop.
 
 ```tsx
 function App() {
-  // pivot 透视表，table: 明细表
+  // pivot: PivotSheet, table: TableSheet
   return (
     <SheetComponent sheetType="pivot" />
   )
 }
 ```
 
-When the `sheetType` changes, the bottom layer will use different table classes for rendering, which means that the`实例`has changed at this time
+When the `sheetType` changes, a different underlying spreadsheet class is used for rendering, which means the **instance has changed**.
 
 ```diff
 pivot => table
@@ -48,10 +81,11 @@ pivot => table
 - new PivotSheet()
 ```
 
-The registration event will be canceled before the change. `S2` optimizes this scenario. Regardless of the `ref` or `onMounted` method, the latest instance is obtained, and developers do not need to care
+Any event listeners registered on the old instance will be removed. `S2` optimizes for this scenario, so whether you use `ref` or `onMounted`, you will always get the latest instance without needing to handle it yourself.
 
 ```tsx
-import { SpreadSheet, S2Event } from '@antv/s2'
+import React from 'react'
+import { SpreadSheet } from '@antv/s2'
 import { SheetComponent } from '@antv/s2-react'
 
 function App() {
@@ -59,8 +93,12 @@ function App() {
   const [sheetType, setSheetType] = React.useState('pivot')
 
   const onMounted = (instance) => {
-    console.log(s2Ref.current === instance)
+    console.log(s2Ref.current === instance) // Always true
   }
+
+  React.useEffect(() => {
+    setSheetType('table')
+  },[])
 
   return (
     <SheetComponent ref={s2Ref} sheetType={sheetType} onMounted={onMounted}/>
@@ -68,16 +106,14 @@ function App() {
 }
 ```
 
-### Forward the instance to the upper component
+### Forwarding the Instance to a Parent Component
 
-If your business has re-encapsulated `SheetComponent` and needs to expose instances, you can use `React.forwardRef` for instance forwarding
+If you have created a wrapper around `SheetComponent` and need to expose the instance, you can use `React.forwardRef`.
 
 ```tsx
 const YourComponent = React.forwardRef(
   (props, ref: React.MutableRefObject<SpreadSheet>) => {
-
-    // ... 业务逻辑
-
+    // ... your business logic
     return (
       <SheetComponent ref={ref} />
     )
@@ -97,11 +133,11 @@ function App() {
 }
 ```
 
-## Vue version
+## Vue Version
 
-### ref method (recommended)
+### Usage
 
-The ref method gets an object, and the `instance` attribute in it corresponds to the real table instance:
+The `ref` method returns an object, and the `instance` property on that object is the actual spreadsheet instance:
 
 ```vue
 <script lang="ts">
@@ -120,7 +156,6 @@ export default defineComponent({
       s2
     };
   },
-
   components: {
     Sheet,
   },
@@ -132,16 +167,17 @@ export default defineComponent({
 </template>
 ```
 
-### Forward the instance to the upper component
+### Forwarding the Instance to a Parent Component
 
-If your business has re-encapsulated `Sheet` and needs to expose instances, you can use `useExpose` provided by the library to forward instances
+If you have created a wrapper around the `Sheet` component and need to expose the instance, you can use the `useExpose` utility provided by the library.
 
 ```tsx
-//  二次封装组件
+// Your wrapper component
+import { defineComponent } from 'vue';
+import { SheetComponent as BaseSheet, useExpose } from '@antv/s2-vue';
+
 export default defineComponent({
   name: 'YourSheet',
-  props: [] as unknown as BaseSheetInitProps,
-  emits: [] as unknown as BaseSheetInitEmits,
   setup(props, ctx) {
     const s2Ref = useExpose(ctx.expose);
     return { s2Ref };
@@ -156,10 +192,13 @@ export default defineComponent({
 </template>
 ```
 
-Use the ref method to obtain an instance of an external component:
+The parent component can then get the instance using a `ref`:
 
 ```vue
 <script lang="ts">
+import { defineComponent, onMounted, shallowRef } from 'vue';
+import YourSheet from './YourSheet.vue';
+
 export default defineComponent({
   setup() {
     const s2 = shallowRef();
@@ -172,9 +211,8 @@ export default defineComponent({
       s2
     };
   },
-
   components: {
-    Sheet,
+    YourSheet,
   },
 });
 </script>
