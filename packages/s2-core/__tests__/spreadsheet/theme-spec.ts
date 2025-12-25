@@ -71,7 +71,7 @@ describe('SpreadSheet Theme Tests', () => {
       expect(tableSheet.theme).toMatchSnapshot();
     });
 
-    test.each(['dark', 'gray', 'colorful', 'default'] as ThemeName[])(
+    test.each(['dark', 'gray', 'colorful', 'default', 'excel'] as ThemeName[])(
       'should get %s theme',
       (name) => {
         s2.setThemeCfg({

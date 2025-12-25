@@ -1,6 +1,7 @@
 import { paletteColorful } from '../../theme/palette/colorful';
 import { paletteDark } from '../../theme/palette/dark';
 import { paletteDefault } from '../../theme/palette/default';
+import { paletteExcel } from '../../theme/palette/excel';
 import { paletteGray } from '../../theme/palette/gray';
 import type { ThemeName } from '../interface';
 import { S2_PREFIX_CLS } from './classnames';
@@ -10,6 +11,7 @@ export const PALETTE_MAP = {
   colorful: paletteColorful,
   gray: paletteGray,
   dark: paletteDark,
+  excel: paletteExcel,
 } as const;
 
 /**
@@ -34,6 +36,7 @@ export const G2_THEME_TYPE: Record<ThemeName, string> = {
   colorful: 'light',
   gray: 'light',
   dark: 'dark',
+  excel: 'light',
 };
 
 export const CELL_PADDING = 8;
