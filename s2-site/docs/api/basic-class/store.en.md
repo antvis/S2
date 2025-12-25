@@ -23,7 +23,7 @@ s2.store.set('key', value) // 存储
 | drillDownFieldInLevel    | Drill down to node level information                                | [PartDrillDownInfo\[\]](#partdrilldowninfo)                   |
 | originalDataCfg          | Raw Data Configuration                                              | [S2DataConfig](/en/api/general/s2-data-config)                |
 | panelBBox                | Visual area wrapping box model                                      | [BBox](/api/basic-class/spreadsheet/#bbox)               |
-| activeResizeArea         | current resizing region group                                       | [Group](https://g.antv.vision/zh/docs/api/group)              |
+| activeResizeArea         | current resizing region group                                       | [Group](https://g.antv.antgroup.com/api/basic/group)              |
 | valueRanges              | conditional format value range                                      | [ValueRanges](#valueranges)                                   |
 | initColLeafNodes      | The column header leaf node when it is first rendered               | [Node\[\]](/api/basic-class/node)                        |
 | hiddenColumnsDetail      | Hidden column header details                                        | [HiddenColumnsInfo\[\]](#hiddencolumnsinfo)                   |
@@ -68,4 +68,4 @@ export interface ValueRange {
 export type ValueRanges = Record<string, ValueRange>;
 ```
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>

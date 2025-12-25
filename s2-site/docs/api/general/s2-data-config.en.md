@@ -18,13 +18,13 @@ const s2DataConfig = {
 }
 ```
 
-| parameter  | illustrate                                                      | type                        | Defaults | required |
-| ---------- | --------------------------------------------------------------- | --------------------------- | -------- | -------- |
-| data       | Raw data                                                        | [Data\[\]](#data)           |          | ✓        |
-| fields     | dimension index                                                 | [Fields](#fields)           |          | ✓        |
-| totalData  | Total/Subtotal Data                                             | [Data\[\]](#data)           |          |          |
-| meta       | Field metadata, configurable field aliases and value formatting | [Meta\[\]](#meta)           |          |          |
-| sortParams | Sorting parameter configuration                                 | [SortParam\[\]](#sortparam) |          |          |
+| parameter    | illustrate                                                      | type                          | Defaults | required |
+| ------------ | --------------------------------------------------------------- | ----------------------------- | -------- | -------- |
+| data         | Raw data                                                        | [RawData\[\]](#rawdata)       |          | ✓        |
+| fields       | Dimension index                                                 | [Fields](#fields)             |          | ✓        |
+| meta         | Field metadata, configurable field aliases and value formatting | [Meta\[\]](#meta)             |          |          |
+| sortParams   | Sorting parameter configuration                                 | [SortParam\[\]](#sortparam)   |          |          |
+| filterParams | Filter parameter configuration                                  | [FilterParam\[\]](#filterparam) |          |          |
 
 ### RawData
 
@@ -129,7 +129,7 @@ Function description: Field metadata, configurable field alias and value formatt
 
 ### MiniChartData
 
-<embed src="@/docs/common/mini-chart.en.md"></embed>
+<embed src="@/common/mini-chart.en.md"></embed>
 
 ### MultiData
 
@@ -144,9 +144,19 @@ Function description: used to support custom data cell rendering of multiple ind
 | label                   | Used as a cell subtitle, displayed on a separate line           | `string`                 |          |          |
 | \[key: string]          | Other transparent fields for customized display of custom cells | `unknown`                | \`\`     |          |
 
-<embed src="@/docs/common/sort-param.en.md"></embed>
+<embed src="@/common/sort-param.en.md"></embed>
 
-<embed src="@/docs/common/custom/customTreeNode.en.md"></embed>
+### FilterParam
+
+Function description: Used for **table mode** data filtering.
+
+| Configuration item name | illustrate                                                                           | type                      | Defaults | required |
+| :---------------------- | :----------------------------------------------------------------------------------- | :------------------------ | :------- | :------- |
+| `filterKey`             | The field id to filter                                                               | `string`                  |          | ✓        |
+| `filteredValues`        | Dimension values to exclude                                                          | `unknown[]`               |          |          |
+| `customFilter`          | Custom filter function, the final filter result satisfies customFilter and is not in filteredValues | `(raw: Record<string, string>) => boolean` |          |          |
+
+<embed src="@/common/custom/customTreeNode.en.md"></embed>
 
 ### Columns
 

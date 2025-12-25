@@ -1,7 +1,7 @@
 ---
 title: Customize Tree
 order: 2
-tag: New
+
 ---
 
 By default, `S2` provides two **row header** layout modes [: tile mode (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) and [tree mode (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) .
@@ -12,7 +12,7 @@ By default **, the hierarchical structure is generated through the data obtained
 
 ### data structure
 
-`markdown:docs/common/custom/customTreeNode.en.md`
+`markdown:common/custom/customTreeNode.en.md`
 
 ```ts
 const customTree: CustomTreeNode[] = [

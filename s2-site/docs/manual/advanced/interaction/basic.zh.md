@@ -1,7 +1,7 @@
 ---
 title: 基础交互
 order: 0
-tag: Updated
+
 ---
 
 ## 交互种类

@@ -21,7 +21,9 @@ export class ChartDataCell extends DataCell {
       return;
     }
 
-    this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    if (!this.chartShape) {
+      this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    }
 
     const chartOptions = this.getChartOptions();
 

@@ -173,4 +173,4 @@ export type IconConditionMappingResult = {
 };
 ```
 
-<embed src="@/docs/common/icon.zh.md"></embed>​
+<embed src="@/common/icon.zh.md"></embed>​

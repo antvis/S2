@@ -1,7 +1,7 @@
 ---
 title: Export
 order: 5
-tag: Updated
+
 ---
 
 ## React export components
@@ -31,7 +31,7 @@ tag: Updated
 | async             | Copy data asynchronously (default is asynchronous)                                       | `boolean`                                                       | `false`  |          |
 | drop down            | Dropdown menu configuration, transparently passed to the `Dropdown` component of `antd` | [DropdownProps](https://ant.design/components/dropdown-cn/#API) |          |          |
 
-<embed src="@/docs/common/copy-export.en.md"></embed>
+<embed src="@/common/copy-export.en.md"></embed>
 
 ## Vue export component
 

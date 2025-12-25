@@ -15,6 +15,10 @@ const s2Options: SheetComponentOptions = {
       horizontal: 1,
     },
   },
+  showDefaultHeaderActionIcon: false,
+  future: {
+    experimentalReuseCell: true,
+  },
 };
 
 export function generateRawData(

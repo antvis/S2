@@ -1,7 +1,7 @@
 ---
 title: CellData
 order: 10
-tag: New
+
 ---
 
 功能描述：透视表数值单元格元数据。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/data-set/cell-data.ts)
@@ -43,4 +43,4 @@ CellData.getCellDataList(raw: RawData, extraFields: string[])
 CellData.getFieldValue(data: ViewMetaData, field?: string)
 ```
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>

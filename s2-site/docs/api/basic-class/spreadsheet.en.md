@@ -21,7 +21,7 @@ s2.isPivotMode()
 | dataSet                    | Tabular Dataset (fields, data, sort)                                                                                                                                                             | [BaseDataSet](/api/basic-class/base-data-set)                                                                                                                     |                                                                      |
 | facet                      | current viewable rendering area                                                                                                                                                                  | [BaseFacet](/api/basic-class/base-facet)                                                                                                                          |                                                                      |
 | tooltip                    | tooltip                                                                                                                                                                                          | [BaseTooltip](/api/basic-class/base-tooltip)                                                                                                                      |                                                                      |
-| container                  | g-canvas example                                                                                                                                                                                 | [Canvas](https://g.antv.vision/zh/docs/api/canvas)                                                                                                                     |                                                                      |
+| container                  | g-canvas example                                                                                                                                                                                 | [Canvas](https://g.antv.antgroup.com/api/renderer/canvas)                                                                                                                     |                                                                      |
 | interaction                | interact                                                                                                                                                                                         | [Interaction](/en/api/basic-class/interaction)                                                                                                                    |                                                                      |
 | hd                  | HD adaptation                                                                                                                                                                                    | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts)                                                                      |                                                                      |
 | on                         | event subscription                                                                                                                                                                               | (event: [S2Event](/manual/advanced/interaction/basic) , listener: () => void) => void                                                                             |                                                                      |
@@ -90,11 +90,12 @@ Function description: cell type
 
 ```ts
 export enum CellType {
-  DATA_CELL = 'dataCell',  // 数值单元格
-  ROW_CELL = 'rowCell', // 行头单元格
-  COL_CELL = 'colCell', // 列头单元格
-  CORNER_CELL = 'cornerCell', // 角头单元格
-  MERGED_CELL = 'mergedCell', // 合并后的单元格
+  DATA_CELL = 'dataCell',  // data cell
+  ROW_CELL = 'rowCell', // row header cell
+  COL_CELL = 'colCell', // column header cell
+  SERIES_NUMBER_CELL = 'seriesNumberCell', // series number cell
+  CORNER_CELL = 'cornerCell', // corner cell
+  MERGED_CELL = 'mergedCell', // merged cell
 }
 ```
 

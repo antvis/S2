@@ -10,6 +10,7 @@ import {
 import {
   CornerNodeType,
   EXTRA_FIELD,
+  NODE_ID_SEPARATOR,
   VALUE_FIELD,
   type CellMeta,
   type CustomHeaderField,
@@ -40,6 +41,7 @@ import {
   getHeaderNodeFromMeta,
   getMaxRowLen,
   getNodeFormatData,
+  ricOptions,
 } from './common';
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
@@ -92,10 +94,23 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     allRowOrColLeafNodes: Node[],
     isTreeData = false,
   ): Node[] {
+    if (isTreeData) {
+      const selectedIds = new Set(selectedMeta.map((meta) => meta.id));
+
+      return allRowOrColLeafNodes.filter((node) => selectedIds.has(node.id));
+    }
+
     return selectedMeta.reduce<Node[]>((nodes, cellMeta) => {
-      const filterNodes = allRowOrColLeafNodes.filter((node) =>
-        isTreeData ? node.id === cellMeta.id : node.id.startsWith(cellMeta.id),
-      );
+      const parentId = cellMeta.id;
+      const filterNodes = allRowOrColLeafNodes.filter((node) => {
+        // 核心修复逻辑：
+        // 1. node.id === parentId   -> 完全匹配，例如 "root[&]四川省" 匹配 "root[&]四川省"
+        // 2. node.id.startsWith(parentId + delimiter) -> 匹配子孙，例如 "root[&]四川省[&]成都市"
+        return (
+          node.id === parentId ||
+          node.id.startsWith(parentId + NODE_ID_SEPARATOR)
+        );
+      });
 
       nodes.push(...filterNodes);
 
@@ -190,11 +205,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
             // 重置 idleCallbackCount，避免下次 requestIdleCallback 时 idleCallbackCount 为 0
             this.initIdleCallbackCount(rowLength);
 
-            requestIdleCallback(dataMatrixIdleCallback);
+            requestIdleCallback(dataMatrixIdleCallback, ricOptions);
           }
         };
 
-        requestIdleCallback(dataMatrixIdleCallback);
+        requestIdleCallback(dataMatrixIdleCallback, ricOptions);
       } catch (e) {
         reject(e);
       }

@@ -1,7 +1,7 @@
 ---
 title: Strategy Sheet
 order: 9
-tag: Updated
+
 ---
 
 In order to meet more analysis scenarios, S2 provides an out-of-the-box scenario table component - trend analysis table. With it, you can easily implement a scene table that displays multiple indicators in a cell.
@@ -160,7 +160,7 @@ const s2DataConfig = {
 * The corner header text can be customized through `options.cornerText`
 * Coloring logic configuration can be configured in `options.conditions` , no need to specify the `field` parameter, the usage reference [field tag](/manual/basic/conditions) currently only supports the text color channel
 
-<embed src="@/docs/common/custom/customTreeNode.en.md"></embed>
+<embed src="@/common/custom/customTreeNode.en.md"></embed>
 
 ## Tooltips
 
@@ -234,6 +234,6 @@ In the indicator trend analysis scenario, usually we want to see the global tren
 
 The configuration is as follows:
 
-<embed src="@/docs/common/mini-chart.en.md"></embed>
+<embed src="@/common/mini-chart.en.md"></embed>
 
 If you want to change the Mini graph style configuration, you can refer to the [theme configuration](/api/general/s2-theme#minicharttheme)

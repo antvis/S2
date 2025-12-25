@@ -1,7 +1,7 @@
 ---
 title: S2Options
 order: 1
-tag: Updated
+
 ---
 
 表格参数配置
@@ -33,11 +33,12 @@ const s2Options = {
 | style                       | [Style](#style)                                                                                                                                                                                                              |      |         | 单元格样式设置，比如布局类型，宽高，边距，是否隐藏数值列头等                                                                              |
 | hd                   | `boolean`                                                                                                                                                                                                                    |      | `true`  | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题。[查看更多](/manual/advanced/hd-adapter)                                 |
 | mergedCellsInfo             | [MergedCellInfo](#mergedcellinfo)[][]                                                                                                                                                                                        |      |         | 合并单元格信息                                                                                                                            |
-| placeholder                 | `string \| (meta: Record<string, any>) => string`                                                                                                                                                                            |      |         | 自定义单元格空数据占位符                                                                                                                        |
+| placeholder                 | [Placeholder](#placeholder)                                                                                                                                                                            |      |         | 自定义空数据占位符配置                                                                                                                        |
 | cornerText                  | string                                                                                                                                                                                                                       |      |         | 自定义角头文本 （仅在树状模式有效）                                                                                                       |
 | cornerExtraFieldText        | string                                                                                                                                                                                                                       |      | `数值`  | 自定义角头虚拟数值字段文本（"数值挂行头"时有效）                                                                                          |
 | dataCell                    | [DataCellCallback](#datacellcallback)                                                                                                                                                                                        |      |         | 自定义单元格 cell                                                                                                                         |
 | cornerCell                  | [CellCallback](#cellcallback)                                                                                                                                                                                                |      |         | 自定义 cornerCell                                                                                                                         |
+| seriesNumberCell            | [CellCallback](#cellcallback)                                                                                                                                                                                                |      |         | 自定义序号单元格                                                                                                                         |
 | rowCell                     | [CellCallback](#cellcallback)                                                                                                                                                                                                |      |         | 自定义行头 cell                                                                                                                           |
 | colCell                     | [CellCallback](#cellcallback)                                                                                                                                                                                                |      |         | 自定义列头 cell                                                                                                                           |
 | mergedCell                  | [MergedCellCallback](#mergedcellcallback)                                                                                                                                                                                    |      |         | 自定义合并单元格                                                                                                                          |
@@ -50,27 +51,30 @@ const s2Options = {
 | layoutSeriesNumberNodes     | [LayoutSeriesNumberNodes](#layoutseriesnumbernodes)                                                                                                                                                                          |      |         | 自定义序号节点                                                                                                                            |
 | dataSet                     | [DataSet](#dataset)                                                                                                                                                                                                          |      |         | 自定义数据集                                                                                                                              |
 | facet                       | (spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => [BaseFacet](/api/basic-class/base-facet)                                                                                                                       |      |         | 自定义分面                                                                                                                                |
+| device                      | `"pc" \| "mobile"`                                                                                                                                                                                                           |      |         | 设备类型                                                                                                                                  |
 | transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | 自定义 AntV/G 渲染引擎 [配置参数](https://g.antv.antgroup.com/api/canvas/options) & [插件注册](https://g.antv.antgroup.com/plugins/intro) |
+| rendererConfig              | `Partial<RendererConfig>`                                                                                                                                                                                                    |      |         | 自定义 AntV/G 渲染引擎配置参数                                                                                                            |
+| future                      | [Future](#future)                                                                                                                                                                                                            |      |         | 开启一些实验性功能 (目前不稳定, 后续可能会有变动)                                                                                          |
 
-<embed src="@/docs/common/conditions.zh.md"></embed>
+<embed src="@/common/conditions.zh.md"></embed>
 
-<embed src="@/docs/common/series-number.zh.md"></embed>
+<embed src="@/common/series-number.zh.md"></embed>
 
-<embed src="@/docs/common/frozen.zh.md"></embed>
+<embed src="@/common/frozen.zh.md"></embed>
 
-<embed src="@/docs/common/interaction.zh.md"></embed>
+<embed src="@/common/interaction.zh.md"></embed>
 
-<embed src="@/docs/common/totals.zh.md"></embed>
+<embed src="@/common/totals.zh.md"></embed>
 
-<embed src="@/docs/common/tooltip.zh.md"></embed>
+<embed src="@/common/tooltip.zh.md"></embed>
 
-<embed src="@/docs/common/custom-tooltip.zh.md"></embed>
+<embed src="@/common/custom-tooltip.zh.md"></embed>
 
-<embed src="@/docs/common/pagination.zh.md"></embed>
+<embed src="@/common/pagination.zh.md"></embed>
 
-<embed src="@/docs/common/style.zh.md"></embed>
+<embed src="@/common/style.zh.md"></embed>
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>
 
 ## DataCellCallback
 
@@ -97,7 +101,7 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 ## MergedCellCallback
 
 ```js | pure
-DataCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) => MergedCell;
+MergedCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) => MergedCell;
 ```
 
 功能描述：自定义合并单元格。[查看示例](/examples/custom/custom-cell/#custom-merged-cell)
@@ -116,17 +120,17 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | spreadsheet | 表格实例                 | [SpreadSheet](/api/basic-class/spreadsheet) | -      | ✓    |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]`                                      | -      |      |
 
-<embed src="@/docs/common/custom/layoutHierarchy.zh.md"></embed>
+<embed src="@/common/custom/layoutHierarchy.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutArrange.zh.md"></embed>
+<embed src="@/common/custom/layoutArrange.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutCoordinate.zh.md"></embed>
+<embed src="@/common/custom/layoutCoordinate.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutCellMeta.zh.md"></embed>
+<embed src="@/common/custom/layoutCellMeta.zh.md"></embed>
 
-<embed src="@/docs/common/custom/layoutSeriesNumberNodes.zh.md"></embed>
+<embed src="@/common/custom/layoutSeriesNumberNodes.zh.md"></embed>
 
-<embed src="@/docs/common/custom/headerActionIcons.zh.md"></embed>
+<embed src="@/common/custom/headerActionIcons.zh.md"></embed>
 
 ## HeaderActionIconProps
 
@@ -138,7 +142,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | meta     | 当前 cell 的 meta 信息 | Node   | -      | ✓    |
 | event    | 当前点击事件信息       | Event  | false  | ✓    |
 
-<embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
+<embed src="@/common/custom/customSvgIcons.zh.md"></embed>
 
 ## LayoutResult
 
@@ -163,6 +167,35 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 ```
 
+## Placeholder
+
+功能描述：自定义空数据占位符配置
+
+| 参数  | 说明                       | 类型                                                             | 默认值 | 必选 |
+| ----- | -------------------------- | ---------------------------------------------------------------- | ------ | ---- |
+| cell  | 空值单元格占位符           | `((meta: Record<string, any>) => string \| undefined \| null) \| string \| null` | `'-'`  |      |
+| empty | 空数据占位符 （明细表有效）| [EmptyPlaceholder](#emptyplaceholder)                            |        |      |
+
+### EmptyPlaceholder
+
+功能描述：空数据占位符配置 （明细表有效）
+
+| 参数        | 说明                                                        | 类型     | 默认值     | 必选 |
+| ----------- | ----------------------------------------------------------- | -------- | ---------- | ---- |
+| icon        | 自定义 Icon, 支持 customSVGIcons 自定义注册和内置的 Icon    | `string` | `"Empty"`  |      |
+| description | 自定义描述内容                                              | `string` | `"暂无数据"` |      |
+
+## Future
+
+功能描述：开启一些实验性功能
+
+> [!WARNING]
+> 这些功能目前不稳定，后续可能会有变动
+
+| 参数                        | 说明                 | 类型      | 默认值  | 必选 |
+| --------------------------- | -------------------- | --------- | ------- | ---- |
+| experimentalReuseCell   | 是否复用单元格以提升性能   | `boolean` | `false` |      |
+
 ## MergedCellInfo
 
-<embed src="@/docs/common/merged-cell.zh.md"></embed>
+<embed src="@/common/merged-cell.zh.md"></embed>

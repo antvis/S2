@@ -11,9 +11,9 @@ DataCellCallback = (viewMeta: ViewMeta, spreadsheet: SpreadSheet) => DataCell | 
 
 功能描述：自定义数值单元格，[ViewMeta](#viewmeta)
 
-<embed src="@/docs/common/view-meta.zh.md"></embed>
+<embed src="@/common/view-meta.zh.md"></embed>
 
-<embed src="@/docs/common/custom/cellCallBack.zh.md"></embed>
+<embed src="@/common/custom/cellCallBack.zh.md"></embed>
 
 ## CornerHeaderCallback
 

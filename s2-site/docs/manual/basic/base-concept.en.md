@@ -1,30 +1,35 @@
 ---
-title: Base Concept
+title: Basic Concepts
 order: 0
 ---
 
-This article introduces the basic concepts of pivot tables.
+This article introduces the basic concepts of a pivot table.
 
 ## Introduction
 
-In statistics, a pivot table is a table in matrix format that displays multivariate frequency distributions. They provide a basic picture of the relationship between two variables (or more), which can help discover the interaction between them and help businesses conduct cross-exploration analysis. They are currently one of the most frequently used charts in the field of commercial `BI` analysis. one.
+In statistics, a pivot table is a table in a matrix format that displays the frequency distribution of multiple variables. It provides a basic picture of the interrelationships between two or more variables, which can help in discovering their interactions and assist in cross-exploratory analysis. It is one of the most frequently used charts in the field of business `BI` analysis today.
 
-### basic concept
+### Basic Concepts
 
-* Measure (Indicator): The value itself, such as price, quantity, etc.
-* Dimension: It can be understood as the angle of analyzing data, such as province, type, etc.
+- **Measure (Indicator)**: The numerical value itself, such as `price`, `quantity`, etc.
+- **Dimension**: Can be understood as a perspective for analyzing data, such as `province`, `type`, etc.
+- **Dimension Value**: The specific value corresponding to a dimension, such as `Chengdu`, `Hangzhou`, etc.
 
-### constitute
+### Components
 
-A pivot table consists of five parts, namely row header, column header, corner header, data cell, and frame, as shown in the following figure:
+A pivot table consists of five parts: `Row Header`, `Column Header`, `Corner Header`, `Data`, and `Frame`.
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7FRBQr_tE4YAAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
+As shown in the figure below:
 
-## row header (rowHeader)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7FRBQr_tE4YAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-The structure of the row header is determined by `s2DataConfig.fields.rows` , which is used for row analysis dimension display. The line head supports two display forms:`平铺模式(grid)` and`树状模式(tree)` .
+## Row Header (rowHeader)
 
-For example, the line header data configures `province, city` fields
+The structure of the row header is determined by [`s2DataConfig.fields.rows`](/api/general/s2-data-config) and is used for displaying row analysis dimensions. It also supports custom row header grouping. [Learn More](/manual/advanced/custom/custom-header#1-pivot-table).
+
+The row header supports two display modes: [`Grid Mode`](/examples/basic/pivot/#grid) and [`Tree Mode`](/examples/basic/pivot/#tree). It also supports displaying [series numbers](/manual/basic/sheet-type/pivot-mode#series-number) and [freezing the row header](/manual/basic/sheet-type/pivot-mode#frozen-row-header-area).
+
+For example, if the row header is configured with two fields, `province` and `city`:
 
 ```ts
 const s2DataConfig = {
@@ -34,7 +39,7 @@ const s2DataConfig = {
 }
 ```
 
-Displayed in tiled mode as:
+### Grid Mode
 
 ```ts
 const s2Options = {
@@ -42,11 +47,13 @@ const s2Options = {
 }
 ```
 
-<br>
+<img width="200" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*p71xTrX3YIEAAAAAAAAAAAAAARQnAQ" width="250"  alt="row" />
 
-![row](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*p71xTrX3YIEAAAAAAAAAAAAAARQnAQ)
+<br/>
 
-Displayed in tree mode as:
+[View Example](/examples/basic/pivot/#grid)
+
+### Tree Mode
 
 ```ts
 const s2Options = {
@@ -54,17 +61,21 @@ const s2Options = {
 }
 ```
 
-<br>
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zYzLQ5rgzsoAAAAAAAAAAAAAARQnAQ" height="200"  alt="column" />
 
-![column](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zYzLQ5rgzsoAAAAAAAAAAAAAARQnAQ)
+<br/>
 
-## column header (colHeader)
+[View Example](/examples/basic/pivot/#tree)
 
-> Note that when it is a detailed table, only columns need to be set.
+## Column Header (colHeader)
 
-The structure of the column header is determined by `s2DataConfig.fields.columns` , which is used for column analysis dimension display.
+:::warning{title="Note"}
+For a detail table, since there is only a column header, you only need to set the columns.
+:::
 
-For example, the column header data configures two fields, `type, sub_type` , which are displayed as:
+The structure of the column header is determined by [`s2DataConfig.fields.columns`](/api/general/s2-data-config) and is used for displaying column analysis dimensions. It also supports custom column header grouping. [Learn More](/manual/advanced/custom/custom-header#2-detail-table)
+
+For example, if the column header is configured with two fields, `type` and `sub_type`, it will be displayed as:
 
 ```ts
 const s2DataConfig = {
@@ -74,26 +85,38 @@ const s2DataConfig = {
 }
 ```
 
-<br>
-
-![column](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_uMfQK9VHk4AAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_uMfQK9VHk4AAAAAAAAAAAAAARQnAQ" width="400"  alt="column" />
 
 ## Corner Header (cornerHeader)
 
-The corner header refers to the upper left corner of the table and plays an important role in the layout of the table.
+The corner header is the top-left part of the table and plays an important role in the layout.
 
-In the layout of the table, `S2` is extended based on the corner header to calculate the size and coordinates of rows and columns.
+In `S2`, the layout is extended from the corner header to calculate the size and coordinates of the rows and columns. The corner header is also used to display the names of the row and column headers, such as `Province` and `City` in the example.
 
-Corner headers are also used to display row headers and column header names, such as`省份`and`城市`in the example.
+Additionally, `S2` provides custom extensions for scenarios that require a custom corner header. See [cornerCell](/examples/custom/custom-cell#corner-cell) and [cornerHeader](/examples/custom/custom-cell#corner-header) for details.
 
-In addition, `S2` also provides custom extensions for scenarios that require custom corner headers, see [cornerCell](/examples/custom/custom-cell#corner-cell) and [cornerHeader](/examples/custom/custom-cell#corner-header) for details.
+## Data (dataCell)
 
-## Data cell (dataCell)
+The data cell area is where the data is displayed at the intersection of the row and column dimension values. This is typically the measure value and is the core data presentation area for table analysis.
 
-The data cell is the data area generated by the intersection of the row and column dimension values of the table. Usually, it should be the measurement value, and it is the core data presentation area of the table data analysis.
+In the data cell area, we can display basic cross-tabulated data, use [conditional formatting](/examples/analysis/conditions#text) to aid analysis, show [derived indicators like year-over-year comparisons](/examples/react-component/sheet/#strategy), and customize the data cells using custom `Hooks`. For more, see [dataCell](/examples/custom/custom-cell#data-cell).
 
-In the data cell area, we can display basic cross data, use [field tags](/examples/analysis/conditions#text) to assist analysis, and display [derivative indicators such as year-on-](/examples/react-component/sheet/#strategy) year comparisons. You can also customize data cells by customizing `Hooks` . For more information, refer to [dataCell](/examples/custom/custom-cell#data-cell) .
+## Frame (frame)
 
-## frame
+The frame is the layout area that sits above the other four areas. It is used for spacing between areas, scrollbars, and the shadow effects of dividing lines. See the [reference example](/examples/case/comparison/#time-spend) for details.
 
-The frame layout area, located above the other four areas, is used as a spacer frame between areas, or logic such as scroll bars, and shadows of frame interval lines.
+## Cell
+
+The `Corner Header`, `Row Header`, and `Column Header` are composed of multiple cells, which support [customization](/manual/advanced/custom/hook).
+
+## Node
+
+A Cell corresponds to a Node. The node represents the [metadata](/api/basic-class/node) of the cell (including what is outside the visible range), while the cell represents the instantiated [cell information](/api/basic-class/base-cell) within the current visible range.
+
+## Facet
+
+This refers to the current [visible rendering area](/api/basic-class/base-facet).
+
+## Dataset
+
+Internally, the table converts the `s2DataConfig` provided by the user into a [dataset](/api/basic-class/base-data-set) to facilitate data processing and rendering.

@@ -1,7 +1,7 @@
 ---
 title: 贡献指南
 order: 7
-tag: Updated
+
 ---
 
 如果你恰好看到了这篇文章，你一定是希望对这个项目贡献自己的一份力量。这是一个开源项目，我们也有繁忙的业务要做，是用自己的业余时间在维护，为爱发电，精力有限，所以有时候 issue 响应速度不是那么及时，如果你遇到了问题，或者对 Issues 和 Discussions 列表的问题感兴趣，可以直接认领并尝试修复，帮助 S2 变得更好，而不是一味的埋怨和催促，我们不是甲方乙方的关系。
@@ -53,7 +53,7 @@ tag: Updated
 
 ## ⌨️ 本地开发
 
-<embed src="@/docs/common/development.zh.md#L4-L100"></embed>
+<embed src="@/common/development.zh.md#L4-L100"></embed>
 
 ### 调试功能
 
@@ -137,4 +137,4 @@ pnpm site:preview
 
 ## 📦 版本
 
-<embed src="@/docs/common/packages.zh.md"></embed>
+<embed src="@/common/packages.zh.md"></embed>

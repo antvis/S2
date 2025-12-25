@@ -1,3 +1,75 @@
+# [@antv/s2-v2.4.12](https://github.com/antvis/S2/compare/@antv/s2-v2.4.11...@antv/s2-v2.4.12) (2025-12-25)
+
+
+### Bug Fixes
+
+* 复制时相同前缀判断不准确 ([#3255](https://github.com/antvis/S2/issues/3255)) ([171841d](https://github.com/antvis/S2/commit/171841d93da2b62a9e4c9088defa0102ed68a81a))
+
+
+### Performance Improvements
+
+* 复用行列头/数值单元格 以提升百万滚动性能至50FPS ([#3222](https://github.com/antvis/S2/issues/3222)) ([3bc1ccb](https://github.com/antvis/S2/commit/3bc1ccb8006fe136989a32303d9107145914e160))
+
+# [@antv/s2-v2.4.11](https://github.com/antvis/S2/compare/@antv/s2-v2.4.10...@antv/s2-v2.4.11) (2025-12-01)
+
+
+### Bug Fixes
+
+* 多行文本紧凑模式shouldShowDefaultHeaderActionIcon导致数值单元格高度不对 ([#3245](https://github.com/antvis/S2/issues/3245)) ([b1eb7f6](https://github.com/antvis/S2/commit/b1eb7f669890dfb367abd69708b69eddd3bd17e1))
+
+# [@antv/s2-v2.4.10](https://github.com/antvis/S2/compare/@antv/s2-v2.4.9...@antv/s2-v2.4.10) (2025-11-03)
+
+
+### Bug Fixes
+
+* 总小计的分组维度在copy时没有正确formatter ([#3238](https://github.com/antvis/S2/issues/3238)) ([8c63b3c](https://github.com/antvis/S2/commit/8c63b3cb225a0643c0a80650e4a8d4184daa219a))
+
+# [@antv/s2-v2.4.9](https://github.com/antvis/S2/compare/@antv/s2-v2.4.8...@antv/s2-v2.4.9) (2025-10-20)
+
+
+### Bug Fixes
+
+* 字体变大时行高自适应变高 ([#3230](https://github.com/antvis/S2/issues/3230)) ([e74bd3c](https://github.com/antvis/S2/commit/e74bd3c9262a4987976339b956ce7336bda1aa62))
+
+# [@antv/s2-v2.4.8](https://github.com/antvis/S2/compare/@antv/s2-v2.4.7...@antv/s2-v2.4.8) (2025-09-15)
+
+
+### Bug Fixes
+
+* 配置了copy.withFormat但是在复制行头的时候未生效 ([#3221](https://github.com/antvis/S2/issues/3221)) ([7240bd5](https://github.com/antvis/S2/commit/7240bd569f0d0fbd486f6724ccbe3f89a64fc653))
+
+
+### Performance Improvements
+
+* 复用网格线和ClipPath，优化getBackgroundColor以提升6%的滚动性能 ([#3219](https://github.com/antvis/S2/issues/3219)) ([1a94f17](https://github.com/antvis/S2/commit/1a94f175b0ec36dc4ee214f0119d6620598632cd))
+
+# [@antv/s2-v2.4.7](https://github.com/antvis/S2/compare/@antv/s2-v2.4.6...@antv/s2-v2.4.7) (2025-09-03)
+
+
+### Bug Fixes
+
+* 配置hideValue后复制数据缺失角头 ([#3220](https://github.com/antvis/S2/issues/3220)) ([d7a22b7](https://github.com/antvis/S2/commit/d7a22b73427047aef4adc0f4dd38b5fb27e98735))
+
+# [@antv/s2-v2.4.6](https://github.com/antvis/S2/compare/@antv/s2-v2.4.5...@antv/s2-v2.4.6) (2025-08-19)
+
+
+### Bug Fixes
+
+* 修复格式化值时缺少参数，确保宽度正确计算 ([#3206](https://github.com/antvis/S2/issues/3206)) ([1fb4c8d](https://github.com/antvis/S2/commit/1fb4c8d57b591404cd9480126374e7a8b62e42dc))
+* 透视表紧凑模式下，数值挂列头时隐藏数值，会导致紧凑模式下列头自适应宽度失效 ([#3213](https://github.com/antvis/S2/issues/3213)) ([90b3611](https://github.com/antvis/S2/commit/90b361120ec4762827b79629410eaf48337273c7))
+
+
+### Performance Improvements
+
+* 使用新版g优化性能 ([#3194](https://github.com/antvis/S2/issues/3194)) ([4ad28fa](https://github.com/antvis/S2/commit/4ad28fa1f94ba802b969f37c103c1142037da3d5))
+
+# [@antv/s2-v2.4.5](https://github.com/antvis/S2/compare/@antv/s2-v2.4.4...@antv/s2-v2.4.5) (2025-07-23)
+
+
+### Bug Fixes
+
+* 相同长度的字符串，其渲染后的实际宽度可能完全不同 ([#3202](https://github.com/antvis/S2/issues/3202)) ([544aa4c](https://github.com/antvis/S2/commit/544aa4c5c60cc97c2316472524ac3a0bbc8bb269))
+
 # [@antv/s2-v2.4.4](https://github.com/antvis/S2/compare/@antv/s2-v2.4.3...@antv/s2-v2.4.4) (2025-07-08)
 
 

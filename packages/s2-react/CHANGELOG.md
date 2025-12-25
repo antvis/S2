@@ -1,3 +1,32 @@
+# [@antv/s2-react-v2.3.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.3.0...@antv/s2-react-v2.3.1) (2025-12-25)
+
+
+### Performance Improvements
+
+* 复用行列头/数值单元格 以提升百万滚动性能至50FPS ([#3222](https://github.com/antvis/S2/issues/3222)) ([3bc1ccb](https://github.com/antvis/S2/commit/3bc1ccb8006fe136989a32303d9107145914e160))
+
+# [@antv/s2-react-v2.3.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.3...@antv/s2-react-v2.3.0) (2025-12-01)
+
+
+### Features
+
+* s2-react 兼容React 19 ([#3248](https://github.com/antvis/S2/issues/3248)) ([8ce1170](https://github.com/antvis/S2/commit/8ce11709aebd6139ccca629325e452e81d5b8fde))
+
+# [@antv/s2-react-v2.2.3](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.2...@antv/s2-react-v2.2.3) (2025-09-15)
+
+
+### Performance Improvements
+
+* 复用网格线和ClipPath，优化getBackgroundColor以提升6%的滚动性能 ([#3219](https://github.com/antvis/S2/issues/3219)) ([1a94f17](https://github.com/antvis/S2/commit/1a94f175b0ec36dc4ee214f0119d6620598632cd))
+
+# [@antv/s2-react-v2.2.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.1...@antv/s2-react-v2.2.2) (2025-07-21)
+
+
+### Bug Fixes
+
+* 修复onDataCellEditStart / End 不能触发的问题 ([#3197](https://github.com/antvis/S2/issues/3197)) ([cfd43f5](https://github.com/antvis/S2/commit/cfd43f5fe58bac8c0e33682fe278ddb1d65c4bc3))
+* 单数值时，趋势分析表数值显示为空 ([#3201](https://github.com/antvis/S2/issues/3201)) ([15e76ba](https://github.com/antvis/S2/commit/15e76ba7a85fbfa2ee56add70d7d88ea0fd0cbfc))
+
 # [@antv/s2-react-v2.2.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.0...@antv/s2-react-v2.2.1) (2025-06-09)
 
 

@@ -627,4 +627,74 @@ describe('<StrategySheet/> Tests', () => {
       });
     });
   });
+
+  // https://github.com/antvis/S2/issues/3200
+  test('should render correct when dataCfg.fields.values.length === 1', async () => {
+    const s2Options: SheetComponentOptions = {
+      width: 800,
+      height: 600,
+    };
+
+    const s2DataConfig1 = {
+      meta: [
+        {
+          key: 'a69098f6',
+          title: '日期',
+          type: 'text',
+          field: 'a69098f6',
+          name: '日期',
+        },
+        {
+          key: 'presto_11549_guid__count_distinct',
+          title: 'guid',
+          type: 'number',
+          field: 'presto_11549_guid__count_distinct',
+          name: '用户量',
+        },
+      ],
+      fields: {
+        columns: ['a69098f6', '$$extra_column$$'],
+        values: ['presto_11549_guid__count_distinct'],
+        rows: [
+          {
+            alias: '用户量',
+            children: [],
+            describe: '',
+            field: 'presto_11549_guid__count_distinct',
+            link: null,
+            title: '用户量',
+            uuid: 'presto_11549_guid__count_distinct',
+            dataType: 'indicator',
+            defaultOpen: true,
+            hideCompareVal: null,
+            indicatorCellColor: null,
+            indicatorDataType: null,
+            numberOfDecimals: 0,
+            key: 'presto_11549_guid__count_distinct',
+            collapsed: false,
+          },
+        ],
+      },
+      data: [
+        {
+          $$extra_column$$: '["数值","环比"]',
+          a69098f6: '2025-07-19',
+          presto_11549_guid__count_distinct: {
+            originalValues: [['6224', '0.02116489']],
+            values: [['6224', '2%']],
+          },
+        },
+      ],
+    };
+
+    renderStrategySheet(s2Options, s2DataConfig1);
+
+    await waitFor(() => {
+      const dataCellText = s2.facet
+        .getDataCells()[0]
+        .textShapes.map((d) => d.attributes.text);
+
+      expect(dataCellText).toEqual(['6224', '2%']);
+    });
+  });
 });

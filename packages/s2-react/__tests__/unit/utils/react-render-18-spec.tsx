@@ -38,25 +38,25 @@ describe('React 18 Render Tests', () => {
     expect(isLegacyReactVersion()).toBeFalsy();
   });
 
-  test('should only call modern render', () => {
-    reactRender(element, container);
+  test('should only call modern render', async () => {
+    await reactRender(element, container);
 
     expect(ReactDOM.render).toHaveBeenCalledTimes(0);
     // @ts-ignore
     expect(ReactDOM.createRoot).toHaveBeenCalledTimes(1);
   });
 
-  test('should only call modern unmount', () => {
-    const root = reactRender(element, container);
+  test('should only call modern unmount', async () => {
+    const root = await reactRender(element, container);
 
-    reactUnmount(container);
+    await reactUnmount(container);
 
     expect(ReactDOM.unmountComponentAtNode).toHaveBeenCalledTimes(0);
     expect(root).not.toBeDefined();
   });
 
-  test('should only call modern render for force clear content', () => {
-    const root = forceClearContent(container);
+  test('should only call modern render for force clear content', async () => {
+    const root = await forceClearContent(container);
 
     expect(ReactDOM.unmountComponentAtNode).toHaveBeenCalledTimes(0);
     expect(ReactDOM.render).toHaveBeenCalledTimes(0);

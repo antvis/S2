@@ -1,7 +1,7 @@
 ---
 title: 自定义行列头分组
 order: 2
-tag: New
+
 ---
 
 `S2` 默认提供 [平铺模式 (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) 和 [树状模式 (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) 两种**行头**单元格布局方式。
@@ -19,7 +19,7 @@ tag: New
 
 ## 数据结构
 
-<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
+<embed src="@/common/custom/customTreeNode.zh.md"></embed>
 
 ```ts
 const customTree = [

@@ -1,7 +1,7 @@
 ---
 title: Interaction
 order: 2
-tag: Updated
+
 ---
 
 Functional description: properties and methods related to the interaction class. [details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/interaction/root.ts)
@@ -53,7 +53,7 @@ s2.interaction.reset()
 | removeIntercepts                    | Remove specified interaction interception                                                                                 | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                     |
 | highlightNodes                      | Highlight the cell corresponding to the node                                                                              | (nodes: [Node](/api/basic-class/node) \[]) => void                           |
 
-<embed src="@/docs/common/interaction.en.md"></embed>
+<embed src="@/common/interaction.en.md"></embed>
 
 ### Interaction Constructor
 
@@ -101,7 +101,11 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
+  | SeriesNumberCell
   | MergedCell
+  | TableDataCell
+  | TableCornerCell
+  | TableSeriesNumberCell
   | BaseCell<T>;
 ```
 
@@ -136,4 +140,4 @@ interface InteractionStateInfo {
 }
 ```
 
-<embed src="@/docs/common/view-meta.en.md"></embed>
+<embed src="@/common/view-meta.en.md"></embed>

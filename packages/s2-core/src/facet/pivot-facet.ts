@@ -34,6 +34,7 @@ import type {
 } from '../common/interface';
 import type { Query } from '../data-set/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
+import { DEFAULT_FONTSIZE } from '../theme';
 import { getValidFrozenOptionsForPivot, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
@@ -425,7 +426,11 @@ export class PivotFacet extends FrozenFacet {
 
     // 文本超过 1 行时再自适应单元格高度, 不然会频繁触发 GC, 导致性能降低: https://github.com/antvis/S2/issues/2693
     const isEnableHeightAdaptive =
-      rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap;
+      (rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap) ||
+      this.spreadsheet.theme.rowCell!.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.rowCell!.measureText.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.rowCell!.seriesText.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.rowCell!.bolderText.fontSize > DEFAULT_FONTSIZE;
 
     if (this.isCustomRowCellHeight(rowNode) || !isEnableHeightAdaptive) {
       rowNode.extra.isCustomHeight = true;
@@ -859,8 +864,11 @@ export class PivotFacet extends FrozenFacet {
       ?.slice(0, LAYOUT_SAMPLE_COUNT)
       .map(
         (dimValue) =>
-          this.spreadsheet.dataSet.getFieldFormatter(field)?.(dimValue) ??
-          dimValue,
+          this.spreadsheet.dataSet.getFieldFormatter(field)?.(
+            dimValue,
+            undefined,
+            node,
+          ) ?? dimValue,
       );
     const maxLabel = maxBy(allLabels, (label) => `${label}`.length);
     const rowNodeWidth =
@@ -905,7 +913,8 @@ export class PivotFacet extends FrozenFacet {
     const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
       colNode.field,
     );
-    const leafNodeLabel = cellFormatter?.(colNode.value) ?? colNode.value;
+    const leafNodeLabel =
+      cellFormatter?.(colNode.value, undefined, colNode) ?? colNode.value;
     const colIconWidth = this.getExpectedCellIconWidth(
       CellType.COL_CELL,
       this.spreadsheet.isValueInCols() &&
@@ -924,9 +933,13 @@ export class PivotFacet extends FrozenFacet {
       const rowNode = rowLeafNodes[index];
 
       if (rowNode) {
+        const { valueField, dataQuery } = this.getDataQueryInfo(
+          rowNode.query!,
+          colNode.query!,
+        );
         const cellData = (this.spreadsheet.dataSet as PivotDataSet).getCellData(
           {
-            query: { ...colNode.query, ...rowNode.query },
+            query: dataQuery,
             rowNode,
             isTotals:
               colNode.isTotals ||
@@ -939,16 +952,13 @@ export class PivotFacet extends FrozenFacet {
         if (cellData) {
           // 总小计格子不一定有数据
           const valueData = cellData?.[VALUE_FIELD];
-          const formattedValue =
+          const cellLabel =
             this.spreadsheet.dataSet.getFieldFormatter(cellData[EXTRA_FIELD])?.(
               valueData,
+              cellData,
+              colNode,
             ) ?? valueData;
-          const cellLabel = formattedValue;
           // 考虑字段标记 icon 的宽度: https://github.com/antvis/S2/pull/2673
-          const { valueField } = this.getDataQueryInfo(
-            rowNode.query!,
-            colNode.query!,
-          );
           const hasIcon = findFieldCondition(
             this.spreadsheet.options.conditions?.icon,
             valueField!,

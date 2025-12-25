@@ -6,6 +6,7 @@ import {
 } from '@antv/g';
 import { interpolateArray } from '@antv/vendor/d3-interpolate';
 import { timer, type Timer } from '@antv/vendor/d3-timer';
+import flru, { flruCache } from 'flru';
 import {
   clamp,
   compact,
@@ -26,7 +27,6 @@ import {
   max,
   maxBy,
   reduce,
-  size,
   sumBy,
 } from 'lodash';
 import {
@@ -40,6 +40,7 @@ import {
   TableSeriesNumberCell,
   type HeaderCell,
 } from '../cell';
+import { DataCellPool } from '../cell/pool';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
@@ -91,6 +92,7 @@ import type {
 } from '../common/interface/scroll';
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
+import { DEFAULT_FONTSIZE } from '../theme';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import type { SelectedIds } from '../utils';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
@@ -175,13 +177,15 @@ export abstract class BaseFacet {
 
   public gridInfo: GridInfo;
 
-  protected textWrapNodeHeightCache: Map<string, number>;
+  protected textWrapNodeHeightCache: flruCache<number>;
 
   protected textWrapTempCornerCell: CornerCell | null;
 
   protected textWrapTempRowCell: RowCell | DataCell;
 
   protected textWrapTempColCell: ColCell | TableColCell;
+
+  protected dataCellPool: DataCellPool;
 
   public customRowHeightStatusMap: Record<string, boolean>;
 
@@ -272,7 +276,7 @@ export abstract class BaseFacet {
     this.textWrapTempRowCell = this.getRowCellInstance(...args);
     this.textWrapTempColCell = this.getColCellInstance(...args);
     this.textWrapTempCornerCell = this.getCornerCellInstance?.(...args);
-    this.textWrapNodeHeightCache = new Map();
+    this.textWrapNodeHeightCache = flru(500);
     this.customRowHeightStatusMap = {};
   }
 
@@ -417,9 +421,13 @@ export abstract class BaseFacet {
     }
 
     const isEnableColNodeHeightAdaptive =
-      colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap;
+      (colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap) ||
+      this.spreadsheet.theme.colCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.colCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const isEnableCornerNodeHeightAdaptive =
-      cornerCellStyle?.maxLines! > 1 && cornerCellStyle?.wordWrap;
+      (cornerCellStyle?.maxLines! > 1 && cornerCellStyle?.wordWrap) ||
+      this.spreadsheet.theme.cornerCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.cornerCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     let colAdaptiveHeight = defaultHeight;
@@ -521,11 +529,15 @@ export abstract class BaseFacet {
       return defaultHeight;
     }
 
-    // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
-    const cacheKey = `${size(fieldValue)}${NODE_ID_SEPARATOR}${maxTextWidth}`;
+    /**
+     * [Bug Fix] 使用完整的 fieldValue 作为缓存键，确保准确性
+     * 之前的 `size(fieldValue)` (即 fieldValue.length) 是不准确的
+     * 相同长度的字符串，其渲染后的实际宽度可能完全不同
+     * * */
+    const cacheKey = `${fieldValue}${NODE_ID_SEPARATOR}${maxTextWidth}`;
     const cacheHeight = this.textWrapNodeHeightCache.get(cacheKey);
 
-    if (cacheHeight && useCache) {
+    if (useCache && isNumber(cacheHeight)) {
       return cacheHeight || defaultHeight;
     }
 
@@ -537,10 +549,7 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height =
-      cell.isMultiLineText() && textHeight >= defaultHeight
-        ? adaptiveHeight
-        : defaultHeight;
+    const height = textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 
@@ -827,7 +836,7 @@ export abstract class BaseFacet {
     this.clearAllGroup();
     this.preCellIndexes = null;
     this.customRowHeightStatusMap = {};
-    this.textWrapNodeHeightCache.clear();
+    this.textWrapNodeHeightCache.clear(false);
     cancelAnimationFrame(this.scrollFrameId!);
   }
 
@@ -1605,10 +1614,17 @@ export abstract class BaseFacet {
       return;
     }
 
-    const cell = this.spreadsheet.options.dataCell?.(
-      viewMeta,
-      this.spreadsheet,
-    )!;
+    let cell;
+
+    if (
+      this.dataCellPool.pool.length > 0 &&
+      this.spreadsheet.options.future?.experimentalReuseCell
+    ) {
+      cell = this.dataCellPool.acquire()!;
+      cell.setMeta(viewMeta);
+    } else {
+      cell = this.spreadsheet.options.dataCell?.(viewMeta, this.spreadsheet)!;
+    }
 
     if (!cell) {
       return;
@@ -1634,33 +1650,72 @@ export abstract class BaseFacet {
       diffPanelIndexes(this.preCellIndexes!, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-      // add new cell in panelCell
-      each(willAddDataCells, ([colIndex, rowIndex]) => {
-        const viewMeta = this.getCellMeta(rowIndex, colIndex);
-        const cell = this.createDataCell(viewMeta);
-
-        if (!cell) {
-          return;
-        }
-
-        this.addDataCell(cell);
-      });
-
-      const allDataCells = this.getDataCells();
-
-      // remove cell from panelCell
-      each(willRemoveDataCells, ([colIndex, rowIndex]) => {
-        const mountedDataCell = find(
-          allDataCells,
-          (cell) => cell.name === `${rowIndex}-${colIndex}`,
+      if (this.spreadsheet.options.future?.experimentalReuseCell) {
+        const allDataCells = this.getDataCells();
+        const maxLength = Math.max(
+          willRemoveDataCells.length,
+          willAddDataCells.length,
         );
 
-        mountedDataCell?.destroy();
-      });
+        // 交替执行删除和添加操作
+        for (let i = 0; i < maxLength; i++) {
+          // 删除单元格
+          if (i < willRemoveDataCells.length) {
+            const [colIndex, rowIndex] = willRemoveDataCells[i];
+            const mountedDataCell = find(
+              allDataCells,
+              (cell) => cell.name === `${rowIndex}-${colIndex}`,
+            );
 
-      DebuggerUtil.getInstance().logger(
-        `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
-      );
+            if (mountedDataCell) {
+              this.dataCellPool.release(mountedDataCell);
+            }
+          }
+
+          // 添加单元格
+          if (i < willAddDataCells.length) {
+            const [colIndex, rowIndex] = willAddDataCells[i];
+            const viewMeta = this.getCellMeta(rowIndex, colIndex);
+            const cell = this.createDataCell(viewMeta);
+
+            if (cell) {
+              this.addDataCell(cell);
+            }
+          }
+        }
+
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
+      } else {
+        // add new cell in panelCell
+        each(willAddDataCells, ([colIndex, rowIndex]) => {
+          const viewMeta = this.getCellMeta(rowIndex, colIndex);
+          const cell = this.createDataCell(viewMeta);
+
+          if (!cell) {
+            return;
+          }
+
+          this.addDataCell(cell);
+        });
+
+        const allDataCells = this.getDataCells();
+
+        // remove cell from panelCell
+        each(willRemoveDataCells, ([colIndex, rowIndex]) => {
+          const mountedDataCell = find(
+            allDataCells,
+            (cell) => cell.name === `${rowIndex}-${colIndex}`,
+          );
+
+          mountedDataCell?.destroy();
+        });
+
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
+      }
     });
 
     this.preCellIndexes = indexes;
@@ -1672,6 +1727,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initCellPool();
     this.initTextWrapTemp();
     this.initGroups();
     // layout
@@ -2463,5 +2519,9 @@ export abstract class BaseFacet {
     return (
       Math.ceil(this.spreadsheet.measureTextWidth(text, font)) + EXTRA_PIXEL
     );
+  }
+
+  protected initCellPool() {
+    this.dataCellPool = new DataCellPool();
   }
 }

@@ -1,7 +1,7 @@
 ---
 title: SpreadSheet
 order: 1
-tag: Updated
+
 ---
 
 功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/sheet-type/spread-sheet.ts)
@@ -106,6 +106,7 @@ export enum CellType {
   DATA_CELL = 'dataCell',  // 数值单元格
   ROW_CELL = 'rowCell', // 行头单元格
   COL_CELL = 'colCell', // 列头单元格
+  SERIES_NUMBER_CELL = 'seriesNumberCell', // 序号单元格
   CORNER_CELL = 'cornerCell', // 角头单元格
   MERGED_CELL = 'mergedCell', // 合并后的单元格
 }

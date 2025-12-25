@@ -21,37 +21,13 @@ If there is a compatibility problem, please use it in combination with `babel` a
 
 ### browser introduction
 
-<embed src="@/docs/common/browser.en.md"></embed>
+<embed src="@/common/browser.en.md"></embed>
 
 ### The access to the official website is a bit slow, or it cannot be opened. Is there a domestic mirror?
 
 The original domestic mirror [https://antv-s2.gitee.io](https://antv-s2.gitee.io/) is no longer maintained. It is recommended to visit the new official website [https://s2.antv.antgroup.com](https://s2.antv.antgroup.com/) for faster speed.
 
 [Old official](https://s2.antv.vision/) website New [official website](https://s2.antv.antgroup.com/)
-
-### After the parent element uses `transform: scale` , the mouse coordinates of the chart respond incorrectly
-
-`supportsCSSTransform` property can be turned on
-
-```ts
-const s2Options = {
-  transformCanvasConfig() {
-    return {
-      supportsCSSTransform: true
-    }
-  }
-}
-```
-
-You can also manually call `s2.changeSheetSize` to change the size of the chart according to the zoom ratio, so that the zoom ratio of the chart and the parent element are consistent
-
-```ts
-const scale = 0.8
-s2.changeSheetSize(width * scale, height * scale)
-s2.render(false)
-```
-
-Please refer to issue [#808](https://github.com/antvis/S2/issues/808) [#990](https://github.com/antvis/S2/pull/990) (thanks to [@cylnet](https://github.com/cylnet) [@xiaochong44](https://github.com/xiaochong44) )
 
 ### How to update table configuration?
 
@@ -170,7 +146,7 @@ Please see [edit mode example](/examples/case/data-preview#excel)
 
 Currently, S2 consists of three packages
 
-* `@antv/s2` : Developed based on `canvas` and [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) , providing basic table display/interaction capabilities
+* `@antv/s2` : Developed based on `canvas` and [AntV/G](https://g.antv.antgroup.com/guide/getting-started) , providing basic table display/interaction capabilities
 * `@antv/s2-react` : Based on the `@antv/s2` package, it provides supporting analysis components
 * `@antv/s2-vue` : Based on `Vue3` and `@antv/s2` package, provide supporting analysis components
 
@@ -178,7 +154,7 @@ That is to say, `@antv/s2` **has nothing to do with the framework** , you can us
 
 Here is an overview of the releases:
 
-<embed src="@/docs/common/packages.en.md"></embed>
+<embed src="@/common/packages.en.md"></embed>
 
 Supporting [analysis components](/examples/react-component/sheet) , currently there is no development plan for `@antv/s2-angular` , the community is welcome to build together 👏🏻.
 
@@ -235,6 +211,6 @@ It is recommended to use `codesandbox` , we provide various versions of template
 
 ### Is there a discussion group?
 
-<embed src="@/docs/common/contact-us.en.md"></embed>
+<embed src="@/common/contact-us.en.md"></embed>
 
 ## 2. Errors and Warnings

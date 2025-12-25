@@ -1,7 +1,7 @@
 ---
 title: 注册 AntV/G 插件
 order: 10
-tag: New
+
 ---
 
 :::warning{title='提示'}
@@ -26,11 +26,6 @@ import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
 
 const s2Options = {
   transformCanvasConfig(renderer) {
-    // 修改配置
-    renderer.setConfig({
-      enableCulling: true,
-      enableDirtyCheck: true,
-    });
     // 注册插件
     renderer.registerPlugin(
       new PluginA11y({
@@ -41,8 +36,6 @@ const s2Options = {
     console.log('当前已注册插件和配置：', renderer.getPlugins(), renderer.getConfig());
 
     return {
-      // 是否支持在容器上应用 CSS Transform 的情况下确保交互事件坐标转换正确
-      supportsCSSTransform: true,
       devicePixelRatio: 2,
       dblClickSpeed: 500,
       cursor: 'crosshair',

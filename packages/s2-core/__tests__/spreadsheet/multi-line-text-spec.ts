@@ -21,6 +21,38 @@ import {
 } from '../data/data-multi-line-text';
 import SimpleDataCfg from '../data/simple-data.json';
 
+function runLargeFontCellHeightTest(s2: SpreadSheet) {
+  return async () => {
+    s2.setDataCfg(SimpleDataCfg);
+    const cell = {
+      bolderText: {
+        fontSize: 36,
+      },
+      measureText: {
+        fontSize: 56,
+      },
+      text: {
+        fontSize: 56,
+      },
+      seriesText: {
+        fontSize: 56,
+      },
+    };
+
+    s2.setTheme({
+      colCell: cell,
+      rowCell: cell,
+      dataCell: cell,
+      cornerCell: cell,
+    });
+
+    await s2.render();
+
+    expect(s2.facet.getLayoutResult().colNodes[0].height).toBe(58);
+    expect(s2.facet.getDataCells()[0].getMeta().height).toBe(80);
+  };
+}
+
 describe('SpreadSheet Multi Line Text Tests', () => {
   let s2: SpreadSheet;
 
@@ -754,6 +786,20 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       matchCellStyleSnapshot();
     });
 
+    test('should calculate correctly max text width for default sort header action icons and layoutWidthType === compact', async () => {
+      updateStyle(Infinity);
+      s2.changeSheetSize(800, 600);
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+        style: {
+          layoutWidthType: 'compact',
+        },
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
     test('should render Col Height correct after hide Sample Nodes', async () => {
       const cellTextWordWrapStyle: CellTextWordWrapStyle = {
         heightByField: null,
@@ -799,6 +845,10 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expect(
         s2.facet.getLayoutResult().colNodes.every((node) => node.height <= 64),
       ).toBe(true);
+    });
+
+    test('should render Cell Height correct after set large font', async () => {
+      await runLargeFontCellHeightTest(s2);
     });
   });
 
@@ -1464,6 +1514,183 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       const actualText2 = tableSheet.facet.getDataCells()[0].getActualText();
 
       expect(actualText1).toEqual(actualText2);
+    });
+
+    test('should render maxLines text correctly with icon', async () => {
+      const pivotSheet = new PivotSheet(
+        getContainer(),
+        {
+          fields: {
+            rows: ['dimValue'],
+            columns: ['indicatorName'],
+            values: ['value'],
+            valueInCols: true,
+          },
+          meta: [
+            {
+              field: 'dimValue',
+              name: '当日自',
+            },
+            {
+              field: 'indicatorName',
+              name: '指标名称',
+            },
+            {
+              field: 'value',
+              name: '值',
+            },
+          ],
+          data: [
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              dimValueDetail: {
+                dim_f01aa4ca_202406131000000000004274951: '测试数据',
+              },
+              value: '--',
+              indicatorName: '当日自证任务且数据采集用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日自证任务且数据采集用户数[#]',
+              maxValue: 37041,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额提额申请用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日主动提额提额申请用户数[#]',
+              maxValue: 1849575,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额提额成功用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日主动提额提额成功用户数[#]',
+              maxValue: 414581,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额提额后授信额度',
+              format: 'cent',
+              id: '[#]当日自[#]测试数据[#]当日主动提额提额后授信额度[#]',
+              maxValue: 211008545.95,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额授信提升额度',
+              format: 'yuan',
+              id: '[#]当日自[#]测试数据[#]当日主动提额授信提升额度[#]',
+              maxValue: 4721735188.31,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日主动提额额度提升提额成功用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日主动提额额度提升提额成功用户数[#]',
+              maxValue: 34536,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日cy25业绩客群支用用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当日cy25业绩客群支用用户数[#]',
+              maxValue: 935010,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当日cy25业绩客群支用金额',
+              format: 'cent',
+              id: '[#]当日自[#]测试数据[#]当日cy25业绩客群支用金额[#]',
+              maxValue: 31536381479.07,
+            },
+            {
+              dimName: '当日自',
+              dimValue: '测试数据',
+              dt: '',
+              crowdName: '',
+              crowdId: '',
+              value: '--',
+              indicatorName: '当前CY25业绩客群余额用户数',
+              format: 'NONE',
+              id: '[#]当日自[#]测试数据[#]当前CY25业绩客群余额用户数[#]',
+              maxValue: 9331634,
+            },
+          ],
+          sortParams: [],
+        },
+        {
+          width: 1920,
+          height: 480,
+          showDefaultHeaderActionIcon: true,
+          style: {
+            colCell: {
+              hideValue: true,
+              maxLines: 2,
+              wordWrap: true,
+              textOverflow: 'ellipsis',
+              // "height": 30
+            },
+            cornerCell: {
+              maxLines: 2,
+              wordWrap: true,
+              textOverflow: 'ellipsis',
+            },
+            rowCell: {
+              maxLines: 2,
+              wordWrap: true,
+              textOverflow: 'ellipsis',
+              collapseAll: false,
+            },
+            layoutWidthType: 'adaptive',
+          },
+        },
+      );
+
+      await pivotSheet.render();
+      expect(
+        pivotSheet.facet.getCornerCells()[0].getHeaderConfig().height,
+      ).toEqual(46);
+    });
+
+    test('should render Cell Height correct after set large font', async () => {
+      await runLargeFontCellHeightTest(s2);
     });
   });
 });

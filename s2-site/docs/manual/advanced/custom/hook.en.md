@@ -1,7 +1,7 @@
 ---
 title: Customize Hook
 order: 1
-tag: Updated
+
 ---
 
 Custom `Hook` allows developers to rewrite all elements of the table, and you can customize certain elements according to product needs, such as corner headers, column headers, row headers, cells, row header order, cell position, etc. If necessary, you can completely rewrite a pivot table that belongs to you!
@@ -48,7 +48,7 @@ To change the default implementation of corner cells, you need to inherit from [
 
 ## cornerHeader
 
-To change the default implementation of corner headers, you need to inherit from [Group](https://g.antv.vision/zh/docs/api/group) and override certain methods, such as rendering content replacement. [example](/examples/custom/custom-cell#corner-cell)
+To change the default implementation of corner headers, you need to inherit from [Group](https://g.antv.antgroup.com/api/basic/group) and override certain methods, such as rendering content replacement. [example](/examples/custom/custom-cell#corner-cell)
 
 ## frame
 

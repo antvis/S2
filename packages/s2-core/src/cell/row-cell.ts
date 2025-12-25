@@ -514,4 +514,15 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       })
     );
   }
+
+  protected shouldShowDefaultHeaderActionIcon() {
+    return (
+      this.spreadsheet.options.showDefaultHeaderActionIcon &&
+      !this.spreadsheet.isValueInCols()
+    );
+  }
+
+  public setHeaderConfig(headerConfig: RowHeaderConfig) {
+    super.setHeaderConfig(headerConfig);
+  }
 }

@@ -28,4 +28,4 @@ s2.tooltip.show({
 | `clearContent`        | Empty tooltip content                                 | `() => void`                                                                |
 | `disablePointerEvent` | Disable tooltip mouse response                        | `() => void`                                                                |
 
-<embed src="@/docs/common/custom-tooltip.en.md"></embed>
+<embed src="@/common/custom-tooltip.en.md"></embed>

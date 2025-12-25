@@ -538,3 +538,9 @@ export type RowData = Data | CellData[];
 export interface ContentPositionParams {
   contentWidth?: number;
 }
+
+export type BackgroundColor = {
+  backgroundColor?: string;
+  backgroundColorOpacity?: number;
+  intelligentReverseTextColor: boolean;
+};

@@ -10,8 +10,7 @@
         "zh": "透视表 - 文本自动换行",
         "en": "Multi Line Text"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "table.ts",
@@ -19,8 +18,7 @@
         "zh": "明细表 - 文本自动换行",
         "en": "Multi Line Text"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*psedTKQWiWUAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*psedTKQWiWUAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "line-break.ts",
@@ -28,8 +26,7 @@
         "zh": "根据换行符换行",
         "en": "Line Break Multi Line Text"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*G8cwQ7BC3VAAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*G8cwQ7BC3VAAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

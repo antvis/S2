@@ -1,7 +1,7 @@
 ---
 title: 自定义折叠/展开节点
 order: 7
-tag: New
+
 ---
 
 S2 支持在树状结构下，配置折叠/展开的节点，默认**展开所有节点**.
@@ -173,4 +173,4 @@ const s2Options = {
 
 ## API 文档
 
-<embed src="@/docs/common/style.zh.md"></embed>
+<embed src="@/common/style.zh.md"></embed>

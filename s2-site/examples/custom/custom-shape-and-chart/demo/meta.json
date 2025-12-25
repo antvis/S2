@@ -10,8 +10,7 @@
         "zh": "在单元格内绘制 AntV/G 图形",
         "en": "Render G Shape"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*0B68S7cmprMAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*0B68S7cmprMAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "custom-g2-chart.ts",
@@ -19,8 +18,7 @@
         "zh": "在单元格内绘制 AntV/G2 图表",
         "en": "Render AntV/G2 Charts"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "pivot-chart.ts",
@@ -28,8 +26,7 @@
         "zh": "透视组合图",
         "en": "PivotChart"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*53HBSp-muMwAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*53HBSp-muMwAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "pivot-chart-polar.ts",
@@ -37,8 +34,7 @@
         "zh": "透视组合图 - 极坐标系",
         "en": "PivotChart Polar"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*XEBxSZXyip4AAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*XEBxSZXyip4AAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "pivot-chart-spec.ts",
@@ -46,8 +42,7 @@
         "zh": "透视组合图 - 自定义 spec",
         "en": "PivotChart Polar Custom Spec"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Y6uQRYoYSdcAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Y6uQRYoYSdcAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "pivot-chart-cell.ts",
@@ -55,8 +50,7 @@
         "zh": "透视组合图 - 自定义 cell",
         "en": "PivotChart Polar Custom Cell"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*V-TMTaDYzxcAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*V-TMTaDYzxcAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "pivot-tree-line.ts",
@@ -64,8 +58,7 @@
         "zh": "树状模式连接线",
         "en": "Tree Mode Connection Line"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*9bLeS5TWnk0AAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*9bLeS5TWnk0AAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

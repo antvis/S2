@@ -1,12 +1,12 @@
 ---
 title: 分页
 order: 11
-tag: New
+
 ---
 
 <Badge>@antv/s2</Badge>
 
-<embed src="@/docs/common/pagination.zh.md"></embed>
+<embed src="@/common/pagination.zh.md"></embed>
 
 ### 结合分页组件使用
 

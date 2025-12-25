@@ -750,6 +750,89 @@ describe('Pivot Table Core Data Process', () => {
     expect(copyContent).toMatchSnapshot();
   });
 
+  it('should copy format total(root) data in grid mode', async () => {
+    s2.setOptions({
+      width: 600,
+      height: 480,
+      hierarchyType: 'grid',
+      // 数值挂行头时, 自定义角头虚拟数值字段文本, 默认 "数值"
+      cornerExtraFieldText: '自定义',
+      interaction: {
+        copy: {
+          enable: true,
+          withFormat: true,
+          withHeader: true,
+        },
+      },
+      // 配置行小计总计显示,且按维度分组（列小计总计同理）
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['province'],
+          calcGrandTotals: {
+            // 设置总计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            // 设置小计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          // 总计分组下，city 城市维度会出现分组
+          grandTotalsGroupDimensions: ['city'],
+          // 小计维度下，type 类别维度下会出现分组
+          subTotalsGroupDimensions: ['type'],
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['province'],
+          calcGrandTotals: {
+            // 设置总计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            // 设置小计汇总计算方式为求和
+            aggregation: Aggregation.SUM,
+          },
+          // 总计分组下，city 城市维度会出现分组
+          grandTotalsGroupDimensions: ['city'],
+          // 小计维度下，type 类别维度下会出现分组
+          subTotalsGroupDimensions: ['type'],
+        },
+      },
+      frozen: {
+        // 默认冻结行头, 行头和数值区域都会展示滚动条
+        // rowHeader: false,
+        // 冻结行头时, 行头宽度占表格的 1/2, 支持动态调整 (0 - 1)
+        // rowHeader: 0.2,
+      },
+    });
+
+    const meta = [
+      { field: 'city', formatter: (v: string) => `${v}-aa` },
+    ] as Meta[];
+
+    s2.setDataCfg(getDataCfg(meta, false));
+
+    await s2.render();
+    const allDataCells = s2.facet.getDataCells();
+
+    s2.interaction.changeState({
+      cells: map(allDataCells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const copyContent = getCopyPlainContent(s2);
+
+    // 主要查看行列小计总计对应的值都格式化成功了
+    expect(copyContent).toMatchSnapshot();
+  });
+
   it('should copy col data in grid mode', () => {
     const cell = s2.facet.getColCells()[0];
 
@@ -1796,5 +1879,107 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     selectCells(cells);
 
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  test('should copy correct row in grid mode with same prefix', async () => {
+    const samePrefixDataCfg = {
+      describe: '标准交叉表数据。',
+      fields: {
+        rows: ['province'],
+        columns: ['type'],
+        values: ['number'],
+        valueInCols: true,
+      },
+      meta: [
+        {
+          field: 'number',
+          name: '数量',
+        },
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '类别',
+        },
+        {
+          field: 'sub_type',
+          name: '子类别',
+        },
+      ],
+      data: [
+        {
+          number: 7789,
+          province: '浙江省',
+          city: '杭州市',
+          type: '家具',
+          sub_type: '桌子',
+        },
+        {
+          number: 3551,
+          province: '四川省',
+          city: '南充市',
+          type: '办公用品',
+          sub_type: '纸张',
+        },
+        {
+          number: 3551,
+          province: '四川省省',
+          city: '南充市',
+          type: '办公用品',
+          sub_type: '纸张',
+        },
+        {
+          number: 3551,
+          province: '湖南省',
+          city: '南充市',
+          type: '办公用品',
+          sub_type: '纸张',
+        },
+      ],
+    };
+    const sheet = new PivotSheet(
+      getContainer(),
+      samePrefixDataCfg,
+      assembleOptions({
+        hierarchyType: 'grid',
+        interaction: {
+          // 悬停高亮
+          hoverHighlight: true,
+
+          copy: {
+            // 允许复制
+            enable: true,
+            // 是否携带行列头数据
+            withHeader: true,
+            // 是否使用格式化数据
+            withFormat: true,
+          },
+          // 刷选
+          brushSelection: {
+            rowCell: true,
+            colCell: true,
+            dataCell: true,
+          },
+          // 多选
+          multiSelection: true,
+        },
+      }),
+    );
+
+    await sheet.render();
+
+    const cells = sheet.facet.getDataCells();
+
+    selectCells(cells, sheet);
+
+    const copyableList = getSelectedData(sheet);
+
+    expect(copyableList).toMatchSnapshot();
   });
 });

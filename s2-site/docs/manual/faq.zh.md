@@ -11,11 +11,11 @@ order: 8
 
 ### 浏览器兼容性
 
-<embed src="@/docs/common/env.zh.md"></embed>
+<embed src="@/common/env.zh.md"></embed>
 
 ### 浏览器引入
 
-<embed src="@/docs/common/browser.zh.md"></embed>
+<embed src="@/common/browser.zh.md"></embed>
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
@@ -30,30 +30,6 @@ order: 8
 
 - [2.x 官网](https://s2.antv.antgroup.com/)
 - [1.x 官网](https://s2-v1.antv.antgroup.com/)
-
-### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
-
-可以开启 [AntV/G](https://g.antv.antgroup.com/api/canvas/options#supportscsstransform) 渲染引起的 `supportsCSSTransform` 属性
-
-```ts
-const s2Options = {
-  transformCanvasConfig() {
-    return {
-      supportsCSSTransform: true
-    }
-  }
-}
-```
-
-也可以手动调用 `s2.changeSheetSize` 根据缩放比改变图表大小，使图表和父元素缩放比保持一致
-
-```ts
-const scale = 0.8
-s2.changeSheetSize(width * scale, height * scale)
-await s2.render(false)
-```
-
-可参考 issue [#808](https://github.com/antvis/S2/issues/808) [#990](https://github.com/antvis/S2/pull/990) （感谢 [@cylnet](https://github.com/cylnet) [@xiaochong44](https://github.com/xiaochong44))
 
 ### 如何更新表格配置？
 
@@ -427,7 +403,7 @@ class CustomColCell extends ColCell {
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？如何获取新版本发布通知？
 
-<embed src="@/docs/common/packages.zh.md"></embed>
+<embed src="@/common/packages.zh.md"></embed>
 
 配套的 [分析组件](/manual/advanced/sheet/editable-mode)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
