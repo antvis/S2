@@ -260,8 +260,10 @@ export abstract class FrozenFacet extends BaseFacet {
     );
 
     if (frozenGroupType === FrozenGroupType.Scroll) {
-      this.panelScrollGroup.appendChild(cell);
-    } else {
+      if (cell.parentElement !== this.panelScrollGroup) {
+        this.panelScrollGroup.appendChild(cell);
+      }
+    } else if (cell.parentElement !== this.frozenGroups[frozenGroupType]) {
       this.frozenGroups[frozenGroupType].appendChild(cell);
     }
 

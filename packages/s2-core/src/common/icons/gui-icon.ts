@@ -1,9 +1,10 @@
 /**
  * @description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
-import { Group, type ImageStyleProps } from '@antv/g';
+import { Group, PointLike, type ImageStyleProps } from '@antv/g';
 import { clone, omit } from 'lodash';
 import { CustomImage } from '../../engine';
+import { batchSetStyle } from '../../utils/g-utils';
 import { DebuggerUtil } from '../debug';
 import { getIcon } from './factory';
 
@@ -121,6 +122,21 @@ export class GuiIcon extends Group {
 
     this.iconImageShape = image;
     this.setImageAttrs({ name, fill });
+  }
+
+  public reRender(cfg: GuiIconCfg) {
+    this.name = cfg.name;
+    this.cfg = cfg;
+    const { name, fill } = this.cfg;
+    const attrs = clone(this.cfg);
+
+    this.iconImageShape.imgType = GuiIcon.type;
+    batchSetStyle(this.iconImageShape, omit(attrs, 'fill'));
+    this.setImageAttrs({ name, fill });
+  }
+
+  public updatePosition(position: PointLike) {
+    batchSetStyle(this.iconImageShape, position);
   }
 
   public setImageAttrs(attrs: Partial<{ name: string; fill: string | null }>) {

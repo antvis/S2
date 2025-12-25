@@ -32,6 +32,7 @@ import {
 } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { renderIcon, renderLine } from '../utils/g-renders';
+import { batchSetStyle } from '../utils/g-utils';
 import {
   getHiddenColumnContinuousSiblingNodes,
   isEqualDisplaySiblingNodeId,
@@ -46,6 +47,10 @@ import { normalizeTextAlign } from '../utils/normalize';
 import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell<ColHeaderConfig> {
+  private verticalResizeArea: CustomRect;
+
+  private horizontalResizeArea: CustomRect;
+
   public get cellType() {
     return CellType.COL_CELL;
   }
@@ -311,20 +316,28 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       cell: this,
     });
 
-    resizeArea.appendChild(
-      new CustomRect(
-        {
-          name: resizeAreaName,
-          style: {
-            ...attrs.style,
-            x: 0,
-            y: offsetY + height - resizeStyle.size!,
-            width: resizeAreaWidth,
+    const style = {
+      ...attrs.style,
+      x: 0,
+      y: offsetY + height - resizeStyle.size!,
+      width: resizeAreaWidth,
+    };
+
+    if (this.horizontalResizeArea) {
+      this.horizontalResizeArea.name = resizeAreaName;
+      this.horizontalResizeArea.appendInfo = attrs.appendInfo;
+      batchSetStyle(this.horizontalResizeArea, style);
+    } else {
+      this.horizontalResizeArea = resizeArea.appendChild(
+        new CustomRect(
+          {
+            name: resizeAreaName,
+            style,
           },
-        },
-        attrs.appendInfo,
-      ),
-    );
+          attrs.appendInfo,
+        ),
+      );
+    }
   }
 
   private getResizeAreaWidth() {
@@ -465,19 +478,26 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       cell: this,
     });
 
-    resizeArea.appendChild(
-      new CustomRect(
-        {
-          style: {
-            ...attrs.style,
-            x: offsetX + width - resizeStyle.size!,
-            y: offsetY,
-            height,
+    const style = {
+      ...attrs.style,
+      x: offsetX + width - resizeStyle.size!,
+      y: offsetY,
+      height,
+    };
+
+    if (this.verticalResizeArea) {
+      this.verticalResizeArea.appendInfo = attrs.appendInfo;
+      batchSetStyle(this.verticalResizeArea, style);
+    } else {
+      this.verticalResizeArea = resizeArea.appendChild(
+        new CustomRect(
+          {
+            style,
           },
-        },
-        attrs.appendInfo,
-      ),
-    );
+          attrs.appendInfo,
+        ),
+      );
+    }
   }
 
   // 绘制热区
@@ -641,5 +661,10 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       this.spreadsheet.options.showDefaultHeaderActionIcon &&
       this.spreadsheet.isValueInCols()
     );
+  }
+
+  public setHeaderConfig(headerConfig: ColHeaderConfig) {
+    super.setHeaderConfig(headerConfig);
+    // this.drawResizeArea();
   }
 }

@@ -1,6 +1,7 @@
 import { Group } from '@antv/g';
 import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
+import { ColCellPool } from '../../cell/pool';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
@@ -26,6 +27,8 @@ import {
  * Column Header for SpreadSheet
  */
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
+  colCellPool = new ColCellPool();
+
   protected initGroups(): void {
     this.scrollGroup = this.appendChild(
       new Group({
@@ -66,6 +69,17 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected getCellInstance(node: Node) {
+    if (
+      this.colCellPool.pool.length > 0 &&
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseCell
+    ) {
+      const colCell = this.colCellPool.acquire()!;
+
+      colCell.reInitCell(node, this.getHeaderConfig());
+
+      return colCell;
+    }
+
     const headerConfig = this.getHeaderConfig();
 
     const { spreadsheet } = this.getHeaderConfig();
@@ -81,11 +95,24 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { spreadsheet } = this.getHeaderConfig();
     const group = this.getCellGroup(node);
 
-    const cell = this.getCellInstance(node);
+    let cell: ColCell;
 
-    node.belongsCell = cell;
+    if (
+      node.belongsCell?.parentNode === group &&
+      node.belongsCell.getMeta() === node
+    ) {
+      cell = node.belongsCell as ColCell;
+      cell.setHeaderConfig(this.headerConfig);
+    } else {
+      cell = this.getCellInstance(node);
 
-    group?.appendChild(cell);
+      node.belongsCell = cell;
+
+      if (cell.parentElement !== group) {
+        group?.appendChild(cell);
+      }
+    }
+
     spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);
     spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
   }
@@ -215,4 +242,20 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       position.y,
     );
   }
+
+  public clear() {
+    if (this.headerConfig.spreadsheet.options.future?.experimentalReuseCell) {
+      // @ts-ignore
+      this.scrollGroup.childNodes.forEach((colCell: ColCell) => {
+        if (!this.isColCellInRect(colCell.getMeta())) {
+          colCell.getMeta().belongsCell = null;
+          this.colCellPool.release(colCell);
+        }
+      });
+    } else {
+      super.clear();
+    }
+  }
+
+  protected clearResizeAreaGroup() {}
 }

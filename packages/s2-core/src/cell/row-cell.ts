@@ -521,4 +521,8 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       !this.spreadsheet.isValueInCols()
     );
   }
+
+  public setHeaderConfig(headerConfig: RowHeaderConfig) {
+    super.setHeaderConfig(headerConfig);
+  }
 }

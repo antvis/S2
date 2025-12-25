@@ -54,6 +54,7 @@ const s2Options = {
 | device                      | `"pc" \| "mobile"`                                                                                                                                                                                                           |      |         | 设备类型                                                                                                                                  |
 | transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | 自定义 AntV/G 渲染引擎 [配置参数](https://g.antv.antgroup.com/api/canvas/options) & [插件注册](https://g.antv.antgroup.com/plugins/intro) |
 | rendererConfig              | `Partial<RendererConfig>`                                                                                                                                                                                                    |      |         | 自定义 AntV/G 渲染引擎配置参数                                                                                                            |
+| future                      | [Future](#future)                                                                                                                                                                                                            |      |         | 开启一些实验性功能 (目前不稳定, 后续可能会有变动)                                                                                          |
 
 <embed src="@/common/conditions.zh.md"></embed>
 
@@ -183,6 +184,17 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 | ----------- | ----------------------------------------------------------- | -------- | ---------- | ---- |
 | icon        | 自定义 Icon, 支持 customSVGIcons 自定义注册和内置的 Icon    | `string` | `"Empty"`  |      |
 | description | 自定义描述内容                                              | `string` | `"暂无数据"` |      |
+
+## Future
+
+功能描述：开启一些实验性功能
+
+> [!WARNING]
+> 这些功能目前不稳定，后续可能会有变动
+
+| 参数                        | 说明                 | 类型      | 默认值  | 必选 |
+| --------------------------- | -------------------- | --------- | ------- | ---- |
+| experimentalReuseCell   | 是否复用单元格以提升性能   | `boolean` | `false` |      |
 
 ## MergedCellInfo
 

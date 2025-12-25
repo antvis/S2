@@ -40,6 +40,7 @@ import {
   TableSeriesNumberCell,
   type HeaderCell,
 } from '../cell';
+import { DataCellPool } from '../cell/pool';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
@@ -183,6 +184,8 @@ export abstract class BaseFacet {
   protected textWrapTempRowCell: RowCell | DataCell;
 
   protected textWrapTempColCell: ColCell | TableColCell;
+
+  protected dataCellPool: DataCellPool;
 
   public customRowHeightStatusMap: Record<string, boolean>;
 
@@ -1611,10 +1614,17 @@ export abstract class BaseFacet {
       return;
     }
 
-    const cell = this.spreadsheet.options.dataCell?.(
-      viewMeta,
-      this.spreadsheet,
-    )!;
+    let cell;
+
+    if (
+      this.dataCellPool.pool.length > 0 &&
+      this.spreadsheet.options.future?.experimentalReuseCell
+    ) {
+      cell = this.dataCellPool.acquire()!;
+      cell.setMeta(viewMeta);
+    } else {
+      cell = this.spreadsheet.options.dataCell?.(viewMeta, this.spreadsheet)!;
+    }
 
     if (!cell) {
       return;
@@ -1640,33 +1650,72 @@ export abstract class BaseFacet {
       diffPanelIndexes(this.preCellIndexes!, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-      // add new cell in panelCell
-      each(willAddDataCells, ([colIndex, rowIndex]) => {
-        const viewMeta = this.getCellMeta(rowIndex, colIndex);
-        const cell = this.createDataCell(viewMeta);
-
-        if (!cell) {
-          return;
-        }
-
-        this.addDataCell(cell);
-      });
-
-      const allDataCells = this.getDataCells();
-
-      // remove cell from panelCell
-      each(willRemoveDataCells, ([colIndex, rowIndex]) => {
-        const mountedDataCell = find(
-          allDataCells,
-          (cell) => cell.name === `${rowIndex}-${colIndex}`,
+      if (this.spreadsheet.options.future?.experimentalReuseCell) {
+        const allDataCells = this.getDataCells();
+        const maxLength = Math.max(
+          willRemoveDataCells.length,
+          willAddDataCells.length,
         );
 
-        mountedDataCell?.destroy();
-      });
+        // 交替执行删除和添加操作
+        for (let i = 0; i < maxLength; i++) {
+          // 删除单元格
+          if (i < willRemoveDataCells.length) {
+            const [colIndex, rowIndex] = willRemoveDataCells[i];
+            const mountedDataCell = find(
+              allDataCells,
+              (cell) => cell.name === `${rowIndex}-${colIndex}`,
+            );
 
-      DebuggerUtil.getInstance().logger(
-        `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
-      );
+            if (mountedDataCell) {
+              this.dataCellPool.release(mountedDataCell);
+            }
+          }
+
+          // 添加单元格
+          if (i < willAddDataCells.length) {
+            const [colIndex, rowIndex] = willAddDataCells[i];
+            const viewMeta = this.getCellMeta(rowIndex, colIndex);
+            const cell = this.createDataCell(viewMeta);
+
+            if (cell) {
+              this.addDataCell(cell);
+            }
+          }
+        }
+
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
+      } else {
+        // add new cell in panelCell
+        each(willAddDataCells, ([colIndex, rowIndex]) => {
+          const viewMeta = this.getCellMeta(rowIndex, colIndex);
+          const cell = this.createDataCell(viewMeta);
+
+          if (!cell) {
+            return;
+          }
+
+          this.addDataCell(cell);
+        });
+
+        const allDataCells = this.getDataCells();
+
+        // remove cell from panelCell
+        each(willRemoveDataCells, ([colIndex, rowIndex]) => {
+          const mountedDataCell = find(
+            allDataCells,
+            (cell) => cell.name === `${rowIndex}-${colIndex}`,
+          );
+
+          mountedDataCell?.destroy();
+        });
+
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
+      }
     });
 
     this.preCellIndexes = indexes;
@@ -1678,6 +1727,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initCellPool();
     this.initTextWrapTemp();
     this.initGroups();
     // layout
@@ -2469,5 +2519,9 @@ export abstract class BaseFacet {
     return (
       Math.ceil(this.spreadsheet.measureTextWidth(text, font)) + EXTRA_PIXEL
     );
+  }
+
+  protected initCellPool() {
+    this.dataCellPool = new DataCellPool();
   }
 }

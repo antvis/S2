@@ -8,7 +8,7 @@ import type {
   Text,
   TextStyleProps,
 } from '@antv/g';
-import { Group } from '@antv/g';
+import { Group, RectStyleProps } from '@antv/g';
 import {
   each,
   get,
@@ -78,6 +78,7 @@ import {
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
+import { batchSetStyle } from '../utils/g-utils';
 import { isLinkFieldNode } from '../utils/interaction/link-field';
 import { isMobile } from '../utils/is-mobile';
 import {
@@ -124,6 +125,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
+
+  protected borders: Map<keyof typeof CellBorderPosition, Line> = new Map();
 
   /* -------------------------------------------------------------------------- */
   /*           abstract functions that must be implemented by subtype           */
@@ -414,7 +417,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         this.getStyle()?.cell!,
       );
 
-      renderLine(this, { ...position, ...style });
+      const borderStyle = { ...position, ...style };
+
+      if (this.borders.has(type)) {
+        batchSetStyle(this.borders.get(type)!, borderStyle);
+      } else {
+        this.borders.set(type, renderLine(this, borderStyle));
+      }
     });
   }
 
@@ -422,39 +431,56 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * 绘制 hover 悬停，刷选的外框
    */
   protected drawInteractiveBorderShape() {
-    this.stateShapes.set(
+    const style = {
+      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+      visibility: 'hidden',
+      pointerEvents: 'none',
+    } as RectStyleProps;
+
+    const interactiveBorderShape = this.stateShapes.get(
       'interactiveBorderShape',
-      renderRect(this, {
-        ...this.getBBoxByType(CellClipBox.PADDING_BOX),
-        visibility: 'hidden',
-        pointerEvents: 'none',
-      }),
     );
+
+    if (interactiveBorderShape) {
+      batchSetStyle(interactiveBorderShape, style);
+    } else {
+      this.stateShapes.set('interactiveBorderShape', renderRect(this, style));
+    }
   }
 
   /**
    * 交互使用的背景色
    */
   protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(this, {
-        ...this.getBBoxByType(),
-        visibility: 'hidden',
-        pointerEvents: 'none',
-      }),
-    );
+    const style = {
+      ...this.getBBoxByType(),
+      visibility: 'hidden',
+      pointerEvents: 'none',
+    } as RectStyleProps;
+
+    const reuseInteractiveBgShape = this.stateShapes.get('interactiveBgShape');
+
+    if (reuseInteractiveBgShape) {
+      batchSetStyle(reuseInteractiveBgShape, style);
+    } else {
+      this.stateShapes.set('interactiveBgShape', renderRect(this, style));
+    }
   }
 
   protected drawBackgroundShape() {
     const { backgroundColor, backgroundColorOpacity } =
       this.getBackgroundColor();
-
-    this.backgroundShape = renderRect(this, {
+    const style = {
       ...this.getBBoxByType(),
       fill: backgroundColor,
       fillOpacity: backgroundColorOpacity,
-    });
+    };
+
+    if (this.backgroundShape) {
+      batchSetStyle(this.backgroundShape, style);
+    } else {
+      this.backgroundShape = renderRect(this, style);
+    }
   }
 
   public renderTextShape(
@@ -464,15 +490,23 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const text = getDisplayText(style.text, this.getEmptyPlaceholder());
     const shallowRender = options?.shallowRender || this.isShallowRender();
 
-    this.textShape = renderText({
-      group: this,
-      textShape: shallowRender ? undefined : this.textShape,
-      style: {
+    if (this.textShape && !shallowRender) {
+      batchSetStyle(this.textShape, {
         ...style,
         // 文本必须为字符串
         text: `${text}`,
-      },
-    });
+      });
+    } else {
+      this.textShape = renderText({
+        group: this,
+        textShape: shallowRender ? undefined : this.textShape,
+        style: {
+          ...style,
+          // 文本必须为字符串
+          text: `${text}`,
+        },
+      });
+    }
 
     this.addTextShape(this.textShape);
 
@@ -560,8 +594,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       }
 
       const { bottom: maxY } = this.textShape.getBBox();
-
-      this.linkFieldShape = renderLine(this, {
+      const options = {
         x1: startX,
         y1: maxY + 1,
         // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
@@ -569,7 +602,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         y2: maxY + 1,
         stroke: linkFillColor,
         lineWidth: 1,
-      });
+      };
+
+      if (this.linkFieldShape) {
+        batchSetStyle(this.linkFieldShape, options);
+      } else {
+        this.linkFieldShape = renderLine(this, options);
+      }
     }
 
     this.textShape.style.fill = linkFillColor;
@@ -727,13 +766,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       const position = this.getIconPosition();
       const { size } = this.getStyle()!.icon!;
 
-      this.conditionIconShape = renderIcon(this, {
+      const iconCfg = {
         ...position,
         name: attrs?.name!,
         width: size,
         height: size,
         fill: attrs?.fill,
-      });
+      };
+
+      if (this.conditionIconShape) {
+        this.conditionIconShape.reRender(iconCfg);
+      } else {
+        this.conditionIconShape = renderIcon(this, iconCfg);
+      }
+
       this.addConditionIconShape(this.conditionIconShape);
     }
   }
@@ -889,5 +935,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.spreadsheet.dataCfg.meta?.find(
       (m) => m.field === this.getMetaField(),
     )?.renderer;
+  }
+
+  public getConditionIntervalShape() {
+    return this.conditionIntervalShape;
   }
 }
