@@ -17,15 +17,15 @@ export const paletteExcel: Palette = {
     // Search results highlight
     results: '#FFFF00',
     // Cell highlight
-    highlight: '#B4D6A4',
+    highlight: '#E2EFDA',
   },
   /**
    * Basic colors mapping for Excel theme:
    * 0:  Corner header text, column header text (#000000 - black)
    * 1:  Row header background, data cell background zebra (#FFFFFF - white)
-   * 2:  Row & data cell interactions hover/selected (#D6EAF8 - light blue)
+   * 2:  Row & data cell interactions hover/selected (#F2F2F2 - Excel light gray hover)
    * 3:  Corner header background, column header background (#E6E6E6 - Excel gray header)
-   * 4:  Column header interaction hover/selected (#C4D7B2 - light green)
+   * 4:  Column header interaction hover/selected (#D9D9D9 - Excel header hover gray)
    * 5:  Brush selection mask (#217346 - Excel green)
    * 6:  Row header link (#0563C1 - Excel hyperlink blue)
    * 7:  Mini bar, resize interaction (#217346 - Excel green)
@@ -35,19 +35,19 @@ export const paletteExcel: Palette = {
    * 11: Vertical split line (#217346 - Excel green)
    * 12: Horizontal split line (#217346 - Excel green)
    * 13: Data cell text (#000000 - black)
-   * 14: Row header text, data cell interaction color (#000000 - black)
+   * 14: Row header text, hover/selection border color (#217346 - Excel green for selection border)
    */
   basicColors: [
     // 0: header text color
     '#000000',
     // 1: row header bg / data cell zebra bg
     '#FFFFFF',
-    // 2: row & data cell interaction (hover, selected)
-    '#D6EAF8',
+    // 2: row & data cell interaction (hover, selected) - Excel light gray
+    '#F2F2F2',
     // 3: corner/col header background
     '#E6E6E6',
-    // 4: col header interaction (hover, selected)
-    '#C4D7B2',
+    // 4: col header interaction (hover, selected) - Excel header hover gray
+    '#D9D9D9',
     // 5: brush selection mask
     '#217346',
     // 6: link color (Excel hyperlink blue)
@@ -66,8 +66,8 @@ export const paletteExcel: Palette = {
     '#217346',
     // 13: data cell text
     '#000000',
-    // 14: row header text, hover interaction color
-    '#000000',
+    // 14: row header text, hover/selection border color (Excel green)
+    '#217346',
   ],
   basicColorRelations: [],
 };
