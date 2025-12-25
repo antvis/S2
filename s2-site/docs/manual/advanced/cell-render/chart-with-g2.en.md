@@ -7,7 +7,7 @@ order: 12
 Before reading this chapter, please make sure you are familiar enough with S2 and the related content of the [`AntV/G`](https://g.antv.antgroup.com/) rendering engine.
 :::
 
-In addition to mini chart drawing, S2 also supports [custom cells](/examples#custom-custom-cell) to combine with [`AntV/G2`](https://g2.antv.antgroup.com/) to create a composite chart, or to draw basic shapes of `AntV/G`.
+In addition to mini chart drawing, S2 also supports [custom cells](/en/examples#custom-custom-cell) to combine with [`AntV/G2`](https://g2.antv.antgroup.com/) to create a composite chart, or to draw basic shapes of `AntV/G`.
 
 ### Data Format
 

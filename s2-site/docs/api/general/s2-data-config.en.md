@@ -68,7 +68,7 @@ const data = [
 
 #### MultiData
 
-Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/zh/examples/react-component/sheet#strategy)
+Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/en/examples/react-component/sheet#strategy)
 
 | Configuration item name | illustrate                                                      | type                             | Defaults | required |
 | :---------------------- | :-------------------------------------------------------------- | :------------------------------- | :------- | :------- |
@@ -135,7 +135,7 @@ Function description: Field metadata, configurable field alias and value formatt
 
 object is **required** , *default: null*
 
-Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/zh/examples/react-component/sheet#strategy)
+Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/en/examples/react-component/sheet#strategy)
 
 | Configuration item name | illustrate                                                      | type                     | Defaults | required |
 | ----------------------- | --------------------------------------------------------------- | ------------------------ | -------- | -------- |
