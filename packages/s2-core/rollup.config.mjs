@@ -79,6 +79,7 @@ if (enableAnalysis) {
 if (isUmdFormat) {
   output.globals = {
     '@antv/s2': 'S2',
+    lodash: '_',
   };
   output.entryFileNames = '[name].min.js';
   plugins.push(terser());
@@ -92,6 +93,7 @@ export default [
     },
     output,
     plugins,
+    external: isUmdFormat ? ['lodash'] : [],
   },
   {
     input: {
@@ -103,6 +105,6 @@ export default [
     },
     plugins,
 
-    external: ['@antv/s2'],
+    external: isUmdFormat ? ['@antv/s2', 'lodash'] : ['@antv/s2'],
   },
 ];

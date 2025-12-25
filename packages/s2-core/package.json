@@ -104,7 +104,10 @@
     {
       "path": "./dist/s2.min.js",
       "import": "{ createComponent }",
-      "limit": "300 kB"
+      "ignore": [
+        "lodash"
+      ],
+      "limit": "230 kB"
     },
     {
       "path": "./dist/s2.min.css",
