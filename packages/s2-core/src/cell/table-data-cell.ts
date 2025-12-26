@@ -6,7 +6,9 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
+  SERIES_NUMBER_FIELD,
 } from '../common/constant';
+import type { TextTheme } from '../common/interface';
 import { CustomRect, type SimpleBBox } from '../engine';
 import type { FrozenFacet } from '../facet/frozen-facet';
 import { isFrozenRow, isFrozenTrailingRow } from '../facet/utils';
@@ -19,6 +21,23 @@ import {
 export class TableDataCell extends DataCell {
   protected getLinkFieldStyle() {
     return this.theme.rowCell!.text!.linkTextFill!;
+  }
+
+  protected getTextStyle(): TextTheme {
+    // 此逻辑不能放到seriesNumberCell中，否则在单元格复用场景下会导致文本样式错误
+    if (this.meta.valueField === SERIES_NUMBER_FIELD) {
+      const textOverflowStyle = this.getCellTextWordWrapStyle(
+        CellType.SERIES_NUMBER_CELL,
+      );
+      const style = this.theme.rowCell!.seriesText!;
+
+      return {
+        ...textOverflowStyle,
+        ...style,
+      };
+    }
+
+    return super.getTextStyle();
   }
 
   protected shouldDrawResizeArea() {

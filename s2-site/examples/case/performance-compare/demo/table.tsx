@@ -6,6 +6,10 @@ const s2Options: S2Options = {
   seriesNumber: {
     enable: true,
   },
+  showDefaultHeaderActionIcon: false,
+  future: {
+    experimentalReuseCell: true,
+  },
 };
 
 export function generateRawData(
