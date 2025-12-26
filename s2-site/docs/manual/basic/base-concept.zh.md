@@ -52,7 +52,7 @@ const s2Options = {
 
 <br/>
 
-[查看示例](//examples/basic/pivot/#grid)
+[查看示例](/examples/basic/pivot/#grid)
 
 ### 树状模式
 
