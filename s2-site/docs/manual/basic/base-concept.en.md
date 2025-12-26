@@ -25,9 +25,9 @@ As shown in the figure below:
 
 ## Row Header (rowHeader)
 
-The structure of the row header is determined by [`s2DataConfig.fields.rows`](/api/general/s2-data-config) and is used for displaying row analysis dimensions. It also supports custom row header grouping. [Learn More](/manual/advanced/custom/custom-header#1-pivot-table).
+The structure of the row header is determined by [`s2DataConfig.fields.rows`](/en/api/general/s2-data-config) and is used for displaying row analysis dimensions. It also supports custom row header grouping. [Learn More](/en/manual/advanced/custom/custom-header#1-pivot-table).
 
-The row header supports two display modes: [`Grid Mode`](/examples/basic/pivot/#grid) and [`Tree Mode`](/examples/basic/pivot/#tree). It also supports displaying [series numbers](/manual/basic/sheet-type/pivot-mode#series-number) and [freezing the row header](/manual/basic/sheet-type/pivot-mode#frozen-row-header-area).
+The row header supports two display modes: [`Grid Mode`](/en/examples/basic/pivot/#grid) and [`Tree Mode`](/en/examples/basic/pivot/#tree). It also supports displaying [series numbers](/en/manual/basic/sheet-type/pivot-mode#series-number) and [freezing the row header](/en/manual/basic/sheet-type/pivot-mode#frozen-row-header-area).
 
 For example, if the row header is configured with two fields, `province` and `city`:
 
@@ -51,7 +51,7 @@ const s2Options = {
 
 <br/>
 
-[View Example](/examples/basic/pivot/#grid)
+[View Example](/en/examples/basic/pivot/#grid)
 
 ### Tree Mode
 
@@ -65,7 +65,7 @@ const s2Options = {
 
 <br/>
 
-[View Example](/examples/basic/pivot/#tree)
+[View Example](/en/examples/basic/pivot/#tree)
 
 ## Column Header (colHeader)
 
@@ -73,7 +73,7 @@ const s2Options = {
 For a detail table, since there is only a column header, you only need to set the columns.
 :::
 
-The structure of the column header is determined by [`s2DataConfig.fields.columns`](/api/general/s2-data-config) and is used for displaying column analysis dimensions. It also supports custom column header grouping. [Learn More](/manual/advanced/custom/custom-header#2-detail-table)
+The structure of the column header is determined by [`s2DataConfig.fields.columns`](/en/api/general/s2-data-config) and is used for displaying column analysis dimensions. It also supports custom column header grouping. [Learn More](/en/manual/advanced/custom/custom-header#2-detail-table)
 
 For example, if the column header is configured with two fields, `type` and `sub_type`, it will be displayed as:
 
@@ -93,30 +93,30 @@ The corner header is the top-left part of the table and plays an important role 
 
 In `S2`, the layout is extended from the corner header to calculate the size and coordinates of the rows and columns. The corner header is also used to display the names of the row and column headers, such as `Province` and `City` in the example.
 
-Additionally, `S2` provides custom extensions for scenarios that require a custom corner header. See [cornerCell](/examples/custom/custom-cell#corner-cell) and [cornerHeader](/examples/custom/custom-cell#corner-header) for details.
+Additionally, `S2` provides custom extensions for scenarios that require a custom corner header. See [cornerCell](/en/examples/custom/custom-cell#corner-cell) and [cornerHeader](/en/examples/custom/custom-cell#corner-header) for details.
 
 ## Data (dataCell)
 
 The data cell area is where the data is displayed at the intersection of the row and column dimension values. This is typically the measure value and is the core data presentation area for table analysis.
 
-In the data cell area, we can display basic cross-tabulated data, use [conditional formatting](/examples/analysis/conditions#text) to aid analysis, show [derived indicators like year-over-year comparisons](/examples/react-component/sheet/#strategy), and customize the data cells using custom `Hooks`. For more, see [dataCell](/examples/custom/custom-cell#data-cell).
+In the data cell area, we can display basic cross-tabulated data, use [conditional formatting](/en/examples/analysis/conditions#text) to aid analysis, show [derived indicators like year-over-year comparisons](/en/examples/react-component/sheet/#strategy), and customize the data cells using custom `Hooks`. For more, see [dataCell](/en/examples/custom/custom-cell#data-cell).
 
 ## Frame (frame)
 
-The frame is the layout area that sits above the other four areas. It is used for spacing between areas, scrollbars, and the shadow effects of dividing lines. See the [reference example](/examples/case/comparison/#time-spend) for details.
+The frame is the layout area that sits above the other four areas. It is used for spacing between areas, scrollbars, and the shadow effects of dividing lines. See the [reference example](/en/examples/case/comparison/#time-spend) for details.
 
 ## Cell
 
-The `Corner Header`, `Row Header`, and `Column Header` are composed of multiple cells, which support [customization](/manual/advanced/custom/hook).
+The `Corner Header`, `Row Header`, and `Column Header` are composed of multiple cells, which support [customization](/en/manual/advanced/custom/hook).
 
 ## Node
 
-A Cell corresponds to a Node. The node represents the [metadata](/api/basic-class/node) of the cell (including what is outside the visible range), while the cell represents the instantiated [cell information](/api/basic-class/base-cell) within the current visible range.
+A Cell corresponds to a Node. The node represents the [metadata](/en/api/basic-class/node) of the cell (including what is outside the visible range), while the cell represents the instantiated [cell information](/en/api/basic-class/base-cell) within the current visible range.
 
 ## Facet
 
-This refers to the current [visible rendering area](/api/basic-class/base-facet).
+This refers to the current [visible rendering area](/en/api/basic-class/base-facet).
 
 ## Dataset
 
-Internally, the table converts the `s2DataConfig` provided by the user into a [dataset](/api/basic-class/base-data-set) to facilitate data processing and rendering.
+Internally, the table converts the `s2DataConfig` provided by the user into a [dataset](/en/api/basic-class/base-data-set) to facilitate data processing and rendering.

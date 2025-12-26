@@ -28,7 +28,7 @@ order: 0
 
 行头的结构是由 [`s2DataConfig.fields.rows`](/api/general/s2-data-config) 决定，用于行分析维度展示，同时支持自定义行头分组。[了解更多](/manual/advanced/custom/custom-header#1-%E9%80%8F%E8%A7%86%E8%A1%A8).
 
-行头支持 [`平铺模式 (grid)`](examples/basic/pivot/#grid), [`树状模式 (tree)`](/examples/basic/pivot/#tree) 两种展示形态，同时支持 [行序号](/manual/basic/sheet-type/pivot-mode#%E5%BA%8F%E5%8F%B7) 的展示以及 [行头冻结](/manual/basic/sheet-type/pivot-mode#%E5%86%BB%E7%BB%93%E8%A1%8C%E5%A4%B4)。
+行头支持 [`平铺模式 (grid)`](/examples/basic/pivot/#grid), [`树状模式 (tree)`](/examples/basic/pivot/#tree) 两种展示形态，同时支持 [行序号](/manual/basic/sheet-type/pivot-mode#%E5%BA%8F%E5%8F%B7) 的展示以及 [行头冻结](/manual/basic/sheet-type/pivot-mode#%E5%86%BB%E7%BB%93%E8%A1%8C%E5%A4%B4)。
 
 比如行头数据配置 `province, city` 两个字段
 
@@ -52,7 +52,7 @@ const s2Options = {
 
 <br/>
 
-[查看示例](/examples/basic/pivot/#grid)
+[查看示例](//examples/basic/pivot/#grid)
 
 ### 树状模式
 

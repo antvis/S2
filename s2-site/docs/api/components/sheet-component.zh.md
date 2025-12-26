@@ -292,7 +292,7 @@ type SheetComponentOptions = S2Options<
 
 > 别名：GEvent
 
-[https://g.antv.antgroup.com/api/event/event-object](事件对象)
+[事件对象](https://g.antv.antgroup.com/api/event/event-object)
 
 ### TargetCellInfo
 

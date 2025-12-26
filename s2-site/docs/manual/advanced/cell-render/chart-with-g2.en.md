@@ -7,11 +7,11 @@ order: 12
 Before reading this chapter, please make sure you are familiar enough with S2 and the related content of the [`AntV/G`](https://g.antv.antgroup.com/) rendering engine.
 :::
 
-In addition to mini chart drawing, S2 also supports [custom cells](/examples#custom-custom-cell) to combine with [`AntV/G2`](https://g2.antv.antgroup.com/) to create a composite chart, or to draw basic shapes of `AntV/G`.
+In addition to mini chart drawing, S2 also supports [custom cells](/en/examples#custom-custom-cell) to combine with [`AntV/G2`](https://g2.antv.antgroup.com/) to create a composite chart, or to draw basic shapes of `AntV/G`.
 
 ### Data Format
 
-The numeric format is still { values: [G2 Chart Data (Spec)](https://g2.antv.antgroup.com/examples/general/interval/#column) }
+The numeric format is still { values: [G2 Chart Data (Spec)](https://g2.antv.antgroup.com/examples/general/interval) }
 
 ```diff
 {
@@ -47,7 +47,7 @@ const s2DataConfig = {
 #### 1.1 Data Preparation
 
 :::info{title="Tip"}
-The data source type is [MultiData](https://s2.antv.antgroup.com/api/general/s2-data-config#multidata), which supports the coexistence of `normal data cells` and `chart cells`. The chart data source is the standard [G2 Spec](https://g2.antv.antgroup.com/examples/general/interval/#column).
+The data source type is [MultiData](https://s2.antv.antgroup.com/api/general/s2-data-config#multidata), which supports the coexistence of `normal data cells` and `chart cells`. The chart data source is the standard [G2 Spec](https://g2.antv.antgroup.com/examples/general/interval).
 :::
 
 ```ts
@@ -133,7 +133,7 @@ await s2.render();
 Essentially, it uses the `renderToMountedElement` provided by `G2` to mount the chart on the `S2` cell instance.
 :::
 
-[View Example](/examples/custom/custom-shape-and-chart/#custom-g2-chart)
+[View Example](/en/examples/custom/custom-shape-and-chart/#custom-g2-chart)
 
 #### 2.4 Using in `@antv/s2-react`
 
@@ -153,7 +153,7 @@ function App() {
 }
 ```
 
-[View React Example](/examples/react-component/sheet/#chart)
+[View React Example](/en/examples/react-component/sheet/#chart)
 
 #### 2.5 Effect
 

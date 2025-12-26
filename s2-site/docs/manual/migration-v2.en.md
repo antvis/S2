@@ -34,7 +34,7 @@ The original websites <https://s2.antv.vision> and <https://antv-s2.gitee.io> ar
 - Version `1.x` is now discontinued, will no longer be updated, bugs fixed, or new features added.
 - `@antv/s2-vue` is now discontinued. Due to limited resources and maintenance costs, combined with package download volume considerations, it will no longer be updated after `2.0.0` official release. Please encapsulate based on `@antv/s2` yourself or fork the repository for secondary development of community versions.
 
-Please upgrade to `2.x` version according to the [Migration Guide](/manual/migration-v2).
+Please upgrade to `2.x` version according to the [Migration Guide](/en/manual/migration-v2).
 
 ## 🛺 From 2.0.0-next.x to 2.0.0 Official Release
 
@@ -108,7 +108,7 @@ In `1.x`, we passed properties like `supportsCSSTransform` and `devicePixelRatio
 In `2.x`:
 
 - Removed `devicePixelRatio` and `supportsCSSTransform (deprecated)`.
-- Added `transformCanvasConfig` to support passing `G` configurations and registering plugins. See [Register AntV/G Plugins](/manual/advanced/g-plugins) documentation for details.
+- Added `transformCanvasConfig` to support passing `G` configurations and registering plugins. See [Register AntV/G Plugins](/en/manual/advanced/g-plugins) documentation for details.
 
 ```tsx | pure
 const s2Options = {
@@ -157,7 +157,7 @@ export interface BaseCellStyle {
 
 4. Now `widthByField` and `heightByField` support both dimension `id` and dimension `field`.
 
-See [Custom Cell Width/Height](/manual/advanced/custom/cell-size) documentation for details.
+See [Custom Cell Width/Height](/en/manual/advanced/custom/cell-size) documentation for details.
 
 #### Tooltip Configuration Adjustments
 
@@ -209,7 +209,7 @@ s2.showTooltip({
 });
 ```
 
-See [Tooltip](/manual/basic/tooltip) documentation for details.
+See [Tooltip](/en/manual/basic/tooltip) documentation for details.
 
 #### Copy/Export Adjustments
 
@@ -255,7 +255,7 @@ const s2Options = {
 4. Copy is enabled by default.
 5. Copy/export is asynchronous by default.
 
-See [Copy and Export](/manual/advanced/interaction/copy) documentation for details.
+See [Copy and Export](/en/manual/advanced/interaction/copy) documentation for details.
 
 #### Brush Selection Configuration Adjustments
 
@@ -281,7 +281,7 @@ const s2Options = {
 
 2. Brush selection is enabled by default for all cells.
 
-See [Basic Interactions](/manual/advanced/interaction/basic) documentation for details.
+See [Basic Interactions](/en/manual/advanced/interaction/basic) documentation for details.
 
 #### headerActionIcons Configuration Adjustments
 
@@ -320,7 +320,7 @@ const s2Options = {
 }
 ```
 
-See [Custom Icon](/manual/advanced/custom/custom-icon) documentation for details.
+See [Custom Icon](/en/manual/advanced/custom/custom-icon) documentation for details.
 
 #### customSVGIcons Configuration Adjustments
 
@@ -409,7 +409,7 @@ const s2DataConfig = {
 }
 ```
 
-See [Custom Row/Column Header Grouping](/manual/advanced/custom/custom-header) documentation for details.
+See [Custom Row/Column Header Grouping](/en/manual/advanced/custom/custom-header) documentation for details.
 
 4. Row Header Cell Collapse/Expand Events Moved to `RowCell`
 
@@ -478,7 +478,7 @@ const s2Options = {
 
 #### Field Marking
 
-Text field marking capabilities now align with [Text Theme Configuration](/api/general/s2-theme#texttheme), supporting font size, opacity, alignment, and other configurations.
+Text field marking capabilities now align with [Text Theme Configuration](/en/api/general/s2-theme#texttheme), supporting font size, opacity, alignment, and other configurations.
 
 ```diff
 const s2Options = {
@@ -500,7 +500,7 @@ const s2Options = {
 }
 ```
 
-See [Field Marking](/manual/basic/conditions) documentation and [Text Marking Examples](/examples/analysis/conditions#text) for details.
+See [Field Marking](/en/manual/basic/conditions) documentation and [Text Marking Examples](/en/examples/analysis/conditions#text) for details.
 
 #### Serial Number Configuration Changes
 
@@ -537,7 +537,7 @@ const s2Options = {
 3. Selection state is no longer reset after width/height adjustments, only tooltip is closed.
 4. Now supports batch adjustments after multiple selections.
 
-See [Row/Column Width/Height Adjustment](/manual/advanced/interaction/resize) documentation for details.
+See [Row/Column Width/Height Adjustment](/en/manual/advanced/interaction/resize) documentation for details.
 
 #### Facet Changes
 
@@ -621,7 +621,7 @@ Detail table:
 + s2.facet.getContentWidth()
 ```
 
-6. APIs for getting layout nodes have been moved to the `s2.facet` namespace. Added rich [syntactic sugar](/api/basic-class/base-facet).
+6. APIs for getting layout nodes have been moved to the `s2.facet` namespace. Added rich [syntactic sugar](/en/api/basic-class/base-facet).
 
 ```diff
 - s2.getRowNodes()
@@ -635,7 +635,7 @@ Detail table:
 + s2.facet.getColNodes()
 ```
 
-See [Get Cell Data](/manual/advanced/get-cell-data) and [BaseFacet](/api/basic-class/base-facet) documentation for details.
+See [Get Cell Data](/en/manual/advanced/get-cell-data) and [BaseFacet](/en/api/basic-class/base-facet) documentation for details.
 
 #### Rendering Parameter Changes
 
@@ -772,7 +772,7 @@ For data with multiple `values`, now expects all `values` information to be incl
 + s2.dataSet.getCellMultiData(params: GetCellMultiDataParams)
 ```
 
-See [Get Cell Data](/manual/advanced/get-cell-data) documentation for details.
+See [Get Cell Data](/en/manual/advanced/get-cell-data) documentation for details.
 
 #### S2DataConfig.totalData Configuration Removed
 
@@ -819,7 +819,7 @@ See [Get Cell Data](/manual/advanced/get-cell-data) documentation for details.
 }
 ```
 
-See [CellData](/api/basic-class/cell-data) documentation for details.
+See [CellData](/en/api/basic-class/cell-data) documentation for details.
 
 #### Cell Brush Selection State Changes
 
@@ -872,7 +872,7 @@ s2.interaction.selectCell(cell, {
 })
 ```
 
-See [Highlight/Select Cell](/manual/advanced/interaction/highlight-and-select-cell) documentation for details.
+See [Highlight/Select Cell](/en/manual/advanced/interaction/highlight-and-select-cell) documentation for details.
 
 #### Scroll API Adjustments
 
@@ -891,7 +891,7 @@ s2.interaction.scrollTo({
 })
 ```
 
-See [Scroll](/manual/advanced/interaction/scroll) documentation for details.
+See [Scroll](/en/manual/advanced/interaction/scroll) documentation for details.
 
 #### Configuration Preprocessing API Changes
 
@@ -902,7 +902,7 @@ See [Scroll](/manual/advanced/interaction/scroll) documentation for details.
 
 #### Empty Data Placeholder Configuration Changes
 
-In addition to supporting cell empty data placeholders, now supports configuring detail table [empty data states](/examples/custom/custom-cell/#empty-placeholder), similar to [Ant Design's Empty component](https://ant-design.antgroup.com/components/empty-cn) empty state effect. Configuration is separated into `cell` and `empty` to distinguish between the two states.
+In addition to supporting cell empty data placeholders, now supports configuring detail table [empty data states](/en/examples/custom/custom-cell/#empty-placeholder), similar to [Ant Design's Empty component](https://ant-design.antgroup.com/components/empty-cn) empty state effect. Configuration is separated into `cell` and `empty` to distinguish between the two states.
 
 ```diff
 const s2Options = {
@@ -924,7 +924,7 @@ const s2Options = {
 }
 ```
 
-See [Custom Empty Data Placeholder](/examples/custom/custom-cell/#empty-placeholder) and [Custom Cell Empty Data Placeholder](/examples/custom/custom-cell/#data-cell-placeholder) examples.
+See [Custom Empty Data Placeholder](/en/examples/custom/custom-cell/#empty-placeholder) and [Custom Cell Empty Data Placeholder](/en/examples/custom/custom-cell/#data-cell-placeholder) examples.
 
 #### Internal Constants Renamed
 
@@ -963,7 +963,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 });
 ```
 
-See [Link Jump](/manual/advanced/interaction/link-jump) documentation for details.
+See [Link Jump](/en/manual/advanced/cell-render/link-jump) documentation for details.
 
 #### ID Generation Rule Changes for Empty Row/Column Dimension Values
 
@@ -1129,7 +1129,7 @@ function App() {
 + <AdvancedSort sheetInstance={s2} />
 ```
 
-See [Advanced Sort](/manual/advanced/analysis/advanced) documentation for details.
+See [Advanced Sort](/en/manual/advanced/analysis/advanced) documentation for details.
 
 ##### Dimension Switcher Component Migration
 
@@ -1151,7 +1151,7 @@ Added `icon` configuration, changed `title` meaning, no longer used for custom e
 + </Switcher>
 ```
 
-See [Dimension Switcher](/manual/advanced/analysis/switcher) documentation for details.
+See [Dimension Switcher](/en/manual/advanced/analysis/switcher) documentation for details.
 
 ##### Export Component Migration
 
@@ -1202,7 +1202,7 @@ See [Dimension Switcher](/manual/advanced/analysis/switcher) documentation for d
 import { StrategyExport } from '@antv/s2-react-components';
 ```
 
-See [Export](/manual/advanced/analysis/export) documentation for details.
+See [Export](/en/manual/advanced/analysis/export) documentation for details.
 
 ##### Drill Down Component Migration
 
@@ -1236,7 +1236,7 @@ function App() {
 }
 ```
 
-See [Dimension Drill Down](/manual/advanced/analysis/drill-down) documentation for details.
+See [Dimension Drill Down](/en/manual/advanced/analysis/drill-down) documentation for details.
 
 ##### Edit Table Input Component Replacement
 
@@ -1322,7 +1322,7 @@ s2.showTooltip({
 });
 ```
 
-See [Tooltip](/manual/basic/tooltip) and [Group Sort](/manual/basic/sort/group) documentation for details.
+See [Tooltip](/en/manual/basic/tooltip) and [Group Sort](/en/manual/basic/sort/group) documentation for details.
 
 #### React 18 Support
 
@@ -1424,7 +1424,7 @@ In version `2.x`, if render parameters are not specified in `onUpdate`, default 
 
 ## ✍️ API Adjustments
 
-Please refer to the [`API Documentation`](/api) marked with <Badge type="success">New</Badge> and <Badge>Updated</Badge> for details.
+Please refer to the [`API Documentation`](/en/api/general/s2-options) marked with <Badge type="success">New</Badge> and <Badge>Updated</Badge> for details.
 
 ## 🙋 Troubleshooting
 

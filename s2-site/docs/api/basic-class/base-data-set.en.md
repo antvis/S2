@@ -11,22 +11,22 @@ s2.dataSet.getFieldName('type')
 
 | Parameter | Description | Type | Version |
 | --- | --- | --- | --- |
-| fields | Field information | [Fields](/api/general/s2-data-config#fields) | |
-| meta | Field metadata, including field names, formatters, etc. | [Meta[]](/api/general/s2-data-config#meta) | |
+| fields | Field information | [Fields](/en/api/general/s2-data-config#fields) | |
+| meta | Field metadata, including field names, formatters, etc. | [Meta[]](/en/api/general/s2-data-config#meta) | |
 | originData | Raw data | [RawData](#rawdata)[] | |
 | indexesData | Multi-dimensional index data | Record<string, [RawData](#rawdata)[][] \| [RawData](#rawdata)[]> | |
-| sortParams | Sorting configuration | [SortParams](/api/general/s2-data-config#sortparams) | |
+| sortParams | Sorting configuration | [SortParams](/en/api/general/s2-data-config#sortparams) | |
 | filterParams | Filtering configuration | [FilterParam](#filterparam)[] | |
 | displayData | Display data | [RawData](#rawdata)[] | |
-| spreadsheet | Spreadsheet instance | [SpreadSheet](/api/basic-class/spreadsheet) | |
-| getField | Get a field | (field: [CustomHeaderField](#customheaderfield)) => [Meta](/api/general/s2-data-config#meta) | |
-| getFieldMeta | Get field metadata | (field: [CustomHeaderField](#customheaderfield), meta?: [Meta[]](/api/general/s2-data-config#meta)) => [Meta](/api/general/s2-data-config#meta) | |
+| spreadsheet | Spreadsheet instance | [SpreadSheet](/en/api/basic-class/spreadsheet) | |
+| getField | Get a field | (field: [CustomHeaderField](#customheaderfield)) => [Meta](/en/api/general/s2-data-config#meta) | |
+| getFieldMeta | Get field metadata | (field: [CustomHeaderField](#customheaderfield), meta?: [Meta[]](/en/api/general/s2-data-config#meta)) => [Meta](/en/api/general/s2-data-config#meta) | |
 | getFieldName | Get a field name | (field: [CustomHeaderField](#customheaderfield), defaultValue?: string) => `string` | |
-| getCustomRowFieldName | Get custom cell field name | (cell: S2CellType<[`ViewMeta`](#viewmeta) \| [`Node`](/api/basic-class/node)>) => `string` | |
-| getCustomFieldDescription | Get custom cell field description | (cell: S2CellType<[`ViewMeta`](#viewmeta) \| [`Node`](/api/basic-class/node)>) => `string` | |
+| getCustomRowFieldName | Get custom cell field name | (cell: S2CellType<[`ViewMeta`](#viewmeta) \| [`Node`](/en/api/basic-class/node)>) => `string` | |
+| getCustomFieldDescription | Get custom cell field description | (cell: S2CellType<[`ViewMeta`](#viewmeta) \| [`Node`](/en/api/basic-class/node)>) => `string` | |
 | getFieldFormatter | Get a field formatter function | (field: [CustomHeaderField](#customheaderfield)) => [Formatter](#formatter) | |
 | getFieldDescription | Get a field description | (field: [CustomHeaderField](#customheaderfield)) => [Formatter](#formatter) | |
-| setDataCfg | Set the data configuration | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/api/general/s2-data-config) `: Partial<`[`S2DataConfig`](/api/general/s2-data-config)`>, reset?: T) => void` | The `reset` parameter is available from `@antv/s2^1.34.0` |
+| setDataCfg | Set the data configuration | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/en/api/general/s2-data-config) `: Partial<`[`S2DataConfig`](/en/api/general/s2-data-config)`>, reset?: T) => void` | The `reset` parameter is available from `@antv/s2^1.34.0` |
 | getDisplayDataSet | Get the currently displayed dataset | () => [DataType[]](#datatype) | |
 | getDimensionValues | Get dimension values | (field: string, query?: [DataType](#datatype)) => string[] | |
 | getCellData | Get data for a single cell | (params: [GetCellDataParams](#getcelldataparams)) => [DataType[]](#datatype) | |

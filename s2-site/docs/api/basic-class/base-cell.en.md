@@ -14,13 +14,13 @@ cell.getActualText()
 | --- | --- | --- |
 | getMeta | Get cell metadata | () => [`ViewMeta`](#viewmeta) |
 | setMeta | Set cell metadata | (viewMeta: [`Partial<ViewMeta>`](#viewmeta)) => void |
-| getIconStyle | Get cell icon style | () => [`IconTheme`](/api/general/s2-theme#icontheme) |
-| getStyle | Get cell style | (name?: string) => [`DefaultCellTheme`](/api/general/s2-theme#defaultcelltheme) |
+| getIconStyle | Get cell icon style | () => [`IconTheme`](/en/api/general/s2-theme#icontheme) |
+| getStyle | Get cell style | (name?: string) => [`DefaultCellTheme`](/en/api/general/s2-theme#defaultcelltheme) |
 | getTextAndIconPosition | Get the position of cell text and icon | (iconCount: `number`) => [`TextAndIconPosition`](#textandiconposition) |
 | cellType | Cell type | [`CellType`](#celltype) |
 | initCell | Initialize cells | `() => void` |
 | update | Update cell | `() => void` |
-| getTextStyle | Get text style | () => [TextTheme](/api/general/s2-theme#s2theme) & [CellTextWordWrapStyle](/api/general/s2-options#celltextwordwrapstyle) |
+| getTextStyle | Get text style | () => [TextTheme](/en/api/general/s2-theme#s2theme) & [CellTextWordWrapStyle](/en/api/general/s2-options#celltextwordwrapstyle) |
 | getCellTextWordWrapStyle | Get text wrap configuration | `() => { wordWrap: boolean, maxLines: number, textOverflow: string \| boolean }` |
 | getFormattedFieldValue | Get the formatted field value | `() => { formattedValue: string, value: string }` |
 | getMaxTextWidth | Get the maximum width of the text | `() => number` |

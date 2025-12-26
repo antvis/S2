@@ -66,7 +66,7 @@ const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;
   const value = record[key]
-  // 拼装自己的跳转地址
+  // Construct your own jump URL
   location.href = `https://path/to/${key}=${value}}`;
 });
 
@@ -101,7 +101,7 @@ const s2 = new TableSheet(container, s2DataConfig, s2Options);
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;
   const value = record[key]
-  // 拼装自己的跳转地址
+  // Construct your own jump URL
   location.href = `https://path/to/${key}=${value}}`;
 });
 

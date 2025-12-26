@@ -6,12 +6,12 @@ order: 6
 
 ## Introduction
 
-S2 has **4** built-in, out-of-the-box theme configurations and also provides powerful theme customization capabilities. [View API](/api/general/s2theme)
+S2 has **4** built-in, out-of-the-box theme configurations and also provides powerful theme customization capabilities. [View API](/en/api/general/s2-theme)
 
-- [Default](/examples/theme/default/#default)
-- [Colorful Blue](/examples/theme/default/#colorful)
-- [Simple Gray](/examples/theme/default/#gray)
-- [Dark](/examples/theme/default/#dark)
+- [Default](/en/examples/theme/default/#default)
+- [Colorful Blue](/en/examples/theme/default/#colorful)
+- [Simple Gray](/en/examples/theme/default/#gray)
+- [Dark](/en/examples/theme/default/#dark)
 
 ### Color
 
@@ -29,7 +29,7 @@ Here are examples of generating standard color palettes using different theme co
 
 ### Palette
 
-The palette is defined as [Palette](/api/general/s2-theme#palette). When generating the theme schema, colors are taken from this palette, which in turn gets its colors from the standard color palette. The key properties of the Palette are:
+The palette is defined as [Palette](/en/api/general/s2-theme#palette). When generating the theme schema, colors are taken from this palette, which in turn gets its colors from the standard color palette. The key properties of the Palette are:
 
 - `basicColors`: A set of 15 basic colors that essentially determine the table's color scheme. When the theme schema is generated, colors are picked from fixed indices in `basicColors`. For example, the row header background color is always taken from `basicColors[1]`.
 - `basicColorRelations`: The mapping between `basicColors` and the standard color palette. For example, in the built-in "colorful" theme, the row header background color `basicColors[1]` is taken from index 0 of the standard color palette.
@@ -38,7 +38,7 @@ This ensures that all colors used in rendering are derived from the theme color,
 
 ### Theme Schema
 
-The theme schema is defined as [S2Theme](/api/general/s2-theme#s2theme), which describes in detail the theme styles for cells, interactions, etc. Its properties include colors, line thicknesses, font sizes, and text alignment. All colors in the schema are taken from the [Palette](/api/general/s2-theme#palette):
+The theme schema is defined as [S2Theme](/en/api/general/s2-theme#s2theme), which describes in detail the theme styles for cells, interactions, etc. Its properties include colors, line thicknesses, font sizes, and text alignment. All colors in the schema are taken from the [Palette](/en/api/general/s2-theme#palette):
 
 - `basicColors`: Basic colors, such as backgrounds for corner/column/row headers, and colors for fonts/icons.
 - `semanticColors`: Semantic colors, such as the color values for red, green, and yellow.
@@ -67,11 +67,11 @@ await s2.render(false);
 
 ## Customizing a Theme
 
-The `setThemeCfg` method on the S2 instance is the entry point for all theme configurations. It accepts a parameter of type [ThemeCfg](/api/general/s2-theme). You can:
+The `setThemeCfg` method on the S2 instance is the entry point for all theme configurations. It accepts a parameter of type [ThemeCfg](/en/api/general/s2-theme). You can:
 
-- Use a preset theme via [ThemeCfg.name](/api/general/s2-theme).
-- Generate a theme by customizing the color palette via [ThemeCfg.palette](/api/general/s2-theme#palette).
-- Generate a theme by customizing the schema via [ThemeCfg.theme](/api/general/s2-theme#s2theme) (this can be used with the other two properties to override the generated theme).
+- Use a preset theme via [ThemeCfg.name](/en/api/general/s2-theme).
+- Generate a theme by customizing the color palette via [ThemeCfg.palette](/en/api/general/s2-theme#palette).
+- Generate a theme by customizing the schema via [ThemeCfg.theme](/en/api/general/s2-theme#s2theme) (this can be used with the other two properties to override the generated theme).
 
 ### Selecting a Preset Theme
 
@@ -128,13 +128,13 @@ S2 has 4 built-in theme effects:
   </tbody>
 </table>
 
-📊 [See more theme examples](/examples/theme/default#default).
+📊 [See more theme examples](/en/examples/theme/default#default).
 
 ### Customizing the Schema
 
 If the built-in themes do not meet your requirements, you can override specific configurations by customizing the `schema`.
 
-You can call `s2.setTheme` or `s2.setThemeCfg()` to configure the `theme` object. [View the complete Schema configuration](/api/general/s2-theme#s2theme):
+You can call `s2.setTheme` or `s2.setThemeCfg()` to configure the `theme` object. [View the complete Schema configuration](/en/api/general/s2-theme#s2theme):
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -157,7 +157,7 @@ await s2.render(false);
 
 Cell text configuration is divided into `text` (normal text), `bolderText` (bold text), `seriesText` (series number text), and `measureText` (measure value text), corresponding to different scenarios.
 
-[View details](/manual/advanced/custom/cell-align) or the [full API](/api/general/s2theme#s2theme).
+[View details](/en/manual/advanced/custom/cell-align) or the [full API](/en/api/general/s2-theme#s2theme).
 
 ```ts
 s2.setTheme({
@@ -180,7 +180,7 @@ s2.setTheme({
 
 #### Customizing Cell Background Color
 
-View the [full API](/api/general/s2theme#s2theme).
+View the [full API](/en/api/general/s2-theme#s2theme).
 
 ```ts
 s2.setTheme({
@@ -194,7 +194,7 @@ s2.setTheme({
 
 #### Customizing Scrollbar Style
 
-View the [full API](/api/general/s2theme#scrollbartheme).
+View the [full API](/en/api/general/s2-theme#scrollbartheme).
 
 ```ts
 s2.setTheme({
@@ -208,7 +208,7 @@ s2.setTheme({
 
 #### Customizing Interaction Style
 
-[View documentation](/manual/advanced/interaction/basic#adjust-interaction-theme) and [example](/en/examples/interaction/basic#state-theme).
+[View documentation](/en/manual/advanced/interaction/basic#adjust-interaction-theme) and [example](/en/examples/interaction/basic#state-theme).
 
 <Playground path='interaction/basic/demo/state-theme.ts' rid='state-theme' height='300'></playground>
 
@@ -216,13 +216,13 @@ s2.setTheme({
 
 ### Customizing the Palette
 
-While customizing the `schema` is flexible, it has a high cognitive load and requires a detailed understanding of the `schema` structure. Therefore, we also provide a feature to customize the color palette. You will need to configure the `palette` object for `setThemeCfg`. [View the full palette configuration](/api/general/s2-theme#palette):
+While customizing the `schema` is flexible, it has a high cognitive load and requires a detailed understanding of the `schema` structure. Therefore, we also provide a feature to customize the color palette. You will need to configure the `palette` object for `setThemeCfg`. [View the full palette configuration](/en/api/general/s2-theme#palette):
 
 #### Manually Selecting Palette Colors
 
 You can refer to the [built-in palettes](https://github.com/antvis/S2/blob/next/packages/s2-core/src/theme/palette/colorful.ts) to personalize `basicColors` and `semanticColors`. The selected colors will be used for drawing different parts of the table. Please refer to the [Palette Color Map](#preset-theme-color-palette-map) below for the color usage relationships.
 
-To help you create your own palette, S2 officially provides a [self-service palette tool](/examples/theme/custom/#custom-manual-palette), which helps you quickly adjust the palette and copy-paste it into your project.
+To help you create your own palette, S2 officially provides a [self-service palette tool](/en/examples/theme/custom/#custom-manual-palette), which helps you quickly adjust the palette and copy-paste it into your project.
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);

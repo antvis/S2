@@ -6,11 +6,11 @@ order: 0
 
 ## Introduction
 
-S2 supports various forms of sorting for table data, such as sorting row/column header dimension values by alphabetical order, or by their corresponding subtotals/grand totals/numerical values. In addition to providing default sorting methods, S2 also allows for custom sorting using functions. [View Example](/examples/analysis/sort#custom-sort-func)
+S2 supports various forms of sorting for table data, such as sorting row/column header dimension values by alphabetical order, or by their corresponding subtotals/grand totals/numerical values. In addition to providing default sorting methods, S2 also allows for custom sorting using functions. [View Example](/en/examples/analysis/sort#custom-sort-func)
 
 ## Usage
 
-Sorting is enabled by passing `sortParams` in the [s2DataConfig](/api/general/s2-data-config).
+Sorting is enabled by passing `sortParams` in the [s2DataConfig](/en/api/general/s2-data-config).
 
 ### sortParams
 
@@ -92,7 +92,7 @@ Sorting can be categorized into two types based on the dimension's level and the
 > How to enable totals/subtotals in S2?
 >
 > 1. Use aggregated data from your data source.
-> 2. Use S2's built-in aggregate calculations. 📊 [See documentation](/api/general/s2-options#totals).
+> 2. Use S2's built-in aggregate calculations. 📊 [See documentation](/en/api/general/s2-options#totals).
 
 - `sortByMeasure` is `TOTAL_VALUE`.
 - `sortFieldId` can be any dimension field (e.g., non-leaf `province` or leaf `city`).
@@ -179,7 +179,7 @@ When `query` includes `all` column dimensions:
 | sortByMeasure | Sorts by a measure (numerical) value. | `string` | - | |
 | query | A filter condition to narrow the sorting scope, e.g., `{ city: 'Baishan' }`. | `object` | - | |
 | type | Used to display an icon for in-group sorting. | `string` | - | |
-| data | The current list of data to be sorted. | Array<`string` \| [`CellData`](/api/basic-class/cell-data)> | - | |
+| data | The current list of data to be sorted. | Array<`string` \| [`CellData`](/en/api/basic-class/cell-data)> | - | |
 
 #### By Dimension Value (Row/Column Header)
 
@@ -233,7 +233,7 @@ const s2DataConfig = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width="600" alt="row" />
 
-📊 [View the custom sort demo](/examples/analysis/sort#custom-sort-func).
+📊 [View the custom sort demo](/en/examples/analysis/sort#custom-sort-func).
 
 ## Priority
 

@@ -5,7 +5,7 @@ order: 1
 
 This article will introduce the data flow processing process of the pivot table, so that readers can understand the internal data logic of `S2` more intuitively.
 
-The data processing process is:`原始数据-> 生成多维数组-> 生成层级结构-> 获取数据`, and we will explain them one by one, the goal is to realize the pivot table in the following figure:
+The data processing process is: `Raw Data -> Generate Multidimensional Array -> Generate Hierarchy -> Get Data`, and we will explain them one by one, the goal is to realize the pivot table in the following figure:
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600">
 
@@ -22,28 +22,28 @@ const dataCfg = {
     },
     data: [{
         "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Table"
     }, {
         "price": 2,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "桌子"
+        "province": "Zhejiang",
+        "city": "Shaoxing",
+        "type": "Furniture",
+        "sub_type": "Table"
     }, {
         "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Sofa"
     }, {
         "price": 4,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "沙发"
+        "province": "Zhejiang",
+        "city": "Shaoxing",
+        "type": "Furniture",
+        "sub_type": "Sofa"
     }]
 };
 const options = {
@@ -63,20 +63,20 @@ const options = {
 First, process the third piece of data to extract the row and column dimension results of the current detailed data under the initial configuration conditions.
 
 ```ts
-// 第四条数据
-// { "price": 4,"province": "浙江省","city": "绍兴市","type": "家具","sub_type": "沙发" }
-const rowDimensionValues = transformDimensionsValue(currentData, ['province', 'city']); // 结果是 ['浙江省', '绍兴市']
-const colDimensionValues = transformDimensionsValue(currentData, ['type', 'sub_type']); // 结果是 ['家具', '沙发']
+// The 4th data item
+// { "price": 4,"province": "Zhejiang","city": "Shaoxing","type": "Furniture","sub_type": "Sofa" }
+const rowDimensionValues = transformDimensionsValue(currentData, ['province', 'city']); // Result is ['Zhejiang', 'Shaoxing']
+const colDimensionValues = transformDimensionsValue(currentData, ['type', 'sub_type']); // Result is ['Furniture', 'Sofa']
 ```
 
 Then, according to the row and column dimension results of the data and the initial configuration conditions, we can obtain the path to the current detailed data (that is, the coordinate index in the row tree structure and column tree structure)
 
 ```ts
-const rowPath = getPath(rowDimensionValues); // 结果是 [0, 1]; 因为浙江下面有杭州和绍兴，所以绍兴坐标为 1，下同。
-const colPath = getPath(colDimensionValues); // 结果是 [0, 1];
-const dataPath = rowPath.concat(...colPath); // 结果是 [0, 1, 0, 1];
+const rowPath = getPath(rowDimensionValues); // Result is [0, 1]; Because Hangzhou and Shaoxing are under Zhejiang, so Shaoxing coordinate is 1, same below.
+const colPath = getPath(colDimensionValues); // Result is [0, 1];
+const dataPath = rowPath.concat(...colPath); // Result is [0, 1, 0, 1];
 
-lodash.set(indexesData, dataPath, currentData); // [0, 1, 0, 1] 是 { "price": 4,"province": "浙江省","city": "绍兴市","type": "家具","sub_type": "沙发" }
+lodash.set(indexesData, dataPath, currentData); // [0, 1, 0, 1] is { "price": 4,"province": "Zhejiang","city": "Shaoxing","type": "Furniture","sub_type": "Sofa" }
 ```
 
 Finally, according to the above process, traverse all the data to get the final multidimensional array, the result is:
@@ -88,19 +88,19 @@ Finally, according to the above process, traverse all the data to get the final 
    [
     [{
      "price": 1,
-     "province": "浙江省",
-     "city": "杭州市",
-     "type": "家具",
-     "sub_type": "桌子",
+     "province": "Zhejiang",
+     "city": "Hangzhou",
+     "type": "Furniture",
+     "sub_type": "Table",
      "$$extra$$": "price",
      "$$value$$": 1
     }],
     [{
      "price": 3,
-     "province": "浙江省",
-     "city": "杭州市",
-     "type": "家具",
-     "sub_type": "沙发",
+     "province": "Zhejiang",
+     "city": "Hangzhou",
+     "type": "Furniture",
+     "sub_type": "Sofa",
      "$$extra$$": "price",
      "$$value$$": 3
     }]
@@ -110,19 +110,19 @@ Finally, according to the above process, traverse all the data to get the final 
    [
     [{
      "price": 2,
-     "province": "浙江省",
-     "city": "绍兴市",
-     "type": "家具",
-     "sub_type": "桌子",
+     "province": "Zhejiang",
+     "city": "Shaoxing",
+     "type": "Furniture",
+     "sub_type": "Table",
      "$$extra$$": "price",
      "$$value$$": 2
     }],
     [{
      "price": 4,
-     "province": "浙江省",
-     "city": "绍兴市",
-     "type": "家具",
-     "sub_type": "沙发",
+     "province": "Zhejiang",
+     "city": "Shaoxing",
+     "type": "Furniture",
+     "sub_type": "Sofa",
      "$$extra$$": "price",
      "$$value$$": 4
     }]
@@ -141,16 +141,16 @@ Next, we take the row tree structure as an example to explain the construction p
 First, get the row dimension enumeration value of a piece of data:
 
 ```ts
-// 第四条数据
-// { "price": 4,"province": "浙江省","city": "绍兴市","type": "家具","sub_type": "沙发" }
-const rowDimensionValues = transformDimensionsValue(currentData, ['province', 'city']); // 结果是 ['浙江省', '绍兴市']
+// The 4th data item
+// { "price": 4,"province": "Zhejiang","city": "Shaoxing","type": "Furniture","sub_type": "Sofa" }
+const rowDimensionValues = transformDimensionsValue(currentData, ['province', 'city']); // Result is ['Zhejiang', 'Shaoxing']
 ```
 
 Then, traverse the row dimension enumeration of this piece of data:
 
 ```ts
-let currentMeta = this.rowPivotMeta; // 存储行树形结构 Map.
-for (let i = 0; i < rowDimensionValues.length; i++) { // 遍历 ['浙江省', '绍兴市'];
+let currentMeta = this.rowPivotMeta; // Stores row tree structure Map.
+for (let i = 0; i < rowDimensionValues.length; i++) { // Traverse ['Zhejiang', 'Shaoxing'];
     if (isFirstCreate) {
         currentMeta.set(rowDimensionValues[i], { // currentMeta = 
             level: currentMeta.size,
@@ -162,12 +162,12 @@ for (let i = 0; i < rowDimensionValues.length; i++) { // 遍历 ['浙江省', '�
 }
 ```
 
-When looping `['浙江省', '绍兴市']` for the first time, the result of `currentMeta` is:
+When looping `['Zhejiang', 'Shaoxing']` for the first time, the result of `currentMeta` is:
 
 ```ts
 Map(1) {
     [[entries]] => [{
-        '浙江省' => { key: '浙江省', value: { children: Map(0)}})
+        'Zhejiang' => { key: 'Zhejiang', value: { children: Map(0)}})
     }]
 }
 ```
@@ -177,10 +177,10 @@ The result of the second loop is:
 ```ts
 Map(1) {
     [[Entries]] => [{
-        '浙江省' => { key: '浙江省', value: { 
+        'Zhejiang' => { key: 'Zhejiang', value: { 
             children: Map(1) {
                 [[Entries]] => [{
-                    '绍兴市' => { key: '绍兴市', value: { children: Map(0)}}
+                    'Shaoxing' => { key: 'Shaoxing', value: { children: Map(0)}}
                 }]
             }
         }}
@@ -188,18 +188,18 @@ Map(1) {
 }
 ```
 
-After traversing a piece of detailed data, it becomes a hierarchical structure such as`浙江省=> 绍兴市`. After traversing all the detailed data, the final row hierarchy is as follows:
+After traversing a piece of detailed data, it becomes a hierarchical structure such as`Zhejiang => Shaoxing`. After traversing all the detailed data, the final row hierarchy is as follows:
 
 ```ts
 Map(1) {
     [[Entries]] => [{
-        '浙江省' => { key: '浙江省', value: { 
+        'Zhejiang' => { key: 'Zhejiang', value: { 
             childField: 'city',
             children: Map(2) {
                 [[Entries]] => [{
-                    '杭州市' => { key: '杭州市', value: { children: Map(0)}}
+                    'Hangzhou' => { key: 'Hangzhou', value: { children: Map(0)}}
                 }, {
-                    '绍兴市' => { key: '绍兴市', value: { children: Map(0)}}
+                    'Shaoxing' => { key: 'Shaoxing', value: { children: Map(0)}}
                 }]
             }
         }}
@@ -212,13 +212,13 @@ The final hierarchy of columns is as follows:
 ```ts
 Map(1) {
     [[Entries]] => [{
-        '家具' => { key: '家具', value: { 
+        'Furniture' => { key: 'Furniture', value: { 
             childField: 'sub_type',
             children: Map(2) {
                 [[Entries]] => [{
-                    '桌子' => { key: '桌子', value: { children: Map(0)}}
+                    'Table' => { key: 'Table', value: { children: Map(0)}}
                 }, {
-                    '沙发' => { key: '沙发', value: { children: Map(0)}}
+                    'Sofa' => { key: 'Sofa', value: { children: Map(0)}}
                 }]
             }
         }}
@@ -232,15 +232,15 @@ When rendering a pivot table data cell, it is necessary to obtain the correspond
 
 ```ts
 const data = getCellData({
-    query: { province: '浙江省', city: '绍兴市', type: '家具', sub_type: '沙发', $$extra$$: 'price' }
+    query: { province: 'Zhejiang', city: 'Shaoxing', type: 'Furniture', sub_type: 'Sofa', $$extra$$: 'price' }
 });
 ```
 
 The implementation process is to first get the row and column dimension enumeration values:
 
 ```ts
-const rowDimensionValues = getQueryDimValues(['province', 'city'], query); // ['浙江省', '绍兴市']
-const colDimensionValues = getQueryDimValues(['type', 'sub_type', '$$extra$$'], query); // ['家具', '沙发', 'price']
+const rowDimensionValues = getQueryDimValues(['province', 'city'], query); // ['Zhejiang', 'Shaoxing']
+const colDimensionValues = getQueryDimValues(['type', 'sub_type', '$$extra$$'], query); // ['Furniture', 'Sofa', 'price']
 ```
 
 Then obtain the data query path through the enumeration value, and get the specific data from the multidimensional array generated earlier.

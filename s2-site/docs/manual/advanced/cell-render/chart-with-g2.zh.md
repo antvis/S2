@@ -11,7 +11,7 @@ order: 12
 
 ### 数据格式
 
-数值格式依旧是 { values: [G2 图表数据 (Spec)](https://g2.antv.antgroup.com/examples/general/interval/#column) }
+数值格式依旧是 { values: [G2 图表数据 (Spec)](https://g2.antv.antgroup.com/examples/general/interval) }
 
 ```diff
 {
@@ -47,7 +47,7 @@ const s2DataConfig = {
 #### 1.1 数据准备
 
 :::info{title="提示"}
-数据源类型为 [MultiData](https://s2.antv.antgroup.com/api/general/s2-data-config#multidata) 支持 `普通数值单元格` 和 `图表单元格` 共存。图表数据源为标准的 [G2 Spec](https://g2.antv.antgroup.com/examples/general/interval/#column).
+数据源类型为 [MultiData](https://s2.antv.antgroup.com/api/general/s2-data-config#multidata) 支持 `普通数值单元格` 和 `图表单元格` 共存。图表数据源为标准的 [G2 Spec](https://g2.antv.antgroup.com/examples/general/interval).
 :::
 
 ```ts

@@ -19,7 +19,7 @@ const s2Options = {
 | width                       | `number`                                            |          | 600                       | table width                                                                                                                                                                                                           |
 | height                      | `number`                                            |          | 480                       | table height                                                                                                                                                                                                           |
 | debug                       | `boolean`                                           |          | `false`                   | Whether to enable debug mode                                                                                                                                                                                          |
-| hierarchyType               | `"grid" \| "tree"`                                  |          | `grid`                    | The display method of row headers, grid: tiled grid structure, tree: tree structure. Supports [custom structure](/manual/advanced/custom/custom-header)                                                               |
+| hierarchyType               | `"grid" \| "tree"`                                  |          | `grid`                    | The display method of row headers, grid: tiled grid structure, tree: tree structure. Supports [custom structure](/en/manual/advanced/custom/custom-header)                                                               |
 | conditions                  | [Conditions](#conditions)                           |          |                           | Conditional Mode Configuration                                                                                                                                                                                        |
 | totals                      | [Totals](#totals)                                   |          |                           | Subtotal Total Configuration                                                                                                                                                                                          |
 | tooltip                     | [Tooltip](#tooltip)                                 |          |                           | tooltip configuration                                                                                                                                                                                                 |
@@ -31,11 +31,11 @@ const s2Options = {
 | headerActionIcons           | [HeaderActionIcon\[\]](#headeractionicon)           |          | `false`                   | Customize row and column header action icons (need to set `showDefaultHeaderActionIcon` to `false` )                                                                                                                  |
 | customSVGIcons              | [CustomSVGIcon\[\]](#customsvgicon)                 |          | `false`                   | Custom svg icons                                                                                                                                                                                                      |
 | style                       | [Style](#style)                                     |          |                           | Cell style settings, such as layout type, width and height, margin, whether to hide the value column header, etc.                                                                                                     |
-| hd                          | `boolean`                                           |          | `true`                    | Whether to enable high-definition screen adaptation to solve the problem of blurred font rendering on high-definition retina screens when switching between multiple screens. [see more](/manual/advanced/hd-adapter) |
+| hd                          | `boolean`                                           |          | `true`                    | Whether to enable high-definition screen adaptation to solve the problem of blurred font rendering on high-definition retina screens when switching between multiple screens. [see more](/en/manual/advanced/hd-adapter) |
 | mergedCellsInfo             | [MergedCellInfo\[\]\[\]](#mergedcellinfo)           |          |                           | Merge cell information                                                                                                                                                                                                |
 | placeholder                 | [Placeholder](#placeholder)                         |          |                           | Empty data placeholder configuration                                                                                                                                                                                          |
 | cornerText                  | `string`                                            |          |                           | Custom corner header text (valid only in tree mode)                                                                                                                                                                    |
-| cornerExtraFieldText        | `string`                                            |          | `数值`                     | Customize the text of the virtual value field of the corner header (valid when value is in row headers)                                                                                                                |
+| cornerExtraFieldText        | `string`                                            |          | `Values`                     | Customize the text of the virtual value field of the corner header (valid when value is in row headers)                                                                                                                |
 | dataCell                    | [DataCellCallback](#datacellcallback)               |          |                           | custom data cell                                                                                                                                                                                                           |
 | cornerCell                  | [CellCallback](#cellcallback)                       |          |                           | Custom cornerCell                                                                                                                                                                                                     |
 | seriesNumberCell            | [CellCallback](#cellcallback)                       |          |                           | Custom series number cell                                                                                                                                                                                             |
@@ -50,9 +50,9 @@ const s2Options = {
 | layoutCellMeta              | [layoutCellMeta](#layoutcellmeta)                   |          |                           | custom cell metadata                                                                                                                                                                                                  |
 | layoutSeriesNumberNodes     | [LayoutSeriesNumberNodes](#layoutseriesnumbernodes) |          |                           | custom series number nodes                                                                                                                                                                                            |
 | dataSet                     | [DataSet](#dataset)                                 |          |                           | custom data set                                                                                                                                                                                                       |
-| facet                       | (spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => [BaseFacet](/api/basic-class/base-facet) |      |         | custom facet                                                                                                                                |
+| facet                       | (spreadsheet: [SpreadSheet](/en/api/basic-class/spreadsheet)) => [BaseFacet](/en/api/basic-class/base-facet) |      |         | custom facet                                                                                                                                |
 | device                      | `"pc" \| "mobile"`                                  |          |                           | Device type                                                                                                                                                                                                           |
-| transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | Custom AntV/G rendering engine [configuration](https://g.antv.antgroup.com/api/canvas/options) & [plugin registration](https://g.antv.antgroup.com/plugins/intro) |
+| transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/en/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | Custom AntV/G rendering engine [configuration](https://g.antv.antgroup.com/api/canvas/options) & [plugin registration](https://g.antv.antgroup.com/plugins/intro) |
 | rendererConfig              | `Partial<RendererConfig>`                           |          |                           | Custom AntV/G rendering engine configuration                                                                                                                                                                          |
 | future                      | [Future](#future)                                   |          |                           | Enable some experimental features (currently unstable, may change in the future)                                                                                                                                       |
 
@@ -90,12 +90,12 @@ Function description: custom value cell, [ViewMeta](#viewmeta)
 CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => G.Group;
 ```
 
-Function description: custom cell. [View example](/examples/custom/custom-cell#row-cell)
+Function description: custom cell. [View example](/en/examples/custom/custom-cell#row-cell)
 
 | parameter   | illustrate                                                           | type                                             | Defaults | required |
 | ----------- | -------------------------------------------------------------------- | ------------------------------------------------ | -------- | -------- |
-| node        | The currently rendered node                                          | [Node](/api/basic-class/node)                    | -        | ✓        |
-| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/api/basic-class/spreadsheet)      | -        | ✓        |
+| node        | The currently rendered node                                          | [Node](/en/api/basic-class/node)                    | -        | ✓        |
+| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/en/api/basic-class/spreadsheet)      | -        | ✓        |
 | restOptions | Indeterminate parameters, pass additional information                | `unknown[]`                                      | -        |          |
 
 ## MergedCellCallback
@@ -104,7 +104,7 @@ Function description: custom cell. [View example](/examples/custom/custom-cell#r
 MergedCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) => MergedCell;
 ```
 
-Function description: custom merged cell. [View example](/examples/custom/custom-cell/#custom-merged-cell)
+Function description: custom merged cell. [View example](/en/examples/custom/custom-cell/#custom-merged-cell)
 
 ## CornerHeaderCallback
 
@@ -117,7 +117,7 @@ Function description: custom corner head
 | parameter   | illustrate                                                           | type                                             | Defaults | required |
 | ----------- | -------------------------------------------------------------------- | ------------------------------------------------ | -------- | -------- |
 | parents     | parent cell                                                          | [S2CellType](#s2celltype)                        | -        | ✓        |
-| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/docs/api/basic-class/spreadsheet) | -        | ✓        |
+| spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/en/api/basic-class/spreadsheet) | -        | ✓        |
 | restOptions | Indeterminate parameters, pass additional information                | `unknown[]`                                      | -        |          |
 
 <embed src="@/common/custom/layoutHierarchy.en.md"></embed>
@@ -162,22 +162,22 @@ export type DataItem = SimpleDataItem | MultiData;
 
 ## LayoutResult
 
-Function description: Basic data format. [View documentation](/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC%E8%8A%82%E7%82%B9)
+Function description: Basic data format. [View documentation](/en/manual/advanced/get-cell-data#get-cell-node-of-specific-area)
 
 | parameter         | illustrate                                                           | type                                               | Defaults | required |
 | ----------------- | -------------------------------------------------------------------- | -------------------------------------------------- | -------- | -------- |
-| colNodes          | Column header nodes (including non-visible area)                     | [Node\[\]](/api/basic-class/node)                  |          |          |
-| colLeafNodes      | Column header leaf nodes (including non-visible area)                | [Node\[\]](/api/basic-class/node)                  |          |          |
+| colNodes          | Column header nodes (including non-visible area)                     | [Node\[\]](/en/api/basic-class/node)                  |          |          |
+| colLeafNodes      | Column header leaf nodes (including non-visible area)                | [Node\[\]](/en/api/basic-class/node)                  |          |          |
 | colsHierarchy     | Column header nodes hierarchy structure (including non-visible area) | [Hierarchy](#hierarchy)                            |          |          |
 | rowNodes          | Row header nodes (including non-visible area)                        | [Node\[\]](#node)                                  |          |          |
-| rowLeafNodes      | Row header leaf nodes (including non-visible area)                   | [Node\[\]](/api/basic-class/node)                  |          |          |
+| rowLeafNodes      | Row header leaf nodes (including non-visible area)                   | [Node\[\]](/en/api/basic-class/node)                  |          |          |
 | rowsHierarchy     | Row header nodes hierarchy structure (including non-visible area)    | [Hierarchy](#hierarchy)                            |          | ✓        |
-| seriesNumberNodes | Series number nodes (including non-visible area)                     | [Node\[\]](/api/basic-class/node)                  |          |          |
-| cornerNodes       | Corner nodes (including non-visible area)                            | [Node\[\]](/api/basic-class/node)                  |          |          |
+| seriesNumberNodes | Series number nodes (including non-visible area)                     | [Node\[\]](/en/api/basic-class/node)                  |          |          |
+| cornerNodes       | Corner nodes (including non-visible area)                            | [Node\[\]](/en/api/basic-class/node)                  |          |          |
 
 ## DataSet
 
-Function description: Custom data set. [View example](/examples/custom/custom-dataset/#custom-strategy-sheet-dataset)
+Function description: Custom data set. [View example](/en/examples/custom/custom-dataset/#custom-strategy-sheet-dataset)
 
 ```js | pure
 DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;

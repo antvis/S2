@@ -8,7 +8,7 @@ order: 2
 
 明细表是 `S2` 的基础形态之一。明细表就是普通的表格，在列头下把每行数据直接展示出来。主要用于大数据场景下明细数据的展示。
 
-明细表和透视表共享 [基础交互](/manual/advanced/interaction/basic)、[主题](/manual/basic/theme) 、[复制](/manual/basic/analysis/export)、[自定义单元格](/manual/advanced/custom/hook) 等能力。除此之外，明细表还支持 [行列冻结](/examples/interaction/basic#froze) 等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 `DOM` 的表格组件，来提升性能和用户体验。
+明细表和透视表共享 [基础交互](/manual/advanced/interaction/basic)、[主题](/manual/basic/theme) 、[复制](/manual/advanced/analysis/export)、[自定义单元格](/manual/advanced/custom/hook) 等能力。除此之外，明细表还支持 [行列冻结](/examples/interaction/basic#froze) 等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 `DOM` 的表格组件，来提升性能和用户体验。
 
 <img alt="pivot-mode" src="https://gw.alipayobjects.com/zos/antfincdn/jWifHNLOsB/08db1064-bb09-4d44-b42b-26aed1766545.png" width="600" />
 
@@ -77,7 +77,7 @@ bootstrap()
 
 <Playground path='basic/table/demo/table.ts' rid='table' height='300'></playground>
 
-​[查看示例](/examples/basic/table) 和 [API 文档](/api/general/s2options)。
+​[查看示例](/examples/basic/table) 和 [API 文档](/api/general/s2-options)。
 
 ## 在 React 中使用
 

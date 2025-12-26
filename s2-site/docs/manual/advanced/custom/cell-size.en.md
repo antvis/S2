@@ -4,9 +4,9 @@ order: 5
 
 ---
 
-S2 can manually drag and drop to dynamically change the width and height of cells. At the same time, there are three built-in layouts: row and column`行列等宽`,`列等宽`and`行列紧凑布局`layout ( [see examples](/examples/layout/basic/#compact) )
+S2 can manually drag and drop to dynamically change the width and height of cells. At the same time, there are three built-in layouts: row and column `equal width`, `column equal width` and `compact` layout ( [see examples](/en/examples/layout/basic/#compact) )
 
-We can modify the background color, font size and other configurations of the cell through the [theme](/docs/manual/basic/theme/) . If you want to customize the width and height of the cell, you can use the [style](/en/api/general/s2-options#style) configuration of `s2Options` to achieve it
+We can modify the background color, font size and other configurations of the cell through the [theme](/en/manual/basic/theme/) . If you want to customize the width and height of the cell, you can use the [style](/en/api/general/s2-options#style) configuration of `s2Options` to achieve it
 
 <Playground path="layout/custom/demo/custom-pivot-size.ts" rid="container" height="400"></Playground>
 
@@ -15,11 +15,11 @@ We can modify the background color, font size and other configurations of the ce
 ```ts
 const s2Options = {
   style: {
-    // 行头单元格配置
+    // Row Header Cell Configuration
     rowCell: {},
-    // 列头单元格配置
+    // Column Header Cell Configuration
     colCell: {},
-    // 数值单元格配置
+    // Data Cell Configuration
     dataCell: {},
   },
 }
@@ -70,11 +70,11 @@ const s2Options = {
   style: {
     rowCell: {
       width: (rowNode) => {
-        // 例：叶子节点 300px, 非叶子节点 200px
+        // Example: Leaf node 300px, non-leaf node 200px
         return rowNode.isLeaf ? 300 : 200;
       },
       height: (rowNode) => {
-        // 例：偶数行高度 300pox, 奇数行默认高度
+        // Example: Even row height 300px, odd row default height
         return rowNode.level % 2 === 0 ? 300 : null,
       }
     },
@@ -90,7 +90,7 @@ const s2Options = {
 
 If you want to set different widths and heights for a specific row/column, you can use `rowCell` 's `widthByField` and `heightByField` preset heights to achieve it. Two types of configurations are supported:
 
-* **fieldId** (eg: `root[&] 浙江省[&] 杭州市`): the unique ID corresponding to each row head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+* **fieldId** (eg: `root[&] Zhejiang Province[&] Hangzhou City`): the unique ID corresponding to each row head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/en/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 * **field** (example: `city` ): corresponds to the `field` configured in `s2DataConfig.fields.rows` , applicable to cells accurate to a certain type of dimension value
 
 <br>
@@ -103,8 +103,8 @@ const s2Options = {
         city: 100
       },
       heightByField: {
-        'root[&] 浙江省 [&] 杭州市': 60,
-        'root[&] 浙江省 [&] 宁波市': 100,
+        'root[&] Zhejiang Province [&] Hangzhou City': 60,
+        'root[&] Zhejiang Province [&] Ningbo City': 100,
       },
     },
   },
@@ -123,7 +123,7 @@ The schedule is a bit special. Since there are only column headers, if you want 
 const s2Options = {
   style: {
     rowCell: {
-      // 给第一行和第三行设置不同的高度
+      // Set different heights for the first and third rows
       heightByField: {
         '1': 130,
         '3': 60,
@@ -180,11 +180,11 @@ const s2Options = {
   style: {
     colCell: {
       width: (colNode) => {
-        // 例：前两列宽度 100px, 其他 50px
+        // Example: First two columns width 100px, others 50px
         return colNode.colIndex <= 2 ? 100 : 50
       },
       height: (colNode) => {
-        // 例：前两列高度 100px, 其他 50px
+        // Example: First two columns height 100px, others 50px
         return colNode.colIndex <= 2 ? 100 : 50
       },
     },
@@ -194,7 +194,7 @@ const s2Options = {
 
 If you want to set different widths and heights for a specific column, you can use `colCell` 's `widthByField` and `heightByField` preset widths and heights to achieve it. Two types of configurations are supported:
 
-* **fieldId** (example: `root[&] 家具[&] 沙发[&]number` ): the unique ID corresponding to each column head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+* **fieldId** (example: `root[&] Furniture[&] Sofa[&]number` ): the unique ID corresponding to each column head node after the row and column cross, applicable to specific cells whose width and height are accurate [(how to get the ID)](/en/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 * **field** (example: `city` ): corresponds to the `field` configured in `s2DataConfig.fields.columns` , applicable to cells accurate to a certain type of dimension value
 
 ```ts
@@ -204,9 +204,9 @@ const s2Options = {
   style: {
     colCell: {
        widthByField: {
-        // 默认 [数值挂列头], EXTRA_FIELD 为内部虚拟数值列
+        // Default [Data value attached to column header], EXTRA_FIELD is internal virtual data value column
         [EXTRA_FIELD]: 60,
-        'root[&] 家具 [&] 沙发 [&]number': 120,
+        'root[&] Furniture [&] Sofa [&]number': 120,
       },
       heightByField: {
         [EXTRA_FIELD]: 80,
@@ -224,7 +224,7 @@ const s2Options = {
 
 ## hide column header
 
-You can also set the height to `0` to achieve the effect of **hiding the column header** , [see an example](/examples/layout/custom#hide-columns)
+You can also set the height to `0` to achieve the effect of **hiding the column header** , [see an example](/en/examples/layout/custom#hide-columns)
 
 ```ts
 const s2Options = {

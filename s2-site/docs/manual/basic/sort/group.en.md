@@ -16,7 +16,7 @@ The `row/column headers` have only a single sorting state at a time, and the cur
 
 ## Usage in `@antv/s2`
 
-`@antv/s2` provides the capability for in-group sorting (which is equivalent to **global sorting** for a detail table). You can implement a [Tooltip sort menu](/manual/basic/tooltip) ([View Example](/examples/custom/custom-order/#custom-order-base)) and then call the relevant [API](/api/basic-class/spreadsheet).
+`@antv/s2` provides the capability for in-group sorting (which is equivalent to **global sorting** for a detail table). You can implement a [Tooltip sort menu](/en/manual/basic/tooltip) ([View Example](/en/examples/custom/custom-order/#custom-order-base)) and then call the relevant [API](/en/api/basic-class/spreadsheet).
 
 ```ts
 const meta = cell.getMeta()
@@ -43,13 +43,13 @@ s2.on(S2Event.RANGE_SORT, (sortParams) => {
 
 <Playground path="analysis/sort/demo/group-sort-base.ts" rid='group-sort-base' height="200"></playground>
 
-- Example 2: Custom sort menu on column header sort icon click ([Learn More](/manual/advanced/custom/custom-order))
+- Example 2: Custom sort menu on column header sort icon click ([Learn More](/en/manual/advanced/custom/custom-order))
 
 <Playground path="custom/custom-order/demo/custom-order-base.ts" rid='custom-order-base' height="200"></playground>
 
 ## Usage in `@antv/s2-react`
 
-`@antv/s2-react` builds upon the [basic sorting capabilities](/manual/basic/sort/basic) of `@antv/s2` and, when combined with a menu component (like `antd`'s `Menu`), provides a default in-group sorting feature. The sort menu is hosted in a [Tooltip](/manual/basic/tooltip) (just enable the tooltip) and is primarily used to sort `row/column headers` by numerical values. [See more sorting examples](/examples/analysis/sort/#group-sort).
+`@antv/s2-react` builds upon the [basic sorting capabilities](/en/manual/basic/sort/basic) of `@antv/s2` and, when combined with a menu component (like `antd`'s `Menu`), provides a default in-group sorting feature. The sort menu is hosted in a [Tooltip](/en/manual/basic/tooltip) (just enable the tooltip) and is primarily used to sort `row/column headers` by numerical values. [See more sorting examples](/en/examples/analysis/sort/#group-sort).
 
 By default, the `SheetComponent` from `@antv/s2-react` displays a sort `icon` in the numerical headers. Clicking it reveals three options: `Ascending`, `Descending`, and `No Sort`. This can be configured in the `options`.
 

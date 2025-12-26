@@ -12,7 +12,7 @@ The common interaction of the form is mainly through the keyboard and mouse
 * Keyboard press/up (keydown / keyup)
 * ...
 
-Through these events, permutations and combinations, to achieve commonly used interactions, take`刷选`as an example, it consists of three events
+Through these events, permutations and combinations, to achieve commonly used interactions, take `brush selection` as an example, it consists of three events
 
 * `mousedown` => `mousemove` => `mouseup`
 
@@ -24,11 +24,11 @@ Through these events, permutations and combinations, to achieve commonly used in
 | multiple choice                                            | `S2Event.GLOBAL_SELECTED`                                     | After single-selecting cells, hold down the `Command / Ctrl` key to continue single-selecting                                                                                                                                                                                      |
 | Row/column header shortcut multiple selection              | `S2Event.GLOBAL_SELECTED`                                     | Click the row/column header, select all the cells of the corresponding row/column header (including those not in the visible range), click again to cancel the selection                                                                                                           |
 | Manually adjust the width and height of row/column headers | `S2Event.LAYOUT_RESIZE`                                       | Hover the mouse over the edge of the row/column header cell, an indicator bar and a cursor will appear, hold down the left mouse button and drag to adjust the width and height                                                                                                    |
-| Swipe                                                      | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | Batch select the numerical cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the information and quantity of the brushed cells.                    |
-| Outfit selection                                           | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables)            |
+| Brush Selection                                              | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | Batch select the numerical cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the information and quantity of the brushed cells.                    |
+| Row Header Selection                                       | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables)            |
 | Column head brush selection                                | `S2Event.COL_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the column header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only pivot tables are supported)    |
 | Interval shortcut multiple selection                       | `S2Event.GLOBAL_SELECTED`                                     | Select a single cell (start), then hold down `Shift` to select a cell again (end), and select all cells in the two cell intervals                                                                                                                                                  |
-| hover                                                      | `S2Event.GLOBAL_HOVER`                                        | When the mouse hovers, the corresponding cell is highlighted. If it is a numerical cell, the [cross is highlighted](/docs/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E8%81%94%E5%8A%A8%E9%AB%98%E4%BA%AE) by default. You can set `hoverHighlight: false` to turn it off |
+| hover                                                      | `S2Event.GLOBAL_HOVER`                                        | When the mouse hovers, the corresponding cell is highlighted. If it is a numerical cell, the [Row/Column linkage highlighting](/en/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E8%81%94%E5%8A%A8%E9%AB%98%E4%BA%AE) by default. You can set `hoverHighlight: false` to turn it off |
 | copy                                                       | `S2Event.GLOBAL_COPIED`                                       | Copy selected cell data                                                                                                                                                                                                                                                            |
 | hide column header                                         | `S2Event.COL_CELL_EXPANDED` `S2Event.COL_CELL_HIDDEN`         | Hide/expand column headers                                                                                                                                                                                                                                                         |
 | link jump                                                  | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | Row header/column header link jump                                                                                                                                                                                                                                                 |
@@ -37,7 +37,7 @@ Through these events, permutations and combinations, to achieve commonly used in
 
 ## interaction event
 
-[View full event list](/docs/api/general/s2-event)
+[View full event list](/en/api/general/s2-event)
 
 * `global:xx` : global chart events
 * `layout:xx` : layout change event
@@ -49,18 +49,18 @@ import { ColCell, DataCell, PivotSheet, RowCell, S2Event } from '@antv/s2';
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells: DataCell[]) => {
-  // 此事件默认打开，配置 options: { interaction: { brushSelection : { dataCell: true } } } 开启数值单元格刷选
-  console.log('刷选的单元格', cells)
+  // This event is enabled by default. Configure options: { interaction: { brushSelection : { dataCell: true } } } to enable data cell brush selection
+  console.log('Brushed cells', cells)
 })
 
 s2.on(S2Event.ROW_BRUSH_SELECTION, (cells: RowCell[]) => {
-  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { rowCell: true } } } 开启数值行头单元格刷选
-  console.log('刷选的行头单元格：', cells)
+  // This event is disabled by default. Configure options: { interaction: { brushSelection : { rowCell: true } } } to enable row header cell brush selection
+  console.log('Brushed row header cells:', cells)
 })
 
 s2.on(S2Event.COL_BRUSH_SELECTION, (cells: ColCell[]) => {
-  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { colCell: true } } } 开启数值列头单元格刷选
-  console.log('刷选的列头单元格：', cells)
+  // This event is disabled by default. Configure options: { interaction: { brushSelection : { colCell: true } } } to enable column header cell brush selection
+  console.log('Brushed column header cells:', cells)
 })
 
 s2.on(S2Event.COL_CELL_HOVER, (event) => {
@@ -72,7 +72,7 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 })
 ```
 
-If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/docs/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2` .
+If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/en/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2` .
 
 ```ts
 import { S2Event, SpreadSheet } from '@antv/s2'
@@ -91,7 +91,7 @@ function App() {
 }
 ```
 
-At the same time, `React` and `Vue3` versions provide event mapping, and you can also use `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/docs/api/components/sheet-component) )
+At the same time, `React` and `Vue3` versions provide event mapping, and you can also use `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/en/api/components/sheet-component) )
 
 > React
 
@@ -113,7 +113,7 @@ const onDataCellClick = () => {}
 <SheetComponent @dataCellClick={onDataCellClick} />
 ```
 
-For global chart events, the bottom layer is implemented through the browser's [EventTarget.addEventListener()](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener) API. If you need to configure its third optional parameter, you can pass it through `eventListenerOptions` to control whether the event is triggered from the`冒泡阶段`or the`捕获阶段`, or only Trigger once and so on.
+For global chart events, the bottom layer is implemented through the browser's [EventTarget.addEventListener()](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener) API. If you need to configure its third optional parameter, you can pass it through `eventListenerOptions` to control whether the event is triggered from the `bubbling phase` or the `capturing phase`, or only Trigger once and so on.
 
 ```ts
 const s2Options = {
@@ -124,7 +124,7 @@ const s2Options = {
   }
 }
 
-// 等价于
+// Equivalent to
 window.addEventListener('mouseup', () => {}, {
   capture: true,
 })
@@ -134,7 +134,7 @@ window.addEventListener('mouseup', () => {}, true)
 
 ## Interaction related configuration
 
-[View specific API configuration details](/docs/api/basic-class/interaction#interaction)
+[View specific API configuration details](/en/api/basic-class/interaction#interaction)
 
 ```ts
 const s2Options = {
@@ -146,9 +146,9 @@ const s2Options = {
 
 ## built-in interaction
 
-> How to modify the interaction default style? Please check the [theme configuration](/docs/manual/basic/theme) chapter
+> How to modify the interaction default style? Please check the [theme configuration](/en/manual/basic/theme) chapter
 
-### radio highlight
+### Single Selection Highlight
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/0lw2grIHZN/click.gif" width="600" alt="preview">
 
@@ -157,7 +157,7 @@ After selecting a cell, if you need to gray out the unselected cells and emphasi
 ```ts
 const s2Options = {
   interaction: {
-    selectedCellsSpotlight: true, // 默认 false
+    selectedCellsSpotlight: true, // default false
   }
 };
 ```
@@ -171,7 +171,7 @@ When the mouse hovers, highlight the current cell and the corresponding row and 
 ```ts
 const s2Options = {
   interaction: {
-    hoverHighlight: false // 默认 true
+    hoverHighlight: false // default true
   }
 };
 ```
@@ -183,8 +183,8 @@ When the mouse selects a cell or brushes a selected cell, the row and column hea
 <img src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600">
 
 ```ts
-// selectedCellHighlight 的类型为  boolean | { rowHeader: boolean, colHeader: boolean, rowCells: boolean, colCells: boolean }
-// 当 selectedCellHighlight 为 boolean 时
+// The type of selectedCellHighlight is boolean | { rowHeader: boolean, colHeader: boolean, rowCells: boolean, colCells: boolean }
+// When selectedCellHighlight is boolean
 const s2Options = {
   interaction: {
     selectedCellHighlight: true // default is false
@@ -215,28 +215,28 @@ After the mouse hovers over the current cell for more than `800ms` , it will kee
 ```ts
 const s2Options = {
   interaction: {
-    hoverFocus: false // 默认 true
+    hoverFocus: false // default true
   }
 };
 ```
 
-### circle highlight
+### Brush Selection Highlight
 
 Circle selection highlighting is also called brush selection. During the brush selection process, the pre-selected cells will be prompted and a translucent brush selection mask will be displayed. It is enabled by default and can be configured to `brushSelection` :
 
-#### Data cell circle selection
+#### Data cell brush selection
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/WBFq3TzTY9/multi-select.gif" alt="preview" width="600">
 
 ```ts
 const s2Options = {
   interaction: {
-    brushSelection: false // 默认 true
+    brushSelection: false // default true
   }
 };
 ```
 
-#### Row header cell circle selection
+#### Row header cell brush selection
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/1M9vUtedn/hangtoushuaxuan.gif" alt="preview" width="600">
 
@@ -244,13 +244,13 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        rowCell: true // 默认 false
+        rowCell: true // default false
     }
   }
 };
 ```
 
-#### Column header cell circle selection
+#### Column header cell brush selection
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/%24DEZUiWFW/lietoushuaxuan.gif" alt="preview" width="600">
 
@@ -258,13 +258,13 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        colCell: true // 默认 false
+        colCell: true // default false
     }
   }
 };
 ```
 
-### shortcut key multiple selection
+### Shortcut Key Multiple Selection
 
 (Command/Ctrl) + click: Single multi-selection overlay, click the selected cell or row or column again to unselect it, it is enabled by default, and `multiSelection` can be configured to disable:
 
@@ -277,13 +277,13 @@ Shift + click: range selection (similar to brush selection), enabled by default,
 ```ts
 const s2Options = {
   interaction: {
-    multiSelection: false, // 默认 true
-    rangeSelection: false // 默认 true
+    multiSelection: false, // default true
+    rangeSelection: false // default true
   }
 };
 ```
 
-### move highlighted cell
+### Move Highlighted Cell
 
 After clicking the value cell, use the keyboard arrow keys to move the current highlighted cell, which is enabled by default, and can be configured to disable `selectedCellMove` :
 
@@ -292,7 +292,7 @@ After clicking the value cell, use the keyboard arrow keys to move the current h
 ```ts
 const s2Options = {
   interaction: {
-    selectedCellMove: false // 默认 true
+    selectedCellMove: false // default true
   }
 };
 ```
@@ -301,7 +301,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600">
 
-Both pivot tables and detailed tables are supported. After clicking the column header of a leaf node, the hide column header button will be displayed. After clicking hide, a display button and a hidden prompt line will be displayed in the adjacent sibling cell, just click the mouse Expand, you can configure `hiddenColumns` to achieve`默认隐藏`and`交互式隐藏`. See [details](/docs/manual/advanced/interaction/hide-columns/) or [specific examples](/examples/interaction/advanced#pivot-hide-columns)
+Both pivot tables and detailed tables are supported. After clicking the column header of a leaf node, the hide column header button will be displayed. After clicking hide, a display button and a hidden prompt line will be displayed in the adjacent sibling cell, just click the mouse Expand, you can configure `hiddenColumns` to achieve `Default Hidden` and `Interactive Hidden`. See [details](/en/manual/advanced/interaction/hide-columns/) or [specific examples](/en/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
 const s2DataConfig = {
@@ -312,10 +312,10 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    // 默认隐藏
+    // Default hidden
     hiddenColumns: ['fieldA']
   },
-  // 关闭手动隐藏
+  // Disable manual hide
   tooltip: {
     operation: {
       hiddenColumns: false
@@ -328,9 +328,9 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif" alt="preview" width="600">
 
-S2 provides three layout methods ( [preview](/examples/layout/basic#compact) ) by default:`列等宽布局``行列等宽布局`and`紧凑布局`, and you can also drag and drop the row/column header to adjust dynamically
+S2 provides three layout methods ( [preview](/en/examples/layout/basic#compact) ) by default: `Column Equal Width Layout` `Row & Column Equal Width Layout` and `Compact Layout`, and you can also drag and drop the row/column header to adjust dynamically
 
-You can configure `resize` to control the width and height of the cells that need to be enabled to adjust the hot zone range, which is divided into three parts: corner header, row header, and column header. The default is to enable all of them. You can quickly turn on or off all `resize` by setting `boolean` type values, and you can also configure hotspots in each area to turn on or off by object type. [View specific examples](/examples/interaction/advanced#resize-active)
+You can configure `resize` to control the width and height of the cells that need to be enabled to adjust the hot zone range, which is divided into three parts: corner header, row header, and column header. The default is to enable all of them. You can quickly turn on or off all `resize` by setting `boolean` type values, and you can also configure hotspots in each area to turn on or off by object type. [View specific examples](/en/examples/interaction/advanced#resize-active)
 
 ```ts
 const s2Options = {
@@ -339,7 +339,7 @@ const s2Options = {
   },
 };
 
-// 等价于
+// Equivalent to
 // const s2Options = {
 //   interaction: {
 //     resize: {
@@ -352,7 +352,7 @@ const s2Options = {
 // };
 ```
 
-You can also configure `resize.visible` and `resize.disable` properties, which are used to control the display of the `resize` hotspot and customize the drag-and-drop verification logic respectively. [View specific examples](/examples/interaction/advanced#resize-disable)
+You can also configure `resize.visible` and `resize.disable` properties, which are used to control the display of the `resize` hotspot and customize the drag-and-drop verification logic respectively. [View specific examples](/en/examples/interaction/advanced#resize-disable)
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600">
 
@@ -387,17 +387,17 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600">
 
-View [details](/docs/manual/advanced/interaction/merge-cell) or [specific examples](/examples/interaction/advanced#merge-cell)
+View [details](/en/manual/advanced/interaction/merge-cell) or [specific examples](/en/examples/interaction/advanced#merge-cell)
 
 ### link jump
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600">
 
-View [details](/docs/manual/advanced/interaction/link-jump) or [specific examples](/examples/interaction/advanced#pivot-link-jump)
+View [details](/en/manual/advanced/cell-render/link-jump) or [specific examples](/en/examples/interaction/advanced#pivot-link-jump)
 
 ### scroll
 
-view [details](/docs/manual/advanced/interaction/scroll)
+view [details](/en/manual/advanced/interaction/scroll)
 
 ### reset interaction
 
@@ -413,11 +413,11 @@ Corresponding event: `GLOBAL_RESET`
 
 ```ts
 s2.on(S2Event.GLOBAL_RESET, () => {
-  console.log('重置')
+  console.log('Reset')
 })
 ```
 
-Configurable `autoResetSheetStyle` to turn off reset interaction. [View specific examples](/examples/interaction/advanced#auto-reset-sheet-style)
+Configurable `autoResetSheetStyle` to turn off reset interaction. [View specific examples](/en/examples/interaction/advanced#auto-reset-sheet-style)
 
 ```ts
 const s2Options = {
@@ -429,7 +429,7 @@ const s2Options = {
 
 ## call the API
 
-`S2` has built-in some interaction-related `API` , which are uniformly mounted under the `s2.interaction` namespace. You can call them to achieve your effects after getting the [SpreadSheet instance](/docs/api/basic-class/spreadsheet) , such as`选中所有单元格`,`获取列头单元格`and other common methods , please refer to the [Interaction instance class](/docs/api/basic-class/interaction) for details
+`S2` has built-in some interaction-related `API` , which are uniformly mounted under the `s2.interaction` namespace. You can call them to achieve your effects after getting the [SpreadSheet instance](/en/api/basic-class/spreadsheet) , such as `Select All Cells`, `Get Column Header Cells` and other common methods , please refer to the [Interaction instance class](/en/api/basic-class/interaction) for details
 
 ```ts
 const s2 = new PivotSheet()

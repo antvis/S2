@@ -6,8 +6,8 @@ order: 3
 Function description: store some information. [details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/store/index.ts)
 
 ```ts
-s2.store.get('key') // 获取
-s2.store.set('key', value) // 存储
+s2.store.get('key') // Get
+s2.store.set('key', value) // Set
 ```
 
 | parameter                | illustrate                                                          | type                                                             |
@@ -15,17 +15,17 @@ s2.store.set('key', value) // 存储
 | scrollX                  | horizontal scroll offset                                            | `number`                                                         |
 | scrollY                  | vertical scroll offset                                              | `number`                                                         |
 | rowHeaderScrollX              | vertical header scroll offset                                       | `number`                                                         |
-| sortParam                | Column header sorting configuration                                 | [SortParam](/docs/api/components/sheet-component/#sortparams) |
+| sortParam                | Column header sorting configuration                                 | [SortParam](/en/api/components/sheet-component/#sortparams) |
 | drillDownIdPathMap       | Drill down node id and corresponding generated path addressing path | `Map<string, number[][]>`                                     |
-| drillDownNode            | current drill-down node                                             | [node](/docs/api/basic-class/node)                            |
+| drillDownNode            | current drill-down node                                             | [node](/en/api/basic-class/node)                            |
 | drillItemsNum            | Control the number of drill-down data                               | `number`                                                      |
 | interactionStateInfo     | Current Interaction Status Information                              | `number`                                                      |
 | drillDownFieldInLevel    | Drill down to node level information                                | [PartDrillDownInfo\[\]](#partdrilldowninfo)                   |
 | originalDataCfg          | Raw Data Configuration                                              | [S2DataConfig](/en/api/general/s2-data-config)                |
-| panelBBox                | Visual area wrapping box model                                      | [BBox](/docs/api/basic-class/spreadsheet/#bbox)               |
+| panelBBox                | Visual area wrapping box model                                      | [BBox](/en/api/basic-class/spreadsheet/#bbox)               |
 | activeResizeArea         | current resizing region group                                       | [Group](https://g.antv.antgroup.com/api/basic/group)              |
 | valueRanges              | conditional format value range                                      | [ValueRanges](#valueranges)                                   |
-| initColLeafNodes      | The column header leaf node when it is first rendered               | [Node\[\]](/docs/api/basic-class/node)                        |
+| initColLeafNodes      | The column header leaf node when it is first rendered               | [Node\[\]](/en/api/basic-class/node)                        |
 | hiddenColumnsDetail      | Hidden column header details                                        | [HiddenColumnsInfo\[\]](#hiddencolumnsinfo)                   |
 | lastRenderedColumnFields | The column header configuration of the last render                  | `string[]`                                                    |
 | resized                  | Whether to manually adjust the width and height                     | `boolean`                                                     |
@@ -39,9 +39,9 @@ s2.store.set('key', value) // 存储
 
 ```ts
 interface HiddenColumnsInfo {
-  // 当前显示的兄弟节点之前所隐藏的节点
+  // Hidden nodes before the currently displayed sibling node
   hideColumnNodes: Node[];
-  // 当前隐藏列所对应展示展开按钮的兄弟节点
+  // Sibling node corresponding to the expand button of the currently hidden column
   displaySiblingNode: Node;
 }
 ```
@@ -50,9 +50,9 @@ interface HiddenColumnsInfo {
 
 ```ts
 interface PartDrillDownInfo {
-  // 下钻数据
+  // Drill down data
   drillData: RawData[];
-  // 下钻字段
+  // Drill down field
   drillField: string;
 }
 ```

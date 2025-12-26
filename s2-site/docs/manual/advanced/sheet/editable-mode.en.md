@@ -23,144 +23,144 @@ import ReactDOM from "react-dom";
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/s2-react.min.css';
 
-// 1. 准备数据
+// 1. Prepare data
 const data = [
   {
-    "province": "浙江",
-    "city": "杭州",
-    "type": "笔",
+    "province": "Zhejiang",
+    "city": "Hangzhou",
+    "type": "Pen",
     "price": 1
   },
   {
-    "province": "浙江",
-    "city": "杭州",
-    "type": "纸张",
+    "province": "Zhejiang",
+    "city": "Hangzhou",
+    "type": "Paper",
     "price": 2
   },
   {
-    "province": "浙江",
-    "city": "舟山",
-    "type": "笔",
+    "province": "Zhejiang",
+    "city": "Zhoushan",
+    "type": "Pen",
     "price": 17
   },
   {
-    "province": "浙江",
-    "city": "舟山",
-    "type": "纸张",
+    "province": "Zhejiang",
+    "city": "Zhoushan",
+    "type": "Paper",
     "price": 6
   },
   {
-    "province": "吉林",
-    "city": "长春",
-    "type": "笔",
+    "province": "Jilin",
+    "city": "Changchun",
+    "type": "Pen",
     "price": 8
   },
   {
-    "province": "吉林",
-    "city": "白山",
-    "type": "笔",
+    "province": "Jilin",
+    "city": "Baishan",
+    "type": "Pen",
     "price": 12
   },
   {
-    "province": "吉林",
-    "city": "长春",
-    "type": "纸张",
+    "province": "Jilin",
+    "city": "Changchun",
+    "type": "Paper",
     "price": 3
   },
   {
-    "province": "吉林",
-    "city": "白山",
-    "type": "纸张",
+    "province": "Jilin",
+    "city": "Baishan",
+    "type": "Paper",
     "price": 25
   },
 
   {
-    "province": "浙江",
-    "city": "杭州",
-    "type": "笔",
+    "province": "Zhejiang",
+    "city": "Hangzhou",
+    "type": "Pen",
     "price": 20
   },
   {
-    "province": "浙江",
-    "city": "杭州",
-    "type": "纸张",
+    "province": "Zhejiang",
+    "city": "Hangzhou",
+    "type": "Paper",
     "price": 10
   },
   {
-    "province": "浙江",
-    "city": "舟山",
-    "type": "笔",
+    "province": "Zhejiang",
+    "city": "Zhoushan",
+    "type": "Pen",
     "price": 15
   },
   {
-    "province": "浙江",
-    "city": "舟山",
-    "type": "纸张",
+    "province": "Zhejiang",
+    "city": "Zhoushan",
+    "type": "Paper",
     "price": 2
   },
   {
-    "province": "吉林",
-    "city": "长春",
-    "type": "笔",
+    "province": "Jilin",
+    "city": "Changchun",
+    "type": "Pen",
     "price": 15
   },
   {
-    "province": "吉林",
-    "city": "白山",
-    "type": "笔",
+    "province": "Jilin",
+    "city": "Baishan",
+    "type": "Pen",
     "price": 30
   },
   {
-    "province": "吉林",
-    "city": "长春",
-    "type": "纸张",
+    "province": "Jilin",
+    "city": "Changchun",
+    "type": "Paper",
     "price": 40
   },
   {
-    "province": "吉林",
-    "city": "白山",
-    "type": "纸张",
+    "province": "Jilin",
+    "city": "Baishan",
+    "type": "Paper",
     "price": 50
   }
 ];
 
-// 2. 配置数据
+// 2. Configure data
 const s2DataCfg = {
   fields: {
-    columns: ["province", "city", "type", "price"], // 要展示的列头字段 id 列表
+    columns: ["province", "city", "type", "price"], // IDs of column header fields to be displayed
   },
   meta: [
-    // 列头字段对应的元信息，比如展示的中文名
+    // Meta information corresponding to column header fields, such as displayed names
     {
       field: "province",
-      name: "省份",
+      name: "Province",
     },
     {
       field: "city",
-      name: "城市",
+      name: "City",
     },
     {
       field: "type",
-      name: "类型",
+      name: "Type",
     },
     {
       field: "price",
-      name: "价格",
+      name: "Price",
     },
   ],
   data,
 };
 
-// 3. 添加配置
+// 3. Add configuration
 const s2Options = {
   width: 400,
   height: 200,
 };
 
-// 4, 渲染
+// 4. Render
 ReactDOM.render(
   <SheetComponent
-    sheetType="editable" // 此处指定sheetType为editable
+    sheetType="editable" // Specify sheetType as editable here
     dataCfg={s2DataCfg}
     options={s2Options}
   />,
@@ -172,4 +172,4 @@ ReactDOM.render(
 
 The effect is shown in the figure: <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
 
-[Playground address](/examples/react-component/sheet#editable)
+[Playground address](/en/examples/react-component/sheet#editable)

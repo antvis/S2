@@ -48,19 +48,19 @@ type SimpleData = string | number;
 ```ts
 const data = [
   {
-    area: '东北',
-    province: '吉林',
-    city: '白山',
-    type: '办公用品',
-    subType: '纸张',
+    area: 'Northeast',
+    province: 'Jilin',
+    city: 'Baishan',
+    type: 'Office Supplies',
+    subType: 'Paper',
     cost: '2',
   },
   {
-    area: '东北',
-    province: '吉林',
-    city: '白山',
-    type: '办公用品',
-    subType: '笔',
+    area: 'Northeast',
+    province: 'Jilin',
+    city: 'Baishan',
+    type: 'Office Supplies',
+    subType: 'Pen',
     cost: '3',
   }
 ];
@@ -68,7 +68,7 @@ const data = [
 
 #### MultiData
 
-Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/zh/examples/react-component/sheet#strategy)
+Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/en/examples/react-component/sheet#strategy)
 
 | Configuration item name | illustrate                                                      | type                             | Defaults | required |
 | :---------------------- | :-------------------------------------------------------------- | :------------------------------- | :------- | :------- |
@@ -100,7 +100,7 @@ Function description: Configure the dimension field of the table, that is, the c
 | columns                 | Column dimension (column header can be customized, [see example](#TODO) )                                                                                                                                    | `string[]` \| [CustomTreeNode\[\]](#customtreenode) | `[]`     |          |
 | values                  | Indicator Dimensions                                                                                                                                                                                         | `string[]`                                          | `[]`     |          |
 | valueInCols             | Whether the indicator dimension is at the column header                                                                                                                                                      | `boolean`                                           |          |          |
-| customValueOrder        | The hierarchical order of custom indicator dimensions in the row and column headers (that is, the order of `values` , starting from `0` ) [View example](/examples/custom/custom-layout/#custom-value-order) | `number`                                            | -        |          |
+| customValueOrder        | The hierarchical order of custom indicator dimensions in the row and column headers (that is, the order of `values` , starting from `0` ) [View example](/en/examples/custom/custom-layout/#custom-value-order) | `number`                                            | -        |          |
 
 ### Meta
 
@@ -135,7 +135,7 @@ Function description: Field metadata, configurable field alias and value formatt
 
 object is **required** , *default: null*
 
-Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/zh/examples/react-component/sheet#strategy)
+Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/en/examples/react-component/sheet#strategy)
 
 | Configuration item name | illustrate                                                      | type                     | Defaults | required |
 | ----------------------- | --------------------------------------------------------------- | ------------------------ | -------- | -------- |

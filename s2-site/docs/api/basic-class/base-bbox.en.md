@@ -12,9 +12,9 @@ bbox.x
 
 | Name | Description | Type |
 | --- | --- | --- |
-| facet | The current visible rendering area | [BaseFacet](/api/basic-class/base-facet) |
-| spreadsheet | The spreadsheet instance | [SpreadSheet](/api/basic-class/spreadsheet) |
-| layoutResult | Layout information | [LayoutResult](/api/basic-class/base-facet#layoutresult) |
+| facet | The current visible rendering area | [BaseFacet](/en/api/basic-class/base-facet) |
+| spreadsheet | The spreadsheet instance | [SpreadSheet](/en/api/basic-class/spreadsheet) |
+| layoutResult | Layout information | [LayoutResult](/en/api/basic-class/base-facet#layoutresult) |
 | x | The x-coordinate | `number` |
 | y | The y-coordinate | `number` |
 | minX | The minimum x-coordinate | `number` |

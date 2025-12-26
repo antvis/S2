@@ -7,7 +7,7 @@ order: 8
 
 ## React Version
 
-When using the `SheetComponent` in React, if you need to access the [spreadsheet instance](/api/basic-class/spreadsheet) for advanced operations, you can use `React.useRef` and `onMounted`.
+When using the `SheetComponent` in React, if you need to access the [spreadsheet instance](/en/api/basic-class/spreadsheet) for advanced operations, you can use `React.useRef` and `onMounted`.
 
 :::info{title="Note"}
 The spreadsheet renders asynchronously. You must wait for the `onMounted` callback to get the latest instance.
@@ -35,7 +35,7 @@ function App() {
 
 ### Usage with Other Components
 
-If you need to use the S2 instance with other components that depend on it, you should use `React.useState` to store the instance. This is because a `ref` change does not trigger a re-render, which could prevent dependent components from updating correctly. [View Example](/examples/react-component/export/#export)
+If you need to use the S2 instance with other components that depend on it, you should use `React.useState` to store the instance. This is because a `ref` change does not trigger a re-render, which could prevent dependent components from updating correctly. [View Example](/en/examples/react-component/export/#export)
 
 ```tsx
 import React from 'react'

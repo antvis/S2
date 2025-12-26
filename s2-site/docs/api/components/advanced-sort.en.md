@@ -11,7 +11,7 @@ The `props` of the `AdvancedSort` component
 
 | parameter     | illustrate                                                             | type                                                                                                                           | required | Defaults |
 | ------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------- | -------- |
-| sheet         | current table instance                                                 | [SpreadSheet](/docs/api/basic-class/spreadsheet)                                                                               | ✓        |          |
+| sheet         | current table instance                                                 | [SpreadSheet](/en/api/basic-class/spreadsheet)                                                                               | ✓        |          |
 | open          | whether to display                                                     | `boolean`                                                                                                                      | ✓        |          |
 | className     | class class name                                                       | `string`                                                                                                                       |          |          |
 | icon          | sort button icon                                                       | `React.ReactNode`                                                                                                              |          |          |
@@ -42,7 +42,7 @@ Configure the `props` of `advancedSort` in the `header`
 
 ### Dimension
 
-Optional field list, if not configured, the default is:`行头+列头+数值`
+Optional field list, if not configured, the default is:`row header + column header + values`
 
 | parameter | illustrate     | type       | Defaults | required |
 | --------- | -------------- | ---------- | -------- | -------- |
@@ -52,7 +52,7 @@ Optional field list, if not configured, the default is:`行头+列头+数值`
 
 ### RuleOption
 
-Rule configuration list, if not configured, the default is:`首字母、手动排序、其他字段`
+Rule configuration list, if not configured, the default is:`first letter, manual sorting, other fields`
 
 | parameter | illustrate   | type           | Defaults | required          |
 | --------- | ------------ | -------------- | -------- | ----------------- |

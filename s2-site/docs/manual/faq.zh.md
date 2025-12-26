@@ -182,7 +182,7 @@ s2.showTooltip({ ... })
 
 ### 表格支持导出 `Excel` 吗？
 
-支持，请查看 [这篇文章](/manual/basic/analysis/export), 或者 [示例](/examples/react-component/export#export)
+支持，请查看 [这篇文章](/manual/advanced/analysis/export), 或者 [示例](/examples/react-component/export#export)
 
 ### 表格导出乱码怎么办？
 
@@ -208,7 +208,7 @@ s2.showTooltip({ ... })
 
 ### 如何自定义单元格宽高？
 
-请查看 [使用文档](/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/examples/gallery#category-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98)
+请查看 [使用文档](/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/examples/layout/custom)
 
 ### 如何关闭 hover 单元格出现的黑色边框？
 
@@ -405,7 +405,7 @@ class CustomColCell extends ColCell {
 
 <embed src="@/common/packages.zh.md"></embed>
 
-配套的 [分析组件](/manual/basic/analysis/editable-mode)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+配套的 [分析组件](/manual/advanced/sheet/editable-mode)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
 ### 如何贡献代码？
 

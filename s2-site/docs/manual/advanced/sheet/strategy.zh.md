@@ -174,7 +174,7 @@ const s2DataConfig = {
 
 - 趋势分析表会将行头布局强制置为**树状模式**，并且数值置于行头，即 `hierarchyType: 'tree'`.
 - 可通过 `s2Options.cornerText` 自定义角头文本。
-- 染色逻辑配置可以在  `options.conditions` 中配置，不需要指定 `field` 参数，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道
+- 染色逻辑配置可以在  `options.conditions` 中配置，不需要指定 `field` 参数，用法参考 [字段标记](/manual/basic/conditions) 目前暂时只支持文本颜色通道
 
 :::
 
@@ -252,11 +252,11 @@ const s2Options = {
 
 ## 配置 mini 图
 
-在指标趋势分析场景下，通常我们希望看到数据的全局走势。走势分析不仅需要包含具体的涨跌，最好还能展示出固定时间段内的趋势图，或者指标的完成情况（进度），所以我们在表格里提供了 mini 图的绘制。为了减少对外部组件库的依赖，我们内置了一个十分轻量的，基于 `@antv/g` 绘制的 mini 图库，以极小的性能开销在单元格内绘制出`子弹图`、`折线图`以及`柱状图`, 具体请查看 [单元格内绘制图表](/manual/advanced/custom/custom-chart) 章节。
+在指标趋势分析场景下，通常我们希望看到数据的全局走势。走势分析不仅需要包含具体的涨跌，最好还能展示出固定时间段内的趋势图，或者指标的完成情况（进度），所以我们在表格里提供了 mini 图的绘制。为了减少对外部组件库的依赖，我们内置了一个十分轻量的，基于 `@antv/g` 绘制的 mini 图库，以极小的性能开销在单元格内绘制出`子弹图`、`折线图`以及`柱状图`, 具体请查看 [单元格内绘制图表](/manual/advanced/pivot-chart) 章节。
 
 <Playground path='react-component/sheet/demo/strategy-mini-chart.tsx' rid='strategy-mini-chart'></playground>
 
-如果想要更换 mini 图样式配置，可以参考 [主题配置]('/api/general/s2theme#minicharttheme')
+如果想要更换 mini 图样式配置，可以参考 [主题配置](/api/general/s2-theme#minicharttheme)
 
 ### 在普通透视表中使用
 

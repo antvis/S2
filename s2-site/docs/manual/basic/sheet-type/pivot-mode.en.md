@@ -80,7 +80,7 @@ bootstrap()
 
 <Playground path='/basic/pivot/demo/grid.ts' rid='pivot-grid' height='300'></playground>
 
-[View Example](/examples/basic/pivot#grid) and [API documentation](/api/general/s2options).
+[View Example](/en/examples/basic/pivot#grid) and [API documentation](/en/api/general/s2options).
 
 ## Usage in React
 
@@ -147,19 +147,19 @@ const App = () => {
 }
 ```
 
-[View Example](/examples/react-component/sheet#pivot) and [API documentation](/api/components/sheet-component).
+[View Example](/en/examples/react-component/sheet#pivot) and [API documentation](/en/api/components/sheet-component).
 
 ## Features
 
 ### Series Number
 
-You can display a built-in series number column by passing `seriesNumber` in `s2Options`. You can also customize the column title. [View Example](/examples/basic/pivot#grid)
+You can display a built-in series number column by passing `seriesNumber` in `s2Options`. You can also customize the column title. [View Example](/en/examples/basic/pivot#grid)
 
 ```ts
 const s2Options = {
   seriesNumber: {
     enable: true,
-    text: 'Custom Title' // Default is "序号"
+    text: 'Custom Title' // Default is "Index"
   }
 }
 ```
@@ -170,7 +170,7 @@ It supports two display modes by default: [Grid Mode](/en/examples/basic/pivot/#
 
 ### Data Summarization
 
-It supports pivot capabilities for [subtotals and grand totals](/manual/basic/totals).
+It supports pivot capabilities for [subtotals and grand totals](/en/manual/basic/totals).
 
 ### Frozen Row Header Area
 
@@ -205,7 +205,7 @@ const s2Options = {
 :::info{title="Note"}
 Unlike [row and column freezing in a detail table](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#row-and-column-freezing), pivot tables have more complex layouts due to their grouping features, which leads to the following limitation:
 
-- When the series number column is enabled and has a [custom layout](/examples/custom/custom-cell/#series-number-cell), freezing row header cells is not currently supported because the relationship between the series number column and the row header cells is unknown.
+- When the series number column is enabled and has a [custom layout](/en/examples/custom/custom-cell/#series-number-cell), freezing row header cells is not currently supported because the relationship between the series number column and the row header cells is unknown.
 
 :::
 
@@ -260,4 +260,4 @@ const s2Options = {
 
 ### Custom Row and Column Header Grouping
 
-By default, the row and column header structures are grouped based on the provided dimension values. Custom grouping is also supported. [Learn More](/manual/advanced/custom/custom-header)
+By default, the row and column header structures are grouped based on the provided dimension values. Custom grouping is also supported. [Learn More](/en/manual/advanced/custom/custom-header)

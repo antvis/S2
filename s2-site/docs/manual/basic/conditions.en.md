@@ -19,7 +19,7 @@ The image below visually demonstrates the four types of conditional formatting:
 
 ## Quick Start
 
-The `S2` conditional formatting feature is configured through the [`Conditions`](/api/general/s2-options#conditions) property in `s2Options`.
+The `S2` conditional formatting feature is configured through the [`Conditions`](/en/api/general/s2-options#conditions) property in `s2Options`.
 
 ```ts
 const s2Options = {
@@ -45,12 +45,12 @@ const s2Options = {
 
 ## Configuration Explanation
 
-The [Conditions property](/api/general/s2-options#conditions) can be configured with four different fields, corresponding to the four types of formatting.
+The [Conditions property](/en/api/general/s2-options#conditions) can be configured with four different fields, corresponding to the four types of formatting.
 
-* `text`, `background`, `interval`, and `icon` are all arrays that inherit from the [Condition](/api/general/s2-options#condition) type.
+* `text`, `background`, `interval`, and `icon` are all arrays that inherit from the [Condition](/en/api/general/s2-options#condition) type.
   * They each contain `field` and `mapping` properties.
   * If a field ID matches multiple formatting rules in the same scope, **the last rule will be applied**.
-* `icon` is slightly different, being an array of the [IconCondition](/api/general/s2-options#iconcondition) type.
+* `icon` is slightly different, being an array of the [IconCondition](/en/api/general/s2-options#iconcondition) type.
   * It includes an additional `position` field to specify the icon's position relative to the text (either to the left or right).
 
 ### field
@@ -98,7 +98,7 @@ export type ConditionMapping<T = unknown> = (
 `mapping` receives three arguments:
 
 * `fieldValue`: The value of the current cell.
-* `data`: For a data cell, this is the corresponding data object. For a header cell, this is the [Node](/api/basic-class/node) information.
+* `data`: For a data cell, this is the corresponding data object. For a header cell, this is the [Node](/en/api/basic-class/node) information.
 * `cell`: The instance of the current cell. If the first two arguments are not enough for your needs, you can use this to get any other data you want.
 
 The return type `ConditionMappingResult<T>` varies for different formatting types, mainly in the generic `T`. S2 provides complete type hints.
@@ -107,7 +107,7 @@ The return type `ConditionMappingResult<T>` varies for different formatting type
 
 > You can also refer to [condition.ts](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/interface/condition.ts) for the specific type definitions.
 
-🎨 For detailed configuration of conditional formatting, refer to the [Conditions API](/api/general/s2-options#conditions) documentation.
+🎨 For detailed configuration of conditional formatting, refer to the [Conditions API](/en/api/general/s2-options#conditions) documentation.
 
 ## Features
 
@@ -145,7 +145,7 @@ When custom header action icons are also present, the condition icon is strongly
 
 <Playground path="analysis/conditions/demo/icon-with-action.ts" rid='icon-with-action' height="200"></playground>
 
-> For more details on custom icons, see the [Custom Icon](/manual/advanced/custom/custom-icon) chapter.
+> For more details on custom icons, see the [Custom Icon](/en/manual/advanced/custom/custom-icon) chapter.
 
 ### Custom Bar Chart Range
 
@@ -212,7 +212,7 @@ const s2Options = {
 
 <Playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
 
-📊 [See more conditional formatting examples](/examples/analysis/conditions#bidirectional-interval).
+📊 [See more conditional formatting examples](/en/examples/analysis/conditions#bidirectional-interval).
 
 ### Gradient Bar Chart
 
@@ -247,7 +247,7 @@ The `price` field uses a gradient color:
 
 <Playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>
 
-📊 [See more conditional formatting examples](/examples/analysis/conditions#gradient-interval).
+📊 [See more conditional formatting examples](/en/examples/analysis/conditions#gradient-interval).
 
 ### Enable Intelligent Text Color Inversion
 
@@ -282,4 +282,4 @@ In pivot table mode, if the `field` for conditional formatting is a row or colum
 
 <Playground path="analysis/conditions/demo/distinguish-cell.ts" rid='distinguish-cell'></playground>
 
-📊 [See more conditional formatting examples](/examples/analysis/conditions#intelligent-background).
+📊 [See more conditional formatting examples](/en/examples/analysis/conditions#intelligent-background).

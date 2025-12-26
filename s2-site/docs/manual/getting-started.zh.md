@@ -170,8 +170,8 @@ bootstrap();
 
 ### `React` 版本 <Badge>@antv/s2-react</Badge>
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](examples/gallery#category-表格组件), 帮助开发者快速满足业务看数分析需求。
-还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip),
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/examples/react-component/sheet), 帮助开发者快速满足业务看数分析需求。
+还有丰富的配套 [分析组件](/examples/react-component/tooltip),
 
 #### 版本依赖
 

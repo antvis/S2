@@ -10,7 +10,7 @@ order: 3
 
 `S2` can be used to implement detailed tables, pivot tables, and trend analysis tables, etc.
 
-In order to better understand this article, before reading this article, I hope you are familiar with the use of `S2` and have a preliminary understanding of the [basic concepts](/docs/manual/basic/base-concept) .
+In order to better understand this article, before reading this article, I hope you are familiar with the use of `S2` and have a preliminary understanding of the [basic concepts](/en/manual/basic/base-concept) .
 
 ## Performance Interpretation
 
@@ -36,16 +36,16 @@ const dataCfg={
   data:[
     {
       number: 7789,
-      province: "浙江省",
-      city: "杭州市",
-      type: "家具",
-      sub_type: "桌子"
+      province: "Zhejiang",
+      city: "Hangzhou",
+      type: "Furniture",
+      sub_type: "Table"
     },{
       number: 2367,
-      province: "浙江省",
-      city: "绍兴市",
-      type: "家具",
-      sub_type: "桌子"
+      province: "Zhejiang",
+      city: "Shaoxing",
+      type: "Furniture",
+      sub_type: "Table"
     },
   //...
   ]
@@ -63,30 +63,30 @@ In addition, we choose `Map` instead of `Object` to implement the tree structure
 ```ts
 // Meta
 const rowsMeta: PivotMeta = {
-  浙江省：{
+  Zhejiang: {
     level: 1,
     childField:"city",
     children: {
-      杭州市：{
+      Hangzhou: {
         level: 1,
         children: {},
       },
-      绍兴市：{
+      Shaoxing: {
         level: 2,
         children: {},
       },
       //...
     },
   },
-  四川省：{
+  Sichuan: {
     level: 2,
     childField:"city",
     children: {
-      成都市：{
+      Chengdu: {
         level: 1,
         children: {},
       },
-      绵阳市：{
+      Mianyang: {
         level: 2,
         children: {},
       },
@@ -104,44 +104,44 @@ In `S2` , we need to convert the one-dimensional data `data` passed in by the us
 
 In the figure above, the coordinates corresponding to the purple cells are:
 
-* Row coordinates: Zhejiang Province\[1] - Hangzhou City\[1]
+* Row coordinates: Zhejiang\[1] - Hangzhou\[1]
 * Column coordinates: Furniture\[1] - Sofa\[2].
 
 Therefore, the coordinates of the cell in the multidimensional array are `[1, 1, 1, 2]` (bit 0 of each level of the multidimensional array is dedicated for totals and subtotals, and the serial numbers of detailed data start from 1). `indexesData` like:
 
 ```ts
-// 转换后的数据结构，
+// Transverted data structure,
 [
   null,
-  // 浙江省
+  // Zhejiang
   [
     null,
-    // 杭州市
+    // Hangzhou
     [
       null,
-      // 家具
+      // Furniture
       [
         null,
         {
           "number": 7789,
-          "province": "浙江省",
-          "city": "杭州市",
-          "type": "家具",
-          "sub_type": "桌子"
+          "province": "Zhejiang",
+          "city": "Hangzhou",
+          "type": "Furniture",
+          "sub_type": "Table"
         },
         {
           "number": 5343,
-          "province": "浙江省",
-          "city": "杭州市",
-          "type": "家具",
-          "sub_type": "沙发"
+          "province": "Zhejiang",
+          "city": "Hangzhou",
+          "type": "Furniture",
+          "sub_type": "Sofa"
         }
       ],
-      // 办公用户
+      // Office Supplies
     ]
-    // 其他城市
+    // Other cities
   ],
-  // 四川省
+  // Sichuan
   [/*...*/]
 ]
 ```
@@ -157,13 +157,13 @@ For the cells of the table, the strategy of `S2` is to render the cells in the v
 Through `scrollX` and `scrollY` , calculate the node index of the cell in the current visible window.
 
 ```ts
-const indexes = this.calculateXYIndexes(scrollX, scrollY); // indexes 结果是当前可视视窗节点的坐标索引集合。
+const indexes = this.calculateXYIndexes(scrollX, scrollY); // indexes result is the coordinate index set of the current visible window node.
 ```
 
 Compare the difference between the current visible window node index set and the last index set.
 
 ```ts
-const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes); // add 和 remove 也是节点坐标索引集合
+const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes); // add and remove are also node coordinate index sets
 ```
 
 Render and delete the newly added and deleted nodes respectively.
@@ -181,7 +181,7 @@ For frequent reading of data, we have also made performance improvements, such a
 
 ```ts
 /**
- * 查找字段信息
+ * Find field information
  */
 public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
   return find(this.meta || meta, (m: Meta) => m.field === field);
@@ -200,8 +200,8 @@ Table data calculation and layout settings involve a lot of calculations. In the
 
 View the actual performance of `1 million` pieces of data:
 
-* [pivot table](/examples/case/performance-compare#pivot)
-* [list](/examples/case/performance-compare#table)
+* [pivot table](/en/examples/case/performance-compare#pivot)
+* [list](/en/examples/case/performance-compare#table)
 
 The detailed performance comparison data is as follows: ![performance](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*G1ITQJTTa4YAAAAAAAAAAAAAARQnAQ)
 

@@ -179,6 +179,6 @@ const s2Options = {
 
 ### 自定义绘制 icon
 
-S2 表格是一个 Canvas 画布，所以你可以绘制任意的图形在表格里，比如 `icon`, 可以查看 [单元格内绘制图标和图形](/manual/advanced/chart-in-cell#3-%E7%BB%98%E5%88%B6-g-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2) 章节了解更多。
+S2 表格是一个 Canvas 画布，所以你可以绘制任意的图形在表格里，比如 `icon`, 可以查看 [单元格内绘制图标和图形](/manual/advanced/cell-render/chart-in-cell#3-%E7%BB%98%E5%88%B6-g-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E5%BD%A2) 章节了解更多。
 
 <embed src="@/common/header-action-icon.zh.md"></embed>

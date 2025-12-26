@@ -16,11 +16,11 @@ const s2Options = {
   hierarchyType: 'tree',
   style: {
     rowCell: {
-      // 折叠节点
+      // Collapse Nodes
       collapseFields: {},
-      // 展开层级
+      // Expand Depth
       expandDepth: 0,
-      // 折叠所有
+      // Collapse All
       collapseAll: true
     },
   },
@@ -31,7 +31,7 @@ const s2Options = {
 
 ## Collapse the specified node
 
-Configure `collapseFields` to support two ways of`维值id` and`维度field` , that is, `root[&] 浙江省`and `city`
+Configure `collapseFields` to support two ways of`dimension value id` and`dimension field` , that is, `root[&] Zhejiang Province` and `city`
 
 ```ts
 const s2Options = {
@@ -45,13 +45,13 @@ const s2Options = {
 
 ### According to the dimension value id corresponding to the node
 
-Specify `id` to fold the specified node, if configured as `root[&] 浙江省`, then all nodes`浙江省`will be folded
+Specify `id` to fold the specified node, if configured as `root[&] Zhejiang Province`, then all nodes`Zhejiang Province`will be folded
 
 ```ts
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: { 'root[&] 浙江省': true },
+      collapseFields: { 'root[&] Zhejiang Province': true },
     },
   },
 }
@@ -127,7 +127,7 @@ The table expands all nodes by default. `collapseFields` needs to know the corre
 const s2Options = {
   style: {
     rowCell: {
-      // 展开两层
+      // Expand two levels
       expandDepth: 1,
     },
   },
@@ -152,9 +152,9 @@ If you want `collapseAll` to take effect, you can set `collapseFields` and `expa
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: null, // 无效
-      collapseAll: true, // 生效
-      expandDepth: null, // 无效
+      collapseFields: null, // Invalid
+      collapseAll: true, // Effective
+      expandDepth: null, // Invalid
     },
   },
 }

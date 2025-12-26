@@ -81,7 +81,7 @@ bootstrap()
 
 <Playground path='/basic/pivot/demo/grid.ts' rid='pivot-grid' height='300'></playground>
 
-​[查看示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。
+​[查看示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2-options)。
 
 ## 在 React 中使用
 
