@@ -128,8 +128,8 @@ await s2.render(false)
 
 ### 如何在 Tooltip 里自定义操作项？
 
-- 方式 1: 默认 tooltip 内容不变，通过 [自定义操作项](https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-operation), 在内容上方增加自定义操作菜单。
-- 方式 2: 通过 [自定义 Tooltip 内容](https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-content), 完全自定义组件内容。
+- 方式 1: 默认 tooltip 内容不变，通过 [自定义操作项](https://s2.antv.antgroup.com/examples/react-component/tooltip/#custom-operation), 在内容上方增加自定义操作菜单。
+- 方式 2: 通过 [自定义 Tooltip 内容](https://s2.antv.antgroup.com/examples/react-component/tooltip/#custom-content-base), 完全自定义组件内容。
 
 ### React 组件，自定义显示 tooltip 后，内容未更新怎么回事？
 

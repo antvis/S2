@@ -59,7 +59,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       const a = document.createElement('a');
 
       a.target = '_blank';
-      a.href = `https://s2.antv.antgroup.com/zh/docs/manual/introduction?${field}=${value}`;
+      a.href = `https://s2.antv.antgroup.com/manual/introduction?${field}=${value}`;
       a.click();
       a.remove();
     });

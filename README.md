@@ -54,9 +54,9 @@
 S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数据驱动的方式。通过提供底层能力库，基础组件，业务场景组件以及自由扩展的能力，让开发者基于自身场景自由选择，既能开箱即用，又能自由发挥。
 
 <p align="center">
-  <a href="https://s2.antv.antgroup.com/zh">简介</a> •
+  <a href="https://s2.antv.antgroup.com">简介</a> •
   <a href="https://s2.antv.antgroup.com/manual/getting-started">快速开始</a> •
-  <a href="https://s2.antv.antgroup.com/zh/examples">图表示例</a> •
+  <a href="https://s2.antv.antgroup.com/examples">图表示例</a> •
   <a href="https://s2.antv.antgroup.com/playground">在线体验</a>
 </p>
 

@@ -17,7 +17,7 @@ function process(children) {
 
 /**
  * 该示例为 React 版本的趋势分析表
- * 如何在普通图表中使用, 请查看: https://s2.antv.antgroup.com/zh/examples/custom/custom-cell#mini-chart
+ * 如何在普通图表中使用, 请查看: https://s2.antv.antgroup.com/examples/custom/custom-cell#mini-chart
  */
 
 fetch(
