@@ -80,7 +80,7 @@ const s2Options = {
         field: 'number',
         mapping(fieldValue, data) {
           return {
-            // 使用自定义 icon 名称
+            // Use custom icon name
             icon: 'Filter',
             fill: '#30BF78',
           };

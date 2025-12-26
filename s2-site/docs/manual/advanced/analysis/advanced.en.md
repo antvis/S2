@@ -88,7 +88,7 @@ advancedSort: {
 
 #### dimension list
 
-Support custom dimension list `dimension` , if not configured, the default is:`行头+列头+数值`
+Support custom dimension list `dimension` , if not configured, the default is:`Row Header + Column Header + Values`
 
 | parameter | illustrate     | type       | Defaults | required |
 | --------- | -------------- | ---------- | -------- | -------- |
@@ -104,7 +104,7 @@ Support custom dimension list `dimension` , if not configured, the default is:`�
 
 #### rule list
 
-Support custom rule configuration list, if not configured, the default is:`首字母、手动排序、其他字段`
+Support custom rule configuration list, if not configured, the default is:`First Letter, Manual Sort, Other Fields`
 
 > Note: If you customize here, you need to customize sortParams through ruleValues in onSortConfirm
 

@@ -69,7 +69,7 @@ const field = {
 ```js
 const field = {
   expandable: true,
-  expandText: "展开同环比", // 默认：展开子项
+  expandText: "Expand YoY comparison", // default: expand sub-items
   items: [
     /*...*/
   ],
@@ -80,7 +80,7 @@ const field = {
 
 ```js
 const field = {
-  allowEmpty: false, // 默认：true
+  allowEmpty: false, // default: true
   items: [
     /*...*/
   ],
@@ -108,7 +108,7 @@ You can see the detailed result data types with the following example:
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tElLTIzXBR0AAAAAAAAAAAAAARQnAQ" height="400" alt="preview">
 
-* The pop-up layer of the `Switcher` component is developed based on `antd` 's [Popover](https://ant.design/components/popover-cn/) , which supports transparent transmission of `Popover` [configuration items](https://ant.design/components/popover-cn/#API) to customize the pop-up layer, such as`触发方式`,`箭头指向`,`卡片弹出方向`, etc.
+* The pop-up layer of the `Switcher` component is developed based on `antd` 's [Popover](https://ant.design/components/popover/) , which supports transparent transmission of `Popover` [configuration items](https://ant.design/components/popover/#API) to customize the pop-up layer, such as`trigger method`,`arrow direction`,`card popup direction`, etc.
 
 ```tsx
 <Switcher popover={{ arrowPointAtCenter: true }} />

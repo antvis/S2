@@ -9,13 +9,13 @@ order: 2
 const s2Options = {
   width: 600,
   height: 480,
-  hierarchyType: 'tree', // 树形结构
+  hierarchyType: 'tree', // Tree structure
 };
 
 <SheetComponent
   options={s2Options}
   partDrillDown={PartDrillDown}
-  sheetType="pivot"  // 透视模式
+  sheetType="pivot"  // Pivot mode
 />
 ```
 

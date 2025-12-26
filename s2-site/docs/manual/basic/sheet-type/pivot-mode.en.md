@@ -159,7 +159,7 @@ You can display a built-in series number column by passing `seriesNumber` in `s2
 const s2Options = {
   seriesNumber: {
     enable: true,
-    text: 'Custom Title' // Default is "序号"
+    text: 'Custom Title' // Default is "Index"
   }
 }
 ```

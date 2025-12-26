@@ -11,9 +11,9 @@ Here is a brief introduction to the commonly used drawing properties of S2:
 
 | attribute name | type              | Functional description                                                                                                                                                         |
 | -------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| fill           | `string`          | The fill color of the graphics background supports \[gradient color configuration] (#configure gradient color), [texture configuration](#%E9%85%8D%E7%BD%AE%E7%BA%B9%E7%90%86) |
+| fill           | `string`          | The fill color of the graphics background supports \[gradient color configuration] (#configure gradient color), [texture configuration](#configure-textures) |
 | fill Opacity   | `number`          | Fill transparency of the graphic background                                                                                                                                    |
-| stroke         | `string`          | Graphic stroke, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#%E9%85%8D%E7%BD%AE%E7%BA%B9%E7%90%86)                            |
+| stroke         | `string`          | Graphic stroke, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#configure-textures)                            |
 | lineWidth      | `number`          | Shape stroke width                                                                                                                                                             |
 | lineDash       | `[number,number]` | The dotted line configuration of the graphic stroke, the first value is the length of each segment of the dotted line, and the second value is the distance between segments   |
 | lineOpacity    | `number`          | graphic stroke stroke transparency                                                                                                                                             |
@@ -28,7 +28,7 @@ Here is a brief introduction to the commonly used drawing properties of S2:
 
 | attribute name | type              | Functional description                                                                                                                                          |
 | -------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| stroke         | `string`          | Line segment color, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#%E9%85%8D%E7%BD%AE%E7%BA%B9%E7%90%86)         |
+| stroke         | `string`          | Line segment color, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#configure-textures)         |
 | lineWidth      | `number`          | line width                                                                                                                                                      |
 | lineDash       | `[number,number]` | Line segment dotted line configuration, the first value is the length of each segment of the dotted line, and the second value is the distance between segments |
 | opacity        | `number`          | line transparency                                                                                                                                               |
@@ -48,9 +48,9 @@ Here is a brief introduction to the commonly used drawing properties of S2:
 | lineHeight     | `number`                                                | line height of text                                                                                                                                                  |
 | textAlign      | `center` \| `left` \| `right` \| `start` \| `end`       | Sets the alignment of the text content                                                                                                                               |
 | textBaseline   | `top` \| `middle` \| `bottom` \| `alphabetic` `hanging` | Sets the current text baseline to use when drawing text                                                                                                              |
-| fill           | `string`                                                | Text fill color, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#%E9%85%8D%E7%BD%AE%E7%BA%B9%E7%90%86)                 |
+| fill           | `string`                                                | Text fill color, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#configure-textures)                 |
 | fill Opacity   | `number`                                                | text fill transparency                                                                                                                                               |
-| stroke         | `string`                                                | Text stroke, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#%E9%85%8D%E7%BD%AE%E7%BA%B9%E7%90%86)                     |
+| stroke         | `string`                                                | Text stroke, support \[gradient color configuration]\(#Configure gradient color), [texture configuration](#configure-textures)                     |
 | lineWidth      | `number`                                                | text stroke width                                                                                                                                                    |
 | lineDash       | `[number,number]`                                       | The dotted line configuration of the stroke, the first value is the length of each segment of the dotted line, and the second value is the distance between segments |
 | line Opacity   | `number`                                                | stroke transparency                                                                                                                                                  |
@@ -75,7 +75,7 @@ S2 provides two forms of linear gradient and circular gradient
 Example:
 
 ```ts
-// 使用渐变色填充，渐变角度为 0，渐变的起始点颜色 #95F0FF，结束的渐变色为 #3A9DBF
+// Use gradient fill, gradient angle is 0, start color #95F0FF, end color #3A9DBF
 fill: `l(0) 0:#95F0FF 1:#3A9DBF`,
 ```
 
@@ -94,7 +94,7 @@ Effect:
 Example:
 
 ```ts
-// 使用渐变色填充，渐变起始圆的圆心坐标为被填充物体的包围盒中心点，半径为（包围盒对角线长度 / 2) 的 1 倍，渐变的起始点颜色 #ffffff，结束的渐变色为 #1890ff
+// Use gradient fill, the center of the start circle is the center of the bounding box of the filled object, radius is 1 * (bounding box diagonal length / 2), start color #ffffff, end color #1890ff
 fill: 'r(0.5, 0.5, 1) 0:#ffffff 0.5:#1890ff';
 ```
 

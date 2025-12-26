@@ -16,28 +16,28 @@ const dataCfg = {
     },
     data: [{
         "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Table"
     }, {
         "price": 2,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "桌子"
+        "province": "Zhejiang",
+        "city": "Shaoxing",
+        "type": "Furniture",
+        "sub_type": "Table"
     }, {
         "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Sofa"
     }, {
         "price": 4,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "沙发"
+        "province": "Zhejiang",
+        "city": "Shaoxing",
+        "type": "Furniture",
+        "sub_type": "Sofa"
     }]
 };
 const options = {
@@ -64,8 +64,8 @@ For example, if the user configures the filter:
     filterParams: [
         {
             filterKey: 'city',
-            filteredValues: ['杭州市'],
-            customFilter: (row) => row['city'] === '杭州市' || row['city'] === '宁波市',
+            filteredValues: ['Hangzhou'],
+            customFilter: (row) => row['city'] === 'Hangzhou' || row['city'] === 'Ningbo',
         }
     ]
 }
@@ -77,17 +77,17 @@ This time, S2 will filter the `city` field, and only keep the records whose valu
 [
     {
         "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Table"
     }, 
     {
         "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Sofa"
     },
 ]
 ```
@@ -112,17 +112,17 @@ S2 will sort the `price` field in descending order, and the data will eventually
 [
     {
         "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Sofa"
     },
     {
         "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
+        "province": "Zhejiang",
+        "city": "Hangzhou",
+        "type": "Furniture",
+        "sub_type": "Table"
     }, 
 ]
 ```

@@ -29,11 +29,11 @@ The trend analysis table component uses various capabilities provided by S2 for 
 <details><summary>check the details</summary><pre> <code class="language-js">const&#x26;nbsp;s2Options&#x26;nbsp;=&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;width:&#x26;nbsp;600,
 &#x26;nbsp;&#x26;nbsp;height:&#x26;nbsp;480,
-&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 角头文本
-&#x26;nbsp;&#x26;nbsp;cornerText:&#x26;nbsp;'指标层级',
-&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 条件格式
+&#x26;nbsp;&#x26;nbsp;// Corner Text
+&#x26;nbsp;&#x26;nbsp;cornerText:&#x26;nbsp;'Metric Hierarchy',
+&#x26;nbsp;&#x26;nbsp;// Conditional Formatting
 &#x26;nbsp;&#x26;nbsp;conditions:&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 同环比数值映射规则
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;// Value mapping rules for YoY/MoM
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;text:&#x26;nbsp;[
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;field:&#x26;nbsp;'number',
@@ -52,13 +52,13 @@ The trend analysis table component uses various capabilities provided by S2 for 
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;fill:&#x26;nbsp;value&#x26;nbsp;>&#x26;nbsp;0&#x26;nbsp;?&#x26;nbsp;'#FF4D4F'&#x26;nbsp;:&#x26;nbsp;'#29A294',
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;};
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;],
 &#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;style:&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;dataCell:&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;valuesCfg:&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 原始数据字段，用于原始数据导出和&#x26;nbsp;tooltip&#x26;nbsp; 展示
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;// Original data field, used for original data export and tooltip display
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;originalValueField:&#x26;nbsp;'originalValues',
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
@@ -106,7 +106,7 @@ const fields = {
   rows: [
     {
       key: 'a-1',
-      title: '节点 1',
+      title: 'Node 1',
       children: []
     }
   ]
@@ -130,18 +130,18 @@ Virtual examples are the same as ordinary fields, you can customize the formatti
 ```ts
 const s2DataConfig = {
   meta: [
-    // 日期列头 格式化
+    // Date column header formatting
     {
       field: 'date',
-      name: '时间',
-      formatter: (value) => `${value}年`,
+      name: 'Time',
+      formatter: (value) => `${value} Year`,
     },
-    // 同环比名称（虚拟列头） 格式化
+    // YoY/MoM name (virtual column header) formatting
     {
       field: EXTRA_COLUMN_FIELD,
       formatter: (value, data, meta) => {
         console.log(data, meta);
-        return meta?.colIndex === 0 ? '自定义标题' : value;
+        return meta?.colIndex === 0 ? 'Custom Title' : value;
       },
     },
   ],
@@ -164,9 +164,9 @@ const s2DataConfig = {
 
 ## Tooltips
 
-The `Tooltip` of the trend analysis table uses the [customization capabilities](/en/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头 (row)` ,`列头 (col)` and`数值 (data)` , and can be imported separately in the `@antv/s2-react` package
+The `Tooltip` of the trend analysis table uses the [customization capabilities](/en/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`Row Header (row)` ,`Column Header (col)` and`Data Value (data)` , and can be imported separately in the `@antv/s2-react` package
 
-| Configuration item name   | illustrate                             | type                            | Defaults                                                   | required |
+| Configuration item name   | Description                            | type                            | Defaults                                                   | required |
 | ------------------------- | -------------------------------------- | ------------------------------- | ---------------------------------------------------------- | -------- |
 | cell                      | current cell                           | `S2CellType`                    | ✓                                                          |          |
 | defaultTooltipShowOptions | Default tooltip display configuration  | `TooltipShowOptions<ReactNode>` |                                                            |          |
@@ -190,18 +190,18 @@ const s2Options = {
 By default, the name of the row header node is used as the title of the Tooltip, and the content can be customized through the `label`
 
 ```tsx
-// 字符串
-<StrategySheetDataTooltip cell={cell} label={"自定义标题"}/>
+// String
+<StrategySheetDataTooltip cell={cell} label={"Custom Title"}/>
 
-// 自定义组件
-<StrategySheetDataTooltip cell={cell} label={(cell, defaultLabel) => `${defaultLabel}（自定义标题`} />
+// Custom Component
+<StrategySheetDataTooltip cell={cell} label={(cell, defaultLabel) => `${defaultLabel} (Custom Title`} />
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/dosQkhLBp/fbe5a635-60ad-4e55-9a23-858842b977ac.png" width="600" alt="preview">
 
 ### show raw data
 
-After `showOriginalValue` is turned on, it will read the `originalValues` data corresponding to the current Tooltip (if any), and display the original data together, that is,`展示值（原始值）`
+After `showOriginalValue` is turned on, it will read the `originalValues` data corresponding to the current Tooltip (if any), and display the original data together, that is,`Display value (Original value)`
 
 ```tsx
 <StrategySheetDataTooltip cell={cell} showOriginalValue />

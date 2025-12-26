@@ -29,7 +29,7 @@ Row and column headers and index value configuration description objects
 | ---------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------- | -------- | -------- |
 | items      | Configure field objects                                                                                     | [SwitcherItem](#switcheritem) `[]` | -        | ✓        |
 | expandable | Whether to open the checkbox for expanding subitems is used to control the expansion and hiding of subitems | `boolean`                          | `false`  |          |
-| expandText | Expand the text corresponding to the checkbox of the subitem                                                | `string`                           | `展开子项`   |          |
+| expandText | Expand the text corresponding to the checkbox of the subitem                                                | `string`                           | `Expand sub-items`   |          |
 | selectable | Whether to open the checkbox of the field to control the display and hiding                                 | `boolean`                          | `false`  |          |
 | allowEmpty | Whether the current dimension can drag out all sub-items                                                    | `boolean`                          | `true`   |          |
 

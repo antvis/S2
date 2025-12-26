@@ -48,19 +48,19 @@ type SimpleData = string | number;
 ```ts
 const data = [
   {
-    area: '东北',
-    province: '吉林',
-    city: '白山',
-    type: '办公用品',
-    subType: '纸张',
+    area: 'Northeast',
+    province: 'Jilin',
+    city: 'Baishan',
+    type: 'Office Supplies',
+    subType: 'Paper',
     cost: '2',
   },
   {
-    area: '东北',
-    province: '吉林',
-    city: '白山',
-    type: '办公用品',
-    subType: '笔',
+    area: 'Northeast',
+    province: 'Jilin',
+    city: 'Baishan',
+    type: 'Office Supplies',
+    subType: 'Pen',
     cost: '3',
   }
 ];

@@ -9,7 +9,7 @@ When you want to reduce the interference of unimportant information, you can hid
 
 ## 1. Manual Hide - by clicking
 
-Click the column header and click the`隐藏`button in the pop-up `tooltip`
+Click the column header and click the `Hide` button in the pop-up `tooltip`
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" alt="preview">
 
@@ -78,7 +78,7 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
+    hiddenColumnFields: ['root[&]Furniture[&]Sofa[&]number'],
   }
 }
 ```
@@ -129,13 +129,13 @@ import { S2Event } from '@antv/s2'
 const s2 = new PivotSheet(...);
 
 s2.on(S2Event.COL_CELL_EXPANDED, (cell) => {
-  console.log('列头展开', cell);
+  console.log('Column Header Expanded', cell);
 });
 
 s2.on(
   S2Event.COL_CELL_HIDDEN,
   (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
-    console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
+    console.log('Column Header Hidden', currentHiddenColumnsInfo, hiddenColumnsDetail);
   },
 );
 ```

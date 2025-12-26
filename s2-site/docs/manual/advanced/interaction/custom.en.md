@@ -14,27 +14,27 @@ Inherit `BaseEvent` to get the current table instance `this.spreadsheet` , imple
 ```ts
 import { BaseEvent } from '@antv/s2';
 
-// 继承 BaseEvent, 可以拿到 this.spreadsheet
+// Inherit BaseEvent to access this.spreadsheet
 class HiddenInteraction extends BaseEvent {
   bindEvents() {
   }
 }
 ```
 
-Listen`列头`double-click event: `S2Event.COL_CELL_DOUBLE_CLICK`
+Listen `Column Header` double-click event: `S2Event.COL_CELL_DOUBLE_CLICK`
 
 ```ts
 import { BaseEvent, S2Event } from '@antv/s2';
 
 class HiddenInteraction extends BaseEvent {
   bindEvents() {
-    // 列头双击时
+    // On column header double click
     this.spreadsheet.on(S2Event.COL_CELL_DOUBLE_CLICK, (event) => {
-      // 获取当前单元格
+      // Get current cell
       const cell = this.spreadsheet.getCell(event.target);
-      // 获取当前单元格元数据
+      // Get current cell meta data
       const meta = cell.getMeta();
-      // 隐藏当前列
+      // Hide current column
       this.spreadsheet.interaction.hideColumns([meta.field]);
     });
   }
@@ -52,7 +52,7 @@ const s2Options = {
   interaction: {
     customInteractions: [
       {
-        // 交互的唯一标识，需要保证和已有交互不冲突
+        // Unique ID for interaction, ensure it doesn't conflict with existing interactions
         key: 'MyInteraction',
         interaction: MyInteraction,
       },
@@ -74,7 +74,7 @@ import { TableSheet } from '@antv/s2';
 class ContextMenuInteraction extends BaseEvent {
   bindEvents() {
     this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
-      // 禁止弹出右键菜单
+      // Prevent context menu pop-up
       event.preventDefault();
     });
   }

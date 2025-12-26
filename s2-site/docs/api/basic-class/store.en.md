@@ -6,8 +6,8 @@ order: 3
 Function description: store some information. [details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/store/index.ts)
 
 ```ts
-s2.store.get('key') // 获取
-s2.store.set('key', value) // 存储
+s2.store.get('key') // Get
+s2.store.set('key', value) // Set
 ```
 
 | parameter                | illustrate                                                          | type                                                             |
@@ -39,9 +39,9 @@ s2.store.set('key', value) // 存储
 
 ```ts
 interface HiddenColumnsInfo {
-  // 当前显示的兄弟节点之前所隐藏的节点
+  // Hidden nodes before the currently displayed sibling node
   hideColumnNodes: Node[];
-  // 当前隐藏列所对应展示展开按钮的兄弟节点
+  // Sibling node corresponding to the expand button of the currently hidden column
   displaySiblingNode: Node;
 }
 ```
@@ -50,9 +50,9 @@ interface HiddenColumnsInfo {
 
 ```ts
 interface PartDrillDownInfo {
-  // 下钻数据
+  // Drill down data
   drillData: RawData[];
-  // 下钻字段
+  // Drill down field
   drillField: string;
 }
 ```

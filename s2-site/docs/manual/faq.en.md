@@ -39,35 +39,35 @@ Update options: [optional](/en/api/general/s2-options) , will be merged with the
 
 ```ts
 pivotSheet.setOptions({ ... })
-pivotSheet.render(false) // 重新渲染，不更新数据
+pivotSheet.render(false) // Re-render, do not update data
 ```
 
 Reset options: [optional, use the incoming options](/en/api/general/s2-options) directly, and will not merge with the last data
 
 ```ts
 pivotSheet.setOptions({ ... }, true)
-pivotSheet.render(false) // 重新渲染，不更新数据
+pivotSheet.render(false) // Re-render, do not update data
 ```
 
 Update dataCfg: [optional](/en/api/general/s2-data-config) , it will be merged with the last data
 
 ```ts
 pivotSheet.setDataCfg({ ... })
-pivotSheet.render(true) // 重新渲染，且更新数据
+pivotSheet.render(true) // Re-render, and update data
 ```
 
 Reset dataCfg: [optional](/en/api/general/s2-data-config) , use the incoming dataCfg directly without merging with the last data
 
 ```ts
 pivotSheet.setDataCfg({ ... }, true)
-pivotSheet.render(true) // 重新渲染，且更新数据
+pivotSheet.render(true) // Re-render, and update data
 ```
 
 update theme: [optional](/en/api/general/s2-theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })
-pivotSheet.render(false)  // 重新渲染，不更新数据
+pivotSheet.render(false)  // Re-render, do not update data
 ```
 
 ### The graph cannot be rendered, what's the matter?
@@ -168,7 +168,7 @@ At present, `S2` only supports the `web` platform, and the applet does not suppo
 
 ### Why is my Issue closed?
 
-Please read [the must-read before submitting an Issue](https://github.com/antvis/S2/issues/1904) , and fill in strictly according to the `Issue 模板`, providing some **meaningful** information, including but not limited to:
+Please read [the must-read before submitting an Issue](https://github.com/antvis/S2/issues/1904) , and fill in strictly according to the `Issue Template`, providing some **meaningful** information, including but not limited to:
 
 * The version number you **actually** installed:
 
@@ -188,7 +188,7 @@ Please read [the must-read before submitting an Issue](https://github.com/antvis
 
 * What are your expectations? What is the current behavior?
 
-> It is expected to be "no problem", but currently it is "problem". This description is no different from what you said. Please try to be as specific as possible. For example: the`数据不正确：预期应该是 xx, 实际是 xx. 布局错误：节点应该显示在行头，实际出现在了列头。`
+> It is expected to be "no problem", but currently it is "problem". This description is no different from what you said. Please try to be as specific as possible. For example: the `Data is incorrect: expected xx, but actually xx. Layout error: the node should be displayed in the row header, but actually appeared in the column header.`
 
 * Try to erase some nouns and descriptions with your own business semantics
 

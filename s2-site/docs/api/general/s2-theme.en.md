@@ -7,14 +7,14 @@ order: 2
 theme configuration
 
 ```ts
-// 统一设置主题 Schema, 色板，名称
+// Set theme Schema, palette, name uniformly
 s2.setThemeCfg({
   theme: {},
   palette: {},
   name: "default"
 });
 
-// 单独设置主题 Schema, 配置单元格背景，文字大小，文字颜色
+// Set theme Schema separately, configure cell background, text size, text color
 s2.setTheme({
   rowCell: {
     cell: {
@@ -201,7 +201,7 @@ Function description: interactive general theme
 | textOpacity       | text transparency       | `number` |          |          |
 | opacity           | overall transparency    | `number` |          |          |
 
-#### Margin｜Padding
+#### Margin | Padding
 
 **optional** *object*
 

@@ -113,8 +113,8 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
 
 ```ts
 interface ChangeCellOptions {
-  cell: S2CellType<ViewMeta>; // 目标单元格
-  isMultiSelection?: boolean; // 是否是多选
+  cell: S2CellType<ViewMeta>; // Target cell
+  isMultiSelection?: boolean; // Whether it is multi-selection
 }
 ```
 
