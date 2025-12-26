@@ -71,6 +71,10 @@ function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
       selectedCellsSpotlight: false,
       hoverHighlight: false,
     },
+    showDefaultHeaderActionIcon: false,
+    future: {
+      experimentalReuseCell: true,
+    },
     conditions: {
       background: [
         {
