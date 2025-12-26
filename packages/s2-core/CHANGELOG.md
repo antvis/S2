@@ -1,3 +1,10 @@
+# [@antv/s2-v2.4.13](https://github.com/antvis/S2/compare/@antv/s2-v2.4.12...@antv/s2-v2.4.13) (2025-12-26)
+
+
+### Bug Fixes
+
+* 复用单元格滚动后TableSheet的seriesNumber和普通单元格样式异常 ([#3272](https://github.com/antvis/S2/issues/3272)) ([8779bdd](https://github.com/antvis/S2/commit/8779bdde13a0dd45b97c8c3da4de65b157ca01b9))
+
 # [@antv/s2-v2.4.12](https://github.com/antvis/S2/compare/@antv/s2-v2.4.11...@antv/s2-v2.4.12) (2025-12-25)
 
 
