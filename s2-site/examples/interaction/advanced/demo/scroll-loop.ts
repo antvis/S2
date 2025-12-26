@@ -36,7 +36,7 @@ function addScrollButton(s2) {
       // 获取当前 Y 轴滚动距离
       const { scrollY } = s2.facet.getScrollOffset();
 
-      // 访问 https://s2.antv.antgroup.com/zh/docs/api 查看更多 API
+      // 访问 https://s2.antv.antgroup.com/api/basic-class/base-facet 查看更多 API
       // 如果已经滚动到了底部，则回到顶部
       if (s2.facet.isScrollToBottom(scrollY)) {
         console.log('滚动到底部');

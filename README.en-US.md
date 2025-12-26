@@ -56,10 +56,10 @@ S2 is a solution in multi-dimensional cross-analysis tables, which provides data
 demo components and expansion capabilities, it allows developers to use it quickly and freely.
 
 <p align="center">
-  <a href="https://s2.antv.antgroup.com/zh">Homepage</a> •
-  <a href="https://s2.antv.antgroup.com/manual/getting-started">Getting Started</a> •
-  <a href="https://s2.antv.antgroup.com/zh/examples">Examples</a> •
-  <a href="https://s2.antv.antgroup.com/playground">Live DEMO</a>
+  <a href="https://s2.antv.antgroup.com/en">Homepage</a> •
+  <a href="https://s2.antv.antgroup.com/en/manual/getting-started">Getting Started</a> •
+  <a href="https://s2.antv.antgroup.com/en/examples">Examples</a> •
+  <a href="https://s2.antv.antgroup.com/en/playground">Live DEMO</a>
 </p>
 
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)

@@ -250,7 +250,7 @@ export interface S2BasicOptions<
 
   /**
    * 自定义角头
-   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#corner-header
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#corner-header
    */
   cornerHeader?: CornerHeaderCallback;
 

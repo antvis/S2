@@ -254,7 +254,7 @@ export interface BaseTooltipConfig<
 
   /**
    * 自定义 Tooltip 类
-   * @see https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-tooltip
+   * @see https://s2.antv.antgroup.com/examples/react-component/tooltip/#custom-tooltip
    */
   render?: (spreadsheet: SpreadSheet) => BaseTooltip<T, Menu>;
 

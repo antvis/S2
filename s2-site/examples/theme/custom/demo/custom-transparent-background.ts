@@ -48,7 +48,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       },
     };
 
-    // https://s2.antv.antgroup.com/zh/docs/api/general/s2-theme#s2theme
+    // https://s2.antv.antgroup.com/api/general/s2-theme#s2theme
     const s2Theme: S2Theme = {
       background: {
         opacity: 0,
