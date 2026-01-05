@@ -422,13 +422,12 @@ export abstract class BaseFacet {
 
     const isEnableColNodeHeightAdaptive =
       (colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap) ||
-      this.spreadsheet.theme.colCell.text.fontSize !== DEFAULT_FONTSIZE ||
-      this.spreadsheet.theme.colCell.bolderText.fontSize !== DEFAULT_FONTSIZE;
+      this.spreadsheet.theme.colCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.colCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const isEnableCornerNodeHeightAdaptive =
       (cornerCellStyle?.maxLines! > 1 && cornerCellStyle?.wordWrap) ||
-      this.spreadsheet.theme.cornerCell.text.fontSize !== DEFAULT_FONTSIZE ||
-      this.spreadsheet.theme.cornerCell.bolderText.fontSize !==
-        DEFAULT_FONTSIZE;
+      this.spreadsheet.theme.cornerCell.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.cornerCell.bolderText.fontSize > DEFAULT_FONTSIZE;
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     let colAdaptiveHeight = defaultHeight;
@@ -459,16 +458,17 @@ export abstract class BaseFacet {
       });
 
       if (!isEmpty(currentCornerNodes)) {
-        cornerAdaptiveHeight = max(
-          currentCornerNodes.map((cornerNode) =>
-            this.getNodeAdaptiveHeight({
-              meta: cornerNode,
-              cell: this.textWrapTempCornerCell!,
-              defaultHeight,
-              useCache: false,
-            }),
-          ),
-        );
+        cornerAdaptiveHeight =
+          max(
+            currentCornerNodes.map((cornerNode) =>
+              this.getNodeAdaptiveHeight({
+                meta: cornerNode,
+                cell: this.textWrapTempCornerCell!,
+                defaultHeight,
+                useCache: false,
+              }),
+            ),
+          ) ?? defaultHeight;
       }
     }
 
@@ -550,7 +550,7 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height = textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
+    const height = Math.max(adaptiveHeight, defaultHeight);
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 

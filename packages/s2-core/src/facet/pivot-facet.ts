@@ -427,12 +427,10 @@ export class PivotFacet extends FrozenFacet {
     // 文本超过 1 行时再自适应单元格高度, 不然会频繁触发 GC, 导致性能降低: https://github.com/antvis/S2/issues/2693
     const isEnableHeightAdaptive =
       (rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap) ||
-      this.spreadsheet.theme.rowCell!.text.fontSize !== DEFAULT_FONTSIZE ||
-      this.spreadsheet.theme.rowCell!.measureText.fontSize !==
-        DEFAULT_FONTSIZE ||
-      this.spreadsheet.theme.rowCell!.seriesText.fontSize !==
-        DEFAULT_FONTSIZE ||
-      this.spreadsheet.theme.rowCell!.bolderText.fontSize !== DEFAULT_FONTSIZE;
+      this.spreadsheet.theme.rowCell!.text.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.rowCell!.measureText.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.rowCell!.seriesText.fontSize > DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.rowCell!.bolderText.fontSize > DEFAULT_FONTSIZE;
 
     if (this.isCustomRowCellHeight(rowNode) || !isEnableHeightAdaptive) {
       rowNode.extra.isCustomHeight = true;
