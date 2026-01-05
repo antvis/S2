@@ -458,16 +458,17 @@ export abstract class BaseFacet {
       });
 
       if (!isEmpty(currentCornerNodes)) {
-        cornerAdaptiveHeight = max(
-          currentCornerNodes.map((cornerNode) =>
-            this.getNodeAdaptiveHeight({
-              meta: cornerNode,
-              cell: this.textWrapTempCornerCell!,
-              defaultHeight,
-              useCache: false,
-            }),
-          ),
-        );
+        cornerAdaptiveHeight =
+          max(
+            currentCornerNodes.map((cornerNode) =>
+              this.getNodeAdaptiveHeight({
+                meta: cornerNode,
+                cell: this.textWrapTempCornerCell!,
+                defaultHeight,
+                useCache: false,
+              }),
+            ),
+          ) ?? defaultHeight;
       }
     }
 
@@ -549,7 +550,17 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height = textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
+    // Check if text actually uses multiple lines
+    const singleLineHeight = cell.getTextLineHeight();
+    const hasWrappedText = textHeight > singleLineHeight * 1.5;
+
+    // Use adaptive height when:
+    // 1. Text actually wraps (uses multiple lines), OR
+    // 2. Text height exceeds default height
+    const needsAdaptiveHeight = hasWrappedText || textHeight >= defaultHeight;
+    const height = needsAdaptiveHeight
+      ? Math.max(adaptiveHeight, defaultHeight)
+      : defaultHeight;
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 
