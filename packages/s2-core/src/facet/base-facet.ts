@@ -458,17 +458,16 @@ export abstract class BaseFacet {
       });
 
       if (!isEmpty(currentCornerNodes)) {
-        cornerAdaptiveHeight =
-          max(
-            currentCornerNodes.map((cornerNode) =>
-              this.getNodeAdaptiveHeight({
-                meta: cornerNode,
-                cell: this.textWrapTempCornerCell!,
-                defaultHeight,
-                useCache: false,
-              }),
-            ),
-          ) ?? defaultHeight;
+        cornerAdaptiveHeight = max(
+          currentCornerNodes.map((cornerNode) =>
+            this.getNodeAdaptiveHeight({
+              meta: cornerNode,
+              cell: this.textWrapTempCornerCell!,
+              defaultHeight,
+              useCache: false,
+            }),
+          ),
+        );
       }
     }
 
@@ -550,7 +549,7 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height = Math.max(adaptiveHeight, defaultHeight);
+    const height = textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 
