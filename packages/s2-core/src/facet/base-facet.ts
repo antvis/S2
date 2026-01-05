@@ -747,7 +747,6 @@ export abstract class BaseFacet {
         deltaY,
         offsetX: x,
         offsetY: y,
-        nativeEvent: originEvent,
       } as unknown as WheelEvent);
     });
 

@@ -830,50 +830,6 @@ describe('Scroll Tests', () => {
     );
   });
 
-  // https://github.com/antvis/S2/issues/3249
-  describe('Mobile Scroll Tests', () => {
-    it('should call preventDefault on native event when mobile scroll is triggered', () => {
-      const preventDefaultSpy = jest.fn();
-      const nativeEvent = {
-        cancelable: true,
-        preventDefault: preventDefaultSpy,
-      };
-
-      jest
-        .spyOn(s2.facet, 'isScrollOverTheViewport')
-        .mockImplementationOnce(() => true);
-
-      // Simulate mobile wheel event with nativeEvent
-      s2.facet.onWheel({
-        deltaX: 0,
-        deltaY: 10,
-        offsetX: 100,
-        offsetY: 200,
-        nativeEvent,
-        cancelable: true,
-        preventDefault: jest.fn(),
-      } as unknown as WheelEvent);
-
-      expect(preventDefaultSpy).toHaveBeenCalled();
-    });
-
-    it('should preserve nativeEvent reference in stopScrollChaining', () => {
-      const preventDefaultSpy = jest.fn();
-      const nativeEvent = {
-        cancelable: true,
-        preventDefault: preventDefaultSpy,
-      };
-
-      // Access stopScrollChaining via any to test protected method
-      (s2.facet as any).stopScrollChaining({
-        cancelable: false,
-        nativeEvent,
-      } as unknown as WheelEvent);
-
-      expect(preventDefaultSpy).toHaveBeenCalled();
-    });
-  });
-
   // https://github.com/antvis/S2/issues/1784
   test('should not throw error if scroll over the data cell area and not exist scroll bar', async () => {
     // rowCell 显示滚动条, dataCell 无滚动条, 然后在 dataCell 区域滚动
