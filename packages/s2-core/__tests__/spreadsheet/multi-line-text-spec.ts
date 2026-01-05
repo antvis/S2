@@ -848,7 +848,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should render Cell Height correct after set large font', async () => {
-      await runLargeFontCellHeightTest(s2);
+      await runLargeFontCellHeightTest(s2)();
     });
   });
 
@@ -1690,7 +1690,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should render Cell Height correct after set large font', async () => {
-      await runLargeFontCellHeightTest(s2);
+      await runLargeFontCellHeightTest(s2)();
     });
 
     // https://github.com/antvis/S2/issues/3262
