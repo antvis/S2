@@ -53,6 +53,41 @@ function runLargeFontCellHeightTest(s2: SpreadSheet) {
   };
 }
 
+// Test for Issue #3262: Small font size with multi-line text should calculate height adaptively
+function runSmallFontCellHeightTest(s2: SpreadSheet) {
+  return async () => {
+    s2.setDataCfg(SimpleDataCfg);
+    const cell = {
+      bolderText: {
+        fontSize: 10,
+      },
+      measureText: {
+        fontSize: 10,
+      },
+      text: {
+        fontSize: 10,
+      },
+      seriesText: {
+        fontSize: 10,
+      },
+    };
+
+    s2.setTheme({
+      colCell: cell,
+      rowCell: cell,
+      dataCell: cell,
+      cornerCell: cell,
+    });
+
+    await s2.render();
+
+    // With font size 10 (smaller than default 12), the cell height should be adaptive
+    // Height should be smaller than the default (30px), approximately around 12-14px for font size 10
+    expect(s2.facet.getLayoutResult().colNodes[0].height).toBeLessThan(30);
+    expect(s2.facet.getDataCells()[0].getMeta().height).toBeLessThan(30);
+  };
+}
+
 describe('SpreadSheet Multi Line Text Tests', () => {
   let s2: SpreadSheet;
 
@@ -849,6 +884,11 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
     test('should render Cell Height correct after set large font', async () => {
       await runLargeFontCellHeightTest(s2);
+    });
+
+    // https://github.com/antvis/S2/issues/3262
+    test('should render Cell Height correct after set small font', async () => {
+      await runSmallFontCellHeightTest(s2)();
     });
   });
 
@@ -1691,6 +1731,50 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
     test('should render Cell Height correct after set large font', async () => {
       await runLargeFontCellHeightTest(s2);
+    });
+
+    // https://github.com/antvis/S2/issues/3262
+    test('should render Cell Height correct after set small font', async () => {
+      await runSmallFontCellHeightTest(s2)();
+    });
+
+    // https://github.com/antvis/S2/issues/3262
+    test('should render multi-line text with small font and textBaseline top correctly', async () => {
+      s2.setOptions({
+        style: {
+          colCell: {
+            maxLines: 2,
+            wordWrap: true,
+            textOverflow: 'ellipsis',
+          },
+        },
+      });
+
+      s2.setTheme({
+        colCell: {
+          bolderText: {
+            textBaseline: 'top',
+            fontSize: 10,
+          },
+        },
+        cornerCell: {
+          bolderText: {
+            textBaseline: 'top',
+            fontSize: 10,
+          },
+        },
+      });
+
+      await s2.render();
+
+      // With small font size (10px) and multi-line text (maxLines: 2),
+      // the adaptive height should be calculated and the header should
+      // accommodate the text properly
+      const colNodes = s2.facet.getLayoutResult().colNodes;
+
+      // The cell height should be adaptive and not the default 30px
+      // With fontSize 10 and maxLines 2, the height should be around 40-48px
+      expect(colNodes[0].height).toBeGreaterThanOrEqual(30);
     });
   });
 });

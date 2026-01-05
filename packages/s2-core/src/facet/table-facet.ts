@@ -219,8 +219,8 @@ export class TableFacet extends FrozenFacet {
     // 不超过一行或者用户已经配置过当前行高则无需预设
     if (
       (isEmpty(colLeafNodes) || style?.dataCell?.maxLines! <= 1) &&
-      this.spreadsheet.theme.dataCell.text.fontSize <= DEFAULT_FONTSIZE &&
-      this.spreadsheet.theme.dataCell.bolderText.fontSize <= DEFAULT_FONTSIZE
+      this.spreadsheet.theme.dataCell.text.fontSize === DEFAULT_FONTSIZE &&
+      this.spreadsheet.theme.dataCell.bolderText.fontSize === DEFAULT_FONTSIZE
     ) {
       return;
     }
@@ -249,8 +249,8 @@ export class TableFacet extends FrozenFacet {
     const heightByField = style?.rowCell?.heightByField;
     const isEnableHeightAdaptive =
       (style?.dataCell?.maxLines! > 1 && style?.dataCell?.wordWrap) ||
-      this.spreadsheet.theme.dataCell.text.fontSize > DEFAULT_FONTSIZE ||
-      this.spreadsheet.theme.dataCell.bolderText.fontSize > DEFAULT_FONTSIZE;
+      this.spreadsheet.theme.dataCell.text.fontSize !== DEFAULT_FONTSIZE ||
+      this.spreadsheet.theme.dataCell.bolderText.fontSize !== DEFAULT_FONTSIZE;
 
     if (keys(heightByField!).length || isEnableHeightAdaptive) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
