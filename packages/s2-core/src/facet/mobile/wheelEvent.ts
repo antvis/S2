@@ -17,6 +17,18 @@ const TOTAL_MS = 800;
 const SWIPE_TIME_GAP = 100;
 
 /**
+ * 判断是否是多点触控 (用于检测缩放手势)
+ * @param evt FederatedPointerEvent
+ * @returns boolean - true 表示是多点触控 (>= 2 个触摸点)
+ */
+const isMultiTouch = (evt: FederatedPointerEvent): boolean => {
+  const nativeEvent = evt.nativeEvent as TouchEvent;
+
+  // 检查是否是触摸事件且有多个触摸点
+  return nativeEvent?.touches?.length >= 2;
+};
+
+/**
  * 移动端滚动事件
  * @see https://github.com/antvis/g-gesture/blob/next/src/event/wheel.ts
  */
@@ -61,6 +73,13 @@ export class WheelEvent extends EE {
   }
 
   private bindPointerDown = (evt: FederatedPointerEvent) => {
+    // 多点触控时 (如缩放手势), 不开始滚动, 让浏览器处理原生缩放行为
+    // When multi-touch is detected (e.g., pinch-to-zoom), don't start panning
+    // to allow native browser zoom behavior
+    if (isMultiTouch(evt)) {
+      return;
+    }
+
     window.cancelAnimationFrame(this.raf);
     this.panning = true;
 
@@ -72,6 +91,16 @@ export class WheelEvent extends EE {
   };
 
   private bindPointerMove = (evt: FederatedPointerEvent) => {
+    // 多点触控时 (如缩放手势), 停止滚动, 让浏览器处理原生缩放行为
+    // When multi-touch is detected (e.g., pinch-to-zoom), stop panning
+    // to allow native browser zoom behavior
+    if (isMultiTouch(evt)) {
+      this.panning = false;
+      window.cancelAnimationFrame(this.raf);
+
+      return;
+    }
+
     if (this.panning) {
       const ms = now();
       const deltaMS = ms - this.lastMoveMS;
