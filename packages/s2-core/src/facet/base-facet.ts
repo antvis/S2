@@ -550,7 +550,17 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height = Math.max(adaptiveHeight, defaultHeight);
+    // Check if text actually uses multiple lines
+    const singleLineHeight = cell.getTextLineHeight();
+    const hasWrappedText = textHeight > singleLineHeight * 1.5;
+
+    // Use adaptive height when:
+    // 1. Text actually wraps (uses multiple lines), OR
+    // 2. Text height exceeds default height
+    const needsAdaptiveHeight = hasWrappedText || textHeight >= defaultHeight;
+    const height = needsAdaptiveHeight
+      ? Math.max(adaptiveHeight, defaultHeight)
+      : defaultHeight;
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 
