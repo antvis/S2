@@ -134,9 +134,8 @@ export class WheelEvent extends EE {
       // 根据回调判断是否阻止默认滚动行为
       // 必须在事件链早期调用，否则浏览器的 passive 事件监听器会接管滚动
       if (nativeEvent?.cancelable) {
-        const shouldPrevent = this.shouldPreventDefault
-          ? this.shouldPreventDefault(deltaX, deltaY, evt.x, evt.y)
-          : true;
+        const shouldPrevent =
+          this.shouldPreventDefault?.(deltaX, deltaY, evt.x, evt.y) ?? true;
 
         if (shouldPrevent) {
           (nativeEvent as Event).preventDefault?.();
