@@ -1,3 +1,12 @@
+# [@antv/s2-v2.4.14-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v2.4.13...@antv/s2-v2.4.14-alpha.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* (mobile) support pinch-to-zoom gesture by detecting multi-touch ([#3276](https://github.com/antvis/S2/issues/3276)) ([f83cca5](https://github.com/antvis/S2/commit/f83cca56caf4deafe65197b27834505da0947b09)), closes [#3251](https://github.com/antvis/S2/issues/3251)
+* 修复了小字号多行文本被截断 ([#3279](https://github.com/antvis/S2/issues/3279)) ([519f8f2](https://github.com/antvis/S2/commit/519f8f2631f67e8a9e57f19a0e49c80e59bd3b4a)), closes [#3262](https://github.com/antvis/S2/issues/3262) [#3262](https://github.com/antvis/S2/issues/3262)
+* 移动端交叉表滚动时，手指不松开持续滚动几秒后，表格滚动会带动整个网页一起滚动 ([75d2005](https://github.com/antvis/S2/commit/75d2005ef1d489df0bcc32d40cf67f6472178220))
+
 # [@antv/s2-v2.4.13](https://github.com/antvis/S2/compare/@antv/s2-v2.4.12...@antv/s2-v2.4.13) (2025-12-26)
 
 
