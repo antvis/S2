@@ -1,6 +1,7 @@
 ---
 title: Server-Side Rendering (SSR)
 order: 10
+tag: New
 ---
 
 <Badge>@antv/s2-ssr</Badge>
@@ -15,8 +16,6 @@ In certain scenarios, you may need to generate table images on the server side (
 - 🖨️ **Print Services**: Generate high-quality table images for printing
 
 S2 provides the `@antv/s2-ssr` package, which allows you to render PivotSheet and TableSheet in Node.js environments and export them to **PNG, JPEG, SVG, or PDF** formats.
-
-![Preview](/assets/s2-ssr-pivot.png)
 
 ## Installation
 
@@ -86,7 +85,7 @@ async function main() {
 main();
 ```
 
-![PivotSheet](/assets/s2-ssr-pivot.png)
+![PivotSheet](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*cHFySYcOKEsAAAAAQGAAAAgAemJ7AQ/fmt.avif)
 
 ### Export TableSheet
 
@@ -116,7 +115,7 @@ async function main() {
 main();
 ```
 
-![TableSheet](/assets/s2-ssr-table.png)
+![TableSheet](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pp96Qr9HP-EAAAAAQFAAAAgAemJ7AQ/fmt.avif)
 
 ## Export Formats
 
@@ -178,7 +177,7 @@ const spreadsheet = await createSpreadsheet({
 });
 ```
 
-![Dark Theme](/assets/s2-ssr-dark.png)
+![Dark Theme](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*hSipR7SMWMwAAAAAQGAAAAgAemJ7AQ/fmt.avif)
 
 ```javascript
 // Colorful theme
@@ -190,7 +189,7 @@ const spreadsheet = await createSpreadsheet({
 });
 ```
 
-![Colorful Theme](/assets/s2-ssr-colorful.png)
+![Colorful Theme](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*GckgTbAX_7EAAAAAQGAAAAgAemJ7AQ/fmt.avif)
 
 ### Custom Theme
 

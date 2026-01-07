@@ -1,6 +1,7 @@
 ---
 title: 服务端渲染 (SSR)
 order: 10
+tag: New
 ---
 
 <Badge>@antv/s2-ssr</Badge>
@@ -15,8 +16,6 @@ order: 10
 - 🖨️ **打印服务**：服务端生成高清表格图片用于打印
 
 S2 提供了 `@antv/s2-ssr` 包，让你可以在 Node.js 环境中渲染透视表和明细表，并导出为 **PNG、JPEG、SVG、PDF** 等格式。
-
-![效果预览](/assets/s2-ssr-pivot.png)
 
 ## 安装
 
@@ -86,7 +85,7 @@ async function main() {
 main();
 ```
 
-![透视表](/assets/s2-ssr-pivot.png)
+![透视表](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*cHFySYcOKEsAAAAAQGAAAAgAemJ7AQ/fmt.avif)
 
 ### 导出明细表
 
@@ -116,7 +115,7 @@ async function main() {
 main();
 ```
 
-![明细表](/assets/s2-ssr-table.png)
+![明细表](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pp96Qr9HP-EAAAAAQFAAAAgAemJ7AQ/fmt.avif)
 
 ## 导出格式
 
@@ -178,7 +177,7 @@ const spreadsheet = await createSpreadsheet({
 });
 ```
 
-![暗黑主题](/assets/s2-ssr-dark.png)
+![暗黑主题](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*hSipR7SMWMwAAAAAQGAAAAgAemJ7AQ/fmt.avif)
 
 ```javascript
 // 多彩主题
@@ -190,7 +189,7 @@ const spreadsheet = await createSpreadsheet({
 });
 ```
 
-![多彩主题](/assets/s2-ssr-colorful.png)
+![多彩主题](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*GckgTbAX_7EAAAAAQGAAAAgAemJ7AQ/fmt.avif)
 
 ### 自定义主题
 
