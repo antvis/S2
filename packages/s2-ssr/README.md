@@ -1,28 +1,28 @@
 # @antv/s2-ssr
 
-Server-side rendering (SSR) support for [S2](https://github.com/antvis/S2) using [node-canvas](https://github.com/Automattic/node-canvas).
+基于 [node-canvas](https://github.com/Automattic/node-canvas) 的 [S2](https://github.com/antvis/S2) 服务端渲染 (SSR) 支持。
 
-This package allows you to render S2 PivotSheet and TableSheet to PNG, JPEG, SVG, or PDF formats in Node.js environments.
+该包允许您在 Node.js 环境中将 S2 透视表（PivotSheet）和明细表（TableSheet）渲染为 PNG、JPEG、SVG 或 PDF 格式。
 
-## Installation
+## 安装
 
 ```bash
 npm install @antv/s2-ssr
-# or
+# 或者
 pnpm add @antv/s2-ssr
 ```
 
-> **Note**: This package requires [node-canvas](https://github.com/Automattic/node-canvas) which needs Cairo and Pango. See the [node-canvas installation guide](https://github.com/Automattic/node-canvas#compiling) for platform-specific instructions.
+> **注意**：该包依赖 [node-canvas](https://github.com/Automattic/node-canvas)，它需要 Cairo 和 Pango。有关特定平台的说明，请参阅 [node-canvas 安装指南](https://github.com/Automattic/node-canvas#compiling)。
 
-## Usage
+## 使用
 
-### Basic Usage
+### 基本使用
 
 ```javascript
 const { createSpreadsheet } = require('@antv/s2-ssr');
 
 const options = {
-  sheetType: 'pivot', // or 'table'
+  sheetType: 'pivot', // 或者 'table'
   width: 800,
   height: 600,
   dataCfg: {
@@ -37,35 +37,35 @@ const options = {
     ],
   },
   options: {
-    // S2 options
+    // S2 配置
   },
 };
 
 (async () => {
   const spreadsheet = await createSpreadsheet(options);
 
-  // Export to file
+  // 导出到文件
   spreadsheet.exportToFile('./output.png');
 
-  // Or get as buffer
+  // 或者获取 buffer
   const buffer = spreadsheet.toBuffer();
 
-  // Or get as data URL
+  // 或者获取 data URL
   const dataURL = spreadsheet.toDataURL();
 
-  // Clean up
+  // 清理资源
   spreadsheet.destroy();
 })();
 ```
 
-### Export Formats
+### 导出格式
 
-#### PNG/JPEG (default)
+#### PNG/JPEG (默认)
 
 ```javascript
 const spreadsheet = await createSpreadsheet({
   ...options,
-  imageType: 'png', // or 'jpeg'
+  imageType: 'png', // 或者 'jpeg'
 });
 
 spreadsheet.exportToFile('./output.png');
@@ -97,45 +97,45 @@ spreadsheet.exportToFile('./output.pdf');
 
 ### `createSpreadsheet(options)`
 
-Creates a spreadsheet instance for SSR.
+创建一个用于 SSR 的表格实例。
 
-#### Options
+#### Options (配置项)
 
-| Property | Type | Default | Description |
+| 属性 | 类型 | 默认值 | 描述 |
 | --- | --- | --- | --- |
-| `sheetType` | `'pivot' \| 'table'` | `'pivot'` | Type of spreadsheet to create |
-| `width` | `number` | - | Canvas width |
-| `height` | `number` | - | Canvas height |
-| `dataCfg` | `S2DataConfig` | - | S2 data configuration |
-| `options` | `S2Options` | `{}` | S2 options |
-| `devicePixelRatio` | `number` | `2` | Device pixel ratio |
-| `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | Output type |
-| `imageType` | `'png' \| 'jpeg'` | `'png'` | Image type (when outputType is 'image') |
-| `waitForRender` | `number` | `32` | Wait time (ms) for async rendering to complete |
-| `renderPlugins` | `any[]` | `[]` | Additional G render plugins |
+| `sheetType` | `'pivot' \| 'table'` | `'pivot'` | 要创建的表格类型 |
+| `width` | `number` | - | 画布宽度 |
+| `height` | `number` | - | 画布高度 |
+| `dataCfg` | `S2DataConfig` | - | S2 数据配置 |
+| `options` | `S2Options` | `{}` | S2 表格配置 |
+| `devicePixelRatio` | `number` | `2` | 设备像素比 |
+| `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | 输出类型 |
+| `imageType` | `'png' \| 'jpeg'` | `'png'` | 图片类型 (当 outputType 为 'image' 时) |
+| `waitForRender` | `number` | `32` | 等待异步渲染完成的时间 (ms) |
+| `renderPlugins` | `any[]` | `[]` | 额外的 G 渲染插件 |
 
-#### Returns
+#### Returns (返回值)
 
-Returns a `Spreadsheet` object with the following methods:
+返回一个 `Spreadsheet` 对象，包含以下方法：
 
-| Method | Description |
+| 方法 | 描述 |
 | --- | --- |
-| `exportToFile(path, meta?)` | Export to a file |
-| `toBuffer(meta?)` | Get as Node.js Buffer |
-| `toDataURL()` | Get as base64 data URL |
-| `getCanvas()` | Get the underlying node-canvas instance |
-| `destroy()` | Clean up resources |
+| `exportToFile(path, meta?)` | 导出到文件 |
+| `toBuffer(meta?)` | 获取 Node.js Buffer |
+| `toDataURL()` | 获取 base64 data URL |
+| `getCanvas()` | 获取底层的 node-canvas 实例 |
+| `destroy()` | 清理资源 |
 
 ### `createCanvas(options)`
 
-Creates a raw G Canvas with node-canvas for advanced usage.
+创建一个带有 node-canvas 的原生 G Canvas，用于高级用法。
 
-## Node.js Environment Setup
+## Node.js 环境配置
 
-When using this package, you need to set up browser globals in your Node.js environment. For jsdom users, this is typically handled automatically. For other environments:
+使用此包时，您需要在 Node.js 环境中设置浏览器全局变量。对于 jsdom 用户，这通常会自动处理。对于其他环境：
 
 ```javascript
-// Setup before importing @antv/s2-ssr
+// 在导入 @antv/s2-ssr 之前进行设置
 global.navigator = { userAgent: 'node' };
 global.window = { navigator: global.navigator };
 global.document = {
