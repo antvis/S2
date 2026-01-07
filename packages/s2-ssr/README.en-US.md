@@ -144,6 +144,7 @@ Creates a spreadsheet instance for SSR.
 | `dataCfg` | `S2DataConfig` | - | S2 data configuration |
 | `options` | `S2Options` | `{}` | S2 options |
 | `themeCfg` | `ThemeCfg` | - | Theme configuration |
+| `autoFit` | `boolean` | `true` | Auto crop canvas to actual table size, remove blank areas |
 | `devicePixelRatio` | `number` | `2` | Device pixel ratio |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | Output type |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | Image type (when outputType is 'image') |

@@ -1,4 +1,4 @@
-/* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file,max-lines-per-function */
 import { existsSync, lstatSync, writeFileSync } from 'fs';
 
 import { Renderer } from '@antv/g-canvas';
@@ -81,6 +81,7 @@ export async function createSpreadsheet(
     devicePixelRatio = 2,
     waitForRender = 100,
     outputType,
+    autoFit = true,
     renderPlugins = [],
   } = options;
 
@@ -192,10 +193,52 @@ export async function createSpreadsheet(
   // Wait for async rendering to complete
   await sleep(waitForRender);
 
+  // Determine the output canvas (cropped if autoFit)
+  let outputCanvas = nodeCanvas;
+
+  if (autoFit && outputType !== 'svg' && outputType !== 'pdf') {
+    // Get actual table dimensions from facet
+    const facet = spreadsheet.facet;
+
+    if (facet) {
+      const panelBBox = facet.panelBBox;
+      // Actual width/height is the max extent of the table content
+      const actualWidth = Math.ceil(panelBBox.maxX);
+      const actualHeight = Math.ceil(panelBBox.maxY);
+
+      // Only crop if actual dimensions are smaller than canvas
+      if (actualWidth < width || actualHeight < height) {
+        const croppedWidth = Math.min(actualWidth, width);
+        const croppedHeight = Math.min(actualHeight, height);
+
+        // Create a new canvas with actual dimensions
+        const croppedCanvas = createNodeCanvas(croppedWidth, croppedHeight);
+        const ctx = croppedCanvas.getContext('2d');
+
+        if (ctx) {
+          // Copy the rendered content from original canvas
+          ctx.drawImage(
+            nodeCanvas,
+            0,
+            0,
+            croppedWidth * devicePixelRatio,
+            croppedHeight * devicePixelRatio,
+            0,
+            0,
+            croppedWidth,
+            croppedHeight,
+          );
+        }
+
+        outputCanvas = croppedCanvas;
+      }
+    }
+  }
+
   const [extendName, mimeType] = getInfoOf(options);
 
   const result: Spreadsheet = {
-    getCanvas: () => nodeCanvas,
+    getCanvas: () => outputCanvas,
     destroy: () => spreadsheet.destroy(),
     exportToFile: (file: string, meta?: MetaData) => {
       let outputPath = file;
@@ -211,11 +254,11 @@ export async function createSpreadsheet(
       }
 
       // @ts-expect-error skip type check for node-canvas specific API
-      writeFileSync(outputPath, nodeCanvas.toBuffer(mimeType, meta));
+      writeFileSync(outputPath, outputCanvas.toBuffer(mimeType, meta));
     },
     // @ts-expect-error skip type check for node-canvas specific API
-    toBuffer: (meta?: MetaData) => nodeCanvas.toBuffer(mimeType, meta),
-    toDataURL: () => nodeCanvas.toDataURL(mimeType as 'image/png'),
+    toBuffer: (meta?: MetaData) => outputCanvas.toBuffer(mimeType, meta),
+    toDataURL: () => outputCanvas.toDataURL(mimeType as 'image/png'),
   };
 
   return result;

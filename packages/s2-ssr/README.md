@@ -144,6 +144,7 @@ const spreadsheet = await createSpreadsheet({
 | `dataCfg` | `S2DataConfig` | - | S2 数据配置 |
 | `options` | `S2Options` | `{}` | S2 表格配置 |
 | `themeCfg` | `ThemeCfg` | - | 主题配置 |
+| `autoFit` | `boolean` | `true` | 自动裁剪画布到实际表格大小，去除空白区域 |
 | `devicePixelRatio` | `number` | `2` | 设备像素比 |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | 输出类型 |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | 图片类型 (当 outputType 为 'image' 时) |

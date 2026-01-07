@@ -243,6 +243,7 @@ spreadsheet.destroy();
 | `options` | `S2Options` | `{}` | Sheet options, same as browser side |
 | `themeCfg` | `ThemeCfg` | - | Theme configuration |
 | `devicePixelRatio` | `number` | `2` | Device pixel ratio, affects image clarity |
+| `autoFit` | `boolean` | `true` | Auto crop canvas to actual table size, remove blank areas |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | Output type |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | Image format |
 | `waitForRender` | `number` | `32` | Wait time for rendering (milliseconds) |

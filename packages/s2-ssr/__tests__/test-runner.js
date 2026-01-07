@@ -313,6 +313,35 @@ async function runTests() {
     spreadsheet.destroy();
   });
 
+  console.log('\nAutoFit:');
+
+  // Test: AutoFit disabled (should keep original canvas size)
+  await test('autoFit disabled', async () => {
+    // Create with large canvas but small data - should NOT crop
+    const width = 800;
+    const height = 600;
+    const spreadsheet = await createSpreadsheet({
+      sheetType: 'pivot',
+      width,
+      height,
+      dataCfg: pivotData,
+      autoFit: false,
+    });
+    const canvas = spreadsheet.getCanvas();
+
+    // Should keep original dimensions (multiplied by DPR 2)
+    const dpr = 2;
+
+    assert(
+      canvas.width === width * dpr && canvas.height === height * dpr,
+      `Canvas should not be cropped: expected ${width * dpr}x${height * dpr}, got ${canvas.width}x${canvas.height}`,
+    );
+    console.log(`     Canvas size: ${canvas.width}x${canvas.height}`);
+
+    spreadsheet.exportToFile(path.join(ASSETS_DIR, 'pivot-no-autofit.png'));
+    spreadsheet.destroy();
+  });
+
   // Summary
   console.log('\n---');
   console.log(`Results: ${passed} passed, ${failed} failed`);

@@ -238,6 +238,7 @@ spreadsheet.destroy();
 | --- | --- | --- | --- |
 | `sheetType` | `'pivot' \| 'table'` | `'pivot'` | 表格类型 |
 | `width` | `number` | - | 画布宽度（像素） |
+| `autoFit` | `boolean` | `true` | 自动裁剪画布到实际表格大小，去除空白区域 |
 | `height` | `number` | - | 画布高度（像素） |
 | `dataCfg` | `S2DataConfig` | - | 数据配置，与浏览器端一致 |
 | `options` | `S2Options` | `{}` | 表格配置，与浏览器端一致 |

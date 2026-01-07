@@ -74,6 +74,13 @@ export interface Options {
    */
   imageType?: 'png' | 'jpeg';
   /**
+   * <zh/> 自动裁剪画布到实际表格大小，去除空白区域
+   *
+   * <en/> Auto crop canvas to actual table size, remove blank areas
+   * @defaultValue true
+   */
+  autoFit?: boolean;
+  /**
    * <zh/> 渲染插件
    *
    * <en/> Render plugins
