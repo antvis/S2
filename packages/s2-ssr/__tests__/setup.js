@@ -1,6 +1,6 @@
 // Mock browser globals for SSR testing
-
 /* eslint-disable max-classes-per-file */
+
 // Mock navigator
 global.navigator = {
   userAgent: 'node',
@@ -8,20 +8,7 @@ global.navigator = {
   platform: 'node',
 };
 
-// Mock window
-global.window = {
-  navigator: global.navigator,
-  devicePixelRatio: 2,
-  addEventListener: () => {},
-  removeEventListener: () => {},
-  getComputedStyle: () => ({}),
-  setTimeout: global.setTimeout,
-  clearTimeout: global.clearTimeout,
-  requestAnimationFrame: (cb) => setTimeout(cb, 16),
-  cancelAnimationFrame: (id) => clearTimeout(id),
-};
-
-// Mock document
+// Mock document first (before window)
 global.document = {
   createElement: (tag) => ({
     tagName: tag.toUpperCase(),
@@ -48,6 +35,7 @@ global.document = {
     getContext: () => null,
     toDataURL: () => '',
   }),
+  getElementById: () => null,
   createElementNS: (ns, tag) => global.document.createElement(tag),
   body: {
     appendChild: () => {},
@@ -61,6 +49,23 @@ global.document = {
   removeEventListener: () => {},
   querySelector: () => null,
   querySelectorAll: () => [],
+};
+
+// Mock window (after document so window.document works)
+global.window = {
+  navigator: global.navigator,
+  document: global.document,
+  devicePixelRatio: 2,
+  addEventListener: () => {},
+  removeEventListener: () => {},
+  getComputedStyle: () => ({
+    getPropertyValue: () => '',
+  }),
+  setTimeout: global.setTimeout,
+  clearTimeout: global.clearTimeout,
+  requestAnimationFrame: (cb) => setTimeout(cb, 16),
+  cancelAnimationFrame: (id) => clearTimeout(id),
+  location: { href: 'http://localhost/' },
 };
 
 // Mock HTMLElement

@@ -3,6 +3,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
 
+// Mock CSS/LESS/SVG imports
+require.extensions['.css'] = () => {};
+require.extensions['.less'] = () => {};
+require.extensions['.svg'] = () => {};
+
 // Setup browser globals for SSR before loading any modules
 global.navigator = {
   userAgent: 'node',
@@ -10,18 +15,7 @@ global.navigator = {
   platform: 'node',
 };
 
-global.window = {
-  navigator: global.navigator,
-  devicePixelRatio: 2,
-  addEventListener: () => {},
-  removeEventListener: () => {},
-  getComputedStyle: () => new Proxy({}, { get: () => '' }),
-  setTimeout: global.setTimeout,
-  clearTimeout: global.clearTimeout,
-  requestAnimationFrame: (cb) => setTimeout(cb, 16),
-  cancelAnimationFrame: (id) => clearTimeout(id),
-};
-
+// Define document first since window.document needs it
 global.document = {
   createElement: (tag) => ({
     tagName: tag.toUpperCase(),
@@ -44,6 +38,7 @@ global.document = {
     getContext: () => null,
     toDataURL: () => '',
   }),
+  getElementById: () => null,
   createElementNS: (ns, tag) => global.document.createElement(tag),
   body: { appendChild: () => {}, removeChild: () => {}, style: {} },
   documentElement: { style: {} },
@@ -51,6 +46,23 @@ global.document = {
   removeEventListener: () => {},
   querySelector: () => null,
   querySelectorAll: () => [],
+};
+
+// Define window after document so window.document works
+global.window = {
+  navigator: global.navigator,
+  document: global.document,
+  devicePixelRatio: 2,
+  addEventListener: () => {},
+  removeEventListener: () => {},
+  getComputedStyle: () => ({
+    getPropertyValue: () => '',
+  }),
+  setTimeout: global.setTimeout,
+  clearTimeout: global.clearTimeout,
+  requestAnimationFrame: (cb) => setTimeout(cb, 16),
+  cancelAnimationFrame: (id) => clearTimeout(id),
+  location: { href: 'http://localhost/' },
 };
 
 global.HTMLElement = class HTMLElement {};
@@ -98,54 +110,55 @@ cli.command('version', 'Show version').action(() => {
 });
 
 cli
-  .command('export', 'Export S2 Spreadsheet to Image, PDF or SVG')
-  .option('-i, --input <inputPath>', 'Path to the S2 spec file')
-  .option('-o, --output <outputPath>', 'Path to the export file')
-  .option('-t, --type [type]', 'File type, default is image')
+  .command('export', 'Export spreadsheet to image')
+  .option('-i, --input <file>', 'Input specification file (JSON)')
+  .option('-o, --output <file>', 'Output file path')
+  .option('-t, --type <type>', 'Sheet type: pivot or table', {
+    default: 'pivot',
+  })
+  .option('-w, --width <number>', 'Width in pixels', { default: 800 })
+  .option('-h, --height <number>', 'Height in pixels', { default: 600 })
+  .option('--image-type <type>', 'Image type: png or jpeg', { default: 'png' })
+  .option('--output-type <type>', 'Output type: image, svg, or pdf', {
+    default: 'image',
+  })
+  .option('--wait <ms>', 'Wait time for rendering in milliseconds', {
+    default: 32,
+  })
   .action(async (options) => {
-    const { input, output, type } = options;
+    const { input, output, type, width, height, imageType, outputType, wait } =
+      options;
 
     if (!input) {
-      console.log(
-        '\x1b[31m%s\x1b[0m',
-        'Please provide a path to the S2 spec file',
-      );
+      console.error('Error: Input file is required');
       process.exit(1);
     }
 
-    if (!fs.existsSync(input)) {
-      console.log('\x1b[31m%s\x1b[0m', 'File does not exist: ', input);
+    if (!output) {
+      console.error('Error: Output file is required');
       process.exit(1);
     }
 
-    let spec;
+    // Read input specification
+    const specContent = fs.readFileSync(input, 'utf-8');
+    const spec = JSON.parse(specContent);
 
-    try {
-      spec = JSON.parse(fs.readFileSync(input, 'utf-8'));
-    } catch (e) {
-      console.log('\x1b[31m%s\x1b[0m', 'Invalid JSON file');
-      process.exit(1);
-    }
+    // Create spreadsheet and export
+    const spreadsheet = await createSpreadsheet({
+      sheetType: spec.sheetType || type,
+      width: spec.width || parseInt(width, 10),
+      height: spec.height || parseInt(height, 10),
+      imageType: spec.imageType || imageType,
+      outputType: spec.outputType || outputType,
+      waitForRender: spec.waitForRender || parseInt(wait, 10),
+      dataCfg: spec.dataCfg,
+      options: spec.options,
+    });
 
-    if (!spec.outputType) {
-      if (type === 'svg' || type === 'pdf') {
-        spec.outputType = type;
-      }
-    }
-
-    console.log(`Exporting to ${type || 'image'}...`);
-
-    const spreadsheet = await createSpreadsheet(spec);
-
-    spreadsheet.exportToFile(output, type);
-
-    console.log('\x1b[32m%s\x1b[0m', 'Exported successfully!');
-
+    spreadsheet.exportToFile(output);
     spreadsheet.destroy();
-
-    process.exit(0);
+    console.log(`Exported to: ${output}`);
   });
 
 cli.help();
-
 cli.parse();

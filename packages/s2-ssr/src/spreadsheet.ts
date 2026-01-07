@@ -1,18 +1,22 @@
 /* eslint-disable max-classes-per-file */
 import { existsSync, lstatSync, writeFileSync } from 'fs';
 
+import { Renderer } from '@antv/g-canvas';
 import {
   PivotSheet as BasePivotSheet,
   TableSheet as BaseTableSheet,
-  type SpreadSheet,
 } from '@antv/s2';
-import { createCanvas } from './canvas';
+import type { Canvas as NodeCanvas } from 'canvas';
+import { Image as NodeImage, createCanvas as createNodeCanvas } from 'canvas';
 import type { MetaData, Options, Spreadsheet } from './types';
 
+// Store nodeCanvas for each spreadsheet instance
+const nodeCanvasMap = new WeakMap<object, NodeCanvas>();
+
 /**
- * <zh/> SSR 版本的 PivotSheet，覆盖了需要 DOM 的方法
+ * <zh/> SSR 版本的 PivotSheet
  *
- * <en/> SSR version of PivotSheet with DOM methods overridden
+ * <en/> SSR version of PivotSheet
  */
 class SSRPivotSheet extends BasePivotSheet {
   protected setupContainerStyle(): void {
@@ -21,9 +25,9 @@ class SSRPivotSheet extends BasePivotSheet {
 }
 
 /**
- * <zh/> SSR 版本的 TableSheet，覆盖了需要 DOM 的方法
+ * <zh/> SSR 版本的 TableSheet
  *
- * <en/> SSR version of TableSheet with DOM methods overridden
+ * <en/> SSR version of TableSheet
  */
 class SSRTableSheet extends BaseTableSheet {
   protected setupContainerStyle(): void {
@@ -35,8 +39,6 @@ class SSRTableSheet extends BaseTableSheet {
  * <zh/> 获取输出文件的扩展名
  *
  * <en/> Get the extension name of the output file
- * @param options - <zh/>配置项 | <en/>options
- * @returns <zh/>输出文件的扩展名 | <en/>The extension name of the output file
  */
 function getInfoOf(options: Options) {
   const { outputType, imageType } = options;
@@ -65,8 +67,6 @@ const sleep = (ms: number) =>
  * <zh/> 创建表格并等待渲染完成
  *
  * <en/> Create a spreadsheet and wait for the rendering to complete
- * @param options - <zh/>表格配置项 | <en/>Spreadsheet options
- * @returns <zh/>扩展表格实例 | <en/>Extended spreadsheet instance
  */
 export async function createSpreadsheet(
   options: Options,
@@ -77,13 +77,36 @@ export async function createSpreadsheet(
     options: s2Options = {},
     width,
     height,
-    waitForRender = 32,
+    devicePixelRatio = 2,
+    waitForRender = 100,
+    outputType,
+    renderPlugins = [],
   } = options;
 
-  const [gCanvas, nodeCanvas] = createCanvas(options);
+  // Create node-canvas instances
+  const nodeCanvas = createNodeCanvas(
+    width,
+    height,
+    outputType as 'pdf' | 'svg',
+  );
+  const offscreenNodeCanvas = createNodeCanvas(1, 1);
 
-  // Wait for canvas to be ready
-  await gCanvas.ready;
+  // Add required DOM-like properties to nodeCanvas for S2 compatibility
+  const canvas = nodeCanvas as NodeCanvas & {
+    isConnected?: boolean;
+    addEventListener?: () => void;
+    removeEventListener?: () => void;
+    style?: Record<string, string>;
+  };
+
+  Object.defineProperty(canvas, 'isConnected', {
+    value: true,
+    writable: false,
+    configurable: true,
+  });
+  canvas.addEventListener = () => {};
+  canvas.removeEventListener = () => {};
+  canvas.style = {};
 
   // Create a minimal mock container for SSR
   const mockContainer = {
@@ -106,14 +129,11 @@ export async function createSpreadsheet(
     offsetHeight: height,
   };
 
-  // Get the Image class from canvas module for image creation
-  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
-  const { Image: NodeImage } = require('canvas');
-
   // Choose the SSR-compatible sheet class
   const SheetClass = sheetType === 'table' ? SSRTableSheet : SSRPivotSheet;
 
-  const spreadsheet: SpreadSheet = new SheetClass(
+  // Create the spreadsheet instance with transformCanvasConfig to inject node-canvas
+  const spreadsheet = new SheetClass(
     mockContainer as unknown as HTMLElement,
     dataCfg,
     {
@@ -127,9 +147,9 @@ export async function createSpreadsheet(
         enable: false,
         ...s2Options.tooltip,
       },
-      // Use our SSR canvas instead of creating a new one
-      transformCanvasConfig: (renderer) => {
-        // Disable DOM-related plugins
+      // Configure G Canvas to use our node-canvas
+      transformCanvasConfig: (renderer: Renderer) => {
+        // Disable DOM-related plugins that don't work in SSR
         const htmlRendererPlugin = renderer.getPlugin('html-renderer');
         const domInteractionPlugin = renderer.getPlugin('dom-interaction');
 
@@ -141,15 +161,24 @@ export async function createSpreadsheet(
           renderer.unregisterPlugin(domInteractionPlugin);
         }
 
+        // Register additional plugins
+        renderPlugins.forEach((plugin) => {
+          renderer.registerPlugin(plugin);
+        });
+
         return {
-          container: mockContainer as unknown as HTMLElement,
-          canvas: nodeCanvas as unknown as HTMLCanvasElement,
-          offscreenCanvas: nodeCanvas as unknown as HTMLCanvasElement,
-          createImage: () => new NodeImage() as HTMLImageElement,
+          // Pass our node-canvas as the underlying canvas element
+          canvas: canvas as unknown as HTMLCanvasElement,
+          offscreenCanvas: offscreenNodeCanvas as unknown as HTMLCanvasElement,
+          devicePixelRatio,
+          createImage: () => new NodeImage() as unknown as HTMLImageElement,
         };
       },
     },
   );
+
+  // Store node canvas reference
+  nodeCanvasMap.set(spreadsheet, nodeCanvas);
 
   // Render the spreadsheet
   await spreadsheet.render();

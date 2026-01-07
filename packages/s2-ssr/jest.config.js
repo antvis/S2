@@ -2,6 +2,7 @@
 module.exports = {
   forceExit: true,
   testEnvironment: 'jsdom',
+  setupFiles: ['<rootDir>/__tests__/setup.js'],
   testMatch: ['**/__tests__/**/*.spec.[jt]s?(x)'],
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest'],
