@@ -75,6 +75,7 @@ export async function createSpreadsheet(
     sheetType = 'pivot',
     dataCfg,
     options: s2Options = {},
+    themeCfg,
     width,
     height,
     devicePixelRatio = 2,
@@ -179,6 +180,11 @@ export async function createSpreadsheet(
 
   // Store node canvas reference
   nodeCanvasMap.set(spreadsheet, nodeCanvas);
+
+  // Apply theme configuration if provided
+  if (themeCfg) {
+    spreadsheet.setThemeCfg(themeCfg);
+  }
 
   // Render the spreadsheet
   await spreadsheet.render();

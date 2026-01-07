@@ -155,6 +155,7 @@ function assert(condition, message) {
   }
 }
 
+// eslint-disable-next-line max-lines-per-function
 async function runTests() {
   console.log('\n📊 S2-SSR Unit Tests\n');
   console.log('PivotSheet:');
@@ -271,6 +272,44 @@ async function runTests() {
 
     assert(buffer.length > 1000, `Buffer too small: ${buffer.length} bytes`);
     spreadsheet.exportToFile(path.join(ASSETS_DIR, 'table.jpeg'));
+    spreadsheet.destroy();
+  });
+
+  console.log('\nTheme:');
+
+  // Test: Dark Theme
+  await test('dark theme', async () => {
+    const spreadsheet = await createSpreadsheet({
+      sheetType: 'pivot',
+      width: 400,
+      height: 300,
+      dataCfg: pivotData,
+      themeCfg: {
+        name: 'dark',
+      },
+    });
+    const buffer = spreadsheet.toBuffer();
+
+    assert(buffer.length > 1000, `Buffer too small: ${buffer.length} bytes`);
+    spreadsheet.exportToFile(path.join(ASSETS_DIR, 'pivot-dark.png'));
+    spreadsheet.destroy();
+  });
+
+  // Test: Colorful Theme
+  await test('colorful theme', async () => {
+    const spreadsheet = await createSpreadsheet({
+      sheetType: 'pivot',
+      width: 400,
+      height: 300,
+      dataCfg: pivotData,
+      themeCfg: {
+        name: 'colorful',
+      },
+    });
+    const buffer = spreadsheet.toBuffer();
+
+    assert(buffer.length > 1000, `Buffer too small: ${buffer.length} bytes`);
+    spreadsheet.exportToFile(path.join(ASSETS_DIR, 'pivot-colorful.png'));
     spreadsheet.destroy();
   });
 

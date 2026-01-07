@@ -1,5 +1,5 @@
 import type { RendererPlugin } from '@antv/g';
-import type { S2DataConfig, S2Options } from '@antv/s2';
+import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import type { Canvas, JpegConfig, PdfConfig, PngConfig } from 'canvas';
 
 /**
@@ -27,6 +27,12 @@ export interface Options {
    * <en/> Sheet options
    */
   options?: Partial<S2Options>;
+  /**
+   * <zh/> 主题配置
+   *
+   * <en/> Theme configuration
+   */
+  themeCfg?: ThemeCfg;
   /**
    * <zh/> 画布宽度
    *

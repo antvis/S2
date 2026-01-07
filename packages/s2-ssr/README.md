@@ -93,6 +93,41 @@ const spreadsheet = await createSpreadsheet({
 spreadsheet.exportToFile('./output.pdf');
 ```
 
+### 主题配置
+
+S2 提供了多种内置主题，可以通过 `themeCfg` 配置项来设置：
+
+```javascript
+// 暗黑主题
+const spreadsheet = await createSpreadsheet({
+  ...options,
+  themeCfg: {
+    name: 'dark', // 'default' | 'dark' | 'colorful' | 'gray'
+  },
+});
+
+spreadsheet.exportToFile('./output-dark.png');
+```
+
+也可以自定义主题：
+
+```javascript
+const spreadsheet = await createSpreadsheet({
+  ...options,
+  themeCfg: {
+    theme: {
+      cornerCell: {
+        cell: {
+          backgroundColor: '#1a1a2e',
+        },
+      },
+    },
+  },
+});
+```
+
+详细的主题配置请参考 [S2 主题文档](https://s2.antv.antgroup.com/manual/basic/theme)。
+
 ## API
 
 ### `createSpreadsheet(options)`
@@ -108,6 +143,7 @@ spreadsheet.exportToFile('./output.pdf');
 | `height` | `number` | - | 画布高度 |
 | `dataCfg` | `S2DataConfig` | - | S2 数据配置 |
 | `options` | `S2Options` | `{}` | S2 表格配置 |
+| `themeCfg` | `ThemeCfg` | - | 主题配置 |
 | `devicePixelRatio` | `number` | `2` | 设备像素比 |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | 输出类型 |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | 图片类型 (当 outputType 为 'image' 时) |

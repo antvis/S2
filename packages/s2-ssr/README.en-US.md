@@ -93,6 +93,41 @@ const spreadsheet = await createSpreadsheet({
 spreadsheet.exportToFile('./output.pdf');
 ```
 
+### Theme Configuration
+
+S2 provides multiple built-in themes that can be configured via the `themeCfg` option:
+
+```javascript
+// Dark theme
+const spreadsheet = await createSpreadsheet({
+  ...options,
+  themeCfg: {
+    name: 'dark', // 'default' | 'dark' | 'colorful' | 'gray'
+  },
+});
+
+spreadsheet.exportToFile('./output-dark.png');
+```
+
+You can also customize the theme:
+
+```javascript
+const spreadsheet = await createSpreadsheet({
+  ...options,
+  themeCfg: {
+    theme: {
+      cornerCell: {
+        cell: {
+          backgroundColor: '#1a1a2e',
+        },
+      },
+    },
+  },
+});
+```
+
+For detailed theme configuration, see the [S2 Theme Documentation](https://s2.antv.antgroup.com/en/manual/basic/theme).
+
 ## API
 
 ### `createSpreadsheet(options)`
@@ -108,6 +143,7 @@ Creates a spreadsheet instance for SSR.
 | `height` | `number` | - | Canvas height |
 | `dataCfg` | `S2DataConfig` | - | S2 data configuration |
 | `options` | `S2Options` | `{}` | S2 options |
+| `themeCfg` | `ThemeCfg` | - | Theme configuration |
 | `devicePixelRatio` | `number` | `2` | Device pixel ratio |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | Output type |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | Image type (when outputType is 'image') |
