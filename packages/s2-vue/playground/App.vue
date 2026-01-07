@@ -587,6 +587,7 @@ export default defineComponent({
     const sheetType = ref<SheetType>('editable');
     const s2 = shallowRef();
     const dataCfgFlag = ref(1);
+    const loading = ref(false);
 
     /*
      * ! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
@@ -709,6 +710,7 @@ export default defineComponent({
         onChange: handlePageChange,
         onShowSizeChange: handlePageSizeChange,
       },
+      loading,
     };
   },
   components: {
@@ -739,6 +741,9 @@ export default defineComponent({
       "
     >
       更新到themeCfg
+    </button>
+    <button @click="loading = !loading">
+      {{ loading ? '停止Loading' : '开启Loading' }}
     </button>
     <div>
       <label>
@@ -773,6 +778,7 @@ export default defineComponent({
     @mounted="onMounted"
     @dataCellClick="onDataCellClick"
     @colCellClick="onColCellClick"
+    :loading="loading"
   />
 </template>
 
