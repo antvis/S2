@@ -1,0 +1,26 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "strict": true,
+        "outDir": "lib",
+        "target": "ESNext",
+        "module": "CommonJS",
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "declaration": true,
+        "skipLibCheck": true,
+        "moduleResolution": "node",
+        "paths": {
+            "@antv/s2": [
+                "../s2-core/src/index.ts"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "__tests__/**/*"
+    ]
+}
