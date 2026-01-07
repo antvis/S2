@@ -30,7 +30,7 @@
     "prepublishOnly": "npm run ci",
     "test": "run-s test:*",
     "test:bin": "node ./bin/s2-ssr.js export -i ./__tests__/spreadsheet-spec.json -o __tests__/assets/bin",
-    "test:unit": "jest",
+    "test:unit": "node ./__tests__/test-runner.js",
     "tsc": "tsc --noEmit -p tsconfig.test.json",
     "type-check": "tsc --noEmit -p tsconfig.test.json"
   },
