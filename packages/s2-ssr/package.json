@@ -31,6 +31,7 @@
     "test": "run-s test:*",
     "test:bin": "node ./bin/s2-ssr.js export -i ./__tests__/spreadsheet-spec.json -o __tests__/assets/bin",
     "test:unit": "jest",
+    "tsc": "tsc --noEmit -p tsconfig.test.json",
     "type-check": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
@@ -57,7 +58,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.28.1",
     "rollup-plugin-polyfill-node": "^0.13.0",
-    "typescript": "^5.7.2"
+    "typescript": "5.4.5"
   },
   "publishConfig": {
     "access": "public",
