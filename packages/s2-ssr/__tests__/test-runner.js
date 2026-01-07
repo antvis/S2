@@ -315,6 +315,40 @@ async function runTests() {
 
   console.log('\nAutoFit:');
 
+  // Test: AutoFit enabled (should crop to actual size with high DPI)
+  await test('autoFit enabled', async () => {
+    const spreadsheet = await createSpreadsheet({
+      sheetType: 'pivot',
+      width: 800,
+      height: 600,
+      dataCfg: pivotData,
+      autoFit: true,
+      devicePixelRatio: 2,
+    });
+    const canvas = spreadsheet.getCanvas();
+    // Expected height is small (around 122), width is 800 (logical) => physical 1600 x 244 (approx)
+    const dpr = 2;
+
+    // Width should be preserved (logical 800 -> physical 1600)
+    assert(
+      canvas.width === 800 * dpr,
+      `Width should be ${800 * dpr}, got ${canvas.width}`,
+    );
+
+    // Height should be cropped (logical 122 -> physical 244), definitely less than original 600*2=1200
+    assert(
+      canvas.height < 600 * dpr,
+      `Height should be cropped (< ${600 * dpr}), got ${canvas.height}`,
+    );
+
+    console.log(`     Cropped High-Res Size: ${canvas.width}x${canvas.height}`);
+
+    spreadsheet.exportToFile(
+      path.join(ASSETS_DIR, 'pivot-autofit-high-res.png'),
+    );
+    spreadsheet.destroy();
+  });
+
   // Test: AutoFit disabled (should keep original canvas size)
   await test('autoFit disabled', async () => {
     // Create with large canvas but small data - should NOT crop

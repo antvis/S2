@@ -211,22 +211,25 @@ export async function createSpreadsheet(
         const croppedWidth = Math.min(actualWidth, width);
         const croppedHeight = Math.min(actualHeight, height);
 
-        // Create a new canvas with actual dimensions
-        const croppedCanvas = createNodeCanvas(croppedWidth, croppedHeight);
+        const realWidth = Math.ceil(croppedWidth * devicePixelRatio);
+        const realHeight = Math.ceil(croppedHeight * devicePixelRatio);
+
+        // Create a new canvas with physical dimensions to preserve quality
+        const croppedCanvas = createNodeCanvas(realWidth, realHeight);
         const ctx = croppedCanvas.getContext('2d');
 
         if (ctx) {
-          // Copy the rendered content from original canvas
+          // Copy the rendered content from original canvas 1:1
           ctx.drawImage(
             nodeCanvas,
             0,
             0,
-            croppedWidth * devicePixelRatio,
-            croppedHeight * devicePixelRatio,
+            realWidth,
+            realHeight,
             0,
             0,
-            croppedWidth,
-            croppedHeight,
+            realWidth,
+            realHeight,
           );
         }
 
