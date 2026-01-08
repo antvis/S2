@@ -148,6 +148,38 @@ const spreadsheet = await createSpreadsheet({
 
 For detailed theme configuration, see the [S2 Theme Documentation](https://s2.antv.antgroup.com/en/manual/basic/theme).
 
+## Jest Configuration
+
+If you're using Jest to test code that imports `@antv/s2-ssr`, you'll need to configure Jest to handle CSS files. The `require.extensions` approach used by this package only works at Node.js runtime, not within Jest's module system.
+
+Add the following to your `jest.config.js` or `jest.config.ts`:
+
+```javascript
+module.exports = {
+  // ... other config
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': '<rootDir>/__mocks__/styleMock.js',
+    '\\.(svg)$': '<rootDir>/__mocks__/fileMock.js',
+  },
+};
+```
+
+Then create the mock files:
+
+**`__mocks__/styleMock.js`**
+
+```javascript
+module.exports = {};
+```
+
+**`__mocks__/fileMock.js`**
+
+```javascript
+module.exports = 'file-stub';
+```
+
+This tells Jest to mock CSS/LESS/SVG imports with empty modules, preventing parse errors.
+
 ## API
 
 ### `createSpreadsheet(options)`
