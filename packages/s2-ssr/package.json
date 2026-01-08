@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-ssr",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Support SSR for S2",
   "keywords": [
     "antv",
@@ -37,7 +37,7 @@
   "dependencies": {
     "@antv/g": "^6.1.24",
     "@antv/g-canvas": "^2.0.43",
-    "@antv/s2": "^2.4.13",
+    "@antv/s2": "workspace:*",
     "cac": "^6.7.14",
     "canvas": "^3"
   },
