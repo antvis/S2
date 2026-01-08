@@ -1,4 +1,8 @@
+// Setup Node.js environment before any other imports
+import './env';
+
 export { createCanvas } from './canvas';
+export { setupNodeEnvironment } from './env';
 export { createSpreadsheet } from './spreadsheet';
 export type { MetaData, Options, Spreadsheet } from './types';
 

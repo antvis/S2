@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable max-classes-per-file */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
 
@@ -8,95 +7,14 @@
  * Uses Node.js directly instead of Jest to avoid jsdom/node-canvas conflicts
  */
 
-// Mock CSS/LESS/SVG imports
+// Setup CSS/LESS/SVG extensions BEFORE importing the package
+// This must be done first because the package imports @antv/s2 which requires CSS files
 require.extensions['.css'] = () => {};
 require.extensions['.less'] = () => {};
 require.extensions['.svg'] = () => {};
 
-// Setup browser globals for SSR
-global.navigator = {
-  userAgent: 'node',
-  language: 'en-US',
-  platform: 'node',
-};
-
-global.document = {
-  createElement: (tag) => ({
-    tagName: tag.toUpperCase(),
-    style: {},
-    setAttribute: () => {},
-    getAttribute: () => null,
-    appendChild: () => {},
-    removeChild: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    classList: { add: () => {}, remove: () => {}, contains: () => false },
-    getBoundingClientRect: () => ({
-      width: 0,
-      height: 0,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    }),
-    getContext: () => null,
-    toDataURL: () => '',
-  }),
-  getElementById: () => null,
-  createElementNS: (ns, tag) => global.document.createElement(tag),
-  body: { appendChild: () => {}, removeChild: () => {}, style: {} },
-  documentElement: { style: {} },
-  addEventListener: () => {},
-  removeEventListener: () => {},
-  querySelector: () => null,
-  querySelectorAll: () => [],
-};
-
-global.window = {
-  navigator: global.navigator,
-  document: global.document,
-  devicePixelRatio: 2,
-  addEventListener: () => {},
-  removeEventListener: () => {},
-  getComputedStyle: () => ({
-    getPropertyValue: () => '',
-  }),
-  setTimeout: global.setTimeout,
-  clearTimeout: global.clearTimeout,
-  requestAnimationFrame: (cb) => setTimeout(cb, 16),
-  cancelAnimationFrame: (id) => clearTimeout(id),
-  location: { href: 'http://localhost/' },
-};
-
-global.HTMLElement = class HTMLElement {};
-global.HTMLCanvasElement = class HTMLCanvasElement {};
-global.HTMLImageElement = class HTMLImageElement {};
-global.requestAnimationFrame = (cb) => setTimeout(cb, 16);
-global.cancelAnimationFrame = (id) => clearTimeout(id);
-global.performance = { now: () => Date.now() };
-global.ResizeObserver = class ResizeObserver {
-  observe() {}
-
-  unobserve() {}
-
-  disconnect() {}
-};
-global.MutationObserver = class MutationObserver {
-  observe() {}
-
-  disconnect() {}
-};
-global.PointerEvent = class PointerEvent {
-  constructor(type, opts) {
-    Object.assign(this, { type }, opts);
-  }
-};
-global.CustomEvent = class CustomEvent {
-  constructor(type, opts) {
-    this.type = type;
-    this.detail = opts?.detail;
-  }
-};
+// Import env setup from built package (this sets up Node.js globals)
+require('../dist/s2-ssr.cjs');
 
 // Now run tests
 const path = require('path');
@@ -205,6 +123,24 @@ async function runTests() {
     assert(
       fs.existsSync(path.join(ASSETS_DIR, 'pivot.svg')),
       'SVG file not created',
+    );
+    spreadsheet.destroy();
+  });
+
+  // Test: PivotSheet PDF
+  await test('file pdf', async () => {
+    const spreadsheet = await createSpreadsheet({
+      sheetType: 'pivot',
+      width: 400,
+      height: 300,
+      outputType: 'pdf',
+      dataCfg: pivotData,
+    });
+
+    spreadsheet.exportToFile(path.join(ASSETS_DIR, 'pivot.pdf'));
+    assert(
+      fs.existsSync(path.join(ASSETS_DIR, 'pivot.pdf')),
+      'PDF file not created',
     );
     spreadsheet.destroy();
   });

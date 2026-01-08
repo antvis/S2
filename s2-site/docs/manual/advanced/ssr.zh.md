@@ -50,9 +50,27 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## 基本用法
 
+:::warning{title="环境配置"}
+
+在导入 `@antv/s2-ssr` 之前，需要先设置 CSS 模块加载器。这是由于 `@antv/s2` 导入了 CSS 文件，Node.js 无法原生处理：
+
+```javascript
+// 必须在导入 @antv/s2-ssr 之前设置
+require.extensions['.css'] = () => {};
+require.extensions['.less'] = () => {};
+require.extensions['.svg'] = () => {};
+```
+
+:::
+
 ### 导出透视表
 
 ```javascript
+// 设置 CSS 模块加载器
+require.extensions['.css'] = () => {};
+require.extensions['.less'] = () => {};
+require.extensions['.svg'] = () => {};
+
 const { createSpreadsheet } = require('@antv/s2-ssr');
 
 async function main() {

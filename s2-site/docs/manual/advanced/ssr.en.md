@@ -50,9 +50,27 @@ Please refer to the [node-canvas installation guide](https://github.com/Automatt
 
 ## Basic Usage
 
+:::warning{title="Environment Setup"}
+
+Before importing `@antv/s2-ssr`, you need to set up CSS module loaders. This is required because `@antv/s2` imports CSS files that Node.js cannot handle natively:
+
+```javascript
+// Must be set BEFORE importing @antv/s2-ssr
+require.extensions['.css'] = () => {};
+require.extensions['.less'] = () => {};
+require.extensions['.svg'] = () => {};
+```
+
+:::
+
 ### Export PivotSheet
 
 ```javascript
+// Set up CSS module loaders
+require.extensions['.css'] = () => {};
+require.extensions['.less'] = () => {};
+require.extensions['.svg'] = () => {};
+
 const { createSpreadsheet } = require('@antv/s2-ssr');
 
 async function main() {

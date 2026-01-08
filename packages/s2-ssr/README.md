@@ -1,28 +1,48 @@
 # @antv/s2-ssr
 
-基于 [node-canvas](https://github.com/Automattic/node-canvas) 的 [S2](https://github.com/antvis/S2) 服务端渲染 (SSR) 支持。
+[简体中文](./README.zh-CN.md) | English
 
-该包允许您在 Node.js 环境中将 S2 透视表（PivotSheet）和明细表（TableSheet）渲染为 PNG、JPEG、SVG 或 PDF 格式。
+Server-side rendering (SSR) support for [S2](https://github.com/antvis/S2) using [node-canvas](https://github.com/Automattic/node-canvas).
 
-## 安装
+This package allows you to render S2 PivotSheet and TableSheet to PNG, JPEG, SVG, or PDF formats in Node.js environments.
+
+## Installation
 
 ```bash
 npm install @antv/s2-ssr
-# 或者
+# or
 pnpm add @antv/s2-ssr
 ```
 
-> **注意**：该包依赖 [node-canvas](https://github.com/Automattic/node-canvas)，它需要 Cairo 和 Pango。有关特定平台的说明，请参阅 [node-canvas 安装指南](https://github.com/Automattic/node-canvas#compiling)。
+> **Note**: This package requires [node-canvas](https://github.com/Automattic/node-canvas) which needs Cairo and Pango. See the [node-canvas installation guide](https://github.com/Automattic/node-canvas#compiling) for platform-specific instructions.
 
-## 使用
+## Usage
 
-### 基本使用
+### Prerequisites
+
+Before importing `@antv/s2-ssr`, you need to set up CSS module loaders. This is required because `@antv/s2` imports CSS files that Node.js cannot handle natively:
 
 ```javascript
+// Must be set BEFORE importing @antv/s2-ssr
+require.extensions['.css'] = () => {};
+require.extensions['.less'] = () => {};
+require.extensions['.svg'] = () => {};
+
+// Now you can import and use the package
+const { createSpreadsheet } = require('@antv/s2-ssr');
+```
+
+### Basic Usage
+
+```javascript
+require.extensions['.css'] = () => {};
+require.extensions['.less'] = () => {};
+require.extensions['.svg'] = () => {};
+
 const { createSpreadsheet } = require('@antv/s2-ssr');
 
 const options = {
-  sheetType: 'pivot', // 或者 'table'
+  sheetType: 'pivot', // or 'table'
   width: 800,
   height: 600,
   dataCfg: {
@@ -37,35 +57,35 @@ const options = {
     ],
   },
   options: {
-    // S2 配置
+    // S2 options
   },
 };
 
 (async () => {
   const spreadsheet = await createSpreadsheet(options);
 
-  // 导出到文件
+  // Export to file
   spreadsheet.exportToFile('./output.png');
 
-  // 或者获取 buffer
+  // Or get as buffer
   const buffer = spreadsheet.toBuffer();
 
-  // 或者获取 data URL
+  // Or get as data URL
   const dataURL = spreadsheet.toDataURL();
 
-  // 清理资源
+  // Clean up
   spreadsheet.destroy();
 })();
 ```
 
-### 导出格式
+### Export Formats
 
-#### PNG/JPEG (默认)
+#### PNG/JPEG (default)
 
 ```javascript
 const spreadsheet = await createSpreadsheet({
   ...options,
-  imageType: 'png', // 或者 'jpeg'
+  imageType: 'png', // or 'jpeg'
 });
 
 spreadsheet.exportToFile('./output.png');
@@ -93,12 +113,12 @@ const spreadsheet = await createSpreadsheet({
 spreadsheet.exportToFile('./output.pdf');
 ```
 
-### 主题配置
+### Theme Configuration
 
-S2 提供了多种内置主题，可以通过 `themeCfg` 配置项来设置：
+S2 provides multiple built-in themes that can be configured via the `themeCfg` option:
 
 ```javascript
-// 暗黑主题
+// Dark theme
 const spreadsheet = await createSpreadsheet({
   ...options,
   themeCfg: {
@@ -109,7 +129,7 @@ const spreadsheet = await createSpreadsheet({
 spreadsheet.exportToFile('./output-dark.png');
 ```
 
-也可以自定义主题：
+You can also customize the theme:
 
 ```javascript
 const spreadsheet = await createSpreadsheet({
@@ -126,60 +146,46 @@ const spreadsheet = await createSpreadsheet({
 });
 ```
 
-详细的主题配置请参考 [S2 主题文档](https://s2.antv.antgroup.com/manual/basic/theme)。
+For detailed theme configuration, see the [S2 Theme Documentation](https://s2.antv.antgroup.com/en/manual/basic/theme).
 
 ## API
 
 ### `createSpreadsheet(options)`
 
-创建一个用于 SSR 的表格实例。
+Creates a spreadsheet instance for SSR.
 
-#### Options (配置项)
+#### Options
 
-| 属性 | 类型 | 默认值 | 描述 |
+| Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `sheetType` | `'pivot' \| 'table'` | `'pivot'` | 要创建的表格类型 |
-| `width` | `number` | - | 画布宽度 |
-| `height` | `number` | - | 画布高度 |
-| `dataCfg` | `S2DataConfig` | - | S2 数据配置 |
-| `options` | `S2Options` | `{}` | S2 表格配置 |
-| `themeCfg` | `ThemeCfg` | - | 主题配置 |
-| `autoFit` | `boolean` | `true` | 自动裁剪画布到实际表格大小，去除空白区域 |
-| `devicePixelRatio` | `number` | `2` | 设备像素比 |
-| `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | 输出类型 |
-| `imageType` | `'png' \| 'jpeg'` | `'png'` | 图片类型 (当 outputType 为 'image' 时) |
-| `waitForRender` | `number` | `32` | 等待异步渲染完成的时间 (ms) |
-| `renderPlugins` | `any[]` | `[]` | 额外的 G 渲染插件 |
+| `sheetType` | `'pivot' \| 'table'` | `'pivot'` | Type of spreadsheet to create |
+| `width` | `number` | - | Canvas width |
+| `height` | `number` | - | Canvas height |
+| `dataCfg` | `S2DataConfig` | - | S2 data configuration |
+| `options` | `S2Options` | `{}` | S2 options |
+| `themeCfg` | `ThemeCfg` | - | Theme configuration |
+| `autoFit` | `boolean` | `true` | Auto crop canvas to actual table size, remove blank areas |
+| `devicePixelRatio` | `number` | `2` | Device pixel ratio |
+| `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | Output type |
+| `imageType` | `'png' \| 'jpeg'` | `'png'` | Image type (when outputType is 'image') |
+| `waitForRender` | `number` | `32` | Wait time (ms) for async rendering to complete |
+| `renderPlugins` | `any[]` | `[]` | Additional G render plugins |
 
-#### Returns (返回值)
+#### Returns
 
-返回一个 `Spreadsheet` 对象，包含以下方法：
+Returns a `Spreadsheet` object with the following methods:
 
-| 方法 | 描述 |
+| Method | Description |
 | --- | --- |
-| `exportToFile(path, meta?)` | 导出到文件 |
-| `toBuffer(meta?)` | 获取 Node.js Buffer |
-| `toDataURL()` | 获取 base64 data URL |
-| `getCanvas()` | 获取底层的 node-canvas 实例 |
-| `destroy()` | 清理资源 |
+| `exportToFile(path, meta?)` | Export to a file |
+| `toBuffer(meta?)` | Get as Node.js Buffer |
+| `toDataURL()` | Get as base64 data URL |
+| `getCanvas()` | Get the underlying node-canvas instance |
+| `destroy()` | Clean up resources |
 
 ### `createCanvas(options)`
 
-创建一个带有 node-canvas 的原生 G Canvas，用于高级用法。
-
-## Node.js 环境配置
-
-使用此包时，您需要在 Node.js 环境中设置浏览器全局变量。对于 jsdom 用户，这通常会自动处理。对于其他环境：
-
-```javascript
-// 在导入 @antv/s2-ssr 之前进行设置
-global.navigator = { userAgent: 'node' };
-global.window = { navigator: global.navigator };
-global.document = {
-  createElement: () => ({ style: {} }),
-  body: { style: {} },
-};
-```
+Creates a raw G Canvas with node-canvas for advanced usage.
 
 ## License
 
