@@ -410,7 +410,7 @@ export default defineComponent({
 <template>
   <div class="playground">
     <h1>S2 Vue Playground</h1>
-    <Tabs v-model:activeKey="activeTab" type="card" destroyInactiveTabPane>
+    <Tabs v-model:activeKey="activeTab" type="card">
       <TabPane key="basic" tab="基础表">
         <div style="margin-bottom: 10px">
           <button @click="togglePagination">切换分页</button>

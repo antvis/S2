@@ -1,8 +1,9 @@
+<!-- eslint-disable no-console -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
+import { Plugin as PluginRoughCanvasRenderer } from '@antv/g-plugin-rough-canvas-renderer';
 import type { S2DataConfig, S2Options } from '@antv/s2';
-// Note: Plugin imports may need to be installed separately
-// import { Plugin as PluginRoughCanvasRenderer } from '@antv/g-plugin-rough-canvas-renderer';
+import { ref } from 'vue';
 import { SheetComponent } from '../../src';
 
 const dataCfg = ref<S2DataConfig>({
@@ -113,11 +114,22 @@ const options = ref<S2Options>({
   interaction: {
     brushSelection: { rowCell: true, colCell: true, dataCell: true },
   },
-  // Plugins can be added via transformCanvasConfig
-  // transformCanvasConfig(renderer) {
-  //   renderer.registerPlugin(new PluginRoughCanvasRenderer());
-  //   return { devicePixelRatio: 2, cursor: 'crosshair' };
-  // },
+  transformCanvasConfig(renderer) {
+    // 需要注意的是一旦使用该插件，"脏矩形渲染"便无法使用，这意味着任何图形的任何样式属性改变，都会导致画布的全量重绘, 性能会严重下降。
+    renderer.registerPlugin(new PluginRoughCanvasRenderer());
+    renderer.registerPlugin(
+      new PluginA11y({
+        enableExtractingText: true,
+      }),
+    );
+
+    console.log('当前已注册插件:', renderer.getPlugins(), renderer.getConfig());
+
+    return {
+      devicePixelRatio: 2,
+      cursor: 'crosshair',
+    };
+  },
 });
 </script>
 

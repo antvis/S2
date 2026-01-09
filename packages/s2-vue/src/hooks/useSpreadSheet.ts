@@ -4,6 +4,7 @@ import {
   type S2Options,
   type SpreadSheet,
 } from '@antv/s2';
+import { PivotChartSheet } from '@antv/s2/extends';
 import { onBeforeUnmount, onMounted, ref, shallowRef, toRaw, toRef } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from '../interface';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
@@ -50,6 +51,10 @@ export function useSpreadSheet(
 
     if (sheetType === 'table' || sheetType === 'editable') {
       return new TableSheet(container, rawDataCfg, s2Options);
+    }
+
+    if (sheetType === 'pivotChart') {
+      return new PivotChartSheet(container, rawDataCfg, s2Options);
     }
 
     return new PivotSheet(container, rawDataCfg, s2Options);

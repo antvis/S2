@@ -8,6 +8,7 @@ import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits } from '../../interface';
 import { initBaseSheetProps } from '../../utils/initPropAndEmits';
 import BaseSheet from './base-sheet.vue';
+import { DragCopyPoint } from './editable-sheet/drag-copy';
 
 function buildEditProps(option: S2Options): S2Options {
   return { ...option };
@@ -131,6 +132,7 @@ export default defineComponent({
   },
   components: {
     BaseSheet,
+    DragCopyPoint,
   },
 }) as unknown;
 </script>
@@ -150,6 +152,7 @@ export default defineComponent({
         ref="inputRef"
         :style="inputStyle"
       />
+      <DragCopyPoint />
     </template>
   </BaseSheet>
 </template>
