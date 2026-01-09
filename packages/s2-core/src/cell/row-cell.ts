@@ -1,4 +1,4 @@
-import type { FederatedPointerEvent, PointLike } from '@antv/g';
+import type { PointLike } from '@antv/g';
 import { find, get, merge } from 'lodash';
 import {
   CellType,
@@ -36,9 +36,6 @@ import { normalizeTextAlign } from './../utils/normalize';
 import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell<RowHeaderConfig> {
-  // 标记是否已添加移动端触摸事件监听器，防止重复添加
-  private hasMobileTouchListeners = false;
-
   public get cellType() {
     return CellType.ROW_CELL;
   }
@@ -180,46 +177,11 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     });
 
     // 移动端, 点击热区为整个单元格
-    // 使用标记防止重复添加事件监听器（drawTreeIcon 可能被多次调用）
     const { device } = this.spreadsheet.options;
 
-    if (isMobile(device) && !this.hasMobileTouchListeners) {
-      this.hasMobileTouchListeners = true;
-      let touchStartPosition: { x: number; y: number } | null = null;
-
-      this.addEventListener('touchstart', (e: FederatedPointerEvent) => {
-        const nativeEvent = e.nativeEvent as TouchEvent;
-        const touch =
-          nativeEvent.touches?.[0] || nativeEvent.changedTouches?.[0];
-
-        if (touch) {
-          touchStartPosition = { x: touch.clientX, y: touch.clientY };
-        }
-      });
-
-      this.addEventListener('touchend', (e: FederatedPointerEvent) => {
-        const nativeEvent = e.nativeEvent as TouchEvent;
-        const touch = nativeEvent.changedTouches?.[0];
-
-        if (!touch || !touchStartPosition) {
-          return;
-        }
-
-        // 计算移动距离，如果超过阈值则认为是滚动操作，不触发展开/收起
-        const dx = Math.abs(touch.clientX - touchStartPosition.x);
-        const dy = Math.abs(touch.clientY - touchStartPosition.y);
-        const SCROLL_THRESHOLD = 10;
-
-        if (dx < SCROLL_THRESHOLD && dy < SCROLL_THRESHOLD) {
-          this.emitCollapseEvent();
-        }
-
-        touchStartPosition = null;
-      });
-
-      // 处理触摸被系统中断的情况（如来电、通知等）
-      this.addEventListener('touchcancel', () => {
-        touchStartPosition = null;
+    if (isMobile(device)) {
+      this.addMobileTouchListener(() => {
+        this.emitCollapseEvent();
       });
     }
   }
