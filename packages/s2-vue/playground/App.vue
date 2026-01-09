@@ -23,6 +23,7 @@ import CustomTreeDemo from './components/CustomTree.vue';
 import CustomGridDemo from './components/CustomGrid.vue';
 import BigDataSheetDemo from './components/BigDataSheet.vue';
 import PluginsSheetDemo from './components/PluginsSheet.vue';
+import EditableSheetDemo from './components/EditableSheet.vue';
 
 const dataConfig1: S2DataConfig = {
   fields: {
@@ -403,6 +404,7 @@ export default defineComponent({
     CustomGridDemo,
     BigDataSheetDemo,
     PluginsSheetDemo,
+    EditableSheetDemo,
   },
 });
 </script>
@@ -477,12 +479,7 @@ export default defineComponent({
         <GridAnalysisSheetDemo />
       </TabPane>
       <TabPane key="editable" tab="编辑表">
-        <SheetComponent
-          sheetType="editable"
-          :dataCfg="dataConfig1"
-          :options="{ ...options, tooltip: { enable: false } }"
-          :adaptive="true"
-        />
+        <EditableSheetDemo />
       </TabPane>
       <TabPane key="plugins" tab="AntV/G 插件系统">
         <PluginsSheetDemo />
