@@ -1,3 +1,12 @@
+# [@antv/s2-v2.4.14](https://github.com/antvis/S2/compare/@antv/s2-v2.4.13...@antv/s2-v2.4.14) (2026-01-09)
+
+
+### Bug Fixes
+
+* (mobile) support pinch-to-zoom gesture by detecting multi-touch ([#3276](https://github.com/antvis/S2/issues/3276)) ([f83cca5](https://github.com/antvis/S2/commit/f83cca56caf4deafe65197b27834505da0947b09)), closes [#3251](https://github.com/antvis/S2/issues/3251)
+* 修复了小字号多行文本被截断 ([#3279](https://github.com/antvis/S2/issues/3279)) ([519f8f2](https://github.com/antvis/S2/commit/519f8f2631f67e8a9e57f19a0e49c80e59bd3b4a)), closes [#3262](https://github.com/antvis/S2/issues/3262) [#3262](https://github.com/antvis/S2/issues/3262)
+* 修复移动端树状行头滚动误触发展开/收起事件的问题 ([#3284](https://github.com/antvis/S2/issues/3284)) ([4bb17f6](https://github.com/antvis/S2/commit/4bb17f6f2fd13d5424e8e0a22cb34492122a5e2f))
+
 # [@antv/s2-v2.4.13](https://github.com/antvis/S2/compare/@antv/s2-v2.4.12...@antv/s2-v2.4.13) (2025-12-26)
 
 
