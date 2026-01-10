@@ -1,13 +1,7 @@
 ---
-title: Vue 3.0 组件 （停止维护）
-order: 13
+title: Vue 3.0 组件
+order: 2
 ---
-
-<Badge type="success">@antv/s2-vue</Badge>
-
-:::warning
-`@antv/s2-vue` 停止维护，请基于 `@antv/s2` 封装，或自行 `fork` 二次开发。
-:::
 
 ## 基础表组件
 
