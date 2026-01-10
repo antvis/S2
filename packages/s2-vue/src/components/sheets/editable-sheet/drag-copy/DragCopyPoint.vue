@@ -9,14 +9,7 @@ import {
   S2_PREFIX_CLS,
 } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
-import {
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-  computed,
-} from 'vue';
+import { defineComponent, onUnmounted, ref, watch, computed } from 'vue';
 import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 import DragCopyMask from './DragCopyMask.vue';
 
@@ -117,15 +110,39 @@ export default defineComponent({
       batchSelected();
     };
 
+    const bindEvents = () => {
+      const spreadsheet = s2Ref.value;
+
+      if (!spreadsheet) {
+        return;
+      }
+
+      spreadsheet.on(S2Event.COL_CELL_CLICK, batchSelected);
+      spreadsheet.on(S2Event.ROW_CELL_CLICK, batchSelected);
+      spreadsheet.on(S2Event.CORNER_CELL_CLICK, batchSelected);
+      spreadsheet.on(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected);
+      spreadsheet.on(S2Event.DATA_CELL_CLICK, fixPosition);
+      spreadsheet.on(S2Event.GLOBAL_SCROLL, handleScroll);
+    };
+
+    const unbindEvents = () => {
+      const spreadsheet = s2Ref.value;
+
+      if (!spreadsheet) {
+        return;
+      }
+
+      spreadsheet.off(S2Event.COL_CELL_CLICK, batchSelected);
+      spreadsheet.off(S2Event.ROW_CELL_CLICK, batchSelected);
+      spreadsheet.off(S2Event.CORNER_CELL_CLICK, batchSelected);
+      spreadsheet.off(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected);
+      spreadsheet.off(S2Event.DATA_CELL_CLICK, fixPosition);
+      spreadsheet.off(S2Event.GLOBAL_SCROLL, handleScroll);
+    };
+
     // Watch cell changes
     watch(cell, () => {
       handleScroll();
-      const spreadsheet = s2Ref.value;
-
-      if (spreadsheet) {
-        spreadsheet.off(S2Event.GLOBAL_SCROLL, handleScroll);
-        spreadsheet.on(S2Event.GLOBAL_SCROLL, handleScroll);
-      }
     });
 
     // Update position when scroll or cell changes
@@ -169,29 +186,28 @@ export default defineComponent({
       },
     );
 
-    onMounted(() => {
-      const spreadsheet = s2Ref.value;
+    // Watch s2Ref to bind/unbind events
+    watch(
+      s2Ref,
+      (newS2, oldS2) => {
+        if (oldS2) {
+          oldS2.off(S2Event.COL_CELL_CLICK, batchSelected);
+          oldS2.off(S2Event.ROW_CELL_CLICK, batchSelected);
+          oldS2.off(S2Event.CORNER_CELL_CLICK, batchSelected);
+          oldS2.off(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected);
+          oldS2.off(S2Event.DATA_CELL_CLICK, fixPosition);
+          oldS2.off(S2Event.GLOBAL_SCROLL, handleScroll);
+        }
 
-      if (spreadsheet) {
-        spreadsheet.on(S2Event.COL_CELL_CLICK, batchSelected);
-        spreadsheet.on(S2Event.ROW_CELL_CLICK, batchSelected);
-        spreadsheet.on(S2Event.CORNER_CELL_CLICK, batchSelected);
-        spreadsheet.on(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected);
-        spreadsheet.on(S2Event.DATA_CELL_CLICK, fixPosition);
-      }
-    });
+        if (newS2) {
+          bindEvents();
+        }
+      },
+      { immediate: true },
+    );
 
     onUnmounted(() => {
-      const spreadsheet = s2Ref.value;
-
-      if (spreadsheet) {
-        spreadsheet.off(S2Event.GLOBAL_SCROLL, handleScroll);
-        spreadsheet.off(S2Event.COL_CELL_CLICK, batchSelected);
-        spreadsheet.off(S2Event.ROW_CELL_CLICK, batchSelected);
-        spreadsheet.off(S2Event.CORNER_CELL_CLICK, batchSelected);
-        spreadsheet.off(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected);
-        spreadsheet.off(S2Event.DATA_CELL_CLICK, fixPosition);
-      }
+      unbindEvents();
     });
 
     const pointStyle = computed(() => ({
