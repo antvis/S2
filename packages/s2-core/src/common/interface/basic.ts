@@ -529,6 +529,13 @@ export interface TableSortParam extends SortParam {
 export interface GridInfo {
   cols: number[];
   rows: number[];
+  /**
+   * 行偏移量，用于大数据量时避免浮点数精度问题
+   * 当数据量很大时，绝对 Y 坐标可能超过 2^24，导致 32 位浮点数精度丢失
+   * 使用偏移量将坐标转换为相对值，确保渲染精度
+   * @see https://github.com/antvis/S2/issues/3285
+   */
+  rowsOffset?: number;
 }
 
 export interface Point extends PointLike {}

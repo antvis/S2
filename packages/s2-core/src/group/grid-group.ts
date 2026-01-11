@@ -43,6 +43,9 @@ export class GridGroup extends Group {
 
     const width = last(gridInfo.cols) ?? 0;
     const height = last(gridInfo.rows) ?? 0;
+    // 使用偏移量来定位网格，避免大数据量时浮点数精度问题
+    // fix: https://github.com/antvis/S2/issues/3285
+    const rowsOffset = gridInfo.rowsOffset ?? 0;
     const { theme } = this.s2;
     const style = theme.dataCell!.cell;
 
@@ -62,17 +65,17 @@ export class GridGroup extends Group {
       lineWidth: horizontalBorderWidth,
     };
 
+    // 设置网格组的 Y 偏移，使相对坐标的网格线与绝对坐标的单元格对齐
+    this.gridGroup.style.y = rowsOffset;
+
     const children = this.gridGroup.children as Line[];
     let childIndex = 0;
 
     // 复用或新增垂直线
     gridInfo.cols.forEach((x) => {
-      // 使用 Math.round 确保坐标为整数，避免大数据量下的浮点数精度问题
-      // fix: https://github.com/antvis/S2/issues/3285
-      const roundedX = Math.round(x - halfVerticalBorderWidth);
       const attrs = {
-        x1: roundedX,
-        x2: roundedX,
+        x1: x - halfVerticalBorderWidth,
+        x2: x - halfVerticalBorderWidth,
         y1: 0,
         y2: height,
         ...verticalBorderStyle,
@@ -91,14 +94,11 @@ export class GridGroup extends Group {
 
     // 复用或新增水平线
     gridInfo.rows.forEach((y) => {
-      // 使用 Math.round 确保坐标为整数，避免大数据量下的浮点数精度问题
-      // fix: https://github.com/antvis/S2/issues/3285
-      const roundedY = Math.round(y - halfHorizontalBorderWidth);
       const attrs = {
         x1: 0,
         x2: width,
-        y1: roundedY,
-        y2: roundedY,
+        y1: y - halfHorizontalBorderWidth,
+        y2: y - halfHorizontalBorderWidth,
         ...horizontalBorderStyle,
       };
 

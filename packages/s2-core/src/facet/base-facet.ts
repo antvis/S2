@@ -1935,11 +1935,16 @@ export abstract class BaseFacet {
       colMax!,
       this.layoutResult.colLeafNodes,
     );
-    const rows = getRowsForGrid(rowMin!, rowMax!, this.viewCellHeights);
+    const { rows, offset } = getRowsForGrid(
+      rowMin!,
+      rowMax!,
+      this.viewCellHeights,
+    );
 
     return {
       cols,
       rows,
+      rowsOffset: offset,
     };
   };
 

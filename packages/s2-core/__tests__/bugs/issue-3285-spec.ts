@@ -2,156 +2,62 @@
  * @description spec for issue #3285
  * https://github.com/antvis/S2/issues/3285
  * 大数据量明细表，data-cell 上下边框缺失
- * 当行数超过 279621（y 坐标超过 8,388,608 即 2^23）时，32位浮点数精度不足导致边框位置计算错误
+ * 当数据量很大时，绝对 Y 坐标可能超过 2^24，导致 32 位浮点数精度丢失
+ * 解决方案：使用相对坐标 + 偏移量来绘制网格线
  */
-import { CellBorderPosition, type CellTheme } from '@/common/interface';
-import { getBorderPositionAndStyle } from '@/utils/cell/cell';
+import { getRowsForGrid } from '@/utils/grid';
 
-describe('Issue #3285: Large data table data-cell border missing', () => {
-  const cellStyle: CellTheme = {
-    horizontalBorderWidth: 1,
-    verticalBorderWidth: 1,
-    horizontalBorderColor: '#000',
-    verticalBorderColor: '#000',
-    horizontalBorderColorOpacity: 1,
-    verticalBorderColorOpacity: 1,
-  };
+describe('Issue #3285: Large data table grid rendering', () => {
+  // 模拟 viewCellHeights 对象
+  const createViewCellHeights = (rowHeight: number) => ({
+    getCellOffsetY: (rowIndex: number) => rowIndex * rowHeight,
+    getTotalHeight: () => 0,
+    getTotalLength: () => 0,
+    getIndexRange: () => ({ start: 0, end: 0 }),
+  });
 
-  describe('getBorderPositionAndStyle', () => {
-    test('should return integer y positions for horizontal borders at large y values', () => {
-      // 模拟大数据量场景，y 坐标超过 2^23 (8,388,608)
-      const bbox = {
-        x: 0,
-        y: 8388630, // 约等于 row 279621 * 30 (row height)
-        width: 100,
-        height: 30,
-      };
+  describe('getRowsForGrid', () => {
+    test('should return relative coordinates and offset for small row indexes', () => {
+      const viewCellHeights = createViewCellHeights(30);
+      const { rows, offset } = getRowsForGrid(0, 10, viewCellHeights);
 
-      const topBorder = getBorderPositionAndStyle(
-        CellBorderPosition.TOP,
-        bbox,
-        cellStyle,
-      );
-      const bottomBorder = getBorderPositionAndStyle(
-        CellBorderPosition.BOTTOM,
-        bbox,
-        cellStyle,
-      );
+      // 偏移量应该是第一个可见行的 Y 坐标
+      expect(offset).toBe(0);
 
-      // y1 和 y2 应该是整数，避免浮点数精度问题
-      expect(Number.isInteger(topBorder.position.y1)).toBe(true);
-      expect(Number.isInteger(topBorder.position.y2)).toBe(true);
-      expect(Number.isInteger(bottomBorder.position.y1)).toBe(true);
-      expect(Number.isInteger(bottomBorder.position.y2)).toBe(true);
-
-      // 验证位置正确（四舍五入后）
-      // TOP: y + horizontalBorderWidth / 2 = 8388630 + 0.5 ≈ 8388631
-      expect(topBorder.position.y1).toBe(8388631);
-      expect(topBorder.position.y2).toBe(8388631);
-
-      // BOTTOM: y + height - horizontalBorderWidth / 2 = 8388630 + 30 - 0.5 ≈ 8388660
-      expect(bottomBorder.position.y1).toBe(8388660);
-      expect(bottomBorder.position.y2).toBe(8388660);
+      // rows 应该是相对坐标（相对于第一个可见行的底部）
+      expect(rows[0]).toBe(30); // row 0 的底部 = 30 - 0 = 30
+      expect(rows[10]).toBe(330); // row 10 的底部 = 330 - 0 = 330
     });
 
-    test('should return integer x positions for vertical borders at large x values', () => {
-      // 测试大 x 值时的垂直边框
-      const bbox = {
-        x: 8388630,
-        y: 0,
-        width: 100,
-        height: 30,
-      };
+    test('should return relative coordinates for large row indexes (beyond 2^23)', () => {
+      const viewCellHeights = createViewCellHeights(30);
+      // 模拟滚动到第 279621 行（Y ≈ 8,388,630 > 2^23）
+      const rowMin = 279621;
+      const rowMax = 279631;
+      const { rows, offset } = getRowsForGrid(rowMin, rowMax, viewCellHeights);
 
-      const leftBorder = getBorderPositionAndStyle(
-        CellBorderPosition.LEFT,
-        bbox,
-        cellStyle,
-      );
-      const rightBorder = getBorderPositionAndStyle(
-        CellBorderPosition.RIGHT,
-        bbox,
-        cellStyle,
-      );
+      // 偏移量应该是第一个可见行的 Y 坐标（大值）
+      expect(offset).toBe(279621 * 30);
 
-      // x1 和 x2 应该是整数
-      expect(Number.isInteger(leftBorder.position.x1)).toBe(true);
-      expect(Number.isInteger(leftBorder.position.x2)).toBe(true);
-      expect(Number.isInteger(rightBorder.position.x1)).toBe(true);
-      expect(Number.isInteger(rightBorder.position.x2)).toBe(true);
+      // rows 应该是相对坐标（小值，从 0 开始）
+      // row[0] = getCellOffsetY(279622) - offset = 279622 * 30 - 279621 * 30 = 30
+      expect(rows[0]).toBe(30);
+      // row[10] = getCellOffsetY(279632) - offset = 279632 * 30 - 279621 * 30 = 330
+      expect(rows[10]).toBe(330);
 
-      // LEFT: x + verticalBorderWidth / 2 = 8388630 + 0.5 ≈ 8388631
-      expect(leftBorder.position.x1).toBe(8388631);
-      expect(leftBorder.position.x2).toBe(8388631);
-
-      // RIGHT: x + width - verticalBorderWidth / 2 = 8388630 + 100 - 0.5 ≈ 8388730
-      expect(rightBorder.position.x1).toBe(8388730);
-      expect(rightBorder.position.x2).toBe(8388730);
+      // 所有相对坐标都应该是小值，可以安全地在 canvas 中渲染
+      rows.forEach((row) => {
+        expect(row).toBeLessThan(1000);
+      });
     });
 
-    test('should handle normal y values correctly', () => {
-      // 测试正常数据量场景
-      const bbox = {
-        x: 0,
-        y: 100,
-        width: 100,
-        height: 30,
-      };
+    test('should handle edge case where rowMin equals rowMax', () => {
+      const viewCellHeights = createViewCellHeights(30);
+      const { rows, offset } = getRowsForGrid(100, 100, viewCellHeights);
 
-      const topBorder = getBorderPositionAndStyle(
-        CellBorderPosition.TOP,
-        bbox,
-        cellStyle,
-      );
-      const bottomBorder = getBorderPositionAndStyle(
-        CellBorderPosition.BOTTOM,
-        bbox,
-        cellStyle,
-      );
-
-      // 正常情况下也应该返回整数
-      expect(Number.isInteger(topBorder.position.y1)).toBe(true);
-      expect(Number.isInteger(bottomBorder.position.y1)).toBe(true);
-
-      // TOP: 100 + 0.5 ≈ 101
-      expect(topBorder.position.y1).toBe(101);
-      // BOTTOM: 100 + 30 - 0.5 ≈ 130
-      expect(bottomBorder.position.y1).toBe(130);
-    });
-
-    test('should handle even border width correctly', () => {
-      // 测试偶数边框宽度
-      const style: CellTheme = {
-        ...cellStyle,
-        horizontalBorderWidth: 2,
-        verticalBorderWidth: 2,
-      };
-      const bbox = {
-        x: 0,
-        y: 8388630,
-        width: 100,
-        height: 30,
-      };
-
-      const topBorder = getBorderPositionAndStyle(
-        CellBorderPosition.TOP,
-        bbox,
-        style,
-      );
-      const bottomBorder = getBorderPositionAndStyle(
-        CellBorderPosition.BOTTOM,
-        bbox,
-        style,
-      );
-
-      // 偶数边框宽度除以2是整数，不会有精度问题，但结果仍应为整数
-      expect(Number.isInteger(topBorder.position.y1)).toBe(true);
-      expect(Number.isInteger(bottomBorder.position.y1)).toBe(true);
-
-      // TOP: 8388630 + 1 = 8388631
-      expect(topBorder.position.y1).toBe(8388631);
-      // BOTTOM: 8388630 + 30 - 1 = 8388659
-      expect(bottomBorder.position.y1).toBe(8388659);
+      expect(offset).toBe(100 * 30);
+      expect(rows.length).toBe(1);
+      expect(rows[0]).toBe(30); // 单行的底部位置
     });
   });
 });

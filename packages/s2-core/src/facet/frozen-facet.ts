@@ -297,12 +297,16 @@ export abstract class FrozenFacet extends BaseFacet {
 
       let cols: number[] = [];
       let rows: number[] = [];
+      let rowsOffset: number | undefined;
 
       if (key.toLowerCase().includes('row')) {
         const [rowMin, rowMax] = this.frozenGroupAreas[key].range || [];
 
         cols = this.gridInfo.cols;
-        rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+        const gridRows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+
+        rows = gridRows.rows;
+        rowsOffset = gridRows.offset;
 
         if (key === FrozenGroupArea.TrailingRow) {
           const top = this.frozenGroupAreas[FrozenGroupArea.TrailingRow].y;
@@ -313,6 +317,7 @@ export abstract class FrozenFacet extends BaseFacet {
             top,
             this.viewCellHeights,
           );
+          rowsOffset = undefined;
         }
       } else {
         const [colMin, colMax] = this.frozenGroupAreas[key].range || [];
@@ -320,6 +325,7 @@ export abstract class FrozenFacet extends BaseFacet {
 
         cols = getColsForGrid(colMin, colMax, nodes);
         rows = this.gridInfo.rows;
+        rowsOffset = this.gridInfo.rowsOffset;
       }
 
       const frozenGroup = FrozenGroupAreaTypeMap[key];
@@ -328,6 +334,7 @@ export abstract class FrozenFacet extends BaseFacet {
         {
           cols,
           rows,
+          rowsOffset,
         },
         frozenGroup,
       );

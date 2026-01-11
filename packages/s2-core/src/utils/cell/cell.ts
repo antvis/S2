@@ -250,11 +250,8 @@ export const getBorderPositionAndStyle = (
       yPosition = y + height - horizontalBorderWidth / 2;
     }
 
-    // 当 y 坐标超过 2^23（约 8,388,608）时，32位浮点数精度不足导致小数部分丢失
-    // 使用 Math.round 确保边框位置为整数，避免大数据量下的渲染问题
-    // fix: https://github.com/antvis/S2/issues/3285
-    y1 = Math.round(yPosition);
-    y2 = Math.round(yPosition);
+    y1 = yPosition;
+    y2 = yPosition;
     x1 = x;
     x2 = x + width;
   }
@@ -272,9 +269,8 @@ export const getBorderPositionAndStyle = (
       xPosition = x + width - verticalBorderWidth / 2;
     }
 
-    // 同样对 x 坐标进行取整处理，确保一致性
-    x1 = Math.round(xPosition);
-    x2 = Math.round(xPosition);
+    x1 = xPosition;
+    x2 = xPosition;
     y1 = y;
     y2 = y + height;
   }
