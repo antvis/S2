@@ -1,0 +1,17 @@
+{
+  "title": {
+    "zh": "交互",
+    "en": "Interaction"
+  },
+  "demos": [
+    {
+      "filename": "custom-tooltip.vue",
+      "title": {
+        "zh": "自定义 Tooltip",
+        "en": "Custom Tooltip"
+      },
+      "type": "vue",
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "title": {
+    "zh": "布局",
+    "en": "Layout"
+  },
+  "demos": [
+    {
+      "filename": "adaptive.vue",
+      "title": {
+        "zh": "自适应宽高",
+        "en": "Adaptive Width and Height"
+      },
+      "type": "vue",
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/4e65b452-f472-466c-8435-08169994c979.png"
+    }
+  ]
+}

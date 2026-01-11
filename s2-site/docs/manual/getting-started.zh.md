@@ -305,7 +305,7 @@ pnpm add ant-design-vue@3.x
 import "@antv/s2-vue/dist/s2-vue.min.css";
 ```
 
-​📊 查看 [Vue3 版本透视表 demo](https://codesandbox.io/s/s2-vue-hwg64q)。
+​📊 查看 [Vue3 版本透视表 demo](/manual/advanced/vue#透视表)。
 
 ## TypeScript
 

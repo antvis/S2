@@ -222,4 +222,4 @@ const adaptive = {
 </template>
 ```
 
-​📊 查看 [Vue 组件自适应 demo](https://codesandbox.io/s/vue-adaptive-demo-4pptyy?file=/src/App.vue)
+​📊 查看 [Vue 组件自适应 demo](/manual/advanced/vue#vue-component-adaptive-demo)

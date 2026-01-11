@@ -64,7 +64,7 @@ const s2Options = {
 
 ```
 
-[Demo 地址](https://codesandbox.io/embed/nice-dijkstra-hzycy6?fontsize=14&hidenavigation=1&theme=dark)
+<VisionSnapPreview path='/vue-component/analysis/demo/pagination.vue' rid='s2-vue-pagination-link' height='500'></VisionSnapPreview>
 
 #### API
 

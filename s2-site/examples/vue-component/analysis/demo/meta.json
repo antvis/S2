@@ -1,0 +1,26 @@
+{
+  "title": {
+    "zh": "分析组件",
+    "en": "Analysis Component"
+  },
+  "demos": [
+    {
+      "filename": "pagination.vue",
+      "title": {
+        "zh": "分页",
+        "en": "Pagination"
+      },
+      "type": "vue",
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/xyf3W7%243x/874136e0-ef92-4217-a068-16cb6e340632.png"
+    },
+    {
+      "filename": "drill-down.vue",
+      "title": {
+        "zh": "下钻",
+        "en": "Drill Down"
+      },
+      "type": "vue",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*o3C4Q5yPqXgAAAAAAAAAAAAAARQnAQ"
+    }
+  ]
+}

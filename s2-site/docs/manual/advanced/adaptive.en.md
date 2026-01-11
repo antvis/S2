@@ -208,4 +208,4 @@ const adaptive = {
 </template>
 ```
 
-​📊 Check out the [Vue component adaptive demo](https://codesandbox.io/s/vue-adaptive-demo-4pptyy?file=/src/App.vue)
+​📊 Check out the [Vue component adaptive demo](/manual/advanced/vue#vue-component-adaptive-demo)

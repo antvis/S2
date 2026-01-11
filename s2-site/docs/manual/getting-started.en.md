@@ -273,7 +273,7 @@ yarn add ant-design-vue
 import "@antv/s2-vue/dist/s2-vue.min.css";
 ```
 
-​📊 Check out [the Vue3 version pivot table demo](https://codesandbox.io/s/s2-vue-hwg64q) .
+​📊 Check out [the Vue3 version pivot table demo](/manual/advanced/vue#pivot-table) .
 
 ## ⌨️ Local development
 

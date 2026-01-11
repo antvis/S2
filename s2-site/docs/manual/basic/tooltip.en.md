@@ -255,7 +255,7 @@ You can also create a `Custom Tooltip Class` to integrate with any framework (`V
 
 - [View BaseTooltip Class](/en/api/basic-class/base-tooltip)
 - [View React Example](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
-- [View Vue Example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
+- [View Vue Example](/manual/advanced/vue#tooltip)
 
 ```ts
 import { BaseTooltip, SpreadSheet } from '@antv/s2';

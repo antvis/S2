@@ -302,6 +302,14 @@ export default defineConfig({
         },
       },
       {
+        slug: 'vue-component',
+        icon: 'build',
+        title: {
+          zh: 'Vue 组件',
+          en: 'Vue Component',
+        },
+      },
+      {
         slug: 'custom',
         icon: 'edit',
         title: {
