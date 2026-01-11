@@ -18,7 +18,7 @@ export const getRowsForGrid = (
   viewCellHeights: ViewCellHeights,
 ) => {
   const rows = [];
-  // 使用第一个可见行的 Y 坐标作为基准偏移量
+  // 使用起始行索引的 Y 坐标作为基准偏移量
   const baseY = viewCellHeights.getCellOffsetY(rowMin);
 
   for (let index = rowMin; index < rowMax + 1; index++) {

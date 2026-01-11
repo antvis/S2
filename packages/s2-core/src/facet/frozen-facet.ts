@@ -317,6 +317,8 @@ export abstract class FrozenFacet extends BaseFacet {
             top,
             this.viewCellHeights,
           );
+          // TrailingRow 使用 getFrozenRowsForGrid，其坐标已经是相对于 top 的位置
+          // 不需要额外的偏移量，因为 frozen 组有独立的定位方式
           rowsOffset = undefined;
         }
       } else {

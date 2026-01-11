@@ -29,9 +29,11 @@ describe('Issue #3285: Large data table grid rendering', () => {
       expect(rows[10]).toBe(330); // row 10 的底部 = 330 - 0 = 330
     });
 
-    test('should return relative coordinates for large row indexes (beyond 2^23)', () => {
+    test('should return relative coordinates for large row indexes (beyond 2^24 with DPR)', () => {
       const viewCellHeights = createViewCellHeights(30);
-      // 模拟滚动到第 279621 行（Y ≈ 8,388,630 > 2^23）
+      // 模拟滚动到第 279621 行
+      // 当 DPR=2 时，canvas 内部 Y = 279621 × 30 × 2 = 16,777,260
+      // 此值接近 2^24 = 16,777,216 的精度边界
       const rowMin = 279621;
       const rowMax = 279631;
       const { rows, offset } = getRowsForGrid(rowMin, rowMax, viewCellHeights);
