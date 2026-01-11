@@ -67,9 +67,12 @@ export class GridGroup extends Group {
 
     // 复用或新增垂直线
     gridInfo.cols.forEach((x) => {
+      // 使用 Math.round 确保坐标为整数，避免大数据量下的浮点数精度问题
+      // fix: https://github.com/antvis/S2/issues/3285
+      const roundedX = Math.round(x - halfVerticalBorderWidth);
       const attrs = {
-        x1: x - halfVerticalBorderWidth,
-        x2: x - halfVerticalBorderWidth,
+        x1: roundedX,
+        x2: roundedX,
         y1: 0,
         y2: height,
         ...verticalBorderStyle,
@@ -88,11 +91,14 @@ export class GridGroup extends Group {
 
     // 复用或新增水平线
     gridInfo.rows.forEach((y) => {
+      // 使用 Math.round 确保坐标为整数，避免大数据量下的浮点数精度问题
+      // fix: https://github.com/antvis/S2/issues/3285
+      const roundedY = Math.round(y - halfHorizontalBorderWidth);
       const attrs = {
         x1: 0,
         x2: width,
-        y1: y - halfHorizontalBorderWidth,
-        y2: y - halfHorizontalBorderWidth,
+        y1: roundedY,
+        y2: roundedY,
         ...horizontalBorderStyle,
       };
 
