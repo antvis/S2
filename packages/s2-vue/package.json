@@ -55,8 +55,11 @@
     "tsc": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
     "@vueuse/core": "^10.5.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "tinycolor2": "^1.4.2",
+    "tinygradient": "^1.1.5"
   },
   "devDependencies": {
     "@antv/event-emitter": "^0.1.3",

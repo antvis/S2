@@ -446,12 +446,21 @@ importers:
 
   packages/s2-vue:
     dependencies:
+      '@ant-design/icons-vue':
+        specifier: ^6.1.0
+        version: 6.1.0(vue@3.4.27(typescript@5.4.5))
       '@vueuse/core':
         specifier: ^10.5.0
         version: 10.10.0(vue@3.4.27(typescript@5.4.5))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      tinycolor2:
+        specifier: ^1.4.2
+        version: 1.6.0
+      tinygradient:
+        specifier: ^1.1.5
+        version: 1.1.5
     devDependencies:
       '@antv/event-emitter':
         specifier: ^0.1.3

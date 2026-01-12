@@ -33,6 +33,7 @@ import {
 // Import playground components
 import BigDataSheetDemo from './components/BigDataSheet.vue';
 import ChartSheetDemo from './components/ChartSheet.vue';
+import ComponentsPlaygroundDemo from './components/ComponentsPlayground.vue';
 import CustomGridDemo from './components/CustomGrid.vue';
 import CustomTreeDemo from './components/CustomTree.vue';
 import EditableSheetDemo from './components/EditableSheet.vue';
@@ -634,6 +635,9 @@ const setThemeCfg = (cb: any) => {
       </a-tab-pane>
       <a-tab-pane key="bigData" tab="100万数据">
         <BigDataSheetDemo />
+      </a-tab-pane>
+      <a-tab-pane key="components" tab="组件扩展">
+        <ComponentsPlaygroundDemo />
       </a-tab-pane>
     </a-tabs>
   </div>
