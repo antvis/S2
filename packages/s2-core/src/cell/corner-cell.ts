@@ -63,7 +63,9 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
   protected afterDrawText() {}
 
   private onTreeIconClick(isCollapsed: boolean) {
-    if (isMobile()) {
+    const { device } = this.spreadsheet.options;
+
+    if (isMobile(device)) {
       return;
     }
 
@@ -109,8 +111,10 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       },
     });
     // 移动端, 点击热区为整个单元格
-    if (isMobile()) {
-      this.addEventListener('touchend', () => {
+    const { device } = this.spreadsheet.options;
+
+    if (isMobile(device)) {
+      this.addMobileTouchListener(() => {
         this.emitCollapseEvent(isCollapsed);
       });
     }

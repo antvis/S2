@@ -91,8 +91,9 @@ export class GridGroup extends Group {
       const attrs = {
         x1: 0,
         x2: width,
-        y1: y - halfHorizontalBorderWidth,
-        y2: y - halfHorizontalBorderWidth,
+        y1: -halfHorizontalBorderWidth,
+        y2: -halfHorizontalBorderWidth,
+        transform: `translate(0, ${y})`,
         ...horizontalBorderStyle,
       };
 

@@ -110,8 +110,9 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
   private onTreeIconClick() {
     const { isCollapsed, hierarchy } = this.meta;
+    const { device } = this.spreadsheet.options;
 
-    if (isMobile()) {
+    if (isMobile(device)) {
       return;
     }
 
@@ -176,8 +177,10 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     });
 
     // 移动端, 点击热区为整个单元格
-    if (isMobile()) {
-      this.addEventListener('touchend', () => {
+    const { device } = this.spreadsheet.options;
+
+    if (isMobile(device)) {
+      this.addMobileTouchListener(() => {
         this.emitCollapseEvent();
       });
     }

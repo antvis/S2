@@ -4,7 +4,7 @@ import {
   type S2Options,
   type SpreadSheet,
 } from '@antv/s2';
-import { onBeforeUnmount, onMounted, ref, shallowRef, toRaw } from 'vue';
+import { onBeforeUnmount, onMounted, ref, shallowRef, toRaw, toRef } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from '../interface';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 import { getSheetComponentOptions } from '../utils/options';
@@ -22,17 +22,20 @@ export function useSpreadSheet(
     dataCfg,
     options,
     themeCfg,
-    loading: loadingProps,
     sheetType,
     spreadsheet: customSpreadSheet,
     onMounted: onS2Mounted,
   } = props;
+
+  // 使用 toRef 保持 loading 属性的响应性
+  const loadingRef = toRef(props, 'loading');
+
   const wrapperRef = ref<HTMLDivElement>();
   const containerRef = ref<HTMLDivElement>();
 
   const s2Ref = shallowRef<SpreadSheet>();
 
-  const { loading, setLoading } = useLoading(s2Ref, loadingProps);
+  const { loading, setLoading } = useLoading(s2Ref, loadingRef);
   const pagination = usePagination(s2Ref, props);
 
   const renderSpreadSheet = (container: HTMLDivElement) => {
