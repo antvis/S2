@@ -39,7 +39,7 @@ cli
     default: 'image',
   })
   .option('--wait <ms>', 'Wait time for rendering in milliseconds', {
-    default: 32,
+    default: 100,
   })
   .action(async (options) => {
     const { input, output, type, width, height, imageType, outputType, wait } =

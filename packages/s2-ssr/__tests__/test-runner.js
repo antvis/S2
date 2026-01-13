@@ -73,9 +73,7 @@ function assert(condition, message) {
   }
 }
 
-// eslint-disable-next-line max-lines-per-function
-async function runTests() {
-  console.log('\n📊 S2-SSR Unit Tests\n');
+async function runPivotSheetTests() {
   console.log('PivotSheet:');
 
   // Test: PivotSheet PNG
@@ -177,7 +175,9 @@ async function runTests() {
     assert(buffer.length > 1000, `Buffer too small: ${buffer.length} bytes`);
     spreadsheet.destroy();
   });
+}
 
+async function runTableSheetTests() {
   console.log('\nTableSheet:');
 
   // Test: TableSheet PNG
@@ -210,7 +210,9 @@ async function runTests() {
     spreadsheet.exportToFile(path.join(ASSETS_DIR, 'table.jpeg'));
     spreadsheet.destroy();
   });
+}
 
+async function runThemeTests() {
   console.log('\nTheme:');
 
   // Test: Dark Theme
@@ -248,7 +250,9 @@ async function runTests() {
     spreadsheet.exportToFile(path.join(ASSETS_DIR, 'pivot-colorful.png'));
     spreadsheet.destroy();
   });
+}
 
+async function runAutoFitTests() {
   console.log('\nAutoFit:');
 
   // Test: AutoFit enabled (should crop to actual size with high DPI)
@@ -296,6 +300,7 @@ async function runTests() {
       height,
       dataCfg: pivotData,
       autoFit: false,
+      devicePixelRatio: 2,
     });
     const canvas = spreadsheet.getCanvas();
 
@@ -311,6 +316,16 @@ async function runTests() {
     spreadsheet.exportToFile(path.join(ASSETS_DIR, 'pivot-no-autofit.png'));
     spreadsheet.destroy();
   });
+}
+
+// eslint-disable-next-line max-lines-per-function
+async function runTests() {
+  console.log('\n📊 S2-SSR Unit Tests\n');
+
+  await runPivotSheetTests();
+  await runTableSheetTests();
+  await runThemeTests();
+  await runAutoFitTests();
 
   // Summary
   console.log('\n---');

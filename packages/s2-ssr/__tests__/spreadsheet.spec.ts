@@ -70,8 +70,8 @@ const tableData = {
 describe('createSpreadsheet', () => {
   describe('PivotSheet', () => {
     const createPivot = (
-      outputType?: any,
-      imageType: any = 'png',
+      outputType?: 'image' | 'svg' | 'pdf',
+      imageType: 'png' | 'jpeg' = 'png',
       options = {},
     ) => {
       return createSpreadsheet({
@@ -139,8 +139,8 @@ describe('createSpreadsheet', () => {
 
   describe('TableSheet', () => {
     const createTable = (
-      outputType?: any,
-      imageType: any = 'png',
+      outputType?: 'image' | 'svg' | 'pdf',
+      imageType: 'png' | 'jpeg' = 'png',
       options = {},
     ) => {
       return createSpreadsheet({

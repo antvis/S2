@@ -200,7 +200,7 @@ module.exports = 'file-stub';
 | `devicePixelRatio` | `number` | `2` | 设备像素比 |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | 输出类型 |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | 图片类型 (当 outputType 为 'image' 时) |
-| `waitForRender` | `number` | `32` | 等待异步渲染完成的时间 (ms) |
+| `waitForRender` | `number` | `100` | 等待异步渲染完成的时间 (ms) |
 | `renderPlugins` | `any[]` | `[]` | 额外的 G 渲染插件 |
 
 #### Returns (返回值)

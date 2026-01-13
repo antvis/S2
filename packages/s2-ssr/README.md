@@ -200,7 +200,7 @@ Creates a spreadsheet instance for SSR.
 | `devicePixelRatio` | `number` | `2` | Device pixel ratio |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | Output type |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | Image type (when outputType is 'image') |
-| `waitForRender` | `number` | `32` | Wait time (ms) for async rendering to complete |
+| `waitForRender` | `number` | `100` | Wait time (ms) for async rendering to complete |
 | `renderPlugins` | `any[]` | `[]` | Additional G render plugins |
 
 #### Returns

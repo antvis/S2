@@ -53,10 +53,10 @@ export interface Options {
    */
   devicePixelRatio?: number;
   /**
-   * <zh/> 等待渲染的时间，默认为 32ms
+   * <zh/> 等待渲染的时间，默认为 100ms
    *
-   * <en/> The time to wait for rendering, default is 32ms
-   * @defaultValue 32
+   * <en/> The time to wait for rendering, default is 100ms
+   * @defaultValue 100
    */
   waitForRender?: number;
   /**
