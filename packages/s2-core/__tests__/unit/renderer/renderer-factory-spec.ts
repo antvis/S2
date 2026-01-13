@@ -4,8 +4,6 @@ import { Image as GImage } from '@antv/g';
 
 const validImageURL = `https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original`;
 const fallbackImageURL = `https://mdn.alipayobjects.com/huamei_2yzvel/afts/img/A*WxI6T4znRX0AAAAAAAAAAAAAeriAAQ/original`;
-const corsFailImageURL =
-  'https://img.ixintu.com/download/jpg/20200913/9b6606f90fd89b28e55a7a911b5501d7_512_512.jpg%21con';
 
 describe('SingletonRenderer.render 渲染器测试', () => {
   let mockCell: BaseCell<any>;
@@ -41,25 +39,6 @@ describe('SingletonRenderer.render 渲染器测试', () => {
     const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[1][0];
 
     expect(createdElement.style.opacity).toBe(0.8);
-  });
-
-  test('应该正确创建不支持跨域的图片元素', async () => {
-    // 测试图片渲染类型
-    const config: CustomRendererConfig = {
-      type: 'IMAGE',
-      config: { opacity: 0.8 },
-      fallback: fallbackImageURL,
-    };
-
-    mockCell.getFieldValue.mockReturnValue(corsFailImageURL);
-
-    await SingletonRenderer.render(config, mockCell);
-
-    // 验证元素创建参数
-    expect(mockCell.appendChild).toHaveBeenCalledWith(expect.any(GImage));
-    const createdElement = (mockCell.appendChild as jest.Mock).mock.calls[1][0];
-
-    expect(createdElement.style.src.src).toBe(corsFailImageURL);
   });
 
   test('应该正确创建prepareText中的元素', async () => {

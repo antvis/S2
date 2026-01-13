@@ -263,7 +263,7 @@ spreadsheet.destroy();
 | `devicePixelRatio` | `number` | `2` | 设备像素比，影响图片清晰度 |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | 输出类型 |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | 图片格式 |
-| `waitForRender` | `number` | `32` | 等待渲染完成的时间（毫秒） |
+| `waitForRender` | `number` | `100` | 等待渲染完成的时间（毫秒） |
 
 ## CLI 工具
 

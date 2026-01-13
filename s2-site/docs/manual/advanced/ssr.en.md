@@ -263,7 +263,7 @@ spreadsheet.destroy();
 | `autoFit` | `boolean` | `true` | Auto crop canvas to actual table size, remove blank areas |
 | `outputType` | `'image' \| 'svg' \| 'pdf'` | `'image'` | Output type |
 | `imageType` | `'png' \| 'jpeg'` | `'png'` | Image format |
-| `waitForRender` | `number` | `32` | Wait time for rendering (milliseconds) |
+| `waitForRender` | `number` | `100` | Wait time for rendering (milliseconds) |
 
 ## CLI Tool
 
