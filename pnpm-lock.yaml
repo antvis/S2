@@ -453,7 +453,7 @@ importers:
         specifier: ^2.0.43
         version: 2.2.0
       '@antv/s2':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../s2-core
       cac:
         specifier: ^6.7.14
@@ -20271,7 +20271,11 @@ snapshots:
       jest-runner: 26.6.3
       jest-runtime: 26.6.3
     transitivePeerDependencies:
+      - bufferutil
+      - canvas
       - supports-color
+      - ts-node
+      - utf-8-validate
 
   '@jest/test-sequencer@29.7.0':
     dependencies:
