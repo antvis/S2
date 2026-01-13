@@ -19,6 +19,7 @@ import {
   CellType,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
+  MOBILE_SCROLL_THRESHOLD,
   S2Event,
 } from '../common/constant';
 import { InteractionStateName } from '../common/constant/interaction';
@@ -67,6 +68,18 @@ export abstract class HeaderCell<
 
   /** right icon 绘制起始坐标 */
   protected rightIconPosition: PointLike;
+
+  /** 是否已添加移动端触摸事件监听器（防止重复添加） */
+  protected hasMobileTouchListeners = false;
+
+  /** 移动端触摸事件处理器引用（用于销毁时移除） */
+  private mobileTouchHandlers:
+    | {
+        onTouchStart: (e: CanvasEvent) => void;
+        onTouchEnd: (e: CanvasEvent) => void;
+        onTouchCancel: () => void;
+      }
+    | undefined;
 
   protected abstract isBolderText(): boolean;
 
@@ -557,7 +570,74 @@ export abstract class HeaderCell<
     return this.meta.field;
   }
 
+  /**
+   * 添加移动端触摸事件监听器
+   * 用于区分点击和滚动操作，避免滚动时误触发展开/收起
+   * @param onTap 点击回调（当触摸移动距离小于阈值时触发）
+   */
+  protected addMobileTouchListener(onTap: () => void) {
+    if (this.hasMobileTouchListeners) {
+      return;
+    }
+
+    this.hasMobileTouchListeners = true;
+    let touchStartPosition: { x: number; y: number } | null = null;
+
+    const onTouchStart = (e: CanvasEvent) => {
+      const nativeEvent = e.nativeEvent as TouchEvent;
+      const touch = nativeEvent.touches?.[0] || nativeEvent.changedTouches?.[0];
+
+      if (touch) {
+        touchStartPosition = { x: touch.clientX, y: touch.clientY };
+      }
+    };
+
+    const onTouchEnd = (e: CanvasEvent) => {
+      const nativeEvent = e.nativeEvent as TouchEvent;
+      const touch = nativeEvent.changedTouches?.[0];
+
+      if (!touch || !touchStartPosition) {
+        return;
+      }
+
+      // 计算移动距离，如果超过阈值则认为是滚动操作，不触发展开/收起
+      const dx = Math.abs(touch.clientX - touchStartPosition.x);
+      const dy = Math.abs(touch.clientY - touchStartPosition.y);
+
+      if (dx < MOBILE_SCROLL_THRESHOLD && dy < MOBILE_SCROLL_THRESHOLD) {
+        onTap();
+      }
+
+      touchStartPosition = null;
+    };
+
+    const onTouchCancel = () => {
+      touchStartPosition = null;
+    };
+
+    // 保存处理器引用以便销毁时移除
+    this.mobileTouchHandlers = { onTouchStart, onTouchEnd, onTouchCancel };
+
+    this.addEventListener('touchstart', onTouchStart);
+    this.addEventListener('touchend', onTouchEnd);
+    this.addEventListener('touchcancel', onTouchCancel);
+  }
+
   destroy() {
+    // 移除移动端触摸事件监听器
+    if (this.mobileTouchHandlers) {
+      this.removeEventListener(
+        'touchstart',
+        this.mobileTouchHandlers.onTouchStart,
+      );
+      this.removeEventListener('touchend', this.mobileTouchHandlers.onTouchEnd);
+      this.removeEventListener(
+        'touchcancel',
+        this.mobileTouchHandlers.onTouchCancel,
+      );
+      this.mobileTouchHandlers = undefined;
+    }
+
     this.meta.belongsCell = null;
     super.destroy();
   }
