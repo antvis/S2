@@ -83,8 +83,12 @@ export const copyToClipboard = (
     copyableItem = data;
   }
 
+  if (isSSR()) {
+    // 在 SSR 环境中不支持剪贴板操作
+    return Promise.resolve();
+  }
+
   if (
-    isSSR() ||
     !hasNavigator() ||
     !navigator.clipboard ||
     !window.ClipboardItem ||
