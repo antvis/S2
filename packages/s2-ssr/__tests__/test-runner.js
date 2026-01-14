@@ -126,6 +126,9 @@ async function runPivotSheetTests() {
   });
 
   // Test: PivotSheet PDF
+  // 每次执行单测都会生成一个新的PDF文件（时间戳会变），不方便版本管理
+  // Each unit test execution generates a new PDF file (timestamp changes), which is inconvenient for version tracking
+  /*
   await test('file pdf', async () => {
     const spreadsheet = await createSpreadsheet({
       sheetType: 'pivot',
@@ -142,6 +145,7 @@ async function runPivotSheetTests() {
     );
     spreadsheet.destroy();
   });
+  */
 
   // Test: toDataURL
   await test('toDataURL', async () => {
