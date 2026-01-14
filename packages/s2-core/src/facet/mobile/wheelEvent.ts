@@ -29,6 +29,21 @@ const isMultiTouch = (evt: FederatedPointerEvent): boolean => {
 };
 
 /**
+ * 判断是否应该阻止默认滚动行为的回调函数类型
+ * @param deltaX 水平滚动距离
+ * @param deltaY 垂直滚动距离
+ * @param offsetX 触摸点 X 坐标
+ * @param offsetY 触摸点 Y 坐标
+ * @returns boolean - true 表示应该阻止默认行为
+ */
+export type ShouldPreventDefaultCallback = (
+  deltaX: number,
+  deltaY: number,
+  offsetX: number,
+  offsetY: number,
+) => boolean;
+
+/**
  * 移动端滚动事件
  * @see https://github.com/antvis/g-gesture/blob/next/src/event/wheel.ts
  */
@@ -49,10 +64,16 @@ export class WheelEvent extends EE {
 
   private raf: number;
 
-  constructor(canvas: Canvas) {
+  private shouldPreventDefault?: ShouldPreventDefaultCallback;
+
+  constructor(
+    canvas: Canvas,
+    shouldPreventDefault?: ShouldPreventDefaultCallback,
+  ) {
     super();
     this.canvas = canvas;
     this.panning = false;
+    this.shouldPreventDefault = shouldPreventDefault;
 
     this.init();
   }
@@ -102,11 +123,24 @@ export class WheelEvent extends EE {
     }
 
     if (this.panning) {
+      const nativeEvent = evt.nativeEvent;
       const ms = now();
       const deltaMS = ms - this.lastMoveMS;
 
       const deltaX = this.preX - evt.x;
       const deltaY = this.preY - evt.y;
+
+      // https://github.com/antvis/S2/issues/3249
+      // 根据回调判断是否阻止默认滚动行为
+      // 必须在事件链早期调用，否则浏览器的 passive 事件监听器会接管滚动
+      if (nativeEvent?.cancelable) {
+        const shouldPrevent =
+          this.shouldPreventDefault?.(deltaX, deltaY, evt.x, evt.y) ?? true;
+
+        if (shouldPrevent) {
+          (nativeEvent as Event).preventDefault?.();
+        }
+      }
 
       this.speedX = deltaX / deltaMS;
       this.speedY = deltaY / deltaMS;
@@ -121,6 +155,8 @@ export class WheelEvent extends EE {
         y: evt.y,
         deltaX,
         deltaY,
+        // 传递原生事件用于移动端 preventDefault
+        nativeEvent,
       } as unknown as FederatedWheelEvent);
     }
   };
