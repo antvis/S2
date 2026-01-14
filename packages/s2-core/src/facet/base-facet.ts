@@ -705,6 +705,8 @@ export abstract class BaseFacet {
 
     canvas.addEventListener('touchstart', (event) => {
       startY = event.touches[0].clientY;
+      // 重置滚动方向，让新的触摸手势可以向任意方向滚动
+      this.scrollDirection = undefined as unknown as ScrollDirection;
     });
 
     canvas.addEventListener('touchend', (event) => {
@@ -745,21 +747,56 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForMobile = () => {
-    this.mobileWheel = new MobileWheel(this.spreadsheet.container);
-    this.mobileWheel.on('wheel', (ev: FederatedWheelEvent) => {
-      this.spreadsheet.hideTooltip();
-      const originEvent = ev.originalEvent;
-      const { deltaX, deltaY: defaultDeltaY, x, y } = ev;
-      const deltaY = this.getMobileWheelDeltaY(defaultDeltaY);
+    // https://github.com/antvis/S2/issues/3249
+    // 创建回调函数，根据 overscrollBehavior 和滚动边界判断是否阻止默认行为
+    const shouldPreventDefault = (
+      deltaX: number,
+      deltaY: number,
+      offsetX: number,
+      offsetY: number,
+    ): boolean => {
+      const { interaction } = this.spreadsheet.options;
+      const overscrollBehavior = interaction?.overscrollBehavior;
 
-      this.onWheel({
-        ...originEvent,
+      // 对于 'contain' 和 'none' 模式，始终阻止默认行为
+      if (overscrollBehavior !== 'auto') {
+        return true;
+      }
+
+      // 对于 'auto' 模式，只有在滚动区域内（未到边缘）时才阻止默认行为
+      // 到达边缘时允许事件冒泡到外层容器
+      const isScrollOverViewport = this.isScrollOverTheViewport({
         deltaX,
         deltaY,
-        offsetX: x,
-        offsetY: y,
-      } as unknown as WheelEvent);
-    });
+        offsetX,
+        offsetY,
+      });
+
+      return isScrollOverViewport;
+    };
+
+    this.mobileWheel = new MobileWheel(
+      this.spreadsheet.container,
+      shouldPreventDefault,
+    );
+    this.mobileWheel.on(
+      'wheel',
+      (ev: FederatedWheelEvent & { nativeEvent?: Event }) => {
+        this.spreadsheet.hideTooltip();
+        const originEvent = ev.originalEvent;
+        const { deltaX, deltaY: defaultDeltaY, x, y, nativeEvent } = ev;
+        const deltaY = this.getMobileWheelDeltaY(defaultDeltaY);
+
+        this.onWheel({
+          ...originEvent,
+          deltaX,
+          deltaY,
+          offsetX: x,
+          offsetY: y,
+          __nativeEvent__: nativeEvent,
+        } as unknown as WheelEvent);
+      },
+    );
 
     this.onContainerWheelForMobileCompatibility();
   };
@@ -1457,16 +1494,20 @@ export abstract class BaseFacet {
   };
 
   protected stopScrollChaining = (event: WheelEvent) => {
-    if (event?.cancelable) {
-      event?.preventDefault?.();
+    // https://github.com/antvis/S2/issues/3249
+    // 优先使用 __nativeEvent__ (移动端通过 wheelEvent.ts 传递的原生事件)
+    // 需要在事件链早期调用 preventDefault，否则事件会变成 passive/non-cancelable
+    const nativeEvent =
+      // eslint-disable-next-line no-underscore-dangle
+      (event as unknown as { __nativeEvent__?: Event })?.__nativeEvent__ ||
+      (event as unknown as FederatedPointerEvent)?.nativeEvent;
+
+    if (nativeEvent?.cancelable) {
+      (nativeEvent as Event)?.preventDefault?.();
     }
 
-    // 使用 G 对应的原生 TouchEvent，以达到移动端禁用外部容器滚动的效果
-    const mobileEvent =
-      (event as unknown as FederatedPointerEvent)?.nativeEvent || event;
-
-    if (mobileEvent?.cancelable) {
-      mobileEvent?.preventDefault?.();
+    if (event?.cancelable) {
+      event?.preventDefault?.();
     }
   };
 
@@ -1517,7 +1558,10 @@ export abstract class BaseFacet {
       return;
     }
 
+    // 水平滚动方向变化检测：只在有水平滚动时才检查
+    // 修复：添加 optimizedDeltaX !== 0 检查，避免垂直滚动时被误拦截
     if (
+      optimizedDeltaX !== 0 &&
       this.scrollDirection !== undefined &&
       this.scrollDirection !==
         (optimizedDeltaX > 0
