@@ -7,6 +7,10 @@
  * Uses Node.js directly instead of Jest to avoid jsdom/node-canvas conflicts
  */
 
+// Now run tests
+const path = require('path');
+const fs = require('fs');
+
 // Setup CSS/LESS/SVG extensions BEFORE importing the package
 // This must be done first because the package imports @antv/s2 which requires CSS files
 require.extensions['.css'] = () => {};
@@ -14,11 +18,10 @@ require.extensions['.less'] = () => {};
 require.extensions['.svg'] = () => {};
 
 // Import env setup from built package (this sets up Node.js globals)
-require('../dist/s2-ssr.cjs');
+const { setupNodeEnvironment } = require('../dist/s2-ssr.cjs');
 
-// Now run tests
-const path = require('path');
-const fs = require('fs');
+setupNodeEnvironment();
+
 const { createSpreadsheet } = require('../dist/s2-ssr.cjs');
 
 const ASSETS_DIR = path.join(__dirname, 'assets');

@@ -196,6 +196,3 @@ export function setupNodeEnvironment(): void {
   setupModuleExtensions();
   setupBrowserGlobals();
 }
-
-// Auto-setup on import in Node.js environment
-setupNodeEnvironment();

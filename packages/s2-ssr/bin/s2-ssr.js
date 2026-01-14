@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
 
+const fs = require('fs');
+const cac = require('cac');
+
 // Setup CSS/LESS/SVG extensions BEFORE importing the package
 // This must be done first because the package imports @antv/s2 which requires CSS files
 require.extensions['.css'] = () => {};
@@ -9,11 +12,11 @@ require.extensions['.less'] = () => {};
 require.extensions['.svg'] = () => {};
 
 // Import env setup from built package (this sets up Node.js globals)
-require('../dist/s2-ssr.cjs');
+const { setupNodeEnvironment } = require('../dist/s2-ssr.cjs');
+
+setupNodeEnvironment();
 
 // Now load the actual module and CLI logic
-const fs = require('fs');
-const cac = require('cac');
 const { createSpreadsheet } = require('../dist/s2-ssr.cjs');
 const { version } = require('../package.json');
 
