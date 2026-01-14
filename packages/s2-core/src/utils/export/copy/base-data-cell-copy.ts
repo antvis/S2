@@ -15,6 +15,7 @@ import type {
 import { CopyMIMEType } from '../../../common/interface/export';
 import { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
+import { isSSR } from '../../ssr';
 import {
   escapeField,
   getHeaderList,
@@ -105,6 +106,6 @@ export abstract class BaseDataCellCopy {
    * Safari 等不支持 requestIdleCallback 的浏览器, 降级为同步
    */
   protected isEnableASync() {
-    return this.config.async && !!window.requestIdleCallback;
+    return !isSSR() && this.config.async && !!window.requestIdleCallback;
   }
 }
