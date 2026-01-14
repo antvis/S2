@@ -1,5 +1,5 @@
-// Setup Node.js environment before any other imports
-import './env';
+// Note: setupNodeEnvironment is exported for users who need manual env setup
+// This import is intentionally removed to prevent global mock pollution
 
 export { createCanvas } from './canvas';
 export { setupNodeEnvironment } from './env';
