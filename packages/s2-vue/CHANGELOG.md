@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.1.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.3...@antv/s2-vue-v2.1.0-alpha.1) (2026-01-16)
+
+
+### Features
+
+* **s2-vue:** 更新s2-vue ([11b4b3a](https://github.com/antvis/S2/commit/11b4b3a76f13917a326fe9ee616d9f74223da61d))
+
 # [@antv/s2-vue-v2.0.3](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.2...@antv/s2-vue-v2.0.3) (2026-01-14)
 
 
