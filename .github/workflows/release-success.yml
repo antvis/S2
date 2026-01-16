@@ -36,7 +36,7 @@ jobs:
           git config --global user.email 'a1231236677287@163.com'
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
-          GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.HUIYU_GITHUB_TOKEN }}
 
       - name: Checkout branch
         run: |
@@ -55,7 +55,7 @@ jobs:
         run: |
           gh pr create --title "chore: 🤖 更新 changelog 文件" --body "![preview](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Eel8Rp5jlAkAAAAAAAAAAAAADmJ7AQ/original) <br/> 🤖 由 [[🚀 After the release is successful](https://github.com/antvis/S2/blob/master/.github/workflows/release-success.yml)] action 自动创建."
         env:
-          GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.HUIYU_GITHUB_TOKEN }}
 
       # 失败通知
       - name: 🔊 Create failed notify
