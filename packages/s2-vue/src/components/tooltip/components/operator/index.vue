@@ -12,7 +12,7 @@ import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
 import TooltipOperatorMenu from './menu.vue';
 
-interface TooltipOperatorProps extends BaseTooltipOperatorProps {
+export interface TooltipOperatorProps extends BaseTooltipOperatorProps {
   onClick?: MenuProps['onClick'];
 }
 

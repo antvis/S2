@@ -486,6 +486,9 @@ importers:
       vue-tsc:
         specifier: ^3.2.0
         version: 3.2.2(typescript@5.8.2)
+      vue-types:
+        specifier: ^3.0.2
+        version: 3.0.2(vue@3.5.26(typescript@5.8.2))
 
   s2-site:
     dependencies:
