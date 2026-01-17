@@ -39,8 +39,8 @@
   "scripts": {
     "build": "npm-run-all clean --parallel build:umd build:cjs build:esm",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
-    "build:cjs": "vue-tsc --module commonjs --outDir lib -p tsconfig.build.json && pnpm build:sync-assets lib/",
-    "build:esm": "vue-tsc --module ESNext --outDir esm -p tsconfig.build.json && pnpm build:sync-assets esm/",
+    "build:cjs": "cross-env FORMAT=cjs vite build && pnpm build:sync-assets lib/",
+    "build:esm": "cross-env FORMAT=es vite build && pnpm build:sync-assets esm/",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
     "build:sync-assets": "copyfiles -u 1 \"src/**/*.{less,svg}\"",
@@ -64,8 +64,9 @@
     "@vue/shared": "^3.3.4",
     "@vue/tsconfig": "^0.4.0",
     "ant-design-vue": "^3.2.20",
+    "vite-plugin-dts": "^4.5.0",
     "vue": "^3.3.4",
-    "vue-tsc": "^2.1.6"
+    "vue-tsc": "^3.2.0"
   },
   "peerDependencies": {
     "@antv/s2": "^2.0.0",
