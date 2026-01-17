@@ -1,42 +1,42 @@
 ---
 name: s2-type-check
-description: 在修改 S2 项目代码后，必须运行类型检查以确保没有类型错误，避免推送到 git 时出现问题。
+description: After modifying S2 project code, you must run type checking to ensure there are no type errors, avoiding issues when pushing to git.
 ---
 
-# S2 类型检查
+# S2 Type Check
 
-## 何时使用这个 skill
+## When to use this skill
 
-**每当你修改了 `packages/` 目录下的任何 TypeScript 代码文件后，必须在任务结束前使用此 skill。**
+**After modifying any TypeScript code files in the `packages/` directory, you must use this skill before finishing the task.**
 
-这包括但不限于：
-- 修改 `.ts`、`.tsx`、`.vue` 文件
-- 添加新的源代码文件
-- 修改类型定义文件 (`.d.ts`)
-- 修改导入/导出语句
+This includes but is not limited to:
+- Modifying `.ts`, `.tsx`, `.vue` files
+- Adding new source code files
+- Modifying type definition files (`.d.ts`)
+- Modifying import/export statements
 
-## 执行步骤
+## Execution Steps
 
-在完成所有代码修改后，执行以下命令来检查类型：
+After completing all code modifications, run the following command to check types:
 
 ```bash
 cd /Users/zjt/code/S2
 pnpm lint:type
 ```
 
-这个命令会对 `packages/` 下的所有包运行 TypeScript 编译器检查。
+This command runs the TypeScript compiler check on all packages under `packages/`.
 
-## 处理类型错误
+## Handling Type Errors
 
-如果命令报告了类型错误：
+If the command reports type errors:
 
-1. **仔细阅读错误信息**，确定错误的文件位置和原因
-2. **修复所有类型错误**，确保代码类型安全
-3. **重新运行 `pnpm lint:type`**，确认所有错误已修复
-4. 只有在类型检查通过后，任务才算完成
+1. **Carefully read the error message** to determine the location and cause of the error.
+2. **Fix all type errors** to ensure code type safety.
+3. **Re-run `pnpm lint:type`** to confirm all errors are fixed.
+4. The task is considered complete only after type check passes.
 
-## 注意事项
+## Notes
 
-- 不要忽略类型错误，它们可能在 CI/CD 流程中导致构建失败
-- 如果某些错误难以修复，应该告知用户并讨论解决方案
-- 这个检查是推送代码到 git 前的必要步骤
+- Do not ignore type errors; they may cause build failures in the CI/CD pipeline.
+- If some errors are difficult to fix, inform the user and discuss solutions.
+- This check is a necessary step before pushing code to git.
