@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.1.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.1.0-alpha.1...@antv/s2-vue-v2.1.0-alpha.2) (2026-01-17)
+
+
+### Bug Fixes
+
+* 修复构建问题 ([40442f4](https://github.com/antvis/S2/commit/40442f4f89db3326d13613bd49f0173cab02920b))
+
 # [@antv/s2-vue-v2.1.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.3...@antv/s2-vue-v2.1.0-alpha.1) (2026-01-16)
 
 
