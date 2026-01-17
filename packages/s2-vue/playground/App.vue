@@ -640,8 +640,6 @@ const setThemeCfg = (cb: any) => {
 </template>
 
 <style lang="less">
-@import 'ant-design-vue/dist/antd.less';
-
 .playground {
   padding: 20px;
 

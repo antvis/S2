@@ -7,10 +7,10 @@ import {
   type BaseDrillDownComponentProps,
 } from '@antv/s2';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
-import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
+import type { SelectInfo } from 'ant-design-vue/es/menu/src/interface';
 import { isEmpty } from 'lodash';
-import type { Key } from 'ant-design-vue/lib/_util/type';
-import type { ChangeEvent } from 'ant-design-vue/lib/_util/EventInterface';
+import type { Key } from 'ant-design-vue/es/_util/type';
+import type { ChangeEvent } from 'ant-design-vue/es/_util/EventInterface';
 import LocationIcon from '../../icons/location-icon.vue';
 import TextIcon from '../../icons/text-icon.vue';
 import CalendarIcon from '../../icons/calendar-icon.vue';
