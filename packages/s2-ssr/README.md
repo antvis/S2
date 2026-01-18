@@ -219,6 +219,46 @@ Returns a `Spreadsheet` object with the following methods:
 
 Creates a raw G Canvas with node-canvas for advanced usage.
 
+## Development
+
+If you're developing `@antv/s2-ssr` within the S2 monorepo, follow these steps:
+
+### 1. Enable canvas build script
+
+The `canvas` package requires its install script to run in order to download prebuilt binaries. Ensure `canvas` is listed in `onlyBuiltDependencies` in `pnpm-workspace.yaml`:
+
+```yaml
+onlyBuiltDependencies:
+  - canvas
+```
+
+Then reinstall dependencies:
+
+```bash
+pnpm install
+```
+
+### 2. Build s2-core
+
+The s2-ssr package depends on `@antv/s2` which is linked to the local `s2-core` package. You need to build the CommonJS output:
+
+```bash
+pnpm core:build
+```
+
+### 3. Build s2-ssr
+
+```bash
+cd packages/s2-ssr
+pnpm build
+```
+
+### 4. Run examples
+
+```bash
+node examples/grid-english.js
+```
+
 ## License
 
 MIT

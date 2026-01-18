@@ -39,7 +39,7 @@
     "@antv/g-canvas": "^2.0.43",
     "@antv/s2": "workspace:*",
     "cac": "^6.7.14",
-    "canvas": "^3"
+    "canvas": "^3.2.0"
   },
   "devDependencies": {
     "@antv/g-plugin-rough-canvas-renderer": "^2.0.44",

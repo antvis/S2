@@ -219,6 +219,46 @@ module.exports = 'file-stub';
 
 创建一个带有 node-canvas 的原生 G Canvas，用于高级用法。
 
+## 本地开发
+
+如果您在 S2 monorepo 中开发 `@antv/s2-ssr`，请按照以下步骤操作：
+
+### 1. 启用 canvas 构建脚本
+
+`canvas` 包需要运行其安装脚本才能下载预编译的二进制文件。确保 `canvas` 在 `pnpm-workspace.yaml` 的 `onlyBuiltDependencies` 中：
+
+```yaml
+onlyBuiltDependencies:
+  - canvas
+```
+
+然后重新安装依赖：
+
+```bash
+pnpm install
+```
+
+### 2. 构建 s2-core
+
+s2-ssr 包依赖于链接到本地 `s2-core` 的 `@antv/s2`。您需要构建 CommonJS 输出：
+
+```bash
+pnpm core:build
+```
+
+### 3. 构建 s2-ssr
+
+```bash
+cd packages/s2-ssr
+pnpm build
+```
+
+### 4. 运行示例
+
+```bash
+node examples/grid-english.js
+```
+
 ## License
 
 MIT
