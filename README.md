@@ -50,9 +50,7 @@ A practical visualization library for tabular analysis.
 </p>
 </div>
 
-S2 is a solution in multi-dimensional cross-analysis tables, which provides data-driven analysis table components.
- It supplements multi-dimensional analysis tables in the industry. By providing the core library, essential components,
-demo components and expansion capabilities, it allows developers to use it quickly and freely.
+S2 is a pure data-driven multi-dimensional cross-analysis table solution. It provides a core library, basic components, and business scenario components. With its high extensibility, developers can flexibly build complex table reports out of the box.
 
 <p align="center">
   <a href="https://s2.antv.antgroup.com/en">Homepage</a> •
@@ -65,18 +63,15 @@ demo components and expansion capabilities, it allows developers to use it quick
 
 ## ✨ Features
 
-1. Multi-dimensional cross-analysis: Say goodbye to a single analysis dimension and fully embrace the free combination analysis of any dimension.
-2. High performance: It can support rendering in less than 8s under the total amount of millions of data and achieve second-level rendering through partial drilling.
-3. High scalability: Support any custom extensions (including but not limited to layout, style, interaction, data hook flow, etc.).
-4. Out of the box: Provide out-of-the-box `React` and `Vue3` table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering
- of complex scenes quickly.
-5. High interaction: support rich interaction forms (single selection, circle selection, row selection, column selection, freeze line header, width and height dragging, custom interaction, etc.)
+- **Multi-dimensional cross-analysis**: Say goodbye to rigid analysis dimensions and embrace free combination of any dimensions.
+- **High performance**: Supports rendering millions of data points in under 8 seconds, and achieves sub-second rendering for drill-downs.
+- **High extensibility**: Supports custom extensions for layout, interaction, style, and data processing.
+- **Out of the box**: Provides production-ready `React` and `Vue 3` components for various analysis scenarios. Simple configuration is all you need.
+- **Rich interactions**: Supports various interactions like selection (single, multi, range), freezing, resizing, and custom interactive behaviors.
 
 ## 🔨 Getting Started
 
-可以通过 NPM、Yarn 或者 pnpm 等包管理器来安装。
-
-`S2` is usually installed via a package manager such as npm, Yarn, or pnpm.
+**Install via package manager:**
 
 ```bash
 npm install @antv/s2 --save
@@ -90,9 +85,7 @@ yarn add @antv/s2
 pnpm add @antv/s2
 ```
 
-After
-
-After successful installation, prepare a DOM container for rendering and import the corresponding S2 API object through import.
+After installation, prepare a DOM container for rendering and import the corresponding S2 API object.
 
 ```html
 <div id="container"></div>
@@ -135,7 +128,7 @@ bootstrap()
 | --- |  --- | --- | --- |
 | Edge | last 2 versions | last 2 versions | last 2 versions |
 
-`@antv/s2-react` and `@antv/s2-vue` see [React JavaScript environment requirements](https://zh-hans.reactjs.org/docs/javascript-environment-requirements.html) 和 [Vite browser compatibility](https://cn.vitejs.dev/guide/build.html#browser-compatibility)
+For `@antv/s2-react` and `@antv/s2-vue`, please refer to [React JavaScript environment requirements](https://reactjs.org/docs/javascript-environment-requirements.html) and [Vite browser compatibility](https://vitejs.dev/guide/build.html#browser-compatibility).
 
 ## 👤 Author
 
@@ -146,7 +139,7 @@ bootstrap()
 Contributions, issues and feature requests are welcome.
 Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
 
-> S2 use pnpm as package manager
+> S2 uses pnpm as the package manager
 
 ```bash
 git clone git@github.com:antvis/S2.git
