@@ -6,11 +6,35 @@
     "strict": false,
     "declaration": true,
     "noImplicitAny": false,
+    "types": [
+      "node",
+      "jest",
+      "vite/client",
+      "vue-types"
+    ],
     "paths": {
-      "@antv/s2": ["s2-core/src/index.ts"],
-      "@antv/s2/esm/shared": ["s2-core/src/shared/index.ts"],
-    },
+      "@antv/s2": [
+        "s2-core/src/index.ts"
+      ],
+      "@antv/s2/*": [
+        "s2-core/src/*"
+      ],
+      "@antv/s2/esm/shared": [
+        "s2-core/src/shared/index.ts"
+      ]
+    }
   },
-  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
-  "include": ["src", "./typings.d.ts", "../../global.d.ts"]
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "esm",
+    "lib",
+    "dist",
+    "temp"
+  ],
+  "include": [
+    "src",
+    "./typings.d.ts",
+    "../../global.d.ts"
+  ]
 }

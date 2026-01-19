@@ -39,8 +39,8 @@
   "scripts": {
     "build": "npm-run-all clean --parallel build:umd build:cjs build:esm",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
-    "build:cjs": "vue-tsc --module commonjs --outDir lib -p tsconfig.build.json && pnpm build:sync-assets lib/",
-    "build:esm": "vue-tsc --module ESNext --outDir esm -p tsconfig.build.json && pnpm build:sync-assets esm/",
+    "build:cjs": "cross-env FORMAT=cjs vite build && pnpm build:sync-assets lib/",
+    "build:esm": "cross-env FORMAT=es vite build && pnpm build:sync-assets esm/",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
     "build:sync-assets": "copyfiles -u 1 \"src/**/*.{less,svg}\"",
@@ -59,17 +59,22 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@antv/event-emitter": "^0.1.3",
+    "@antv/g-plugin-a11y": "^1.1.15",
+    "@antv/g-plugin-rough-canvas-renderer": "^2.0.33",
     "@antv/s2": "workspace:*",
     "@testing-library/vue": "^7.0.0",
     "@vue/shared": "^3.3.4",
     "@vue/tsconfig": "^0.4.0",
-    "ant-design-vue": "^3.2.20",
-    "vue": "^3.3.4",
-    "vue-tsc": "^2.1.6"
+    "ant-design-vue": "^4.2.6",
+    "vite-plugin-dts": "^4.5.0",
+    "vue": "^3.5.13",
+    "vue-tsc": "^3.2.0",
+    "vue-types": "^3.0.2"
   },
   "peerDependencies": {
     "@antv/s2": "^2.0.0",
-    "ant-design-vue": "^3.2.0",
+    "ant-design-vue": "^4.x",
     "vue": ">=3.x"
   },
   "publishConfig": {
@@ -80,7 +85,7 @@
     {
       "path": "./dist/s2-vue.min.js",
       "import": "{ createComponent }",
-      "limit": "35 kB",
+      "limit": "38 kB",
       "ignore": [
         "S2",
         "Vue",

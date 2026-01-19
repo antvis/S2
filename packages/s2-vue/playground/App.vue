@@ -1,787 +1,676 @@
-<script lang="ts">
+<script setup lang="ts">
 /* eslint-disable no-console */
 import {
-  CellType,
-  type RawData,
+  DEFAULT_FROZEN_COUNTS,
+  DEFAULT_STYLE,
+  customMerge,
+  getDefaultSeriesNumberText,
+  safeJsonParse,
+  type Node,
   type S2DataConfig,
-  type S2Options,
-  type PartDrillDown,
-  type PartDrillDownInfo,
   type SheetType,
+  type ThemeCfg,
 } from '@antv/s2';
-import { forEach, random } from 'lodash';
-import { defineComponent, reactive, ref, shallowRef } from 'vue';
+import '@antv/s2/src/styles/theme/dark.css';
+import { cloneDeep, isEmpty } from 'lodash';
+import { computed, ref, shallowRef, watch } from 'vue';
+// Adjust import if needed
 import { SheetComponent } from '../src';
+import {
+  PivotSheetFrozenOptions,
+  TableSheetFrozenOptions,
+  defaultOptions,
+  headerActionIcons,
+  pivotSheetDataCfg,
+  pivotSheetDataCfgForCompactMode,
+  s2ConditionsOptions,
+  s2ThemeConfig,
+  tableSheetDataCfg,
+  tableSheetMultipleColumns,
+  tableSheetSingleColumns,
+} from './config';
 
-const dataConfig1: S2DataConfig = {
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['type', 'sub_type'],
-    values: ['number'],
-    valueInCols: true,
-  },
-  meta: [
-    {
-      field: 'number',
-      name: '数量',
-    },
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '类别',
-    },
-    {
-      field: 'sub_type',
-      name: '子类别',
-    },
+// Import playground components
+import BigDataSheetDemo from './components/BigDataSheet.vue';
+import ChartSheetDemo from './components/ChartSheet.vue';
+import CustomGridDemo from './components/CustomGrid.vue';
+import CustomTreeDemo from './components/CustomTree.vue';
+import EditableSheetDemo from './components/EditableSheet.vue';
+import GridAnalysisSheetDemo from './components/GridAnalysisSheet.vue';
+import PivotChartSheetDemo from './components/PivotChartSheet.vue';
+import PluginsSheetDemo from './components/PluginsSheet.vue';
+import ResizeConfig from './components/ResizeConfig.vue';
+import StrategySheetDemo from './components/StrategySheet.vue';
+
+type TableSheetColumnType = 'single' | 'multiple';
+
+// ================== State ==================
+const activeTab = ref(localStorage.getItem('debugTabKey') || 'basic');
+const render = ref(true);
+const sheetType = ref<SheetType>(
+  (localStorage.getItem('debugSheetType') as SheetType) || 'pivot',
+);
+const showPagination = ref(false);
+const showTotals = ref(false);
+const themeCfg = ref<ThemeCfg>(s2ThemeConfig);
+const options = ref(cloneDeep(defaultOptions));
+const dataCfg = ref<Partial<S2DataConfig>>(
+  cloneDeep(
+    sheetType.value === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg,
+  ),
+);
+// columnOptions removed.
+const tableSheetColumnType = ref<TableSheetColumnType>(
+  (localStorage.getItem('debugTableSheetColumnType') as TableSheetColumnType) ||
+    'single',
+);
+const activeCollapseKeys = ref(
+  safeJsonParse(localStorage.getItem('debugCollapseKey')!) || [
+    'filter',
+    'resize',
   ],
-  data: [
-    {
-      number: 7789,
-      province: '浙江省',
-      city: '杭州市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 2367,
-      province: '浙江省',
-      city: '绍兴市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 3877,
-      province: '浙江省',
-      city: '宁波市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 4342,
-      province: '浙江省',
-      city: '舟山市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 5343,
-      province: '浙江省',
-      city: '杭州市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 632,
-      province: '浙江省',
-      city: '绍兴市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 7234,
-      province: '浙江省',
-      city: '宁波市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 834,
-      province: '浙江省',
-      city: '舟山市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 945,
-      province: '浙江省',
-      city: '杭州市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1304,
-      province: '浙江省',
-      city: '绍兴市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1145,
-      province: '浙江省',
-      city: '宁波市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1432,
-      province: '浙江省',
-      city: '舟山市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1343,
-      province: '浙江省',
-      city: '杭州市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1354,
-      province: '浙江省',
-      city: '绍兴市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1523,
-      province: '浙江省',
-      city: '宁波市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1634,
-      province: '浙江省',
-      city: '舟山市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1723,
-      province: '四川省',
-      city: '成都市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 1822,
-      province: '四川省',
-      city: '绵阳市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 1943,
-      province: '四川省',
-      city: '南充市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 2330,
-      province: '四川省',
-      city: '乐山市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 2451,
-      province: '四川省',
-      city: '成都市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2244,
-      province: '四川省',
-      city: '绵阳市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2333,
-      province: '四川省',
-      city: '南充市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2445,
-      province: '四川省',
-      city: '乐山市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2335,
-      province: '四川省',
-      city: '成都市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 245,
-      province: '四川省',
-      city: '绵阳市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 2457,
-      province: '四川省',
-      city: '南充市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 2458,
-      province: '四川省',
-      city: '乐山市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 4004,
-      province: '四川省',
-      city: '成都市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 3077,
-      province: '四川省',
-      city: '绵阳市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 3551,
-      province: '四川省',
-      city: '南充市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 352,
-      province: '四川省',
-      city: '乐山市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-  ],
+);
+
+// Resizing
+const s2Ref = shallowRef();
+const scrollTimer = ref<number>();
+
+// ================== Helpers ==================
+const updateOptions = (newOptions: any) => {
+  options.value = customMerge(options.value, newOptions);
 };
 
-const dataConfig2: S2DataConfig = {
-  fields: {
-    rows: ['province', 'city', 'type'],
-    columns: ['sub_type'],
-    values: ['number'],
-    valueInCols: true,
-  },
-  meta: [
-    {
-      field: 'number',
-      name: '数量',
-    },
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '类别',
-    },
-    {
-      field: 'sub_type',
-      name: '子类别',
-    },
-  ],
-  data: [
-    {
-      number: 3877,
-      province: '浙江省',
-      city: '宁波市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 4342,
-      province: '浙江省',
-      city: '舟山市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 5343,
-      province: '浙江省',
-      city: '杭州市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 632,
-      province: '浙江省',
-      city: '绍兴市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 7234,
-      province: '浙江省',
-      city: '宁波市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 834,
-      province: '浙江省',
-      city: '舟山市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 945,
-      province: '浙江省',
-      city: '杭州市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1304,
-      province: '浙江省',
-      city: '绍兴市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1145,
-      province: '浙江省',
-      city: '宁波市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1432,
-      province: '浙江省',
-      city: '舟山市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 1343,
-      province: '浙江省',
-      city: '杭州市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1354,
-      province: '浙江省',
-      city: '绍兴市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1523,
-      province: '浙江省',
-      city: '宁波市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1634,
-      province: '浙江省',
-      city: '舟山市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 1723,
-      province: '四川省',
-      city: '成都市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 1822,
-      province: '四川省',
-      city: '绵阳市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 1943,
-      province: '四川省',
-      city: '南充市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 2330,
-      province: '四川省',
-      city: '乐山市',
-      type: '家具',
-      sub_type: '桌子',
-    },
-    {
-      number: 2451,
-      province: '四川省',
-      city: '成都市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2244,
-      province: '四川省',
-      city: '绵阳市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2333,
-      province: '四川省',
-      city: '南充市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2445,
-      province: '四川省',
-      city: '乐山市',
-      type: '家具',
-      sub_type: '沙发',
-    },
-    {
-      number: 2335,
-      province: '四川省',
-      city: '成都市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 245,
-      province: '四川省',
-      city: '绵阳市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 2457,
-      province: '四川省',
-      city: '南充市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 2458,
-      province: '四川省',
-      city: '乐山市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-    {
-      number: 4004,
-      province: '四川省',
-      city: '成都市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 3077,
-      province: '四川省',
-      city: '绵阳市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 3551,
-      province: '四川省',
-      city: '南充市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: 352,
-      province: '四川省',
-      city: '乐山市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-  ],
+const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
+  const currentDataCfg =
+    sheetType.value === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg;
+
+  dataCfg.value = customMerge(cloneDeep(currentDataCfg), newDataCfg);
 };
 
-const fieldMap = {
-  channel: ['物美', '华联'],
-  sex: ['男', '女'],
+// ================== Event Handlers ==================
+
+const onSheetTypeChange = (e: any) => {
+  const selectedSheetType = e.target.value;
+
+  sheetType.value = selectedSheetType;
+
+  switch (selectedSheetType) {
+    case 'table':
+      dataCfg.value = cloneDeep(tableSheetDataCfg);
+      updateOptions(defaultOptions);
+      break;
+    default:
+      dataCfg.value = cloneDeep(pivotSheetDataCfg);
+      updateOptions(defaultOptions);
+      break;
+  }
 };
 
-const partDrillDown: PartDrillDown = {
-  drillConfig: {
-    dataSet: [
-      {
-        name: '客户性别',
-        value: 'sex2',
-        type: 'location',
+const onLayoutWidthTypeChange = (e: any) => {
+  updateOptions({
+    style: {
+      layoutWidthType: e.target.value,
+    },
+  });
+};
+
+const onTableColumnTypeChange = (e: any) => {
+  tableSheetColumnType.value = e.target.value;
+};
+
+const onToggleRender = (checked: boolean) => {
+  render.value = checked;
+};
+
+const onThemeChange = (e: any) => {
+  themeCfg.value = {
+    name: e.target.value,
+  };
+};
+
+const logHandler =
+  (name: string, callback?: (...args: any[]) => void) =>
+  (...args: any[]) => {
+    if (s2Ref.value?.instance?.options?.debug) {
+      console.log(name, ...args);
+    }
+
+    callback?.(...args);
+  };
+
+const onSheetMounted = (instance: any) => {
+  s2Ref.value = instance;
+  logHandler('onMounted')(instance);
+};
+
+const onSheetDestroy = logHandler('onDestroy', () => {
+  clearInterval(scrollTimer.value!);
+});
+
+// ================== Effects ==================
+
+watch(
+  [sheetType, tableSheetColumnType],
+  () => {
+    if (sheetType.value !== 'table') {
+      return;
+    }
+
+    dataCfg.value = customMerge(cloneDeep(tableSheetDataCfg), {
+      fields: {
+        columns:
+          tableSheetColumnType.value === 'single'
+            ? tableSheetSingleColumns
+            : tableSheetMultipleColumns,
       },
-      {
-        name: '销售渠道',
-        value: 'channel',
-        type: 'text',
-      },
-      {
-        name: '客户性别111',
-        value: 'sex1',
-        type: 'date',
-      },
-    ],
+    });
   },
-  // drillItemsNum: 1,
-  fetchData: (meta, drillFields) =>
-    new Promise<PartDrillDownInfo>((resolve) => {
-      // 弹窗 -> 选择 -> 请求数据
-      const dataSet = meta.spreadsheet.dataSet;
-      const field = drillFields[0];
-      const rowData = dataSet
-        .getCellMultiData({ query: meta.query! })
-        .filter((item) => item?.['sub_type'] && item?.['type']) as RawData[];
+  {
+    immediate: true,
+  },
+);
 
-      console.log(rowData);
-      const drillDownData: RawData[] = [];
-
-      forEach(rowData, (data) => {
-        const { number, sub_type: subType, type } = data;
-        const number0 = random(50, number as number);
-        const number1 = Number(number!) - number0;
-        const dataItem0 = {
-          ...meta.query,
-          number: number0,
-          sub_type: subType,
-          type,
-          [field]: fieldMap[field as keyof typeof fieldMap][0],
-        };
-
-        drillDownData.push(dataItem0);
-        const dataItem1 = {
-          ...meta.query,
-          number: number1,
-          sub_type: subType,
-          type,
-          [field]: fieldMap[field as keyof typeof fieldMap][1],
-        };
-
-        drillDownData.push(dataItem1);
-      });
-      console.log(drillDownData);
-      resolve({
-        drillField: field,
-        drillData: drillDownData,
-      });
-    }),
-};
-
-export default defineComponent({
-  setup() {
-    const sheetType = ref<SheetType>('editable');
-    const s2 = shallowRef();
-    const dataCfgFlag = ref(1);
-    const loading = ref(false);
-
-    /*
-     * ! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
-     *   reference: ../S2/node_modules/@vue/runtime-core/node_modules/@vue/reactivity/dist/reactivity.d.ts L321
-     */
-    const options = reactive({
-      debug: true,
-      width: 600,
-      height: 400,
-      style: {
-        rowCell: {
-          collapseAll: false,
+watch(
+  () => options.value?.style?.layoutWidthType,
+  (val) => {
+    if (val === 'compact') {
+      updateOptions({
+        style: {
+          dataCell: {
+            width: 200,
+          },
         },
+      });
+      dataCfg.value = pivotSheetDataCfgForCompactMode;
+    } else {
+      updateOptions({
+        style: DEFAULT_STYLE,
+      });
+      dataCfg.value = pivotSheetDataCfg;
+    }
+  },
+);
+
+watch(activeTab, (val) => {
+  localStorage.setItem('debugTabKey', val);
+});
+
+watch(activeCollapseKeys, (val) => {
+  localStorage.setItem('debugCollapseKey', JSON.stringify(val));
+});
+
+// ================== Computed Options ==================
+
+const mergedOptions = computed(() => {
+  return customMerge(
+    {
+      pagination: showPagination.value && {
+        current: 1,
+        pageSize: 4,
       },
       tooltip: {
-        operation: {
-          hiddenColumns: true,
-          sort: true,
-          menu: {
-            onClick: (info, cell) => {
-              console.log('menuClick', info, cell);
-            },
-            items: [
-              {
-                key: 'trend',
-                icon: 'Trend',
-                label: '趋势',
-                visible: (cell) => cell.cellType === CellType.DATA_CELL,
-                onClick(info, cell) {
-                  // eslint-disable-next-line no-console
-                  console.log('趋势图 icon 点击: ', info, cell);
-                },
-              },
-              {
-                key: '1',
-                icon: 'Trend',
-                label: '菜单1',
-                onClick(info, cell) {
-                  console.log('cell-1: ', cell);
-                },
-                children: [
-                  {
-                    key: '1-1',
-                    icon: 'Trend',
-                    label: '菜单1-1',
-                    onClick(info, cell) {
-                      console.log('cell-1-1: ', cell);
-                    },
-                  },
-                ],
-              },
-              {
-                key: '2',
-                icon: 'Trend',
-                label: '菜单2',
-                onClick(info, cell) {
-                  console.log('cell-2: ', cell);
-                },
-              },
-            ],
-          },
+        // Simple tooltip configuration for Vue, complex JSX tooltips not directly supported essentially different
+        content: null,
+      },
+      totals: showTotals.value && {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          subTotalsDimensions: ['province'],
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          subTotalsDimensions: ['type'],
         },
       },
-    }) as unknown as S2Options;
-
-    const themeCfg = reactive({
-      theme: {
-        cornerCell: {
-          text: {
-            fill: 'red',
+      customSVGIcons: !options.value.showDefaultHeaderActionIcon && [
+        {
+          name: 'Filter',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+        },
+        {
+          name: 'FilterAsc',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
+        },
+      ],
+      headerActionIcons: !options.value.showDefaultHeaderActionIcon && [
+        {
+          icons: ['Filter'],
+          belongsCell: 'colCell',
+          displayCondition: (node: Node) =>
+            node.id !== 'root[&]家具[&]桌子[&]number',
+          onClick: () => {
+            console.log('Filter colCell click');
           },
         },
-      },
-    });
-
-    const onRowCellClick = (params: any) => {
-      console.log('row cell click: ', params);
-    };
-    const onDataCellClick = (params: any) => {
-      console.log('data Cell Click: ', params);
-    };
-    const onColCellClick = (params: any) => {
-      console.log('col cell click: ', params);
-    };
-    const onMounted = (params: any) => {
-      console.log('onMounted: ', params);
-    };
-
-    const handlePageChange = (current: number) =>
-      console.log('page changed:', current);
-
-    const handlePageSizeChange = (pageSize: number) =>
-      console.log('pageSize changed:', pageSize);
-
-    const togglePagination = () => {
-      options.pagination = options.pagination
-        ? undefined
-        : { current: 1, pageSize: 4 };
-    };
-
-    onMounted(() => {
-      console.log('onMounted', s2.value?.instance);
-    });
-
-    return {
-      sheetType,
-      s2,
-      dataCfgFlag,
-      dataConfig1,
-      dataConfig2,
-      options,
-      themeCfg,
-      onRowCellClick,
-      onDataCellClick,
-      onColCellClick,
-      onMounted,
-      togglePagination,
-      partDrillDown,
-      showPagination: {
-        onChange: handlePageChange,
-        onShowSizeChange: handlePageSizeChange,
-      },
-      loading,
-    };
-  },
-  components: {
-    SheetComponent,
-  },
+        {
+          icons: ['SortDown'],
+          belongsCell: 'colCell',
+          displayCondition: (node: Node) =>
+            node.id === 'root[&]家具[&]桌子[&]number',
+          onClick: () => {
+            console.log('SortDown colCell click');
+          },
+        },
+        {
+          icons: ['FilterAsc'],
+          belongsCell: 'cornerCell',
+          onClick: () => {
+            console.log('FilterAsc cornerCell click');
+          },
+        },
+        {
+          icons: ['SortDown', 'Filter'],
+          belongsCell: 'rowCell',
+          onClick: () => {
+            console.log('SortDown & Filter rowCell click');
+          },
+        },
+      ],
+    },
+    options.value,
+  );
 });
+
+// Set Theme/Option helpers
+const setOptions = (cb: any) => {
+  options.value = cb(options.value);
+};
+const setThemeCfg = (cb: any) => {
+  themeCfg.value = cb(themeCfg.value);
+};
 </script>
 
 <template>
-  <div style="margin-bottom: 10px">
-    <button @click="togglePagination">toggle pagination</button>
-    <button @click="dataCfgFlag = dataCfgFlag === 1 ? 2 : 1">
-      更新dataCfg
-    </button>
-    <button
-      @click="
-        options.hierarchyType =
-          options.hierarchyType === 'tree' ? 'grid' : 'tree'
-      "
-    >
-      更新options
-    </button>
+  <div class="playground">
+    <a-tabs v-model:activeKey="activeTab" type="card" destroy-inactive-tab-pane>
+      <a-tab-pane key="basic" tab="基础表">
+        <a-collapse v-model:activeKey="activeCollapseKeys">
+          <a-collapse-panel key="filter" header="筛选器">
+            <a-space style="margin-bottom: 20px; flex-wrap: wrap">
+              <a-tooltip title="表格类型">
+                <a-radio-group
+                  v-model:value="sheetType"
+                  @change="onSheetTypeChange"
+                >
+                  <a-radio-button value="pivot">透视表</a-radio-button>
+                  <a-radio-button value="table">明细表</a-radio-button>
+                </a-radio-group>
+              </a-tooltip>
 
-    <button
-      @click="
-        themeCfg.theme.cornerCell.text.fill =
-          themeCfg.theme.cornerCell.text.fill === 'blue' ? 'red' : 'blue'
-      "
-    >
-      更新到themeCfg
-    </button>
-    <button @click="loading = !loading">
-      {{ loading ? '停止Loading' : '开启Loading' }}
-    </button>
-    <div>
-      <label>
-        <input type="radio" id="pivot" value="pivot" v-model="sheetType" />
-        透视表
-      </label>
-      <label>
-        <input type="radio" id="table" value="table" v-model="sheetType" />
-        明细表
-      </label>
-      <label>
-        <input
-          type="radio"
-          id="editable"
-          value="editable"
-          v-model="sheetType"
+              <a-tooltip v-if="sheetType === 'table'" title="明细表多级表头">
+                <a-radio-group
+                  v-model:value="tableSheetColumnType"
+                  @change="onTableColumnTypeChange"
+                >
+                  <a-radio-button value="single">单列头</a-radio-button>
+                  <a-radio-button value="multiple">多列头</a-radio-button>
+                </a-radio-group>
+              </a-tooltip>
+
+              <a-tooltip title="布局类型">
+                <a-radio-group
+                  :value="options?.style?.layoutWidthType"
+                  @change="onLayoutWidthTypeChange"
+                >
+                  <a-radio-button value="adaptive">行列等宽</a-radio-button>
+                  <a-radio-button value="colAdaptive">列等宽</a-radio-button>
+                  <a-radio-button value="compact">紧凑</a-radio-button>
+                </a-radio-group>
+              </a-tooltip>
+
+              <a-button
+                danger
+                @click="
+                  () => {
+                    s2Ref?.instance?.destroy();
+                    s2Ref?.instance?.render();
+                  }
+                "
+              >
+                卸载组件 (s2.destroy)
+              </a-button>
+            </a-space>
+
+            <a-space class="filter-container">
+              <a-switch
+                checked-children="渲染组件"
+                un-checked-children="卸载组件"
+                :checked="render"
+                @change="onToggleRender"
+              />
+              <a-switch
+                checked-children="调试模式开"
+                un-checked-children="调试模式关"
+                :checked="mergedOptions.debug"
+                @change="(checked) => updateOptions({ debug: checked })"
+              />
+              <a-switch
+                checked-children="树形"
+                un-checked-children="平铺"
+                :checked="mergedOptions.hierarchyType === 'tree'"
+                @change="
+                  (checked) =>
+                    updateOptions({ hierarchyType: checked ? 'tree' : 'grid' })
+                "
+                :disabled="sheetType === 'table'"
+              />
+              <a-switch
+                checked-children="数值挂列头"
+                un-checked-children="数值挂行头"
+                :checked="dataCfg.fields?.valueInCols"
+                @change="
+                  (checked) =>
+                    updateDataCfg({ fields: { valueInCols: checked } })
+                "
+                :disabled="sheetType === 'table'"
+              />
+              <a-switch
+                checked-children="隐藏数值"
+                un-checked-children="显示数值"
+                :checked="mergedOptions.style?.colCell?.hideValue"
+                @change="
+                  (checked) =>
+                    updateOptions({
+                      style: { colCell: { hideValue: checked } },
+                    })
+                "
+                :disabled="sheetType === 'table'"
+              />
+              <a-switch
+                checked-children="显示行小计/总计"
+                un-checked-children="隐藏行小计/总计"
+                :checked="mergedOptions.totals?.row?.showSubTotals"
+                @change="
+                  (checked) =>
+                    updateOptions({
+                      totals: {
+                        row: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseGrandTotalsLayout: true,
+                          reverseSubTotalsLayout: true,
+                          subTotalsDimensions: ['province'],
+                        },
+                      },
+                    })
+                "
+                :disabled="sheetType === 'table'"
+              />
+              <a-switch
+                checked-children="显示列小计/总计"
+                un-checked-children="隐藏列小计/总计"
+                :checked="mergedOptions.totals?.col?.showSubTotals"
+                @change="
+                  (checked) =>
+                    updateOptions({
+                      totals: {
+                        col: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseGrandTotalsLayout: true,
+                          reverseSubTotalsLayout: true,
+                          subTotalsDimensions: ['type'],
+                        },
+                      },
+                    })
+                "
+                :disabled="sheetType === 'table'"
+              />
+              <a-tooltip title="透视表有效">
+                <a-switch
+                  checked-children="冻结行头区域开"
+                  un-checked-children="冻结行头区域关"
+                  :checked="!!mergedOptions.frozen?.rowHeader"
+                  @change="
+                    (checked) =>
+                      updateOptions({ frozen: { rowHeader: checked } })
+                  "
+                  :disabled="sheetType === 'table'"
+                />
+              </a-tooltip>
+
+              <a-switch
+                checked-children="冻结行头开"
+                un-checked-children="冻结行头关"
+                :checked="!!mergedOptions.frozen?.trailingRowCount"
+                @change="
+                  (checked) => {
+                    if (checked) {
+                      updateOptions({ frozen: PivotSheetFrozenOptions });
+                    } else {
+                      updateOptions({ frozen: { ...DEFAULT_FROZEN_COUNTS } });
+                    }
+                  }
+                "
+              />
+              <a-switch
+                checked-children="冻结列头开"
+                un-checked-children="冻结列头关"
+                :checked="!!mergedOptions.frozen?.trailingColCount"
+                @change="
+                  (checked) => {
+                    if (checked) {
+                      updateOptions({ frozen: TableSheetFrozenOptions });
+                    } else {
+                      updateOptions({ frozen: { ...DEFAULT_FROZEN_COUNTS } });
+                    }
+                  }
+                "
+              />
+              <a-switch
+                checked-children="显示序号"
+                un-checked-children="不显示序号"
+                :checked="mergedOptions.seriesNumber?.enable"
+                @change="
+                  (checked) =>
+                    updateOptions({ seriesNumber: { enable: checked } })
+                "
+              />
+              <a-switch
+                checked-children="自定义序号文本"
+                un-checked-children="默认序号文本"
+                :checked="mergedOptions.seriesNumber?.text === '自定义序号文本'"
+                @change="
+                  (checked) =>
+                    updateOptions({
+                      seriesNumber: {
+                        text: checked
+                          ? '自定义序号文本'
+                          : getDefaultSeriesNumberText(),
+                      },
+                    })
+                "
+                :disabled="!mergedOptions.seriesNumber?.enable"
+              />
+              <a-switch
+                checked-children="分页"
+                un-checked-children="不分页"
+                :checked="showPagination"
+                @change="(checked) => (showPagination = checked)"
+              />
+              <a-switch
+                checked-children="汇总"
+                un-checked-children="无汇总"
+                :checked="showTotals"
+                @change="(checked) => (showTotals = checked)"
+              />
+              <a-switch
+                checked-children="默认 headerActionIcons"
+                un-checked-children="自定义 headerActionIcons"
+                :checked="mergedOptions.showDefaultHeaderActionIcon"
+                @change="
+                  (checked) =>
+                    updateOptions({
+                      showDefaultHeaderActionIcon: checked,
+                      headerActionIcons: checked ? [] : headerActionIcons,
+                    })
+                "
+              />
+              <a-switch
+                checked-children="打开链接跳转"
+                un-checked-children="无链接跳转"
+                :checked="!isEmpty(mergedOptions.interaction?.linkFields)"
+                @change="
+                  (checked) =>
+                    updateOptions({
+                      interaction: {
+                        linkFields: checked ? ['province', 'city'] : [],
+                      },
+                    })
+                "
+              />
+              <a-tooltip title="将列头高度设为0">
+                <a-switch
+                  checked-children="隐藏列头和对应角头"
+                  un-checked-children="显示列头和对应角头"
+                  :checked="mergedOptions.style?.colCell?.height === 0"
+                  @change="
+                    (checked) =>
+                      updateOptions({
+                        style: {
+                          colCell: {
+                            height: checked
+                              ? 0
+                              : defaultOptions?.style?.colCell?.height ??
+                                DEFAULT_STYLE.colCell?.height,
+                          },
+                        },
+                      })
+                  "
+                />
+              </a-tooltip>
+              <a-tooltip title="改变 dataConfig 配置">
+                <a-switch
+                  checked-children="隐藏列头但保留角头"
+                  un-checked-children="显示列头"
+                  :checked="isEmpty(dataCfg.fields?.columns)"
+                  @change="
+                    (checked) => {
+                      dataCfg.fields.columns = checked
+                        ? []
+                        : pivotSheetDataCfg.fields.columns;
+                    }
+                  "
+                />
+              </a-tooltip>
+              <a-switch
+                checked-children="字段标记开"
+                un-checked-children="字段标记关"
+                :checked="!isEmpty(mergedOptions.conditions)"
+                @change="
+                  (checked) =>
+                    updateOptions({
+                      conditions: checked ? s2ConditionsOptions : null,
+                    })
+                "
+              />
+            </a-space>
+
+            <a-space class="filter-container">
+              <span class="label">
+                主题配置
+                <a-divider type="vertical" />
+              </span>
+              <a-tooltip :title="`当前主题名: ${themeCfg.name}`">
+                <a-radio-group
+                  v-model:value="themeCfg.name"
+                  @change="onThemeChange"
+                >
+                  <a-radio-button value="default">默认</a-radio-button>
+                  <a-radio-button value="gray">简约灰</a-radio-button>
+                  <a-radio-button value="colorful">多彩蓝</a-radio-button>
+                  <a-radio-button value="dark">暗黑</a-radio-button>
+                </a-radio-group>
+              </a-tooltip>
+            </a-space>
+          </a-collapse-panel>
+          <a-collapse-panel key="resize" header="热区配置">
+            <ResizeConfig
+              :options="mergedOptions"
+              :setOptions="setOptions"
+              :setThemeCfg="setThemeCfg"
+            />
+          </a-collapse-panel>
+        </a-collapse>
+
+        <SheetComponent
+          v-if="render"
+          ref="s2Ref"
+          :sheetType="sheetType"
+          :dataCfg="dataCfg"
+          :options="mergedOptions"
+          :themeCfg="themeCfg"
+          :loadData="false"
+          @mounted="onSheetMounted"
+          @destroy="onSheetDestroy"
         />
-        编辑表
-      </label>
-    </div>
+      </a-tab-pane>
+
+      <a-tab-pane key="customTree" tab="自定义目录树">
+        <CustomTreeDemo />
+      </a-tab-pane>
+      <a-tab-pane key="customGrid" tab="自定义行列头">
+        <CustomGridDemo />
+      </a-tab-pane>
+      <a-tab-pane key="strategy" tab="趋势分析表">
+        <StrategySheetDemo />
+      </a-tab-pane>
+      <a-tab-pane key="gridAnalysis" tab="网格分析表">
+        <GridAnalysisSheetDemo />
+      </a-tab-pane>
+      <a-tab-pane key="editable" tab="编辑表">
+        <EditableSheetDemo />
+      </a-tab-pane>
+      <a-tab-pane key="plugins" tab="AntV/G 插件系统">
+        <PluginsSheetDemo />
+      </a-tab-pane>
+      <a-tab-pane key="pivotChart" tab="透视组合图">
+        <PivotChartSheetDemo />
+      </a-tab-pane>
+      <a-tab-pane key="chart" tab="绘制 G2 图表">
+        <ChartSheetDemo />
+      </a-tab-pane>
+      <a-tab-pane key="bigData" tab="100万数据">
+        <BigDataSheetDemo />
+      </a-tab-pane>
+    </a-tabs>
   </div>
-  <SheetComponent
-    ref="s2"
-    :sheetType="sheetType"
-    :dataCfg="dataCfgFlag === 1 ? dataConfig1 : dataConfig2"
-    :options="options"
-    :themeCfg="themeCfg"
-    :adaptive="true"
-    :showPagination="showPagination"
-    :partDrillDown="partDrillDown"
-    @rowCellClick="onRowCellClick"
-    @mounted="onMounted"
-    @dataCellClick="onDataCellClick"
-    @colCellClick="onColCellClick"
-    :loading="loading"
-  />
 </template>
 
 <style lang="less">
-@import 'ant-design-vue/dist/antd.less';
+.playground {
+  padding: 20px;
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  // button {
+  //   margin-right: 8px;
+  //   margin-bottom: 8px;
+  //   padding: 4px 12px;
+  //   cursor: pointer;
+  // }
+
+  // label {
+  //   margin-right: 16px;
+  // }
+
+  .filter-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 5px;
+
+    & > * {
+      margin-right: 8px;
+    }
+  }
+
+  .ant-collapse {
+    margin-bottom: 20px;
+  }
+}
 </style>
