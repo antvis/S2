@@ -1,3 +1,19 @@
+# [@antv/s2-v2.4.16](https://github.com/antvis/S2/compare/@antv/s2-v2.4.15...@antv/s2-v2.4.16) (2026-01-14)
+
+
+### Bug Fixes
+
+* 增加基础包对环境的校验，以便适配SSR ([#3290](https://github.com/antvis/S2/issues/3290)) ([7bd5470](https://github.com/antvis/S2/commit/7bd54703a1d5e3bc1f90d7405f7bdb3bbc677039))
+
+# [@antv/s2-v2.4.15](https://github.com/antvis/S2/compare/@antv/s2-v2.4.14...@antv/s2-v2.4.15) (2026-01-14)
+
+
+### Bug Fixes
+
+* 修复大数据量明细表，滚动到 279621 行之后，行之间的水平线绘制失败 ([#3287](https://github.com/antvis/S2/issues/3287)) ([e15dc6d](https://github.com/antvis/S2/commit/e15dc6d89c80e7eb3059cd90c17952095e2ccc7c))
+* 对SSR环境增加适配 ([#3289](https://github.com/antvis/S2/issues/3289)) ([6438bc4](https://github.com/antvis/S2/commit/6438bc4f804d9f59e707247021c0d5cc7e96764d))
+* 移动端交叉表滚动时，手指不松开持续滚动几秒后，表格滚动会带动整个网页一起滚动 ([#3280](https://github.com/antvis/S2/issues/3280)) ([0b37db8](https://github.com/antvis/S2/commit/0b37db829e4de046c3703e661625c1411577dd6b))
+
 # [@antv/s2-v2.4.14](https://github.com/antvis/S2/compare/@antv/s2-v2.4.13...@antv/s2-v2.4.14) (2026-01-09)
 
 

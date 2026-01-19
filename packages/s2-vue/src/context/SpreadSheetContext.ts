@@ -1,6 +1,6 @@
 import type { SpreadSheet } from '@antv/s2';
 import type { InjectionKey, Ref } from 'vue';
-import { inject, provide, ref } from 'vue';
+import { inject, provide, shallowRef } from 'vue';
 
 /**
  * S2 实例的 InjectionKey
@@ -22,7 +22,7 @@ export function provideSpreadSheet(instance: Ref<SpreadSheet | null>) {
  * @returns S2 实例的响应式引用
  */
 export function useSpreadSheetInstance(): Ref<SpreadSheet | null> {
-  const instance = inject(S2_INSTANCE_KEY, ref(null));
+  const instance = inject(S2_INSTANCE_KEY, shallowRef(null));
 
   return instance;
 }

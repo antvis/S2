@@ -1,3 +1,14 @@
 packages:
-  - 'packages/*'
-  - 's2-site'
+  - packages/*
+  - s2-site
+
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
+  - core-js
+  - electron
+  - esbuild
+  - fsevents
+
+onlyBuiltDependencies:
+  - canvas

@@ -4,6 +4,7 @@ import {
   type Copyable,
   type CopyableItem,
 } from '../../common/interface/export';
+import { hasNavigator, isSSR } from '../ssr';
 
 /**
  * 同步复制
@@ -82,7 +83,17 @@ export const copyToClipboard = (
     copyableItem = data;
   }
 
-  if (!navigator.clipboard || !window.ClipboardItem || !async) {
+  if (isSSR()) {
+    // 在 SSR 环境中不支持剪贴板操作
+    return Promise.resolve();
+  }
+
+  if (
+    !hasNavigator() ||
+    !navigator.clipboard ||
+    !window.ClipboardItem ||
+    !async
+  ) {
     return copyToClipboardByExecCommand(copyableItem);
   }
 

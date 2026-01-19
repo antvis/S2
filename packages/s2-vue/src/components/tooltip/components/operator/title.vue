@@ -7,7 +7,7 @@ import {
 import { computed, defineComponent } from 'vue';
 import type { GetInitProps } from '../../../../interface';
 
-interface TooltipOperatorTitleProps {
+export interface TooltipOperatorTitleProps {
   menu: TooltipBaseOperatorMenuItem;
 }
 
