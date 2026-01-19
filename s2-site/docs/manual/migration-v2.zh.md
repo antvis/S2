@@ -32,7 +32,6 @@ order: 9
 ## ⏰ 已停止维护的包和版本
 
 - `1.x` 版本现已停止维护，不再继续更新，不再修复 bug，不再支持新特性。
-- `@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发社区版本。
 
 请根据 [升级指南](/manual/migration-v2) 尽快升级到 `2.x` 版本。
 
@@ -1436,11 +1435,7 @@ class AntdV5AliasPlugin {
 + interface SheetComponentProps {}
 ```
 
-### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge> <Badge type="error">停止维护</Badge>
-
-:::warning{title="注意"}
-`@antv/s2-vue` 现已停止维护，由于精力投入有限，出于维护成本，包下载量等因素综合考虑，从 `2.0.0` 正式版后不再继续更新，请基于 `@antv/s2` 自行封装，或 fork 仓库进行二次开发社区版本。
-:::
+### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge>
 
 ## ✍️ API 调整
 

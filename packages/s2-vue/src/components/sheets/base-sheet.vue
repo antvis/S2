@@ -1,9 +1,10 @@
 <script lang="ts">
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { isBoolean } from 'lodash';
 import S2Pagination from '../pagination/index.vue';
+import { provideSpreadSheet } from '../../context/SpreadSheetContext';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
   initBaseSheetEmits,
@@ -17,6 +18,11 @@ export default defineComponent({
   setup(props, ctx) {
     const { wrapperRef, containerRef, s2Ref, loading, pagination } =
       useSpreadSheet(props, ctx.emit);
+
+    // Provide S2 instance to child components (for DragCopyPoint, etc.)
+    const s2RefComputed = computed(() => s2Ref.value ?? null);
+
+    provideSpreadSheet(s2RefComputed);
 
     ctx.expose({
       get instance() {

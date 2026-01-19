@@ -7,12 +7,12 @@ import {
 } from '@antv/s2';
 import { Menu, Dropdown, type MenuProps } from 'ant-design-vue';
 import { defineComponent } from 'vue';
-import type { MenuClickEventHandler } from 'ant-design-vue/lib/menu/src/interface';
+import type { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
 import TooltipOperatorMenu from './menu.vue';
 
-interface TooltipOperatorProps extends BaseTooltipOperatorProps {
+export interface TooltipOperatorProps extends BaseTooltipOperatorProps {
   onClick?: MenuProps['onClick'];
 }
 

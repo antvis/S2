@@ -1,5 +1,5 @@
 ---
-title: Vue 3.0 Component (Deprecated)
+title: Vue 3.0 Component
 order: 13
 ---
 
