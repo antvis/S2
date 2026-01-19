@@ -97,7 +97,7 @@ import { PivotSheet } from '@antv/s2';
 async function bootstrap() {
   const container = document.getElementById('container');
 
-  const s2DataConfig = await fetch('https://site-data-pre.alipay.com/s2/en-data-config.json')
+  const s2DataConfig = await fetch('https://assets.antv.antgroup.com/s2/en-data-config.json')
     .then(r => r.json())
 
   const s2 = new PivotSheet(container, s2DataConfig, {
