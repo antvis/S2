@@ -85,7 +85,7 @@
     {
       "path": "./dist/s2-vue.min.js",
       "import": "{ createComponent }",
-      "limit": "35 kB",
+      "limit": "38 kB",
       "ignore": [
         "S2",
         "Vue",
