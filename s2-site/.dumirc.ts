@@ -308,6 +308,7 @@ export default defineConfig({
           zh: 'Vue 组件',
           en: 'Vue Component',
         },
+        hidden: true,
       },
       {
         slug: 'custom',
