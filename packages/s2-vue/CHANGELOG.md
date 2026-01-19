@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.3](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.2...@antv/s2-vue-v2.0.3) (2026-01-14)
+
+
+### Bug Fixes
+
+* 修复 s2-vue 的 SheetComponent 的 loading 属性失效问题 ([#3282](https://github.com/antvis/S2/issues/3282)) ([3da788e](https://github.com/antvis/S2/commit/3da788e9bf77bce92f9487ecd8655b12a3dffbbc)), closes [#2922](https://github.com/antvis/S2/issues/2922)
+
 # [@antv/s2-vue-v2.0.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.1...@antv/s2-vue-v2.0.2) (2024-12-13)
 
 

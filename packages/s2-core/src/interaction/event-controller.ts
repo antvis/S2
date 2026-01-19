@@ -22,6 +22,7 @@ import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
 import { getAppendInfo } from '../utils/interaction/common';
 import { isMobile } from '../utils/is-mobile';
+import { isSSR } from '../utils/ssr';
 import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
@@ -103,6 +104,10 @@ export class EventController {
     });
 
     // dom events
+    if (isSSR()) {
+      return;
+    }
+
     this.addDomEventListener(window, OriginEventType.CLICK, (event) => {
       this.resetSheetStyle(event);
       this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
