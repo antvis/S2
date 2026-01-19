@@ -1,0 +1,65 @@
+{
+  "sheetType": "pivot",
+  "width": 600,
+  "height": 400,
+  "dataCfg": {
+    "fields": {
+      "rows": ["province", "city"],
+      "columns": ["type"],
+      "values": ["price"]
+    },
+    "data": [
+      {
+        "province": "浙江",
+        "city": "杭州",
+        "type": "笔",
+        "price": 10
+      },
+      {
+        "province": "浙江",
+        "city": "杭州",
+        "type": "纸张",
+        "price": 20
+      },
+      {
+        "province": "浙江",
+        "city": "宁波",
+        "type": "笔",
+        "price": 15
+      },
+      {
+        "province": "浙江",
+        "city": "宁波",
+        "type": "纸张",
+        "price": 25
+      },
+      {
+        "province": "江苏",
+        "city": "南京",
+        "type": "笔",
+        "price": 12
+      },
+      {
+        "province": "江苏",
+        "city": "南京",
+        "type": "纸张",
+        "price": 22
+      },
+      {
+        "province": "江苏",
+        "city": "苏州",
+        "type": "笔",
+        "price": 18
+      },
+      {
+        "province": "江苏",
+        "city": "苏州",
+        "type": "纸张",
+        "price": 28
+      }
+    ]
+  },
+  "options": {
+    "hierarchyType": "grid"
+  }
+}

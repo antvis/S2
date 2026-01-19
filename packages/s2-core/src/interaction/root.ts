@@ -50,6 +50,7 @@ import {
 } from '../utils/interaction/select-event';
 import { clearState, setState } from '../utils/interaction/state-controller';
 import { isMobile } from '../utils/is-mobile';
+import { isSSR } from '../utils/ssr';
 import type { BaseEvent } from './base-event';
 import {
   DataCellClick,
@@ -96,6 +97,11 @@ export class RootInteraction {
     this.spreadsheet = spreadsheet;
     this.registerEventController();
     this.registerInteractions();
+
+    if (isSSR()) {
+      return;
+    }
+
     window.addEventListener(
       'visibilitychange',
       this.onTriggerInteractionsResetEffect,
@@ -112,6 +118,11 @@ export class RootInteraction {
     this.eventController.clear();
     this.clearHoverTimer();
     this.resetState();
+
+    if (isSSR()) {
+      return;
+    }
+
     window.removeEventListener(
       'visibilitychange',
       this.onTriggerInteractionsResetEffect,

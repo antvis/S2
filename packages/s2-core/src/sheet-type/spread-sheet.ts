@@ -70,6 +70,7 @@ import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { isMobile } from '../utils/is-mobile';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
+import { hasDocument, isSSR } from '../utils/ssr';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 import type { PivotSheet } from './pivot-sheet';
 import type { TableSheet } from './table-sheet';
@@ -179,6 +180,11 @@ export abstract class SpreadSheet extends EE {
   }
 
   private setOverscrollBehavior() {
+    // SSR environment: skip overscroll behavior manipulation
+    if (isSSR() || !hasDocument()) {
+      return;
+    }
+
     const { overscrollBehavior } = this.options.interaction!;
     // 行内样式 + css 样式
     const initOverscrollBehavior = window
@@ -199,6 +205,11 @@ export abstract class SpreadSheet extends EE {
   }
 
   private restoreOverscrollBehavior() {
+    // SSR environment: skip overscroll behavior restoration
+    if (!hasDocument()) {
+      return;
+    }
+
     document.body.style.overscrollBehavior =
       this.store.get('initOverscrollBehavior') || '';
   }

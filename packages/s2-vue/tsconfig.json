@@ -6,6 +6,12 @@
     "strict": false,
     "declaration": true,
     "noImplicitAny": false,
+    "types": [
+      "node",
+      "jest",
+      "vite/client",
+      "vue-types"
+    ],
     "paths": {
       "@antv/s2": [
         "s2-core/src/index.ts"
