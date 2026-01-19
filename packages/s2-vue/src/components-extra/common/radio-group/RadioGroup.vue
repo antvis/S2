@@ -13,7 +13,7 @@ const props = withDefaults(
     options?: AntdRadioGroupProps['options'];
     value?: string | number | boolean;
     optionType?: 'default' | 'button';
-    size?: 'large' | 'middle' | 'small';
+    size?: 'large' | 'default' | 'small';
   }>(),
   {
     label: '',

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { S2_PREFIX_CLS, i18n } from '@antv/s2';
-import { Checkbox, type CheckboxChangeEvent } from 'ant-design-vue';
+import { Checkbox } from 'ant-design-vue';
+import type { CheckboxProps } from 'ant-design-vue';
+
+type CheckboxChangeEvent = Parameters<
+  NonNullable<CheckboxProps['onChange']>
+>[0];
 import { isEmpty } from 'lodash';
 import { ref, computed } from 'vue';
 import { ResetGroup } from '../common';

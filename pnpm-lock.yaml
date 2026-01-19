@@ -516,12 +516,21 @@ importers:
 
   packages/s2-vue:
     dependencies:
+      '@ant-design/icons-vue':
+        specifier: ^6.1.0
+        version: 6.1.0(vue@3.5.26(typescript@5.8.2))
       '@vueuse/core':
         specifier: ^10.5.0
         version: 10.10.0(vue@3.5.26(typescript@5.8.2))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      tinycolor2:
+        specifier: ^1.4.2
+        version: 1.6.0
+      tinygradient:
+        specifier: ^1.1.5
+        version: 1.1.5
     devDependencies:
       '@antv/event-emitter':
         specifier: ^0.1.3
@@ -831,6 +840,11 @@ packages:
 
   '@ant-design/icons-svg@4.4.2':
     resolution: {integrity: sha512-vHbT+zJEVzllwP+CM+ul7reTEfBR0vgxFe7+lREAsAA7YGsYpboiq2sQNeQeRvh09GfQgs/GyFEvZpJ9cLXpXA==}
+
+  '@ant-design/icons-vue@6.1.0':
+    resolution: {integrity: sha512-EX6bYm56V+ZrKN7+3MT/ubDkvJ5rK/O2t380WFRflDcVFgsvl3NLH7Wxeau6R8DbrO5jWR6DSTC3B6gYFp77AA==}
+    peerDependencies:
+      vue: '>=3.0.3'
 
   '@ant-design/icons-vue@7.0.1':
     resolution: {integrity: sha512-eCqY2unfZK6Fe02AwFlDHLfoyEFreP6rBwAZMIJ1LugmfMiVgwWDYlp1YsRugaPtICYOabV1iWxXdP12u9U43Q==}
@@ -17495,6 +17509,12 @@ snapshots:
       '@babel/runtime': 7.27.6
 
   '@ant-design/icons-svg@4.4.2': {}
+
+  '@ant-design/icons-vue@6.1.0(vue@3.5.26(typescript@5.8.2))':
+    dependencies:
+      '@ant-design/colors': 6.0.0
+      '@ant-design/icons-svg': 4.4.2
+      vue: 3.5.26(typescript@5.8.2)
 
   '@ant-design/icons-vue@7.0.1(vue@3.5.26(typescript@5.8.2))':
     dependencies:
