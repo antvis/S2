@@ -50,7 +50,14 @@ export class PivotSheet extends SpreadSheet {
   }
 
   public isHierarchyTreeType(): boolean {
-    return this.options.hierarchyType === 'tree';
+    return (
+      this.options.hierarchyType === 'tree' ||
+      this.options.hierarchyType === 'grid-tree'
+    );
+  }
+
+  public isHierarchyGridTreeType(): boolean {
+    return this.options.hierarchyType === 'grid-tree';
   }
 
   /**

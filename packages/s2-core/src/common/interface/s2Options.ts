@@ -350,11 +350,14 @@ export interface S2BaseFrozenOptions {
   trailingColCount?: number;
 }
 
-export type HierarchyType = 'grid' | 'tree';
+export type HierarchyType = 'grid' | 'tree' | 'grid-tree';
 
 export interface S2PivotSheetOptions {
   /**
-   * 行头布局类型, grid: 平铺网格 | tree: 树状结构
+   * 行头布局类型
+   * - grid: 平铺网格
+   * - tree: 树状结构
+   * - grid-tree: 树状平铺（平铺布局 + 展开折叠）
    */
   hierarchyType?: HierarchyType;
 

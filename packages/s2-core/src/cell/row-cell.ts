@@ -85,9 +85,11 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   }
 
   protected showTreeLeafNodeAlignDot() {
+    // grid-tree 模式下不需要对齐点，因为每个层级有独立的列
     return (
       this.spreadsheet.options.style?.rowCell?.showTreeLeafNodeAlignDot &&
-      this.spreadsheet.isHierarchyTreeType()
+      this.spreadsheet.isHierarchyTreeType() &&
+      !this.spreadsheet.isHierarchyGridTreeType()
     );
   }
 
@@ -358,7 +360,12 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   }
 
   protected getContentIndent() {
-    if (!this.spreadsheet.isHierarchyTreeType()) {
+    // grid-tree 模式下，每个维度层级有独立的列，不需要缩进
+    // 纯 tree 模式下，所有层级在同一列，需要根据层级深度进行缩进
+    if (
+      !this.spreadsheet.isHierarchyTreeType() ||
+      this.spreadsheet.isHierarchyGridTreeType()
+    ) {
       return 0;
     }
 
