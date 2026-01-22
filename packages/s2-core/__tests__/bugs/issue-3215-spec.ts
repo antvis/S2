@@ -1,7 +1,7 @@
 /**
  * @description spec for issue #3215
  * https://github.com/antvis/S2/issues/3215
- * customValueOrder=0时，多个数值列的总计列头被合并到一起了
+ * customValueOrder=0 时，多个数值列的总计列头被合并到一起了
  */
 import { PivotSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options } from '../../src';
