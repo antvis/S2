@@ -121,6 +121,8 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
     (field) => field !== EXTRA_FIELD,
   );
   // 判断当前字段是否为第一个维度字段
+  // 当 firstDimensionFieldIndex === -1 时（即所有字段都是 EXTRA_FIELD），回退到原有逻辑
+  // 但由于 addTotals 中也会检查 currentField !== EXTRA_FIELD，所以不会错误添加总计
   const isFirstDimensionField =
     index === firstDimensionFieldIndex ||
     (index === 0 && firstDimensionFieldIndex === -1);
