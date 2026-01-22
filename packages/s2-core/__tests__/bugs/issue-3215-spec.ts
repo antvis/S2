@@ -73,34 +73,31 @@ const s2DataConfig: S2DataConfig = {
 };
 
 describe('GrandTotals Header Merge Tests', () => {
-  test('should not merge multiple value columns grand totals headers when customValueOrder=0', async () => {
+  test('should have separate grand total nodes for each measure when customValueOrder=0', async () => {
     const s2 = new PivotSheet(getContainer(), s2DataConfig, s2Options);
 
     await s2.render();
 
-    // 获取列头总计节点
-    const colTotalNodes = s2.facet.getColTotalsNodes();
-    const grandTotalNodes = colTotalNodes.filter((node) => node.isGrandTotals);
-
-    // 当 customValueOrder=0 时，应该有总计节点
-    expect(grandTotalNodes.length).toBeGreaterThan(0);
-
     const { colLeafNodes } = s2.facet.getLayoutResult();
 
-    // 筛选出总计相关的叶子节点（即总计行下的数值列）
+    // 筛选出总计相关的叶子节点
     const grandTotalLeafNodes = colLeafNodes.filter(
       (node) => node.isGrandTotals,
     );
 
     // 当 customValueOrder=0 时，应该有2个总计叶子节点（对应 number 和 price 两个数值列）
-    // 如果被错误合并，将只有1个或0个节点
+    // 期望的节点 ID 格式：root[&]price[&]总计, root[&]number[&]总计
+    // 而不是 root[&]总计 (错误的合并情况)
     expect(grandTotalLeafNodes).toHaveLength(2);
 
-    // 验证两个总计叶子节点应该有不同的 value（对应不同的数值列）
-    const values = grandTotalLeafNodes.map((node) => node.value);
+    // 验证节点 ID 包含数值字段名
+    const nodeIds = grandTotalLeafNodes.map((node) => node.id);
 
-    expect(values).toContain('number');
-    expect(values).toContain('price');
+    expect(nodeIds.some((id) => id.includes('price'))).toBe(true);
+    expect(nodeIds.some((id) => id.includes('number'))).toBe(true);
+
+    // 验证每个节点 ID 都包含总计标识
+    expect(nodeIds.every((id) => id.includes('总计'))).toBe(true);
 
     s2.destroy();
   });

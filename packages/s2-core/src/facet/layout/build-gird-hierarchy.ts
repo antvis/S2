@@ -117,16 +117,18 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
 
   // 找到第一个维度字段的索引（排除 EXTRA_FIELD）
   // 当 customValueOrder=0 时，EXTRA_FIELD 在位置 0，此时第一个维度字段的索引为 1
-  // 如果没有找到维度字段（极端情况），默认使用 0
-  const firstDimensionFieldIndex = Math.max(
-    0,
-    fields.findIndex((field) => field !== EXTRA_FIELD),
+  const firstDimensionFieldIndex = fields.findIndex(
+    (field) => field !== EXTRA_FIELD,
   );
+  // 判断当前字段是否为第一个维度字段
+  const isFirstDimensionField =
+    index === firstDimensionFieldIndex ||
+    (index === 0 && firstDimensionFieldIndex === -1);
 
   addTotals({
     currentField,
     lastField: fields[index - 1],
-    isFirstField: index === firstDimensionFieldIndex,
+    isFirstField: isFirstDimensionField,
     fieldValues,
     spreadsheet,
   });
