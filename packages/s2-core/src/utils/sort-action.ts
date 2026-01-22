@@ -168,9 +168,13 @@ export const sortByFunc = (params: SortActionParams): string[] => {
     return originValues;
   }
 
+  // 使用 getLeafColumnsWithKey 处理自定义列头（对象数组）的情况
+  const rowFields = getLeafColumnsWithKey(dataSet!.fields.rows);
+  const colFields = getLeafColumnsWithKey(dataSet!.fields.columns);
+
   if (
-    (dataSet!.fields.rows!.indexOf(sortFieldId) > 0 ||
-      dataSet!.fields.columns!.indexOf(sortFieldId) > 0) &&
+    (rowFields.indexOf(sortFieldId) > 0 ||
+      colFields.indexOf(sortFieldId) > 0) &&
     !includes(sortResult[0], NODE_ID_SEPARATOR)
   ) {
     /**
@@ -192,7 +196,9 @@ const sortByMethod = (params: SortActionParams): string[] => {
   const { sortParam, measureValues, originValues, dataSet } = params;
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam!;
   const { rows = [], columns = [] } = dataSet!.fields;
-  const isInRows = rows?.includes(sortFieldId);
+  // 使用 getLeafColumnsWithKey 处理自定义列头（对象数组）的情况
+  const rowFields = getLeafColumnsWithKey(rows);
+  const isInRows = rowFields.includes(sortFieldId);
   let result;
 
   if (sortByMeasure) {
@@ -203,7 +209,7 @@ const sortByMethod = (params: SortActionParams): string[] => {
     );
 
     const fields = (
-      isInRows ? rows : getLeafColumnsWithKey(columns)
+      isInRows ? rowFields : getLeafColumnsWithKey(columns)
     ) as string[];
 
     result = getDimensionsWithParentPath(
@@ -260,11 +266,11 @@ const createTotalParams = (
   if (isMultipleDimensionValue) {
     // 获取行/列小计时，需要将所有行/列维度的值作为 params
     const realOriginValue = split(originValue, NODE_ID_SEPARATOR);
-    const currentFields = (
-      fields?.rows?.includes(sortFieldId)
-        ? fields.rows
-        : getLeafColumnsWithKey(fields.columns)
-    ) as string[];
+    // 使用 getLeafColumnsWithKey 处理自定义列头（对象数组）的情况
+    const rowFields = getLeafColumnsWithKey(fields.rows);
+    const currentFields = rowFields.includes(sortFieldId)
+      ? rowFields
+      : getLeafColumnsWithKey(fields.columns);
 
     for (let i = 0; i <= indexOf(currentFields, sortFieldId); i++) {
       totalParams[currentFields[i]] = realOriginValue[i];
@@ -312,21 +318,21 @@ export const getSortByMeasureValues = (
 
   // 按 query 查出所有数据
   const columns = getLeafColumnsWithKey(fields.columns);
+  // 使用 getLeafColumnsWithKey 处理自定义列头（对象数组）的情况
+  const rows = getLeafColumnsWithKey(fields.rows);
 
   /**
    * 按汇总值进行排序
-   * 需要过滤出符合要求的 “汇总数据”
+   * 需要过滤出符合要求的 "汇总数据"
    * 因为 getCellMultiData 会查询出 query 及其子维度的所有数据
    * 如 query={ type: 'xx' } 会包含 { type: 'xx', subType: '*' } 的数据
    */
-  const isSortFieldInRow = includes(fields.rows, sortFieldId);
+  const isSortFieldInRow = rows.includes(sortFieldId);
   // 排序字段所在一侧的全部字段
-  const sortFields = filterExtraDimension(
-    isSortFieldInRow ? fields.rows : columns,
-  );
+  const sortFields = filterExtraDimension(isSortFieldInRow ? rows : columns);
   // 与排序交叉的另一侧全部字段
   const oppositeFields = filterExtraDimension(
-    isSortFieldInRow ? columns : fields.rows,
+    isSortFieldInRow ? columns : rows,
   );
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
