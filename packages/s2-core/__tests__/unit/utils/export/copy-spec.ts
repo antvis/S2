@@ -928,7 +928,7 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toEqual(
-      `\t\t家具\r\n\t\t桌子\r\n\t\tnumber\r\n浙江省\t杭州市\t7789`,
+      `\ttype\t家具\r\n\tsub_type\t桌子\r\nprovince\tcity\tnumber\r\n浙江省\t杭州市\t7789`,
     );
 
     // 小计节点
@@ -937,7 +937,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     expect(getCopyPlainContent(s2)).toEqual(
-      `\t\t家具\r\n\t\t桌子\r\n\t\tnumber\r\n浙江省\t小计\t18375`,
+      `\ttype\t家具\r\n\tsub_type\t桌子\r\nprovince\tcity\tnumber\r\n浙江省\t小计\t18375`,
     );
   });
 

@@ -395,9 +395,10 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
     const colMatrix = this.getColMatrix();
+    const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
     return this.matrixTransformer(
-      assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
       this.config.separator,
     );
   };
@@ -414,9 +415,10 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
     const colMatrix = this.getColMatrix();
+    const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
     return this.matrixTransformer(
-      assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
       this.config.separator,
     );
   }

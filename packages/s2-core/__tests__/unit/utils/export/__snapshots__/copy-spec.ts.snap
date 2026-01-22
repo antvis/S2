@@ -163,16 +163,16 @@ exports[`Pivot Table Core Data Process should copy format total(root) data in gr
 `;
 
 exports[`Pivot Table Core Data Process should copy normal data with format header in grid mode 1`] = `
-"		家具-类
-		桌子-子类
-		数量
+"	type	家具-类
+	sub_type	桌子-子类
+province	城市	数量
 浙江省-省	杭州市-市	7789元"
 `;
 
 exports[`Pivot Table Core Data Process should copy normal data with format header in grid mode 2`] = `
-"		家具-类
-		桌子-子类
-		数量
+"	type	家具-类
+	sub_type	桌子-子类
+province	城市	数量
 浙江省-省	小计	18375元"
 `;
 
