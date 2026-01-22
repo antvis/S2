@@ -104,9 +104,6 @@
       "stylelint --custom-syntax --fix"
     ]
   },
-  "dependencies": {
-    "electron": "11.5.0"
-  },
   "devDependencies": {
     "@babel/core": "^7.24.6",
     "@commitlint/cli": "^19.3.0",
