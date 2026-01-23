@@ -487,6 +487,14 @@ export class PivotDataSet extends BaseDataSet {
     if (isTotals) {
       return this.getTotalValue(query, totalStatus);
     }
+
+    // grid-tree 模式下折叠的节点，使用小计聚合逻辑计算数据
+    // 折叠节点没有原始数据，需要聚合其子节点的数据
+    const isGridTree = this.spreadsheet?.isHierarchyGridTreeType();
+
+    if (isGridTree && rowNode?.isCollapsed) {
+      return this.getTotalValue(query, totalStatus);
+    }
   }
 
   public getTotalStatus = (query: Query): TotalStatus => {

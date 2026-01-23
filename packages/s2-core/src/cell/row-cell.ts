@@ -80,6 +80,36 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     );
   }
 
+  /**
+   * grid-tree 模式下，折叠的节点需要跨越子维度列形成合并单元格
+   * 通过重写 getBBoxByType 实现视觉上的跨列效果，不影响全局布局
+   */
+  public getBBoxByType(type = CellClipBox.BORDER_BOX): SimpleBBox {
+    const baseBBox = super.getBBoxByType(type);
+
+    // 只在 grid-tree 模式下的折叠节点才需要跨列
+    if (!this.spreadsheet.isHierarchyGridTreeType() || !this.meta.isCollapsed) {
+      return baseBBox;
+    }
+
+    // 获取行头层级信息，计算需要跨越的宽度
+    const { hierarchy } = this.meta;
+    const sampleNodes = hierarchy?.sampleNodesForAllLevels || [];
+    let spanWidth = 0;
+
+    // 从当前层级到最大层级的所有列宽之和
+    for (let i = this.meta.level; i <= (hierarchy?.maxLevel ?? 0); i++) {
+      const levelSample = sampleNodes[i];
+
+      spanWidth += levelSample?.width ?? 0;
+    }
+
+    return {
+      ...baseBBox,
+      width: spanWidth || baseBBox.width,
+    };
+  }
+
   protected showTreeIcon() {
     // tree 和 grid-tree 模式都需要显示展开/折叠图标
     // 注意：折叠的节点虽然 isLeaf=true，但仍需显示展开图标
