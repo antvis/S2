@@ -81,7 +81,23 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   }
 
   protected showTreeIcon() {
-    return this.spreadsheet.isHierarchyTreeType() && !this.meta.isLeaf;
+    // tree 和 grid-tree 模式都需要显示展开/折叠图标
+    // 注意：折叠的节点虽然 isLeaf=true，但仍需显示展开图标
+    const isTreeOrGridTree =
+      this.spreadsheet.isHierarchyTreeType() ||
+      this.spreadsheet.isHierarchyGridTreeType();
+
+    if (!isTreeOrGridTree) {
+      return false;
+    }
+
+    // 已折叠的节点需要显示展开图标
+    if (this.meta.isCollapsed) {
+      return true;
+    }
+
+    // 未折叠的非叶子节点显示折叠图标
+    return !this.meta.isLeaf;
   }
 
   protected showTreeLeafNodeAlignDot() {

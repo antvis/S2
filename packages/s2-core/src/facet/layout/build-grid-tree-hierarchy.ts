@@ -18,6 +18,7 @@ import { TotalMeasure } from '../layout/total-measure';
 
 /**
  * 计算节点是否折叠
+ * 注意：真正的叶子节点（没有子节点）不应该有折叠状态
  */
 const calculateCollapsedState = (options: {
   spreadsheet: HeaderNodesParams['spreadsheet'];
@@ -26,9 +27,23 @@ const calculateCollapsedState = (options: {
   level: number;
   isTotals: boolean;
   isTotalMeasure: boolean;
+  isLeaf: boolean;
 }): boolean => {
-  const { spreadsheet, nodeId, currentField, level, isTotals, isTotalMeasure } =
-    options;
+  const {
+    spreadsheet,
+    nodeId,
+    currentField,
+    level,
+    isTotals,
+    isTotalMeasure,
+    isLeaf,
+  } = options;
+
+  // 真正的叶子节点没有子节点，不应有折叠状态
+  if (isLeaf) {
+    return false;
+  }
+
   const { collapseFields, collapseAll, expandDepth } =
     spreadsheet.options.style?.rowCell ?? {};
 
@@ -39,6 +54,80 @@ const calculateCollapsedState = (options: {
   return isTotals || isTotalMeasure
     ? false
     : isDefaultCollapsed ?? isLevelCollapsed ?? collapseAll ?? false;
+};
+
+/**
+ * 处理字段值，返回节点的值、查询条件和各种标志
+ */
+const processFieldValue = (options: {
+  fieldValue: FieldValue;
+  currentField: string;
+  query: Record<string, unknown>;
+  parentNode: HeaderNodesParams['parentNode'];
+  spreadsheet: HeaderNodesParams['spreadsheet'];
+  level: number;
+  fields: string[];
+  addMeasureInTotalQuery: boolean | undefined;
+}) => {
+  const {
+    fieldValue,
+    currentField,
+    query,
+    parentNode,
+    spreadsheet,
+    level,
+    fields,
+    addMeasureInTotalQuery,
+  } = options;
+
+  const isTotals = TotalClass.isTotalClassInstance(fieldValue);
+  const isTotalMeasure = TotalMeasure.isTotalMeasureInstance(fieldValue);
+
+  let value: string;
+  let nodeQuery: Record<string, unknown>;
+  let isLeaf = false;
+  let isGrandTotals = false;
+  let isSubTotals = false;
+  let isTotalRoot = false;
+
+  if (isTotals) {
+    isGrandTotals = fieldValue.isGrandTotals;
+    isSubTotals = fieldValue.isSubTotals;
+    isTotalRoot = fieldValue.isTotalRoot;
+    value = i18n(fieldValue.label);
+    nodeQuery = isTotalRoot
+      ? { ...query }
+      : { ...query, [currentField]: value };
+    if (addMeasureInTotalQuery) {
+      nodeQuery[EXTRA_FIELD] = spreadsheet?.dataSet?.fields.values![0];
+    }
+
+    isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
+  } else if (isTotalMeasure) {
+    value = i18n(fieldValue.label);
+    nodeQuery = { ...query, [EXTRA_FIELD]: value };
+    isGrandTotals = parentNode.isGrandTotals!;
+    isSubTotals = parentNode.isSubTotals!;
+    isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
+  } else {
+    value = fieldValue;
+    nodeQuery =
+      value === EMPTY_FIELD_VALUE
+        ? { ...query }
+        : { ...query, [currentField]: value };
+    isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
+  }
+
+  return {
+    value,
+    nodeQuery,
+    isLeaf,
+    isGrandTotals,
+    isSubTotals,
+    isTotalRoot,
+    isTotals,
+    isTotalMeasure,
+  };
 };
 
 /**
@@ -64,49 +153,20 @@ const generateGridTreeHeaderNodes = (params: HeaderNodesParams) => {
     const fieldValue = resolveNillString(
       originalFieldValue as string,
     ) as FieldValue;
-    const isTotals = TotalClass.isTotalClassInstance(fieldValue);
-    const isTotalMeasure = TotalMeasure.isTotalMeasureInstance(fieldValue);
-
-    let value: string;
-    let nodeQuery: Record<string, unknown>;
-    let isLeaf = false;
-    let isGrandTotals = false;
-    let isSubTotals = false;
-    let isTotalRoot = false;
     const adjustedField = currentField;
 
-    if (isTotals) {
-      isGrandTotals = fieldValue.isGrandTotals;
-      isSubTotals = fieldValue.isSubTotals;
-      isTotalRoot = fieldValue.isTotalRoot;
-      value = i18n(fieldValue.label);
-      if (isTotalRoot) {
-        nodeQuery = { ...query };
-      } else {
-        nodeQuery = { ...query, [currentField]: value };
-      }
+    const processed = processFieldValue({
+      fieldValue,
+      currentField,
+      query,
+      parentNode,
+      spreadsheet,
+      level,
+      fields,
+      addMeasureInTotalQuery,
+    });
 
-      if (addMeasureInTotalQuery) {
-        nodeQuery[EXTRA_FIELD] = spreadsheet?.dataSet?.fields.values![0];
-      }
-
-      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
-    } else if (isTotalMeasure) {
-      value = i18n(fieldValue.label);
-      nodeQuery = { ...query, [EXTRA_FIELD]: value };
-      isGrandTotals = parentNode.isGrandTotals!;
-      isSubTotals = parentNode.isSubTotals!;
-      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
-    } else {
-      value = fieldValue;
-      nodeQuery =
-        value === EMPTY_FIELD_VALUE
-          ? { ...query }
-          : { ...query, [currentField]: value };
-      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
-    }
-
-    const nodeId = generateId(parentNode.id, value);
+    const nodeId = generateId(parentNode.id, processed.value);
 
     if (nodeId) {
       const isCollapsed = calculateCollapsedState({
@@ -114,26 +174,27 @@ const generateGridTreeHeaderNodes = (params: HeaderNodesParams) => {
         nodeId,
         currentField,
         level,
-        isTotals,
-        isTotalMeasure,
+        isTotals: processed.isTotals,
+        isTotalMeasure: processed.isTotalMeasure,
+        isLeaf: processed.isLeaf,
       });
 
       const node = new Node({
         id: nodeId,
-        value,
+        value: processed.value,
         level,
         field: adjustedField,
         parent: parentNode,
-        isTotals: isTotals || isTotalMeasure,
-        isGrandTotals,
-        isSubTotals,
-        isTotalMeasure,
+        isTotals: processed.isTotals || processed.isTotalMeasure,
+        isGrandTotals: processed.isGrandTotals,
+        isSubTotals: processed.isSubTotals,
+        isTotalMeasure: processed.isTotalMeasure,
         isCollapsed,
-        isTotalRoot,
+        isTotalRoot: processed.isTotalRoot,
         hierarchy,
-        query: nodeQuery,
+        query: processed.nodeQuery,
         spreadsheet,
-        isLeaf: isLeaf || isCollapsed,
+        isLeaf: processed.isLeaf || isCollapsed,
       });
 
       const expandCurrentNode = layoutHierarchy(
@@ -142,12 +203,11 @@ const generateGridTreeHeaderNodes = (params: HeaderNodesParams) => {
         node,
         hierarchy,
       );
-
       const hiddenColumnsInfo = spreadsheet?.facet?.getHiddenColumnsInfo(node);
 
       if (
         level > hierarchy.maxLevel &&
-        !isGrandTotals &&
+        !processed.isGrandTotals &&
         !parentNode.isGrandTotals &&
         !parentNode.isSubTotals &&
         !node.isSubTotals &&
@@ -159,7 +219,7 @@ const generateGridTreeHeaderNodes = (params: HeaderNodesParams) => {
       }
 
       // grid-tree 模式下，折叠的节点也是叶子节点
-      const isLeafNode = isLeaf || isCollapsed || !expandCurrentNode;
+      const isLeafNode = processed.isLeaf || isCollapsed || !expandCurrentNode;
 
       if (isLeafNode) {
         node.isLeaf = true;
