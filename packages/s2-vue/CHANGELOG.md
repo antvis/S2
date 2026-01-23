@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.3...@antv/s2-vue-v2.1.0) (2026-01-19)
+
+
+### Features
+
+* **s2-vue:** 🚀 架构升级与功能补全 (s2-vue和s2-React功能对齐) ([#3295](https://github.com/antvis/S2/issues/3295)) ([89f565f](https://github.com/antvis/S2/commit/89f565f1e54b050de791b289a8df01b4f829893c))
+
 # [@antv/s2-vue-v2.0.3](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.2...@antv/s2-vue-v2.0.3) (2026-01-14)
 
 
