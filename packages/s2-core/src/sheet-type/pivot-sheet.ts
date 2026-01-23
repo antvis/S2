@@ -50,8 +50,6 @@ export class PivotSheet extends SpreadSheet {
   }
 
   public isHierarchyTreeType(): boolean {
-    // 注意：grid-tree 模式使用 grid 布局，不在此处返回 true
-    // 需要折叠逻辑时请使用 isHierarchyCollapseType()
     return this.options.hierarchyType === 'tree';
   }
 
