@@ -27,6 +27,23 @@ fetch(
                     // },
                 },
             },
+            // 配置总计和小计
+            totals: {
+                row: {
+                    showGrandTotals: true,
+                    showSubTotals: true,
+                    subTotalsDimensions: ['province'],
+                    grandTotalsLabel: '总计',
+                    subTotalsLabel: '小计',
+                    // 自动计算小计和总计
+                    calcSubTotals: {
+                        aggregation: 'SUM',
+                    },
+                    calcGrandTotals: {
+                        aggregation: 'SUM',
+                    },
+                },
+            },
         };
 
         const s2 = new PivotSheet(container!, dataCfg, s2Options);
