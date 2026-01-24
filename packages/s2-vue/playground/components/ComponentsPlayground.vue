@@ -6,13 +6,17 @@ import {
   type ThemeName,
   type S2Options,
 } from '@antv/s2';
-import { Space } from 'ant-design-vue';
+import { Button, Space, Popover } from 'ant-design-vue';
 import { ref, shallowRef, computed } from 'vue';
 import {
   SheetComponent,
   ThemePanel,
   TextAlignPanel,
   FrozenPanel,
+  Switcher,
+  AdvancedSort,
+  DrillDown,
+  StrategyExport,
 } from '../../src';
 import type {
   ThemePanelOptions,
@@ -106,12 +110,60 @@ const onFrozenReset = (
   console.log('FrozenPanel onReset:', panelOptions, prevOptions);
 };
 
-const dataCfg = computed(() => pivotSheetDataCfg);
+const toSwitcherItems = (fields: any[] = []) => {
+  return fields.map((f) => {
+    return typeof f === 'string' ? { id: f } : { id: f.field, ...f };
+  });
+};
+
+// Switcher Logic
+const switcherFields = ref({
+  rows: pivotSheetDataCfg.fields.rows,
+  columns: pivotSheetDataCfg.fields.columns,
+  values: pivotSheetDataCfg.fields.values,
+});
+
+const dataCfg = computed(() => {
+  return {
+    ...pivotSheetDataCfg,
+    fields: {
+      ...pivotSheetDataCfg.fields,
+      ...switcherFields.value,
+    },
+  };
+});
+
+const onSwitcherSubmit = ({ rows, columns, values }: any) => {
+  console.log('Switcher onSubmit:', rows, columns, values);
+  switcherFields.value = {
+    rows: rows.items.map((i: any) => i.id),
+    columns: columns.items.map((i: any) => i.id),
+    values: values.items.map((i: any) => i.id),
+  };
+  if (s2Ref.value) {
+    s2Ref.value.render(false);
+  }
+};
+
+// Advanced Sort Logic
+const onSortConfirm = (ruleValues: any[], sortParams: any[]) => {
+  console.log('AdvancedSort onConfirm:', ruleValues, sortParams);
+  if (s2Ref.value) {
+    s2Ref.value.setDataCfg({
+      ...s2Ref.value.dataCfg,
+      sortParams,
+    });
+    s2Ref.value.render(false);
+  }
+};
+
+// Drill Down Logic
+const drillFields = ref<string[]>([]);
 </script>
 
 <template>
   <div class="components-playground">
-    <Space class="config-panels" direction="vertical">
+    <Space direction="horizontal" class="config-panels">
       <ThemePanel
         title="主题配置"
         :disableCustomPrimaryColorPicker="false"
@@ -138,6 +190,32 @@ const dataCfg = computed(() => pivotSheetDataCfg);
         @change="onFrozenChange"
         @reset="onFrozenReset"
       />
+      <Switcher
+        title="行列切换"
+        :rows="{ items: toSwitcherItems(dataCfg.fields.rows) }"
+        :columns="{ items: toSwitcherItems(dataCfg.fields.columns) }"
+        :values="{ items: toSwitcherItems(dataCfg.fields.values) }"
+        @submit="onSwitcherSubmit"
+      />
+      <AdvancedSort
+        v-if="s2Ref"
+        :sheetInstance="s2Ref"
+        @sort-confirm="onSortConfirm"
+      />
+      <Popover trigger="click" placement="bottomLeft">
+        <template #content>
+          <DrillDown
+            :dataSet="[
+              { name: '地区', value: 'area', type: 'location' },
+              { name: '城市', value: 'city', type: 'location' },
+              { name: '日期', value: 'date', type: 'date' },
+            ]"
+            v-model:drillFields="drillFields"
+          />
+        </template>
+        <Button>下钻</Button>
+      </Popover>
+      <StrategyExport v-if="s2Ref" :sheetInstance="s2Ref" />
     </Space>
     <SheetComponent
       :dataCfg="dataCfg"
@@ -153,10 +231,13 @@ const dataCfg = computed(() => pivotSheetDataCfg);
 <style lang="less" scoped>
 .components-playground {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 
   .config-panels {
-    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
   }
 }
 </style>
