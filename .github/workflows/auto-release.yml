@@ -61,7 +61,7 @@ jobs:
       # 如果是 action 自带的 机器人 token, 出于安全考虑, github 会禁止循环触发, 使用真实用户的 token 可解决这个问题
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.HUIYU_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           npm_config_legacy_peer_deps: true
         run: pnpm release
