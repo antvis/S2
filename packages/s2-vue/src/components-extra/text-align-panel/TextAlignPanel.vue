@@ -87,7 +87,7 @@ const getCellAlignOptions = (field: keyof TextAlignPanelOptions) => {
   }));
 };
 
-const handleChange = (field: keyof TextAlignPanelOptions) => (e: any) => {
+const handleChange = (field: keyof TextAlignPanelOptions, e: any) => {
   onOptionsChange(field, e.target.value);
 };
 </script>
@@ -106,7 +106,7 @@ const handleChange = (field: keyof TextAlignPanelOptions) => (e: any) => {
       :value="options.colCellTextAlign"
       :options="getCellAlignOptions('colCellTextAlign')"
       onlyIcon
-      @change="handleChange('colCellTextAlign')"
+      @change="(e) => handleChange('colCellTextAlign', e)"
     />
     <RadioGroup
       :label="i18n('表身 (维度)')"
@@ -114,7 +114,7 @@ const handleChange = (field: keyof TextAlignPanelOptions) => (e: any) => {
       :value="options.rowCellTextAlign"
       :options="getCellAlignOptions('rowCellTextAlign')"
       onlyIcon
-      @change="handleChange('rowCellTextAlign')"
+      @change="(e) => handleChange('rowCellTextAlign', e)"
     />
     <RadioGroup
       :label="i18n('表身 (指标)')"
@@ -122,7 +122,7 @@ const handleChange = (field: keyof TextAlignPanelOptions) => (e: any) => {
       :value="options.dataCellTextAlign"
       :options="getCellAlignOptions('dataCellTextAlign')"
       onlyIcon
-      @change="handleChange('dataCellTextAlign')"
+      @change="(e) => handleChange('dataCellTextAlign', e)"
     />
   </ResetGroup>
 </template>

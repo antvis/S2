@@ -35,7 +35,9 @@ const classNames = computed(() => {
 });
 
 const handleChange = (e: any) => {
-  emit('change', e);
+  const value = e?.target?.value ?? e;
+
+  emit('change', { target: { value } });
 };
 </script>
 
@@ -49,6 +51,7 @@ const handleChange = (e: any) => {
         :options="options"
         :option-type="optionType"
         @change="handleChange"
+        @update:value="handleChange"
       />
       <slot name="extra" />
     </span>
