@@ -59,38 +59,6 @@ export const shouldCrossRows = (
   type: FieldType,
 ) => sheetType === 'table' || type === FieldType.Values;
 
-export const moveItem = (
-  source: SwitcherItem[] = [],
-  destination: SwitcherItem[] = [],
-  droppableSource: DraggableLocation,
-  droppableDestination: DraggableLocation,
-): SwitcherState => {
-  // change order in same column
-  if (droppableDestination.droppableId === droppableSource.droppableId) {
-    const updatingDestination = [...destination];
-    const [removed] = updatingDestination.splice(droppableSource.index, 1);
-
-    updatingDestination.splice(droppableDestination.index, 0, removed);
-
-    return {
-      [droppableDestination.droppableId]: updatingDestination,
-    };
-  }
-
-  // move to other column
-  const updatingSource = [...source];
-  const updatingDestination = [...destination];
-
-  const [removed] = updatingSource.splice(droppableSource.index, 1);
-
-  updatingDestination.splice(droppableDestination.index, 0, removed);
-
-  return {
-    [droppableSource.droppableId]: updatingSource,
-    [droppableDestination.droppableId]: updatingDestination,
-  };
-};
-
 export const checkItem = (
   source: SwitcherItem[] = [],
   checked: boolean,

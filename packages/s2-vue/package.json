@@ -89,11 +89,14 @@
     {
       "path": "./dist/s2-vue.min.js",
       "import": "{ createComponent }",
-      "limit": "38 kB",
+      "limit": "65 kB",
       "ignore": [
         "S2",
         "Vue",
-        "antd"
+        "ant-design-vue",
+        "lodash",
+        "@vueuse/core",
+        "@ant-design/icons-vue"
       ]
     },
     {

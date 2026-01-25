@@ -94,15 +94,25 @@ const handleDimension = (dimension: Dimension) => {
   );
 };
 
-const handleCustomSort = (dimension: Dimension, splitOrders?: string[]) => {
+const handleCustomSort = (
+  dimension: RuleItem | Dimension,
+  splitOrders?: string[],
+) => {
   handleCustom();
-  currentDimension.value = dimension;
+  // Find the correct Dimension object to ensure type safety
+  const correctDimension = find(
+    manualDimensionList.value,
+    (item) => item.field === dimension.field,
+  );
+
+  if (correctDimension) {
+    currentDimension.value = correctDimension;
+  }
+
   if (splitOrders && splitOrders.length > 0) {
     sortBy.value = uniq(splitOrders);
   } else {
-    const list =
-      find(manualDimensionList.value, (item) => item.field === dimension.field)
-        ?.list || [];
+    const list = correctDimension?.list || [];
 
     sortBy.value = uniq(list);
   }
@@ -154,12 +164,19 @@ const customCancel = () => {
   handleCustom();
 };
 
-const deleteRule = (dimension: Dimension) => {
+const deleteRule = (dimension: RuleItem | Dimension) => {
   ruleList.value = filter(
     ruleList.value,
     (item) => item.field !== dimension.field,
   );
-  dimensionList.value = [...dimensionList.value, dimension];
+  const originalDimension = find(
+    manualDimensionList.value,
+    (item) => item.field === dimension.field,
+  );
+
+  if (originalDimension) {
+    dimensionList.value = [...dimensionList.value, originalDimension];
+  }
 
   // Clean up form data
   delete formData.value[dimension.field];
@@ -430,12 +447,7 @@ const onSplitOrdersChange = (orders: string[]) => {
                 <template v-else>
                   <a
                     :class="`${ADVANCED_SORT_PRE_CLS}-rule-end`"
-                    @click="
-                      handleCustomSort(
-                        item as unknown as Dimension,
-                        formData[item.field].sortBy,
-                      )
-                    "
+                    @click="handleCustomSort(item, formData[item.field].sortBy)"
                   >
                     {{ i18n('设置顺序') }}
                   </a>
@@ -445,7 +457,7 @@ const onSplitOrdersChange = (orders: string[]) => {
 
                 <DeleteOutlined
                   :class="`${ADVANCED_SORT_PRE_CLS}-rule-end-delete`"
-                  @click="deleteRule(item as unknown as Dimension)"
+                  @click="deleteRule(item)"
                 />
               </Form.Item>
             </div>
