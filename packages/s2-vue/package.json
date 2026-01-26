@@ -55,8 +55,12 @@
     "tsc": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
     "@vueuse/core": "^10.5.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "tinycolor2": "^1.4.2",
+    "tinygradient": "^1.1.5",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@antv/event-emitter": "^0.1.3",
@@ -85,11 +89,14 @@
     {
       "path": "./dist/s2-vue.min.js",
       "import": "{ createComponent }",
-      "limit": "38 kB",
+      "limit": "65 kB",
       "ignore": [
         "S2",
         "Vue",
-        "antd"
+        "ant-design-vue",
+        "lodash",
+        "@vueuse/core",
+        "@ant-design/icons-vue"
       ]
     },
     {

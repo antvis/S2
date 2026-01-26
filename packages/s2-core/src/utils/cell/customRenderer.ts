@@ -1,10 +1,12 @@
+import type { flruCache } from 'flru';
+
 const loadError = new Error('Failed to load image and fallback');
 
 export function asyncDrawImage(options: {
   src: string;
   fallback?: string;
   timeout?: number;
-  mediaCache?: Map<string, HTMLElement | null>;
+  mediaCache?: flruCache<HTMLElement | null>;
   crossOrigin?: string | null;
 }): Promise<HTMLImageElement> {
   const {
