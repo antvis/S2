@@ -53,6 +53,10 @@ export class PivotSheet extends SpreadSheet {
     return this.options.hierarchyType === 'tree';
   }
 
+  public isHierarchyGridTreeType(): boolean {
+    return this.options.hierarchyType === 'grid-tree';
+  }
+
   /**
    * Scroll Freeze Row Header
    */

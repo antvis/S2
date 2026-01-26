@@ -19,6 +19,15 @@
         "en": "Tree mode"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/VnOOCNzUqk/a68995cb-7e96-452a-a0da-faf4b1f9d59b.png"
+    },
+    {
+      "filename": "grid-tree.ts",
+      "title": {
+        "zh": "树状平铺模式",
+        "en": "Grid Tree mode"
+      },
+      "new": true,
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TveZTrlRjlYAAAAAQiAAAAgAemJ7AQ/fmt.avif"
     }
   ]
 }
