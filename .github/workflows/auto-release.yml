@@ -7,13 +7,19 @@ on:
       - alpha
       - next
 
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]') && startsWith(github.event.head_commit.message , 'chore(release):')"
     strategy:
       matrix:
-        node-version: [20] # semantic-release 需要 >= 16 的 Node.js 环境
+        node-version: [24] # npm trust publish 需要 Nodejs 24
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +32,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -62,7 +68,6 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.HUIYU_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           npm_config_legacy_peer_deps: true
         run: pnpm release
 
