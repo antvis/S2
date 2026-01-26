@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, watch, onBeforeUnmount } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { i18n } from '@antv/s2';
-import draggable from 'vuedraggable';
+// Use sortablejs instead of vuedraggable to avoid ESM build issues (require is not defined) in Vite
+import Sortable from 'sortablejs';
 import type { CheckboxChangeEvent } from 'ant-design-vue/lib/checkbox/interface';
 import { getSwitcherClassName } from '../util';
 import DimensionItem from '../item/DimensionItem.vue';
@@ -46,9 +47,6 @@ const emit = defineEmits<{
     id: string,
     parentId?: string,
   ): void;
-  // vuedraggable requires v-model:list or list prop + @change
-  // But here we rely on the parent state update logic. Wait, vuedraggable mutates the array?
-  // Ideally we should emit an update.
   (e: 'update:items', items: SwitcherItem[]): void;
 }>();
 
@@ -56,12 +54,8 @@ const CLASS_NAME_PREFIX = 'dimension';
 
 const expandChildren = ref(true);
 const enabled = ref(false);
-
-onMounted(() => {
-  requestAnimationFrame(() => {
-    enabled.value = true;
-  });
-});
+const draggableRef = ref<HTMLElement>();
+let sortableInstance: Sortable | null = null;
 
 const onUpdateExpand = (event: CheckboxChangeEvent) => {
   expandChildren.value = event.target.checked;
@@ -72,6 +66,55 @@ const isDragDisabled = computed(
   () => !props.allowEmpty && props.items.length === 1,
 );
 
+const initSortable = () => {
+  if (!draggableRef.value) {
+    return;
+  }
+
+  sortableInstance = Sortable.create(draggableRef.value, {
+    animation: 200,
+    group: props.droppableType,
+    disabled: isDragDisabled.value,
+    ghostClass: getSwitcherClassName(CLASS_NAME_PREFIX, 'items-highlight'),
+    onEnd: (evt) => {
+      const { oldIndex, newIndex } = evt;
+
+      if (
+        oldIndex === undefined ||
+        newIndex === undefined ||
+        oldIndex === newIndex
+      ) {
+        return;
+      }
+
+      // Sync state
+      const newItems = [...props.items];
+      const [movedItem] = newItems.splice(oldIndex, 1);
+
+      newItems.splice(newIndex, 0, movedItem);
+      emit('update:items', newItems);
+    },
+  });
+};
+
+watch(isDragDisabled, (val) => {
+  sortableInstance?.option('disabled', val);
+});
+
+onMounted(() => {
+  requestAnimationFrame(() => {
+    enabled.value = true;
+    // Wait for DOM to be ready
+    requestAnimationFrame(() => {
+      initSortable();
+    });
+  });
+});
+
+onBeforeUnmount(() => {
+  sortableInstance?.destroy();
+});
+
 const onVisibleItemChange = (
   fieldType: string,
   checked: boolean,
@@ -80,23 +123,6 @@ const onVisibleItemChange = (
 ) => {
   emit('visible-item-change', fieldType, checked, id, parentId);
 };
-
-// Draggable config
-const dragOptions = computed(() => ({
-  animation: 200,
-  // allow drag between same group
-  group: props.droppableType,
-  disabled: isDragDisabled.value,
-  ghostClass: getSwitcherClassName(CLASS_NAME_PREFIX, 'items-highlight'),
-}));
-
-// We need a writable computed for v-model
-const list = computed({
-  get: () => props.items,
-  set: (val) => {
-    emit('update:items', val);
-  },
-});
 </script>
 
 <template>
@@ -118,27 +144,25 @@ const list = computed({
       </div>
     </div>
 
-    <draggable
-      v-model="list"
-      item-key="id"
-      v-bind="dragOptions"
+    <div
+      ref="draggableRef"
       :class="[
         getSwitcherClassName(CLASS_NAME_PREFIX, 'items'),
         { [getSwitcherClassName(CLASS_NAME_PREFIX, 'long-items')]: crossRows },
       ]"
     >
-      <template #item="{ element, index }">
-        <DimensionItem
-          :index="index"
-          :fieldType="fieldType"
-          :item="element"
-          :expandable="expandable"
-          :expandChildren="expandChildren"
-          :selectable="selectable"
-          :isDragDisabled="isDragDisabled"
-          @visible-item-change="onVisibleItemChange"
-        />
-      </template>
-    </draggable>
+      <DimensionItem
+        v-for="(item, index) in items"
+        :key="item.id"
+        :index="index"
+        :fieldType="fieldType"
+        :item="item"
+        :expandable="expandable"
+        :expandChildren="expandChildren"
+        :selectable="selectable"
+        :isDragDisabled="isDragDisabled"
+        @visible-item-change="onVisibleItemChange"
+      />
+    </div>
   </div>
 </template>
