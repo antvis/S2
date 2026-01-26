@@ -51,6 +51,9 @@ export default defineConfig(() => {
             'vue',
             '@antv/s2',
             '@ant-design/icons-vue',
+            'sortablejs',
+            'tinycolor2',
+            'tinygradient',
           ],
           output: {
             ...baseConfig.build?.rollupOptions?.output,
