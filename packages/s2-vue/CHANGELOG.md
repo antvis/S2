@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.2.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.2.0-alpha.1...@antv/s2-vue-v2.2.0-alpha.2) (2026-01-26)
+
+
+### Bug Fixes
+
+* 弃用 vuedragable 修复 esm 构建问题 ([c78c02d](https://github.com/antvis/S2/commit/c78c02d62b0f040f58bcbb3e30ce25b8690cbb74))
+
 # [@antv/s2-vue-v2.2.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.1.0...@antv/s2-vue-v2.2.0-alpha.1) (2026-01-26)
 
 
