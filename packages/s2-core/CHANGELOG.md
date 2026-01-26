@@ -1,3 +1,11 @@
+# [@antv/s2-v2.6.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v2.5.0...@antv/s2-v2.6.0-alpha.1) (2026-01-26)
+
+
+### Features
+
+* squash merge feat/gridTree ([6bb4b2d](https://github.com/antvis/S2/commit/6bb4b2d15a43803f625c9d8fcf337cc7b9569a1f))
+* squash merge s2-vue-components ([2f12d98](https://github.com/antvis/S2/commit/2f12d985149b0080fe1a53152d78f48b89145624))
+
 # [@antv/s2-v2.5.0](https://github.com/antvis/S2/compare/@antv/s2-v2.4.16...@antv/s2-v2.5.0) (2026-01-19)
 
 

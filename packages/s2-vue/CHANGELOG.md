@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.2.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.1.0...@antv/s2-vue-v2.2.0-alpha.1) (2026-01-26)
+
+
+### Features
+
+* squash merge s2-vue-components ([2f12d98](https://github.com/antvis/S2/commit/2f12d985149b0080fe1a53152d78f48b89145624))
+
 # [@antv/s2-vue-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.3...@antv/s2-vue-v2.1.0) (2026-01-19)
 
 
