@@ -167,7 +167,45 @@ const s2Options = {
 
 ### 展示形态
 
-默认支持 [平铺模式](/zh/examples/basic/pivot/#grid) 和 [树状模式](/zh/examples/basic/pivot/#tree) 两种展示形态。
+默认支持 [平铺模式](/zh/examples/basic/pivot/#grid)、[树状模式](/zh/examples/basic/pivot/#tree) 和 [树状平铺模式](/zh/examples/basic/pivot/#grid-tree) 三种展示形态。
+
+#### 平铺模式 (grid)
+
+每个维度层级有独立的列，不支持展开折叠。
+
+```ts
+const s2Options = {
+  hierarchyType: 'grid',
+}
+```
+
+#### 树状模式 (tree)
+
+所有维度层级在同一列，通过缩进区分层级，支持展开折叠。
+
+```ts
+const s2Options = {
+  hierarchyType: 'tree',
+}
+```
+
+#### 树状平铺模式 (grid-tree)
+
+结合平铺和树状的特点：每个维度层级有独立的列，同时支持展开折叠。
+
+```ts
+const s2Options = {
+  hierarchyType: 'grid-tree',
+  style: {
+    rowCell: {
+      // 默认展开层级 (从 0 开始)
+      expandDepth: 1,
+    },
+  },
+}
+```
+
+<Playground path='/basic/pivot/demo/grid-tree.ts' rid='pivot-grid-tree' height='300'></playground>
 
 ### 数据汇总
 
