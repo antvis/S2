@@ -313,7 +313,6 @@ const rawOptions: S2Options = {
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, shallowRef } from 'vue';
-import "@antv/s2-vue/dist/s2-vue.min.css";
 
 export default defineComponent({
   setup() {
@@ -343,16 +342,24 @@ export default defineComponent({
 </template>
 ```
 
-### 3. 渲染
+### 3. 挂载节点
 
-```ts
-import { createApp } from 'vue';
-import App from './App.vue';
-
-createApp(App).mount('#app');
-
+```html
+<!-- index.html -->
+<div id="app"></div>
 ```
 
-### 4. 结果
+### 4. 渲染
+
+```ts
+// index.ts
+import { createApp } from 'vue';
+import App from './App.vue';
+import "@antv/s2-vue/dist/s2-vue.min.css";
+
+createApp(App).mount('#app');
+```
+
+### 5. 结果
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/rf1gPzsFQ/2e3f09f1-6f94-4981-91d4-8c7a770574be.png)
