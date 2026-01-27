@@ -26,12 +26,13 @@ import type { FrozenFacet } from '../facet';
 import { Frame } from '../facet/header/frame';
 import { type ColHeaderConfig } from '../facet/header/interface';
 import {
+  getCellBoxByType,
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
   getVerticalTextPosition,
 } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
-import { renderIcon, renderLine } from '../utils/g-renders';
+import { renderIcon, renderLine, renderTreeIcon } from '../utils/g-renders';
 import { batchSetStyle } from '../utils/g-utils';
 import {
   getHiddenColumnContinuousSiblingNodes,
@@ -43,6 +44,7 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
+import { isMobile } from '../utils/is-mobile';
 import { normalizeTextAlign } from '../utils/normalize';
 import { HeaderCell } from './header-cell';
 
@@ -57,6 +59,51 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
   protected getBorderPositions(): CellBorderPosition[] {
     return [CellBorderPosition.TOP, CellBorderPosition.RIGHT];
+  }
+
+  /**
+   * column grid-tree 模式下，折叠的节点需要跨越子维度行形成合并单元格
+   * 通过重写 getBBoxByType 实现视觉上的跨行效果，不影响全局布局
+   */
+  public getBBoxByType(type = CellClipBox.BORDER_BOX): SimpleBBox {
+    // 只在 column grid-tree 模式下的折叠节点才需要跨行
+    if (
+      !this.spreadsheet.isHierarchyGridTreeColType() ||
+      !this.meta.isCollapsed
+    ) {
+      return super.getBBoxByType(type);
+    }
+
+    // 获取列头层级信息，计算需要跨越的高度
+    const { hierarchy } = this.meta;
+    const sampleNodes = hierarchy?.sampleNodesForAllLevels || [];
+    let spanHeight = 0;
+
+    // 从当前层级到最大层级的所有行高之和
+    for (let i = this.meta.level; i <= (hierarchy?.maxLevel ?? 0); i++) {
+      const levelSample = sampleNodes[i];
+
+      spanHeight += levelSample?.height ?? 0;
+    }
+
+    // 构造扩展后的 BORDER_BOX（保持 x, y 不变，只改变 height）
+    const expandedBorderBox: SimpleBBox = {
+      x: this.meta.x,
+      y: this.meta.y,
+      width: this.meta.width,
+      height: spanHeight || this.meta.height,
+    };
+
+    // 使用 getCellBoxByType 处理 padding/border，确保 CONTENT_BOX 正确计算
+    const cellStyle = (this.getStyle() ||
+      this.theme.dataCell) as DefaultCellTheme;
+
+    return getCellBoxByType(
+      expandedBorderBox,
+      this.getBorderPositions(),
+      cellStyle?.cell!,
+      type,
+    );
   }
 
   protected initCell() {
@@ -74,6 +121,8 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   protected afterDrawText() {
     // 绘制字段标记 -- icon
     this.drawActionAndConditionIcons();
+    // 绘制树状模式收起展开的 icon (grid-tree 模式)
+    this.drawTreeIcon();
     // draw borders
     this.drawBorders();
     // draw resize ares
@@ -115,6 +164,79 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     }
 
     return false;
+  }
+
+  /**
+   * 是否显示列头树状模式的展开/折叠图标 (grid-tree 模式)
+   */
+  protected showTreeIcon() {
+    // 只有 column grid-tree 模式需要显示展开/折叠图标
+    if (!this.spreadsheet.isHierarchyGridTreeColType()) {
+      return false;
+    }
+
+    // 已折叠的节点需要显示展开图标
+    if (this.meta.isCollapsed) {
+      return true;
+    }
+
+    // 未折叠的非叶子节点显示折叠图标
+    return !this.meta.isLeaf;
+  }
+
+  private onTreeIconClick() {
+    const { device } = this.spreadsheet.options;
+
+    if (isMobile(device)) {
+      return;
+    }
+
+    this.emitCollapseEvent();
+  }
+
+  private emitCollapseEvent() {
+    this.spreadsheet.emit(S2Event.COL_CELL_COLLAPSED__PRIVATE, {
+      isCollapsed: !this.meta.isCollapsed,
+      node: this.meta,
+    });
+  }
+
+  protected drawTreeIcon() {
+    if (!this.showTreeIcon()) {
+      return;
+    }
+
+    const { isCollapsed } = this.meta;
+    const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const { fill } = this.getTextStyle();
+    const { size } = this.getStyle()!.icon!;
+
+    const iconX = x;
+    const iconY = this.getIconPosition().y;
+
+    this.treeIcon = renderTreeIcon({
+      group: this,
+      iconCfg: {
+        x: iconX,
+        y: iconY,
+        width: size,
+        height: size,
+        fill,
+      },
+      isCollapsed,
+      onClick: () => {
+        this.onTreeIconClick();
+      },
+    });
+
+    // 移动端, 点击热区为整个单元格
+    const { device } = this.spreadsheet.options;
+
+    if (isMobile(device)) {
+      this.addMobileTouchListener(() => {
+        this.emitCollapseEvent();
+      });
+    }
   }
 
   /**

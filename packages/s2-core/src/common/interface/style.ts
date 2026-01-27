@@ -116,6 +116,26 @@ export interface ColCellStyle extends BaseCellStyle, CellTextWordWrapStyle {
    * 数值挂列头时, 是否隐藏数值 (即 s2DataConfig.fields.values 只有一个数值时生效)
    */
   hideValue?: boolean;
+
+  /**
+   * 收起所有列头节点 (grid-tree 模式生效)
+   * @description 优先级 `collapseFields` > `expandDepth` > `collapseAll`
+   */
+  collapseAll?: boolean | null;
+
+  /**
+   * 折叠列头节点 (grid-tree 模式生效)
+   * id 级别: { ['root[&]家具']: true } 即 家具 对应的节点会被折叠
+   * field 级别: { type: true } : 即 所有 type 对应的维值都会被折叠
+   * @description 优先级 `collapseFields` > `expandDepth` > `collapseAll`
+   */
+  collapseFields?: Record<string, boolean> | null;
+
+  /**
+   * 列头节点默认展开到第几层 (从 0 开始, grid-tree 模式生效)
+   * @description 优先级 `collapseFields` > `expandDepth` > `collapseAll`
+   */
+  expandDepth?: number | null;
 }
 
 export interface CornerCellStyle extends CellTextWordWrapStyle {}

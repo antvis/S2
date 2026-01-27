@@ -47,6 +47,10 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
+  public isHierarchyGridTreeColType(): boolean {
+    return false;
+  }
+
   /**
    * Scroll Freeze Row Header
    */

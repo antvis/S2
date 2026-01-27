@@ -441,7 +441,13 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public getCellData(params: GetCellDataParams): ViewMetaData | undefined {
-    const { query = {}, rowNode, isTotals = false, totalStatus } = params || {};
+    const {
+      query = {},
+      rowNode,
+      colNode,
+      isTotals = false,
+      totalStatus,
+    } = params || {};
 
     const { rows: originRows, columns } = this.fields;
     let rows = originRows;
@@ -490,9 +496,15 @@ export class PivotDataSet extends BaseDataSet {
 
     // grid-tree 模式下折叠的节点，使用小计聚合逻辑计算数据
     // 折叠节点没有原始数据，需要聚合其子节点的数据
-    const isGridTree = this.spreadsheet?.isHierarchyGridTreeType();
+    const isRowGridTree = this.spreadsheet?.isHierarchyGridTreeType();
+    const isColGridTree = this.spreadsheet?.isHierarchyGridTreeColType();
 
-    if (isGridTree && rowNode?.isCollapsed) {
+    if (isRowGridTree && rowNode?.isCollapsed) {
+      return this.getTotalValue(query, totalStatus);
+    }
+
+    // column grid-tree 模式下折叠的列节点，使用小计聚合逻辑
+    if (isColGridTree && colNode?.isCollapsed) {
       return this.getTotalValue(query, totalStatus);
     }
   }

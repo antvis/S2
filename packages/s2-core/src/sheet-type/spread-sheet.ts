@@ -117,6 +117,8 @@ export abstract class SpreadSheet extends EE {
 
   public abstract isHierarchyGridTreeType(): boolean;
 
+  public abstract isHierarchyGridTreeColType(): boolean;
+
   public abstract isFrozenRowHeader(): boolean;
 
   public abstract isValueInCols(): boolean;

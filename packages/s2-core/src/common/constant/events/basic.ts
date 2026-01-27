@@ -34,6 +34,12 @@ export enum S2Event {
   COL_CELL_HIDDEN = 'col-cell:hidden',
   COL_CELL_RENDER = 'col-cell:render',
   COL_CELL_SELECTED = 'col-cell:selected',
+  COL_CELL_COLLAPSED = 'col-cell:collapsed',
+  COL_CELL_ALL_COLLAPSED = 'col-cell:all-collapsed',
+
+  // 列头内部通信 event
+  COL_CELL_COLLAPSED__PRIVATE = 'col-cell:collapsed__private',
+  COL_CELL_ALL_COLLAPSED__PRIVATE = 'col-cell:all-collapsed__private',
 
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',
