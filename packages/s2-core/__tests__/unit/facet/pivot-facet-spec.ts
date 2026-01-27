@@ -73,6 +73,7 @@ jest.mock('@/sheet-type', () => {
         emit: jest.fn(),
         isHierarchyTreeType: jest.fn(),
         isHierarchyGridTreeType: jest.fn(),
+        isHierarchyGridTreeColType: jest.fn().mockReturnValue(false),
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),
           getColLeafNodes: jest.fn().mockReturnValue([]),
