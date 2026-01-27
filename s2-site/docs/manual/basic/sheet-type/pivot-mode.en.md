@@ -206,6 +206,22 @@ const s2Options = {
 
 <Playground path='/basic/pivot/demo/grid-tree.ts' rid='pivot-grid-tree' height='300'></playground>
 
+#### Column Grid Tree Mode
+
+Similar to the grid tree mode of row headers, each dimension level of the column header has an independent row while supporting expansion and collapse.
+
+```ts
+const s2Options = {
+  columnHierarchyType: 'grid-tree',
+  style: {
+    colCell: {
+      // Default expand level (starts from 0)
+      expandDepth: 0,
+    },
+  },
+}
+```
+
 ### Data Summarization
 
 It supports pivot capabilities for [subtotals and grand totals](/en/manual/basic/totals).
