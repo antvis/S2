@@ -1,4 +1,5 @@
 import { DisplayObjectConfig, Path } from '@antv/g';
+import flru, { flruCache } from 'flru';
 import type { BaseCell } from '../cell';
 import { CellClipBox } from '../common/interface';
 import { CustomRendererConfig } from '../common/interface/renderer';
@@ -6,7 +7,7 @@ import { SimpleBBox } from '../engine';
 import { getPreparedText } from '../utils/cell/customRenderer';
 
 export abstract class BaseRenderer {
-  static mediaCache = new Map<string, HTMLElement | null>();
+  static mediaCache: flruCache<HTMLElement | null> = flru(200);
 
   abstract prepare(
     renderer: CustomRendererConfig,
