@@ -25,7 +25,7 @@ const useS2Event = (
   emitName: keyof BaseSheetInitEmits,
 ) => {
   const handler = (...params: any[]) => {
-    // @ts-ignore
+    // @ts-expect-error
     emit(emitName, ...params);
   };
 
