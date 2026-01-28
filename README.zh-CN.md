@@ -150,6 +150,10 @@ S2 非常需要你的共建，请阅读 [贡献指南](https://s2.antv.antgroup.
 
 ![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=antvis/S2&type=date&legend=top-left)](https://www.star-history.com/#antvis/S2&type=date&legend=top-left)
+
 ## 📄 License
 
 MIT@[AntV](https://github.com/antvis)
