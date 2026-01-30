@@ -548,6 +548,7 @@ describe('Interaction Event Controller Tests', () => {
 
     window.dispatchEvent(new Event('scroll'));
 
+    // throttle defaults to leading: true, so hideTooltip is called immediately
     expect(spreadsheet.hideTooltip).toHaveBeenCalled();
   });
 
