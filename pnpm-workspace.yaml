@@ -6,12 +6,9 @@ ignoredBuiltDependencies:
   - '@parcel/watcher'
   - '@swc/core'
   - core-js
-  - core-js-pure
   - electron
   - esbuild
   - fsevents
-  - protobufjs
-  - vue-demi
 
 onlyBuiltDependencies:
   - canvas
