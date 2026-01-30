@@ -126,6 +126,9 @@ export class EventController {
     this.addDomEventListener(window, OriginEventType.POINTER_MOVE, (event) => {
       this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
     });
+    this.addDomEventListener(window, OriginEventType.SCROLL, () => {
+      this.spreadsheet.hideTooltip();
+    });
   }
 
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
