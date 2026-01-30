@@ -127,6 +127,40 @@ describe('Sort Action Test', () => {
         ),
       ).toEqual(['3', 2, '-', undefined]);
 
+      // 测试 null 值排序，升序时 null 在前，降序时 null 在后
+      const dataNullAsc = createCellData([null, 2, '3', 0]);
+
+      expect(
+        unwrapCellData(sortAction(dataNullAsc, 'ASC', 'a') as CellData[]),
+      ).toEqual([null, 0, 2, '3']);
+
+      const dataNullDesc = createCellData([null, 2, '3', 0]);
+
+      expect(
+        unwrapCellData(sortAction(dataNullDesc, 'DESC', 'a') as CellData[]),
+      ).toEqual(['3', 2, 0, null]);
+
+      // 测试同时包含多个 null 值的情况（issue #3306 的场景）
+      const dataMultiNull = createCellData([null, null, 0, 9, 0, -1]);
+      const resultAsc = unwrapCellData(
+        sortAction(dataMultiNull, 'ASC', 'a') as CellData[],
+      );
+
+      // 升序时 null 值应该在最前面
+      expect(resultAsc[0]).toBeNull();
+      expect(resultAsc[1]).toBeNull();
+      expect(resultAsc.slice(2)).toEqual([-1, 0, 0, 9]);
+
+      const dataMultiNullDesc = createCellData([null, null, 0, 9, 0, -1]);
+      const resultDesc = unwrapCellData(
+        sortAction(dataMultiNullDesc, 'DESC', 'a') as CellData[],
+      );
+
+      // 降序时 null 值应该在最后面
+      expect(resultDesc[4]).toBeNull();
+      expect(resultDesc[5]).toBeNull();
+      expect(resultDesc.slice(0, 4)).toEqual([9, 0, 0, -1]);
+
       const data6 = createCellData(['', 2, '3']);
 
       expect(

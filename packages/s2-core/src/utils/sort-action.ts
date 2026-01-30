@@ -55,7 +55,6 @@ export const sortAction = (
   key?: string,
 ) => {
   const sort = isAscSort(sortMethod!) ? 1 : -1;
-  const specialValues = ['-', undefined];
 
   return list?.sort((pre, next) => {
     let a = pre as string | number;
@@ -64,16 +63,25 @@ export const sortAction = (
     if (key) {
       a = (pre as CellData).getValueByField(key) as string | number;
       b = (next as CellData).getValueByField(key) as string | number;
-      if (canConvertToNumber(a) && canConvertToNumber(b)) {
-        return (Number(a) - Number(b)) * sort;
+
+      const aIsSpecial = isNil(a) || a === '-';
+      const bIsSpecial = isNil(b) || b === '-';
+
+      // 处理特殊值（null, undefined, '-'）：升序时在前，降序时在后
+      if (aIsSpecial && bIsSpecial) {
+        return 0;
       }
 
-      if (a && specialValues?.includes(a?.toString())) {
+      if (aIsSpecial) {
         return -sort;
       }
 
-      if (Number(a) && specialValues?.includes(b?.toString())) {
+      if (bIsSpecial) {
         return sort;
+      }
+
+      if (canConvertToNumber(a) && canConvertToNumber(b)) {
+        return (Number(a) - Number(b)) * sort;
       }
     }
 
