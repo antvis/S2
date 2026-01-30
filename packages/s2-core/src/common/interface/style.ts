@@ -131,6 +131,18 @@ export interface S2Style {
   layoutWidthType?: `${LayoutWidthType}`;
 
   /**
+   * 紧凑模式下的额外宽度，用于在紧凑布局计算的宽度基础上增加额外的宽度
+   * @description 仅在 layoutWidthType 为 'compact' 时生效
+   */
+  compactExtraWidth?: number;
+
+  /**
+   * 紧凑模式下的最小单元格宽度，用于保证单元格不会过窄
+   * @description 仅在 layoutWidthType 为 'compact' 时生效
+   */
+  compactMinWidth?: number;
+
+  /**
    * 数值单元格配置
    */
   dataCell?: DataCellStyle | null;

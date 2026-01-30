@@ -536,12 +536,12 @@ export class TableFacet extends FrozenFacet {
     const { theme, dataSet } = this.spreadsheet;
     const { bolderText: colCellTextStyle } = theme.colCell!;
     const { text: dataCellTextStyle, cell: cellStyle } = theme.dataCell!;
-    const data = dataSet.getDisplayDataSet();
+    const displayData = dataSet.getDisplayDataSet();
     const formatter = dataSet.getFieldFormatter(colNode.field);
 
     // 采样前 50，找出表身最长的数据
     const maxLabel = maxBy(
-      data
+      displayData
         ?.slice(0, LAYOUT_SAMPLE_COUNT)
         .map(
           (data) =>
@@ -566,7 +566,16 @@ export class TableFacet extends FrozenFacet {
       this.measureTextWidth(colNode.value, colCellTextStyle) +
       getOccupiedWidthForTableCol(this.spreadsheet, colNode, theme.colCell!);
 
-    return round(Math.max(colHeaderNodeWidth, maxLabelWidth));
+    const { compactExtraWidth = 0, compactMinWidth } =
+      this.spreadsheet.options.style || {};
+
+    const calculatedWidth = round(
+      Math.max(colHeaderNodeWidth, maxLabelWidth) + compactExtraWidth,
+    );
+
+    return isNumber(compactMinWidth)
+      ? Math.max(calculatedWidth, compactMinWidth)
+      : calculatedWidth;
   }
 
   private getColLeafNodesWidth(

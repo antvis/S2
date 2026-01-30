@@ -127,13 +127,21 @@ export class PivotChartFacet extends PivotFacet {
   }
 
   protected override getCompactGridColNodeWidth(colNode: Node) {
-    const { dataCell } = this.spreadsheet.options.style!;
+    const {
+      dataCell,
+      compactExtraWidth = 0,
+      compactMinWidth,
+    } = this.spreadsheet.options.style!;
     const dataCellWidth = getCellWidth(
       dataCell!,
       this.getColLeafNodeRelatedCount(colNode),
     );
 
-    return round(dataCellWidth);
+    const calculatedWidth = round(dataCellWidth + compactExtraWidth);
+
+    return isNumber(compactMinWidth)
+      ? Math.max(calculatedWidth, compactMinWidth)
+      : calculatedWidth;
   }
 
   protected override getAdaptGridColWidth(
