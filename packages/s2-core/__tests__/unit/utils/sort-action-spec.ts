@@ -64,7 +64,7 @@ describe('Sort Action Test', () => {
     });
 
     test('sort action with object arr', () => {
-      function createCellData(list: (number | string | undefined)[]) {
+      function createCellData(list: (number | string | undefined | null)[]) {
         return list.map((a) => new CellData({ a }, 'a'));
       }
 
