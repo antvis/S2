@@ -225,7 +225,7 @@ export interface Totals {
  * 空值排序位置
  * - 'first': 空值排在最前
  * - 'last': 空值排在最后
- * - 'auto': 与 'last' 相同，空值始终在后
+ * - 'auto': 升序时空值在前，降序时空值在后
  */
 export type NullsPlacement = 'first' | 'last' | 'auto';
 
@@ -252,7 +252,7 @@ export interface Sort {
    * 空值排序位置
    * - 'first': 空值永远排在最前
    * - 'last': 空值永远排在最后（默认值）
-   * - 'auto': 与 'last' 相同，空值始终在后
+   * - 'auto': 升序时空值在前，降序时空值在后
    */
   nullsPlacement?: NullsPlacement;
 }

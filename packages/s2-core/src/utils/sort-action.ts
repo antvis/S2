@@ -62,17 +62,23 @@ export const sortAction = (
   nullsPlacement: NullsPlacement = 'last',
 ) => {
   const sort = isAscSort(sortMethod!) ? 1 : -1;
+  const isAsc = isAscSort(sortMethod!);
 
   // 计算空值的排序方向
   // 'first': 空值始终在前 (返回 -1)
   // 'last': 空值始终在后 (返回 1)
-  // 'auto': 与 'last' 行为相同，升降序都在后
+  // 'auto': 升序时空值在前，降序时空值在后
   const getNullsSortDirection = () => {
     if (nullsPlacement === 'first') {
       return -1;
     }
 
-    // 'last' 和 'auto' 都是空值在最后
+    if (nullsPlacement === 'auto') {
+      // auto: 升序 → 空值在前(-1)，降序 → 空值在后(1)
+      return isAsc ? -1 : 1;
+    }
+
+    // 'last': 空值始终在最后
     return 1;
   };
 

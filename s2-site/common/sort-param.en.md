@@ -26,7 +26,7 @@ Configuration for the position of null values (`null`, `undefined`, `'-'`, empty
 | --- | --- |
 | `'first'` | Null values always at the beginning |
 | `'last'` | Null values always at the end (**default**, industry best practice) |
-| `'auto'` | Same as `'last'`, null values are always at the end |
+| `'auto'` | Ascending: null values at the beginning; Descending: null values at the end |
 
 :::info{title="Note"}
 

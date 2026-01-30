@@ -229,7 +229,7 @@ describe('Sort Action Test', () => {
         ),
       ).toEqual([null, undefined, '3', 2, 0]);
 
-      // nullsPlacement='auto' - 与 'last' 行为相同
+      // nullsPlacement='auto' - 升序时空值在前，降序时空值在后
       expect(
         unwrapCellData(
           sortAction(
@@ -239,7 +239,7 @@ describe('Sort Action Test', () => {
             'auto',
           ) as CellData[],
         ),
-      ).toEqual([0, 2, '3', null, undefined]);
+      ).toEqual([null, undefined, 0, 2, '3']);
       expect(
         unwrapCellData(
           sortAction(
