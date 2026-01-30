@@ -23,6 +23,7 @@ S2 支持对表格数据进行多种形式的排序，如行/列头维值根据�
 | query | 筛选条件，缩小排序范围 如 ：`{ city: '成都' }` | `object` | - |  |
 | type | 组内排序用来显示 icon（透视表适用） | `string` | - |  |
 | sortFunc | 自定义排序的 function | `(v: SortFuncParam) => Array<string>` | - |  |
+| nullsPlacement | 空值排序位置 | `'first'` \| `'last'` \| `'auto'` | `'last'` |  |
 
 ```ts
 import { EXTRA_FIELD } from "@antv/s2";
