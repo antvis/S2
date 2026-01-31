@@ -63,12 +63,17 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
   const heightRange = yEnd - yStart;
   const intervalPadding = miniChart?.bar?.intervalPadding!;
 
-  const intervalX =
-    type === MiniChartType.Bar
-      ? (xEnd - xStart - (measures.length - 1) * intervalPadding) /
-          measures.length +
-        intervalPadding
-      : (xEnd - xStart) / (measures.length - 1) || 0;
+  let intervalX: number;
+
+  if (type === MiniChartType.Bar) {
+    intervalX =
+      (xEnd - xStart - (measures.length - 1) * intervalPadding) /
+        measures.length +
+      intervalPadding;
+  } else {
+    intervalX =
+      measures.length > 1 ? (xEnd - xStart) / (measures.length - 1) : 0;
+  }
 
   const box: number[][] = [];
   const points = map(
