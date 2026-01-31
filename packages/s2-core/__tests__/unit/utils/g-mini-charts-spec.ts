@@ -12,6 +12,7 @@ import {
   drawBullet,
   drawInterval,
   drawLine,
+  filterValidChartData,
   getBulletRangeColor,
   scale,
   transformRatioToPercent,
@@ -413,6 +414,192 @@ describe('Render Chart Shape Tests', () => {
     const text = cell.children.find((child) => child.style.text);
 
     expect(text.attr('text')).toEqual('10.00%');
+  });
+});
+
+describe('#filterValidChartData() Tests', () => {
+  test('should filter out NaN values from chart data', () => {
+    const chartData = {
+      type: MiniChartType.Line as const,
+      data: [
+        { year: '2017', value: NaN },
+        { year: '2018', value: NaN },
+        { year: '2019', value: NaN },
+        { year: '2020', value: NaN },
+        { year: '2021', value: NaN },
+        { year: '2022', value: 168 },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    const result = filterValidChartData(chartData);
+
+    expect(result.data).toHaveLength(1);
+    expect(result.data[0]).toEqual({ year: '2022', value: 168 });
+  });
+
+  test('should keep all valid values', () => {
+    const chartData = {
+      type: MiniChartType.Line as const,
+      data: [
+        { year: '2017', value: 100 },
+        { year: '2018', value: 200 },
+        { year: '2019', value: 300 },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    const result = filterValidChartData(chartData);
+
+    expect(result.data).toHaveLength(3);
+  });
+
+  test('should return empty data when all values are NaN', () => {
+    const chartData = {
+      type: MiniChartType.Line as const,
+      data: [
+        { year: '2017', value: NaN },
+        { year: '2018', value: NaN },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    const result = filterValidChartData(chartData);
+
+    expect(result.data).toHaveLength(0);
+  });
+
+  test('should handle mixed valid and NaN values', () => {
+    const chartData = {
+      type: MiniChartType.Line as const,
+      data: [
+        { year: '2017', value: NaN },
+        { year: '2018', value: 100 },
+        { year: '2019', value: NaN },
+        { year: '2020', value: 200 },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    const result = filterValidChartData(chartData);
+
+    expect(result.data).toHaveLength(2);
+    expect(result.data[0]).toEqual({ year: '2018', value: 100 });
+    expect(result.data[1]).toEqual({ year: '2020', value: 200 });
+  });
+});
+
+describe('#drawLine() with NaN values Tests', () => {
+  const s2Options: S2Options = {
+    width: 600,
+    height: 400,
+  };
+
+  let s2: SpreadSheet;
+  let cell: DataCell;
+
+  beforeEach(async () => {
+    s2 = createPivotSheet(s2Options);
+    await s2.render();
+
+    cell = s2.facet.getDataCells()[0];
+  });
+
+  test('should render only point (no polyline) when only one valid value exists', () => {
+    const chartData = {
+      type: MiniChartType.Line as const,
+      data: [
+        { year: '2017', value: NaN },
+        { year: '2018', value: NaN },
+        { year: '2019', value: NaN },
+        { year: '2020', value: NaN },
+        { year: '2021', value: NaN },
+        { year: '2022', value: 168 },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    drawLine(chartData, cell);
+
+    // 只有一个有效数据点时，不应该绘制折线
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'polyline'),
+    ).toHaveLength(0);
+
+    // 应该只绘制一个点
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'circle'),
+    ).toHaveLength(1);
+  });
+
+  test('should render polyline and points when multiple valid values exist', () => {
+    const chartData = {
+      type: MiniChartType.Line as const,
+      data: [
+        { year: '2017', value: NaN },
+        { year: '2018', value: 100 },
+        { year: '2019', value: NaN },
+        { year: '2020', value: 200 },
+        { year: '2021', value: NaN },
+        { year: '2022', value: 300 },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    drawLine(chartData, cell);
+
+    // 多个有效数据点时，应该绘制折线
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'polyline'),
+    ).toHaveLength(1);
+
+    // 应该绘制3个点
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'circle'),
+    ).toHaveLength(3);
+  });
+
+  test('should not render anything when all values are NaN', () => {
+    const chartData = {
+      type: MiniChartType.Line as const,
+      data: [
+        { year: '2017', value: NaN },
+        { year: '2018', value: NaN },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    drawLine(chartData, cell);
+
+    // 所有数据都是 NaN 时，不应该绘制任何内容
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'polyline'),
+    ).toHaveLength(0);
+
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'circle'),
+    ).toHaveLength(0);
   });
 });
 

@@ -63,12 +63,17 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
   const heightRange = yEnd - yStart;
   const intervalPadding = miniChart?.bar?.intervalPadding!;
 
-  const intervalX =
-    type === MiniChartType.Bar
-      ? (xEnd - xStart - (measures.length - 1) * intervalPadding) /
-          measures.length +
-        intervalPadding
-      : (xEnd - xStart) / (measures.length - 1) || 0;
+  let intervalX: number;
+
+  if (type === MiniChartType.Bar) {
+    intervalX =
+      (xEnd - xStart - (measures.length - 1) * intervalPadding) /
+        measures.length +
+      intervalPadding;
+  } else {
+    intervalX =
+      measures.length > 1 ? (xEnd - xStart) / (measures.length - 1) : 0;
+  }
 
   const box: number[][] = [];
   const points = map(
@@ -138,6 +143,25 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
 // ========================= mini 折线相关 ==============================
 
 /**
+ *  过滤掉 NaN 值，返回有效的图表数据
+ */
+export const filterValidChartData = (
+  chartData: BaseChartData,
+): BaseChartData => {
+  const { data, encode } = chartData;
+  const validData = data.filter((item) => {
+    const yValue = item?.[encode!.y];
+
+    return typeof yValue === 'number' && !Number.isNaN(yValue);
+  });
+
+  return {
+    ...chartData,
+    data: validData,
+  };
+};
+
+/**
  *  绘制单元格内的 mini 折线图
  */
 export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
@@ -145,18 +169,30 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
     return;
   }
 
+  // 过滤掉 NaN 值，只保留有效数据点
+  const validChartData = filterValidChartData(chartData);
+
+  // 如果过滤后没有有效数据，不绘制任何内容
+  if (isEmpty(validChartData.data)) {
+    return;
+  }
+
   const dataCellStyle = cell.getStyle(CellType.DATA_CELL) as DefaultCellTheme;
   const { miniChart } = dataCellStyle;
   const { point, linkLine } = miniChart?.line!;
 
-  const { points } = scale(chartData, cell);
+  const { points } = scale(validChartData, cell);
 
-  renderPolyline(cell, {
-    points,
-    stroke: linkLine?.fill,
-    lineWidth: linkLine?.size,
-    opacity: linkLine?.opacity,
-  });
+  // 当只有一个有效数据点时，只绘制一个点，而不是线
+  // 这是 BI / 数据可视化领域的通用共识
+  if (points.length > 1) {
+    renderPolyline(cell, {
+      points,
+      stroke: linkLine?.fill,
+      lineWidth: linkLine?.size,
+      opacity: linkLine?.opacity,
+    });
+  }
 
   for (let i = 0; i < points.length; i++) {
     renderCircle(cell, {
