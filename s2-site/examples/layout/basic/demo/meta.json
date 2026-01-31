@@ -27,6 +27,15 @@
         "en": "ColAdaptive"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/cEkDC%26g%24xj/df31b66d-4a76-4e69-be5a-f467af2d337d.png"
+    },
+    {
+      "filename": "compact-width.tsx",
+      "title": {
+        "zh": "紧凑模式额外宽度与最小宽度",
+        "en": "Compact Mode Extra Width & Min Width"
+      },
+      "new": true,
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NN_lTpAqhQkAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

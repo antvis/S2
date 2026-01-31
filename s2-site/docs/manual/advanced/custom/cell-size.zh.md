@@ -29,6 +29,26 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/%24peMHWxZX/d20c9c80-d8d0-4fae-8d88-d31fe83c8072.png" alt="preview" width="600"/>
 
+## 调整紧凑布局宽高
+
+`layoutWidthType: 'compact'` (紧凑模式) 下，表格宽度是根据内容自适应的。如果内容过短，可能会导致单元格因为太窄而产生的视觉效果不佳，或者太贴合内容导致没有余量。
+
+此时可以通过 `compactExtraWidth` (额外宽度) 和 `compactMinWidth` (最小宽度) 来进行调整。
+
+```ts
+const s2Options = {
+  style: {
+    layoutWidthType: 'compact',
+    // 给紧凑模式下计算出的宽度额外增加 12px
+    compactExtraWidth: 12, 
+    // 保证紧凑模式下单元格宽度至少为 60px
+    compactMinWidth: 60,
+  },
+}
+```
+
+<Playground path='layout/basic/demo/compact-width.tsx' rid='basic-compact' height='400'></Playground>
+
 ## 调整数值单元格宽高
 
 :::warning{title="注意"}
