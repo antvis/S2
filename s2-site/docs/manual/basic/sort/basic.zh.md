@@ -236,6 +236,27 @@ const s2DataConfig = {
 
 📊 查看 demo [自定义排序](/examples/analysis/sort#custom-sort-func)。
 
+### 5. 空值位置配置（nullsPlacement）
+
+支持配置空值（`null`、`undefined`、`'-'`、空字符串）在排序中的位置。
+
+- `'first'`: 空值永远排在最前
+- `'last'`: 空值永远排在最后（**默认值**）
+- `'auto'`: 升序时空值在前，降序时空值在后
+
+支持通过 `sortFieldId: '*'` 配置通配符，作为全局默认策略，**通配符配置优先级低于特定字段配置**。
+
+```ts
+const s2DataConfig = {
+  sortParams: [
+    // 1. 全局配置：所有字段空值默认在前
+    { sortFieldId: '*', nullsPlacement: 'first' },
+     // 2. 单独配置：city 字段空值在后（优先级更高）
+    { sortFieldId: 'city', nullsPlacement: 'last' },
+  ]
+}
+```
+
 ## 优先级
 
 1. `sortParams` 里的条件优先级高于原始数据

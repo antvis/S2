@@ -92,8 +92,8 @@ export const sortAction = (
       a = (pre as CellData).getValueByField(key) as string | number;
       b = (next as CellData).getValueByField(key) as string | number;
 
-      const aIsSpecial = isNil(a) || a === '-';
-      const bIsSpecial = isNil(b) || b === '-';
+      const aIsSpecial = isNil(a) || a === '-' || a === '';
+      const bIsSpecial = isNil(b) || b === '-' || b === '';
 
       // 处理特殊值（null, undefined, '-'）
       if (aIsSpecial && bIsSpecial) {
@@ -268,7 +268,7 @@ const sortByMethod = (params: SortActionParams): string[] => {
 
 const processSort = (params: SortActionParams): string[] => {
   const { sortParam, originValues = [], measureValues, dataSet } = params;
-  const { sortFunc, sortMethod, sortBy } = sortParam!;
+  const { sortFunc, sortMethod, sortBy: sortList } = sortParam!;
 
   let result = originValues;
   const sortActionParams = {
@@ -280,9 +280,9 @@ const processSort = (params: SortActionParams): string[] => {
 
   if (sortFunc) {
     result = sortByFunc(sortActionParams);
-  } else if (sortBy) {
+  } else if (sortList) {
     // 自定义列表
-    result = sortByCustom({ sortByValues: sortBy, originValues });
+    result = sortByCustom({ sortByValues: sortList, originValues });
   } else if (isAscSort(sortMethod!) || isDescSort(sortMethod!)) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);

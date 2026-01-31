@@ -24,6 +24,7 @@ describe('Group Sort When Have Same Child Measure', () => {
         sortFieldId: 'type',
         sortByMeasure: 'cost',
         sortMethod: 'asc',
+        nullsPlacement: 'first',
       },
     ],
   });

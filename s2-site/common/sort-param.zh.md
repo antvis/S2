@@ -46,6 +46,21 @@ const s2DataConfig = {
     },
   ],
 };
+
+const globalNullsConfig = {
+  sortParams: [
+    // 使用通配符 * 配置全局空值策略，所有字段默认空值在前
+    {
+      sortFieldId: '*',
+      nullsPlacement: 'first',
+    },
+    // 特殊字段覆盖：price 字段空值在后
+    {
+      sortFieldId: 'price',
+      nullsPlacement: 'last',
+    },
+  ],
+};
 ```
 
 #### SortFuncParam
