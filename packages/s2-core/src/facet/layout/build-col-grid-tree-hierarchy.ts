@@ -17,6 +17,16 @@ import { TotalClass } from '../layout/total-class';
 import { TotalMeasure } from '../layout/total-measure';
 
 /**
+ * 检查下一层是否为指标层（EXTRA_FIELD）
+ * 用于判断是否需要"穿透"折叠状态继续渲染指标节点
+ */
+const isNextLevelIndicator = (fields: string[], level: number): boolean => {
+  const nextField = fields[level + 1];
+
+  return nextField === EXTRA_FIELD;
+};
+
+/**
  * 计算列头节点是否折叠
  * 注意：真正的叶子节点（没有子节点）不应该有折叠状态
  */
@@ -179,6 +189,11 @@ const generateGridTreeColHeaderNodes = (params: HeaderNodesParams) => {
         isLeaf: processed.isLeaf,
       });
 
+      // 检查下一层是否为指标层（用于指标穿透）
+      const nextLevelIsIndicator = isNextLevelIndicator(fields, level);
+      // 如果折叠但下一层是指标，需要"穿透"继续生成指标节点
+      const shouldPenetrateForIndicator = isCollapsed && nextLevelIsIndicator;
+
       const node = new Node({
         id: nodeId,
         value: processed.value,
@@ -194,7 +209,10 @@ const generateGridTreeColHeaderNodes = (params: HeaderNodesParams) => {
         hierarchy,
         query: processed.nodeQuery,
         spreadsheet,
-        isLeaf: processed.isLeaf || isCollapsed,
+        // 如果需要指标穿透，则不应标记为叶子节点
+        isLeaf: shouldPenetrateForIndicator
+          ? false
+          : processed.isLeaf || isCollapsed,
       });
 
       const expandCurrentNode = layoutHierarchy(
@@ -219,7 +237,11 @@ const generateGridTreeColHeaderNodes = (params: HeaderNodesParams) => {
       }
 
       // grid-tree 模式下，折叠的节点也是叶子节点
-      const isLeafNode = processed.isLeaf || isCollapsed || !expandCurrentNode;
+      // 但如果需要指标穿透，则继续递归生成指标节点
+      const isLeafNode =
+        processed.isLeaf ||
+        (isCollapsed && !shouldPenetrateForIndicator) ||
+        !expandCurrentNode;
 
       if (isLeafNode) {
         node.isLeaf = true;

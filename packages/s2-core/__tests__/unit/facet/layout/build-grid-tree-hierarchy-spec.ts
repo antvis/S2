@@ -358,4 +358,318 @@ describe('build grid-tree hierarchy', () => {
 
     s2.destroy();
   });
+
+  describe('indicator penetration in grid-tree mode', () => {
+    // 指标在行头时的测试数据配置
+    const dataCfgWithValueInRows: S2DataConfig = {
+      fields: {
+        rows: ['province', 'city'],
+        columns: ['type'],
+        values: ['number', 'price'],
+        valueInCols: false, // 指标放在行头
+      },
+      meta: [
+        { field: 'province', name: '省份' },
+        { field: 'city', name: '城市' },
+        { field: 'type', name: '类别' },
+        { field: 'number', name: '数量' },
+        { field: 'price', name: '价格' },
+      ],
+      data: [
+        {
+          province: '浙江省',
+          city: '杭州市',
+          type: '家具',
+          number: 7789,
+          price: 100,
+        },
+        {
+          province: '浙江省',
+          city: '绍兴市',
+          type: '家具',
+          number: 2367,
+          price: 80,
+        },
+        {
+          province: '四川省',
+          city: '成都市',
+          type: '家具',
+          number: 1723,
+          price: 90,
+        },
+        {
+          province: '四川省',
+          city: '绵阳市',
+          type: '家具',
+          number: 1822,
+          price: 70,
+        },
+      ],
+    };
+
+    test('should show indicator nodes when parent dimension is collapsed (row header)', async () => {
+      const s2Options: S2Options = {
+        width: 600,
+        height: 400,
+        hierarchyType: 'grid-tree',
+        style: {
+          rowCell: {
+            collapseFields: {
+              'root[&]浙江省': true, // 折叠浙江省
+            },
+          },
+        },
+      };
+
+      const s2 = new PivotSheet(
+        getContainer(),
+        dataCfgWithValueInRows,
+        s2Options,
+      );
+
+      await s2.render();
+
+      const rowNodes = s2.facet.getRowNodes();
+      const rowLeafNodes = s2.facet.getRowLeafNodes();
+
+      // 浙江省节点应该是折叠的
+      const zhejiangNode = rowNodes.find((node) => node.id === 'root[&]浙江省');
+
+      expect(zhejiangNode?.isCollapsed).toBe(true);
+
+      // 指标节点（number、price）应该仍然显示
+      // 浙江省下的指标节点应该作为叶子节点存在
+      const zhejiangIndicatorNodes = rowLeafNodes.filter(
+        (node) => node.field === EXTRA_FIELD && node.id.includes('浙江省'),
+      );
+
+      // 浙江省折叠后，应该有2个指标节点（number和price）
+      expect(zhejiangIndicatorNodes.length).toBe(2);
+
+      // 验证指标节点的值是正确的
+      const indicatorValues = zhejiangIndicatorNodes.map((node) => node.value);
+
+      expect(indicatorValues).toContain('number');
+      expect(indicatorValues).toContain('price');
+
+      s2.destroy();
+    });
+
+    test('should show indicator nodes when collapseAll is true (row header)', async () => {
+      const s2Options: S2Options = {
+        width: 600,
+        height: 400,
+        hierarchyType: 'grid-tree',
+        style: {
+          rowCell: {
+            collapseAll: true, // 全部折叠
+          },
+        },
+      };
+
+      const s2 = new PivotSheet(
+        getContainer(),
+        dataCfgWithValueInRows,
+        s2Options,
+      );
+
+      await s2.render();
+
+      const rowNodes = s2.facet.getRowNodes();
+      const rowLeafNodes = s2.facet.getRowLeafNodes();
+
+      // 省份节点应该都是折叠的
+      const provinceNodes = rowNodes.filter(
+        (node) => node.field === 'province',
+      );
+
+      expect(provinceNodes.every((node) => node.isCollapsed)).toBe(true);
+
+      // 但指标节点仍然应该显示
+      // 每个省份应该有2个指标节点（浙江省和四川省各2个）
+      const indicatorNodes = rowLeafNodes.filter(
+        (node) => node.field === EXTRA_FIELD,
+      );
+
+      expect(indicatorNodes.length).toBe(4); // 2省份 x 2指标
+
+      s2.destroy();
+    });
+
+    test('should show indicator nodes when expandDepth is 0 (row header)', async () => {
+      const s2Options: S2Options = {
+        width: 600,
+        height: 400,
+        hierarchyType: 'grid-tree',
+        style: {
+          rowCell: {
+            expandDepth: 0, // 只展开第0层
+          },
+        },
+      };
+
+      const s2 = new PivotSheet(
+        getContainer(),
+        dataCfgWithValueInRows,
+        s2Options,
+      );
+
+      await s2.render();
+
+      const rowNodes = s2.facet.getRowNodes();
+      const rowLeafNodes = s2.facet.getRowLeafNodes();
+
+      // 省份节点应该都是折叠的
+      const provinceNodes = rowNodes.filter(
+        (node) => node.field === 'province',
+      );
+
+      expect(provinceNodes.every((node) => node.isCollapsed)).toBe(true);
+
+      // 指标节点仍然应该显示
+      const indicatorNodes = rowLeafNodes.filter(
+        (node) => node.field === EXTRA_FIELD,
+      );
+
+      expect(indicatorNodes.length).toBe(4); // 2省份 x 2指标
+
+      s2.destroy();
+    });
+
+    // 指标在列头时的测试数据配置
+    const dataCfgWithValueInCols: S2DataConfig = {
+      fields: {
+        rows: ['province'],
+        columns: ['type', 'sub_type'],
+        values: ['number', 'price'],
+        valueInCols: true, // 指标放在列头（默认）
+      },
+      meta: [
+        { field: 'province', name: '省份' },
+        { field: 'type', name: '类别' },
+        { field: 'sub_type', name: '子类别' },
+        { field: 'number', name: '数量' },
+        { field: 'price', name: '价格' },
+      ],
+      data: [
+        {
+          province: '浙江省',
+          type: '家具',
+          sub_type: '桌子',
+          number: 7789,
+          price: 100,
+        },
+        {
+          province: '浙江省',
+          type: '家具',
+          sub_type: '沙发',
+          number: 5343,
+          price: 80,
+        },
+        {
+          province: '四川省',
+          type: '家具',
+          sub_type: '桌子',
+          number: 1723,
+          price: 90,
+        },
+        {
+          province: '四川省',
+          type: '家具',
+          sub_type: '沙发',
+          number: 2451,
+          price: 70,
+        },
+      ],
+    };
+
+    test('should show indicator nodes when parent dimension is collapsed (col header)', async () => {
+      const s2Options: S2Options = {
+        width: 800,
+        height: 400,
+        hierarchyType: 'grid-tree',
+        style: {
+          colCell: {
+            collapseFields: {
+              'root[&]家具[&]桌子': true, // 折叠桌子
+            },
+          },
+        },
+      };
+
+      const s2 = new PivotSheet(
+        getContainer(),
+        dataCfgWithValueInCols,
+        s2Options,
+      );
+
+      await s2.render();
+
+      const colNodes = s2.facet.getColNodes();
+      const colLeafNodes = s2.facet.getColLeafNodes();
+
+      // 桌子节点应该是折叠的
+      const deskNode = colNodes.find(
+        (node) => node.id === 'root[&]家具[&]桌子',
+      );
+
+      expect(deskNode?.isCollapsed).toBe(true);
+
+      // 但桌子下的指标节点仍然应该显示
+      const deskIndicatorNodes = colLeafNodes.filter(
+        (node) => node.field === EXTRA_FIELD && node.id.includes('桌子'),
+      );
+
+      // 桌子折叠后，应该有2个指标节点（number和price）
+      expect(deskIndicatorNodes.length).toBe(2);
+
+      // 验证指标节点的值是正确的
+      const indicatorValues = deskIndicatorNodes.map((node) => node.value);
+
+      expect(indicatorValues).toContain('number');
+      expect(indicatorValues).toContain('price');
+
+      s2.destroy();
+    });
+
+    test('should show indicator nodes when collapseAll is true (col header)', async () => {
+      const s2Options: S2Options = {
+        width: 800,
+        height: 400,
+        hierarchyType: 'grid-tree',
+        style: {
+          colCell: {
+            collapseAll: true, // 全部折叠
+          },
+        },
+      };
+
+      const s2 = new PivotSheet(
+        getContainer(),
+        dataCfgWithValueInCols,
+        s2Options,
+      );
+
+      await s2.render();
+
+      const colNodes = s2.facet.getColNodes();
+      const colLeafNodes = s2.facet.getColLeafNodes();
+
+      // 子类别节点应该都是折叠的
+      const subTypeNodes = colNodes.filter((node) => node.field === 'sub_type');
+
+      expect(subTypeNodes.every((node) => node.isCollapsed)).toBe(true);
+
+      // 但指标节点仍然应该显示
+      // 每个子类别应该有2个指标节点
+      const indicatorNodes = colLeafNodes.filter(
+        (node) => node.field === EXTRA_FIELD,
+      );
+
+      // 2子类别 x 2指标 = 4
+      expect(indicatorNodes.length).toBe(4);
+
+      s2.destroy();
+    });
+  });
 });
