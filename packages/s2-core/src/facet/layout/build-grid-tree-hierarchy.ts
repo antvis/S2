@@ -21,6 +21,11 @@ import { TotalMeasure } from '../layout/total-measure';
  * 用于判断是否需要"穿透"折叠状态继续渲染指标节点
  */
 const isNextLevelIndicator = (fields: string[], level: number): boolean => {
+  // Bounds check to prevent accessing out of range index
+  if (level + 1 >= fields.length) {
+    return false;
+  }
+
   const nextField = fields[level + 1];
 
   return nextField === EXTRA_FIELD;
