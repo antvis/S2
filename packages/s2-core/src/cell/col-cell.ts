@@ -456,7 +456,15 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
-    if (!resizeArea || !this.shouldAddVerticalResizeArea()) {
+    if (!resizeArea) {
+      return;
+    }
+
+    if (!this.shouldAddVerticalResizeArea()) {
+      if (this.verticalResizeArea) {
+        this.verticalResizeArea.style.visibility = 'hidden';
+      }
+
       return;
     }
 
@@ -483,6 +491,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       x: offsetX + width - resizeStyle.size!,
       y: offsetY,
       height,
+      visibility: 'visible' as const,
     };
 
     if (this.verticalResizeArea) {
@@ -665,6 +674,6 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
   public setHeaderConfig(headerConfig: ColHeaderConfig) {
     super.setHeaderConfig(headerConfig);
-    // this.drawResizeArea();
+    this.drawResizeArea();
   }
 }

@@ -257,5 +257,11 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     }
   }
 
-  protected clearResizeAreaGroup() {}
+  protected clearResizeAreaGroup(type?: string) {
+    if (this.headerConfig.spreadsheet.options.future?.experimentalReuseCell) {
+      return;
+    }
+
+    super.clearResizeAreaGroup(type);
+  }
 }
