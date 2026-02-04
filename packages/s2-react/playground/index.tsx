@@ -495,19 +495,27 @@ function MainLayout() {
                                     updateOptions({ debug: checked });
                                   }}
                                 />
-                                <Switch
-                                  checkedChildren="树形"
-                                  unCheckedChildren="平铺"
-                                  checked={
-                                    mergedOptions.hierarchyType === 'tree'
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      hierarchyType: checked ? 'tree' : 'grid',
-                                    });
-                                  }}
-                                  disabled={sheetType === 'table'}
-                                />
+                                <Tooltip title="透视表层级结构">
+                                  <Radio.Group
+                                    value={mergedOptions.hierarchyType}
+                                    onChange={(e) => {
+                                      updateOptions({
+                                        hierarchyType: e.target.value,
+                                      });
+                                    }}
+                                    disabled={sheetType === 'table'}
+                                  >
+                                    <Radio.Button value="grid">
+                                      平铺
+                                    </Radio.Button>
+                                    <Radio.Button value="tree">
+                                      树形
+                                    </Radio.Button>
+                                    <Radio.Button value="grid-tree">
+                                      grid-tree
+                                    </Radio.Button>
+                                  </Radio.Group>
+                                </Tooltip>
                                 <Switch
                                   checkedChildren="数值挂列头"
                                   unCheckedChildren="数值挂行头"

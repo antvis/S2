@@ -347,16 +347,18 @@ const setThemeCfg = (cb: any) => {
                 :checked="mergedOptions.debug"
                 @change="(checked) => updateOptions({ debug: checked })"
               />
-              <a-switch
-                checked-children="树形"
-                un-checked-children="平铺"
-                :checked="mergedOptions.hierarchyType === 'tree'"
-                @change="
-                  (checked) =>
-                    updateOptions({ hierarchyType: checked ? 'tree' : 'grid' })
-                "
-                :disabled="sheetType === 'table'"
-              />
+              <a-tooltip title="透视表层级结构">
+                <a-radio-group
+                  :value="mergedOptions.hierarchyType"
+                  @change="
+                    (e) => updateOptions({ hierarchyType: e.target.value })
+                  "
+                >
+                  <a-radio-button value="grid">平铺</a-radio-button>
+                  <a-radio-button value="tree">树形</a-radio-button>
+                  <a-radio-button value="grid-tree">grid-tree</a-radio-button>
+                </a-radio-group>
+              </a-tooltip>
               <a-switch
                 checked-children="数值挂列头"
                 un-checked-children="数值挂行头"
