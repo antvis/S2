@@ -20,7 +20,12 @@ import {
   QueryDataType,
   TOTAL_VALUE,
 } from '../common/constant';
-import type { Fields, SortMethod, SortParam } from '../common/interface';
+import type {
+  Fields,
+  NullsPlacement,
+  SortMethod,
+  SortParam,
+} from '../common/interface';
 import type { PivotDataSet, Query } from '../data-set';
 import type { CellData } from '../data-set/cell-data';
 import type {
@@ -48,14 +53,36 @@ export const isDescSort = (sortMethod: SortMethod) =>
  * @param list - 待排序数组
  * @param sortMethod - 升、降序
  * @param key - 根据key数值排序，如果有key代表根据维度值排序，故按数字排，如果没有按照字典排
+ * @param nullsPlacement - 空值排序位置，默认为 'last'（空值永远在最后）
  */
 export const sortAction = (
   list: (number | string)[] | CellData[],
   sortMethod?: SortMethod,
   key?: string,
+  nullsPlacement: NullsPlacement = 'last',
 ) => {
   const sort = isAscSort(sortMethod!) ? 1 : -1;
-  const specialValues = ['-', undefined];
+  const isAsc = isAscSort(sortMethod!);
+
+  // 计算空值的排序方向
+  // 'first': 空值始终在前 (返回 -1)
+  // 'last': 空值始终在后 (返回 1)
+  // 'auto': 升序时空值在前，降序时空值在后
+  const getNullsSortDirection = () => {
+    if (nullsPlacement === 'first') {
+      return -1;
+    }
+
+    if (nullsPlacement === 'auto') {
+      // auto: 升序 → 空值在前(-1)，降序 → 空值在后(1)
+      return isAsc ? -1 : 1;
+    }
+
+    // 'last': 空值始终在最后
+    return 1;
+  };
+
+  const nullsSortDirection = getNullsSortDirection();
 
   return list?.sort((pre, next) => {
     let a = pre as string | number;
@@ -64,16 +91,25 @@ export const sortAction = (
     if (key) {
       a = (pre as CellData).getValueByField(key) as string | number;
       b = (next as CellData).getValueByField(key) as string | number;
+
+      const aIsSpecial = isNil(a) || a === '-' || a === '';
+      const bIsSpecial = isNil(b) || b === '-' || b === '';
+
+      // 处理特殊值（null, undefined, '-'）
+      if (aIsSpecial && bIsSpecial) {
+        return 0;
+      }
+
+      if (aIsSpecial) {
+        return nullsSortDirection;
+      }
+
+      if (bIsSpecial) {
+        return -nullsSortDirection;
+      }
+
       if (canConvertToNumber(a) && canConvertToNumber(b)) {
         return (Number(a) - Number(b)) * sort;
-      }
-
-      if (a && specialValues?.includes(a?.toString())) {
-        return -sort;
-      }
-
-      if (Number(a) && specialValues?.includes(b?.toString())) {
-        return sort;
       }
     }
 
@@ -84,10 +120,10 @@ export const sortAction = (
     }
 
     if (a) {
-      return sort;
+      return -nullsSortDirection;
     }
 
-    return -sort;
+    return nullsSortDirection;
   });
 };
 
@@ -190,7 +226,13 @@ export const sortByFunc = (params: SortActionParams): string[] => {
 
 const sortByMethod = (params: SortActionParams): string[] => {
   const { sortParam, measureValues, originValues, dataSet } = params;
-  const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam!;
+  const {
+    sortByMeasure,
+    query,
+    sortFieldId,
+    sortMethod,
+    nullsPlacement = 'last',
+  } = sortParam!;
   const { rows = [], columns = [] } = dataSet!.fields;
   const isInRows = rows?.includes(sortFieldId);
   let result;
@@ -200,6 +242,7 @@ const sortByMethod = (params: SortActionParams): string[] => {
       measureValues!,
       sortMethod,
       sortByMeasure === TOTAL_VALUE ? query?.[EXTRA_FIELD] : sortByMeasure,
+      nullsPlacement,
     );
 
     const fields = (
@@ -212,7 +255,12 @@ const sortByMethod = (params: SortActionParams): string[] => {
       dimensions as CellData[],
     );
   } else {
-    result = sortAction(measureValues!, sortMethod) as string[];
+    result = sortAction(
+      measureValues!,
+      sortMethod,
+      undefined,
+      nullsPlacement,
+    ) as string[];
   }
 
   return mergeDataWhenASC(result, originValues!, isAscSort(sortMethod!));
@@ -220,7 +268,7 @@ const sortByMethod = (params: SortActionParams): string[] => {
 
 const processSort = (params: SortActionParams): string[] => {
   const { sortParam, originValues = [], measureValues, dataSet } = params;
-  const { sortFunc, sortMethod, sortBy } = sortParam!;
+  const { sortFunc, sortMethod, sortBy: sortList } = sortParam!;
 
   let result = originValues;
   const sortActionParams = {
@@ -232,9 +280,9 @@ const processSort = (params: SortActionParams): string[] => {
 
   if (sortFunc) {
     result = sortByFunc(sortActionParams);
-  } else if (sortBy) {
+  } else if (sortList) {
     // 自定义列表
-    result = sortByCustom({ sortByValues: sortBy, originValues });
+    result = sortByCustom({ sortByValues: sortList, originValues });
   } else if (isAscSort(sortMethod!) || isDescSort(sortMethod!)) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
