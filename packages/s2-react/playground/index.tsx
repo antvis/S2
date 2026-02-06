@@ -31,6 +31,7 @@ import {
   DatePicker,
   Divider,
   Input,
+  InputNumber,
   Pagination,
   Popover,
   Radio,
@@ -470,6 +471,40 @@ function MainLayout() {
                                     </Radio.Button>
                                   </Radio.Group>
                                 </Tooltip>
+                                <InputNumber
+                                  style={{ width: 120 }}
+                                  min={0}
+                                  placeholder="紧凑布局（附加宽）"
+                                  disabled={
+                                    options?.style?.layoutWidthType !==
+                                    'compact'
+                                  }
+                                  value={options?.style?.compactExtraWidth ?? 0}
+                                  onChange={(value) => {
+                                    updateOptions({
+                                      style: {
+                                        compactExtraWidth: value ?? 0,
+                                      },
+                                    });
+                                  }}
+                                />
+                                <InputNumber
+                                  style={{ width: 120 }}
+                                  min={0}
+                                  placeholder="紧凑布局（最小宽）"
+                                  disabled={
+                                    options?.style?.layoutWidthType !==
+                                    'compact'
+                                  }
+                                  value={options?.style?.compactMinWidth ?? 0}
+                                  onChange={(value) => {
+                                    updateOptions({
+                                      style: {
+                                        compactMinWidth: value ?? 0,
+                                      },
+                                    });
+                                  }}
+                                />
                                 <Button
                                   danger
                                   onClick={() => {

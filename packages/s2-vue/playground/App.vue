@@ -328,6 +328,29 @@ const setThemeCfg = (cb: any) => {
                 </a-radio-group>
               </a-tooltip>
 
+              <a-input-number
+                style="width: 120px"
+                :min="0"
+                placeholder="紧凑布局（附加宽）"
+                :disabled="options?.style?.layoutWidthType !== 'compact'"
+                :value="mergedOptions.style?.compactExtraWidth ?? 0"
+                @change="
+                  (value) =>
+                    updateOptions({ style: { compactExtraWidth: value } })
+                "
+              />
+              <a-input-number
+                style="width: 120px"
+                :min="0"
+                placeholder="紧凑布局（最小宽）"
+                :disabled="options?.style?.layoutWidthType !== 'compact'"
+                :value="mergedOptions.style?.compactMinWidth ?? 0"
+                @change="
+                  (value) =>
+                    updateOptions({ style: { compactMinWidth: value } })
+                "
+              />
+
               <a-button
                 danger
                 @click="
