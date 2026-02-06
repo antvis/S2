@@ -23,6 +23,7 @@ import {
   headerActionIcons,
   pivotSheetDataCfg,
   pivotSheetDataCfgForCompactMode,
+  pivotSheetMultiLineTextDataCfg,
   s2ConditionsOptions,
   s2ThemeConfig,
   tableSheetDataCfg,
@@ -127,6 +128,10 @@ const onThemeChange = (e: any) => {
   themeCfg.value = {
     name: e.target.value,
   };
+};
+
+const onMaxLinesChange = () => {
+  updateDataCfg(pivotSheetMultiLineTextDataCfg);
 };
 
 const logHandler =
@@ -594,6 +599,7 @@ const setThemeCfg = (cb: any) => {
               :options="mergedOptions"
               :setOptions="setOptions"
               :setThemeCfg="setThemeCfg"
+              :onMaxLinesChange="onMaxLinesChange"
             />
           </a-collapse-panel>
         </a-collapse>
