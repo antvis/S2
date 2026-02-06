@@ -897,7 +897,16 @@ export class PivotFacet extends FrozenFacet {
       rowNodeWidth > fieldNameNodeWidth ? maxLabel : fieldName,
     );
 
-    return round(Math.max(rowNodeWidth, fieldNameNodeWidth));
+    const { compactExtraWidth = 0, compactMinWidth } =
+      this.spreadsheet.options.style || {};
+
+    const calculatedWidth = round(
+      Math.max(rowNodeWidth, fieldNameNodeWidth) + compactExtraWidth,
+    );
+
+    return isNumber(compactMinWidth)
+      ? Math.max(calculatedWidth, compactMinWidth)
+      : calculatedWidth;
   }
 
   protected getCompactGridColNodeWidth(colNode: Node, rowLeafNodes: Node[]) {
@@ -1001,13 +1010,21 @@ export class PivotFacet extends FrozenFacet {
       fontSize: Math.max(dataCellTextStyle.fontSize, colCellTextStyle.fontSize),
     });
 
-    return round(
+    const { compactExtraWidth = 0, compactMinWidth } =
+      this.spreadsheet.options.style || {};
+
+    const calculatedWidth = round(
       maxTextWidth +
         colCellStyle!.padding!.left! +
         colCellStyle!.padding!.right! +
         colCellStyle!.verticalBorderWidth! * 2 +
-        appendedWidth,
+        appendedWidth +
+        compactExtraWidth,
     );
+
+    return isNumber(compactMinWidth)
+      ? Math.max(calculatedWidth, compactMinWidth)
+      : calculatedWidth;
   }
 
   public getViewCellHeights() {

@@ -3,7 +3,7 @@
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import path from 'path';
-import { UserConfig, defineConfig } from 'vite';
+import { PluginOption, UserConfig, defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { getBaseConfig } from '../../build.config.base.mjs';
 
@@ -29,7 +29,7 @@ export default defineConfig(() => {
           exclude: ['**/__tests__/**', '**/playground/**'],
           tsconfigPath: './tsconfig.build.json',
         }),
-    ].filter(Boolean) as UserConfig['plugins'],
+    ].filter(Boolean) as PluginOption[],
   });
 
   // For ESM and CJS builds, use preserveModules to output individual files
@@ -42,7 +42,19 @@ export default defineConfig(() => {
         rollupOptions: {
           ...baseConfig.build?.rollupOptions,
           // Externalize dependencies to avoid bundling them
-          external: ['lodash', /^lodash\/.*/, '@vueuse/core', /^@vueuse\/.*/],
+          external: [
+            'lodash',
+            /^lodash\/.*/,
+            '@vueuse/core',
+            /^@vueuse\/.*/,
+            'ant-design-vue',
+            'vue',
+            '@antv/s2',
+            '@ant-design/icons-vue',
+            'sortablejs',
+            'tinycolor2',
+            'tinygradient',
+          ],
           output: {
             ...baseConfig.build?.rollupOptions?.output,
             preserveModules: true,
@@ -57,5 +69,28 @@ export default defineConfig(() => {
   return {
     root,
     ...baseConfig,
+    build: {
+      ...baseConfig.build,
+      rollupOptions: {
+        ...baseConfig.build?.rollupOptions,
+        external: [
+          'lodash',
+          /^lodash\/.*/,
+          '@vueuse/core',
+          /^@vueuse\/.*/,
+          'ant-design-vue',
+          'vue',
+          '@antv/s2',
+          '@ant-design/icons-vue',
+        ],
+        output: {
+          ...baseConfig.build?.rollupOptions?.output,
+          globals: {
+            ...baseConfig.build?.rollupOptions?.output?.globals,
+            '@ant-design/icons-vue': 'AntDesignIconsVue',
+          },
+        },
+      },
+    },
   } as UserConfig;
 });

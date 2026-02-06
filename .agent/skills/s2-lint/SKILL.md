@@ -10,6 +10,7 @@ description: After modifying S2 project code, you must run lint to ensure there 
 **After modifying any code files in the `packages/` directory, you must use this skill before finishing the task.**
 
 This includes but is not limited to:
+
 - Modifying `.ts`, `.tsx`, `.vue` files
 - Adding new source code files
 - Modifying type definition files (`.d.ts`)
@@ -26,10 +27,11 @@ pnpm lint
 ```
 
 This command runs the following checks sequentially:
+
 - `lint:type` - TypeScript type checking
 - `lint:script` - ESLint code style checking
 - `lint:style` - Stylelint CSS/LESS checking
-- `lint:docs` - Markdownlint documentation checking
+- `lint:docs` - MarkdownLint documentation checking
 - `lint:word` - Case-police word casing checking
 
 ## Handling Errors

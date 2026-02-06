@@ -166,7 +166,45 @@ const s2Options = {
 
 ### Display Modes
 
-It supports two display modes by default: [Grid Mode](/en/examples/basic/pivot/#grid) and [Tree Mode](/en/examples/basic/pivot/#tree).
+It supports three display modes by default: [Grid Mode](/en/examples/basic/pivot/#grid), [Tree Mode](/en/examples/basic/pivot/#tree), and [Grid Tree Mode](/en/examples/basic/pivot/#grid-tree).
+
+#### Grid Mode
+
+Each dimension level has an independent column, and expanding/collapsing is not supported.
+
+```ts
+const s2Options = {
+  hierarchyType: 'grid',
+}
+```
+
+#### Tree Mode
+
+All dimension levels are in the same column, distinguished by indentation, supporting expansion and collapse.
+
+```ts
+const s2Options = {
+  hierarchyType: 'tree',
+}
+```
+
+#### Grid Tree Mode
+
+Combines the characteristics of grid and tree: each dimension level has an independent column, while supporting expansion and collapse.
+
+```ts
+const s2Options = {
+  hierarchyType: 'grid-tree',
+  style: {
+    rowCell: {
+      // Default expand level (starts from 0)
+      expandDepth: 1,
+    },
+  },
+}
+```
+
+<Playground path='/basic/pivot/demo/grid-tree.ts' rid='pivot-grid-tree' height='300'></playground>
 
 ### Data Summarization
 

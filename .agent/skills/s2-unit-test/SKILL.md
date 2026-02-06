@@ -8,6 +8,7 @@ description: Guidelines for writing and maintaining unit tests in the S2 project
 ## When to Use This Skill
 
 Use this skill when you:
+
 - Modify code under `packages/*/src/`
 - Fix bugs (especially with issue numbers)
 - Add new features or functions
@@ -20,7 +21,7 @@ Use this skill when you:
 
 Search for `__tests__` directories to find where tests for the modified file already exist:
 
-```
+```text
 packages/s2-core/__tests__/unit/      # Unit tests organized by module
 packages/s2-core/__tests__/bugs/      # Bug regression tests with issue numbers
 packages/s2-core/__tests__/spreadsheet/  # Integration-level spreadsheet tests
@@ -150,6 +151,7 @@ pnpm --filter @antv/s2 test:coverage
 ## Goal
 
 The primary goal of unit tests is to:
+
 - **Increase line coverage** - Every line of src code should be exercised
 - **Increase branch coverage** - Test all conditional paths
 - **Prevent regressions** - Ensure bugs don't reappear

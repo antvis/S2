@@ -204,6 +204,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.KEY_UP,
       OriginEventType.POINTER_UP,
       OriginEventType.POINTER_MOVE,
+      OriginEventType.SCROLL,
     ];
 
     expect(eventController.domEventListeners).toHaveLength(
@@ -539,6 +540,15 @@ describe('Interaction Event Controller Tests', () => {
 
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
+    expect(spreadsheet.hideTooltip).toHaveBeenCalled();
+  });
+
+  test('should hide tooltip when window scrolls', () => {
+    spreadsheet.hideTooltip = jest.fn();
+
+    window.dispatchEvent(new Event('scroll'));
+
+    // throttle defaults to leading: true, so hideTooltip is called immediately
     expect(spreadsheet.hideTooltip).toHaveBeenCalled();
   });
 
