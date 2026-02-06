@@ -21,7 +21,7 @@ import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge, setupDataConfig } from '@/utils';
 import { Canvas, CanvasEvent } from '@antv/g';
-import { cloneDeep, last } from 'lodash';
+import { cloneDeep, last, merge } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
 import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
@@ -1347,6 +1347,90 @@ describe('PivotSheet Tests', () => {
 
         expect(rowCell.getActionIcons()).toBeEmpty();
       });
+
+      sheet.destroy();
+    });
+
+    // https://github.com/antvis/S2/issues/3308
+    it('should use previous defined nullsPlacement in sortParams', async () => {
+      const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
+        fields: {
+          rows: ['province'],
+          columns: [],
+        },
+        sortParams: [
+          {
+            sortFieldId: 'province',
+            sortMethod: 'DESC',
+            nullsPlacement: 'first',
+          },
+        ],
+      } as unknown as S2DataConfig);
+
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, {
+        width: 400,
+        height: 200,
+      });
+
+      await sheet.render();
+
+      const provinceNode = sheet.facet.getRowNodes()[0];
+
+      // trigger group sort
+      await sheet.groupSortByMethod('ASC', provinceNode);
+
+      // should match previous defined nullsPlacement
+      expect(sheet.dataCfg.sortParams).toMatchObject([
+        {
+          sortFieldId: 'province',
+          sortMethod: 'ASC',
+          nullsPlacement: 'first',
+        },
+      ]);
+
+      sheet.destroy();
+    });
+
+    it('should use wildcard defined nullsPlacement in sortParams', async () => {
+      const layoutDataCfg = merge({}, cloneDeep(originalDataCfg), {
+        fields: {
+          rows: ['province'],
+          columns: ['city'],
+          values: ['price'],
+          valueInCols: true,
+        },
+        sortParams: [
+          {
+            sortFieldId: '*',
+            nullsPlacement: 'first',
+          },
+        ],
+      } as unknown as S2DataConfig);
+
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, {
+        width: 400,
+        height: 200,
+      });
+
+      await sheet.render();
+
+      const provinceNode = sheet.facet.getRowNodes()[0];
+
+      // trigger group sort
+      await sheet.groupSortByMethod('ASC', provinceNode);
+
+      // should match previous defined nullsPlacement
+      expect(sheet.dataCfg.sortParams).toMatchObject([
+        {
+          sortFieldId: '*',
+          nullsPlacement: 'first',
+        },
+        {
+          sortFieldId: 'city',
+          sortMethod: 'ASC',
+          nullsPlacement: 'first',
+        },
+      ]);
 
       sheet.destroy();
     });

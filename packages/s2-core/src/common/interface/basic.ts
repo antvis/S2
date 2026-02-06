@@ -221,6 +221,14 @@ export interface Totals {
   col?: Total;
 }
 
+/**
+ * 空值排序位置
+ * - 'first': 空值排在最前
+ * - 'last': 空值排在最后
+ * - 'auto': 升序时空值在前，降序时空值在后
+ */
+export type NullsPlacement = 'first' | 'last' | 'auto';
+
 export interface Sort {
   /** 字段 id */
   sortFieldId: string;
@@ -239,6 +247,14 @@ export interface Sort {
 
   /** 组内排序用来显示icon */
   type?: string;
+
+  /**
+   * 空值排序位置
+   * - 'first': 空值永远排在最前
+   * - 'last': 空值永远排在最后（默认值）
+   * - 'auto': 升序时空值在前，降序时空值在后
+   */
+  nullsPlacement?: NullsPlacement;
 }
 
 export interface SortFuncParam extends Sort {

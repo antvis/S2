@@ -104,6 +104,13 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       spanWidth += levelSample?.width ?? 0;
     }
 
+    // CONTENT_BOX 需要减去左右 padding
+    if (type === CellClipBox.CONTENT_BOX) {
+      const { padding } = this.getStyle()!.cell!;
+
+      spanWidth -= (padding?.left ?? 0) + (padding?.right ?? 0);
+    }
+
     return {
       ...baseBBox,
       width: spanWidth || baseBBox.width,

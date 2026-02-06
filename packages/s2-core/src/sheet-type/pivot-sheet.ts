@@ -161,11 +161,20 @@ export class PivotSheet extends SpreadSheet {
     }
 
     const sortFieldId = isString(sortField) ? sortField : sortField!.field;
+    const currentSortParam = this.dataCfg.sortParams?.find(
+      (item) =>
+        item?.sortFieldId === sortFieldId || item?.sortFieldId === sortValue,
+    );
+    const wildcardSortParam = this.dataCfg.sortParams?.find(
+      (item) => item?.sortFieldId === '*',
+    );
     const sortParam: SortParam = {
       sortFieldId,
       sortMethod,
       sortByMeasure: sortValue,
       query: sortQuery,
+      nullsPlacement:
+        currentSortParam?.nullsPlacement ?? wildcardSortParam?.nullsPlacement,
     };
     const prevSortParams = this.dataCfg.sortParams?.filter(
       (item) => item?.sortFieldId !== sortField,

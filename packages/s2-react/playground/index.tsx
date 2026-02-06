@@ -31,6 +31,7 @@ import {
   DatePicker,
   Divider,
   Input,
+  InputNumber,
   Pagination,
   Popover,
   Radio,
@@ -470,6 +471,40 @@ function MainLayout() {
                                     </Radio.Button>
                                   </Radio.Group>
                                 </Tooltip>
+                                <InputNumber
+                                  style={{ width: 120 }}
+                                  min={0}
+                                  placeholder="紧凑布局（附加宽）"
+                                  disabled={
+                                    options?.style?.layoutWidthType !==
+                                    'compact'
+                                  }
+                                  value={options?.style?.compactExtraWidth ?? 0}
+                                  onChange={(value) => {
+                                    updateOptions({
+                                      style: {
+                                        compactExtraWidth: value ?? 0,
+                                      },
+                                    });
+                                  }}
+                                />
+                                <InputNumber
+                                  style={{ width: 120 }}
+                                  min={0}
+                                  placeholder="紧凑布局（最小宽）"
+                                  disabled={
+                                    options?.style?.layoutWidthType !==
+                                    'compact'
+                                  }
+                                  value={options?.style?.compactMinWidth ?? 0}
+                                  onChange={(value) => {
+                                    updateOptions({
+                                      style: {
+                                        compactMinWidth: value ?? 0,
+                                      },
+                                    });
+                                  }}
+                                />
                                 <Button
                                   danger
                                   onClick={() => {
@@ -495,19 +530,27 @@ function MainLayout() {
                                     updateOptions({ debug: checked });
                                   }}
                                 />
-                                <Switch
-                                  checkedChildren="树形"
-                                  unCheckedChildren="平铺"
-                                  checked={
-                                    mergedOptions.hierarchyType === 'tree'
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      hierarchyType: checked ? 'tree' : 'grid',
-                                    });
-                                  }}
-                                  disabled={sheetType === 'table'}
-                                />
+                                <Tooltip title="透视表层级结构">
+                                  <Radio.Group
+                                    value={mergedOptions.hierarchyType}
+                                    onChange={(e) => {
+                                      updateOptions({
+                                        hierarchyType: e.target.value,
+                                      });
+                                    }}
+                                    disabled={sheetType === 'table'}
+                                  >
+                                    <Radio.Button value="grid">
+                                      平铺
+                                    </Radio.Button>
+                                    <Radio.Button value="tree">
+                                      树形
+                                    </Radio.Button>
+                                    <Radio.Button value="grid-tree">
+                                      grid-tree
+                                    </Radio.Button>
+                                  </Radio.Group>
+                                </Tooltip>
                                 <Switch
                                   checkedChildren="数值挂列头"
                                   unCheckedChildren="数值挂行头"
