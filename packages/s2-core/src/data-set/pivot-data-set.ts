@@ -412,8 +412,11 @@ export class PivotDataSet extends BaseDataSet {
       getAggregationAndCalcFuncByQuery(status, options?.totals) || {};
 
     // 聚合方式从用户配置的 s2Options.totals 取, 在触发前端兜底计算汇总逻辑时, 如果没有汇总的配置, 默认按 [求和] 计算,避免排序失效.
+    // tree 和 grid-tree 模式下，如果用户没有配置 totals，不应该自动聚合
     const defaultAggregation =
-      isEmpty(options?.totals) && !this.spreadsheet.isHierarchyTreeType()
+      isEmpty(options?.totals) &&
+      !this.spreadsheet.isHierarchyTreeType() &&
+      !this.spreadsheet.isHierarchyGridTreeType()
         ? Aggregation.SUM
         : '';
 

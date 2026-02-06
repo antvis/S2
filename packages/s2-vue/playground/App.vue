@@ -23,6 +23,7 @@ import {
   headerActionIcons,
   pivotSheetDataCfg,
   pivotSheetDataCfgForCompactMode,
+  pivotSheetMultiLineTextDataCfg,
   s2ConditionsOptions,
   s2ThemeConfig,
   tableSheetDataCfg,
@@ -127,6 +128,12 @@ const onThemeChange = (e: any) => {
   themeCfg.value = {
     name: e.target.value,
   };
+};
+
+const onMaxLinesChange = (maxLines: number) => {
+  updateDataCfg(
+    maxLines > 1 ? pivotSheetMultiLineTextDataCfg : pivotSheetDataCfg,
+  );
 };
 
 const logHandler =
@@ -321,6 +328,29 @@ const setThemeCfg = (cb: any) => {
                 </a-radio-group>
               </a-tooltip>
 
+              <a-input-number
+                style="width: 120px"
+                :min="0"
+                placeholder="紧凑布局（附加宽）"
+                :disabled="options?.style?.layoutWidthType !== 'compact'"
+                :value="mergedOptions.style?.compactExtraWidth ?? 0"
+                @change="
+                  (value) =>
+                    updateOptions({ style: { compactExtraWidth: value } })
+                "
+              />
+              <a-input-number
+                style="width: 120px"
+                :min="0"
+                placeholder="紧凑布局（最小宽）"
+                :disabled="options?.style?.layoutWidthType !== 'compact'"
+                :value="mergedOptions.style?.compactMinWidth ?? 0"
+                @change="
+                  (value) =>
+                    updateOptions({ style: { compactMinWidth: value } })
+                "
+              />
+
               <a-button
                 danger
                 @click="
@@ -334,7 +364,10 @@ const setThemeCfg = (cb: any) => {
               </a-button>
             </a-space>
 
-            <a-space class="filter-container">
+            <a-space
+              class="filter-container"
+              style="margin-bottom: 20px; align-items: flex-start"
+            >
               <a-switch
                 checked-children="渲染组件"
                 un-checked-children="卸载组件"
@@ -347,16 +380,19 @@ const setThemeCfg = (cb: any) => {
                 :checked="mergedOptions.debug"
                 @change="(checked) => updateOptions({ debug: checked })"
               />
-              <a-switch
-                checked-children="树形"
-                un-checked-children="平铺"
-                :checked="mergedOptions.hierarchyType === 'tree'"
-                @change="
-                  (checked) =>
-                    updateOptions({ hierarchyType: checked ? 'tree' : 'grid' })
-                "
-                :disabled="sheetType === 'table'"
-              />
+              <a-tooltip title="透视表层级结构">
+                <a-radio-group
+                  :value="mergedOptions.hierarchyType"
+                  :disabled="sheetType === 'table'"
+                  @change="
+                    (e) => updateOptions({ hierarchyType: e.target.value })
+                  "
+                >
+                  <a-radio-button value="grid">平铺</a-radio-button>
+                  <a-radio-button value="tree">树形</a-radio-button>
+                  <a-radio-button value="grid-tree">grid-tree</a-radio-button>
+                </a-radio-group>
+              </a-tooltip>
               <a-switch
                 checked-children="数值挂列头"
                 un-checked-children="数值挂行头"
@@ -592,6 +628,7 @@ const setThemeCfg = (cb: any) => {
               :options="mergedOptions"
               :setOptions="setOptions"
               :setThemeCfg="setThemeCfg"
+              :onMaxLinesChange="onMaxLinesChange"
             />
           </a-collapse-panel>
         </a-collapse>
