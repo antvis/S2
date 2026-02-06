@@ -109,7 +109,7 @@ const resizeConfig = () =>
 
 <template>
   <div class="resize-config-container">
-    <a-space class="filter-container">
+    <a-space class="filter-container" style="margin-bottom: 20px">
       <span class="label">
         热区配置
         <a-divider type="vertical" />

@@ -130,8 +130,10 @@ const onThemeChange = (e: any) => {
   };
 };
 
-const onMaxLinesChange = () => {
-  updateDataCfg(pivotSheetMultiLineTextDataCfg);
+const onMaxLinesChange = (maxLines: number) => {
+  updateDataCfg(
+    maxLines > 1 ? pivotSheetMultiLineTextDataCfg : pivotSheetDataCfg,
+  );
 };
 
 const logHandler =
@@ -339,7 +341,10 @@ const setThemeCfg = (cb: any) => {
               </a-button>
             </a-space>
 
-            <a-space class="filter-container">
+            <a-space
+              class="filter-container"
+              style="margin-bottom: 20px; align-items: flex-start"
+            >
               <a-switch
                 checked-children="渲染组件"
                 un-checked-children="卸载组件"
@@ -355,6 +360,7 @@ const setThemeCfg = (cb: any) => {
               <a-tooltip title="透视表层级结构">
                 <a-radio-group
                   :value="mergedOptions.hierarchyType"
+                  :disabled="sheetType === 'table'"
                   @change="
                     (e) => updateOptions({ hierarchyType: e.target.value })
                   "
