@@ -91,8 +91,9 @@ export class GuiIcon extends Group {
   // icon 对应的 GImage 对象 (Image 模式)
   public iconImageShape?: CustomImage;
 
-  // icon 对应的 Path 对象数组 (Path 模式)
-  public iconPathShapes: Path[] = [];
+  // icon 对应的 Path 和 HitArea 对象数组 (Path 模式)
+  // 第一个元素是透明的点击热区 Rect，其余是实际的 Path
+  public iconPathShapes: (Path | Rect)[] = [];
 
   private cfg: GuiIconCfg;
 
@@ -129,9 +130,11 @@ export class GuiIcon extends Group {
     let parsedData = PathDataCache[cacheKey];
 
     if (!parsedData) {
-      parsedData = parseSvgPaths(svg)!;
-      if (parsedData) {
-        PathDataCache[cacheKey] = parsedData;
+      const parsed = parseSvgPaths(svg);
+
+      if (parsed) {
+        parsedData = parsed;
+        PathDataCache[cacheKey] = parsed;
       }
     }
 
@@ -166,7 +169,7 @@ export class GuiIcon extends Group {
     });
 
     this.appendChild(hitAreaRect);
-    this.iconPathShapes.push(hitAreaRect as unknown as Path);
+    this.iconPathShapes.push(hitAreaRect);
 
     // 创建所有 path
     for (const pathData of parsedData.paths) {
@@ -364,7 +367,8 @@ export class GuiIcon extends Group {
     if (this.usePathMode) {
       const fill = attrs.fill || this.cfg.fill || '#000';
 
-      this.iconPathShapes.forEach((shape) => {
+      // 第一个元素是透明热区 (hitAreaRect)，应保持透明，从第二个开始更新 fill
+      this.iconPathShapes.slice(1).forEach((shape) => {
         shape.style.fill = fill;
       });
 
@@ -430,7 +434,7 @@ export class GuiIcon extends Group {
 
     if (this.usePathMode) {
       this.iconPathShapes.forEach((shape) => {
-        shape.setAttribute('visibility', status);
+        shape.style.visibility = status;
       });
     } else if (this.iconImageShape) {
       this.iconImageShape.setAttribute('visibility', status);
