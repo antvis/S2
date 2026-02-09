@@ -1,3 +1,19 @@
+# [@antv/s2-v2.6.0](https://github.com/antvis/S2/compare/@antv/s2-v2.5.0...@antv/s2-v2.6.0) (2026-02-09)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复页面滚动时tooltip不自动隐藏的问题 ([#3310](https://github.com/antvis/S2/issues/3310)) ([e7a02bb](https://github.com/antvis/S2/commit/e7a02bb9adfc2c8cb83925bd88ff373fa04f2310)), closes [#3307](https://github.com/antvis/S2/issues/3307)
+* 修复 mini 折线图只有一个有效值时绘制异常的问题 ([#3312](https://github.com/antvis/S2/issues/3312)) ([424e769](https://github.com/antvis/S2/commit/424e7697a9ad6f662a068b790d7b7f18e4944f17))
+* 修复调整列宽后hover单元格任意位置都出现拖拽热区的问题 ([#3315](https://github.com/antvis/S2/issues/3315)) ([8be0068](https://github.com/antvis/S2/commit/8be0068be14c2bb2cf175bdcec356feda9196558))
+* 修复透视表组内排序在指标数据为 null 时排序异常的问题 ([#3308](https://github.com/antvis/S2/issues/3308)) ([f02c68a](https://github.com/antvis/S2/commit/f02c68a6f2467aabe1eb77c56b6d8ec7ffa8a466))
+
+
+### Features
+
+* **style:** 支持紧凑模式下设置额外宽度和最小宽度 ([#3309](https://github.com/antvis/S2/issues/3309)) ([c6cdec7](https://github.com/antvis/S2/commit/c6cdec7a53746a9d97e56540c466823567688a10)), closes [#3305](https://github.com/antvis/S2/issues/3305)
+* 树状平铺grid-tree模式，可以在Grid模式下展开/折叠 ([#3299](https://github.com/antvis/S2/issues/3299)) ([f28ca93](https://github.com/antvis/S2/commit/f28ca9346a0643ab0bf895bab5cb382a5e39c224))
+
 # [@antv/s2-v2.5.0](https://github.com/antvis/S2/compare/@antv/s2-v2.4.16...@antv/s2-v2.5.0) (2026-01-19)
 
 
