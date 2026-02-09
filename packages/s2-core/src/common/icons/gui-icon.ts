@@ -144,9 +144,11 @@ export class GuiIcon extends Group {
 
     const { x = 0, y = 0, width, height, cursor } = this.cfg;
 
-    // 计算缩放比例
-    const scaleX = (width as number) / parsedData.viewBox.width;
-    const scaleY = (height as number) / parsedData.viewBox.height;
+    // 计算缩放比例 (添加类型守卫以防 width/height 不是数字)
+    const numWidth = typeof width === 'number' ? width : 0;
+    const numHeight = typeof height === 'number' ? height : 0;
+    const scaleX = numWidth / parsedData.viewBox.width;
+    const scaleY = numHeight / parsedData.viewBox.height;
 
     // 清除旧的 path shapes
     this.iconPathShapes.forEach((shape) => {
@@ -159,10 +161,10 @@ export class GuiIcon extends Group {
     // 同时设置 cursor 样式
     const hitAreaRect = new Rect({
       style: {
-        x: x as number,
-        y: y as number,
-        width: width as number,
-        height: height as number,
+        x: typeof x === 'number' ? x : 0,
+        y: typeof y === 'number' ? y : 0,
+        width: numWidth,
+        height: numHeight,
         fill: 'transparent',
         cursor: cursor || 'default',
       },
@@ -350,8 +352,10 @@ export class GuiIcon extends Group {
       const parsedData = PathDataCache[this.cfg.name];
 
       if (parsedData) {
-        const scaleX = (width as number) / parsedData.viewBox.width;
-        const scaleY = (height as number) / parsedData.viewBox.height;
+        const numWidth = typeof width === 'number' ? width : 0;
+        const numHeight = typeof height === 'number' ? height : 0;
+        const scaleX = numWidth / parsedData.viewBox.width;
+        const scaleY = numHeight / parsedData.viewBox.height;
 
         this.iconPathShapes.forEach((shape) => {
           shape.style.transform = `translate(${position.x}, ${position.y}) scale(${scaleX}, ${scaleY})`;
