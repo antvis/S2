@@ -1,0 +1,443 @@
+import { isBoolean, isFunction, isNumber, isString, throttle } from 'lodash';
+import { S2Event } from '../../common/constant';
+import type {
+  S2DataConfig,
+  S2Options,
+  ScrollOffset,
+  StickyHeaderOptions,
+} from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
+import { customMerge } from '../../utils/merge';
+
+enum StickyState {
+  /** 未吸顶 (表格在视口下方或已完全滚出) */
+  UN_STICKY = 'UN_STICKY',
+  /** 完全吸顶 (表头固定在视口顶部) */
+  STICKY = 'STICKY',
+  /** 吸顶边缘 (表格底部即将离开视口, 表头跟随滚出) */
+  STICKY_EDGE = 'STICKY_EDGE',
+}
+
+/**
+ * Window 级别表头吸顶控制器
+ *
+ * 在 s2-core 层级通过双实例 + DOM 代理包装实现框架无关的表头吸顶功能
+ * 当表格高度超出页面可视区域时, 表头会自动吸附在视口顶部
+ */
+export class StickyHeaderController {
+  private spreadsheet: SpreadSheet;
+
+  /** 吸顶表头的 S2 实例 (仅渲染表头) */
+  private stickyS2: SpreadSheet | null = null;
+
+  /** 吸顶表头的容器 DOM */
+  private wrapperElement: HTMLDivElement | null = null;
+
+  /** 吸顶表头 S2 的挂载容器 */
+  private stickyContainer: HTMLDivElement | null = null;
+
+  private stickyState: StickyState = StickyState.UN_STICKY;
+
+  /** 解除事件监听的回调集合 */
+  private disposers: Array<() => void> = [];
+
+  /** 用户配置 */
+  private options: StickyHeaderOptions;
+
+  constructor(spreadsheet: SpreadSheet) {
+    this.spreadsheet = spreadsheet;
+    this.options = this.resolveOptions();
+    this.init();
+  }
+
+  public getStickyState(): StickyState {
+    return this.stickyState;
+  }
+
+  private resolveOptions(): StickyHeaderOptions {
+    const cfg = this.spreadsheet.options.interaction?.stickyHeader;
+
+    if (!cfg || isBoolean(cfg)) {
+      return {};
+    }
+
+    return cfg;
+  }
+
+  // ==================== 初始化 ====================
+
+  private init() {
+    this.createDOM();
+    this.createStickyS2();
+    this.bindScrollListener();
+    this.bindSyncListeners();
+
+    // 首次渲染吸顶表头 (此时主表的 LAYOUT_AFTER_RENDER 已触发过, 需手动触发一次)
+    this.renderStickyS2();
+  }
+
+  /**
+   * 创建吸顶表头容器 DOM
+   */
+  private createDOM() {
+    const mainCanvas = this.spreadsheet.getCanvasElement();
+
+    if (!mainCanvas) {
+      return;
+    }
+
+    const container = mainCanvas.parentElement!;
+
+    // 确保容器有定位上下文
+    const computedPos = window.getComputedStyle(container).position;
+
+    if (computedPos === 'static') {
+      container.style.position = 'relative';
+    }
+
+    // 创建吸顶表头的外层包装器
+    this.wrapperElement = document.createElement('div');
+    this.wrapperElement.className = 's2-sticky-header-wrapper';
+    Object.assign(this.wrapperElement.style, {
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      right: '0',
+      zIndex: '10',
+      overflow: 'hidden',
+      display: 'none',
+    });
+
+    // 创建 S2 挂载容器
+    this.stickyContainer = document.createElement('div');
+    this.wrapperElement.appendChild(this.stickyContainer);
+
+    container.insertBefore(this.wrapperElement, mainCanvas);
+  }
+
+  // ==================== 吸顶 S2 实例 ====================
+
+  /**
+   * 压缩 S2 数据配置, 仅保留渲染表头的必要数据
+   *
+   * columns 中指定了列头所使用的维值的 key, 在数据项中对应的值组合起来即为一个列头
+   * 对于相同列头值的数据, 只保留一项即可
+   */
+  private minimizeDataCfg(dataCfg: S2DataConfig): S2DataConfig {
+    const columns = dataCfg?.fields?.columns;
+
+    if (!columns) {
+      return dataCfg;
+    }
+
+    const cache: Record<string, unknown> = {};
+
+    dataCfg.data.forEach((item) => {
+      const values = columns.map((column) => {
+        const key = isString(column)
+          ? column
+          : (column as { field: string }).field;
+
+        return item[key]?.toString?.();
+      });
+
+      const cacheKey = values.join('');
+
+      if (!cache[cacheKey]) {
+        cache[cacheKey] = item;
+      }
+    });
+
+    return { ...dataCfg, data: Object.values(cache) as S2DataConfig['data'] };
+  }
+
+  /**
+   * 生成吸顶表头的 Options (禁用大部分交互)
+   */
+  private applyStickyOptions(options: S2Options): S2Options {
+    return customMerge(options, {
+      // 将 dataCell height 设置为 0 确保只渲染表头
+      style: { dataCell: { height: 0 } },
+      // 禁用大小调整
+      interaction: {
+        resize: false,
+        // 防止递归创建
+        stickyHeader: false,
+      },
+      tooltip: {
+        enable: false,
+      },
+      headerActionIcons: [],
+      showDefaultHeaderActionIcon: false,
+    } as Partial<S2Options>);
+  }
+
+  /**
+   * 基于主表当前配置, 生成吸顶表头的配置
+   */
+  private toStickyConfig() {
+    const { dataCfg, options } = this.spreadsheet;
+
+    return {
+      dataCfg: this.minimizeDataCfg(dataCfg),
+      options: this.applyStickyOptions(options),
+    };
+  }
+
+  /**
+   * 创建吸顶 S2 实例
+   *
+   * 核心: 通过 spreadsheet.constructor 创建同类型的 S2 实例 (PivotSheet / TableSheet)
+   * 确保和主表使用相同的渲染逻辑
+   */
+  private createStickyS2() {
+    if (!this.stickyContainer) {
+      return;
+    }
+
+    const { dataCfg, options } = this.toStickyConfig();
+
+    // 利用主表的构造函数创建同类型实例
+    const SheetClass = this.spreadsheet.constructor as new (
+      dom: HTMLElement,
+      dataCfg: S2DataConfig,
+      options: S2Options,
+    ) => SpreadSheet;
+
+    this.stickyS2 = new SheetClass(this.stickyContainer, dataCfg, options);
+  }
+
+  /**
+   * 渲染吸顶 S2 并调整到表头大小
+   */
+  private async renderStickyS2() {
+    if (!this.stickyS2) {
+      return;
+    }
+
+    const { facet } = this.spreadsheet;
+
+    if (!facet) {
+      return;
+    }
+
+    const mainConfig = this.spreadsheet.getCanvasConfig();
+    const headerHeight = facet.cornerBBox?.height ?? 0;
+    const width = mainConfig.width ?? 0;
+
+    this.stickyS2.changeSheetSize(width, headerHeight);
+    await this.stickyS2.render();
+  }
+
+  // ==================== 滚动监听 & 样式计算 ====================
+
+  private getOffsetTop(): number {
+    const { offsetTop } = this.options;
+
+    if (isFunction(offsetTop)) {
+      return offsetTop();
+    }
+
+    if (isNumber(offsetTop)) {
+      return offsetTop;
+    }
+
+    return 0;
+  }
+
+  private getScrollContainer(): HTMLElement | Window {
+    return this.options.scrollContainer ?? window;
+  }
+
+  /**
+   * 获取主表的位置和尺寸信息
+   */
+  private getTableBox() {
+    const mainCanvas = this.spreadsheet.getCanvasElement();
+
+    if (!mainCanvas) {
+      return null;
+    }
+
+    const canvasBox = mainCanvas.getBoundingClientRect();
+    const { facet } = this.spreadsheet;
+
+    if (!facet) {
+      return null;
+    }
+
+    const tableTop = canvasBox.top;
+    const tableLeft = canvasBox.left;
+    const tableWidth = canvasBox.width;
+    const headerHeight = facet.cornerBBox?.height ?? 0;
+    const canvasHeight = canvasBox.height;
+    const containerHeight = facet.getContentHeight();
+    const tableHeight = Math.min(containerHeight, canvasHeight);
+    const tableBottom = tableTop + tableHeight;
+
+    return {
+      tableTop,
+      tableLeft,
+      tableWidth,
+      tableHeight,
+      tableBottom,
+      headerHeight,
+    };
+  }
+
+  /**
+   * 核心: 计算三态样式并应用到吸顶容器
+   */
+  private syncStyle = () => {
+    if (!this.wrapperElement) {
+      return;
+    }
+
+    const tableBox = this.getTableBox();
+
+    if (!tableBox) {
+      return;
+    }
+
+    const {
+      headerHeight,
+      tableBottom,
+      tableHeight,
+      tableLeft,
+      tableWidth,
+      tableTop,
+    } = tableBox;
+
+    const baseLine = this.getOffsetTop();
+    const { style } = this.wrapperElement;
+
+    // 1. 未吸顶: 表格顶部在视口以下, 或表格底部在视口以上
+    if (baseLine < tableTop || baseLine > tableTop + tableHeight) {
+      this.stickyState = StickyState.UN_STICKY;
+      style.display = 'none';
+
+      return;
+    }
+
+    // 通用属性
+    style.display = '';
+    style.height = `${headerHeight}px`;
+
+    // 2. 完全吸顶: 表头上边缘已滚出视口, 但表格底部还未进入吸顶表头区域
+    if (tableTop < baseLine && baseLine < tableBottom - headerHeight) {
+      this.stickyState = StickyState.STICKY;
+      style.position = 'fixed';
+      style.top = `${baseLine}px`;
+      style.left = `${tableLeft}px`;
+      style.width = `${tableWidth}px`;
+      style.right = '';
+
+      return;
+    }
+
+    // 3. 吸顶边缘: 表格底部边缘进入表头高度范围, 表头开始跟随滚出
+    if (tableBottom - headerHeight <= baseLine && baseLine <= tableBottom) {
+      this.stickyState = StickyState.STICKY_EDGE;
+      style.position = 'absolute';
+      style.top = `${tableHeight - headerHeight}px`;
+      style.left = '0';
+      style.right = '0';
+      style.width = '';
+    }
+  };
+
+  private bindScrollListener() {
+    const scrollContainer = this.getScrollContainer();
+    const onScroll = throttle(this.syncStyle, 16);
+
+    scrollContainer.addEventListener('scroll', onScroll, { passive: true });
+    this.disposers.push(() => {
+      scrollContainer.removeEventListener('scroll', onScroll);
+    });
+  }
+
+  // ==================== 主从同步 ====================
+
+  /**
+   * 横向滚动同步: 主表横滑时, 吸顶 S2 的表头跟着同步横滑
+   * 布局变更同步: 当主表列宽/表格大小变化时, 重新渲染吸顶表头
+   */
+  private bindSyncListeners() {
+    const { spreadsheet } = this;
+
+    // 1. 横向滚动同步 (参考 StrategySheetPro syncScroll)
+    const onGlobalScroll = (position: ScrollOffset) => {
+      if (!this.stickyS2?.facet) {
+        return;
+      }
+
+      this.stickyS2.facet.updateScrollOffset({
+        offsetX: { value: position.scrollX, animate: false },
+        offsetY: { value: position.scrollY, animate: false },
+        rowHeaderOffsetX: {
+          value: position.rowHeaderScrollX,
+          animate: false,
+        },
+      });
+    };
+
+    spreadsheet.on(S2Event.GLOBAL_SCROLL, onGlobalScroll);
+    this.disposers.push(() => {
+      spreadsheet.off(S2Event.GLOBAL_SCROLL, onGlobalScroll);
+    });
+
+    // 2. 布局变更同步 (参考 StrategySheetPro syncLayout)
+    const onLayoutChange = () => {
+      if (!this.stickyS2) {
+        return;
+      }
+
+      const { dataCfg, options } = this.toStickyConfig();
+
+      this.stickyS2.setDataCfg(dataCfg);
+      this.stickyS2.setOptions(options);
+
+      // 调整画布大小到表头大小
+      const mainConfig = spreadsheet.getCanvasConfig();
+
+      this.stickyS2.changeSheetSize(
+        mainConfig.width,
+        spreadsheet.facet.cornerBBox.height,
+      );
+      this.stickyS2.render(false);
+
+      this.syncStyle();
+    };
+
+    const layoutEvents = [S2Event.LAYOUT_AFTER_RENDER, S2Event.LAYOUT_RESIZE];
+
+    layoutEvents.forEach((event) => {
+      spreadsheet.on(event, onLayoutChange);
+    });
+    this.disposers.push(() => {
+      layoutEvents.forEach((event) => {
+        spreadsheet.off(event, onLayoutChange);
+      });
+    });
+  }
+
+  // ==================== 生命周期 ====================
+
+  public destroy() {
+    this.disposers.forEach((dispose) => dispose());
+    this.disposers = [];
+
+    if (this.stickyS2) {
+      this.stickyS2.destroy();
+      this.stickyS2 = null;
+    }
+
+    if (this.wrapperElement) {
+      this.wrapperElement.remove();
+      this.wrapperElement = null;
+    }
+
+    this.stickyContainer = null;
+    this.stickyState = StickyState.UN_STICKY;
+  }
+}
