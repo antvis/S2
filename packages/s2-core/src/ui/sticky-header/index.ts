@@ -44,9 +44,13 @@ export class StickyHeaderController {
   /** 用户配置 */
   private options: StickyHeaderOptions;
 
+  /** 缓存的滚动容器 */
+  private scrollContainer: HTMLElement | Window = window;
+
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.options = this.resolveOptions();
+    this.scrollContainer = this.resolveScrollContainer();
     this.init();
   }
 
@@ -245,8 +249,58 @@ export class StickyHeaderController {
     return 0;
   }
 
-  private getScrollContainer(): HTMLElement | Window {
-    return this.options.scrollContainer ?? window;
+  /**
+   * 沿 DOM 树向上查找最近的**实际正在滚动**的祖先容器
+   *
+   * 仅当某个祖先同时满足以下两个条件时才返回:
+   * 1. CSS overflow/overflow-y/overflow-x 为 auto | scroll | overlay
+   * 2. scrollHeight > clientHeight (内容确实溢出, 正在产生滚动)
+   *
+   * 这样可以跳过 Ant Tabs 等 overflow:auto 但内容未溢出的容器
+   */
+  private getScrollParent(node: HTMLElement | null): HTMLElement | Window {
+    if (!node) {
+      return window;
+    }
+
+    let parent = node.parentElement;
+
+    while (
+      parent &&
+      parent !== document.body &&
+      parent !== document.documentElement
+    ) {
+      const style = window.getComputedStyle(parent);
+      const overflow =
+        style.getPropertyValue('overflow') +
+        style.getPropertyValue('overflow-y') +
+        style.getPropertyValue('overflow-x');
+
+      if (
+        /(?:auto|scroll|overlay)/.test(overflow) &&
+        parent.scrollHeight > parent.clientHeight
+      ) {
+        return parent;
+      }
+
+      parent = parent.parentElement;
+    }
+
+    return window;
+  }
+
+  private resolveScrollContainer(): HTMLElement | Window {
+    if (this.options.scrollContainer) {
+      return this.options.scrollContainer;
+    }
+
+    const canvas = this.spreadsheet.getCanvasElement();
+
+    return this.getScrollParent(canvas);
+  }
+
+  private isWindowScroll(): boolean {
+    return this.scrollContainer === window;
   }
 
   /**
@@ -288,6 +342,13 @@ export class StickyHeaderController {
   /**
    * 核心: 计算三态样式并应用到吸顶容器
    */
+  /**
+   * 核心: 计算三态样式并应用到吸顶容器
+   *
+   * 同时支持 window 滚动和 div 容器滚动两种场景:
+   * - window: 使用 position:fixed, top 为视口偏移
+   * - div:    使用 position:absolute, top 为相对 S2 容器的偏移
+   */
   private syncStyle = () => {
     if (!this.wrapperElement) {
       return;
@@ -308,11 +369,19 @@ export class StickyHeaderController {
       tableTop,
     } = tableBox;
 
-    const baseLine = this.getOffsetTop();
+    const offsetTop = this.getOffsetTop();
+
+    // 对于 window 滚动, 参考线 = offsetTop (相对视口顶部)
+    // 对于 div 滚动,   参考线 = 容器可见顶部 + offsetTop (相对视口)
+    const refLine = this.isWindowScroll()
+      ? offsetTop
+      : (this.scrollContainer as HTMLElement).getBoundingClientRect().top +
+        offsetTop;
+
     const { style } = this.wrapperElement;
 
-    // 1. 未吸顶: 表格顶部在视口以下, 或表格底部在视口以上
-    if (baseLine < tableTop || baseLine > tableTop + tableHeight) {
+    // 1. 未吸顶: 表格顶部在参考线以下, 或表格底部在参考线以上
+    if (refLine < tableTop || refLine > tableTop + tableHeight) {
       this.stickyState = StickyState.UN_STICKY;
       style.display = 'none';
 
@@ -323,20 +392,31 @@ export class StickyHeaderController {
     style.display = '';
     style.height = `${headerHeight}px`;
 
-    // 2. 完全吸顶: 表头上边缘已滚出视口, 但表格底部还未进入吸顶表头区域
-    if (tableTop < baseLine && baseLine < tableBottom - headerHeight) {
+    // 2. 完全吸顶: 表头上边缘已滚出, 但表格底部还未进入吸顶表头区域
+    if (tableTop < refLine && refLine < tableBottom - headerHeight) {
       this.stickyState = StickyState.STICKY;
-      style.position = 'fixed';
-      style.top = `${baseLine}px`;
-      style.left = `${tableLeft}px`;
-      style.width = `${tableWidth}px`;
-      style.right = '';
+
+      if (this.isWindowScroll()) {
+        // window 滚动: fixed 定位相对视口
+        style.position = 'fixed';
+        style.top = `${refLine}px`;
+        style.left = `${tableLeft}px`;
+        style.width = `${tableWidth}px`;
+        style.right = '';
+      } else {
+        // div 滚动: absolute 定位相对 S2 容器
+        style.position = 'absolute';
+        style.top = `${refLine - tableTop}px`;
+        style.left = '0';
+        style.right = '0';
+        style.width = '';
+      }
 
       return;
     }
 
     // 3. 吸顶边缘: 表格底部边缘进入表头高度范围, 表头开始跟随滚出
-    if (tableBottom - headerHeight <= baseLine && baseLine <= tableBottom) {
+    if (tableBottom - headerHeight <= refLine && refLine <= tableBottom) {
       this.stickyState = StickyState.STICKY_EDGE;
       style.position = 'absolute';
       style.top = `${tableHeight - headerHeight}px`;
@@ -347,12 +427,13 @@ export class StickyHeaderController {
   };
 
   private bindScrollListener() {
-    const scrollContainer = this.getScrollContainer();
     const onScroll = throttle(this.syncStyle, 16);
 
-    scrollContainer.addEventListener('scroll', onScroll, { passive: true });
+    this.scrollContainer.addEventListener('scroll', onScroll, {
+      passive: true,
+    });
     this.disposers.push(() => {
-      scrollContainer.removeEventListener('scroll', onScroll);
+      this.scrollContainer.removeEventListener('scroll', onScroll);
     });
   }
 

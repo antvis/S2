@@ -441,12 +441,13 @@ export abstract class SpreadSheet extends EE {
   private syncStickyHeader() {
     const enabled = !!this.options.interaction?.stickyHeader;
 
-    if (!enabled && this.stickyHeaderController) {
+    // 先销毁旧控制器（无论是关闭还是选项内容变更都需要重建）
+    if (this.stickyHeaderController) {
       this.stickyHeaderController.destroy();
       this.stickyHeaderController = null;
     }
 
-    if (enabled && !this.stickyHeaderController) {
+    if (enabled) {
       this.initStickyHeader();
     }
   }
