@@ -63,7 +63,7 @@ const s2Options: S2Options = {
   width: 600,
   height: 2000,
   interaction: {
-    stickyHeader: {offsetTop: 64},
+    stickyHeader: true,
   } as any,
 };
 
