@@ -62,6 +62,7 @@ import { LinkGroup } from './components/LinkGroup';
 import { PivotChartSheet } from './components/PivotChartSheet';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
+import { StickyHeaderSheet } from './components/StickyHeaderSheet';
 import { StrategySheet } from './components/StrategySheet';
 import {
   PivotSheetFrozenOptions,
@@ -1749,6 +1750,11 @@ function MainLayout() {
                 key: 'bigData',
                 label: '100万数据',
                 children: <BigDataSheet />,
+              },
+              {
+                key: 'stickyHeader',
+                label: '表头吸顶',
+                children: <StickyHeaderSheet ref={s2Ref} />,
               },
             ]}
           />
