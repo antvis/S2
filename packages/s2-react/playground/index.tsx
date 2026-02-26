@@ -808,6 +808,22 @@ function MainLayout() {
                                     });
                                   }}
                                 />
+                                <Switch
+                                  checkedChildren="表头吸顶"
+                                  unCheckedChildren="表头不吸顶"
+                                  checked={
+                                    !!mergedOptions.interaction?.stickyHeader
+                                  }
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        stickyHeader: checked
+                                          ? { enableInteraction: true }
+                                          : false,
+                                      },
+                                    });
+                                  }}
+                                />
                               </Space>
                               <Space className="filter-container">
                                 <span className="label">
@@ -1692,6 +1708,9 @@ function MainLayout() {
                             )
                           }
                         </SheetComponent>
+                        {mergedOptions.interaction?.stickyHeader && (
+                          <div style={{ height: '100vh' }} />
+                        )}
                       </React.StrictMode>
                     )}
                   </>
