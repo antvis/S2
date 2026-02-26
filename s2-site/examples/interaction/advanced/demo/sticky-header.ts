@@ -63,8 +63,11 @@ const s2Options: S2Options = {
   width: 600,
   height: 2000,
   interaction: {
-    stickyHeader: {offsetTop: 64},
+    stickyHeader: {
+      enableInteraction: true,
+    },
   } as any,
+  hierarchyType: 'tree',
 };
 
 const s2 = new PivotSheet(container, dataCfg, s2Options);
