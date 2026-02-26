@@ -349,6 +349,12 @@ export interface StickyHeaderOptions {
    * 绑定的外部滚动容器 (默认 window)
    */
   scrollContainer?: HTMLElement | Window;
+
+  /**
+   * 是否启用吸顶表头的交互能力 (排序/resize/展开折叠等)
+   * @default false
+   */
+  enableInteraction?: boolean;
 }
 
 export interface InteractionCellHighlightOptions {

@@ -47,6 +47,9 @@ export class StickyHeaderController {
   /** 缓存的滚动容器 */
   private scrollContainer: HTMLElement | Window = window;
 
+  /** 布局同步防回环锁 */
+  private isSyncing = false;
+
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.options = this.resolveOptions();
@@ -75,6 +78,7 @@ export class StickyHeaderController {
     this.createStickyS2();
     this.bindScrollListener();
     this.bindSyncListeners();
+    this.bindInteractionBridge();
 
     // 首次渲染吸顶表头 (此时主表的 LAYOUT_AFTER_RENDER 已触发过, 需手动触发一次)
     this.renderStickyS2();
@@ -156,16 +160,38 @@ export class StickyHeaderController {
   }
 
   /**
-   * 生成吸顶表头的 Options (禁用大部分交互)
+   * 生成吸顶表头的 Options
+   *
+   * 当 enableInteraction 为 true 时, 保留 resize/tooltip/headerActionIcons 等配置
+   * 仅禁用刷选/多选等不适用于表头的交互
    */
   private applyStickyOptions(options: S2Options): S2Options {
+    const enableInteraction = this.options.enableInteraction;
+
+    if (enableInteraction) {
+      return customMerge(options, {
+        style: { dataCell: { height: 0 } },
+        interaction: {
+          resize: options.interaction?.resize,
+          stickyHeader: false,
+          brushSelection: false,
+          multiSelection: false,
+          rangeSelection: false,
+          selectedCellMove: false,
+        },
+        tooltip: {
+          enable: true,
+          operation: {
+            hiddenColumns: false,
+          },
+        },
+      } as Partial<S2Options>);
+    }
+
     return customMerge(options, {
-      // 将 dataCell height 设置为 0 确保只渲染表头
       style: { dataCell: { height: 0 } },
-      // 禁用大小调整
       interaction: {
         resize: false,
-        // 防止递归创建
         stickyHeader: false,
       },
       tooltip: {
@@ -469,25 +495,31 @@ export class StickyHeaderController {
 
     // 2. 布局变更同步 (参考 StrategySheetPro syncLayout)
     const onLayoutChange = () => {
-      if (!this.stickyS2) {
+      if (!this.stickyS2 || this.isSyncing) {
         return;
       }
 
-      const { dataCfg, options } = this.toStickyConfig();
+      this.isSyncing = true;
 
-      this.stickyS2.setDataCfg(dataCfg);
-      this.stickyS2.setOptions(options);
+      try {
+        const { dataCfg, options } = this.toStickyConfig();
 
-      // 调整画布大小到表头大小
-      const mainConfig = spreadsheet.getCanvasConfig();
+        this.stickyS2.setDataCfg(dataCfg);
+        this.stickyS2.setOptions(options);
 
-      this.stickyS2.changeSheetSize(
-        mainConfig.width,
-        spreadsheet.facet.cornerBBox.height,
-      );
-      this.stickyS2.render(false);
+        // 调整画布大小到表头大小
+        const mainConfig = spreadsheet.getCanvasConfig();
 
-      this.syncStyle();
+        this.stickyS2.changeSheetSize(
+          mainConfig.width,
+          spreadsheet.facet.cornerBBox.height,
+        );
+        this.stickyS2.render(false);
+
+        this.syncStyle();
+      } finally {
+        this.isSyncing = false;
+      }
     };
 
     const layoutEvents = [S2Event.LAYOUT_AFTER_RENDER, S2Event.LAYOUT_RESIZE];
@@ -500,6 +532,85 @@ export class StickyHeaderController {
         spreadsheet.off(event, onLayoutChange);
       });
     });
+  }
+
+  // ==================== 交互桥接 ====================
+
+  /**
+   * 交互桥接: 监听副表的语义事件, 转译为主表的等效操作
+   *
+   * - Resize: 提取 style 应用到主表, 主表 render 后 onLayoutChange 自动同步副表
+   * - Sort: RANGE_SORT 是命令事件, 主表 facet 内部直接处理
+   * - Collapse: ROW_CELL_COLLAPSED__PRIVATE 是命令事件, PivotSheet 内部直接处理
+   */
+  private bindInteractionBridge() {
+    if (!this.options.enableInteraction || !this.stickyS2) {
+      return;
+    }
+
+    const { stickyS2, spreadsheet } = this;
+
+    // 1. Resize 桥接 (列宽/行高/列头高)
+    //    副表 resize 交互完成后会 emit LAYOUT_RESIZE 并携带 ResizeParams
+    //    提取其中的 style 应用到主表, 主表 render 后 onLayoutChange 会自动同步副表
+    stickyS2.on(S2Event.LAYOUT_RESIZE, async (resizeDetail) => {
+      if (resizeDetail.style) {
+        spreadsheet.setOptions({ style: resizeDetail.style });
+        await spreadsheet.render(false);
+      }
+
+      spreadsheet.emit(S2Event.LAYOUT_RESIZE, resizeDetail);
+    });
+
+    // 2. 排序桥接
+    //    透视表排序通过 groupSortByMethod → setDataCfg({ sortParams }) 完成
+    //    RANGE_SORT 在透视表中仅是通知事件, 不足以触发排序
+    //    需要直接将 sortParams apply 到主表 dataCfg
+    stickyS2.on(S2Event.RANGE_SORT, async (sortParams) => {
+      spreadsheet.setDataCfg({
+        ...spreadsheet.dataCfg,
+        sortParams,
+      });
+      await spreadsheet.render();
+      spreadsheet.emit(S2Event.RANGE_SORT, sortParams);
+    });
+
+    // 3. 树节点展开/折叠桥接 (单个节点)
+    //    ROW_CELL_COLLAPSED 是通知事件, 需要转发为 __PRIVATE 命令事件
+    stickyS2.on(S2Event.ROW_CELL_COLLAPSED, (params) => {
+      spreadsheet.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, params);
+      this.scrollToTableTop();
+    });
+
+    // 4. 角头全量展开/折叠桥接
+    //    副表 handleRowCellToggleCollapseAll 已经做了 !isCollapsed 取反
+    //    emit ROW_CELL_ALL_COLLAPSED 携带的是最终状态 collapseAll
+    //    不能再通过 __PRIVATE (内含取反) 转发, 否则会双重取反
+    //    直接将最终状态 apply 到主表
+    stickyS2.on(S2Event.ROW_CELL_ALL_COLLAPSED, async (collapseAll) => {
+      spreadsheet.setOptions({
+        style: {
+          rowCell: {
+            collapseAll,
+            collapseFields: null,
+            expandDepth: null,
+          },
+        },
+      });
+      await spreadsheet.render(false);
+      spreadsheet.emit(S2Event.ROW_CELL_ALL_COLLAPSED, collapseAll);
+      this.scrollToTableTop();
+    });
+  }
+
+  /**
+   * 折叠/展开后滚动到表格顶部
+   * 折叠操作会大幅改变表格高度, 原位置可能导致用户迷失
+   */
+  private scrollToTableTop() {
+    const canvas = this.spreadsheet.getCanvasElement();
+
+    canvas?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
   }
 
   // ==================== 生命周期 ====================
