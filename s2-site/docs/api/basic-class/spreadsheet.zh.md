@@ -82,6 +82,7 @@ type S2MountContainer = string | HTMLElement;
 
 ```ts
 interface ScrollOffsetConfig {
+  skipScrollEvent?: boolean;
   rowHeaderOffsetX?: {
     value: number | undefined;
     animate?: boolean;

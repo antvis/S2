@@ -73,6 +73,11 @@ Function description: Scroll offset configuration
 
 ```ts
 interface ScrollOffsetConfig {
+  skipScrollEvent?: boolean;
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
   offsetX?: {
     value: number | undefined;
     animate?: boolean;
