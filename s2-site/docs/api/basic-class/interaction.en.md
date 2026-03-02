@@ -41,7 +41,7 @@ s2.interaction.reset()
 | getRowColActiveCells                | Get the active cell of row header and column header                                                                       | `() => RowCell[] \| ColCell[]`                                                    |
 | getAllCells                         | Get all cells in the visible area                                                                                         | () => [S2CellType](#s2celltype) \[]                                               |
 | selectAll                           | select all cells                                                                                                          | `() => void`                                                                      |
-| changeCell                          | Change the state of the specified cell (in visible area)                                                                  | (cell: [S2CellType](#s2celltype), options: [ChangeCellOptions](#changecelloptions)) => void |
+| changeCell                          | Change the state of the specified cell (in visible area)                                                                  | (options: [ChangeCellOptions](#changecelloptions)) => void |
 | getCellChildrenNodes                | Get all child nodes of the current cell                                                                                   | (cell: [S2CellType](#s2celltype) ) => [Node](/en/api/basic-class/node) \[]  |
 | hideColumns                         | Hidden column (when forceRender is `false` , if the hidden column is empty, the table update will no longer be triggered) | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void`            |
 | mergeCells                          | Merge Cells                                                                                                               | (cellsInfo?: [MergedCellInfo](#mergedcellinfo) \[], hideData?: boolean) => void   |
@@ -60,8 +60,8 @@ s2.interaction.reset()
 | scrollToRight | Scroll to right  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
 | scrollToBottom | Scroll to bottom  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
 | scrollToLeft | Scroll to left  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
-| highlightCell | Highlight specified cell (in visible area)| (cell: [S2CellType](#s2celltype)) => void |
-| selectCell | Select specified cell (in visible area)| (cell: [S2CellType](#s2celltype), options: [ChangeCellOptions](#changecelloptions)) => void |
+| highlightCell | Highlight specified cell (in visible area)| (cell: [S2CellType](#s2celltype), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| selectCell | Select specified cell (in visible area)| (cell: [S2CellType](#s2celltype), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
 | updateDataCellRelevantHeaderCells | Highlight data cell and relevant header cells  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 | updateDataCellRelevantRowCells | Highlight data cell and relevant row cells  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 | updateDataCellRelevantColCells | Highlight data cell and relevant column cells  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
@@ -145,6 +145,9 @@ export interface ChangeCellOptions extends CellScrollToOptions {
   cell: S2CellType<ViewMeta>;
   isMultiSelection?: boolean;
   stateName?: `${InteractionStateName}`;
+  interactionName?: `${InteractionName}`;
+  scrollIntoView?: boolean;
+  event?: FederatedPointerEvent;
 }
 ```
 
