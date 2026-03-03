@@ -80,16 +80,15 @@ body:
     attributes:
       label: ⌨️ Code Snapshots / 代码片段
       description: |
-        1. 请粘贴你的**核心代码片段**, 包括但不限于 `报错信息`, `s2Options 配置信息`, `s2DataConfig 数据源信息`。
-        2. 请不要粘贴你自己的业务代码, 更不要无脑粘贴一大段没有格式化的 "乱码", 请注意使用 markdown code 标签。
-        3. 请不要**直接粘贴官网的在线示例链接, 然后告诉我们有问题, 官网不会保存你编辑后的代码**, 请粘贴 `你的代码片段`, 或者使用 [codesandbox](https://codesandbox.io/)
-        4. 请尽量不要粘贴代码的截图，请使用文本, 方便复制.
-      placeholder: |
-        If there is a code block, please use Markdown syntax, such as:
-        请注意使用 markdown code 标签:
+        1. 请贴出你的**核心代码片段**，包括但不限于 `报错信息`, `s2Options 配置信息`, `s2DataConfig 数据源信息`。
+        2. 请保证代码格式清晰。你可以直接修改下方的示例代码块。
+        3. 请不要直接贴截图，文本更方便我们复制运行。
+      value: |
+        ```typescript
+        // 在这里粘贴你的核心代码，一定要保留上下两行的 ``` 符号！
+        // Paste your code here, keeping the ``` around it!
 
-        ```javascript
-        // Your code here
+        
         ```
     validations:
       required: true
@@ -155,3 +154,16 @@ body:
         - label: Safari (Limited support / 有限支持)
         - label: IE (Nonsupport / 不支持)
         - label: Others / 其他
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 🪓 Check that you have performed the following steps / 请确认你已完成以下自查
+      options:
+        - label: 我已经主动搜索过问题列表 (I have actively searched the Issues list)
+        - label: 我已经主动搜索过讨论区 (I have actively searched the Discussions list)
+        - label: 我已经仔细阅读过官方文档 (I have read the Official Document)
+        - label: 我确认这是一个 BUG，而不是如何使用的问题 (I confirm this is a BUG, not a usage question)
+        - label: 我已经提供了有效的复现链接或严格的操作步骤 (I have provided a valid reproduction link or strict descriptive steps)
+    validations:
+      required: true
