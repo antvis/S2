@@ -13068,6 +13068,17 @@ Array [
     "originalText": "1",
     "width": 80,
   },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 96,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": "2",
+    "width": 80,
+  },
 ]
 `;
 
@@ -13150,6 +13161,21 @@ Array [
     "originalText": "浙江省",
     "width": 96,
   },
+  Object {
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "actualTextHeight": 80,
+    "actualTextWidth": 365,
+    "height": 96,
+    "multiLineActualTexts": Array [
+      "浙江省浙江省",
+      "浙江省浙江省",
+      "浙江省浙江省",
+      "浙江省浙江省",
+      "浙江省浙江省",
+    ],
+    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "width": 96,
+  },
 ]
 `;
 
@@ -13201,6 +13227,17 @@ Array [
     "width": 96,
   },
   Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 96,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
     "actualText": "632",
     "actualTextHeight": 15,
     "actualTextWidth": 21,
@@ -13242,6 +13279,17 @@ Array [
       "5343",
     ],
     "originalText": 5343,
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 96,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
     "width": 96,
   },
 ]
@@ -16106,6 +16154,17 @@ Array [
     "originalText": "3",
     "width": 80,
   },
+  Object {
+    "actualText": "4",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 150,
+    "multiLineActualTexts": Array [
+      "4",
+    ],
+    "originalText": "4",
+    "width": 80,
+  },
 ]
 `;
 
@@ -16415,6 +16474,17 @@ Array [
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 100,
   },
+  Object {
+    "actualText": "四川省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "四川省",
+    ],
+    "originalText": "四川省",
+    "width": 100,
+  },
 ]
 `;
 
@@ -16517,6 +16587,15 @@ Array [
     "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
+    "height": 30,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 103,
+  },
+  Object {
+    "actualText": "",
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
     "height": 64,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
@@ -16611,6 +16690,15 @@ Array [
     "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
+    "height": 30,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 103,
+  },
+  Object {
+    "actualText": "",
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
     "height": 64,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
@@ -16698,6 +16786,15 @@ Array [
       "-",
     ],
     "originalText": "-",
+    "width": 103,
+  },
+  Object {
+    "actualText": "",
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 30,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
     "width": 103,
   },
   Object {
@@ -16799,6 +16896,15 @@ Array [
     "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
+    "height": 30,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 103,
+  },
+  Object {
+    "actualText": "",
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
     "height": 64,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
@@ -16892,6 +16998,15 @@ Array [
     "actualText": "",
     "actualTextHeight": 0,
     "actualTextWidth": 0,
+    "height": 30,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 103,
+  },
+  Object {
+    "actualText": "",
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
     "height": 64,
     "multiLineActualTexts": Array [],
     "originalText": undefined,
@@ -16979,6 +17094,15 @@ Array [
       "-",
     ],
     "originalText": "-",
+    "width": 103,
+  },
+  Object {
+    "actualText": "",
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 30,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
     "width": 103,
   },
 ]
@@ -24281,6 +24405,17 @@ Array [
     "originalText": 9,
     "width": 80,
   },
+  Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": 10,
+    "width": 80,
+  },
 ]
 `;
 
@@ -24465,6 +24600,17 @@ Array [
     "width": 80,
   },
   Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": 10,
+    "width": 80,
+  },
+  Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
@@ -24493,6 +24639,17 @@ Array [
     "actualTextHeight": 15,
     "actualTextWidth": 37,
     "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
     "multiLineActualTexts": Array [
       "浙江省",
     ],
@@ -24667,6 +24824,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 103,
+  },
+  Object {
     "actualText": "家具",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
@@ -24765,6 +24933,17 @@ Array [
       "家具",
     ],
     "originalText": "家具",
+    "width": 103,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
     "width": 103,
   },
   Object {
@@ -24869,6 +25048,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 103,
+  },
+  Object {
     "actualText": "236723672361111",
     "actualTextHeight": 30,
     "actualTextWidth": 100,
@@ -24969,6 +25159,17 @@ Array [
       "834",
     ],
     "originalText": 834,
+    "width": 103,
+  },
+  Object {
+    "actualText": "945",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "945",
+    ],
+    "originalText": 945,
     "width": 103,
   },
 ]
@@ -25089,6 +25290,17 @@ Array [
       "9",
     ],
     "originalText": 9,
+    "width": 80,
+  },
+  Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": 10,
     "width": 80,
   },
 ]
@@ -25275,6 +25487,17 @@ Array [
     "width": 80,
   },
   Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": 10,
+    "width": 80,
+  },
+  Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
@@ -25303,6 +25526,17 @@ Array [
     "actualTextHeight": 15,
     "actualTextWidth": 37,
     "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
     "multiLineActualTexts": Array [
       "浙江省",
     ],
@@ -25477,6 +25711,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 103,
+  },
+  Object {
     "actualText": "家具",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
@@ -25575,6 +25820,17 @@ Array [
       "家具",
     ],
     "originalText": "家具",
+    "width": 103,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
     "width": 103,
   },
   Object {
@@ -25679,6 +25935,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 103,
+  },
+  Object {
     "actualText": "236723672361111",
     "actualTextHeight": 30,
     "actualTextWidth": 100,
@@ -25779,6 +26046,17 @@ Array [
       "834",
     ],
     "originalText": 834,
+    "width": 103,
+  },
+  Object {
+    "actualText": "945",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "945",
+    ],
+    "originalText": 945,
     "width": 103,
   },
 ]
@@ -32598,6 +32876,17 @@ Array [
     "originalText": 8,
     "width": 80,
   },
+  Object {
+    "actualText": "9",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "9",
+    ],
+    "originalText": 9,
+    "width": 80,
+  },
 ]
 `;
 
@@ -32771,6 +33060,17 @@ Array [
     "width": 80,
   },
   Object {
+    "actualText": "9",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "9",
+    ],
+    "originalText": 9,
+    "width": 80,
+  },
+  Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
@@ -32819,6 +33119,17 @@ Array [
     "actualTextHeight": 15,
     "actualTextWidth": 37,
     "height": 100,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
     "multiLineActualTexts": Array [
       "浙江省",
     ],
@@ -32947,6 +33258,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "舟山市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "舟山市",
+    ],
+    "originalText": "舟山市",
+    "width": 103,
+  },
+  Object {
     "actualText": "家具",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
@@ -32995,6 +33317,17 @@ Array [
     "actualTextHeight": 15,
     "actualTextWidth": 25,
     "height": 100,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
     "multiLineActualTexts": Array [
       "家具",
     ],
@@ -33123,6 +33456,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "沙发",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 103,
+  },
+  Object {
     "actualText": "236723672361111",
     "actualTextHeight": 30,
     "actualTextWidth": 100,
@@ -33210,6 +33554,17 @@ Array [
       "7234",
     ],
     "originalText": 7234,
+    "width": 103,
+  },
+  Object {
+    "actualText": "834",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "834",
+    ],
+    "originalText": 834,
     "width": 103,
   },
 ]
@@ -41279,6 +41634,17 @@ Array [
     "originalText": 9,
     "width": 80,
   },
+  Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": 10,
+    "width": 80,
+  },
 ]
 `;
 
@@ -41463,6 +41829,17 @@ Array [
     "width": 80,
   },
   Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": 10,
+    "width": 80,
+  },
+  Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
@@ -41491,6 +41868,17 @@ Array [
     "actualTextHeight": 15,
     "actualTextWidth": 37,
     "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
     "multiLineActualTexts": Array [
       "浙江省",
     ],
@@ -41665,6 +42053,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 103,
+  },
+  Object {
     "actualText": "家具",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
@@ -41763,6 +42162,17 @@ Array [
       "家具",
     ],
     "originalText": "家具",
+    "width": 103,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
     "width": 103,
   },
   Object {
@@ -41867,6 +42277,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 103,
+  },
+  Object {
     "actualText": "236723672361111",
     "actualTextHeight": 30,
     "actualTextWidth": 100,
@@ -41967,6 +42388,17 @@ Array [
       "834",
     ],
     "originalText": 834,
+    "width": 103,
+  },
+  Object {
+    "actualText": "945",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "945",
+    ],
+    "originalText": 945,
     "width": 103,
   },
 ]
@@ -42098,6 +42530,17 @@ Array [
       "10",
     ],
     "originalText": 10,
+    "width": 80,
+  },
+  Object {
+    "actualText": "11",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "11",
+    ],
+    "originalText": 11,
     "width": 80,
   },
 ]
@@ -42292,6 +42735,17 @@ Array [
     "width": 80,
   },
   Object {
+    "actualText": "11",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "11",
+    ],
+    "originalText": 11,
+    "width": 80,
+  },
+  Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
@@ -42319,6 +42773,17 @@ Array [
     "actualTextHeight": 15,
     "actualTextWidth": 37,
     "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
     "multiLineActualTexts": Array [
       "浙江省",
     ],
@@ -42514,6 +42979,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "绍兴市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 103,
+  },
+  Object {
     "actualText": "家具",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
@@ -42611,6 +43087,17 @@ Array [
       "家具",
     ],
     "originalText": "家具",
+    "width": 103,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
     "width": 103,
   },
   Object {
@@ -42736,6 +43223,17 @@ Array [
     "width": 103,
   },
   Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 103,
+  },
+  Object {
     "actualText": "236723672361111",
     "actualTextHeight": 30,
     "actualTextWidth": 100,
@@ -42846,6 +43344,17 @@ Array [
       "945",
     ],
     "originalText": 945,
+    "width": 103,
+  },
+  Object {
+    "actualText": "1304",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1304",
+    ],
+    "originalText": 1304,
     "width": 103,
   },
 ]
