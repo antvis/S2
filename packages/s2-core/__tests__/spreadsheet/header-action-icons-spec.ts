@@ -195,7 +195,7 @@ describe('HeaderActionIcons Tests', () => {
     const positions = s2.facet.getRowCells().map((cell) => {
       return cell
         .getActionIcons()
-        .map((icon) => pick(icon.iconImageShape.attributes, ['x', 'y']));
+        .map((icon) => pick(icon.getCfg(), ['x', 'y']));
     });
 
     expect(positions).toMatchSnapshot();

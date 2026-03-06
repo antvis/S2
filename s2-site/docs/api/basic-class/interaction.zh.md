@@ -89,7 +89,7 @@ export interface CellScrollToOptions {
 
 ```ts
 
-export interface ChangeCellOptions {
+export interface ChangeCellOptions extends CellScrollToOptions {
   /**
    * 目标单元格
    */
@@ -103,7 +103,7 @@ export interface ChangeCellOptions {
   /**
    * 状态名 （默认 `selected`)
    */
-  stateName?: InteractionStateName;
+  stateName?: `${InteractionStateName}`;
 
   /**
    * 如果单元格不在可视范围，是否自动滚动
@@ -181,37 +181,6 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | TableCornerCell
   | TableSeriesNumberCell
   | BaseCell<T>;
-```
-
-### ChangeCellOptions
-
-```ts
-interface ChangeCellOptions {
-  /**
-   * 目标单元格
-   */
-  cell: S2CellType<ViewMeta>;
-
-  /**
-   * 是否是多选
-   */
-  isMultiSelection?: boolean;
-
-  /**
-   * 状态名
-   */
-  stateName?: InteractionStateName;
-
-  /**
-   * 交互名
-   */
-  interactionName?: `${InteractionName}`;
-
-  /**
-   * 如果单元格不在可视范围，是否自动滚动
-   */
-  scrollIntoView?: boolean;
-}
 ```
 
 ### MergedCellInfo

@@ -41,7 +41,7 @@ s2.interaction.reset()
 | getRowColActiveCells                | Get the active cell of row header and column header                                                                       | `() => RowCell[] \| ColCell[]`                                                    |
 | getAllCells                         | Get all cells in the visible area                                                                                         | () => [S2CellType](#s2celltype) \[]                                               |
 | selectAll                           | select all cells                                                                                                          | `() => void`                                                                      |
-| changeCell                    | Select the specified row and column header cell                                                                           | (changeCellInfo: [ChangeCellOptions](#selectheadercellinfo) ) => boolean |
+| changeCell                          | Change the state of the specified cell (in visible area)                                                                  | (cell: [S2CellType](#s2celltype), options: [ChangeCellOptions](#changecelloptions)) => void |
 | getCellChildrenNodes                | Get all child nodes of the current cell                                                                                   | (cell: [S2CellType](#s2celltype) ) => [Node](/en/api/basic-class/node) \[]  |
 | hideColumns                         | Hidden column (when forceRender is `false` , if the hidden column is empty, the table update will no longer be triggered) | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void`            |
 | mergeCells                          | Merge Cells                                                                                                               | (cellsInfo?: [MergedCellInfo](#mergedcellinfo) \[], hideData?: boolean) => void   |
@@ -51,7 +51,20 @@ s2.interaction.reset()
 | addIntercepts                       | Added interactive interception                                                                                            | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                     |
 | hasIntercepts                       | Whether there is an interaction specified for interception                                                                | (interceptTypes: [InterceptType](#intercepttype) \[]) => boolean                  |
 | removeIntercepts                    | Remove specified interaction interception                                                                                 | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                     |
-| highlightNodes                      | Highlight the cell corresponding to the node                                                                              | (nodes: [Node](/en/api/basic-class/node) \[]) => void                           |
+| highlightNodes                      | Highlight the cell corresponding to the node                                                                              | (nodes: [Node](/en/api/basic-class/node)[], stateName: `${InteractionStateName}`) => void                           |
+| scrollTo | Scroll to specified position   | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |
+| scrollToNode | Scroll to specified cell node   | (node: [Node](/en/api/basic-class/node), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| scrollToCell | Scroll to specified cell   | (cell: [S2CellType](#s2celltype), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| scrollToCellById | Scroll to specified cell by id   | (id: string, options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| scrollToTop | Scroll to top  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| scrollToRight | Scroll to right  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| scrollToBottom | Scroll to bottom  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| scrollToLeft | Scroll to left  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |
+| highlightCell | Highlight specified cell (in visible area)| (cell: [S2CellType](#s2celltype)) => void |
+| selectCell | Select specified cell (in visible area)| (cell: [S2CellType](#s2celltype), options: [ChangeCellOptions](#changecelloptions)) => void |
+| updateDataCellRelevantHeaderCells | Highlight data cell and relevant header cells  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
+| updateDataCellRelevantRowCells | Highlight data cell and relevant row cells  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
+| updateDataCellRelevantColCells | Highlight data cell and relevant column cells  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 
 <embed src="@/common/interaction.en.md"></embed>
 
@@ -109,12 +122,29 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | BaseCell<T>;
 ```
 
+### CellScrollToOptions
+
+```ts
+export interface CellScrollToOptions {
+  /**
+   * Whether to show scrolling animation
+   */
+  animate?: boolean;
+
+  /**
+   * Whether to trigger scroll event
+   */
+  skipScrollEvent?: boolean;
+}
+```
+
 ### ChangeCellOptions
 
 ```ts
-interface ChangeCellOptions {
-  cell: S2CellType<ViewMeta>; // Target cell
-  isMultiSelection?: boolean; // Whether it is multi-selection
+export interface ChangeCellOptions extends CellScrollToOptions {
+  cell: S2CellType<ViewMeta>;
+  isMultiSelection?: boolean;
+  stateName?: `${InteractionStateName}`;
 }
 ```
 
