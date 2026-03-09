@@ -64,6 +64,7 @@ import type { Node } from '../facet/layout/node';
 import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
+import { StickyHeaderController } from '../ui/sticky-header';
 import { BaseTooltip } from '../ui/tooltip';
 import { getOffscreenCanvas, removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
@@ -97,6 +98,8 @@ export abstract class SpreadSheet extends EE {
   public interaction: RootInteraction;
 
   public hdAdapter: HdAdapter;
+
+  public stickyHeaderController: StickyHeaderController | null = null;
 
   /**
    * 表格是否已销毁
@@ -152,6 +155,7 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
     this.setOverscrollBehavior();
     this.mountSheetInstance();
+    this.initStickyHeader();
   }
 
   protected setupDataConfig(dataCfg: S2DataConfig) {
@@ -242,6 +246,24 @@ export abstract class SpreadSheet extends EE {
       this.hdAdapter = new HdAdapter(this);
       this.hdAdapter.init();
     }
+  }
+
+  /**
+   * 初始化表头吸顶控制器 (延迟到首次渲染完成后)
+   */
+  private initStickyHeader() {
+    if (!this.options.interaction?.stickyHeader) {
+      return;
+    }
+
+    // 吸顶控制器依赖 facet.cornerBBox, 需要在首次渲染完成后才能初始化
+    const onFirstRender = () => {
+      this.off(S2Event.LAYOUT_AFTER_RENDER, onFirstRender);
+      this.stickyHeaderController?.destroy();
+      this.stickyHeaderController = new StickyHeaderController(this);
+    };
+
+    this.on(S2Event.LAYOUT_AFTER_RENDER, onFirstRender);
   }
 
   protected initInteraction() {
@@ -410,6 +432,24 @@ export abstract class SpreadSheet extends EE {
 
     this.resetHiddenColumnsDetailInfoIfNeeded();
     this.registerIcons();
+    this.syncStickyHeader();
+  }
+
+  /**
+   * 同步吸顶控制器状态：options 更新后如果 stickyHeader 配置变更则销毁/重建
+   */
+  private syncStickyHeader() {
+    const enabled = !!this.options.interaction?.stickyHeader;
+
+    // 先销毁旧控制器（无论是关闭还是选项内容变更都需要重建）
+    if (this.stickyHeaderController) {
+      this.stickyHeaderController.destroy();
+      this.stickyHeaderController = null;
+    }
+
+    if (enabled) {
+      this.initStickyHeader();
+    }
   }
 
   /**
@@ -528,6 +568,8 @@ export abstract class SpreadSheet extends EE {
     this.destroyed = true;
     this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
+    this.stickyHeaderController?.destroy();
+    this.stickyHeaderController = null;
     this.facet?.destroy();
     this.hdAdapter?.destroy();
     this.interaction?.destroy();
