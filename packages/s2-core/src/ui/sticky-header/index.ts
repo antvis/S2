@@ -146,10 +146,10 @@ export class StickyHeaderController {
           ? column
           : (column as { field: string }).field;
 
-        return item[key]?.toString?.();
+        return String(item[key]);
       });
 
-      const cacheKey = values.join('');
+      const cacheKey = values.join('\u0000');
 
       if (!cache[cacheKey]) {
         cache[cacheKey] = item;
