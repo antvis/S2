@@ -1,3 +1,16 @@
+# [@antv/s2-v2.7.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.6.0...@antv/s2-v2.7.0-beta.1) (2026-03-09)
+
+
+### Bug Fixes
+
+* implement CSP-compatible SVG icon rendering using Path mode ([#3319](https://github.com/antvis/S2/issues/3319)) ([0fba0c3](https://github.com/antvis/S2/commit/0fba0c365257918c22df9adc61a49b332aeb377d))
+* 移除横向滚动条的多余空白 ([#3325](https://github.com/antvis/S2/issues/3325)) ([81e36ec](https://github.com/antvis/S2/commit/81e36ece9d7ddf61a1f1833f3b8c3a95d5cd7c01))
+
+
+### Features
+
+* 表头吸顶 (Sticky Header) 功能及配套 ([#3323](https://github.com/antvis/S2/issues/3323)) ([4e832f3](https://github.com/antvis/S2/commit/4e832f3b2dc97ac78df0b450390d7370d134f0d4))
+
 # [@antv/s2-v2.6.0](https://github.com/antvis/S2/compare/@antv/s2-v2.5.0...@antv/s2-v2.6.0) (2026-02-09)
 
 
