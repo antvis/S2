@@ -367,9 +367,6 @@ export class StickyHeaderController {
 
   /**
    * 核心: 计算三态样式并应用到吸顶容器
-   */
-  /**
-   * 核心: 计算三态样式并应用到吸顶容器
    *
    * 同时支持 window 滚动和 div 容器滚动两种场景:
    * - window: 使用 position:fixed, top 为视口偏移
