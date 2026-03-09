@@ -93,7 +93,7 @@ export const StickyHeaderSheet = React.forwardRef<
       ...s2Options,
       interaction: {
         ...s2Options.interaction,
-        stickyHeader: enabled ? { offsetTop } : false,
+        stickyHeader: enabled ? { offsetTop, enableInteraction: true } : false,
       },
     }),
     [offsetTop, enabled],
