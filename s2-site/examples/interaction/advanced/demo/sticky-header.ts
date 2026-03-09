@@ -1,4 +1,4 @@
-import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
+import { PivotSheet, S2Options } from '@antv/s2';
 
 function generateData() {
   const provinces = [
@@ -66,7 +66,7 @@ const s2Options: S2Options = {
     stickyHeader: {
       enableInteraction: true,
     },
-  } as any,
+  },
   hierarchyType: 'tree',
 };
 

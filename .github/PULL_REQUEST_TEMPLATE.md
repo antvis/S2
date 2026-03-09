@@ -16,8 +16,8 @@
 - [ ] Type optimization
 
 🐛 Bugfix
-
-- [ ] Solve the issue and close #0
+<!-- 如果没有相关的 issue 需要关闭，请删除这一行 -->
+- [ ] Solve the issue and close #1904
 
 🔧 Chore
 
@@ -40,6 +40,14 @@
 | Before | After |
 | ------ | ----- |
 | ❌      | ✅     |
+
+### ⚠️ Breaking Changes
+
+<!-- Does this PR introduce a breaking change? -->
+<!-- 这个 PR 是否包含破坏性变更？如果有，请说明它对现有用户的影响以及如何进行迁移。 -->
+
+- [ ] Yes
+- [ ] No
 
 ### 🔗 Related issue link
 
