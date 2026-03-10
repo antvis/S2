@@ -312,6 +312,18 @@ export interface S2BasicOptions<
      */
     experimentalReuseCell?: boolean;
   };
+
+  /**
+   * 安全策略配置
+   */
+  csp?: {
+    /**
+     * 图标渲染策略
+     * - blob: 使用 Blob URL 渲染 (默认, 兼容性好, 但严苛 CSP 环境可能报错)
+     * - path: 优先使用矢量路径渲染 (CSP 友好, 但仅支持简单无变换图标)
+     */
+    iconStrategy?: 'blob' | 'path';
+  };
 }
 
 // 设备，pc || mobile

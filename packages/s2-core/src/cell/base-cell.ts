@@ -30,7 +30,7 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import type { GuiIcon } from '../common/icons/gui-icon';
+import type { GuiIcon, GuiIconCfg } from '../common/icons/gui-icon';
 import {
   CellBorderPosition,
   CellClipBox,
@@ -766,12 +766,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       const position = this.getIconPosition();
       const { size } = this.getStyle()!.icon!;
 
-      const iconCfg = {
+      const iconCfg: GuiIconCfg = {
         ...position,
         name: attrs?.name!,
         width: size,
         height: size,
         fill: attrs?.fill,
+        iconStrategy: this.spreadsheet.options.csp?.iconStrategy,
       };
 
       if (this.conditionIconShape) {

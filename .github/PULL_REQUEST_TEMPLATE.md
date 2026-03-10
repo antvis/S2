@@ -17,7 +17,7 @@
 
 🐛 Bugfix
 <!-- 如果没有相关的 issue 需要关闭，请删除这一行 -->
-- [ ] Solve the issue and close #1904
+- [ ] Solve the issue and close
 
 🔧 Chore
 
@@ -53,10 +53,6 @@
 
 <!-- If there is a related Issue/PR link -->
 <!-- 如果有相关的 Issue/PR 链接，请关联上 -->
-
-<!-- close #0 -->
-<!-- ref #0 -->
-<!-- fix #0 -->
 
 ### 🔍 Self-Check before the merge
 

@@ -588,6 +588,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       ...iconConfig,
       name: 'ExpandColIcon',
       cursor: 'pointer',
+      iconStrategy: this.spreadsheet.options.csp?.iconStrategy,
     });
 
     icon.addEventListener('click', () => {

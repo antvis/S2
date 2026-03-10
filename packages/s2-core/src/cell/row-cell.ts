@@ -224,6 +224,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
         width: size,
         height: size,
         fill,
+        iconStrategy: this.spreadsheet.options.csp?.iconStrategy,
       },
       isCollapsed,
       onClick: () => {
