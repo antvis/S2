@@ -251,6 +251,7 @@ export abstract class HeaderCell<
       name,
       x,
       y,
+      iconStrategy: this.spreadsheet.options.csp?.iconStrategy,
     });
 
     icon.toggleVisibility(!defaultHide);
@@ -321,13 +322,14 @@ export abstract class HeaderCell<
         const y = iconPosition.y;
 
         if (icon.isConditionIcon) {
-          const iconCfg = {
+          const iconCfg: GuiIconCfg = {
             x,
             y,
             name: icon.name,
             width: size,
             height: size,
             fill: icon.fill,
+            iconStrategy: this.spreadsheet.options.csp?.iconStrategy,
           };
 
           if (this.conditionIconShape) {
