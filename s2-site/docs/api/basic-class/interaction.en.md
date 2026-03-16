@@ -138,6 +138,29 @@ export interface CellScrollToOptions {
 }
 ```
 
+### StickyHeaderOptions
+
+```ts
+export interface StickyHeaderOptions {
+  /**
+   * Top offset when sticky (used for external business with a fixed Header, such as navigation bar)
+   * @default 0
+   */
+  offsetTop?: number | (() => number);
+
+  /**
+   * The external scroll container to bind to (defaults to window)
+   */
+  scrollContainer?: HTMLElement | Window;
+
+  /**
+   * Whether to enable the interaction capabilities of the sticky header (sorting/resize/expand/collapse, etc.)
+   * @default false
+   */
+  enableInteraction?: boolean;
+}
+```
+
 ### ChangeCellOptions
 
 ```ts
