@@ -134,9 +134,8 @@ function setupWindowAndClasses(g: GlobalEnv): void {
     }),
     setTimeout: globalThis.setTimeout,
     clearTimeout: globalThis.clearTimeout,
-    requestAnimationFrame: (cb: FrameRequestCallback) =>
-      setTimeout(cb as unknown as () => void, 16),
-    cancelAnimationFrame: (id: number) => clearTimeout(id),
+    requestAnimationFrame: g.requestAnimationFrame,
+    cancelAnimationFrame: g.cancelAnimationFrame,
     location: { href: 'http://localhost/' },
   };
 
@@ -202,8 +201,8 @@ function setupBrowserGlobals(): void {
 
   setupNavigator(g);
   setupDocument(g);
-  setupWindowAndClasses(g);
   setupAPIsAndEvents(g);
+  setupWindowAndClasses(g);
 }
 
 /**
