@@ -66,7 +66,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
         const field = node?.field;
 
         if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
-          return (i + 1).toString();
+          const seriesValue = i + 1;
+          const formatter = this.getFormatter({
+            field,
+            rowIndex: i,
+            colIndex: j,
+          });
+
+          return formatter(seriesValue);
         }
 
         const formatter = this.getFormatter({
@@ -114,7 +121,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
                 const field = colNode.field;
 
                 if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
-                  row.push((j + 1).toString());
+                  const seriesValue = j + 1;
+                  const formatter = this.getFormatter({
+                    field,
+                    rowIndex: j,
+                    colIndex: i,
+                  });
+
+                  row.push(formatter(seriesValue) as string);
                   // eslint-disable-next-line no-continue
                   continue;
                 }
