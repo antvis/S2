@@ -7,6 +7,7 @@ import type {
   SimpleData,
 } from '../common/interface';
 import { getEmptyPlaceholder } from '../utils';
+import { getByPath } from '../utils/accessor';
 import { isAscSort, isDescSort } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
 import type { GetCellDataParams, GetCellMultiDataParams } from './interface';
@@ -67,7 +68,7 @@ export class TableDataSet extends BaseDataSet {
     each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
       const filteredValuesSet = new Set(filteredValues);
       const defaultFilterFunc = (row: RawData) =>
-        !filteredValuesSet.has(row[filterKey]);
+        !filteredValuesSet.has(getByPath(row, filterKey) as any);
 
       const filteredData = filter(this.displayData, (row) => {
         if (customFilter) {
@@ -105,7 +106,7 @@ export class TableDataSet extends BaseDataSet {
           for (let index = 0; index < keys.length; index++) {
             const k = keys[index];
 
-            if (record[k] !== query[k]) {
+            if (getByPath(record, k) !== query[k]) {
               inScope = false;
               restData.push(record);
               break;
@@ -130,8 +131,12 @@ export class TableDataSet extends BaseDataSet {
         const reversedSortBy = [...sortBy].reverse();
 
         sortedData = data.sort((a, b) => {
-          const idxA = reversedSortBy.indexOf(a[sortFieldId] as string);
-          const idxB = reversedSortBy.indexOf(b[sortFieldId] as string);
+          const idxA = reversedSortBy.indexOf(
+            getByPath(a, sortFieldId) as string,
+          );
+          const idxB = reversedSortBy.indexOf(
+            getByPath(b, sortFieldId) as string,
+          );
 
           return idxB - idxA;
         });
@@ -143,11 +148,11 @@ export class TableDataSet extends BaseDataSet {
         const customSortBy = isFunction(sortBy) ? sortBy : null;
         const customSort = (record: RawData) => {
           // 空值占位符按最小值处理 https://github.com/antvis/S2/issues/2707
-          if (record[sortFieldId] === placeholder) {
+          if (getByPath(record, sortFieldId) === placeholder) {
             return Number.MIN_VALUE;
           }
 
-          return record[sortFieldId];
+          return getByPath(record, sortFieldId) as any;
         };
 
         sortedData = orderBy(
@@ -183,7 +188,7 @@ export class TableDataSet extends BaseDataSet {
       return rowData as Data;
     }
 
-    return rowData[query['field']] as SimpleData;
+    return getByPath(rowData, query['field']) as SimpleData;
   }
 
   public getCellMultiData(
@@ -201,7 +206,7 @@ export class TableDataSet extends BaseDataSet {
       return rowData as Data[];
     }
 
-    return rowData.map((item) => item[query['field']]) as Data[];
+    return rowData.map((item) => getByPath(item, query['field'])) as Data[];
   }
 
   public getRowData(cell: CellMeta) {
