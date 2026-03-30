@@ -1,3 +1,11 @@
+# [@antv/s2-v2.7.0-beta.2](https://github.com/antvis/S2/compare/@antv/s2-v2.7.0-beta.1...@antv/s2-v2.7.0-beta.2) (2026-03-30)
+
+
+### Bug Fixes
+
+* support configurable icon rendering strategy and fix complex ico… ([#3328](https://github.com/antvis/S2/issues/3328)) ([5813141](https://github.com/antvis/S2/commit/5813141a994302365457bf98fcb6a6d49fa3e9a5))
+* 明细表导出序号列 formatter 不生效 ([#3333](https://github.com/antvis/S2/issues/3333)) ([4a333c3](https://github.com/antvis/S2/commit/4a333c3da3953231f7afe3ac0250d8ed2f89c0c4))
+
 # [@antv/s2-v2.7.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v2.6.0...@antv/s2-v2.7.0-beta.1) (2026-03-09)
 
 
