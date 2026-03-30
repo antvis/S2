@@ -152,6 +152,7 @@ describe('GuiIcon Tests', () => {
         y: 10,
         width: 16,
         height: 16,
+        iconStrategy: 'path',
       });
 
       // Path 模式下应该有 iconPathShapes
@@ -173,6 +174,7 @@ describe('GuiIcon Tests', () => {
         y: 0,
         width: 16,
         height: 16,
+        iconStrategy: 'path',
       });
 
       expect(icon.iconPathShapes.length).toBeGreaterThan(0);
@@ -190,6 +192,7 @@ describe('GuiIcon Tests', () => {
         width: 16,
         height: 16,
         cursor: 'pointer',
+        iconStrategy: 'path',
       });
 
       expect(icon.iconPathShapes.length).toBeGreaterThan(0);
@@ -231,6 +234,7 @@ describe('GuiIcon Tests', () => {
         width: 16,
         height: 16,
         fill: 'red',
+        iconStrategy: 'path',
       });
 
       expect(icon.iconPathShapes.length).toBeGreaterThan(0);
@@ -251,6 +255,7 @@ describe('GuiIcon Tests', () => {
         y: 0,
         width: 16,
         height: 16,
+        iconStrategy: 'path',
       });
 
       expect(icon.iconPathShapes.length).toBeGreaterThan(0);
@@ -262,6 +267,7 @@ describe('GuiIcon Tests', () => {
         y: 0,
         width: 16,
         height: 16,
+        iconStrategy: 'path',
       });
 
       expect(icon.name).toBe('Minus');
@@ -275,6 +281,7 @@ describe('GuiIcon Tests', () => {
         y: 0,
         width: 16,
         height: 16,
+        iconStrategy: 'path',
       });
 
       icon.updatePosition({ x: 50, y: 100 });
@@ -293,6 +300,7 @@ describe('GuiIcon Tests', () => {
         y: 0,
         width: 16,
         height: 16,
+        iconStrategy: 'path',
       });
 
       // 隐藏

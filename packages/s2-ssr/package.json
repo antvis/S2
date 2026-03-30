@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-ssr",
-  "version": "0.0.2",
+  "version": "0.1.1",
   "description": "Support SSR for S2",
   "keywords": [
     "antv",

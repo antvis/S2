@@ -25,6 +25,11 @@ const PathDataCache: Record<string, ParsedSvgData> = {};
 export interface GuiIconCfg extends Omit<ImageStyleProps, 'fill'> {
   readonly name: string;
   readonly fill?: string | null;
+  /**
+   * 图标渲染策略
+   * @see S2BasicOptions.csp
+   */
+  readonly iconStrategy?: 'blob' | 'path';
 }
 
 /**
@@ -32,6 +37,16 @@ export interface GuiIconCfg extends Omit<ImageStyleProps, 'fill'> {
  * @see https://github.com/antvis/S2/issues/3125
  */
 function parseSvgPaths(svg: string): ParsedSvgData | null {
+  // 如果 SVG 包含 transform, g, rect 等不支持的复杂标签或属性，暂不使用 Path 模式
+  // 避免渲染错位
+  if (
+    /transform|translate|scale|rotate|<g|<rect|<circle|<ellipse|<line|<polyline|<polygon|<text|<tspan/i.test(
+      svg,
+    )
+  ) {
+    return null;
+  }
+
   // 提取 viewBox
   const viewBoxMatch = svg.match(/viewBox=["']([^"']+)["']/);
 
@@ -289,20 +304,20 @@ export class GuiIcon extends Group {
   public isOnlineLink = (src: string) => /^(?:https?:)?(?:\/\/)/.test(src);
 
   private render() {
-    const { name, fill } = this.cfg;
+    const { name, fill, iconStrategy } = this.cfg;
 
-    // 优先尝试 Path 模式 (完全绕过 CSP 限制)
-    if (this.tryRenderAsPath(name, fill)) {
+    // 如果指定了 path 模式，优先尝试 Path 模式 (完全绕过 CSP 限制)
+    if (iconStrategy === 'path' && this.tryRenderAsPath(name, fill)) {
       this.usePathMode = true;
 
       return;
     }
 
-    // 回退到 Image 模式
+    // 默认或失败时回退到 Image 模式
     this.usePathMode = false;
     const attrs = clone(this.cfg);
     const image = new CustomImage(GuiIcon.type, {
-      style: omit(attrs, 'fill'),
+      style: omit(attrs, ['fill', 'iconStrategy']),
     });
 
     this.iconImageShape = image;
@@ -312,7 +327,7 @@ export class GuiIcon extends Group {
   public reRender(cfg: GuiIconCfg) {
     this.name = cfg.name;
     this.cfg = cfg;
-    const { name, fill } = this.cfg;
+    const { name, fill, iconStrategy } = this.cfg;
 
     // 清除旧的渲染
     if (this.usePathMode) {
@@ -323,8 +338,8 @@ export class GuiIcon extends Group {
       this.iconPathShapes = [];
     }
 
-    // 优先尝试 Path 模式
-    if (this.tryRenderAsPath(name, fill)) {
+    // 如果指定了 path 模式，优先尝试 Path 模式
+    if (iconStrategy === 'path' && this.tryRenderAsPath(name, fill)) {
       this.usePathMode = true;
 
       return;
@@ -336,11 +351,11 @@ export class GuiIcon extends Group {
 
     if (!this.iconImageShape) {
       this.iconImageShape = new CustomImage(GuiIcon.type, {
-        style: omit(attrs, 'fill'),
+        style: omit(attrs, ['fill', 'iconStrategy']),
       });
     } else {
       this.iconImageShape.imgType = GuiIcon.type;
-      batchSetStyle(this.iconImageShape, omit(attrs, 'fill'));
+      batchSetStyle(this.iconImageShape, omit(attrs, ['fill', 'iconStrategy']));
     }
 
     this.setImageAttrs({ name, fill });

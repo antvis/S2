@@ -54,7 +54,8 @@ const s2Options = {
 | device                      | `"pc" \| "mobile"`                                  |          |                           | Device type                                                                                                                                                                                                           |
 | transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/en/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | Custom AntV/G rendering engine [configuration](https://g.antv.antgroup.com/api/canvas/options) & [plugin registration](https://g.antv.antgroup.com/plugins/intro) |
 | rendererConfig              | `Partial<RendererConfig>`                           |          |                           | Custom AntV/G rendering engine configuration                                                                                                                                                                          |
-| future                      | [Future](#future)                                   |          |                           | Enable some experimental features (currently unstable, may change in the future)                                                                                                                                       |
+| future                      | [Future](#future)                                                                                                                                                                                                            |      |         | Enabling some experimental features (currently unstable and may change later)                                                              |
+| csp                         | [Csp](#csp)                                                                                                                                                                                                                  |      |         | Content Security Policy configurations                                                                                                     |
 
 <embed src="@/common/conditions.en.md"></embed>
 
@@ -206,11 +207,19 @@ Function description: Empty data placeholder configuration (for table mode)
 Function description: Enable some experimental features
 
 > [!WARNING]
-> These features are currently unstable and may change in the future
+> These features are currently unstable and may change later
 
-| parameter                   | illustrate                  | type      | Defaults | required |
-| --------------------------- | --------------------------- | --------- | -------- | -------- |
-| experimentalReuseCell   | Whether to reuse cells to improve performance | `boolean` | `false`  |          |
+| parameter             | illustrate                               | type      | Defaults | required |
+| --------------------- | ---------------------------------------- | --------- | -------- | -------- |
+| experimentalReuseCell | Whether to reuse cells to improve performance | `boolean` | `false`  |          |
+
+## Csp
+
+Function description: Content Security Policy configurations
+
+| parameter             | illustrate                               | type      | Defaults | required |
+| --------------------- | ---------------------------------------- | --------- | -------- | -------- |
+| iconStrategy          | Icon rendering strategy. `blob`: Render using Blob URL (default, good compatibility, but may throw errors in strict CSP environments); `path`: Prefer rendering using vector paths (CSP friendly, but only supports simple icons without transformations) | `'blob' \| 'path'` | `'blob'` |          |
 
 ## MergedCellInfo
 

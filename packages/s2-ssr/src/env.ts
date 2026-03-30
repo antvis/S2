@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck - This file contains intentionally minimal mock implementations
 /**
  * Node.js environment setup for SSR
@@ -30,33 +31,49 @@ function setupModuleExtensions(): void {
   }
 }
 
-/**
- * Setup browser-like globals in Node.js environment
- */
-function setupBrowserGlobals(): void {
-  const g = globalThis as typeof globalThis & {
-    navigator: unknown;
-    document: unknown;
-    window: unknown;
-    HTMLElement: unknown;
-    HTMLCanvasElement: unknown;
-    HTMLImageElement: unknown;
-    requestAnimationFrame: unknown;
-    cancelAnimationFrame: unknown;
-    performance: unknown;
-    ResizeObserver: unknown;
-    MutationObserver: unknown;
-    PointerEvent: unknown;
-    CustomEvent: unknown;
-  };
+type GlobalEnv = typeof globalThis & {
+  navigator: unknown;
+  document: unknown;
+  window: unknown;
+  HTMLElement: unknown;
+  HTMLCanvasElement: unknown;
+  HTMLImageElement: unknown;
+  requestAnimationFrame: unknown;
+  cancelAnimationFrame: unknown;
+  performance: unknown;
+  ResizeObserver: unknown;
+  MutationObserver: unknown;
+  PointerEvent: unknown;
+  CustomEvent: unknown;
+};
 
+function setupNavigator(g: GlobalEnv): void {
   // Mock navigator
-  g.navigator = {
+  // Node.js >= 21 introduces a global `navigator` object with only getters.
+  // We need to gracefully handle it or override it securely.
+  const mockNavigator = {
     userAgent: 'node',
     language: 'en-US',
     platform: 'node',
   };
 
+  try {
+    Object.defineProperty(g, 'navigator', {
+      value: mockNavigator,
+      writable: true,
+      configurable: true,
+    });
+  } catch (e) {
+    // If it still fails, just fallback to direct assignment and catch
+    try {
+      g.navigator = mockNavigator;
+    } catch (err) {
+      // Ignore
+    }
+  }
+}
+
+function setupDocument(g: GlobalEnv): void {
   // Mock document (before window so window.document works)
   g.document = {
     createElement: (tag: string) => ({
@@ -102,7 +119,9 @@ function setupBrowserGlobals(): void {
     querySelector: () => null,
     querySelectorAll: () => [],
   };
+}
 
+function setupWindowAndClasses(g: GlobalEnv): void {
   // Mock window (after document)
   g.window = {
     navigator: g.navigator,
@@ -115,9 +134,8 @@ function setupBrowserGlobals(): void {
     }),
     setTimeout: globalThis.setTimeout,
     clearTimeout: globalThis.clearTimeout,
-    requestAnimationFrame: (cb: FrameRequestCallback) =>
-      setTimeout(cb as unknown as () => void, 16),
-    cancelAnimationFrame: (id: number) => clearTimeout(id),
+    requestAnimationFrame: g.requestAnimationFrame,
+    cancelAnimationFrame: g.cancelAnimationFrame,
     location: { href: 'http://localhost/' },
   };
 
@@ -125,7 +143,9 @@ function setupBrowserGlobals(): void {
   g.HTMLElement = class HTMLElement {};
   g.HTMLCanvasElement = class HTMLCanvasElement {};
   g.HTMLImageElement = class HTMLImageElement {};
+}
 
+function setupAPIsAndEvents(g: GlobalEnv): void {
   // Mock animation frame APIs
   g.requestAnimationFrame = (cb: FrameRequestCallback) =>
     setTimeout(cb as unknown as () => void, 16);
@@ -171,6 +191,18 @@ function setupBrowserGlobals(): void {
       this.detail = opts?.detail;
     }
   };
+}
+
+/**
+ * Setup browser-like globals in Node.js environment
+ */
+function setupBrowserGlobals(): void {
+  const g = globalThis as GlobalEnv;
+
+  setupNavigator(g);
+  setupDocument(g);
+  setupAPIsAndEvents(g);
+  setupWindowAndClasses(g);
 }
 
 /**

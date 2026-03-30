@@ -55,6 +55,7 @@ const s2Options = {
 | transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | 自定义 AntV/G 渲染引擎 [配置参数](https://g.antv.antgroup.com/api/canvas/options) & [插件注册](https://g.antv.antgroup.com/plugins/intro) |
 | rendererConfig              | `Partial<RendererConfig>`                                                                                                                                                                                                    |      |         | 自定义 AntV/G 渲染引擎配置参数                                                                                                            |
 | future                      | [Future](#future)                                                                                                                                                                                                            |      |         | 开启一些实验性功能 (目前不稳定, 后续可能会有变动)                                                                                          |
+| csp                         | [Csp](#csp)                                                                                                                                                                                                                  |      |         | 安全策略配置                                                                                                                              |
 
 <embed src="@/common/conditions.zh.md"></embed>
 
@@ -195,6 +196,14 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 | 参数                        | 说明                 | 类型      | 默认值  | 必选 |
 | --------------------------- | -------------------- | --------- | ------- | ---- |
 | experimentalReuseCell   | 是否复用单元格以提升性能   | `boolean` | `false` |      |
+
+## Csp
+
+功能描述：安全策略配置
+
+| 参数                        | 说明                 | 类型      | 默认值  | 必选 |
+| --------------------------- | -------------------- | --------- | ------- | ---- |
+| iconStrategy                | 图标渲染策略，`blob`: 使用 Blob URL 渲染 (默认, 兼容性好, 但严苛 CSP 环境可能报错); `path`: 优先使用矢量路径渲染 (CSP 友好, 但仅支持简单无变换图标) | `'blob' \| 'path'` | `'blob'` |      |
 
 ## MergedCellInfo
 

@@ -104,6 +104,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
         width: size,
         height: size,
         fill,
+        iconStrategy: this.spreadsheet.options.csp?.iconStrategy,
       },
       isCollapsed,
       onClick: () => {
