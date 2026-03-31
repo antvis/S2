@@ -1,4 +1,4 @@
-import { each, filter, hasIn, isFunction, isObject, orderBy } from 'lodash';
+import { each, filter, hasIn, isFunction, isNil, isObject } from 'lodash';
 import type { CellMeta } from '../common';
 import type {
   Data,
@@ -7,11 +7,38 @@ import type {
   SimpleData,
 } from '../common/interface';
 import { getEmptyPlaceholder } from '../utils';
+import { canConvertToNumber } from '../utils/number-calculate';
 import { isAscSort, isDescSort } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
 import type { GetCellDataParams, GetCellMultiDataParams } from './interface';
 
 export class TableDataSet extends BaseDataSet {
+  private compareSortValues(
+    valueA: SimpleData,
+    valueB: SimpleData,
+    sortMethod: 'asc' | 'desc',
+  ) {
+    const sort = isAscSort(sortMethod) ? 1 : -1;
+
+    if (isNil(valueA) && isNil(valueB)) {
+      return 0;
+    }
+
+    if (isNil(valueA)) {
+      return 1;
+    }
+
+    if (isNil(valueB)) {
+      return -1;
+    }
+
+    if (canConvertToNumber(valueA) && canConvertToNumber(valueB)) {
+      return (Number(valueA) - Number(valueB)) * sort;
+    }
+
+    return valueA.toString().localeCompare(valueB.toString(), 'zh') * sort;
+  }
+
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     return dataCfg;
   }
@@ -136,25 +163,32 @@ export class TableDataSet extends BaseDataSet {
           return idxB - idxA;
         });
       } else if (isAscSort(sortMethod!) || isDescSort(sortMethod!)) {
+        const normalizedSortMethod = sortMethod!.toLocaleLowerCase() as
+          | 'asc'
+          | 'desc';
         const placeholder = getEmptyPlaceholder(
           this.spreadsheet,
           this.spreadsheet.options?.placeholder,
         );
         const customSortBy = isFunction(sortBy) ? sortBy : null;
-        const customSort = (record: RawData) => {
+        const customSort = (record: RawData): SimpleData => {
           // 空值占位符按最小值处理 https://github.com/antvis/S2/issues/2707
           if (record[sortFieldId] === placeholder) {
             return Number.MIN_VALUE;
           }
 
-          return record[sortFieldId];
+          return record[sortFieldId] as SimpleData;
         };
 
-        sortedData = orderBy(
-          data,
-          [customSortBy || customSort],
-          [sortMethod?.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
-        ) as RawData[];
+        const getSortValue = customSortBy || customSort;
+
+        sortedData = [...data].sort((recordA, recordB) =>
+          this.compareSortValues(
+            getSortValue(recordA) as SimpleData,
+            getSortValue(recordB) as SimpleData,
+            normalizedSortMethod,
+          ),
+        );
       }
 
       if (restData.length) {
