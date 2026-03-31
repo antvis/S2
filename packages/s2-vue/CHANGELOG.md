@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.2.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.1.0...@antv/s2-vue-v2.2.0) (2026-03-31)
+
+
+### Features
+
+* s2-vue支持分析组件（与 s2-react-components对齐） ([#3301](https://github.com/antvis/S2/issues/3301)) ([0792629](https://github.com/antvis/S2/commit/0792629760205122207b4f371327cab6f1ea2504))
+
 # [@antv/s2-vue-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.3...@antv/s2-vue-v2.1.0) (2026-01-19)
 
 
