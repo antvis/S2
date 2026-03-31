@@ -3,7 +3,7 @@ import { ArrowDown } from '@/common/icons/svg/svgs';
 import { CustomImage } from '@/engine/CustomImage';
 import { Group } from '@antv/g';
 import { registerIcon } from '../../../../src/common/icons';
-import { createPivotSheet, sleep } from '../../../util/helpers';
+import { createPivotSheet } from '../../../util/helpers';
 
 describe('GuiIcon Tests', () => {
   test('should get gui icon static type', () => {
@@ -46,10 +46,11 @@ describe('GuiIcon Tests', () => {
 
   test('should not render icon with invalid online url', async () => {
     registerIcon('test', 'https://www.test.svg');
+    jest
+      .spyOn(GuiIcon.prototype, 'getImage')
+      .mockRejectedValueOnce(new Error('mock load failed'));
 
-    const errSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementationOnce(() => {});
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     // eslint-disable-next-line no-new
     new GuiIcon({
@@ -60,7 +61,8 @@ describe('GuiIcon Tests', () => {
       height: 20,
     });
 
-    await sleep(300);
+    await Promise.resolve();
+    await Promise.resolve();
 
     expect(errSpy).toHaveBeenCalled();
   });
