@@ -46,7 +46,7 @@ describe('GuiIcon Tests', () => {
 
   test('should not render icon with invalid online url', async () => {
     registerIcon('test', 'https://www.test.svg');
-    jest
+    const getImageSpy = jest
       .spyOn(GuiIcon.prototype, 'getImage')
       .mockRejectedValueOnce(new Error('mock load failed'));
 
@@ -65,6 +65,8 @@ describe('GuiIcon Tests', () => {
     await Promise.resolve();
 
     expect(errSpy).toHaveBeenCalled();
+    getImageSpy.mockRestore();
+    errSpy.mockRestore();
   });
 
   test('should get is online link result', () => {
@@ -98,9 +100,8 @@ describe('GuiIcon Tests', () => {
     });
 
     const spy = jest.spyOn(icon, 'getImage');
-    const oldVal = icon.iconImageShape.style.src;
 
-    expect(oldVal).toBeDefined();
+    expect(icon.iconImageShape).toBeInstanceOf(CustomImage);
     icon.setImageAttrs({ fill: 'red' });
     expect(spy).toHaveBeenCalled();
   });
