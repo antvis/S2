@@ -44,7 +44,7 @@ module.exports = async ({ github, core, context, discussion }) => {
 
     const variables = {
       discussionId: discussion.node_id,
-      body: buildAutoReplyBody(discussion.user.login, response, source),
+      body: buildAutoReplyBody(discussion.user.login, response, source, "discussion"),
     };
 
     await github.graphql(mutation, variables);

@@ -53,9 +53,13 @@ async function getAutomatedReply({
   };
 }
 
-function buildAutoReplyBody(userLogin, response, source) {
+function buildAutoReplyBody(userLogin, response, source, postType) {
   const sourceLabel =
     source === "deepwiki" ? "DeepWiki" : "AI 文档检索兜底链路";
+
+  if (postType === "issue") {
+    return `@${userLogin} 感谢反馈！\n\n${response}\n\n---\n> 🤖 *此回复由 AI 助手自动生成（${sourceLabel}），仅供初步参考。维护者会尽快确认和跟进。*\n>\n> **如果信息不足，请补充：**\n> - 具体 S2 版本号（\`npm ls @antv/s2\`）\n> - 最小可复现 Demo（[CodeSandbox](https://codesandbox.io/) / [StackBlitz](https://stackblitz.com/)）\n> - 浏览器 + OS 信息`;
+  }
 
   return `@${userLogin} 您好！以下是关于您问题的自动回复：\n\n${response}\n\n---\n*此回复由 AI 助手自动生成（${sourceLabel}）。如有任何问题，我们的团队会尽快跟进。*`;
 }
@@ -115,8 +119,38 @@ async function getLegacyAutomatedReply({
 
 function prepareDeepWikiQuestion(context, postType, post) {
   const body = post.body?.trim() || "暂无补充内容";
+
+  if (postType === "issue") {
+    return `
+你是 ${context.repo.repo} 项目的核心维护者。请基于 antvis/S2 的源码与仓库信息，诊断下面这个 GitHub Issue。
+
+你的目标是：帮用户解决问题，或者指出根因。
+
+要求：
+1. 先判断这是 Bug 报告还是 Feature 请求
+2. 如果是 Bug：
+   - 尝试定位可能的根因（相关的源码模块、函数、逻辑）
+   - 如果在某个版本已修复，只提这一个最相关的版本，不要罗列历史修复记录
+   - 如果能判断，给出临时 workaround
+   - 如果信息不足以判断，明确指出还需要什么（版本号、最小复现 Demo 等）
+3. 如果是 Feature 请求：
+   - 检查是否已有类似能力，给出现有方案
+   - 如果确实没有，简要说明
+4. 禁止：
+   - 不要罗列大量历史版本的修复记录
+   - 不要复读文档配置项说明，除非直接解决问题
+   - 不要教育用户「不应该这么用」
+   - 不要提及内部测试用例文件名
+5. 回复简洁、有深度、使用 Markdown，像维护者同行对话，不是客服
+
+标题：${post.title}
+内容：${body}
+`.trim();
+  }
+
+  // Discussion: 保持对话式风格
   return `
-你是 ${context.repo.repo} 项目的智能助手。请直接基于 antvis/S2 的文档与仓库信息，回答下面这个 GitHub ${postType}。
+你是 ${context.repo.repo} 项目的智能助手。请基于 antvis/S2 的文档与仓库信息，回答下面这个 GitHub Discussion。
 
 要求：
 - 直接回答用户问题，不要解释你的思考过程
@@ -130,15 +164,30 @@ function prepareDeepWikiQuestion(context, postType, post) {
 
 function prepareAIPrompt(context, postType, post) {
   const body = post.body?.trim() || "暂无补充内容";
-  return `
-你是 ${context.repo.repo} 项目的智能助手。这是一个处理 GitHub ${postType} 的自动回复系统。
-请分析以下 ${postType} 并提供专业、有帮助的回复。
 
-## 当前 ${postType}
+  if (postType === "issue") {
+    return `
+你是 ${context.repo.repo} 项目的核心维护者。请诊断下面这个 GitHub Issue，尝试找到根因或给出解决方案。
+
+## Issue
 - 标题: ${post.title}
 - 内容: ${body}
 
-请提供完整、有帮助的回复，但不要过于冗长。回复应该条理清晰，使用适当的 Markdown 格式。
+要求：
+- Bug 类 Issue：定位根因 → 给出 workaround → 说明是否已修复（只提最相关的 1 个版本）
+- Feature 类 Issue：检查现有能力 → 给出替代方案或简要说明
+- 不要罗列历史修复记录，不要复读文档，保持简洁有深度
+`.trim();
+  }
+
+  return `
+你是 ${context.repo.repo} 项目的智能助手。请回答以下 GitHub Discussion。
+
+## Discussion
+- 标题: ${post.title}
+- 内容: ${body}
+
+请提供简洁、有帮助的回复，使用 Markdown 格式。
 `.trim();
 }
 

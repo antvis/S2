@@ -36,7 +36,7 @@ module.exports = async ({ github, core, context, issue }) => {
       issue_number: issue.number,
       owner: context.repo.owner,
       repo: context.repo.repo,
-      body: buildAutoReplyBody(issue.user.login, response, source),
+      body: buildAutoReplyBody(issue.user.login, response, source, "issue"),
     });
 
     core.info("Issue 处理完成");
