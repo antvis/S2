@@ -4385,13 +4385,12 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
+      "2367236723...",
     ],
     "originalText": 236723672361111,
     "width": 96,
@@ -5293,13 +5292,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for default sort header action icons 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 102,
@@ -7180,13 +7178,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should calculate correctly max text width for headerActionIcons 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 102,
@@ -8880,13 +8877,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should get correctly row cell height priority if actual text not wrap 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 102,
@@ -9578,13 +9574,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if custom cell style less than actual text height by colCell.height 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
+      "2367236723...",
     ],
     "originalText": 236723672361111,
     "width": 96,
@@ -9979,13 +9974,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if custom cell style less than actual text height by colCell.height() 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
+      "2367236723...",
     ],
     "originalText": 236723672361111,
     "width": 96,
@@ -10938,13 +10932,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if custom cell style more than actual text height by colCell.heightByField 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
+      "2367236723...",
     ],
     "originalText": 236723672361111,
     "width": 96,
@@ -13182,13 +13175,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should render by infinity maxLines 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
+      "2367236723...",
     ],
     "originalText": 236723672361111,
     "width": 96,
@@ -14826,13 +14818,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should render by maxLinesByField 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 102,
@@ -15932,13 +15923,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
+      "2367236723...",
     ],
     "originalText": 236723672361111,
     "width": 96,
@@ -16622,13 +16612,12 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 103,
@@ -17311,13 +17300,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should render two max text lines 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
+      "2367236723...",
     ],
     "originalText": 236723672361111,
     "width": 96,
@@ -17909,13 +17897,12 @@ Array [
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should use actual text height for large max line 5`] = `
 Array [
   Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
+    "actualText": "23672367236...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 84,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "23672367236...",
     ],
     "originalText": 236723672361111,
     "width": 102,
