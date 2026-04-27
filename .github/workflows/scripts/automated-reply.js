@@ -21,6 +21,7 @@ async function getAutomatedReply({
     const response = await queryDeepWiki({
       repoName: library,
       question: prepareDeepWikiQuestion(context, postType, post),
+      connectionMode: "close-after-query",
     });
 
     if (!response || !response.trim()) {
