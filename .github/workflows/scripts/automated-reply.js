@@ -246,7 +246,7 @@ async function getAIResponse(core, userQuestion, fallbackText) {
       messages: [{ role: "user", content: userQuestion }],
       temperature: 0.7,
       top_p: 1.0,
-      model: "openai/gpt-4.1",
+      model: "openai/gpt-5",
     });
 
     core.info("成功获取 AI 响应");
