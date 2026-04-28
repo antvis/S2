@@ -1,3 +1,11 @@
+# [@antv/s2-v2.7.1-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v2.7.0...@antv/s2-v2.7.1-alpha.1) (2026-04-28)
+
+
+### Bug Fixes
+
+* dataCell 始终按当前 meta.height 计算可展示行数 ([#3339](https://github.com/antvis/S2/issues/3339)) ([15be85d](https://github.com/antvis/S2/commit/15be85da06165b29ae810b57067306f65b5e350c))
+* 视频单元格宽度异常 ([#3340](https://github.com/antvis/S2/issues/3340)) ([8e42aff](https://github.com/antvis/S2/commit/8e42aff58d4b5a75122bbb8fd463948c36e43bf5))
+
 # [@antv/s2-v2.7.0](https://github.com/antvis/S2/compare/@antv/s2-v2.6.0...@antv/s2-v2.7.0) (2026-03-31)
 
 
