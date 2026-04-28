@@ -1,14 +1,20 @@
 // 视频渲染器
 import { DisplayObjectConfig, Rect, RectStyleProps } from '@antv/g';
 import type { BaseCell } from '../cell';
+import { VIDEO_RECT_NAME } from '../common/constant/renderer';
 import { GuiIcon } from '../common/icons';
-import { VideoRendererConfig } from '../common/interface';
+import { CellClipBox, VideoRendererConfig } from '../common/interface';
 import { SimpleBBox } from '../engine';
+import { calculateImageSize } from '../utils/cell/customRenderer';
 import { BaseRenderer } from './BaseRenderer';
+
+// 部分浏览器 autoplay=false 时不解码首帧，seek 到此时间点强制解码以展示预览画面
+const VIDEO_PREVIEW_FRAME_TIME = 0.001;
 
 const defaultVideoConfig = {
   loop: true,
-  autoplay: true,
+  autoplay: false,
+  preload: 'auto',
   crossOrigin: true,
   controls: false,
   muted: true,
@@ -48,6 +54,8 @@ export class VideoRenderer extends BaseRenderer {
 
       video.onloadeddata = () => {
         clearTimeout(fallbackTimer);
+        video.pause();
+        video.currentTime = VIDEO_PREVIEW_FRAME_TIME;
         BaseRenderer.mediaCache.set(text, video);
 
         resolve(video);
@@ -70,28 +78,46 @@ export class VideoRenderer extends BaseRenderer {
     cell: BaseCell<SimpleBBox>,
     element: HTMLVideoElement | string,
   ): DisplayObjectConfig<RectStyleProps> {
-    const { x, y, width, height } = this.getCellInfo(cell);
-    let transform = '';
+    const { y, height } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const availableWidth = Math.max(cell.getMaxTextWidth(), 0);
+    let videoWidth = availableWidth;
+    let videoHeight = height;
+    let fill: RectStyleProps['fill'] = 'transparent';
 
     if (element instanceof HTMLVideoElement) {
-      const scaleX = width / element.videoWidth;
-      const scaleY = height / element.videoHeight;
+      const calculated = calculateImageSize(
+        availableWidth,
+        height,
+        element.videoWidth,
+        element.videoHeight,
+      );
 
-      transform = `scale(${scaleX}, ${scaleY})`;
+      videoWidth = calculated.width;
+      videoHeight = calculated.height;
+
+      const scaleX = videoWidth / element.videoWidth;
+      const scaleY = videoHeight / element.videoHeight;
+
+      fill = {
+        image: element,
+        repetition: 'no-repeat',
+        transform: `scale(${scaleX}, ${scaleY})`,
+      };
     }
+
+    const { x: videoX } = cell.getContentPosition({
+      contentWidth: videoWidth,
+    });
+    const videoY = y + (height - videoHeight) / 2;
 
     // https://g.antv.antgroup.com/api/css/pattern
     return {
       style: {
-        x,
-        y,
-        width,
-        height,
-        fill: {
-          image: element,
-          repetition: 'no-repeat',
-          transform,
-        },
+        x: videoX,
+        y: videoY,
+        width: videoWidth,
+        height: videoHeight,
+        fill,
         ...renderer.config,
       },
     };
@@ -101,8 +127,13 @@ export class VideoRenderer extends BaseRenderer {
     cell: BaseCell<SimpleBBox>,
     config: DisplayObjectConfig<RectStyleProps>,
   ) {
-    const rect = new Rect(config);
-    const { x, y, width, height } = this.getCellInfo(cell);
+    const rect = new Rect({ ...config, name: VIDEO_RECT_NAME });
+    const { x, y, width, height } = config.style as {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
     const calcSize = Math.min(width, height) * 0.25;
 
     rect.appendChild(

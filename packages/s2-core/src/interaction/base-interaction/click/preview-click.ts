@@ -4,7 +4,10 @@ import { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { get } from 'lodash';
 import type { BaseCell } from '../../../cell/base-cell';
 import { CellType, S2Event, S2_PREFIX_CLS } from '../../../common/constant';
-import { CellRendererType } from '../../../common/constant/renderer';
+import {
+  CellRendererType,
+  VIDEO_RECT_NAME,
+} from '../../../common/constant/renderer';
 import type { PreviewTheme } from '../../../common/interface';
 import { ImageRendererConfig } from '../../../common/interface';
 import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
@@ -182,7 +185,13 @@ export class PreviewClick extends BaseEvent implements BaseEventImplement {
       cellRendererType === CellRendererType.IMAGE &&
       get(event.target, 'nodeName') !== 'image'
     ) {
-      // 如果点击的位置并不是图片，则不预览
+      return;
+    }
+
+    if (
+      cellRendererType === CellRendererType.VIDEO &&
+      get(event.target, 'name') !== VIDEO_RECT_NAME
+    ) {
       return;
     }
 
