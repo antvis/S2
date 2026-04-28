@@ -19,6 +19,7 @@ describe('SingletonRenderer.render 渲染器测试', () => {
         x: 0,
       })),
       getIconStyle: jest.fn(),
+      getMaxTextWidth: jest.fn(() => mockBBox.width),
       removeChild: jest.fn(),
     } as unknown as BaseCell<any>;
   });
