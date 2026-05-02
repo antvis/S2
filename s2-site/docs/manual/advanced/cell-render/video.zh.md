@@ -24,7 +24,7 @@ const s2DataConfig = {
       clickToPreview?: boolean, // 是否开启点击预览
       prepareText?: (value: SimpleData) => Promise<string>, // 渲染前对文本进行异步处理
       config?: Partial<RectStyleProps>, // 单元格内视频矩形区域配置 https://g.antv.antgroup.com/api/css/pattern#htmlvideoelement
-      videoConfig?: Partial<HTMLVideoElement> // https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement
+      videoConfig?: Partial<HTMLVideoElement> // https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement，默认值：{ loop: true, autoplay: false, preload: 'auto', crossOrigin: true, controls: false, muted: true }
     }
   }
 }
