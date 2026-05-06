@@ -23,7 +23,7 @@ const s2DataConfig = {
       clickToPreview?: boolean, // Whether to enable click to preview
       prepareText?: (value: SimpleData) => Promise<string>, // Asynchronously process text before rendering
       config?: Partial<RectStyleProps>, // Video rectangle area configuration within the cell https://g.antv.antgroup.com/api/css/pattern#htmlvideoelement
-      videoConfig?: Partial<HTMLVideoElement> // https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement
+      videoConfig?: Partial<HTMLVideoElement> // https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement, default: { loop: true, autoplay: false, preload: 'auto', crossOrigin: true, controls: false, muted: true }
     }
   }
 }
