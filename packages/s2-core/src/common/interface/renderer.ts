@@ -1,7 +1,12 @@
-import { ImageStyleProps, RectStyleProps } from '@antv/g';
+import type {
+  DisplayObjectConfig,
+  ImageStyleProps,
+  RectStyleProps,
+} from '@antv/g';
 import { CellRendererType } from '../constant/renderer';
 
 type RendererType = keyof typeof CellRendererType;
+
 // 基础渲染配置
 interface BaseRendererConfig<T extends RendererType | CellRendererType> {
   /**
@@ -30,3 +35,8 @@ export interface VideoRendererConfig
 }
 
 export type CustomRendererConfig = ImageRendererConfig | VideoRendererConfig;
+
+export interface VideoRendererDisplayObjectConfig
+  extends DisplayObjectConfig<RectStyleProps> {
+  isFallback?: boolean;
+}
