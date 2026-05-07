@@ -1,3 +1,10 @@
+# [@antv/s2-v2.7.1-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v2.7.1-alpha.1...@antv/s2-v2.7.1-alpha.2) (2026-05-07)
+
+
+### Bug Fixes
+
+* 视频渲染兜底图失效 ([#3344](https://github.com/antvis/S2/issues/3344)) ([81a6533](https://github.com/antvis/S2/commit/81a65333fb8ed5b1de61c6d50e2d3d96351ef8f9))
+
 # [@antv/s2-v2.7.1-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v2.7.0...@antv/s2-v2.7.1-alpha.1) (2026-04-28)
 
 
