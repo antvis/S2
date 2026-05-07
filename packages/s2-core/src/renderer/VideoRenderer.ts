@@ -1,11 +1,16 @@
 // 视频渲染器
-import { DisplayObjectConfig, Rect, RectStyleProps } from '@antv/g';
+import type { DisplayObjectConfig, RectStyleProps } from '@antv/g';
+import { Rect } from '@antv/g';
 import type { BaseCell } from '../cell';
 import { VIDEO_RECT_NAME } from '../common/constant/renderer';
 import { GuiIcon } from '../common/icons';
 import { CellClipBox, VideoRendererConfig } from '../common/interface';
+import type { VideoRect } from '../common/interface/renderer';
 import { SimpleBBox } from '../engine';
-import { calculateImageSize } from '../utils/cell/customRenderer';
+import {
+  asyncDrawImage,
+  calculateImageSize,
+} from '../utils/cell/customRenderer';
 import { BaseRenderer } from './BaseRenderer';
 
 // 部分浏览器 autoplay=false 时不解码首帧，seek 到此时间点强制解码以展示预览画面
@@ -21,62 +26,105 @@ const defaultVideoConfig = {
 };
 
 export class VideoRenderer extends BaseRenderer {
+  // 标记当前是否为 fallback 状态
+  public isFallback = false;
+
   async prepare(renderer: VideoRendererConfig, cell: BaseCell<SimpleBBox>) {
     const text = await this.prepareText(renderer, cell);
 
-    return new Promise<HTMLVideoElement | string>((resolve) => {
-      const { height, width } = this.getCellInfo(cell);
-      const { timeout = 10000, fallback = '' } = renderer;
+    return new Promise<HTMLVideoElement | HTMLImageElement | string>(
+      (resolve) => {
+        const { height, width } = this.getCellInfo(cell);
+        const { timeout = 10000, fallback = '' } = renderer;
 
-      if (BaseRenderer.mediaCache.has(text)) {
-        const video = BaseRenderer.mediaCache.get(text)! as HTMLVideoElement;
+        if (BaseRenderer.mediaCache.has(text)) {
+          const cached = BaseRenderer.mediaCache.get(text)!;
 
-        resolve(video);
+          if (cached instanceof HTMLVideoElement) {
+            this.isFallback = false;
+            resolve(cached);
+          } else if (cached instanceof HTMLImageElement) {
+            // 缓存的是 fallback 兜底图
+            this.isFallback = true;
+            resolve(cached);
+          } else {
+            // 缓存为 null，表示视频和兜底图都加载失败
+            this.isFallback = true;
+            resolve(fallback);
+          }
 
-        return;
-      }
+          return;
+        }
 
-      const video = document.createElement('video');
+        const video = document.createElement('video');
 
-      const fallbackTimer = setTimeout(() => {
-        resolve(fallback);
-      }, timeout);
+        const handleFallback = async () => {
+          this.isFallback = true;
 
-      const config = {
-        height,
-        width,
-        src: text,
-        ...defaultVideoConfig,
-        ...renderer.videoConfig,
-      };
+          if (fallback) {
+            const img = await asyncDrawImage({
+              src: fallback,
+              fallback: '',
+              timeout: 5000,
+              mediaCache: BaseRenderer.mediaCache,
+            }).catch(() => null);
 
-      Object.assign(video, config);
+            if (img) {
+              BaseRenderer.mediaCache.set(text, img);
+              resolve(img);
 
-      video.onloadeddata = () => {
-        clearTimeout(fallbackTimer);
-        video.pause();
-        video.currentTime = VIDEO_PREVIEW_FRAME_TIME;
-        BaseRenderer.mediaCache.set(text, video);
+              return;
+            }
+          }
 
-        resolve(video);
-      };
+          BaseRenderer.mediaCache.set(text, null);
+          resolve(fallback);
+        };
 
-      const onError = () => {
-        clearTimeout(fallbackTimer);
-        resolve(fallback);
-      };
+        const fallbackTimer = setTimeout(handleFallback, timeout);
 
-      // 错误处理
-      ['error', 'abort', 'stalled'].forEach((eventName) => {
-        video.addEventListener(eventName, onError);
-      });
-    });
+        const config = {
+          height,
+          width,
+          src: text,
+          ...defaultVideoConfig,
+          ...renderer.videoConfig,
+        };
+
+        Object.assign(video, config);
+
+        video.onloadeddata = () => {
+          clearTimeout(fallbackTimer);
+
+          // 只在未显式配置 autoplay: true 时才 pause/seek，避免覆盖用户配置
+          if (!config.autoplay) {
+            video.pause();
+            video.currentTime = VIDEO_PREVIEW_FRAME_TIME;
+          }
+
+          BaseRenderer.mediaCache.set(text, video);
+          this.isFallback = false;
+
+          resolve(video);
+        };
+
+        const onError = () => {
+          clearTimeout(fallbackTimer);
+          handleFallback();
+        };
+
+        // 错误处理
+        ['error', 'abort', 'stalled'].forEach((eventName) => {
+          video.addEventListener(eventName, onError);
+        });
+      },
+    );
   }
 
   public generateConfig(
     renderer: VideoRendererConfig,
     cell: BaseCell<SimpleBBox>,
-    element: HTMLVideoElement | string,
+    element: HTMLVideoElement | HTMLImageElement | string,
   ): DisplayObjectConfig<RectStyleProps> {
     const { y, height } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
     const availableWidth = Math.max(cell.getMaxTextWidth(), 0);
@@ -84,25 +132,33 @@ export class VideoRenderer extends BaseRenderer {
     let videoHeight = height;
     let fill: RectStyleProps['fill'] = 'transparent';
 
-    if (element instanceof HTMLVideoElement) {
-      const calculated = calculateImageSize(
+    const getMediaSize = (el: HTMLVideoElement | HTMLImageElement) =>
+      el instanceof HTMLVideoElement
+        ? { width: el.videoWidth, height: el.videoHeight }
+        : { width: el.naturalWidth, height: el.naturalHeight };
+
+    if (
+      element instanceof HTMLVideoElement ||
+      element instanceof HTMLImageElement
+    ) {
+      const { width: srcWidth, height: srcHeight } = getMediaSize(element);
+      const { width: finalWidth, height: finalHeight } = calculateImageSize(
         availableWidth,
         height,
-        element.videoWidth,
-        element.videoHeight,
+        srcWidth,
+        srcHeight,
       );
 
-      videoWidth = calculated.width;
-      videoHeight = calculated.height;
-
-      const scaleX = videoWidth / element.videoWidth;
-      const scaleY = videoHeight / element.videoHeight;
-
+      videoWidth = finalWidth;
+      videoHeight = finalHeight;
       fill = {
         image: element,
         repetition: 'no-repeat',
-        transform: `scale(${scaleX}, ${scaleY})`,
+        transform: `scale(${finalWidth / srcWidth}, ${finalHeight / srcHeight})`,
       };
+    } else {
+      // 加载失败：展示空白
+      fill = 'transparent';
     }
 
     const { x: videoX } = cell.getContentPosition({
@@ -127,26 +183,33 @@ export class VideoRenderer extends BaseRenderer {
     cell: BaseCell<SimpleBBox>,
     config: DisplayObjectConfig<RectStyleProps>,
   ) {
-    const rect = new Rect({ ...config, name: VIDEO_RECT_NAME });
+    const rect = new Rect({ ...config, name: VIDEO_RECT_NAME }) as VideoRect;
     const { x, y, width, height } = config.style as {
       x: number;
       y: number;
       width: number;
       height: number;
     };
-    const calcSize = Math.min(width, height) * 0.25;
 
-    rect.appendChild(
-      new GuiIcon({
-        name: 'Play',
-        width: calcSize,
-        height: calcSize,
-        x: x + width / 2 - calcSize / 2,
-        y: y + height / 2 - calcSize / 2,
-        pointerEvents: 'none',
-        cursor: 'pointer',
-      }),
-    );
+    // 标记是否为 fallback 状态，用于点击和播放按钮显示判断
+    rect.isFallback = this.isFallback;
+
+    // 仅在视频正常加载时显示播放按钮，fallback 兜底图不显示
+    if (!this.isFallback) {
+      const calcSize = Math.min(width, height) * 0.25;
+
+      rect.appendChild(
+        new GuiIcon({
+          name: 'Play',
+          width: calcSize,
+          height: calcSize,
+          x: x + width / 2 - calcSize / 2,
+          y: y + height / 2 - calcSize / 2,
+          pointerEvents: 'none',
+          cursor: 'pointer',
+        }),
+      );
+    }
 
     cell.appendChild(rect);
   }

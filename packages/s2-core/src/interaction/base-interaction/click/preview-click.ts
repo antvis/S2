@@ -1,6 +1,6 @@
 // ==================== 通用工具函数 ====================
 
-import { FederatedPointerEvent as CanvasEvent } from '@antv/g';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { get } from 'lodash';
 import type { BaseCell } from '../../../cell/base-cell';
 import { CellType, S2Event, S2_PREFIX_CLS } from '../../../common/constant';
@@ -10,6 +10,7 @@ import {
 } from '../../../common/constant/renderer';
 import type { PreviewTheme } from '../../../common/interface';
 import { ImageRendererConfig } from '../../../common/interface';
+import type { VideoRect } from '../../../common/interface/renderer';
 import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
 import {
   asyncDrawImage,
@@ -191,6 +192,14 @@ export class PreviewClick extends BaseEvent implements BaseEventImplement {
     if (
       cellRendererType === CellRendererType.VIDEO &&
       get(event.target, 'name') !== VIDEO_RECT_NAME
+    ) {
+      return;
+    }
+
+    // 视频 fallback 场景（兜底图）不触发预览，通过 rect 上的标记判断
+    if (
+      cellRendererType === CellRendererType.VIDEO &&
+      (event.target as VideoRect)?.isFallback === true
     ) {
       return;
     }
