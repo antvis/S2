@@ -1,6 +1,6 @@
 // ==================== 通用工具函数 ====================
 
-import { FederatedPointerEvent as CanvasEvent } from '@antv/g';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { get } from 'lodash';
 import type { BaseCell } from '../../../cell/base-cell';
 import { CellType, S2Event, S2_PREFIX_CLS } from '../../../common/constant';

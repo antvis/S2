@@ -8,6 +8,7 @@ export function asyncDrawImage(options: {
   timeout?: number;
   mediaCache?: flruCache<HTMLElement | null>;
   crossOrigin?: string | null;
+  cacheKeyPrefix?: string;
 }): Promise<HTMLImageElement> {
   const {
     src,
@@ -15,34 +16,35 @@ export function asyncDrawImage(options: {
     timeout = 10000,
     mediaCache,
     crossOrigin = 'Anonymous',
+    cacheKeyPrefix,
   } = options;
 
+  const cacheKey = cacheKeyPrefix ? `${cacheKeyPrefix}:${src}` : src;
+
   return new Promise((resolve, reject) => {
-    if (mediaCache?.has(src)) {
-      const cacheImg = mediaCache.get(src);
+    if (mediaCache?.has(cacheKey)) {
+      const cacheImg = mediaCache.get(cacheKey);
 
-      if (cacheImg) {
-        resolve(mediaCache.get(src) as HTMLImageElement);
-      } else {
-        reject(loadError);
+      if (cacheImg instanceof HTMLImageElement) {
+        resolve(cacheImg);
+
+        return;
       }
-
-      return;
     }
 
     const cacheResolve = (img: HTMLImageElement) => {
-      mediaCache?.set(src, img);
+      mediaCache?.set(cacheKey, img);
       resolve(img);
     };
 
     const cacheReject = (error: Error) => {
-      mediaCache?.set(src, null);
+      mediaCache?.set(cacheKey, null);
       reject(error);
     };
 
     const processFallback = () => {
       if (fallback) {
-        // 如果仍然加载失败，尝试 fallback
+        // fallback 图片使用原始URL作为缓存key（不带前缀），避免污染主缓存
         asyncDrawImage({
           src: fallback,
           timeout,
@@ -63,6 +65,7 @@ export function asyncDrawImage(options: {
           timeout,
           mediaCache,
           crossOrigin: null,
+          cacheKeyPrefix,
         })
           .then(cacheResolve)
           .catch(processFallback);

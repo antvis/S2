@@ -22,6 +22,7 @@ export class ImageRenderer extends BaseRenderer {
       fallback: renderer.fallback,
       timeout: renderer.timeout,
       mediaCache: BaseRenderer.mediaCache,
+      cacheKeyPrefix: 'image',
     });
   }
 
