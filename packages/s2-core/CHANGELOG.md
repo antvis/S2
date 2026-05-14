@@ -1,3 +1,10 @@
+# [@antv/s2-v2.7.1-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v2.7.1-alpha.2...@antv/s2-v2.7.1-alpha.3) (2026-05-14)
+
+
+### Bug Fixes
+
+* 优化image和video缓存机制 ([#3345](https://github.com/antvis/S2/issues/3345)) ([8e51c77](https://github.com/antvis/S2/commit/8e51c7722eb9d33025b870f8fabf7a8da5ee8a3a))
+
 # [@antv/s2-v2.7.1-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v2.7.1-alpha.1...@antv/s2-v2.7.1-alpha.2) (2026-05-07)
 
 
