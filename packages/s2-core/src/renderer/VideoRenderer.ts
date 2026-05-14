@@ -39,12 +39,25 @@ export class VideoRenderer extends BaseRenderer {
 
         this.fallback = fallback;
 
-        if (BaseRenderer.mediaCache.has(text)) {
-          const cached = BaseRenderer.mediaCache.get(text)! as HTMLVideoElement;
+        const cacheKey = BaseRenderer.getCacheKey('video', text);
 
-          resolve(cached);
+        if (BaseRenderer.mediaCache.has(cacheKey)) {
+          const cached = BaseRenderer.mediaCache.get(cacheKey);
 
-          return;
+          if (
+            cached instanceof HTMLVideoElement ||
+            cached instanceof HTMLImageElement
+          ) {
+            resolve(cached);
+
+            return;
+          }
+
+          if (cached === null) {
+            resolve(fallback);
+
+            return;
+          }
         }
 
         const video = document.createElement('video');
@@ -59,14 +72,14 @@ export class VideoRenderer extends BaseRenderer {
             }).catch(() => null);
 
             if (img) {
-              BaseRenderer.mediaCache.set(text, img);
+              BaseRenderer.mediaCache.set(cacheKey, img);
               resolve(img);
 
               return;
             }
           }
 
-          BaseRenderer.mediaCache.set(text, null);
+          BaseRenderer.mediaCache.set(cacheKey, null);
           resolve(fallback);
         };
 
@@ -91,7 +104,7 @@ export class VideoRenderer extends BaseRenderer {
             video.currentTime = VIDEO_PREVIEW_FRAME_TIME;
           }
 
-          BaseRenderer.mediaCache.set(text, video);
+          BaseRenderer.mediaCache.set(cacheKey, video);
 
           resolve(video);
         };
