@@ -9,6 +9,10 @@ import { getPreparedText } from '../utils/cell/customRenderer';
 export abstract class BaseRenderer {
   static mediaCache: flruCache<HTMLElement | null> = flru(200);
 
+  protected static getCacheKey(type: string, url: string) {
+    return `${type}:${url}`;
+  }
+
   abstract prepare(
     renderer: CustomRendererConfig,
     cell: BaseCell<SimpleBBox>,
