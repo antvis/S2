@@ -32,9 +32,6 @@ redirect_from:
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
   </a>
-  <a href="https://github.com/actions-cool/issues-helper" target="_blank">
-    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues helper"/>
-  </a>
   <a href="https://github.com/antvis/S2/blob/next/LICENSE" target="_blank" target="_blank">
     <img src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="License: MIT@AntV" />
   </a>
