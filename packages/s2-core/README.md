@@ -16,9 +16,6 @@
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
-  <a href="https://codecov.io/gh/antvis/S2" target="_blank">
-    <img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="test coverage"/>
-  </a>
   <a href="https://github.com/antvis/S2/releases" target="_blank">
     <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release date"/>
   </a>

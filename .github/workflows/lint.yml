@@ -46,4 +46,3 @@ jobs:
         run: pnpm build:size-limit
         env:
           CI: true
-          BUNDLESIZE_GITHUB_TOKEN: ${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}
