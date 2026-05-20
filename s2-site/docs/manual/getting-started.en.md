@@ -32,7 +32,7 @@ $ yarn add @antv/s2 @antv/s2-vue
 
 If you need to be compatible with `IE` , you need to introduce `polyfill` compatibility.
 
-## 🔨 use
+## 🔨 Usage
 
 There are three ways to create an `S2` table, the basic class version `(s2-core)` and the `React` and `Vue3` version based on the `core` layer package
 
@@ -50,99 +50,99 @@ There are three ways to create an `S2` table, the basic class version `(s2-core)
 &#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;data:&#x26;nbsp;[
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"1",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"2",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"17",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"6",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"8",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"12",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"3",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"25",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"0.5",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"20",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"1.7",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"0.12",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"10",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"9",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"3",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"1",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;}
 &#x26;nbsp;&#x26;nbsp;]
@@ -184,7 +184,7 @@ run();
 
 ### `React` version
 
-`S2` provides an out-of-the-box `React` version \[table component] (/examples/gallery#category-table component), as well as a wealth of supporting [analysis components](/examples/gallery#category-Tooltip) to help developers quickly meet business analysis needs.
+`S2` provides an out-of-the-box `React` version \[table component] (/examples/react-component/sheet), as well as a wealth of supporting [analysis components](/en/examples/react-component/tooltip) to help developers quickly meet business analysis needs.
 
 #### Table components use
 
@@ -207,13 +207,13 @@ ReactDOM.render(
 
 #### Precautions
 
-`React` version`分析组件`such as`高级排序`,`导出`,`下钻`, `Tooltip` and other components are developed based on `antd` component library. If you want to use it, you need to install it additionally and introduce the corresponding style
+`React` version `Analysis Components` such as `Advanced Sort`, `Export`, `Drill Down`, `Tooltip` and other components are developed based on the `antd` component library. If you want to use it, you need to install it additionally and introduce the corresponding style
 
 ```ts
 yarn add antd @ant-design/icons
 ```
 
-​📊 Check out the [React version pivot table demo](/examples/react-component/sheet#pivot) .
+​📊 Check out the [React version pivot table demo](/en/examples/react-component/sheet#pivot) .
 
 ### `Vue3` version
 
@@ -231,7 +231,7 @@ import "@antv/s2-vue/dist/s2-vue.min.css";
 
 export default defineComponent({
   setup() {
-    // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
+    // dataCfg has many fields, it is recommended to use shallow. If there are data changes, replace the entire object directly.
     const dataCfg = shallowRef(s2DataConfig);
     const options: S2Options = reactive(s2Options);
 
@@ -263,7 +263,7 @@ createApp(App).mount('#app');
 
 #### Precautions
 
-`Vue3` version`分析组件`such as:`高级排序`,`导出`,`下钻`, `Tooltip` and other components are developed based on the `ant-design-vue` component library. If you want to use it, you need to install it additionally and introduce the corresponding style
+`Vue3` version `Analysis Components` such as: `Advanced Sort`, `Export`, `Drill Down`, `Tooltip` and other components are developed based on the `ant-design-vue` component library. If you want to use it, you need to install it additionally and introduce the corresponding style
 
 ```ts
 yarn add ant-design-vue

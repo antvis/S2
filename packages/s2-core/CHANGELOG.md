@@ -1,3 +1,96 @@
+# [@antv/s2-v2.7.1](https://github.com/antvis/S2/compare/@antv/s2-v2.7.0...@antv/s2-v2.7.1) (2026-05-18)
+
+
+### Bug Fixes
+
+* dataCell 始终按当前 meta.height 计算可展示行数 ([#3339](https://github.com/antvis/S2/issues/3339)) ([15be85d](https://github.com/antvis/S2/commit/15be85da06165b29ae810b57067306f65b5e350c))
+* 优化image和video缓存机制 ([#3345](https://github.com/antvis/S2/issues/3345)) ([8e51c77](https://github.com/antvis/S2/commit/8e51c7722eb9d33025b870f8fabf7a8da5ee8a3a))
+* 视频单元格宽度异常 ([#3340](https://github.com/antvis/S2/issues/3340)) ([8e42aff](https://github.com/antvis/S2/commit/8e42aff58d4b5a75122bbb8fd463948c36e43bf5))
+* 视频渲染兜底图失效 ([#3344](https://github.com/antvis/S2/issues/3344)) ([81a6533](https://github.com/antvis/S2/commit/81a65333fb8ed5b1de61c6d50e2d3d96351ef8f9))
+
+# [@antv/s2-v2.7.0](https://github.com/antvis/S2/compare/@antv/s2-v2.6.0...@antv/s2-v2.7.0) (2026-03-31)
+
+
+### Bug Fixes
+
+* implement CSP-compatible SVG icon rendering using Path mode ([#3319](https://github.com/antvis/S2/issues/3319)) ([0fba0c3](https://github.com/antvis/S2/commit/0fba0c365257918c22df9adc61a49b332aeb377d))
+* support configurable icon rendering strategy and fix complex ico… ([#3328](https://github.com/antvis/S2/issues/3328)) ([5813141](https://github.com/antvis/S2/commit/5813141a994302365457bf98fcb6a6d49fa3e9a5))
+* **TableSheet:** 修复中文字符串排序与 PivotSheet 不一致的问题 ([#3336](https://github.com/antvis/S2/issues/3336)) ([0a406d8](https://github.com/antvis/S2/commit/0a406d819994fa35a05e20af06596d4235c8f004))
+* 明细表导出序号列 formatter 不生效 ([#3333](https://github.com/antvis/S2/issues/3333)) ([4a333c3](https://github.com/antvis/S2/commit/4a333c3da3953231f7afe3ac0250d8ed2f89c0c4))
+* 移除横向滚动条的多余空白 ([#3325](https://github.com/antvis/S2/issues/3325)) ([81e36ec](https://github.com/antvis/S2/commit/81e36ece9d7ddf61a1f1833f3b8c3a95d5cd7c01))
+
+
+### Features
+
+* 表头吸顶 (Sticky Header) 功能及配套 ([#3323](https://github.com/antvis/S2/issues/3323)) ([4e832f3](https://github.com/antvis/S2/commit/4e832f3b2dc97ac78df0b450390d7370d134f0d4))
+
+# [@antv/s2-v2.6.0](https://github.com/antvis/S2/compare/@antv/s2-v2.5.0...@antv/s2-v2.6.0) (2026-02-09)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复页面滚动时tooltip不自动隐藏的问题 ([#3310](https://github.com/antvis/S2/issues/3310)) ([e7a02bb](https://github.com/antvis/S2/commit/e7a02bb9adfc2c8cb83925bd88ff373fa04f2310)), closes [#3307](https://github.com/antvis/S2/issues/3307)
+* 修复 mini 折线图只有一个有效值时绘制异常的问题 ([#3312](https://github.com/antvis/S2/issues/3312)) ([424e769](https://github.com/antvis/S2/commit/424e7697a9ad6f662a068b790d7b7f18e4944f17))
+* 修复调整列宽后hover单元格任意位置都出现拖拽热区的问题 ([#3315](https://github.com/antvis/S2/issues/3315)) ([8be0068](https://github.com/antvis/S2/commit/8be0068be14c2bb2cf175bdcec356feda9196558))
+* 修复透视表组内排序在指标数据为 null 时排序异常的问题 ([#3308](https://github.com/antvis/S2/issues/3308)) ([f02c68a](https://github.com/antvis/S2/commit/f02c68a6f2467aabe1eb77c56b6d8ec7ffa8a466))
+
+
+### Features
+
+* **style:** 支持紧凑模式下设置额外宽度和最小宽度 ([#3309](https://github.com/antvis/S2/issues/3309)) ([c6cdec7](https://github.com/antvis/S2/commit/c6cdec7a53746a9d97e56540c466823567688a10)), closes [#3305](https://github.com/antvis/S2/issues/3305)
+* 树状平铺grid-tree模式，可以在Grid模式下展开/折叠 ([#3299](https://github.com/antvis/S2/issues/3299)) ([f28ca93](https://github.com/antvis/S2/commit/f28ca9346a0643ab0bf895bab5cb382a5e39c224))
+
+# [@antv/s2-v2.5.0](https://github.com/antvis/S2/compare/@antv/s2-v2.4.16...@antv/s2-v2.5.0) (2026-01-19)
+
+
+### Features
+
+* **s2-vue:** 🚀 架构升级与功能补全 (s2-vue和s2-React功能对齐) ([#3295](https://github.com/antvis/S2/issues/3295)) ([89f565f](https://github.com/antvis/S2/commit/89f565f1e54b050de791b289a8df01b4f829893c))
+
+# [@antv/s2-v2.4.16](https://github.com/antvis/S2/compare/@antv/s2-v2.4.15...@antv/s2-v2.4.16) (2026-01-14)
+
+
+### Bug Fixes
+
+* 增加基础包对环境的校验，以便适配SSR ([#3290](https://github.com/antvis/S2/issues/3290)) ([7bd5470](https://github.com/antvis/S2/commit/7bd54703a1d5e3bc1f90d7405f7bdb3bbc677039))
+
+# [@antv/s2-v2.4.15](https://github.com/antvis/S2/compare/@antv/s2-v2.4.14...@antv/s2-v2.4.15) (2026-01-14)
+
+
+### Bug Fixes
+
+* 修复大数据量明细表，滚动到 279621 行之后，行之间的水平线绘制失败 ([#3287](https://github.com/antvis/S2/issues/3287)) ([e15dc6d](https://github.com/antvis/S2/commit/e15dc6d89c80e7eb3059cd90c17952095e2ccc7c))
+* 对SSR环境增加适配 ([#3289](https://github.com/antvis/S2/issues/3289)) ([6438bc4](https://github.com/antvis/S2/commit/6438bc4f804d9f59e707247021c0d5cc7e96764d))
+* 移动端交叉表滚动时，手指不松开持续滚动几秒后，表格滚动会带动整个网页一起滚动 ([#3280](https://github.com/antvis/S2/issues/3280)) ([0b37db8](https://github.com/antvis/S2/commit/0b37db829e4de046c3703e661625c1411577dd6b))
+
+# [@antv/s2-v2.4.14](https://github.com/antvis/S2/compare/@antv/s2-v2.4.13...@antv/s2-v2.4.14) (2026-01-09)
+
+
+### Bug Fixes
+
+* (mobile) support pinch-to-zoom gesture by detecting multi-touch ([#3276](https://github.com/antvis/S2/issues/3276)) ([f83cca5](https://github.com/antvis/S2/commit/f83cca56caf4deafe65197b27834505da0947b09)), closes [#3251](https://github.com/antvis/S2/issues/3251)
+* 修复了小字号多行文本被截断 ([#3279](https://github.com/antvis/S2/issues/3279)) ([519f8f2](https://github.com/antvis/S2/commit/519f8f2631f67e8a9e57f19a0e49c80e59bd3b4a)), closes [#3262](https://github.com/antvis/S2/issues/3262) [#3262](https://github.com/antvis/S2/issues/3262)
+* 修复移动端树状行头滚动误触发展开/收起事件的问题 ([#3284](https://github.com/antvis/S2/issues/3284)) ([4bb17f6](https://github.com/antvis/S2/commit/4bb17f6f2fd13d5424e8e0a22cb34492122a5e2f))
+
+# [@antv/s2-v2.4.13](https://github.com/antvis/S2/compare/@antv/s2-v2.4.12...@antv/s2-v2.4.13) (2025-12-26)
+
+
+### Bug Fixes
+
+* 复用单元格滚动后TableSheet的seriesNumber和普通单元格样式异常 ([#3272](https://github.com/antvis/S2/issues/3272)) ([8779bdd](https://github.com/antvis/S2/commit/8779bdde13a0dd45b97c8c3da4de65b157ca01b9))
+
+# [@antv/s2-v2.4.12](https://github.com/antvis/S2/compare/@antv/s2-v2.4.11...@antv/s2-v2.4.12) (2025-12-25)
+
+
+### Bug Fixes
+
+* 复制时相同前缀判断不准确 ([#3255](https://github.com/antvis/S2/issues/3255)) ([171841d](https://github.com/antvis/S2/commit/171841d93da2b62a9e4c9088defa0102ed68a81a))
+
+
+### Performance Improvements
+
+* 复用行列头/数值单元格 以提升百万滚动性能至50FPS ([#3222](https://github.com/antvis/S2/issues/3222)) ([3bc1ccb](https://github.com/antvis/S2/commit/3bc1ccb8006fe136989a32303d9107145914e160))
+
 # [@antv/s2-v2.4.11](https://github.com/antvis/S2/compare/@antv/s2-v2.4.10...@antv/s2-v2.4.11) (2025-12-01)
 
 

@@ -6,7 +6,7 @@ order: 6
 
 ## 简介
 
-S2 中内置了 **4** 套开箱即用的主题配置，也提供了强大的主题自定义功能。[查看 API](/api/general/s2theme)
+S2 中内置了 **4** 套开箱即用的主题配置，也提供了强大的主题自定义功能。[查看 API](/api/general/s2-theme)
 
 - [默认](/examples/theme/default/#default)
 - [多彩蓝](/examples/theme/default/#colorful)
@@ -157,7 +157,7 @@ await s2.render(false);
 
 单元格文本配置分为了 `text（普通文本）`, `bolderText（加粗文本）`, `seriesText（序号文本）`, `measureText（度量值文本）`, 分别对应不同场景。
 
-[查看详情](/manual/advanced/custom/cell-align) 或 [完整 API](/api/general/s2theme#s2theme)
+[查看详情](/manual/advanced/custom/cell-align) 或 [完整 API](/api/general/s2-theme#s2theme)
 
 ```ts
 s2.setTheme({
@@ -180,7 +180,7 @@ s2.setTheme({
 
 #### 自定义单元格背景色
 
-查看 [完整 API](/api/general/s2theme#s2theme)
+查看 [完整 API](/api/general/s2-theme#s2theme)
 
 ```ts
 s2.setTheme({
@@ -194,7 +194,7 @@ s2.setTheme({
 
 #### 自定义滚动条样式
 
-查看 [完整 API](/api/general/s2theme#scrollbartheme)
+查看 [完整 API](/api/general/s2-theme#scrollbartheme)
 
 ```ts
 s2.setTheme({

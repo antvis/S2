@@ -35,18 +35,18 @@ const s2 = new PivotSheet(...)
 
 const debounceRender = debounce((width, height) => {
   s2.changeSheetSize(width, height)
-  s2.render(false) // 不重新加载数据
+  s2.render(false) // Do not reload data
 }, 200)
 
 new ResizeObserver(([entry] = []) => {
     const [size] = entry.borderBoxSize || [];
     debounceRender(size.inlineSize, size.blockSize)
-}).observe(document.body); // 通过监听 document.body 来实现监听窗口大小变化
+}).observe(document.body); // Monitor window size changes by observing document.body
 ```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
 
-​📊 Check out the [window adaptive demo](/examples/layout/adaptive#window-adaptation)
+​📊 Check out the [window adaptive demo](/en/examples/layout/adaptive#window-adaptation)
 
 ### container adaptation
 
@@ -58,11 +58,11 @@ import { debounce } from 'lodash'
 
 const s2 = new PivotSheet(...)
 
-const parent = /* 你的容器节点 */
+const parent = /* Your container node */
 
 const debounceRender = debounce((width, height) => {
   s2.changeSheetSize(width, height)
-  s2.render(false) // 不重新加载数据
+  s2.render(false) // Do not reload data
 }, 200)
 
 const resizeObserver = new ResizeObserver(([entry] = []) => {
@@ -72,13 +72,13 @@ const resizeObserver = new ResizeObserver(([entry] = []) => {
 
 resizeObserver.observe(parent);
 
-// 取消监听
+// Cancel monitoring
 // resizeObserver.unobserve(parent)
 ```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/IFNNjZ862/Kapture%2525202021-11-23%252520at%25252019.07.37.gif)
 
-​📊 View [container adaptive demo](/examples/layout/adaptive#container-adaptation)
+​📊 View [container adaptive demo](/en/examples/layout/adaptive#container-adaptation)
 
 ### React components
 
@@ -87,7 +87,7 @@ If you use `@antv/s2-react` , you can configure the `adaptive` parameter to enab
 #### Adaptive parameter type
 
 ```ts
-// `adaptive` 的类型 `Adaptive`
+// Type of `adaptive` is `Adaptive`
 type Adaptive =
   | boolean
   | {
@@ -137,13 +137,13 @@ const containerId = 'containerId';
     adaptive={{
       width: true,
       height: false,
-      getContainer: () => adaptiveRef.current // 或者使用 document.getElementById(containerId)
+      getContainer: () => adaptiveRef.current // Or use document.getElementById(containerId)
     }}
   />
 </div>
 ```
 
-​📊 View [React component adaptive demo](/examples/layout/adaptive#react-adaptive)
+​📊 View [React component adaptive demo](/en/examples/layout/adaptive#react-adaptive)
 
 ### Vue components
 

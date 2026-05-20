@@ -1,0 +1,108 @@
+@import '@antv/s2/esm/shared/styles/variables.less';
+
+.@{strategy-sheet-tooltip-cls-prefix} {
+  line-height: 20px;
+  font-size: 12px;
+  color: var(~'@{css-var-prefix}-font-65', rgba(0, 0, 0, 0.65));
+  overflow: hidden;
+  padding: 12px;
+
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  & &-divider {
+    border-top: 1px solid var(~'@{css-var-prefix}-border', #e9e9e9);
+    margin: 10px -12px;
+  }
+
+  & &-description {
+    overflow-wrap: break-word;
+  }
+
+  // tooltip for row cell
+  // ------------------------------------------------------
+  &&-row &-value {
+    font-weight: 700;
+  }
+
+  // tooltip for col cell
+  // ------------------------------------------------------
+  &&-col &-name {
+    margin-right: 20px;
+  }
+
+  &&-col &-value {
+    color: var(~'@{css-var-prefix}-font-85', rgba(0, 0, 0, 0.85));
+  }
+
+  // tooltip for normal data cell
+  // ------------------------------------------------------
+  &&-data &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-label {
+      font-weight: 700;
+      margin-right: 20px;
+    }
+  }
+
+  &&-data &-original-value {
+    text-align: right;
+  }
+
+  &&-data &-derived-values {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li.derived-value-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .derived-value-group {
+        color: var(~'@{css-var-prefix}-font-65', rgba(0, 0, 0, 0.65));
+        margin-left: 10px;
+
+        .derived-value-trend-icon {
+          display: inline-block;
+          width: 0;
+          height: 0;
+          margin-right: 4px;
+          border-right: 4px solid transparent;
+          border-bottom: 9px solid var(~'@{css-var-prefix}-font', #000);
+          border-left: 4px solid transparent;
+          transform: rotate(0deg);
+        }
+
+        &.derived-value-trend-up {
+          color: #f46649;
+
+          .derived-value-trend-icon {
+            border-bottom-color: #f46649;
+          }
+        }
+
+        &.derived-value-trend-down {
+          color: #2aa491;
+
+          .derived-value-trend-icon {
+            transform: rotate(180deg);
+            border-bottom-color: #2aa491;
+          }
+        }
+
+        .derived-value-original {
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+}

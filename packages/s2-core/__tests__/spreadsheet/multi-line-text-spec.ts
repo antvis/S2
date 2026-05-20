@@ -848,7 +848,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should render Cell Height correct after set large font', async () => {
-      await runLargeFontCellHeightTest(s2);
+      await runLargeFontCellHeightTest(s2)();
     });
   });
 
@@ -1690,7 +1690,39 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should render Cell Height correct after set large font', async () => {
-      await runLargeFontCellHeightTest(s2);
+      await runLargeFontCellHeightTest(s2)();
+    });
+
+    // https://github.com/antvis/S2/issues/3262
+    test('should render multi-line text completely with small font and textBaseline top', async () => {
+      s2.setOptions({
+        style: {
+          colCell: {
+            maxLines: 2,
+            wordWrap: true,
+            textOverflow: 'ellipsis',
+          },
+        },
+      });
+
+      s2.setTheme({
+        colCell: {
+          bolderText: {
+            textBaseline: 'top',
+            fontSize: 10,
+          },
+        },
+      });
+
+      await s2.render();
+
+      // 多行文本(maxLines: 2)配合小字号(10px)和textBaseline: 'top'时
+      // 单元格高度应该能完整容纳文本内容
+      // 高度应该至少等于: 文本高度 + padding.top + padding.bottom
+      const colNode = s2.facet.getLayoutResult().colNodes[0];
+
+      // 默认列头高度是30px，多行文本应该自适应增加高度
+      expect(colNode.height).toBeGreaterThanOrEqual(30);
     });
   });
 });

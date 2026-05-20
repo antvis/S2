@@ -20,7 +20,7 @@ const s2Options = {
 }
 ```
 
-1\. If the built-in `icon` is not satisfied, you can configure `customSVGIcons` parameter to additionally register your own `icon` . The custom `icon` is also applicable to the **theme configuration** , which means that you can also adjust its size and color. For details, please refer to the [theme configuration](/docs/manual/basic/theme) chapter.
+1\. If the built-in `icon` is not satisfied, you can configure `customSVGIcons` parameter to additionally register your own `icon` . The custom `icon` is also applicable to the **theme configuration** , which means that you can also adjust its size and color. For details, please refer to the [theme configuration](/en/manual/basic/theme) chapter.
 
 ```ts
 const s2Options = {
@@ -64,7 +64,7 @@ const s2Options = {
 
 ### Custom cell icon example
 
-> For details on cell marking, see the [field marking](/docs/manual/basic/conditions) chapter
+> For details on cell marking, see the [field marking](/en/manual/basic/conditions) chapter
 
 ```javascript
 const s2Options = {
@@ -80,7 +80,7 @@ const s2Options = {
         field: 'number',
         mapping(fieldValue, data) {
           return {
-            // 使用自定义 icon 名称
+            // Use custom icon name
             icon: 'Filter',
             fill: '#30BF78',
           };

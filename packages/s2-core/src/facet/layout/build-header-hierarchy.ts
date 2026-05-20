@@ -11,6 +11,7 @@ import type {
   HeaderParams,
 } from '../layout/interface';
 import { buildGridHierarchy } from './build-gird-hierarchy';
+import { buildGridTreeHierarchy } from './build-grid-tree-hierarchy';
 import { buildCustomTreeHierarchy } from './build-row-custom-tree-hierarchy';
 import { buildRowTreeHierarchy } from './build-row-tree-hierarchy';
 import { buildTableHierarchy } from './build-table-hierarchy';
@@ -94,13 +95,48 @@ const handleTreeRowHierarchy = (params: HeaderParams) => {
   }
 };
 
+const handleGridTreeRowHierarchy = (params: HeaderParams) => {
+  const {
+    isValueInCols,
+    moreThanOneValue,
+    rootNode,
+    hierarchy,
+    fields,
+    isCustomTreeFields,
+    spreadsheet,
+  } = params;
+
+  // grid-tree 模式使用专门的层级构建器
+  const addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
+  const addMeasureInTotalQuery = !isValueInCols && !moreThanOneValue;
+
+  if (isCustomTreeFields) {
+    handleCustomTreeHierarchy(params);
+  } else {
+    buildGridTreeHierarchy({
+      spreadsheet,
+      addTotalMeasureInTotal,
+      addMeasureInTotalQuery,
+      parentNode: rootNode,
+      currentField: (fields as string[])[0],
+      fields: fields as string[],
+      hierarchy,
+    });
+  }
+};
+
 const handleRowHeaderHierarchy = (params: HeaderParams) => {
   // 只有透视表有行头
   const { spreadsheet } = params;
 
-  if (spreadsheet.isHierarchyTreeType()) {
+  if (spreadsheet.isHierarchyGridTreeType()) {
+    // grid-tree 模式：平铺布局 + 展开折叠
+    handleGridTreeRowHierarchy(params);
+  } else if (spreadsheet.isHierarchyTreeType()) {
+    // tree 模式：纯树状布局
     handleTreeRowHierarchy(params);
   } else {
+    // grid 模式：纯平铺布局
     handleGridRowColHierarchy(params);
   }
 };

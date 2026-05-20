@@ -127,3 +127,10 @@ export enum ScrollDirectionRowIndexDiff {
   SCROLL_UP = -1,
   SCROLL_DOWN = 1,
 }
+
+/**
+ * 移动端滚动阈值（像素）
+ * 用于区分用户的点击操作和滚动操作
+ * 如果触摸移动距离小于此值，认为是点击；否则认为是滚动
+ */
+export const MOBILE_SCROLL_THRESHOLD = 10;

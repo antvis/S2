@@ -31,6 +31,7 @@ import {
   DatePicker,
   Divider,
   Input,
+  InputNumber,
   Pagination,
   Popover,
   Radio,
@@ -61,6 +62,7 @@ import { LinkGroup } from './components/LinkGroup';
 import { PivotChartSheet } from './components/PivotChartSheet';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
+import { StickyHeaderSheet } from './components/StickyHeaderSheet';
 import { StrategySheet } from './components/StrategySheet';
 import {
   PivotSheetFrozenOptions,
@@ -470,6 +472,40 @@ function MainLayout() {
                                     </Radio.Button>
                                   </Radio.Group>
                                 </Tooltip>
+                                <InputNumber
+                                  style={{ width: 120 }}
+                                  min={0}
+                                  placeholder="紧凑布局（附加宽）"
+                                  disabled={
+                                    options?.style?.layoutWidthType !==
+                                    'compact'
+                                  }
+                                  value={options?.style?.compactExtraWidth ?? 0}
+                                  onChange={(value) => {
+                                    updateOptions({
+                                      style: {
+                                        compactExtraWidth: value ?? 0,
+                                      },
+                                    });
+                                  }}
+                                />
+                                <InputNumber
+                                  style={{ width: 120 }}
+                                  min={0}
+                                  placeholder="紧凑布局（最小宽）"
+                                  disabled={
+                                    options?.style?.layoutWidthType !==
+                                    'compact'
+                                  }
+                                  value={options?.style?.compactMinWidth ?? 0}
+                                  onChange={(value) => {
+                                    updateOptions({
+                                      style: {
+                                        compactMinWidth: value ?? 0,
+                                      },
+                                    });
+                                  }}
+                                />
                                 <Button
                                   danger
                                   onClick={() => {
@@ -495,19 +531,27 @@ function MainLayout() {
                                     updateOptions({ debug: checked });
                                   }}
                                 />
-                                <Switch
-                                  checkedChildren="树形"
-                                  unCheckedChildren="平铺"
-                                  checked={
-                                    mergedOptions.hierarchyType === 'tree'
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      hierarchyType: checked ? 'tree' : 'grid',
-                                    });
-                                  }}
-                                  disabled={sheetType === 'table'}
-                                />
+                                <Tooltip title="透视表层级结构">
+                                  <Radio.Group
+                                    value={mergedOptions.hierarchyType}
+                                    onChange={(e) => {
+                                      updateOptions({
+                                        hierarchyType: e.target.value,
+                                      });
+                                    }}
+                                    disabled={sheetType === 'table'}
+                                  >
+                                    <Radio.Button value="grid">
+                                      平铺
+                                    </Radio.Button>
+                                    <Radio.Button value="tree">
+                                      树形
+                                    </Radio.Button>
+                                    <Radio.Button value="grid-tree">
+                                      grid-tree
+                                    </Radio.Button>
+                                  </Radio.Group>
+                                </Tooltip>
                                 <Switch
                                   checkedChildren="数值挂列头"
                                   unCheckedChildren="数值挂行头"
@@ -761,6 +805,22 @@ function MainLayout() {
                                       conditions: checked
                                         ? s2ConditionsOptions
                                         : null,
+                                    });
+                                  }}
+                                />
+                                <Switch
+                                  checkedChildren="表头吸顶"
+                                  unCheckedChildren="表头不吸顶"
+                                  checked={
+                                    !!mergedOptions.interaction?.stickyHeader
+                                  }
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        stickyHeader: checked
+                                          ? { enableInteraction: true }
+                                          : false,
+                                      },
                                     });
                                   }}
                                 />
@@ -1616,7 +1676,7 @@ function MainLayout() {
                           onRowCellScroll={logHandler('onRowCellScroll')}
                           onLinkFieldJump={logHandler('onLinkFieldJump', () => {
                             window.open(
-                              'https://s2.antv.antgroup.com/zh/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
+                              'https://s2.antv.antgroup.com/manual/advanced/cell-render/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
                             );
                           })}
                           onDataCellBrushSelection={logHandler(
@@ -1648,6 +1708,9 @@ function MainLayout() {
                             )
                           }
                         </SheetComponent>
+                        {mergedOptions.interaction?.stickyHeader && (
+                          <div style={{ height: '100vh' }} />
+                        )}
                       </React.StrictMode>
                     )}
                   </>
@@ -1706,6 +1769,11 @@ function MainLayout() {
                 key: 'bigData',
                 label: '100万数据',
                 children: <BigDataSheet />,
+              },
+              {
+                key: 'stickyHeader',
+                label: '表头吸顶',
+                children: <StickyHeaderSheet ref={s2Ref} />,
               },
             ]}
           />

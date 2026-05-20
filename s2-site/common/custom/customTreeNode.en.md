@@ -5,7 +5,7 @@ order: 8
 
 ### CustomTreeNode
 
-Function description: Customize the configuration of the tree structure. View [detailed instructions](/zh/docs/manual/advanced/custom/custom-tree) or [examples](/zh/examples/custom/custom-tree#custom-tree)
+Function description: Customize the configuration of the tree structure. View [detailed instructions](/manual/advanced/custom/custom-header) or [examples](/examples/custom/custom-layout#custom-layout-hierarchy)
 
 | parameter   | illustrate                                                                                                      | type                                  | Defaults | required |
 | ----------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------- | -------- | :------: |

@@ -7,23 +7,13 @@ const STEP = 50;
 // 每次滚动间隔时间
 const MS = 500;
 
-// 计时器
-let timer;
+function addScrollButton(s2: PivotSheet) {
+  let timer: ReturnType<typeof setInterval>;
+  let isScrolling = false;
 
-function addScrollButton(s2) {
   const btn = document.createElement('button');
-
   btn.className = 'ant-btn ant-btn-default';
   btn.innerHTML = '开始滚动';
-
-  const stopBtn = document.createElement('button');
-
-  stopBtn.className = 'ant-btn ant-btn-default';
-  stopBtn.innerHTML = '停止滚动';
-
-  stopBtn.addEventListener('click', () => {
-    clearInterval(timer);
-  });
 
   btn.addEventListener('click', () => {
     // 如果没有纵向滚动条则不需要触发定时器
@@ -31,12 +21,22 @@ function addScrollButton(s2) {
       return;
     }
 
+    if (isScrolling) {
+      clearInterval(timer);
+      isScrolling = false;
+      btn.innerHTML = '开始滚动';
+      return;
+    }
+
+    isScrolling = true;
+    btn.innerHTML = '停止滚动';
+
     // 如果需要快速滚动, 可将 setInterval 替换成 requestAnimationFrame
     timer = setInterval(() => {
       // 获取当前 Y 轴滚动距离
       const { scrollY } = s2.facet.getScrollOffset();
 
-      // 访问 https://s2.antv.antgroup.com/zh/docs/api 查看更多 API
+      // 访问 https://s2.antv.antgroup.com/api/basic-class/base-facet 查看更多 API
       // 如果已经滚动到了底部，则回到顶部
       if (s2.facet.isScrollToBottom(scrollY)) {
         console.log('滚动到底部');
@@ -61,8 +61,14 @@ function addScrollButton(s2) {
     }, MS);
   });
 
+  // 记得在表格卸载后 或者 `s2.destroy()` 后清除定时器
+  s2.on(S2Event.LAYOUT_DESTROY, () => {
+    if (timer) {
+      clearInterval(timer);
+    }
+  });
+
   document.querySelector('#container > canvas')?.before(btn);
-  btn.after(stopBtn);
 }
 
 fetch(
@@ -70,7 +76,7 @@ fetch(
 )
   .then((res) => res.json())
   .then(async (dataCfg) => {
-    const container = document.getElementById('container');
+    const container = document.getElementById('container') as HTMLElement;
 
     const s2Options: S2Options = {
       width: 600,
@@ -84,11 +90,6 @@ fetch(
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
-
-    // 记得在表格卸载后 或者 `s2.destroy()` 后清除定时器
-    s2.on(S2Event.LAYOUT_DESTROY, () => {
-      clearInterval(timer);
-    });
 
     await s2.render();
 

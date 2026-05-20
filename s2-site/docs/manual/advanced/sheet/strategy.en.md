@@ -8,15 +8,15 @@ In order to meet more analysis scenarios, S2 provides an out-of-the-box scenario
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png" width="600" alt="preview">
 
-As shown in the figure, the table form of this type of table is characterized by the ability to display multiple indicator data in the **same data cell** and **column header cell** , which is used for **data indicators that need to pay attention to time trends** , and to **view year-on-** year comparisons and other scenarios. Line headers can [customize the hierarchical structure](/zh/docs/manual/advanced/custom/custom-tree) . Therefore, this component can be used directly when there is such an analysis requirement.
+As shown in the figure, the table form of this type of table is characterized by the ability to display multiple indicator data in the **same data cell** and **column header cell** , which is used for **data indicators that need to pay attention to time trends** , and to **view year-on-** year comparisons and other scenarios. Line headers can [customize the hierarchical structure](/en/manual/advanced/custom/custom-header) . Therefore, this component can be used directly when there is such an analysis requirement.
 
 ## premise
 
 The trend analysis table component uses various capabilities provided by S2 for integration, so it is recommended that you have read the following chapters before reading this chapter:
 
-* [basic concept](/zh/docs/manual/basic/base-concept)
-* [field tag](/zh/docs/manual/basic/conditions/)
-* [Customize row and column headers](/zh/docs/manual/advanced/custom/custom-tree)
+* [basic concept](/en/manual/basic/base-concept)
+* [field tag](/en/manual/basic/conditions/)
+* [Customize row and column headers](/en/manual/advanced/custom/custom-header)
 
 ## Get started quickly
 
@@ -29,11 +29,11 @@ The trend analysis table component uses various capabilities provided by S2 for 
 <details><summary>check the details</summary><pre> <code class="language-js">const&#x26;nbsp;s2Options&#x26;nbsp;=&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;width:&#x26;nbsp;600,
 &#x26;nbsp;&#x26;nbsp;height:&#x26;nbsp;480,
-&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 角头文本
-&#x26;nbsp;&#x26;nbsp;cornerText:&#x26;nbsp;'指标层级',
-&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 条件格式
+&#x26;nbsp;&#x26;nbsp;// Corner Text
+&#x26;nbsp;&#x26;nbsp;cornerText:&#x26;nbsp;'Metric Hierarchy',
+&#x26;nbsp;&#x26;nbsp;// Conditional Formatting
 &#x26;nbsp;&#x26;nbsp;conditions:&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 同环比数值映射规则
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;// Value mapping rules for YoY/MoM
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;text:&#x26;nbsp;[
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;field:&#x26;nbsp;'number',
@@ -52,13 +52,13 @@ The trend analysis table component uses various capabilities provided by S2 for 
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;fill:&#x26;nbsp;value&#x26;nbsp;>&#x26;nbsp;0&#x26;nbsp;?&#x26;nbsp;'#FF4D4F'&#x26;nbsp;:&#x26;nbsp;'#29A294',
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;};
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;],
 &#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;style:&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;dataCell:&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;valuesCfg:&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 原始数据字段，用于原始数据导出和&#x26;nbsp;tooltip&#x26;nbsp; 展示
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;// Original data field, used for original data export and tooltip display
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;originalValueField:&#x26;nbsp;'originalValues',
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
@@ -99,14 +99,14 @@ const data = {
 }
 ```
 
-* Row Header Hierarchy: [Custom Hierarchy](/zh/docs/manual/advanced/custom/custom-tree)
+* Row Header Hierarchy: [Custom Hierarchy](/en/manual/advanced/custom/custom-header)
 
 ```ts
 const fields = {
   rows: [
     {
       key: 'a-1',
-      title: '节点 1',
+      title: 'Node 1',
       children: []
     }
   ]
@@ -130,18 +130,18 @@ Virtual examples are the same as ordinary fields, you can customize the formatti
 ```ts
 const s2DataConfig = {
   meta: [
-    // 日期列头 格式化
+    // Date column header formatting
     {
       field: 'date',
-      name: '时间',
-      formatter: (value) => `${value}年`,
+      name: 'Time',
+      formatter: (value) => `${value} Year`,
     },
-    // 同环比名称（虚拟列头） 格式化
+    // YoY/MoM name (virtual column header) formatting
     {
       field: EXTRA_COLUMN_FIELD,
       formatter: (value, data, meta) => {
         console.log(data, meta);
-        return meta?.colIndex === 0 ? '自定义标题' : value;
+        return meta?.colIndex === 0 ? 'Custom Title' : value;
       },
     },
   ],
@@ -158,15 +158,15 @@ const s2DataConfig = {
 
 * The trend analysis table will force the row header layout to a tree mode, that is, `hierarchyType: 'tree'`
 * The corner header text can be customized through `options.cornerText`
-* Coloring logic configuration can be configured in `options.conditions` , no need to specify the `field` parameter, the usage reference [field tag](/zh/docs/manual/basic/conditions) currently only supports the text color channel
+* Coloring logic configuration can be configured in `options.conditions` , no need to specify the `field` parameter, the usage reference [field tag](/en/manual/basic/conditions) currently only supports the text color channel
 
 <embed src="@/common/custom/customTreeNode.en.md"></embed>
 
 ## Tooltips
 
-The `Tooltip` of the trend analysis table uses the [customization capabilities](/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头 (row)` ,`列头 (col)` and`数值 (data)` , and can be imported separately in the `@antv/s2-react` package
+The `Tooltip` of the trend analysis table uses the [customization capabilities](/en/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`Row Header (row)` ,`Column Header (col)` and`Data Value (data)` , and can be imported separately in the `@antv/s2-react` package
 
-| Configuration item name   | illustrate                             | type                            | Defaults                                                   | required |
+| Configuration item name   | Description                            | type                            | Defaults                                                   | required |
 | ------------------------- | -------------------------------------- | ------------------------------- | ---------------------------------------------------------- | -------- |
 | cell                      | current cell                           | `S2CellType`                    | ✓                                                          |          |
 | defaultTooltipShowOptions | Default tooltip display configuration  | `TooltipShowOptions<ReactNode>` |                                                            |          |
@@ -190,18 +190,18 @@ const s2Options = {
 By default, the name of the row header node is used as the title of the Tooltip, and the content can be customized through the `label`
 
 ```tsx
-// 字符串
-<StrategySheetDataTooltip cell={cell} label={"自定义标题"}/>
+// String
+<StrategySheetDataTooltip cell={cell} label={"Custom Title"}/>
 
-// 自定义组件
-<StrategySheetDataTooltip cell={cell} label={(cell, defaultLabel) => `${defaultLabel}（自定义标题`} />
+// Custom Component
+<StrategySheetDataTooltip cell={cell} label={(cell, defaultLabel) => `${defaultLabel} (Custom Title`} />
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/dosQkhLBp/fbe5a635-60ad-4e55-9a23-858842b977ac.png" width="600" alt="preview">
 
 ### show raw data
 
-After `showOriginalValue` is turned on, it will read the `originalValues` data corresponding to the current Tooltip (if any), and display the original data together, that is,`展示值（原始值）`
+After `showOriginalValue` is turned on, it will read the `originalValues` data corresponding to the current Tooltip (if any), and display the original data together, that is,`Display value (Original value)`
 
 ```tsx
 <StrategySheetDataTooltip cell={cell} showOriginalValue />
@@ -236,4 +236,4 @@ The configuration is as follows:
 
 <embed src="@/common/mini-chart.en.md"></embed>
 
-If you want to change the Mini graph style configuration, you can refer to the [theme configuration]('/zh/api/general/s2theme#minicharttheme')
+If you want to change the Mini graph style configuration, you can refer to the [theme configuration](/en/api/general/s2-theme#minicharttheme)

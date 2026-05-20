@@ -80,14 +80,69 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     );
   }
 
+  /**
+   * grid-tree 模式下，折叠的节点需要跨越子维度列形成合并单元格
+   * 通过重写 getBBoxByType 实现视觉上的跨列效果，不影响全局布局
+   */
+  public getBBoxByType(type = CellClipBox.BORDER_BOX): SimpleBBox {
+    const baseBBox = super.getBBoxByType(type);
+
+    // 只在 grid-tree 模式下的折叠节点才需要跨列
+    if (!this.spreadsheet.isHierarchyGridTreeType() || !this.meta.isCollapsed) {
+      return baseBBox;
+    }
+
+    // 获取行头层级信息，计算需要跨越的宽度
+    const { hierarchy } = this.meta;
+    const sampleNodes = hierarchy?.sampleNodesForAllLevels || [];
+    let spanWidth = 0;
+
+    // 从当前层级到最大层级的所有列宽之和
+    for (let i = this.meta.level; i <= (hierarchy?.maxLevel ?? 0); i++) {
+      const levelSample = sampleNodes[i];
+
+      spanWidth += levelSample?.width ?? 0;
+    }
+
+    // CONTENT_BOX 需要减去左右 padding
+    if (type === CellClipBox.CONTENT_BOX) {
+      const { padding } = this.getStyle()!.cell!;
+
+      spanWidth -= (padding?.left ?? 0) + (padding?.right ?? 0);
+    }
+
+    return {
+      ...baseBBox,
+      width: spanWidth || baseBBox.width,
+    };
+  }
+
   protected showTreeIcon() {
-    return this.spreadsheet.isHierarchyTreeType() && !this.meta.isLeaf;
+    // tree 和 grid-tree 模式都需要显示展开/折叠图标
+    // 注意：折叠的节点虽然 isLeaf=true，但仍需显示展开图标
+    const isTreeOrGridTree =
+      this.spreadsheet.isHierarchyTreeType() ||
+      this.spreadsheet.isHierarchyGridTreeType();
+
+    if (!isTreeOrGridTree) {
+      return false;
+    }
+
+    // 已折叠的节点需要显示展开图标
+    if (this.meta.isCollapsed) {
+      return true;
+    }
+
+    // 未折叠的非叶子节点显示折叠图标
+    return !this.meta.isLeaf;
   }
 
   protected showTreeLeafNodeAlignDot() {
+    // grid-tree 模式下不需要对齐点，因为每个层级有独立的列
     return (
       this.spreadsheet.options.style?.rowCell?.showTreeLeafNodeAlignDot &&
-      this.spreadsheet.isHierarchyTreeType()
+      this.spreadsheet.isHierarchyTreeType() &&
+      !this.spreadsheet.isHierarchyGridTreeType()
     );
   }
 
@@ -110,8 +165,9 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
   private onTreeIconClick() {
     const { isCollapsed, hierarchy } = this.meta;
+    const { device } = this.spreadsheet.options;
 
-    if (isMobile()) {
+    if (isMobile(device)) {
       return;
     }
 
@@ -168,6 +224,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
         width: size,
         height: size,
         fill,
+        iconStrategy: this.spreadsheet.options.csp?.iconStrategy,
       },
       isCollapsed,
       onClick: () => {
@@ -176,8 +233,10 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     });
 
     // 移动端, 点击热区为整个单元格
-    if (isMobile()) {
-      this.addEventListener('touchend', () => {
+    const { device } = this.spreadsheet.options;
+
+    if (isMobile(device)) {
+      this.addMobileTouchListener(() => {
         this.emitCollapseEvent();
       });
     }
@@ -355,7 +414,12 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   }
 
   protected getContentIndent() {
-    if (!this.spreadsheet.isHierarchyTreeType()) {
+    // grid-tree 模式下，每个维度层级有独立的列，不需要缩进
+    // 纯 tree 模式下，所有层级在同一列，需要根据层级深度进行缩进
+    if (
+      !this.spreadsheet.isHierarchyTreeType() ||
+      this.spreadsheet.isHierarchyGridTreeType()
+    ) {
       return 0;
     }
 
@@ -520,5 +584,9 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       this.spreadsheet.options.showDefaultHeaderActionIcon &&
       !this.spreadsheet.isValueInCols()
     );
+  }
+
+  public setHeaderConfig(headerConfig: RowHeaderConfig) {
+    super.setHeaderConfig(headerConfig);
   }
 }

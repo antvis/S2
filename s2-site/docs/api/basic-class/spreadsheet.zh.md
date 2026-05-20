@@ -82,6 +82,7 @@ type S2MountContainer = string | HTMLElement;
 
 ```ts
 interface ScrollOffsetConfig {
+  skipScrollEvent?: boolean;
   rowHeaderOffsetX?: {
     value: number | undefined;
     animate?: boolean;
@@ -106,6 +107,7 @@ export enum CellType {
   DATA_CELL = 'dataCell',  // 数值单元格
   ROW_CELL = 'rowCell', // 行头单元格
   COL_CELL = 'colCell', // 列头单元格
+  SERIES_NUMBER_CELL = 'seriesNumberCell', // 序号单元格
   CORNER_CELL = 'cornerCell', // 角头单元格
   MERGED_CELL = 'mergedCell', // 合并后的单元格
 }

@@ -204,6 +204,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.KEY_UP,
       OriginEventType.POINTER_UP,
       OriginEventType.POINTER_MOVE,
+      OriginEventType.SCROLL,
     ];
 
     expect(eventController.domEventListeners).toHaveLength(
@@ -539,6 +540,15 @@ describe('Interaction Event Controller Tests', () => {
 
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
+    expect(spreadsheet.hideTooltip).toHaveBeenCalled();
+  });
+
+  test('should hide tooltip when window scrolls', () => {
+    spreadsheet.hideTooltip = jest.fn();
+
+    window.dispatchEvent(new Event('scroll'));
+
+    // throttle defaults to leading: true, so hideTooltip is called immediately
     expect(spreadsheet.hideTooltip).toHaveBeenCalled();
   });
 
@@ -919,14 +929,15 @@ describe('Interaction Event Controller Tests', () => {
       spreadsheet.container.appendChild(guiIcon); // 加入 g 渲染树才有事件传递
       spreadsheet.once(event, handler);
 
-      // 内部的 GuiIcon
-      const { iconImageShape } = guiIcon;
+      // 内部的 GuiIcon (兼容 Path 模式和 Image 模式)
+      // Path 模式下使用 iconPathShapes, Image 模式下使用 iconImageShape
+      const targetShape = guiIcon.iconPathShapes[0] || guiIcon.iconImageShape;
 
       Object.defineProperty(eventController, 'target', {
-        value: iconImageShape,
+        value: targetShape,
         writable: true,
       });
-      iconImageShape.dispatchEvent(
+      targetShape.dispatchEvent(
         createFederatedPointerEvent(spreadsheet, OriginEventType.POINTER_UP),
       );
 
@@ -1018,14 +1029,14 @@ describe('Interaction Event Controller Tests', () => {
       spreadsheet.container.appendChild(guiIcon); // 加入 g 渲染树才有事件传递
       spreadsheet.once(event, handler);
 
-      // 内部的 GuiIcon
-      const { iconImageShape } = guiIcon;
+      // 内部的 GuiIcon (兼容 Path 模式和 Image 模式)
+      const targetShape = guiIcon.iconPathShapes[0] || guiIcon.iconImageShape;
 
       Object.defineProperty(eventController, 'target', {
-        value: iconImageShape,
+        value: targetShape,
         writable: true,
       });
-      iconImageShape.dispatchEvent(
+      targetShape.dispatchEvent(
         createFederatedPointerEvent(spreadsheet, OriginEventType.CLICK),
       );
 

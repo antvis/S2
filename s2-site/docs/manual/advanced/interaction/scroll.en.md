@@ -13,14 +13,14 @@ S2 is based on `Canvas` rendering, and also realizes virtual scrolling, that is,
 
 #### custom scroll speed
 
-The `scrollSpeedRatio` can be configured to control the scroll rate, which is divided into two directions:`水平`and`垂直`. The range is `0-1` , and the default is `1` . [View specific examples](/examples/interaction/advanced#scroll-speed-ratio)
+The `scrollSpeedRatio` can be configured to control the scroll rate, which is divided into two directions:`Horizontal`and`Vertical`. The range is `0-1` , and the default is `1` . [View specific examples](/en/examples/interaction/advanced#scroll-speed-ratio)
 
 ```ts
 const s2Options = {
   interaction: {
     scrollSpeedRatio: {
-      vertical: 0.3, // 垂直
-      horizontal: 1, // 水平
+      vertical: 0.3, // Vertical
+      horizontal: 1, // Horizontal
     },
   },
 };
@@ -34,13 +34,13 @@ Swipe the scroll wheel to scroll vertically, if you hold `Shift` at the same tim
 
 When there are scroll bars in both itself and the parent container, the browser's default scrolling behavior is: non-border does not trigger the parent container to scroll, and when the border is reached, the parent container is triggered to scroll, and you can also configure [overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) to change the default behavior.
 
-S2 is a virtual scroll, but it also **simulates** the scrolling behavior of the browser, and the `overscrollBehavior` can be configured to control the non-boundary scrolling behavior. [view example](/examples/interaction/advanced#overscroll-behavior)
+S2 is a virtual scroll, but it also **simulates** the scrolling behavior of the browser, and the `overscrollBehavior` can be configured to control the non-boundary scrolling behavior. [view example](/en/examples/interaction/advanced#overscroll-behavior)
 
 ```ts
 const s2Options = {
   interaction: {
     overscrollBehavior: 'auto' // 'auto' | 'none' | 'contain';
-    overscrollBehavior: null  // 设为 null 则不做任何处理
+    overscrollBehavior: null  // Set to null to do nothing
   },
 };
 ```
@@ -67,7 +67,7 @@ const s2Options = {
 
 #### Listen for scrolling events
 
-For the`透视表`, the scrollable area is`行头单元格`and the`数值单元格`respectively; for the`明细表`, the scrollable area is only the`数值单元格`, which can be monitored separately or collectively
+For the `pivot table`, the scrollable area is `row header cell` and the `data cell` respectively; for the `table sheet`, the scrollable area is only the `data cell`, which can be monitored separately or collectively
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/D9%24skF%24Bl/Kapture%2525202022-06-23%252520at%25252017.08.17.gif" alt="preview" width="600">
 
@@ -76,7 +76,7 @@ For the`透视表`, the scrollable area is`行头单元格`and the`数值单元�
 * `S2Event.GLOBAL_SCROLL` : Cell scrolling, triggers when the value/row header cell scrolls
 * `S2Event.ROW_CELL_SCROLL` : row header cell scrolling
 
-At the same time: For the `s2-react` and `s2-vue` versions, event mapping is also provided, please refer to the [API documentation](/docs/api/components/sheet-component) for details
+At the same time: For the `s2-react` and `s2-vue` versions, event mapping is also provided, please refer to the [API documentation](/en/api/components/sheet-component) for details
 
 It should be noted that the row header cell will only display the scroll bar **when the row header is fixed** , and there will only be a **horizontal scroll bar** , so the `scrollY` will always be `0`
 
@@ -84,11 +84,11 @@ It should be noted that the row header cell will only display the scroll bar **w
 import { S2Event } from '@antv/s2';
 
 s2.on(S2Event.GLOBAL_SCROLL, (position) => {
-  console.log('表格滚动', position) // { scrollX: 0, scrollY: 100 }
+  console.log('Table Scroll', position) // { scrollX: 0, scrollY: 100 }
 })
 
 s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
-  console.log('行头单元格滚动', position) // { scrollX: 0, scrollY: 100 }
+  console.log('Row Header Cell Scroll', position) // { scrollX: 0, scrollY: 100 }
 })
 ```
 
@@ -96,5 +96,5 @@ s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
 
 Consider the following examples:
 
-* [Scroll to the specified cell](/examples/interaction/advanced/#scroll-to-cell)
-* [cycle scrolling](/examples/interaction/advanced#scroll-loop)
+* [Scroll to the specified cell](/en/examples/interaction/advanced/#scroll-to-cell)
+* [cycle scrolling](/en/examples/interaction/advanced#scroll-loop)

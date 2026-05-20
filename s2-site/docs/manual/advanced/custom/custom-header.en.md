@@ -18,40 +18,40 @@ By default **, the hierarchical structure is generated through the data obtained
 const customTree: CustomTreeNode[] = [
   {
     key: 'a-1',
-    title: '自定义节点 a-1',
-    description: 'a-1 描述',
+    title: 'Custom Node a-1',
+    description: 'a-1 Description',
     children: [
       {
         key: 'a-1-1',
-        title: '自定义节点 a-1-1',
-        description: 'a-1-1 描述',
+        title: 'Custom Node a-1-1',
+        description: 'a-1-1 Description',
         children: [
           {
             key: 'measure-1',
-            title: '指标 1',
-            description: '指标 1 描述',
+            title: 'Metric 1',
+            description: 'Metric 1 Description',
             children: [],
           },
           {
             key: 'measure-2',
-            title: '指标 2',
-            description: '指标 2 描述',
+            title: 'Metric 2',
+            description: 'Metric 2 Description',
             children: [],
           },
         ],
       },
       {
         key: 'a-1-2',
-        title: '自定义节点 a-1-2',
-        description: 'a-1-2 描述',
+        title: 'Custom Node a-1-2',
+        description: 'a-1-2 Description',
         children: [],
       },
     ],
   },
   {
     key: 'a-2',
-    title: '自定义节点 a-2',
-    description: 'a-2 描述',
+    title: 'Custom Node a-2',
+    description: 'a-2 Description',
     children: [],
   },
 ];
@@ -60,14 +60,14 @@ const data = [
   {
     'measure-1': 13,
     'measure-2': 2,
-    type: '家具',
-    sub_type: '桌子',
+    type: 'Furniture',
+    sub_type: 'Table',
   },
   {
     'measure-1': 11,
     'measure-2': 8,
-    type: '家具',
-    sub_type: '椅子',
+    type: 'Furniture',
+    sub_type: 'Chair',
   },
 ]
 ```
@@ -160,15 +160,15 @@ For the tiling mode, the corner header corresponds **to the first cell of each c
 const meta = [
   {
     field: 'a-1',
-    name: '层级 1',
+    name: 'Level 1',
   },
   {
     field: 'a-1-1',
-    name: '层级 2',
+    name: 'Level 2',
   },
   {
     field: 'measure-1',
-    name: '层级 3',
+    name: 'Level 3',
   }
 ]
 ```
@@ -183,11 +183,11 @@ For the tree mode, the corner headers correspond to **all first-level nodes and 
 const meta = [
   {
     field: 'a-1',
-    name: '层级 1',
+    name: 'Level 1',
   },
   {
     field: 'a-2',
-    name: '层级 2',
+    name: 'Level 2',
   },
 ]
 ```
@@ -196,7 +196,7 @@ const meta = [
 
 ```ts
 const s2Options = {
-  cornerText: '自定义角头标题'
+  cornerText: 'Custom Corner Title'
 }
 ```
 
@@ -204,4 +204,4 @@ const s2Options = {
 
 ### more applications
 
-Based on custom row and column headers, we can derive more usage scenarios, such as based on`自定义行头`+`树状模式`, we can customize a [trend analysis table analysis component](zh/docs/manual/basic/analysis/strategy/) .
+Based on custom row and column headers, we can derive more usage scenarios, such as based on `custom row header` + `tree mode`, we can customize a [trend analysis table analysis component](/en/manual/advanced/sheet/strategy) .

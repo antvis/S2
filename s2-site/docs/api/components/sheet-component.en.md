@@ -17,7 +17,7 @@ Function description: The props parameter of the React SheetComponent component
 | spreadsheet | custom table | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/en/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/ docs/api/basic-class/spreadsheet) | | |
 | dataCfg | Pivot table data mapping related configuration items | [S2DataConfig](/en/api/general/s2-data-config) | | ✓ |
 | options | pivot table property configuration item | [SheetComponentOptions](#sheetcomponentoptions) | | ✓ |
-| partDrillDown | Attributes related to dimension drilldown | [PartDrillDown](/docs/api/components/drill-down) | | |
+| partDrillDown | Attributes related to dimension drilldown | [PartDrillDown](/en/api/components/drill-down) | | |
 | adaptive | Whether to adapt to the window size | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
 | themeCfg | Custom pivot table theme styles | [ThemeCfg](/en/api/general/s2-theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
@@ -28,7 +28,7 @@ Function description: The props parameter of the React SheetComponent component
 | onRowCellMouseDown | row header mouse down event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellMouseUp | Row cell mouse release event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellMouseMove | Row cell mouse movement event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onRowCellCollapsed | Node expand/collapse event callback| ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) ) => void; | | |
+| onRowCellCollapsed | Node expand/collapse event callback| ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/en/api/basic-class/node) ) => void; | | |
 | onRowCellAllCollapsed | Event callback for all nodes expanded/collapsed | (isCollapsed: boolean ) => void; | | |
 | onRowCellScroll | row header cell scroll event | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onColCellHover | Column header mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -45,7 +45,7 @@ Function description: The props parameter of the React SheetComponent component
 | onDataCellMouseDown | Mouse down event of numeric cell | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onDataCellMouseUp | Numeric cell mouse release event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onDataCellMouseMove | Numeric cell mouse movement event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onDataCellBrushSelection | Value cell brush selection event | ( dataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void | | |
+| onDataCellBrushSelection | Value cell brush selection event | ( dataCells: [DataCell](/en/api/basic-class/base-cell)[] ) => void | | |
 | onDataCellSelectMove | Numerical cell keyboard direction key move event | (metas: CellMeta[]) => void | | |
 | onCornerCellHover | corner mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellClick | Corner mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -67,10 +67,10 @@ Function description: The props parameter of the React SheetComponent component
 | onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/en/api/general/s2-options/#layoutresult) ) => void; | | |
 | onLayoutPagination | pagination event | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | onLayoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
-| onLayoutAfterCollapseRows | Event callback after collapsing row headers in tree mode | ({collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; | | |
+| onLayoutAfterCollapseRows | Event callback after collapsing row headers in tree mode | ({collapseFields: `Record<string, boolean>`, meta: [Node](/en/api/basic-class/node) ) => void; | | |
 | onBeforeRender | Event before start of render | () => void; | | |
 | onAfterRender | render completed event | () => void; | | |
-| onMounted | Table loading complete event, you can get the table instance [details](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; | | |
+| onMounted | Table loading complete event, you can get the table instance [details](/en/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/en/api/basic-class/spreadsheet)) => void; | | |
 | onDestroy | form destruction event | () => void; | | |
 | onLayoutResize | The overall changeSize event of the table | (params: [ResizeParams](#resizeparams)) => void; | | |
 | onLayoutResizeSeriesWidth | Table serial number row width event | (params: [ResizeParams](#resizeparams)) => void; | | |
@@ -90,12 +90,12 @@ Function description: The props parameter of the React SheetComponent component
 | onContextMenu | Right cell click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMouseHover | table mouse hover event | (event: CanvasEvent) => void | | |
 | onMouseUp | table mouse release event | (event: CanvasEvent) => void | | |
-| onSelected | cell selected event | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void | | |
+| onSelected | cell selected event | (cells: ( [Cell](/en/api/basic-class/base-cell)[] ) => void | | |
 | onReset | Interactive state reset event | (event: KeyboardEvent) => void | | |
-| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/en/api/general/s2-data-config#data) }) => void | | |
+| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/en/api/basic-class/node); record: [Data](/en/api/general/s2-data-config#data) }) => void | | |
 | onScroll | cell scroll event (including row header and value cells) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
-| onColCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; | | |
-| onRowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; | | |
+| onColCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: [ColCell](/en/api/basic-class/base-cell)[]) => void; | | |
+| onRowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: [RowCell](/en/api/basic-class/base-cell)[]) => void; | | |
 
 ## SheetComponentOptions
 
@@ -140,7 +140,7 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onRowCellMouseDown | row header mouse down event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellMouseUp | Row cell mouse release event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellMouseMove | Row cell mouse movement event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onRowCellCollapsed | Node expand/collapse event callback| ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) ) => void; | | |
+| onRowCellCollapsed | Node expand/collapse event callback| ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/en/api/basic-class/node) ) => void; | | |
 | onRowCellAllCollapsed | Event callback for all nodes expanded/collapsed | (isCollapsed: boolean ) => void; | | |
 | onRowCellScroll | row header cell scroll event | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onColCellHover | Column header mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -157,7 +157,7 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onDataCellMouseDown | Mouse down event of numeric cell | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onDataCellMouseUp | Numeric cell mouse release event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onDataCellMouseMove | Numeric cell mouse movement event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onDataCellBrushSelection | Value cell brush selection event | ( dataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void | | |
+| onDataCellBrushSelection | Value cell brush selection event | ( dataCells: [DataCell](/en/api/basic-class/base-cell)[] ) => void | | |
 | onDataCellSelectMove | Numerical cell keyboard direction key move event | (metas: CellMeta[]) => void | | |
 | onCornerCellHover | corner mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellClick | Corner mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -179,10 +179,10 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/en/api/general/s2-options/#layoutresult) ) => void; | | |
 | onLayoutPagination | pagination event | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | onLayoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
-| onLayoutAfterCollapseRows | Event callback after collapsing row headers in tree mode | ({collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; | | |
+| onLayoutAfterCollapseRows | Event callback after collapsing row headers in tree mode | ({collapseFields: `Record<string, boolean>`, meta: [Node](/en/api/basic-class/node) ) => void; | | |
 | onBeforeRender | Event before start of render | () => void; | | |
 | onAfterRender | render completed event | () => void; | | |
-| onMounted | Table loading complete event, you can get the table instance [details](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; | | |
+| onMounted | Table loading complete event, you can get the table instance [details](/en/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/en/api/basic-class/spreadsheet)) => void; | | |
 | onDestroy | form destruction event | () => void; | | |
 | onLayoutResize | The overall changeSize event of the table | (params: [ResizeParams](#resizeparams)) => void; | | |
 | onLayoutResizeSeriesWidth | Table serial number row width event | (params: [ResizeParams](#resizeparams)) => void; | | |
@@ -202,12 +202,12 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onContextMenu | Right cell click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMouseHover | table mouse hover event | (event: CanvasEvent) => void | | |
 | onMouseUp | table mouse release event | (event: CanvasEvent) => void | | |
-| onSelected | cell selected event | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void | | |
+| onSelected | cell selected event | (cells: ( [Cell](/en/api/basic-class/base-cell)[] ) => void | | |
 | onReset | Interactive state reset event | (event: KeyboardEvent) => void | | |
-| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/en/api/general/s2-data-config#data) }) => void | | |
+| onLinkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/en/api/basic-class/node); record: [Data](/en/api/general/s2-data-config#data) }) => void | | |
 | onScroll | cell scroll event (including row header and value cells) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
-| onColCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; | | |
-| onRowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; | | |
+| onColCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: [ColCell](/en/api/basic-class/base-cell)[]) => void; | | |
+| onRowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: [RowCell](/en/api/basic-class/base-cell)[]) => void; | | |
 
 ## SheetComponentOptions
 
@@ -252,7 +252,7 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
-| spreadsheet | custom table | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/en/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet] (/docs/api/basic-class/spreadsheet) | | |
+| spreadsheet | custom table | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/en/api/general/s2-data-config), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet] (/api/basic-class/spreadsheet) | | |
 | rangeSort | Callback event triggered when sorting within a group | (params: [SortParam[]](#sortparam) ) => void; | | |
 | rowCellClick | row head mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | rowCellHover | row header mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -261,9 +261,9 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 | rowCellMouseDown | row head mouse down event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | rowCellMouseUp | row head mouse release event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | rowCellMouseMove | row head mouse move event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| rowCellCollapseTreeRows | Click the row header to collapse and expand the button in the tree structure | (params: {id: `number`; isCollapsed: `boolean`; node: [Node](/docs/api/basic-class/node)}) = > void | | |
+| rowCellCollapseTreeRows | Click the row header to collapse and expand the button in the tree structure | (params: {id: `number`; isCollapsed: `boolean`; node: [Node](/en/api/basic-class/node)}) = > void | | |
 | rowCellScroll | row header cell scroll event | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
-| rowCellCollapsed | Node expand/collapse event callback| ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) ) => void; | | |
+| rowCellCollapsed | Node expand/collapse event callback| ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/en/api/basic-class/node) ) => void; | | |
 | rowCellAllCollapsed | Event callback for all expanded/collapsed nodes | (isCollapsed: boolean ) => void; | | |
 | colCellHover | Column header mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | colCellClick | Column head mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -279,7 +279,7 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 | dataCellMouseDown | mouse down event of numeric cell | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | dataCellMouseUp | Numeric cell mouse release event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | dataCellMouseMove | Numeric cell mouse move event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| dataCellBrushSelection | Value cell brush selection event | (brushRangeDataCells: ( [DataCell](/docs/api/basic-class/base-cell)[] ) => void | | |
+| dataCellBrushSelection | Value cell brush selection event | (brushRangeDataCells: ( [DataCell](/en/api/basic-class/base-cell)[] ) => void | | |
 | dataCellScroll | Numeric cell scroll event | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | cornerCellHover | corner mouse hover event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | cornerCellClick | corner mouse click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -302,7 +302,7 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 | layoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | beforeRender | event before start render | () => void; | | |
 | afterRender | render completed event | () => void; | | |
-| mounted | table loading complete event, you can get the table instance [details](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; | | |
+| mounted | table loading complete event, you can get the table instance [details](/en/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/en/api/basic-class/spreadsheet)) => void; | | |
 | destroy | table destruction event | () => void; | | |
 | layoutResize | changeSize event of the table | (params: [ResizeParams](#resizeparams)) => void; | | |
 | layoutResizeSeriesWidth | table serial number row width event | (params: [ResizeParams](#resizeparams)) => void; | | |
@@ -322,9 +322,9 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 | contextMenu | Right cell click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | mouseHover | table mouse hover event | (event: CanvasEvent) => void | | |
 | mouseUp | table mouse up event | (event: CanvasEvent) => void | | |
-| selected | cell selected event | ( cells: ([Cell](/docs/api/basic-class/base-cell)[] ) => void | | |
+| selected | cell selected event | ( cells: ([Cell](/en/api/basic-class/base-cell)[] ) => void | | |
 | reset | interaction state reset event | (event: KeyboardEvent) => void | | |
-| linkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/en/api/general/s2-data-config#data) }) => void | | |
+| linkFieldJump | Link field jump event (cellData: @antv/s2 1.37.0 new) | (data: { key: string; cellData: [Node](/en/api/basic-class/node); record: [Data](/en/api/general/s2-data-config#data) }) => void | | |
 | scroll | cell scroll event (including row header and value cells) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | colCellBrushSelection | Batch select the column header cells within the brush selection range. During the brush selection process, the brush selection range prompt mask will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | (cells: ColCell[]) => void; | | |
 | rowCellBrushSelection | Batch select the row header cells within the brush selection range. During the brush selection process, a prompt mask for the brush selection range will be displayed. After the brush selection is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) | ( cells: RowCell[]) => void; | | |
@@ -353,9 +353,9 @@ Function description: The return information of the interactive callback functio
 
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
-| target | interaction object | [S2CellType](/docs/api/basic-class/base-cell) | | |
+| target | interaction object | [S2CellType](/en/api/basic-class/base-cell) | | |
 | event | event | [Event](#) | | |
-| viewMeta | current node information | [Node](/docs/api/basic-class/node) | | |
+| viewMeta | current node information | [Node](/en/api/basic-class/node) | | |
 
 <embed src="@/common/sort-param.en.md"></embed>
 
@@ -370,12 +370,12 @@ Function description: The position information of cell scrolling.
 
 ## HiddenColumnsInfo
 
-Function description: After enabling [Hide Column Header](/docs/manual/advanced/interaction/hide-columns), hide the node information of the column header
+Function description: After enabling [Hide Column Header](/en/manual/advanced/interaction/hide-columns), hide the node information of the column header
 
 | Parameter | Description | Type | Default | Required |
 | -- | -- | -- | -- | --- |
-| hideColumnNodes | Currently hidden node information | [Node](/docs/api/basic-class/node)[] | | |
-| displaySiblingNode | Information about neighboring nodes displayed | { prev:[Node](/docs/api/basic-class/node);next: [Node](/docs/api/basic-class/node) } | | |
+| hideColumnNodes | Currently hidden node information | [Node](/en/api/basic-class/node)[] | | |
+| displaySiblingNode | Information about neighboring nodes displayed | { prev:[Node](/en/api/basic-class/node);next: [Node](/en/api/basic-class/node) } | | |
 
 ## ResizeParams
 
@@ -402,7 +402,7 @@ Function description: Table resize (drag to change cell row height and column wi
 | effect | The area affected by the drag change | `Field` \| `Cell` \| `Tree` \| `Series` | | |
 | isResizeArea | Whether it belongs to resize hot area | `boolean` | | |
 | id | field id | `string` | | |
-| meta | cell node information corresponding to the resize hot zone | [Node](/docs/api/basic-class/node) | | |
+| meta | cell node information corresponding to the resize hot zone | [Node](/en/api/basic-class/node) | | |
 | resizedWidth | Width after dragging | `number` | | |
 | resizedHeight | Height after dragging | `number` | | |
 

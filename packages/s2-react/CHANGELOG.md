@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.3.1](https://github.com/antvis/S2/compare/@antv/s2-react-v2.3.0...@antv/s2-react-v2.3.1) (2025-12-25)
+
+
+### Performance Improvements
+
+* 复用行列头/数值单元格 以提升百万滚动性能至50FPS ([#3222](https://github.com/antvis/S2/issues/3222)) ([3bc1ccb](https://github.com/antvis/S2/commit/3bc1ccb8006fe136989a32303d9107145914e160))
+
 # [@antv/s2-react-v2.3.0](https://github.com/antvis/S2/compare/@antv/s2-react-v2.2.3...@antv/s2-react-v2.3.0) (2025-12-01)
 
 

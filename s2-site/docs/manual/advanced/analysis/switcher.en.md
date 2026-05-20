@@ -45,7 +45,7 @@ ReactDOM.render(
 
 ### dimension configuration
 
-Switcher can receive three types of dimension configurations, namely `rows` , `columns` and `values` . They are all of type [SwitcherField](/docs/api/components/switcher#switcherfield) .
+Switcher can receive three types of dimension configurations, namely `rows` , `columns` and `values` . They are all of type [SwitcherField](/en/api/components/switcher#switcherfield) .
 
 > Among them, the two dimensions of `rows` and `columns` can be dragged into each other's configuration boxes, while `values` ​​can only change the field order in its own configuration box.
 
@@ -69,7 +69,7 @@ const field = {
 ```js
 const field = {
   expandable: true,
-  expandText: "展开同环比", // 默认：展开子项
+  expandText: "Expand YoY comparison", // default: expand sub-items
   items: [
     /*...*/
   ],
@@ -80,7 +80,7 @@ const field = {
 
 ```js
 const field = {
-  allowEmpty: false, // 默认：true
+  allowEmpty: false, // default: true
   items: [
     /*...*/
   ],
@@ -91,7 +91,7 @@ const field = {
 
 ### Submit changes
 
-The `Switcher` component will trigger the `onSubmit` callback after the popup window is closed, and this callback will receive a parameter of type [SwitcherResult](/docs/api/components/switcher#switcherresult) , through which you can get the modified result.
+The `Switcher` component will trigger the `onSubmit` callback after the popup window is closed, and this callback will receive a parameter of type [SwitcherResult](/en/api/components/switcher#switcherresult) , through which you can get the modified result.
 
 All results are **grouped by dimension** , and each set of fields is **flattened and** sorted sequentially.
 
@@ -108,13 +108,13 @@ You can see the detailed result data types with the following example:
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tElLTIzXBR0AAAAAAAAAAAAAARQnAQ" height="400" alt="preview">
 
-* The pop-up layer of the `Switcher` component is developed based on `antd` 's [Popover](https://ant.design/components/popover-cn/) , which supports transparent transmission of `Popover` [configuration items](https://ant.design/components/popover-cn/#API) to customize the pop-up layer, such as`触发方式`,`箭头指向`,`卡片弹出方向`, etc.
+* The pop-up layer of the `Switcher` component is developed based on `antd` 's [Popover](https://ant.design/components/popover/) , which supports transparent transmission of `Popover` [configuration items](https://ant.design/components/popover/#API) to customize the pop-up layer, such as`trigger method`,`arrow direction`,`card popup direction`, etc.
 
 ```tsx
 <Switcher popover={{ arrowPointAtCenter: true }} />
 ```
 
-🎨 For detailed configuration of the `Switcher` component, refer to the [Switcher Props](/docs/api/components/switcher) document.
+🎨 For detailed configuration of the `Switcher` component, refer to the [Switcher Props](/en/api/components/switcher) document.
 
 ## example
 
@@ -132,4 +132,4 @@ You can see the detailed result data types with the following example:
 
 <Playground path="react-component/switcher/demo/table.tsx" rid="table"></Playground>
 
-​📊 See more [examples of dimension switching](/examples/react-component/switcher#pure-switcher) .
+​📊 See more [examples of dimension switching](/en/examples/react-component/switcher#pure-switcher) .

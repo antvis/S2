@@ -85,11 +85,34 @@ export interface CellScrollToOptions {
 }
 ```
 
+### StickyHeaderOptions
+
+```ts
+export interface StickyHeaderOptions {
+  /**
+   * 吸顶时的 top 偏移量 (应对外部业务带有固定 Header 的情况, 如导航栏)
+   * @default 0
+   */
+  offsetTop?: number | (() => number);
+
+  /**
+   * 绑定的外部滚动容器 (默认 window)
+   */
+  scrollContainer?: HTMLElement | Window;
+
+  /**
+   * 是否启用吸顶表头的交互能力 (排序/resize/展开折叠等)
+   * @default false
+   */
+  enableInteraction?: boolean;
+}
+```
+
 ### ChangeCellOptions
 
 ```ts
 
-export interface ChangeCellOptions {
+export interface ChangeCellOptions extends CellScrollToOptions {
   /**
    * 目标单元格
    */
@@ -103,7 +126,7 @@ export interface ChangeCellOptions {
   /**
    * 状态名 （默认 `selected`)
    */
-  stateName?: InteractionStateName;
+  stateName?: `${InteractionStateName}`;
 
   /**
    * 如果单元格不在可视范围，是否自动滚动
@@ -181,37 +204,6 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | TableCornerCell
   | TableSeriesNumberCell
   | BaseCell<T>;
-```
-
-### ChangeCellOptions
-
-```ts
-interface ChangeCellOptions {
-  /**
-   * 目标单元格
-   */
-  cell: S2CellType<ViewMeta>;
-
-  /**
-   * 是否是多选
-   */
-  isMultiSelection?: boolean;
-
-  /**
-   * 状态名
-   */
-  stateName?: InteractionStateName;
-
-  /**
-   * 交互名
-   */
-  interactionName?: `${InteractionName}`;
-
-  /**
-   * 如果单元格不在可视范围，是否自动滚动
-   */
-  scrollIntoView?: boolean;
-}
 ```
 
 ### MergedCellInfo

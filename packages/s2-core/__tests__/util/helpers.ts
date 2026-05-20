@@ -221,6 +221,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.isPivotMode = jest.fn();
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
+  s2.isHierarchyGridTreeType = jest.fn();
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as any;
   s2.getCanvasConfig = () => s2.container.getConfig();

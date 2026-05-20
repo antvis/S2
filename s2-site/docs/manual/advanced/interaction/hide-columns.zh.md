@@ -162,7 +162,7 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/LYrMG8bf5/660aa34c-5fce-4f62-b422-ee6d3b5478d1.png)
 
-还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/manual/basic/analysis/switcher/)
+还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/manual/advanced/analysis/switcher/)
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview" />
 

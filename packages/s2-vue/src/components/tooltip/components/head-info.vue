@@ -1,17 +1,31 @@
 <script lang="ts">
-import { type TooltipHeadInfo, TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import { defineComponent } from 'vue';
+import { type TooltipHeadInfo, TOOLTIP_PREFIX_CLS, i18n } from '@antv/s2';
+import { computed, defineComponent } from 'vue';
 import type { GetInitProps } from '../../../interface';
 
 export default defineComponent({
   name: 'TooltipHeadInfo',
   props: ['rows', 'cols'] as unknown as GetInitProps<TooltipHeadInfo>,
-  setup() {
+  setup(props) {
+    const colsText = computed(() =>
+      (props.cols || []).map((item) => item.value).join('/'),
+    );
+    const rowsText = computed(() =>
+      (props.rows || []).map((item) => item.value).join('/'),
+    );
+    const separator = computed(() =>
+      (props.cols?.length ?? 0) > 0 && (props.rows?.length ?? 0) > 0
+        ? i18n('，')
+        : '',
+    );
+
     return {
       TOOLTIP_PREFIX_CLS,
+      colsText,
+      rowsText,
+      separator,
     };
   },
-  components: {},
 });
 </script>
 
@@ -20,9 +34,7 @@ export default defineComponent({
     v-if="cols?.length || rows?.length"
     :class="`${TOOLTIP_PREFIX_CLS}-head-info-list`"
   >
-    <span v-for="col in cols" :key="col.value">{{ col.value }}/</span>
-    <span v-if="cols?.length > 0 && rows?.length > 0">，</span>
-    <span v-for="row in rows" :key="row.value">{{ row.value }}/</span>
+    {{ colsText }}{{ separator }}{{ rowsText }}
   </div>
 </template>
 

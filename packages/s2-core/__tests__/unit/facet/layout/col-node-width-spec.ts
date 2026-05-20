@@ -105,6 +105,60 @@ describe('Col width Test', () => {
 
       expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(64);
     });
+
+    test('get correct width in layoutWidthType compact mode with compactExtraWidth', async () => {
+      s2.setOptions({
+        style: {
+          layoutWidthType: LayoutWidthType.Compact,
+          compactExtraWidth: 20,
+        },
+      });
+      await s2.render();
+
+      // 基础宽度 80 + 额外宽度 20 = 100
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(100);
+    });
+
+    test('get correct width in layoutWidthType compact mode with compactMinWidth', async () => {
+      s2.setOptions({
+        style: {
+          layoutWidthType: LayoutWidthType.Compact,
+          compactMinWidth: 150,
+        },
+      });
+      await s2.render();
+
+      // 基础宽度 80 < 最小宽度 150，所以应用最小宽度
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(150);
+    });
+
+    test('get correct width in layoutWidthType compact mode with both compactExtraWidth and compactMinWidth', async () => {
+      s2.setOptions({
+        style: {
+          layoutWidthType: LayoutWidthType.Compact,
+          compactExtraWidth: 10,
+          compactMinWidth: 100,
+        },
+      });
+      await s2.render();
+
+      // 基础宽度 80 + 额外宽度 10 = 90 < 最小宽度 100，所以应用最小宽度
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(100);
+    });
+
+    test('get correct width in layoutWidthType compact mode with compactExtraWidth exceeding compactMinWidth', async () => {
+      s2.setOptions({
+        style: {
+          layoutWidthType: LayoutWidthType.Compact,
+          compactExtraWidth: 30,
+          compactMinWidth: 100,
+        },
+      });
+      await s2.render();
+
+      // 基础宽度 80 + 额外宽度 30 = 110 > 最小宽度 100，所以使用计算宽度
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(110);
+    });
   });
 
   describe('Table Mode', () => {
@@ -140,6 +194,40 @@ describe('Col width Test', () => {
       // price 列，列头标签比表身数据更长
       expect(Math.round(colLeafNodes[0].width)).toBe(47);
       // cost 列，表身数据比列头更长（格式化）
+      expect(Math.round(colLeafNodes[1].width)).toBe(168);
+    });
+
+    test('get correct width in layoutWidthType compact mode with compactExtraWidth', async () => {
+      s2.setOptions({
+        style: {
+          layoutWidthType: LayoutWidthType.Compact,
+          compactExtraWidth: 20,
+        },
+      });
+      await s2.render();
+
+      const colLeafNodes = s2.facet.getColLeafNodes();
+
+      // price 列: 基础宽度 47 + 额外宽度 20 = 67
+      expect(Math.round(colLeafNodes[0].width)).toBe(67);
+      // cost 列: 基础宽度 168 + 额外宽度 20 = 188
+      expect(Math.round(colLeafNodes[1].width)).toBe(188);
+    });
+
+    test('get correct width in layoutWidthType compact mode with compactMinWidth', async () => {
+      s2.setOptions({
+        style: {
+          layoutWidthType: LayoutWidthType.Compact,
+          compactMinWidth: 100,
+        },
+      });
+      await s2.render();
+
+      const colLeafNodes = s2.facet.getColLeafNodes();
+
+      // price 列: 基础宽度 47 < 最小宽度 100，所以应用最小宽度
+      expect(Math.round(colLeafNodes[0].width)).toBe(100);
+      // cost 列: 基础宽度 168 > 最小宽度 100，保持原来宽度
       expect(Math.round(colLeafNodes[1].width)).toBe(168);
     });
   });

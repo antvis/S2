@@ -59,7 +59,8 @@ const s2DataConfig = {
 | prepareText | 渲染前对文本进行异步处理           | (value: SimpleData) => Promise<string>                                                  |    |      |
 | fallback       | 图片、视频加载失败的兜底展示         | string                                                   |        |      |
 | timeout        | 图片、视频加载超时时间            | number                                                   | 10000  |      |
-| config         | 图片、视频的配置项              | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |        |      |
+| config         | 图片、视频容器的配置项              | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[RectStyleProps](https://g.antv.antgroup.com/api/basic/rect)> |        |      |
+| videoConfig    | 视频配置项，仅当 type 为 VIDEO 时生效 | Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)> | `{ loop: true, autoplay: false, preload: 'auto', crossOrigin: true, controls: false, muted: true }` |      |
 
 <embed src="@/common/custom/customTreeNode.zh.md"></embed>
 <embed src="@/common/view-meta.zh.md"></embed>

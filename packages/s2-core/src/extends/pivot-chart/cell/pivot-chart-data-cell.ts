@@ -65,7 +65,9 @@ export class PivotChartDataCell extends ChartDataCell {
   public drawTextShape(): void {
     const chartOptions = this.getChartOptions();
 
-    this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    if (!this.chartShape) {
+      this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
+    }
 
     waitForCellMounted(() => {
       if (this.destroyed) {

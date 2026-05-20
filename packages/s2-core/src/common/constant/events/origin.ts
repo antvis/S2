@@ -24,4 +24,5 @@ export enum OriginEventType {
   POINTER_OVER = 'pointerover',
   RIGHT_DOWN = 'rightdown',
   RIGHT_UP = 'rightup',
+  SCROLL = 'scroll',
 }

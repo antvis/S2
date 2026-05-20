@@ -5,7 +5,7 @@ redirect_from:
  - /en/docs/manual
 ---
 
-<div><p><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg"> </a><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg"> </a><a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank"><img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"> </a><a href="https://codecov.io/gh/antvis/S2" target="_blank"><img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="Coverage"> </a><a href="https://github.com/antvis/S2/releases" target="_blank"><img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"></a></p></div>
+<div><p><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg"> </a><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg"> </a><a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank"><img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"> </a><a href="https://github.com/antvis/S2/releases" target="_blank"><img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"></a></p></div>
 
 ## ❓ What is S2
 
@@ -28,7 +28,7 @@ npm install @antv/s2
 # yarn add @antv/s2
 ```
 
-## 🔨 use
+## 🔨 Usage
 
 ### 1. Data preparation
 
@@ -40,99 +40,99 @@ npm install @antv/s2
 &#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;data:&#x26;nbsp;[
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"1",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"2",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"17",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"6",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"8",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"12",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"3",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"25",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"0.5",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Hangzhou",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"20",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"1.7",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Zhejiang",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Zhoushan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"0.12",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"10",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Pen",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"9",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Changchun",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"3",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"Jilin",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"Baishan",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"Paper",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"1",
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;}
 &#x26;nbsp;&#x26;nbsp;]

@@ -1,3 +1,24 @@
+# [@antv/s2-vue-v2.2.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.1.0...@antv/s2-vue-v2.2.0) (2026-03-31)
+
+
+### Features
+
+* s2-vue支持分析组件（与 s2-react-components对齐） ([#3301](https://github.com/antvis/S2/issues/3301)) ([0792629](https://github.com/antvis/S2/commit/0792629760205122207b4f371327cab6f1ea2504))
+
+# [@antv/s2-vue-v2.1.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.3...@antv/s2-vue-v2.1.0) (2026-01-19)
+
+
+### Features
+
+* **s2-vue:** 🚀 架构升级与功能补全 (s2-vue和s2-React功能对齐) ([#3295](https://github.com/antvis/S2/issues/3295)) ([89f565f](https://github.com/antvis/S2/commit/89f565f1e54b050de791b289a8df01b4f829893c))
+
+# [@antv/s2-vue-v2.0.3](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.2...@antv/s2-vue-v2.0.3) (2026-01-14)
+
+
+### Bug Fixes
+
+* 修复 s2-vue 的 SheetComponent 的 loading 属性失效问题 ([#3282](https://github.com/antvis/S2/issues/3282)) ([3da788e](https://github.com/antvis/S2/commit/3da788e9bf77bce92f9487ecd8655b12a3dffbbc)), closes [#2922](https://github.com/antvis/S2/issues/2922)
+
 # [@antv/s2-vue-v2.0.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.1...@antv/s2-vue-v2.0.2) (2024-12-13)
 
 

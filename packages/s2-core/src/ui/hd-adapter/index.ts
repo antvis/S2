@@ -1,6 +1,7 @@
 import { debounce } from 'lodash';
 import type { SpreadSheet } from '../../sheet-type';
 import { isMobile } from '../../utils/is-mobile';
+import { isSSR } from '../../utils/ssr';
 
 /**
  * 基于 Canvas 的高清适配方案
@@ -9,9 +10,11 @@ import { isMobile } from '../../utils/is-mobile';
  * 3. 浏览器窗口缩放
  */
 export class HdAdapter {
-  private viewport = window as typeof window & {
-    visualViewport: VisualViewport;
-  };
+  private viewport = isSSR()
+    ? undefined
+    : (window as typeof window & {
+        visualViewport: VisualViewport;
+      });
 
   private devicePixelRatioMedia: MediaQueryList;
 
@@ -28,11 +31,21 @@ export class HdAdapter {
   }
 
   public init = () => {
+    // SSR environment: no-op
+    if (isSSR()) {
+      return;
+    }
+
     this.initDevicePixelRatioListener();
     this.initDeviceZoomListener();
   };
 
   public destroy = () => {
+    // SSR environment: no-op
+    if (isSSR()) {
+      return;
+    }
+
     this.removeDevicePixelRatioListener();
     this.removeDeviceZoomListener();
   };

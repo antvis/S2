@@ -7,13 +7,19 @@ on:
       - alpha
       - next
 
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]') && startsWith(github.event.head_commit.message , 'chore(release):')"
     strategy:
       matrix:
-        node-version: [20] # semantic-release 需要 >= 16 的 Node.js 环境
+        node-version: [24] # npm trust publish 需要 Nodejs 24
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +32,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -57,14 +63,59 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # 自动发布完成后 触发 github.release.published 事件
-      # 如果是 action 自带的 机器人 token, 出于安全考虑, github 会禁止循环触发, 使用真实用户的 token 可解决这个问题
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           npm_config_legacy_peer_deps: true
         run: pnpm release
+
+      - name: Release success ding talk dev group notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
+                "text": "📋 点击查看更新日志",
+                "messageUrl": "https://github.com/antvis/S2/releases",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
+
+      - name: Release success ding talk group notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_GROUP_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
+                "text": "📋 点击查看更新日志",
+                "messageUrl": "https://github.com/antvis/S2/releases",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
+
+      - name: Release success ding talk public notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_PUBLIC_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
+                "text": "📋 点击查看更新日志",
+                "messageUrl": "https://github.com/antvis/S2/releases",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
 
       # 发布失败通知内部开发群
       - name: Release failed ding talk dev group notify

@@ -167,7 +167,7 @@ const s2Options = {
 }
 ```
 
-如果行头是 [自定义节点 (CustomTreeNode)](api/general/s2-data-config#customtreenode), 则优先级如下：
+如果行头是 [自定义节点 (CustomTreeNode)](/api/general/s2-data-config#customtreenode), 则优先级如下：
 
 `collapseFields` > `expandDepth` > `collapseAll` > `CustomTreeNode.collapsed`
 
