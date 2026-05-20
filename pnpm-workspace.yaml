@@ -2,6 +2,18 @@ packages:
   - packages/*
   - s2-site
 
+allowBuilds:
+  '@parcel/watcher': set this to true or false
+  '@swc/core': set this to true or false
+  canvas: set this to true or false
+  core-js: set this to true or false
+  core-js-pure: set this to true or false
+  electron: set this to true or false
+  esbuild: set this to true or false
+  fsevents: set this to true or false
+  protobufjs: set this to true or false
+  vue-demi: set this to true or false
+
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - '@swc/core'
