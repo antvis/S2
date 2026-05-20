@@ -3,10 +3,16 @@
  * 兼容场景：pc端但是使用mobile配置。
  */
 import { DeviceType } from '../common';
+import { hasNavigator, isSSR } from './ssr';
 
 export function isMobile(device?: string) {
   if (device === DeviceType.MOBILE) {
     return true;
+  }
+
+  // SSR environment: treat as desktop
+  if (isSSR() || !hasNavigator()) {
+    return false;
   }
 
   return /(?:iPhone|iPad|SymbianOS|Windows Phone|iPod|iOS|Android|Mobile|Phone|Tablet)/i.test(
@@ -15,6 +21,11 @@ export function isMobile(device?: string) {
 }
 
 export function isIPhoneX() {
+  // SSR environment: not iPhone X
+  if (isSSR()) {
+    return false;
+  }
+
   // eslint-disable-next-line no-restricted-globals
   return (
     /iPhone/gi.test(navigator.userAgent) &&
@@ -24,5 +35,10 @@ export function isIPhoneX() {
 }
 
 export function isWindows() {
+  // SSR environment: not Windows
+  if (isSSR()) {
+    return false;
+  }
+
   return /windows/i.test(navigator.userAgent);
 }

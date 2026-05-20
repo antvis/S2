@@ -20,6 +20,6 @@ order: 4
 | 参数         | 说明                   | 类型            | 默认值                                  | 必选 |
 | ------------ | ---------------------- | --------------- | --------------------------------------- | ---- |
 | coordinate   | 图形坐标系               | `'cartesian' \| 'polar'` |     `'cartesian'`                                  |      |
-| dataCellSpec | 数据单元格自定义的 [g2 spec](https://g2.antv.antgroup.com/manual/core/api) | `G2Spec \| ((cell: PivotChartDataCell) => G2Spec)` |      |  |
-| axisRowCellSpec | 竖轴单元格自定义的 [g2 axis component spec](https://g2.antv.antgroup.com/spec/component/axis) | `[AxisComponent](AxisComponent) \| ((cell: AxisRowCell) => AxisComponent)` |      |  |
-| axisColSpec | 横轴单元格自定义的 [g2 axis component spec](https://g2.antv.antgroup.com/spec/component/axis) | `AxisComponent \| ((cell: AxisColCell) => AxisComponent)` |      |  |
+| dataCellSpec | 数据单元格自定义的 [g2 spec](https://g2.antv.antgroup.com/manual/api) | `G2Spec \| ((cell: PivotChartDataCell) => G2Spec)` |      |  |
+| axisRowCellSpec | 竖轴单元格自定义的 [g2 axis component spec](https://g2.antv.antgroup.com/manual/component/axis) | `[AxisComponent](AxisComponent) \| ((cell: AxisRowCell) => AxisComponent)` |      |  |
+| axisColSpec | 横轴单元格自定义的 [g2 axis component spec](https://g2.antv.antgroup.com/manual/component/axis) | `AxisComponent \| ((cell: AxisColCell) => AxisComponent)` |      |  |

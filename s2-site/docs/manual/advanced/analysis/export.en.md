@@ -31,17 +31,17 @@ Use the shortcut key `command/ctrl + c` to copy the selected area (partial copy)
 ```ts
 const s2Options = {
   interaction: {
-    // 是否开启复制
+    // enable copy
     copy: { enable: true },
-    // 复制格式化后的数据 (s2DataConfig.meta 中配置的 formatter)
+    // copy formatted data (s2DataConfig.meta configured formatter)
     withFormat: false,
-    // 复制数值时是否携带所对应的行列头维值
+    // whether to include corresponding row and column header dimension values when copying data
     withHeader: true,
-    // 圈选复制前，需要开启圈选功能
+    // before brush selection copy, need to enable brush selection
     brushSelection: {
-      dataCell: true, // 圈选数值单元格 （默认开启）
-      rowCell: true,  // 圈选行头单元格
-      colCell: true,  // 圈选列头单元格
+      dataCell: true, // brush select data cells (enabled by default)
+      rowCell: true,  // brush select row header cells
+      colCell: true,  // brush select column header cells
     }
   }
 };
@@ -53,7 +53,7 @@ const s2Options = {
 
 * Copy with HTML format
 
-##### 复制粘贴到富文本编辑器中 （带 `HTML` 格式）
+##### copy and paste into rich text editor (with `HTML` format)
 
 * Copy header content
 
@@ -78,9 +78,9 @@ const s2Options = {
 
 <br/>
 
-##### 复制格式化后的数据
+##### copy formatted data
 
-**withFormat**: 当 `S2DataConfig` 的 `meta` 中配置了 [自定义格式函数时](/api/general/s2-data-config#meta), 是否按照 `formatter` 复制数据
+**withFormat**: when configured in [custom format function](/en/api/general/s2-data-config#meta), whether to follow `formatter` copy data
 
 ```ts
 const s2DataConfig = {
@@ -88,7 +88,7 @@ const s2DataConfig = {
   meta: [
     {
       field: 'city',
-      name: '城市',
+      name: 'city',
       formatter: (value) => `${value}-xx`
     }
   ]
@@ -106,8 +106,8 @@ const s2Options = {
 
 `@antv/s2-react` component layer provides export function
 
-:::info{title='使用 `@antv/s2` 如何导出？'}
-`@antv/s2` 内置了一系列工具函数，[见下方文档](#原始导出方法)
+:::info{title='How to export with ?'}
+`@antv/s2` provides a series of built-in utility functions, [see documentation below](#original-export-method)
 :::
 
 ```tsx

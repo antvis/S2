@@ -123,6 +123,14 @@
         "en": "Interaction Intercepts"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*XpoiQbJ0kugAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "sticky-header.ts",
+      "title": {
+        "zh": "表头吸顶",
+        "en": "Sticky Header"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*O9SGR6Kq3-oAAAAAgCAAAAgAemJ7AQ/original"
     }
   ]
 }

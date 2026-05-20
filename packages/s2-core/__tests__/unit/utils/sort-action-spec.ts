@@ -64,7 +64,7 @@ describe('Sort Action Test', () => {
     });
 
     test('sort action with object arr', () => {
-      function createCellData(list: (number | string | undefined)[]) {
+      function createCellData(list: (number | string | undefined | null)[]) {
         return list.map((a) => new CellData({ a }, 'a'));
       }
 
@@ -101,13 +101,15 @@ describe('Sort Action Test', () => {
 
       const data4 = createCellData(['-', 2, '3']);
 
+      // 默认 nullsPlacement='last'，特殊值始终在最后
       expect(
         unwrapCellData(sortAction(data4, 'ASC', 'a') as CellData[]),
-      ).toEqual(['-', 2, '3']);
+      ).toEqual([2, '3', '-']);
       expect(
         unwrapCellData(sortAction(data4, 'DESC', 'a') as CellData[]),
       ).toEqual(['3', 2, '-']);
 
+      // 默认 nullsPlacement='last'，空值始终在最后
       expect(
         unwrapCellData(
           sortAction(
@@ -116,7 +118,7 @@ describe('Sort Action Test', () => {
             'a',
           ) as CellData[],
         ),
-      ).toEqual([undefined, '-', 2, '3']);
+      ).toEqual([2, '3', '-', undefined]);
       expect(
         unwrapCellData(
           sortAction(
@@ -127,14 +129,127 @@ describe('Sort Action Test', () => {
         ),
       ).toEqual(['3', 2, '-', undefined]);
 
+      // 测试 null 值排序，默认 nullsPlacement='last'，无论升降序，null 都在最后
+      const dataNullAsc = createCellData([null, 2, '3', 0]);
+
+      expect(
+        unwrapCellData(sortAction(dataNullAsc, 'ASC', 'a') as CellData[]),
+      ).toEqual([0, 2, '3', null]);
+
+      const dataNullDesc = createCellData([null, 2, '3', 0]);
+
+      expect(
+        unwrapCellData(sortAction(dataNullDesc, 'DESC', 'a') as CellData[]),
+      ).toEqual(['3', 2, 0, null]);
+
+      // 测试同时包含多个 null 值的情况（issue #3306 的场景）
+      // 默认行为：null 始终在最后
+      const dataMultiNull = createCellData([null, null, 0, 9, 0, -1]);
+      const resultAsc = unwrapCellData(
+        sortAction(dataMultiNull, 'ASC', 'a') as CellData[],
+      );
+
+      // 升序时 null 值应该在最后面（默认 nullsPlacement='last'）
+      expect(resultAsc[4]).toBeNull();
+      expect(resultAsc[5]).toBeNull();
+      expect(resultAsc.slice(0, 4)).toEqual([-1, 0, 0, 9]);
+
+      const dataMultiNullDesc = createCellData([null, null, 0, 9, 0, -1]);
+      const resultDesc = unwrapCellData(
+        sortAction(dataMultiNullDesc, 'DESC', 'a') as CellData[],
+      );
+
+      // 降序时 null 值应该在最后面（默认 nullsPlacement='last'）
+      expect(resultDesc[4]).toBeNull();
+      expect(resultDesc[5]).toBeNull();
+      expect(resultDesc.slice(0, 4)).toEqual([9, 0, 0, -1]);
+
       const data6 = createCellData(['', 2, '3']);
 
       expect(
         unwrapCellData(sortAction(data6, 'ASC', 'a') as CellData[]),
-      ).toEqual(['', 2, '3']);
+      ).toEqual([2, '3', '']);
       expect(
         unwrapCellData(sortAction(data6, 'DESC', 'a') as CellData[]),
       ).toEqual(['3', 2, '']);
+    });
+
+    test('sort action with nullsPlacement option', () => {
+      function createCellData(list: (number | string | undefined | null)[]) {
+        return list.map((a) => new CellData({ a }, 'a'));
+      }
+
+      function unwrapCellData(cellDataList: CellData[]) {
+        return cellDataList.map((cell) => cell[VALUE_FIELD]);
+      }
+
+      const testData = [null, 2, '3', 0, undefined];
+
+      // nullsPlacement='last' (默认值) - 空值始终在最后
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(testData),
+            'ASC',
+            'a',
+            'last',
+          ) as CellData[],
+        ),
+      ).toEqual([0, 2, '3', null, undefined]);
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(testData),
+            'DESC',
+            'a',
+            'last',
+          ) as CellData[],
+        ),
+      ).toEqual(['3', 2, 0, null, undefined]);
+
+      // nullsPlacement='first' - 空值始终在最前
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(testData),
+            'ASC',
+            'a',
+            'first',
+          ) as CellData[],
+        ),
+      ).toEqual([null, undefined, 0, 2, '3']);
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(testData),
+            'DESC',
+            'a',
+            'first',
+          ) as CellData[],
+        ),
+      ).toEqual([null, undefined, '3', 2, 0]);
+
+      // nullsPlacement='auto' - 升序时空值在前，降序时空值在后
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(testData),
+            'ASC',
+            'a',
+            'auto',
+          ) as CellData[],
+        ),
+      ).toEqual([null, undefined, 0, 2, '3']);
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(testData),
+            'DESC',
+            'a',
+            'auto',
+          ) as CellData[],
+        ),
+      ).toEqual(['3', 2, 0, null, undefined]);
     });
   });
 });

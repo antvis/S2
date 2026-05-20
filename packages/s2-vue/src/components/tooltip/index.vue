@@ -2,9 +2,11 @@
 import { getTooltipDefaultOptions } from '@antv/s2';
 import { defineComponent } from 'vue';
 import type { GetInitProps } from '../../interface';
+import TooltipDescription from './components/description.vue';
 import TooltipDetail from './components/detail.vue';
 import TooltipHeadInfo from './components/head-info.vue';
 import TooltipInfos from './components/infos.vue';
+import TooltipInterpretation from './components/interpretation.vue';
 import TooltipSimpleTips from './components/simple-tips.vue';
 import TooltipSummary from './components/summary.vue';
 import { TooltipOperator } from './components/operator';
@@ -31,9 +33,11 @@ export default defineComponent({
     };
   },
   components: {
+    TooltipDescription,
     TooltipDetail,
     TooltipHeadInfo,
     TooltipInfos,
+    TooltipInterpretation,
     TooltipSimpleTips,
     TooltipSummary,
     TooltipOperator,
@@ -66,12 +70,20 @@ export default defineComponent({
         v-if="data?.summaries?.length"
         :summaries="data?.summaries"
       />
+      <TooltipInterpretation
+        v-if="data?.interpretation"
+        :name="data?.interpretation?.name"
+        :icon="data?.interpretation?.icon"
+        :text="data?.interpretation?.text"
+        :content="data?.interpretation?.content"
+      />
       <TooltipHeadInfo
         :rows="data?.headInfo?.rows || []"
         :cols="data?.headInfo?.cols || []"
       />
       <TooltipDetail :list="data?.details || []" />
       <TooltipInfos v-if="data?.infos" :infos="data?.infos" />
+      <TooltipDescription :description="data?.description" />
     </template>
   </template>
 </template>

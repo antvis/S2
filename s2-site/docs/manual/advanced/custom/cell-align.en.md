@@ -3,7 +3,7 @@ title: Customize Cell Alignment
 order: 4
 ---
 
-> **Before reading this section, please make sure you have read the [theme configuration](/docs/manual/basic/theme) documentation**
+> **Before reading this section, please make sure you have read the [theme configuration](/en/manual/basic/theme) documentation**
 
 In order to facilitate users to view data, S2 crosstab will ensure the maximum visibility of row and column headers during the sliding process
 
@@ -174,6 +174,6 @@ dataCell: {
 
 ## Customize specific cell alignment
 
-Sometimes we want to achieve an effect similar to[`字段标记`](https://s2.antv.antgroup.com/manual/basic/conditions), and`自定义对齐方式`of specific cells that **meet the conditions** , instead of changing everything. At this time, we can[`自定义单元格`](https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-specified-cell), `dataCell` , `colCell` , `rowCell` , etc. provided by S2 Hook to do customization.
+Sometimes we want to achieve an effect similar to [`Field Marking`](https://s2.antv.antgroup.com/manual/basic/conditions), and `Custom Alignment` of specific cells that **meet the conditions** , instead of changing everything. At this time, we can [`Custom Cell`](https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-specified-cell), `dataCell` , `colCell` , `rowCell` , etc. provided by S2 Hook to do customization.
 
 <Playground path="custom/custom-cell/demo/custom-specified-cell.ts" rid="container" height="400"></Playground>

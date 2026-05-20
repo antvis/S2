@@ -3,7 +3,7 @@ title: Customize Order
 order: 6
 ---
 
-Although, `S2` tables have default [sort operations](/examples/analysis/sort#group-sort) and [advanced sort](/examples/analysis/sort#advanced) functionality in `React Header` component.
+Although, `S2` tables have default [sort operations](/en/examples/analysis/sort#group-sort) and [advanced sort](/en/examples/analysis/sort#advanced) functionality in `React Header` component.
 
 But in some business scenarios, we still need custom sorting, which we divide into three parts: **custom sorting `icon`** , **custom sorting `tooltip`** , and **custom sorting operations** . Next, I will take you to realize the custom sorting function as shown in the 👇 animation.
 
@@ -11,7 +11,7 @@ But in some business scenarios, we still need custom sorting, which we divide in
 
 ## custom sort icon
 
-Related chapters: [custom icon](/examples/custom/custom-icon#custom-header-action-icon)
+Related chapters: [custom icon](/en/examples/custom/custom-icon#custom-header-action-icon)
 
 ### configuration
 
@@ -19,7 +19,7 @@ Related chapters: [custom icon](/examples/custom/custom-icon#custom-header-actio
 
 ```jsx
 const s2Options = {
-  // 关闭默认 icon
+  // Disable default icon
   showDefaultHeaderActionIcon: false,
   ...
 }
@@ -29,7 +29,7 @@ const s2Options = {
 
 ```jsx
 const s2Options = {
-  // 自定义 icon
+  // Custom icon
   customSVGIcons: [
     {
       name: 'customKingIcon',
@@ -44,12 +44,12 @@ const s2Options = {
 
 ```jsx
 const s2Options = {
-  // 配置 icon 展示位置
+  // Configure icon display position
   headerActionIcons: [
     {
-      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon
+      // Select icon, can be S2 built-in or custom icon
       icons: [ 'customKingIcon' ],
-      // 通过 belongsCell + displayCondition 设置 icon 的展示位置
+      // Set icon display position via belongsCell + displayCondition
       belongsCell: 'colCell',
       displayCondition: (meta) => meta.level === 2,
       ...
@@ -85,31 +85,31 @@ const s2Options = {
 
 ```jsx
 const items = [
-  { key: SortMethodType.none, label: '不排序' },
-  { key: SortMethodType.asc, label: '升序', icon: 'GroupAsc' },
-  { key: SortMethodType.desc, label: '降序', icon: 'GroupDesc' },
-  { key: SortMethodType.custom, label: '自定义排序', icon: 'Trend' },
+  { key: SortMethodType.none, label: 'No Sort' },
+  { key: SortMethodType.asc, label: 'Asc', icon: 'GroupAsc' },
+  { key: SortMethodType.desc, label: 'Desc', icon: 'GroupDesc' },
+  { key: SortMethodType.custom, label: 'Custom Sort', icon: 'Trend' },
 ];
 
 const s2Options = {
-  // 设置自定义 `icon` 的展示条件
+  // Set custom icon display condition
   headerActionIcons: [
     {
-      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon
+      // Select icon, can be S2 built-in or custom icon
       icons: [ 'customKingIcon' ],
-      // 通过 belongsCell + displayCondition 设置 icon 的展示位置
+      // Set icon display position via belongsCell + displayCondition
       belongsCell: 'colCell',
       displayCondition: (meta) => meta.level === 2,
-      // icon 点击之后的执行函数
+      // Execution function after icon click
       onClick: (props) => {
         const { meta, event } = props;
         const operator = {
-          // 配置 tooltip 中展示的内容
+          // Configure content displayed in tooltip
           menu: {
             items
           },
         };
-        // 自定义 tooltip 配置，展示 toolTip
+        // Custom tooltip configuration, show toolTip
         meta.spreadsheet.showTooltipWithInfo(event, [], {
           operator,
           onlyShowCellText: true,
@@ -130,36 +130,36 @@ const s2Options = {
 
 ## custom sort operation
 
-Related chapter: [Custom sorting](/docs/manual/basic/sort/custom#2-%E7%BB%B4%E5%BA%A6%E5%80%BC%E5%88%97%E8%A1%A8sortby)
+Related chapter: [Custom sorting](/en/manual/basic/sort/basic#2-dimension-value-list-sortby)
 
 ### configuration
 
 ```jsx
-// 执行自定义排序回调
+// Execute custom sort callback
 const handleSortCallback = (meta, key) => {
   if (key === SortMethodType.custom) {
     const sortParams = [
-      { sortFieldId: 'type', sortBy: [ '办公用品', '家具' ] },
+      { sortFieldId: 'type', sortBy: [ 'Office Supplies', 'Furniture' ] },
       { sortFieldId: 'city', sortMethod: 'ASC' },
     ];
     setSortParams(sortParams)
-    console.log('可以在这里实现你手动排序的交互和逻辑哟', sortParams)
+    console.log('You can implement your manual sort interaction and logic here', sortParams)
   } else {
-    // 使用 S2 提供的组内排序方式
+    // Use S2 provided intra-group sort method
     meta.spreadsheet.groupSortByMethod(key, meta)
     ;
   }
 }
 
 const s2Options = {
-  // 设置自定义 `icon` 的展示条件
+  // Set custom icon display condition
   headerActionIcons: [
     {
       onClick: (props) => {
         const { meta, event } = props;
         const operator = {
           onClick: ({ key }) => {
-            // 执行自定义排序回调
+            // Execute custom sort callback
             handleSortCallback(meta, key);
             meta.spreadsheet.hideTooltip();
           },

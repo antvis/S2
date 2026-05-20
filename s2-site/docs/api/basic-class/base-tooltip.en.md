@@ -17,7 +17,7 @@ s2.tooltip.show({
 
 | parameter             | illustrate                                            | type                                                                        |
 | --------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------- |
-| `spreadsheet`         | Form example                                          | () => [SpreadSheet](/docs/api/basic-class/spreadsheet)                      |
+| `spreadsheet`         | Form example                                          | () => [SpreadSheet](/en/api/basic-class/spreadsheet)                      |
 | `container`           | tooltip mount container                               | [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) |
 | `options`             | tooltip configuration                                 | [TooltipShowOptions](#tooltipshowoptions)                                   |
 | `position`            | coordinate                                            | `{ x: number, y: number }`                                                  |

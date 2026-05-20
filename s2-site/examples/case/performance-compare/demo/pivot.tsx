@@ -3,6 +3,10 @@ import { PivotSheet, S2DataConfig, type S2Options } from '@antv/s2';
 const s2Options: S2Options = {
   width: 600,
   height: 480,
+  showDefaultHeaderActionIcon: false,
+  future: {
+    experimentalReuseCell: true,
+  },
 };
 
 export function generateRawData(

@@ -40,6 +40,7 @@ import {
   TableSeriesNumberCell,
   type HeaderCell,
 } from '../cell';
+import { DataCellPool } from '../cell/pool';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
@@ -183,6 +184,8 @@ export abstract class BaseFacet {
   protected textWrapTempRowCell: RowCell | DataCell;
 
   protected textWrapTempColCell: ColCell | TableColCell;
+
+  protected dataCellPool: DataCellPool;
 
   public customRowHeightStatusMap: Record<string, boolean>;
 
@@ -455,16 +458,17 @@ export abstract class BaseFacet {
       });
 
       if (!isEmpty(currentCornerNodes)) {
-        cornerAdaptiveHeight = max(
-          currentCornerNodes.map((cornerNode) =>
-            this.getNodeAdaptiveHeight({
-              meta: cornerNode,
-              cell: this.textWrapTempCornerCell!,
-              defaultHeight,
-              useCache: false,
-            }),
-          ),
-        );
+        cornerAdaptiveHeight =
+          max(
+            currentCornerNodes.map((cornerNode) =>
+              this.getNodeAdaptiveHeight({
+                meta: cornerNode,
+                cell: this.textWrapTempCornerCell!,
+                defaultHeight,
+                useCache: false,
+              }),
+            ),
+          ) ?? defaultHeight;
       }
     }
 
@@ -546,7 +550,17 @@ export abstract class BaseFacet {
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    const height = textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
+    // Check if text actually uses multiple lines
+    const singleLineHeight = cell.getTextLineHeight();
+    const hasWrappedText = textHeight > singleLineHeight * 1.5;
+
+    // Use adaptive height when:
+    // 1. Text actually wraps (uses multiple lines), OR
+    // 2. Text height exceeds default height
+    const needsAdaptiveHeight = hasWrappedText || textHeight >= defaultHeight;
+    const height = needsAdaptiveHeight
+      ? Math.max(adaptiveHeight, defaultHeight)
+      : defaultHeight;
 
     this.textWrapNodeHeightCache.set(cacheKey, height);
 
@@ -691,6 +705,8 @@ export abstract class BaseFacet {
 
     canvas.addEventListener('touchstart', (event) => {
       startY = event.touches[0].clientY;
+      // 重置滚动方向，让新的触摸手势可以向任意方向滚动
+      this.scrollDirection = undefined as unknown as ScrollDirection;
     });
 
     canvas.addEventListener('touchend', (event) => {
@@ -731,21 +747,56 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForMobile = () => {
-    this.mobileWheel = new MobileWheel(this.spreadsheet.container);
-    this.mobileWheel.on('wheel', (ev: FederatedWheelEvent) => {
-      this.spreadsheet.hideTooltip();
-      const originEvent = ev.originalEvent;
-      const { deltaX, deltaY: defaultDeltaY, x, y } = ev;
-      const deltaY = this.getMobileWheelDeltaY(defaultDeltaY);
+    // https://github.com/antvis/S2/issues/3249
+    // 创建回调函数，根据 overscrollBehavior 和滚动边界判断是否阻止默认行为
+    const shouldPreventDefault = (
+      deltaX: number,
+      deltaY: number,
+      offsetX: number,
+      offsetY: number,
+    ): boolean => {
+      const { interaction } = this.spreadsheet.options;
+      const overscrollBehavior = interaction?.overscrollBehavior;
 
-      this.onWheel({
-        ...originEvent,
+      // 对于 'contain' 和 'none' 模式，始终阻止默认行为
+      if (overscrollBehavior !== 'auto') {
+        return true;
+      }
+
+      // 对于 'auto' 模式，只有在滚动区域内（未到边缘）时才阻止默认行为
+      // 到达边缘时允许事件冒泡到外层容器
+      const isScrollOverViewport = this.isScrollOverTheViewport({
         deltaX,
         deltaY,
-        offsetX: x,
-        offsetY: y,
-      } as unknown as WheelEvent);
-    });
+        offsetX,
+        offsetY,
+      });
+
+      return isScrollOverViewport;
+    };
+
+    this.mobileWheel = new MobileWheel(
+      this.spreadsheet.container,
+      shouldPreventDefault,
+    );
+    this.mobileWheel.on(
+      'wheel',
+      (ev: FederatedWheelEvent & { nativeEvent?: Event }) => {
+        this.spreadsheet.hideTooltip();
+        const originEvent = ev.originalEvent;
+        const { deltaX, deltaY: defaultDeltaY, x, y, nativeEvent } = ev;
+        const deltaY = this.getMobileWheelDeltaY(defaultDeltaY);
+
+        this.onWheel({
+          ...originEvent,
+          deltaX,
+          deltaY,
+          offsetX: x,
+          offsetY: y,
+          __nativeEvent__: nativeEvent,
+        } as unknown as WheelEvent);
+      },
+    );
 
     this.onContainerWheelForMobileCompatibility();
   };
@@ -1443,16 +1494,20 @@ export abstract class BaseFacet {
   };
 
   protected stopScrollChaining = (event: WheelEvent) => {
-    if (event?.cancelable) {
-      event?.preventDefault?.();
+    // https://github.com/antvis/S2/issues/3249
+    // 优先使用 __nativeEvent__ (移动端通过 wheelEvent.ts 传递的原生事件)
+    // 需要在事件链早期调用 preventDefault，否则事件会变成 passive/non-cancelable
+    const nativeEvent =
+      // eslint-disable-next-line no-underscore-dangle
+      (event as unknown as { __nativeEvent__?: Event })?.__nativeEvent__ ||
+      (event as unknown as FederatedPointerEvent)?.nativeEvent;
+
+    if (nativeEvent?.cancelable) {
+      (nativeEvent as Event)?.preventDefault?.();
     }
 
-    // 使用 G 对应的原生 TouchEvent，以达到移动端禁用外部容器滚动的效果
-    const mobileEvent =
-      (event as unknown as FederatedPointerEvent)?.nativeEvent || event;
-
-    if (mobileEvent?.cancelable) {
-      mobileEvent?.preventDefault?.();
+    if (event?.cancelable) {
+      event?.preventDefault?.();
     }
   };
 
@@ -1503,7 +1558,10 @@ export abstract class BaseFacet {
       return;
     }
 
+    // 水平滚动方向变化检测：只在有水平滚动时才检查
+    // 修复：添加 optimizedDeltaX !== 0 检查，避免垂直滚动时被误拦截
     if (
+      optimizedDeltaX !== 0 &&
       this.scrollDirection !== undefined &&
       this.scrollDirection !==
         (optimizedDeltaX > 0
@@ -1611,10 +1669,17 @@ export abstract class BaseFacet {
       return;
     }
 
-    const cell = this.spreadsheet.options.dataCell?.(
-      viewMeta,
-      this.spreadsheet,
-    )!;
+    let cell;
+
+    if (
+      this.dataCellPool.pool.length > 0 &&
+      this.spreadsheet.options.future?.experimentalReuseCell
+    ) {
+      cell = this.dataCellPool.acquire()!;
+      cell.setMeta(viewMeta);
+    } else {
+      cell = this.spreadsheet.options.dataCell?.(viewMeta, this.spreadsheet)!;
+    }
 
     if (!cell) {
       return;
@@ -1640,33 +1705,72 @@ export abstract class BaseFacet {
       diffPanelIndexes(this.preCellIndexes!, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-      // add new cell in panelCell
-      each(willAddDataCells, ([colIndex, rowIndex]) => {
-        const viewMeta = this.getCellMeta(rowIndex, colIndex);
-        const cell = this.createDataCell(viewMeta);
-
-        if (!cell) {
-          return;
-        }
-
-        this.addDataCell(cell);
-      });
-
-      const allDataCells = this.getDataCells();
-
-      // remove cell from panelCell
-      each(willRemoveDataCells, ([colIndex, rowIndex]) => {
-        const mountedDataCell = find(
-          allDataCells,
-          (cell) => cell.name === `${rowIndex}-${colIndex}`,
+      if (this.spreadsheet.options.future?.experimentalReuseCell) {
+        const allDataCells = this.getDataCells();
+        const maxLength = Math.max(
+          willRemoveDataCells.length,
+          willAddDataCells.length,
         );
 
-        mountedDataCell?.destroy();
-      });
+        // 交替执行删除和添加操作
+        for (let i = 0; i < maxLength; i++) {
+          // 删除单元格
+          if (i < willRemoveDataCells.length) {
+            const [colIndex, rowIndex] = willRemoveDataCells[i];
+            const mountedDataCell = find(
+              allDataCells,
+              (cell) => cell.name === `${rowIndex}-${colIndex}`,
+            );
 
-      DebuggerUtil.getInstance().logger(
-        `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
-      );
+            if (mountedDataCell) {
+              this.dataCellPool.release(mountedDataCell);
+            }
+          }
+
+          // 添加单元格
+          if (i < willAddDataCells.length) {
+            const [colIndex, rowIndex] = willAddDataCells[i];
+            const viewMeta = this.getCellMeta(rowIndex, colIndex);
+            const cell = this.createDataCell(viewMeta);
+
+            if (cell) {
+              this.addDataCell(cell);
+            }
+          }
+        }
+
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
+      } else {
+        // add new cell in panelCell
+        each(willAddDataCells, ([colIndex, rowIndex]) => {
+          const viewMeta = this.getCellMeta(rowIndex, colIndex);
+          const cell = this.createDataCell(viewMeta);
+
+          if (!cell) {
+            return;
+          }
+
+          this.addDataCell(cell);
+        });
+
+        const allDataCells = this.getDataCells();
+
+        // remove cell from panelCell
+        each(willRemoveDataCells, ([colIndex, rowIndex]) => {
+          const mountedDataCell = find(
+            allDataCells,
+            (cell) => cell.name === `${rowIndex}-${colIndex}`,
+          );
+
+          mountedDataCell?.destroy();
+        });
+
+        DebuggerUtil.getInstance().logger(
+          `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
+        );
+      }
     });
 
     this.preCellIndexes = indexes;
@@ -1678,6 +1782,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initCellPool();
     this.initTextWrapTemp();
     this.initGroups();
     // layout
@@ -2469,5 +2574,9 @@ export abstract class BaseFacet {
     return (
       Math.ceil(this.spreadsheet.measureTextWidth(text, font)) + EXTRA_PIXEL
     );
+  }
+
+  protected initCellPool() {
+    this.dataCellPool = new DataCellPool();
   }
 }

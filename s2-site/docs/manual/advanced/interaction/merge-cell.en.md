@@ -16,249 +16,249 @@ Click to view data
   "meta": [
     {
       "field": "number",
-      "name": "数量"
+      "name": "Quantity"
     },
     {
       "field": "province",
-      "name": "省份"
+      "name": "Province"
     },
     {
       "field": "city",
-      "name": "城市"
+      "name": "City"
     },
     {
       "field": "type",
-      "name": "类别"
+      "name": "Type"
     },
     {
       "field": "sub_type",
-      "name": "子类别"
+      "name": "Sub-Type"
     }
   ],
   "data": [
     {
       "number": 7789,
-      "province": "浙江省",
-      "city": "杭州市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Zhejiang Province",
+      "city": "Hangzhou City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 2367,
-      "province": "浙江省",
-      "city": "绍兴市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Zhejiang Province",
+      "city": "Shaoxing City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 3877,
-      "province": "浙江省",
-      "city": "宁波市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Zhejiang Province",
+      "city": "Ningbo City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 4342,
-      "province": "浙江省",
-      "city": "舟山市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Zhejiang Province",
+      "city": "Zhoushan City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 5343,
-      "province": "浙江省",
-      "city": "杭州市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Zhejiang Province",
+      "city": "Hangzhou City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 632,
-      "province": "浙江省",
-      "city": "绍兴市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Zhejiang Province",
+      "city": "Shaoxing City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 7234,
-      "province": "浙江省",
-      "city": "宁波市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Zhejiang Province",
+      "city": "Ningbo City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 834,
-      "province": "浙江省",
-      "city": "舟山市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Zhejiang Province",
+      "city": "Zhoushan City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 945,
-      "province": "浙江省",
-      "city": "杭州市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Zhejiang Province",
+      "city": "Hangzhou City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 1304,
-      "province": "浙江省",
-      "city": "绍兴市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Zhejiang Province",
+      "city": "Shaoxing City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 1145,
-      "province": "浙江省",
-      "city": "宁波市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Zhejiang Province",
+      "city": "Ningbo City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 1432,
-      "province": "浙江省",
-      "city": "舟山市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Zhejiang Province",
+      "city": "Zhoushan City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 1343,
-      "province": "浙江省",
-      "city": "杭州市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Zhejiang Province",
+      "city": "Hangzhou City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
     },
     {
       "number": 1354,
-      "province": "浙江省",
-      "city": "绍兴市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Zhejiang Province",
+      "city": "Shaoxing City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
     },
     {
       "number": 1523,
-      "province": "浙江省",
-      "city": "宁波市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Zhejiang Province",
+      "city": "Ningbo City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
     },
     {
       "number": 1634,
-      "province": "浙江省",
-      "city": "舟山市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Zhejiang Province",
+      "city": "Zhoushan City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
     },
     {
       "number": 1723,
-      "province": "四川省",
-      "city": "成都市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Sichuan Province",
+      "city": "Chengdu City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 1822,
-      "province": "四川省",
-      "city": "绵阳市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Sichuan Province",
+      "city": "Mianyang City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 1943,
-      "province": "四川省",
-      "city": "南充市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Sichuan Province",
+      "city": "Nanchong City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 2330,
-      "province": "四川省",
-      "city": "乐山市",
-      "type": "家具",
-      "sub_type": "桌子"
+      "province": "Sichuan Province",
+      "city": "Leshan City",
+      "type": "Furniture",
+      "sub_type": "Table"
     },
     {
       "number": 2451,
-      "province": "四川省",
-      "city": "成都市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Sichuan Province",
+      "city": "Chengdu City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 2244,
-      "province": "四川省",
-      "city": "绵阳市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Sichuan Province",
+      "city": "Mianyang City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 2333,
-      "province": "四川省",
-      "city": "南充市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Sichuan Province",
+      "city": "Nanchong City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 2445,
-      "province": "四川省",
-      "city": "乐山市",
-      "type": "家具",
-      "sub_type": "沙发"
+      "province": "Sichuan Province",
+      "city": "Leshan City",
+      "type": "Furniture",
+      "sub_type": "Sofa"
     },
     {
       "number": 2335,
-      "province": "四川省",
-      "city": "成都市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Sichuan Province",
+      "city": "Chengdu City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 245,
-      "province": "四川省",
-      "city": "绵阳市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Sichuan Province",
+      "city": "Mianyang City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 2457,
-      "province": "四川省",
-      "city": "南充市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Sichuan Province",
+      "city": "Nanchong City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 2458,
-      "province": "四川省",
-      "city": "乐山市",
-      "type": "办公用品",
-      "sub_type": "笔"
+      "province": "Sichuan Province",
+      "city": "Leshan City",
+      "type": "Office Supplies",
+      "sub_type": "Pen"
     },
     {
       "number": 4004,
-      "province": "四川省",
-      "city": "成都市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Sichuan Province",
+      "city": "Chengdu City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
     },
     {
       "number": 3077,
-      "province": "四川省",
-      "city": "绵阳市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Sichuan Province",
+      "city": "Mianyang City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
     },
     {
       "number": 3551,
-      "province": "四川省",
-      "city": "南充市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Sichuan Province",
+      "city": "Nanchong City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
     },
     {
       "number": 352,
-      "province": "四川省",
-      "city": "乐山市",
-      "type": "办公用品",
-      "sub_type": "纸张"
+      "province": "Sichuan Province",
+      "city": "Leshan City",
+      "type": "Office Supplies",
+      "sub_type": "Paper"
 }
   ]
 }
@@ -289,7 +289,7 @@ const s2Options = {
     // 表格渲染后，会展示一个合并单元格
     mergedCellsInfo: [
       [
-        { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
+        { colIndex: 1, rowIndex: 6, showText: true }, // The meta info of this cell will be used as the merged cell's meta info
         { colIndex: 1, rowIndex: 7 },
         { colIndex: 2, rowIndex: 6 },
         { colIndex: 2, rowIndex: 7 },
@@ -301,23 +301,23 @@ const s2Options = {
 ;
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-// 将单元格合并操作集成到未合并单元格的 tooltip 操作中
+// Integrate the cell merging operation into the tooltip operation of the unmerged cell
 const dataCellTooltip = () => {
-  button.innerText = '点击合并单元格';
+  button.innerText = 'Click to merge cells';
   button.className = 'merge-cells-button';
-  button.onclick = () => s2.interaction.mergeCells(); // 不传入 cellsInfo 时，默认使用当前选中所有的单元格信息
+  button.onclick = () => s2.interaction.mergeCells(); // If cellsInfo is not passed, use current selected cells info by default
   return button;
-}; // （按住 Cmd/ Ctrl 多选）
+}; // (Hold Cmd/Ctrl to multi-select)
 
-// 将取消单元格合并操作集成到合并单元格的 tooltip 操作中
+// Integrate the unmerge cell operation into the tooltip operation of the merged cell
 const mergedCellsTooltip = (mergedCell) => {
-  button.innerText = '取消合并单元格';
+  button.innerText = 'Unmerge cells';
   button.className = 'merge-cells-button';
   button.onclick = () => s2.interaction.unmergeCell(mergedCell);
   return button;
 };
 
-// 监听 dataCell 的点击事件，自定义点击后的交互操作
+// Listen to dataCell click event, customize interaction after click
 s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   s2.tooltip.show({
     position: { x: event.clientX, y: event.clientY },
@@ -325,7 +325,7 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   });
 });
 
-// 监听 mergedCell 的点击事件，自定义点击后的交互操作
+// Listen to mergedCell click event, customize interaction after click
 s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
   const cell = s2.getCell(event.target);
   s2.tooltip.show({
@@ -358,7 +358,7 @@ a **function mergeCells(cellsInfo?: MergedCellInfo\[], hideData?: boolean): void
 
 Merge cell method
 
-| parameter | illustrate                                                                                                                       | type               | Defaults | required |
+| parameter | Description                                                                                                                       | type               | Defaults | required |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------ | -------- | -------- |
 | cellsInfo | Specify the information of a merged cell, if not passed, the information of all currently selected cells will be used by default | `MergedCellInfo[]` | -        |          |
 | hideData  | When hideData is true, merged cells do not display content.                                                                      | `boolean`          | false    |          |
@@ -369,6 +369,6 @@ a **function unmergeCell(removedCells: MergedCell): void**
 
 Unmerge cell method
 
-| parameter    | illustrate            | type         | Defaults | required |
+| parameter    | Description           | type         | Defaults | required |
 | ------------ | --------------------- | ------------ | -------- | -------- |
 | removedCells | Unmerged merged cells | `MergedCell` | -        |          |

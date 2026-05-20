@@ -39,7 +39,7 @@ Fill in the relevant information according to the Issue template. Yes, these ste
 1. Fork the project and clone it (or use GitHub's Codespace function, which is very convenient)
 2. Installation dependencies: `pnpm install` or `pnpm bootstrap`
 3. Commit your changes, commit Please follow the [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
-4. If your change is to fix a bug, you can also add a `close #issue 号`after the submission information, so that the corresponding issue can be automatically closed after the pr is merged, such as `fix: render bug close #123`
+4. If your change is to fix a bug, you can also add a `close #issue number`after the submission information, so that the corresponding issue can be automatically closed after the pr is merged, such as `fix: render bug close #123`
 5. Make sure to add corresponding unit tests and documentation (if necessary)
 6. After all Lint and Test checks are passed, and the review is passed, we will merge your pr.
 

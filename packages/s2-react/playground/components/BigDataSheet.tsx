@@ -16,6 +16,9 @@ const s2Options: SheetComponentOptions = {
     },
   },
   showDefaultHeaderActionIcon: false,
+  future: {
+    experimentalReuseCell: true,
+  },
 };
 
 export function generateRawData(

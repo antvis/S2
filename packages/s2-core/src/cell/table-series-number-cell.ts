@@ -1,5 +1,5 @@
 import { CellType } from '../common/constant';
-import type { TextTheme } from '../common/interface';
+
 import { TableDataCell } from './table-data-cell';
 
 export class TableSeriesNumberCell extends TableDataCell {
@@ -11,17 +11,5 @@ export class TableSeriesNumberCell extends TableDataCell {
      *     packages/s2-core/src/utils/interaction/select-event.ts -> getCellMeta
      */
     return CellType.DATA_CELL;
-  }
-
-  protected getTextStyle(): TextTheme {
-    const textOverflowStyle = this.getCellTextWordWrapStyle(
-      CellType.SERIES_NUMBER_CELL,
-    );
-    const style = this.theme.rowCell!.seriesText!;
-
-    return {
-      ...textOverflowStyle,
-      ...style,
-    };
   }
 }

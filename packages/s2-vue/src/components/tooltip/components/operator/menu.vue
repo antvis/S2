@@ -11,7 +11,7 @@ import { defineComponent } from 'vue';
 import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
 
-interface TooltipOperatorMenuProps {
+export interface TooltipOperatorMenuProps {
   menu: TooltipBaseOperatorMenuItem;
   cell: S2CellType;
 }

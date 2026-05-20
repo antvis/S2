@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-react",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "private": false,
   "description": "use S2 with react",
   "keywords": [
@@ -45,7 +45,7 @@
     "build:sync-assets": "copyfiles -u 1 \"src/**/*.{less,svg}\"",
     "build:umd": "cross-env FORMAT=umd vite build",
     "clean": "rimraf lib esm dist temp",
-    "start": "cross-env PLAYGROUND=true vite",
+    "start": "cross-env PLAYGROUND=true vite --host",
     "test": "jest --passWithNoTests --detectOpenHandles",
     "test:ci": "pnpm test",
     "test:ci-coverage": "pnpm test:coverage",

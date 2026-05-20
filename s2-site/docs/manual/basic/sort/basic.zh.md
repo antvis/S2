@@ -23,6 +23,7 @@ S2 支持对表格数据进行多种形式的排序，如行/列头维值根据�
 | query | 筛选条件，缩小排序范围 如 ：`{ city: '成都' }` | `object` | - |  |
 | type | 组内排序用来显示 icon（透视表适用） | `string` | - |  |
 | sortFunc | 自定义排序的 function | `(v: SortFuncParam) => Array<string>` | - |  |
+| nullsPlacement | 空值排序位置 | `'first'` \| `'last'` \| `'auto'` | `'last'` |  |
 
 ```ts
 import { EXTRA_FIELD } from "@antv/s2";
@@ -234,6 +235,27 @@ const s2DataConfig = {
 <img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width="600" alt="row" />
 
 📊 查看 demo [自定义排序](/examples/analysis/sort#custom-sort-func)。
+
+### 5. 空值位置配置（nullsPlacement）
+
+支持配置空值（`null`、`undefined`、`'-'`、空字符串）在排序中的位置。
+
+- `'first'`: 空值永远排在最前
+- `'last'`: 空值永远排在最后（**默认值**）
+- `'auto'`: 升序时空值在前，降序时空值在后
+
+支持通过 `sortFieldId: '*'` 配置通配符，作为全局默认策略，**通配符配置优先级低于特定字段配置**。
+
+```ts
+const s2DataConfig = {
+  sortParams: [
+    // 1. 全局配置：所有字段空值默认在前
+    { sortFieldId: '*', nullsPlacement: 'first' },
+     // 2. 单独配置：city 字段空值在后（优先级更高）
+    { sortFieldId: 'city', nullsPlacement: 'last' },
+  ]
+}
+```
 
 ## 优先级
 

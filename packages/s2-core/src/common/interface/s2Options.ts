@@ -250,7 +250,7 @@ export interface S2BasicOptions<
 
   /**
    * 自定义角头
-   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#corner-header
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#corner-header
    */
   cornerHeader?: CornerHeaderCallback;
 
@@ -297,6 +297,33 @@ export interface S2BasicOptions<
    * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-facet
    */
   facet?: (spreadsheet: SpreadSheet) => BaseFacet;
+  /**
+   * Enabling some features for the future.
+   *
+   * ! These are some experimental functional features that are currently unstable.
+   *
+   * future flag, concept referenced from:
+   * - https://remix.run/docs/en/main/guides/api-development-strategy#unstable-apis-and-future-flags,
+   * - https://remix.run/blog/future-flags
+   */
+  future?: {
+    /**
+     * 是否复用单元格以提升性能
+     */
+    experimentalReuseCell?: boolean;
+  };
+
+  /**
+   * 安全策略配置
+   */
+  csp?: {
+    /**
+     * 图标渲染策略
+     * - blob: 使用 Blob URL 渲染 (默认, 兼容性好, 但严苛 CSP 环境可能报错)
+     * - path: 优先使用矢量路径渲染 (CSP 友好, 但仅支持简单无变换图标)
+     */
+    iconStrategy?: 'blob' | 'path';
+  };
 }
 
 // 设备，pc || mobile
@@ -335,11 +362,14 @@ export interface S2BaseFrozenOptions {
   trailingColCount?: number;
 }
 
-export type HierarchyType = 'grid' | 'tree';
+export type HierarchyType = 'grid' | 'tree' | 'grid-tree';
 
 export interface S2PivotSheetOptions {
   /**
-   * 行头布局类型, grid: 平铺网格 | tree: 树状结构
+   * 行头布局类型
+   * - grid: 平铺网格
+   * - tree: 树状结构
+   * - grid-tree: 树状平铺（平铺布局 + 展开折叠）
    */
   hierarchyType?: HierarchyType;
 

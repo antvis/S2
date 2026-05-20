@@ -20,9 +20,6 @@ Data-driven multi-dimensional analysis table.
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
-  <a href="https://codecov.io/gh/antvis/S2" target="_blank">
-    <img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="test coverage"/>
-  </a>
   <a href="https://github.com/antvis/S2/releases" target="_blank">
     <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release date"/>
   </a>
@@ -34,9 +31,6 @@ Data-driven multi-dimensional analysis table.
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
-  </a>
-  <a href="https://github.com/actions-cool/issues-helper" target="_blank">
-    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues helper"/>
   </a>
   <a href="https://github.com/antvis/S2/blob/next/LICENSE" target="_blank" target="_blank">
     <img src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="License: MIT@AntV" />

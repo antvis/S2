@@ -18,13 +18,13 @@ const s2DataConfig = {
 }
 ```
 
-| parameter  | illustrate                                                      | type                        | Defaults | required |
-| ---------- | --------------------------------------------------------------- | --------------------------- | -------- | -------- |
-| data       | Raw data                                                        | [Data\[\]](#data)           |          | ✓        |
-| fields     | dimension index                                                 | [Fields](#fields)           |          | ✓        |
-| totalData  | Total/Subtotal Data                                             | [Data\[\]](#data)           |          |          |
-| meta       | Field metadata, configurable field aliases and value formatting | [Meta\[\]](#meta)           |          |          |
-| sortParams | Sorting parameter configuration                                 | [SortParam\[\]](#sortparam) |          |          |
+| parameter    | illustrate                                                      | type                          | Defaults | required |
+| ------------ | --------------------------------------------------------------- | ----------------------------- | -------- | -------- |
+| data         | Raw data                                                        | [RawData\[\]](#rawdata)       |          | ✓        |
+| fields       | Dimension index                                                 | [Fields](#fields)             |          | ✓        |
+| meta         | Field metadata, configurable field aliases and value formatting | [Meta\[\]](#meta)             |          |          |
+| sortParams   | Sorting parameter configuration                                 | [SortParam\[\]](#sortparam)   |          |          |
+| filterParams | Filter parameter configuration                                  | [FilterParam\[\]](#filterparam) |          |          |
 
 ### RawData
 
@@ -48,19 +48,19 @@ type SimpleData = string | number;
 ```ts
 const data = [
   {
-    area: '东北',
-    province: '吉林',
-    city: '白山',
-    type: '办公用品',
-    subType: '纸张',
+    area: 'Northeast',
+    province: 'Jilin',
+    city: 'Baishan',
+    type: 'Office Supplies',
+    subType: 'Paper',
     cost: '2',
   },
   {
-    area: '东北',
-    province: '吉林',
-    city: '白山',
-    type: '办公用品',
-    subType: '笔',
+    area: 'Northeast',
+    province: 'Jilin',
+    city: 'Baishan',
+    type: 'Office Supplies',
+    subType: 'Pen',
     cost: '3',
   }
 ];
@@ -68,7 +68,7 @@ const data = [
 
 #### MultiData
 
-Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/zh/examples/react-component/sheet#strategy)
+Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/en/examples/react-component/sheet#strategy)
 
 | Configuration item name | illustrate                                                      | type                             | Defaults | required |
 | :---------------------- | :-------------------------------------------------------------- | :------------------------------- | :------- | :------- |
@@ -100,7 +100,7 @@ Function description: Configure the dimension field of the table, that is, the c
 | columns                 | Column dimension (column header can be customized, [see example](#TODO) )                                                                                                                                    | `string[]` \| [CustomTreeNode\[\]](#customtreenode) | `[]`     |          |
 | values                  | Indicator Dimensions                                                                                                                                                                                         | `string[]`                                          | `[]`     |          |
 | valueInCols             | Whether the indicator dimension is at the column header                                                                                                                                                      | `boolean`                                           |          |          |
-| customValueOrder        | The hierarchical order of custom indicator dimensions in the row and column headers (that is, the order of `values` , starting from `0` ) [View example](/examples/custom/custom-layout/#custom-value-order) | `number`                                            | -        |          |
+| customValueOrder        | The hierarchical order of custom indicator dimensions in the row and column headers (that is, the order of `values` , starting from `0` ) [View example](/en/examples/custom/custom-layout/#custom-value-order) | `number`                                            | -        |          |
 
 ### Meta
 
@@ -125,7 +125,8 @@ Function description: Field metadata, configurable field alias and value formatt
 | prepareText | Perform asynchronous processing on the text before rendering           | (value: SimpleData) => Promise<string>                                                  |    |      |
 | fallback       | Fallback display for image loading failure          | string                                                   |          |          |
 | timeout        |                                                     | number                                                   | 10000    |          |
-| config         |                                                     | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)>\| [HTMLStyleProps](https://g.antv.antgroup.com/api/basic/html) |          |          |
+| config         | Configuration for image or video container          | Partial<[ImageStyleProps](https://g.antv.antgroup.com/api/basic/image)> \| Partial<[RectStyleProps](https://g.antv.antgroup.com/api/basic/rect)> |          |          |
+| videoConfig    | Video configuration, valid only when type is VIDEO | Partial<[HTMLVideoElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement)> | `{ loop: true, autoplay: false, preload: 'auto', crossOrigin: true, controls: false, muted: true }` |      |
 
 ### MiniChartData
 
@@ -135,7 +136,7 @@ Function description: Field metadata, configurable field alias and value formatt
 
 object is **required** , *default: null*
 
-Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/zh/examples/react-component/sheet#strategy)
+Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/en/examples/react-component/sheet#strategy)
 
 | Configuration item name | illustrate                                                      | type                     | Defaults | required |
 | ----------------------- | --------------------------------------------------------------- | ------------------------ | -------- | -------- |
@@ -145,6 +146,16 @@ Function description: used to support custom data cell rendering of multiple ind
 | \[key: string]          | Other transparent fields for customized display of custom cells | `unknown`                | \`\`     |          |
 
 <embed src="@/common/sort-param.en.md"></embed>
+
+### FilterParam
+
+Function description: Used for **table mode** data filtering.
+
+| Configuration item name | illustrate                                                                           | type                      | Defaults | required |
+| :---------------------- | :----------------------------------------------------------------------------------- | :------------------------ | :------- | :------- |
+| `filterKey`             | The field id to filter                                                               | `string`                  |          | ✓        |
+| `filteredValues`        | Dimension values to exclude                                                          | `unknown[]`               |          |          |
+| `customFilter`          | Custom filter function, the final filter result satisfies customFilter and is not in filteredValues | `(raw: Record<string, string>) => boolean` |          |          |
 
 <embed src="@/common/custom/customTreeNode.en.md"></embed>
 

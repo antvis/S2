@@ -7,7 +7,7 @@ fetch(
   .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
-    // 详情请查看: https://s2.antv.antgroup.com/zh/docs/manual/advanced/custom/cell-size
+    // 详情请查看: https://s2.antv.antgroup.com/manual/advanced/custom/cell-size
     const s2Options: S2Options = {
       width: 600,
       height: 480,

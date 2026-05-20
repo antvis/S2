@@ -717,7 +717,7 @@ tooltip: {
 
 ##### 可自定义显示内容
 
-以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/api/general/s2options#tooltipshowoptions)
+以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/api/general/s2-options#tooltipshowoptions)
 
 - 显示位置 (position)
 
@@ -756,7 +756,7 @@ tooltip: {
 
   - 所选项统计列表（ summaries ）
 
-      所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/api/general/s2options#tooltipoptions#tooltipsummaryoptions)
+      所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/api/general/s2-options#tooltipsummaryoptions)
 
       ```tsx
       instance.showTooltip = (tooltipOptions) => {
@@ -770,7 +770,7 @@ tooltip: {
 
   - 轴列表（ headInfo ）
 
-      轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/api/general/s2options#tooltipoptions#tooltipheadinfo)
+      轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/api/general/s2-options#tooltipheadinfo)
 
       ```tsx
       instance.showTooltip = (tooltipOptions) => {
@@ -791,7 +791,7 @@ tooltip: {
 
   - 数据点明细信息（ details ）
 
-      数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/api/general/s2options#tooltipoptions#listitem)
+      数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/api/general/s2-options#listitem)
 
       ```tsx
       instance.showTooltip = (tooltipOptions) => {
@@ -819,11 +819,11 @@ tooltip: {
 
 - 部分配置 ( options )
 
-  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/api/general/s2options#tooltipoptions)
+  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/api/general/s2-options#tooltipoptions)
 
   - 操作栏（ operator ）
 
-      可操作配置，具体细节参考 [TooltipOperatorOptions](/api/general/s2options#tooltipoperatoroptions)
+      可操作配置，具体细节参考 [TooltipOperatorOptions](/api/general/s2-options#tooltipoperatoroptions)
 
       ```tsx
       instance.showTooltip = (tooltipOptions) => {

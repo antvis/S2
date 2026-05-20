@@ -1,7 +1,7 @@
 import type { PointLike } from '@antv/g';
 import { find, first, get, isEmpty, isEqual, isObject, merge } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
-import { ContentPositionParams, DEFAULT_STYLE } from '../common';
+import { ContentPositionParams } from '../common';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import {
   CellType,
@@ -542,8 +542,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     return (
       rowCell?.maxLinesByField?.[this.meta.id] ??
       rowCell?.maxLinesByField?.[this.meta.rowId!] ??
+      // 透视表数值格继承行高，需按当前高度收缩 maxLines，避免高度不足时继续换行。
       this.getMaxLinesByCustomHeight({
-        isCustomHeight: this.meta.height !== DEFAULT_STYLE.dataCell?.height,
+        isCustomHeight: true,
       })
     );
   }

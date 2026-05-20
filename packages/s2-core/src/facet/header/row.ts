@@ -1,6 +1,7 @@
 import { Group } from '@antv/g';
 import { each } from 'lodash';
 import { RowCell, SeriesNumberCell } from '../../cell';
+import { RowCellPool } from '../../cell/pool';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
@@ -21,6 +22,8 @@ import { getExtraFrozenRowNodes, getFrozenTrailingRowOffset } from './util';
  * Row Header for SpreadSheet
  */
 export class RowHeader extends BaseHeader<RowHeaderConfig> {
+  rowCellPool = new RowCellPool();
+
   protected initGroups(): void {
     this.scrollGroup = this.appendChild(
       new Group({
@@ -50,6 +53,17 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   public getCellInstance(node: Node): RowCell | SeriesNumberCell {
+    if (
+      this.rowCellPool.pool.length > 0 &&
+      this.headerConfig.spreadsheet.options.future?.experimentalReuseCell
+    ) {
+      const rowCell = this.rowCellPool.acquire()!;
+
+      rowCell.reInitCell(node, this.headerConfig);
+
+      return rowCell;
+    }
+
     const headerConfig = this.getHeaderConfig();
 
     const { spreadsheet } = headerConfig;
@@ -107,12 +121,24 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     const appendNode = (node: Node) => {
       const group = this.getCellGroup(node);
+      let cell;
 
-      const cell = this.getCellInstance(node);
+      if (
+        node.belongsCell?.parentNode === group &&
+        node.belongsCell.getMeta() === node
+      ) {
+        cell = node.belongsCell as RowCell;
+        cell.setHeaderConfig(this.headerConfig);
+        cell.updateTextPosition();
+      } else {
+        cell = this.getCellInstance(node);
 
-      node.belongsCell = cell;
+        node.belongsCell = cell;
 
-      group.appendChild(cell);
+        if (cell.parentElement !== group) {
+          group?.appendChild(cell);
+        }
+      }
 
       this.emitRenderEvent(cell);
     };
@@ -204,5 +230,19 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       width,
       height: frozenTrailingRowGroupHeight,
     });
+  }
+
+  public clear() {
+    if (this.headerConfig.spreadsheet.options.future?.experimentalReuseCell) {
+      // @ts-ignore
+      this.scrollGroup.childNodes.forEach((rowCell: RowCell) => {
+        if (!this.isCellInRect(rowCell.getMeta())) {
+          rowCell.getMeta().belongsCell = null;
+          this.rowCellPool.release(rowCell);
+        }
+      });
+    } else {
+      super.clear();
+    }
   }
 }

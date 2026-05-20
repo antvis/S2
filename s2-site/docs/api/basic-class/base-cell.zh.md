@@ -92,7 +92,10 @@ export type S2CellType =
   | ColCell
   | CornerCell
   | RowCell
-  | MergedCell
   | SeriesNumberCell
+  | MergedCell
+  | TableDataCell
+  | TableCornerCell
+  | TableSeriesNumberCell
   | BaseCell;
 ```

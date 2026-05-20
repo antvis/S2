@@ -1,0 +1,648 @@
+import {
+  DataCell,
+  EMPTY_PLACEHOLDER,
+  customMerge,
+  getBaseSheetComponentOptions,
+  type CustomHeaderField,
+  type CustomTreeNode,
+  type S2BaseFrozenOptions,
+  type S2DataConfig,
+  type SheetComponentOptions,
+  type ThemeCfg,
+} from '@antv/s2';
+import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
+import {
+  data,
+  fields,
+  meta,
+  totalData,
+} from '../__tests__/data/mock-dataset.json';
+
+// ================== Data Configurations ==================
+
+export const tableSheetSingleColumns: CustomHeaderField[] = [
+  'province',
+  'city',
+  'type',
+  'sub_type',
+  'number',
+];
+
+export const tableSheetMultipleColumns: CustomTreeNode[] = [
+  {
+    field: 'area',
+    title: '地区地区地区地区地区地区地区地区地区',
+    children: [
+      {
+        field: 'province',
+        title: '省份省份省份省份省份省份省份省份省份',
+        children: [
+          {
+            field: 'type',
+            title: '类型类型类型类型类型类型类型类型类型类型',
+          },
+        ],
+      },
+      { field: 'city', title: '城市' },
+    ],
+  },
+  {
+    field: 'money',
+    title: '金额',
+    children: [
+      { field: 'price', title: '价格', description: '价格描述' },
+      { field: 'number', title: '数量' },
+    ],
+  },
+  {
+    field: 'money1',
+    title: '金额1',
+    children: [
+      { field: 'price1', title: '价格1', description: '价格描述' },
+      { field: 'number1', title: '数量1' },
+    ],
+  },
+];
+
+export const tableSheetDataCfg: S2DataConfig = {
+  data,
+  totalData,
+  meta: [
+    { field: 'number', name: '数值', formatter: (v) => `${v}-@` },
+    ...meta,
+  ],
+  fields: {
+    columns: tableSheetSingleColumns,
+  },
+};
+
+export const pivotSheetDataCfg: S2DataConfig = {
+  data,
+  totalData,
+  meta,
+  fields,
+};
+
+export const pivotSheetMultiLineTextDataCfg = PivotSheetMultiLineTextDataCfg;
+
+export const pivotSheetDataCfgForCompactMode = customMerge<S2DataConfig>(
+  pivotSheetDataCfg,
+  {
+    data: [
+      ...pivotSheetDataCfg.data,
+      {
+        province: '浙江省',
+        city: '杭州市',
+        sub_type: '笔',
+        type: '家具',
+        number: 11111111,
+      },
+      {
+        province: '浙江省',
+        city: '杭州市',
+        sub_type: '纸张123456',
+        type: '办公用品',
+        number: 2,
+      },
+      {
+        province: '浙江省',
+        city: '舟山市',
+        sub_type: '笔',
+        type: '办公用品',
+        number: '20000.334%',
+      },
+      {
+        province: '浙江省',
+        city: '舟山市',
+        sub_type: '纸张',
+        type: '办公用品',
+        number: 133.333,
+      },
+    ],
+  },
+);
+
+export const mockGridAnalysisDataCfg: S2DataConfig = {
+  fields: {
+    rows: ['level'],
+    columns: ['group'],
+    values: ['value'],
+  },
+  meta: [
+    { field: 'group', name: '人群' },
+    { field: 'level', name: '收入水平' },
+  ],
+  data: [
+    {
+      group: '青年',
+      level: '高收入',
+      value: {
+        label: '青年高收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 40000, '+3%', '+520'],
+          ['近30天信用卡分期（平均）', 50000, '+2%', '+500'],
+          ['月初信用卡额度', 400000, '+3%', '+5000'],
+        ],
+      },
+    },
+    {
+      group: '青年',
+      level: '中收入',
+      value: {
+        label: '青年中收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 1000, '-3%', '-500'],
+          ['近30天信用卡分期（平均）', 2000, '+23%', '+500'],
+          ['月初信用卡额度', 3000, '+23%', '+500'],
+        ],
+      },
+    },
+    {
+      group: '青年',
+      level: '低收入',
+      value: {
+        label: '青年低收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 1200, '-43%', '-600'],
+          ['近30天信用卡分期（平均）', 2000, '+20%', '+400'],
+          ['月初信用卡额度', 3000, '+23%', '+500'],
+        ],
+      },
+    },
+    {
+      group: '中年',
+      level: '高收入',
+      value: {
+        label: '中年高收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 40000, '+23%', '+500'],
+          ['近30天信用卡分期（平均）', 50000, '+23%', '+500'],
+          ['月初信用卡额度', 400000, '+23%', '+500'],
+        ],
+      },
+    },
+    {
+      group: '中年',
+      level: '中收入',
+      value: {
+        label: '中年中收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 1000, '+23%', '+500'],
+          ['近30天信用卡分期（平均）', 2000, '+23%', '+500'],
+          ['月初信用卡额度', 3000, '+23%', '+500'],
+        ],
+      },
+    },
+    {
+      group: '中年',
+      level: '低收入',
+      value: {
+        label: '中年低收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 1000, '+23%', '+500'],
+          ['近30天信用卡分期（平均）', 2000, '+23%', '+500'],
+          ['月初信用卡额度', 3000, '+23%', '+500'],
+        ],
+      },
+    },
+    {
+      group: '老年',
+      level: '高收入',
+      value: {
+        label: '老年高收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 40000, '+23%', '+500'],
+          ['近30天信用卡分期（平均）', 50000, '+23%', '+500'],
+          ['月初信用卡额度', 400000, '+23%', '+500'],
+        ],
+      },
+    },
+    {
+      group: '老年',
+      level: '中收入',
+      value: {
+        label: '老年中收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 1000, '+23%', '+500'],
+          ['近30天信用卡分期（平均）', 2000, '+23%', '+500'],
+          ['月初信用卡额度', 3000, '+23%', '+500'],
+        ],
+      },
+    },
+    {
+      group: '老年',
+      level: '低收入',
+      value: {
+        label: '老年低收入人群',
+        values: [
+          ['近30天信用卡支出（平均）', 1000, '+23%', '+500'],
+          ['近30天信用卡分期（平均）', 2000, '+23%', '+500'],
+          ['月初信用卡额度', 3000, '+23%', '+500'],
+        ],
+      },
+    },
+  ],
+};
+
+export const customTreeFields: S2DataConfig['fields'] = {
+  columns: ['type', 'sub_type'],
+  values: [
+    'measure-a',
+    'measure-b',
+    'measure-c',
+    'measure-d',
+    'measure-e',
+    'measure-f',
+  ],
+  rows: [
+    {
+      field: 'custom-node-1',
+      title: '自定义节点A',
+      description: '自定义节点A描述',
+      collapsed: false,
+      children: [
+        {
+          field: 'measure-a',
+          title: '指标A',
+          description: '指标A描述',
+          children: [
+            {
+              field: 'measure-b',
+              title: '指标B',
+              description: '指标B描述',
+              children: [],
+            },
+            {
+              field: 'custom-node-2',
+              title: '自定义节点B',
+              description: '自定义节点B描述',
+              children: [],
+            },
+            {
+              field: 'measure-c',
+              title: '指标C',
+              description: '指标C描述',
+              children: [],
+            },
+          ],
+        },
+        {
+          field: 'custom-node-5',
+          title: '自定义节点E',
+          description: '自定义节点E描述',
+          children: [],
+        },
+      ],
+    },
+    {
+      field: 'measure-e',
+      title: '自定义节点E',
+      description: '指标E描述',
+      children: [
+        {
+          field: 'custom-node-3',
+          title: '自定义节点C',
+          description: '自定义节点C描述',
+          children: [],
+        },
+        {
+          field: 'custom-node-4',
+          title: '自定义节点D',
+          description: '自定义节点D描述',
+          children: [
+            {
+              field: 'measure-f',
+              title: '指标F',
+              description: '指标F描述',
+              children: [],
+            },
+          ],
+          collapsed: false,
+        },
+      ],
+    },
+  ],
+  valueInCols: false,
+};
+
+export const customTreeData = [
+  {
+    'measure-a': 13,
+    'measure-b': 2,
+    'measure-c': 3,
+    'measure-d': 4,
+    'measure-e': 5,
+    'measure-f': 6,
+    type: '家具',
+    sub_type: '桌子',
+  },
+  {
+    'measure-a': 11,
+    'measure-b': 22,
+    'measure-c': 32,
+    'measure-d': 43,
+    'measure-e': 45,
+    'measure-f': 65,
+    type: '家具',
+    sub_type: '椅子',
+  },
+];
+
+// ================== Options Configurations ==================
+
+export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
+  text: [
+    {
+      field: 'province',
+      mapping(value) {
+        if (value === '浙江省') {
+          return {
+            fontSize: 30,
+            fill: 'pink',
+            textAlign: 'center',
+            fontWeight: 'bold',
+          };
+        }
+      },
+    },
+    {
+      field: 'city',
+      mapping(value) {
+        if (value === '成都市') {
+          return {
+            fontSize: 20,
+            fill: 'red',
+            textAlign: 'right',
+            fontWeight: 'bold',
+          };
+        }
+      },
+    },
+    {
+      field: 'type',
+      mapping() {
+        return {
+          fontSize: 20,
+          fill: 'red',
+          textAlign: 'right',
+        };
+      },
+    },
+    {
+      field: 'sub_type',
+      mapping() {
+        return {
+          fontSize: 12,
+          opacity: 0.6,
+          fill: 'yellow',
+          textAlign: 'left',
+        };
+      },
+    },
+    {
+      field: 'number',
+      mapping(value) {
+        if (+value <= 3000) {
+          return {
+            fill: '#065',
+            fontWeight: 800,
+            fontSize: 20,
+          };
+        }
+
+        if (+value > 3000) {
+          return {
+            fill: '#000',
+            opacity: 0.4,
+          };
+        }
+
+        return {
+          fontSize: 30,
+          fill: '#000',
+          textAlign: 'left',
+        };
+      },
+    },
+  ],
+  icon: [
+    {
+      field: 'type',
+      position: 'left',
+      mapping() {
+        return {
+          icon: 'CellUp',
+          fill: '#054',
+        };
+      },
+    },
+    {
+      field: 'city',
+      position: 'left',
+      mapping(value) {
+        if (value === '成都市') {
+          return {
+            icon: 'CellUp',
+            fill: '#FF4D4F',
+          };
+        }
+      },
+    },
+    {
+      field: 'province',
+      position: 'left',
+      mapping() {
+        return {
+          icon: 'CellUp',
+          fill: '#FF4D4F',
+        };
+      },
+    },
+    {
+      field: 'number',
+      mapping() {
+        return {
+          icon: 'CellUp',
+          fill: '#FF4D4F',
+        };
+      },
+    },
+  ],
+  interval: [
+    {
+      field: 'number',
+      mapping() {
+        return {
+          fill: '#80BFFF',
+          // 自定义柱状图范围
+          isCompare: true,
+          maxValue: 8000,
+          minValue: 300,
+        };
+      },
+    },
+  ],
+};
+
+export const TableSheetFrozenOptions: S2BaseFrozenOptions = {
+  colCount: 1,
+  trailingColCount: 1,
+};
+
+export const PivotSheetFrozenOptions: S2BaseFrozenOptions = {
+  rowCount: 1,
+  trailingRowCount: 1,
+};
+
+export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
+  operation: {
+    menu: {
+      onClick(info, cell) {
+        // eslint-disable-next-line no-console
+        console.log('菜单项点击: ', info, cell);
+      },
+      items: [
+        {
+          key: 'custom-a',
+          label: '操作1',
+          icon: 'Trend',
+          visible: (cell) => {
+            return cell instanceof DataCell;
+          },
+          onClick: (info, cell) => {
+            // eslint-disable-next-line no-console
+            console.log('操作1点击:', info, cell);
+          },
+          children: [
+            {
+              key: 'custom-a-a',
+              label: '操作 1-1',
+              onClick: (info, cell) => {
+                // eslint-disable-next-line no-console
+                console.log('操作1-1点击:', info, cell);
+              },
+            },
+          ],
+        },
+        {
+          key: 'custom-b',
+          label: '操作2',
+          icon: 'EyeOutlined',
+          visible: (cell) => {
+            // 叶子节点才显示
+            const meta = cell.getMeta();
+
+            return meta.isLeaf;
+          },
+          onClick: (info, cell) => {
+            // eslint-disable-next-line no-console
+            console.log('操作2点击:', info, cell);
+          },
+        },
+      ],
+    },
+  },
+};
+
+export const headerActionIcons: SheetComponentOptions['headerActionIcons'] = [
+  {
+    icons: ['Trend', { position: 'left', name: 'SortUp' }],
+    belongsCell: 'cornerCell',
+  },
+  {
+    icons: ['Trend', { position: 'left', name: 'SortUp' }],
+    belongsCell: 'rowCell',
+  },
+  {
+    icons: ['Trend', { position: 'left', name: 'SortUp' }],
+    belongsCell: 'colCell',
+  },
+];
+
+export const s2Options: SheetComponentOptions = {
+  debug: true,
+  width: 800,
+  height: 600,
+  hierarchyType: 'grid',
+  placeholder: {
+    cell: EMPTY_PLACEHOLDER,
+    empty: {
+      icon: 'Empty',
+      description: '暂无数据',
+    },
+  },
+  seriesNumber: {
+    enable: false,
+  },
+  transformCanvasConfig() {
+    return {
+      supportsPointerEvents: false,
+      // dblClickSpeed: 500,
+      // devicePixelRatio: 3,
+      // cursor: 'crosshair',
+    };
+  },
+  frozen: {
+    rowHeader: true,
+    // rowCount: 1,
+    // trailingRowCount: 1,
+    // colCount: 1,
+    // trailingColCount: 1,
+  },
+  cornerText: '测试测试测试测试测试测试测试测试测试测试',
+  interaction: {
+    linkFields: [],
+    copy: {
+      enable: true,
+      withFormat: true,
+      withHeader: true,
+    },
+    hoverAfterScroll: true,
+    hoverHighlight: true,
+    selectedCellHighlight: false,
+    selectedCellMove: true,
+    rangeSelection: true,
+    autoResetSheetStyle: (event) => {
+      // 点击配置面板时不自动重置交互
+      if (event?.target instanceof HTMLElement) {
+        return !document
+          .querySelector('.ant-collapse')
+          ?.contains(event?.target);
+      }
+
+      return true;
+    },
+    // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新
+    overscrollBehavior: 'none',
+    brushSelection: {
+      dataCell: true,
+      colCell: true,
+      rowCell: true,
+    },
+    resize: {
+      rowResizeType: 'current',
+      colResizeType: 'current',
+    },
+  },
+  tooltip: S2TooltipOptions,
+};
+
+export const sliderOptions = {
+  min: 0,
+  max: 10,
+  step: 0.1,
+  marks: {
+    0.2: '0.2',
+    1: '1 (默认)',
+    2: '2',
+    10: '10',
+  },
+};
+
+export const s2ThemeConfig: ThemeCfg = {
+  name: 'default',
+  theme: {},
+};
+
+export const defaultOptions =
+  getBaseSheetComponentOptions<SheetComponentOptions>(s2Options);

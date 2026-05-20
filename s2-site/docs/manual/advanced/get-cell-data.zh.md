@@ -5,7 +5,7 @@ order: 9
 ---
 
 :::warning{title='提示'}
-阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/advanced/data-process/pivot)，[布局](/manual/advanced/layout/pivot) 等章节。
+阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/extended-reading/data-process/pivot)，[布局](/manual/extended-reading/layout/pivot) 等章节。
 :::
 
 在实际的业务场景中，我们往往会遇到一些需要获取**单元格数据**的场景，常见的比如：
@@ -250,7 +250,7 @@ s2.dataSet.getCellMultiData({
 
 ### 获取行/列数据
 
-表格初始化时，会将用户声明的数据配置 (s2DataConfig) 转换成内部所需要的数据集 (dataSet), 具体请查看 [数据流处理](/manual/advanced/data-process/pivot)
+表格初始化时，会将用户声明的数据配置 (s2DataConfig) 转换成内部所需要的数据集 (dataSet), 具体请查看 [数据流处理](/manual/extended-reading/data-process/pivot)
 
 数据集的 [实例](/api/basic-class/base-data-set) 挂载在 `s2.dataSet` 命名空间下，可访问它获取你需要的：
 
