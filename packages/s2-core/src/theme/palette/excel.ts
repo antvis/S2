@@ -45,9 +45,9 @@ export const paletteExcel: Palette = {
     // 2: row & data cell interaction (hover, selected) - Excel light gray
     '#F2F2F2',
     // 3: corner/col header background
-    '#E6E6E6',
+    '#F3F2F1',
     // 4: col header interaction (hover, selected) - Excel header hover gray
-    '#D9D9D9',
+    '#E1DFDD',
     // 5: brush selection mask
     '#217346',
     // 6: link color (Excel hyperlink blue)
@@ -59,7 +59,7 @@ export const paletteExcel: Palette = {
     // 9: row header border, data cell border (Excel gridline)
     '#D4D4D4',
     // 10: corner/col header border
-    '#B4B4B4',
+    '#D4D4D4',
     // 11: vertical split line
     '#217346',
     // 12: horizontal split line

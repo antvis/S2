@@ -110,12 +110,6 @@ function MainLayout() {
   const dataCfg = useMemo<S2DataConfig>(() => {
     const fieldsList = Array.from({ length: 8 }, (_, i) => `col${i}`);
 
-    // 列头英文标识映射 (如 A, B, C...)
-    const excelMeta = fieldsList.map((field, idx) => ({
-      field,
-      name: getExcelColumnLabel(idx),
-    }));
-
     // 原始业务标题映射
     const defaultMeta = [
       { field: 'col0', name: 'Product Name' },
@@ -127,6 +121,20 @@ function MainLayout() {
       { field: 'col6', name: 'Status' },
       { field: 'col7', name: 'Location' },
     ];
+
+    // If useExcelHeaders is true, columns is a hierarchical custom tree node list
+    const columns = useExcelHeaders
+      ? defaultMeta.map((m, idx) => ({
+          field: `${m.field}_parent`,
+          title: getExcelColumnLabel(idx),
+          children: [
+            {
+              field: m.field,
+              title: m.name,
+            },
+          ],
+        }))
+      : fieldsList;
 
     // 条件高亮配置 (模拟 Chat Excel 指令)
     const conditions = highlightedCol
@@ -149,9 +157,9 @@ function MainLayout() {
 
     return {
       fields: {
-        columns: fieldsList,
+        columns,
       },
-      meta: useExcelHeaders ? excelMeta : defaultMeta,
+      meta: defaultMeta,
       data,
       conditions,
     };
@@ -413,9 +421,9 @@ function MainLayout() {
           <div style={{ background: '#fcfcfc', padding: '12px', borderRadius: '6px', border: '1px solid #eef0ef' }}>
             <Title level={5} style={{ marginTop: 0 }}>💡 仿真特点说明：</Title>
             <ul>
-              <li><strong>配色同步：</strong>表头背景为 Excel 淡灰色 (`#E6E6E6`)，网格线使用 `#D4D4D4`；选中和 Hover 单元格的外边框表现为经典的 Excel 绿色 (`#217346`)。</li>
-              <li><strong>ABC/123 表头：</strong>通过禁用默认的 RowTitle，开启 `seriesNumber` 序号列，并动态映射 `meta` 来获得顶部 A, B, C 列和左侧 1, 2, 3 行的坐标系。</li>
-              <li><strong>单格聚焦：</strong>Hover 或 Select 单元格时，由于禁用了 `currentRow` / `currentCol`，不会出现 S2 默认的十字选中背景变色，只会对高亮数据所在的行号和列字母增加联动颜色变化。</li>
+              <li><strong>配色同步：</strong>表头背景为 Excel 极浅灰 (`#F3F2F1`)，网格线使用 `#D4D4D4`；选中和 Hover 单元格的外边框表现为经典的 Excel 绿色 (`#217346`)。</li>
+              <li><strong>ABC/123 双层表头：</strong>顶部显示特殊的 A, B, C 列坐标层，其下方为实际的业务语义表头（只有语义表头支持筛选/排序等交互），左侧显示标准的 1, 2, 3 数字行号。</li>
+              <li><strong>Excel 式选择框：</strong>框选多个单元格时，单元格之间不再有各自重叠的边框，而是连成一片、由单一的 Excel 绿色外边框包裹，且移除了默认的十字交叉选中背景色。</li>
             </ul>
           </div>
         </Card>
