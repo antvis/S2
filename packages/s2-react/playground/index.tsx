@@ -1,1785 +1,434 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-console */
-import {
-  DARK_THEME_CLS,
-  DEFAULT_FROZEN_COUNTS,
-  DEFAULT_STYLE,
-  Node,
-  SpreadSheet,
-  customMerge,
-  generatePalette,
-  getDefaultSeriesNumberText,
-  getPalette,
-  safeJsonParse,
-  type Adaptive,
-  type CustomHeaderFields,
-  type HeaderActionIconProps,
-  type InteractionCellHighlightOptions,
-  type InteractionOptions,
-  type S2DataConfig,
-  type SheetType,
-  type TargetCellInfo,
-  type ThemeCfg,
-  type TooltipAutoAdjustBoundary,
-} from '@antv/s2';
-import '@antv/s2/src/styles/theme/dark.css';
-import { useUpdateEffect } from 'ahooks';
-import {
-  Button,
-  Collapse,
-  DatePicker,
-  Divider,
-  Input,
-  InputNumber,
-  Pagination,
-  Popover,
-  Radio,
-  Select,
-  Slider,
-  Space,
-  Switch,
-  Tabs,
-  Tooltip,
-  type RadioChangeEvent,
-} from 'antd';
-import cls from 'classnames';
-import { debounce, isEmpty, random } from 'lodash';
-import React from 'react';
-import { ChromePicker } from 'react-color';
-import type { SheetComponentOptions } from '../src';
-import { SheetComponent } from '../src';
+import React, { useState, useMemo, useRef } from 'react';
 import { reactRender } from '../src/utils/reactRender';
-import { BigDataSheet } from './components/BigDataSheet';
-import { ChartSheet } from './components/ChartSheet';
-import { PlaygroundSheetConfigProvider } from './components/ConfigProvider';
-import { CustomGrid } from './components/CustomGrid';
-import { CustomTree } from './components/CustomTree';
-import { EditableSheet } from './components/EditableSheet';
-import { GridAnalysisSheet } from './components/GridAnalysisSheet';
-import { PlaygroundSheetHeader } from './components/Header';
-import { LinkGroup } from './components/LinkGroup';
-import { PivotChartSheet } from './components/PivotChartSheet';
-import { PluginsSheet } from './components/Plugins';
-import { ResizeConfig } from './components/ResizeConfig';
-import { StickyHeaderSheet } from './components/StickyHeaderSheet';
-import { StrategySheet } from './components/StrategySheet';
-import {
-  PivotSheetFrozenOptions,
-  TableSheetFrozenOptions,
-  defaultOptions,
-  headerActionIcons,
-  pivotSheetDataCfg,
-  pivotSheetDataCfgForCompactMode,
-  pivotSheetMultiLineTextDataCfg,
-  s2ConditionsOptions,
-  s2Options,
-  s2ThemeConfig,
-  sliderOptions,
-  tableSheetDataCfg,
-  tableSheetMultipleColumns,
-  tableSheetSingleColumns,
-} from './config';
-import { PlaygroundContext } from './context/playground.context';
-import { partDrillDown } from './drill-down';
+import { SheetComponent } from '../src';
+import type { SheetComponentOptions } from '../src';
+import { SpreadSheet } from '@antv/s2';
+import type { S2DataConfig, SimplePalette } from '@antv/s2';
+import { Card, Input, Button, Space, Switch, Tag, Typography, Divider, Badge } from 'antd';
+import { SendOutlined, BulbOutlined, UndoOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import './index.less';
-import { onSheetMounted } from './utils';
 
-type TableSheetColumnType = 'single' | 'multiple';
+const { Text, Title } = Typography;
 
-const CustomTooltip = () => (
-  <div>
-    自定义 Tooltip <div>1</div>
-    <div style={{ width: 1000, height: 2000 }}>我很宽很长</div>
-    <DatePicker.RangePicker getPopupContainer={(node) => node.parentElement!} />
-  </div>
-);
+// 2. 转换函数：0 -> A, 1 -> B, 25 -> Z, 26 -> AA
+function getExcelColumnLabel(index: number): string {
+  let label = '';
+  let temp = index;
+  while (temp >= 0) {
+    label = String.fromCharCode((temp % 26) + 65) + label;
+    temp = Math.floor(temp / 26) - 1;
+  }
+  return label;
+}
 
-const CustomColTooltip = () => <div>custom colTooltip</div>;
+// 原始测试数据
+const RAW_DATA = [
+  { col0: 'Apples', col1: 50, col2: 1.2, col3: 'Fruit', col4: '2026-05-01', col5: 60, col6: 'In Stock', col7: 'Aisle 1' },
+  { col0: 'Bananas', col1: 120, col2: 0.8, col3: 'Fruit', col4: '2026-05-02', col5: 96, col6: 'In Stock', col7: 'Aisle 1' },
+  { col0: 'Carrots', col1: 80, col2: 1.5, col3: 'Vegetable', col4: '2026-05-03', col5: 120, col6: 'Low Stock', col7: 'Aisle 2' },
+  { col0: 'Dates', col1: 15, col2: 5.0, col3: 'Fruit', col4: '2026-05-04', col5: 75, col6: 'Out of Stock', col7: 'Aisle 3' },
+  { col0: 'Eggplant', col1: 40, col2: 2.0, col3: 'Vegetable', col4: '2026-05-05', col5: 80, col6: 'In Stock', col7: 'Aisle 2' },
+  { col0: 'Figs', col1: 30, col2: 4.5, col3: 'Fruit', col4: '2026-05-06', col5: 135, col6: 'In Stock', col7: 'Aisle 3' },
+  { col0: 'Grapes', col1: 150, col2: 2.5, col3: 'Fruit', col4: '2026-05-07', col5: 375, col6: 'In Stock', col7: 'Aisle 1' },
+  { col0: 'Honey', col1: 25, col2: 8.5, col3: 'Sweetener', col4: '2026-05-08', col5: 212.5, col6: 'In Stock', col7: 'Aisle 4' },
+];
 
-const ActionIconTooltip = ({ name }: { name: React.ReactNode }) => (
-  <div>{name} Tooltip</div>
-);
+interface ChatMessage {
+  id: number;
+  sender: 'user' | 'assistant';
+  text: string;
+}
 
 function MainLayout() {
-  //  ================== State ========================
-  const [render, setRender] = React.useState(true);
-  const [sheetType, setSheetType] = React.useState<SheetType>(
-    (localStorage.getItem('debugSheetType') as SheetType) || 'pivot',
-  );
-  const [showPagination, setShowPagination] = React.useState(false);
-  const [showTotals, setShowTotals] = React.useState(false);
-  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>(s2ThemeConfig);
-  const [themeColor, setThemeColor] = React.useState<string>('#FFF');
-  const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
-  const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
-  const [options, setOptions] =
-    React.useState<Partial<SheetComponentOptions>>(defaultOptions);
-  const [dataCfg, setDataCfg] = React.useState<Partial<S2DataConfig>>(
-    sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg,
-  );
-  const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(
-    [],
-  );
-  const [tableSheetColumnType, setTableSheetColumnType] =
-    React.useState<TableSheetColumnType>(
-      (localStorage.getItem(
-        'debugTableSheetColumnType',
-      ) as TableSheetColumnType) || 'single',
-    );
+  const s2Ref = useRef<SpreadSheet | null>(null);
 
-  //  ================== Refs ========================
-  const s2Ref = React.useRef<SpreadSheet | null>(null);
-  const scrollTimer = React.useRef<number>();
+  // 基础开关配置
+  const [useExcelTheme, setUseExcelTheme] = useState(true);
+  const [useExcelHeaders, setUseExcelHeaders] = useState(true);
+  const [disableCrosshair, setDisableCrosshair] = useState(true);
 
-  //  ================== Callback ========================
-  const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
-    setOptions(customMerge(options, newOptions));
-  };
+  // 表格数据 & 条件高亮状态
+  const [data, setData] = useState(RAW_DATA);
+  const [highlightedCol, setHighlightedCol] = useState<string | null>(null);
 
-  const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
-    const currentDataCfg =
-      sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg;
-
-    setDataCfg(customMerge(currentDataCfg, newDataCfg));
-  };
-
-  const onAutoAdjustBoundaryChange = (value: TooltipAutoAdjustBoundary) => {
-    updateOptions({
-      tooltip: {
-        autoAdjustBoundary: value || null,
-      },
-    });
-  };
-
-  const onOverscrollBehaviorChange = (
-    overscrollBehavior: InteractionOptions['overscrollBehavior'],
-  ) => {
-    updateOptions({
-      interaction: {
-        overscrollBehavior,
-      },
-    });
-  };
-
-  const onLayoutWidthTypeChange = (e: RadioChangeEvent) => {
-    updateOptions({
-      style: {
-        layoutWidthType: e.target.value,
-      },
-    });
-  };
-
-  const onTableColumnTypeChange = (e: RadioChangeEvent) => {
-    setTableSheetColumnType(e.target.value);
-  };
-
-  const onSizeChange = (type: 'width' | 'height') =>
-    debounce((e) => {
-      updateOptions({
-        [type]: Number(e.target.value),
-      });
-    }, 300);
-
-  const onScrollSpeedRatioChange =
-    (type: 'horizontal' | 'vertical') => (value: number) => {
-      updateOptions({
-        interaction: {
-          scrollSpeedRatio: {
-            [type]: value,
-          },
-        },
-      });
-    };
-
-  const onToggleRender = () => {
-    setRender(!render);
-  };
-
-  const onThemeChange = (e: RadioChangeEvent) => {
-    setThemeCfg({
-      name: e.target.value,
-    });
-  };
-
-  const logHandler =
-    (name: string, callback?: (...args: any[]) => void) =>
-    (...args: any[]) => {
-      if (s2Ref.current?.options?.debug) {
-        console.log(name, ...args);
-      }
-
-      callback?.(...args);
-    };
-
-  const onColCellClick = (cellInfo: TargetCellInfo) => {
-    logHandler('onColCellClick')(cellInfo);
-
-    if (showCustomTooltip) {
-      const { event } = cellInfo;
-
-      s2Ref.current?.showTooltip({
-        position: { x: event.clientX, y: event.clientY },
-        content: <CustomColTooltip />,
-      });
-    }
-  };
-
-  const getColumnOptions = React.useCallback(
-    (type: SheetType) => {
-      if (type === 'table') {
-        return dataCfg.fields?.columns || [];
-      }
-
-      return (
-        s2Ref.current?.facet?.getInitColLeafNodes().map(({ id }) => id) || []
-      );
+  // Chat Excel 模拟器状态
+  const [chatQuery, setChatQuery] = useState('');
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 1,
+      sender: 'assistant',
+      text: '你好！我是 Chat Excel 助手。你可以让我对表格进行【筛选】、【高亮】或【排序】，例如：\n1. "筛选出 Fruit 商品"\n2. "高亮总额大于 100 的格子"\n3. "按数量降序排序"',
     },
-    [dataCfg.fields?.columns],
-  );
+  ]);
 
-  const onSheetTypeChange = (e: RadioChangeEvent) => {
-    const selectedSheetType = e.target.value;
+  // 处理 Chat 命令
+  const handleCommand = (queryText: string) => {
+    if (!queryText.trim()) return;
 
-    setSheetType(e.target.value);
+    // 1. 添加用户消息
+    const userMsg: ChatMessage = {
+      id: Date.now(),
+      sender: 'user',
+      text: queryText,
+    };
+    setMessages((prev) => [...prev, userMsg]);
+    setChatQuery('');
 
-    switch (selectedSheetType) {
-      case 'table':
-        setDataCfg(tableSheetDataCfg);
-        updateOptions(defaultOptions);
-        break;
-      default:
-        setDataCfg(pivotSheetDataCfg);
-        updateOptions(defaultOptions);
-        break;
-    }
-    setColumnOptions(getColumnOptions(sheetType));
+    // 2. 模拟 AI 逻辑处理并更新表格
+    setTimeout(() => {
+      let replyText = '抱歉，我不明白这个指令。试着点击下方的快捷提示词吧！';
+      const cleanQuery = queryText.toLowerCase();
+
+      if (cleanQuery.includes('fruit') || cleanQuery.includes('水果')) {
+        setData(RAW_DATA.filter((item) => item.col3 === 'Fruit'));
+        replyText = '✨ 已为您筛选出分类 (Category) 为 "Fruit" 的所有数据！';
+      } else if (cleanQuery.includes('大于100') || cleanQuery.includes('> 100') || cleanQuery.includes('highlight') || cleanQuery.includes('高亮')) {
+        setHighlightedCol('col5'); // col5 是总额 (Total)
+        replyText = '✨ 已为您高亮标记总额 (Total) 大于 100 的单元格！';
+      } else if (cleanQuery.includes('排序') || cleanQuery.includes('sort') || cleanQuery.includes('降序')) {
+        const sorted = [...RAW_DATA].sort((a, b) => b.col1 - a.col1);
+        setData(sorted);
+        replyText = '✨ 已按数量 (Quantity) 列进行降序排列！';
+      } else if (cleanQuery.includes('重置') || cleanQuery.includes('reset') || cleanQuery.includes('恢复')) {
+        setData(RAW_DATA);
+        setHighlightedCol(null);
+        replyText = '✨ 表格数据与高亮状态已恢复初始设置！';
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          sender: 'assistant',
+          text: replyText,
+        },
+      ]);
+    }, 600);
   };
 
-  //  ================== Hooks ========================
+  // 生成 S2 的 dataCfg
+  const dataCfg = useMemo<S2DataConfig>(() => {
+    const fieldsList = Array.from({ length: 8 }, (_, i) => `col${i}`);
 
-  React.useEffect(() => {
-    console.log('env:', process.env);
+    // 原始业务标题映射
+    const defaultMeta = [
+      { field: 'col0', name: 'Product Name' },
+      { field: 'col1', name: 'Quantity' },
+      { field: 'col2', name: 'Unit Price ($)' },
+      { field: 'col3', name: 'Category' },
+      { field: 'col4', name: 'Date' },
+      { field: 'col5', name: 'Total ($)' },
+      { field: 'col6', name: 'Status' },
+      { field: 'col7', name: 'Location' },
+    ];
 
-    if (sheetType !== 'table') {
-      return;
-    }
+    // If useExcelHeaders is true, columns is a hierarchical custom tree node list
+    const columns = useExcelHeaders
+      ? defaultMeta.map((m, idx) => ({
+          field: `${m.field}_parent`,
+          title: getExcelColumnLabel(idx),
+          children: [
+            {
+              field: m.field,
+              title: m.name,
+            },
+          ],
+        }))
+      : fieldsList;
 
-    setDataCfg(
-      customMerge(tableSheetDataCfg, {
-        fields: {
-          columns:
-            tableSheetColumnType === 'single'
-              ? tableSheetSingleColumns
-              : tableSheetMultipleColumns,
-        },
-      }),
-    );
-  }, [sheetType, tableSheetColumnType]);
+    // 条件高亮配置 (模拟 Chat Excel 指令)
+    const conditions = highlightedCol
+      ? {
+          background: [
+            {
+              field: highlightedCol,
+              mapping: (value: number) => {
+                if (value > 100) {
+                  return {
+                    fill: '#E2EFDA', // Excel 浅绿色
+                  };
+                }
+                return {};
+              },
+            },
+          ],
+        }
+      : undefined;
 
-  const onSheetDestroy = logHandler('onDestroy', () => {
-    clearInterval(scrollTimer.current!);
-  });
+    return {
+      fields: {
+        columns,
+      },
+      meta: defaultMeta,
+      data,
+      conditions,
+    };
+  }, [data, useExcelHeaders, highlightedCol]);
 
-  useUpdateEffect(() => {
-    switch (options!.style!.layoutWidthType) {
-      case 'compact':
-        updateOptions({
-          style: {
-            dataCell: {
-              width: 200,
+  const themeCfg = useMemo(() => {
+    return {
+      name: (useExcelTheme ? 'excel' : 'default') as 'excel' | 'default',
+      getCustomTheme: (palette: SimplePalette) => {
+        if (!useExcelTheme) return {};
+        return {
+          rowCell: {
+            cell: {
+              backgroundColor: palette.basicColors[3], // Excel header gray (#E6E6E6)
+              horizontalBorderColor: palette.basicColors[10], // Gray header border (#B4B4B4)
+              verticalBorderColor: palette.basicColors[10],
+              interactionState: {
+                hover: {
+                  backgroundColor: palette.basicColors[4], // Excel header hover gray (#D9D9D9)
+                  backgroundOpacity: 1,
+                },
+                selected: {
+                  backgroundColor: palette.basicColors[4], // Excel header selected gray (#D9D9D9)
+                  backgroundOpacity: 1,
+                },
+              },
+            },
+            seriesText: {
+              fill: '#000000',
+            },
+            text: {
+              fill: '#000000',
             },
           },
-        });
-        setDataCfg(pivotSheetDataCfgForCompactMode);
-        break;
-
-      default:
-        updateOptions({
-          style: DEFAULT_STYLE,
-        });
-        setDataCfg(pivotSheetDataCfg);
-    }
-  }, [options.style!.layoutWidthType]);
-
-  //  ================== Config ========================
-
-  const mergedOptions: SheetComponentOptions = customMerge(
-    {
-      pagination: showPagination && {
-        current: 1,
-        pageSize: 4,
+          dataCell: {
+            cell: {
+              interactionState: {
+                selected: {
+                  backgroundColor: palette.basicColors[2], // Light gray background selection mask
+                  backgroundOpacity: 0.2,
+                  borderColor: (palette as any).brandColor, // Excel green border
+                  borderWidth: 2,
+                  borderOpacity: 1,
+                },
+                hoverFocus: {
+                  backgroundColor: palette.basicColors[2],
+                  backgroundOpacity: 0.2,
+                  borderColor: (palette as any).brandColor,
+                  borderWidth: 2,
+                  borderOpacity: 1,
+                },
+              },
+            },
+          },
+        };
       },
-      tooltip: {
-        content: showCustomTooltip ? <CustomTooltip /> : null,
+    };
+  }, [useExcelTheme]);
+
+  // 生成 S2 的 options
+  const options = useMemo<SheetComponentOptions>(() => {
+    const interactionConfig = disableCrosshair
+      ? {
+          // 仅高亮行头/列头，去掉十字形选中高亮
+          hoverHighlight: {
+            rowHeader: true,
+            colHeader: true,
+            currentRow: false,
+            currentCol: false,
+          },
+          selectedCellHighlight: {
+            rowHeader: true,
+            colHeader: true,
+            currentRow: false,
+            currentCol: false,
+          },
+        }
+      : {
+          // 默认十字高亮效果
+          hoverHighlight: true,
+          selectedCellHighlight: true,
+        };
+
+    return {
+      width: 780,
+      height: 400,
+      showSeriesNumber: false, // 禁用默认的序号行为以防冲突
+      seriesNumber: {
+        enable: useExcelHeaders, // 开启数字序号列
+        text: '', // 序号列顶部角头显示为空
       },
-      totals: showTotals && {
-        row: {
-          showGrandTotals: true,
-          showSubTotals: true,
-          subTotalsDimensions: ['province'],
-        },
-        col: {
-          showGrandTotals: true,
-          showSubTotals: true,
-          subTotalsDimensions: ['type'],
+      placeholder: {
+        cell: (cell) => {
+          const meta = cell?.['getMeta']?.();
+          if (meta?.field === '$$series_number$$') {
+            return ' ';
+          }
+          return '-';
         },
       },
-      customSVGIcons: !options.showDefaultHeaderActionIcon && [
-        {
-          name: 'Filter',
-          src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
-        },
-        {
-          name: 'FilterAsc',
-          src: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
-        },
-      ],
-      headerActionIcons: !options.showDefaultHeaderActionIcon && [
-        {
-          icons: ['Filter'],
-          belongsCell: 'colCell',
-          displayCondition: (node: Node) =>
-            node.id !== 'root[&]家具[&]桌子[&]number',
-          onClick: ({ event }: HeaderActionIconProps) => {
-            s2Ref.current?.showTooltip({
-              position: { x: event!.clientX, y: event!.clientY },
-              content: <ActionIconTooltip name="Filter colCell" />,
-            });
-          },
-        },
-        {
-          icons: ['SortDown'],
-          belongsCell: 'colCell',
-          displayCondition: (node: Node) =>
-            node.id === 'root[&]家具[&]桌子[&]number',
-          onClick: ({ event }: HeaderActionIconProps) => {
-            s2Ref.current?.showTooltip({
-              position: { x: event!.clientX, y: event!.clientY },
-              content: <ActionIconTooltip name="SortDown colCell" />,
-            });
-          },
-        },
-        {
-          icons: ['FilterAsc'],
-          belongsCell: 'cornerCell',
-          onClick: ({ event }: HeaderActionIconProps) => {
-            s2Ref.current?.showTooltip({
-              position: { x: event!.clientX, y: event!.clientY },
-              content: <ActionIconTooltip name="FilterAsc cornerCell" />,
-            });
-          },
-        },
-        {
-          icons: ['SortDown', 'Filter'],
-          belongsCell: 'rowCell',
-          onClick: ({ event }: HeaderActionIconProps) => {
-            s2Ref.current?.showTooltip({
-              position: { x: event!.clientX, y: event!.clientY },
-              content: <ActionIconTooltip name="SortDown & Filter rowCell" />,
-            });
-          },
-        },
-      ],
-    },
-    options,
-  );
+      interaction: {
+        ...interactionConfig,
+        selectedCellsSpotlight: false, // 不启用选中变暗效果，保持 excel 式的聚焦
+      },
+    };
+  }, [useExcelHeaders, disableCrosshair]);
 
   return (
-    <PlaygroundSheetConfigProvider themeName={themeCfg?.name}>
-      <PlaygroundContext.Provider
-        value={{
-          ref: s2Ref,
-          onMounted: onSheetMounted,
-          onDestroy: onSheetDestroy,
-          themeCfg,
-          setThemeCfg,
-          logHandler,
-        }}
-      >
-        <div
-          className={cls('playground', {
-            [DARK_THEME_CLS]: themeCfg.name === 'dark',
-          })}
-        >
-          <LinkGroup />
-          <Tabs
-            defaultActiveKey={localStorage.getItem('debugTabKey') || 'basic'}
-            type="card"
-            destroyInactiveTabPane
-            items={[
-              {
-                key: 'basic',
-                label: '基础表',
-                children: (
-                  <>
-                    <Collapse
-                      defaultActiveKey={
-                        safeJsonParse(
-                          localStorage.getItem('debugCollapseKey')!,
-                        ) || ['filter', 'resize']
-                      }
-                      items={[
-                        {
-                          key: 'filter',
-                          label: '筛选器',
-                          children: (
-                            <>
-                              <Space>
-                                <Tooltip title="表格类型">
-                                  <Radio.Group
-                                    onChange={onSheetTypeChange}
-                                    defaultValue={sheetType}
-                                  >
-                                    <Radio.Button value="pivot">
-                                      透视表
-                                    </Radio.Button>
-                                    <Radio.Button value="table">
-                                      明细表
-                                    </Radio.Button>
-                                  </Radio.Group>
-                                </Tooltip>
-                                {sheetType === 'table' && (
-                                  <Tooltip title="明细表多级表头">
-                                    <Radio.Group
-                                      onChange={onTableColumnTypeChange}
-                                      defaultValue={tableSheetColumnType}
-                                    >
-                                      <Radio.Button value="single">
-                                        单列头
-                                      </Radio.Button>
-                                      <Radio.Button value="multiple">
-                                        多列头
-                                      </Radio.Button>
-                                    </Radio.Group>
-                                  </Tooltip>
-                                )}
-                                <Tooltip title="布局类型">
-                                  <Radio.Group
-                                    onChange={onLayoutWidthTypeChange}
-                                    defaultValue={
-                                      options?.style?.layoutWidthType
-                                    }
-                                  >
-                                    <Radio.Button value="adaptive">
-                                      行列等宽
-                                    </Radio.Button>
-                                    <Radio.Button value="colAdaptive">
-                                      列等宽
-                                    </Radio.Button>
-                                    <Radio.Button value="compact">
-                                      紧凑
-                                    </Radio.Button>
-                                  </Radio.Group>
-                                </Tooltip>
-                                <InputNumber
-                                  style={{ width: 120 }}
-                                  min={0}
-                                  placeholder="紧凑布局（附加宽）"
-                                  disabled={
-                                    options?.style?.layoutWidthType !==
-                                    'compact'
-                                  }
-                                  value={options?.style?.compactExtraWidth ?? 0}
-                                  onChange={(value) => {
-                                    updateOptions({
-                                      style: {
-                                        compactExtraWidth: value ?? 0,
-                                      },
-                                    });
-                                  }}
-                                />
-                                <InputNumber
-                                  style={{ width: 120 }}
-                                  min={0}
-                                  placeholder="紧凑布局（最小宽）"
-                                  disabled={
-                                    options?.style?.layoutWidthType !==
-                                    'compact'
-                                  }
-                                  value={options?.style?.compactMinWidth ?? 0}
-                                  onChange={(value) => {
-                                    updateOptions({
-                                      style: {
-                                        compactMinWidth: value ?? 0,
-                                      },
-                                    });
-                                  }}
-                                />
-                                <Button
-                                  danger
-                                  onClick={() => {
-                                    s2Ref.current?.destroy();
-                                    s2Ref.current?.render();
-                                  }}
-                                >
-                                  卸载组件 (s2.destroy)
-                                </Button>
-                              </Space>
-                              <Space className="filter-container">
-                                <Switch
-                                  checkedChildren="渲染组件"
-                                  unCheckedChildren="卸载组件"
-                                  defaultChecked={render}
-                                  onChange={onToggleRender}
-                                />
-                                <Switch
-                                  checkedChildren="调试模式开"
-                                  unCheckedChildren="调试模式关"
-                                  defaultChecked={mergedOptions.debug}
-                                  onChange={(checked) => {
-                                    updateOptions({ debug: checked });
-                                  }}
-                                />
-                                <Tooltip title="透视表层级结构">
-                                  <Radio.Group
-                                    value={mergedOptions.hierarchyType}
-                                    onChange={(e) => {
-                                      updateOptions({
-                                        hierarchyType: e.target.value,
-                                      });
-                                    }}
-                                    disabled={sheetType === 'table'}
-                                  >
-                                    <Radio.Button value="grid">
-                                      平铺
-                                    </Radio.Button>
-                                    <Radio.Button value="tree">
-                                      树形
-                                    </Radio.Button>
-                                    <Radio.Button value="grid-tree">
-                                      grid-tree
-                                    </Radio.Button>
-                                  </Radio.Group>
-                                </Tooltip>
-                                <Switch
-                                  checkedChildren="数值挂列头"
-                                  unCheckedChildren="数值挂行头"
-                                  defaultChecked={dataCfg.fields?.valueInCols}
-                                  onChange={(checked) => {
-                                    updateDataCfg({
-                                      fields: {
-                                        valueInCols: checked,
-                                      },
-                                    });
-                                  }}
-                                  disabled={sheetType === 'table'}
-                                />
-                                <Switch
-                                  checkedChildren="隐藏数值"
-                                  unCheckedChildren="显示数值"
-                                  defaultChecked={
-                                    mergedOptions.style?.colCell?.hideValue
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      style: {
-                                        colCell: {
-                                          hideValue: checked,
-                                        },
-                                      },
-                                    });
-                                  }}
-                                  disabled={sheetType === 'table'}
-                                />
-                                <Switch
-                                  checkedChildren="显示行小计/总计"
-                                  unCheckedChildren="隐藏行小计/总计"
-                                  defaultChecked={
-                                    mergedOptions.totals?.row
-                                      ?.showSubTotals as boolean
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      totals: {
-                                        row: {
-                                          showGrandTotals: checked,
-                                          showSubTotals: checked,
-                                          reverseGrandTotalsLayout: true,
-                                          reverseSubTotalsLayout: true,
-                                          subTotalsDimensions: ['province'],
-                                        },
-                                      },
-                                    });
-                                  }}
-                                  disabled={sheetType === 'table'}
-                                />
-                                <Switch
-                                  checkedChildren="显示列小计/总计"
-                                  unCheckedChildren="隐藏列小计/总计"
-                                  defaultChecked={
-                                    mergedOptions.totals?.col
-                                      ?.showSubTotals as boolean
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      totals: {
-                                        col: {
-                                          showGrandTotals: checked,
-                                          showSubTotals: checked,
-                                          reverseGrandTotalsLayout: true,
-                                          reverseSubTotalsLayout: true,
-                                          subTotalsDimensions: ['type'],
-                                        },
-                                      },
-                                    });
-                                  }}
-                                  disabled={sheetType === 'table'}
-                                />
-                                <Tooltip title="透视表有效">
-                                  <Switch
-                                    checkedChildren="冻结行头区域开"
-                                    unCheckedChildren="冻结行头区域关"
-                                    defaultChecked={
-                                      !!mergedOptions.frozen?.rowHeader
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        frozen: {
-                                          rowHeader: checked,
-                                        },
-                                      });
-                                    }}
-                                    disabled={sheetType === 'table'}
-                                  />
-                                </Tooltip>
+    <div className="playground" style={{ padding: '24px', background: '#f5f7f6', minHeight: '100vh', fontFamily: 'sans-serif' }}>
+      
+      {/* 头部样式插入 */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .excel-chat-bubble {
+          padding: 8px 12px;
+          border-radius: 8px;
+          margin-bottom: 8px;
+          max-width: 85%;
+          word-break: break-all;
+        }
+        .excel-chat-user {
+          background-color: #217346;
+          color: white;
+          align-self: flex-end;
+          margin-left: auto;
+        }
+        .excel-chat-assistant {
+          background-color: #e9ecef;
+          color: #333;
+          align-self: flex-start;
+          white-space: pre-line;
+        }
+        .antv-s2-wrapper {
+          border: 1px solid #d4d4d4 !important;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+      `}} />
 
-                                <Switch
-                                  checkedChildren="冻结行头开"
-                                  unCheckedChildren="冻结行头关"
-                                  defaultChecked={
-                                    !!mergedOptions.frozen?.trailingRowCount
-                                  }
-                                  onChange={(checked) => {
-                                    if (checked) {
-                                      updateOptions({
-                                        frozen: PivotSheetFrozenOptions,
-                                      });
-                                    } else {
-                                      updateOptions({
-                                        frozen: { ...DEFAULT_FROZEN_COUNTS },
-                                      });
-                                    }
-                                  }}
-                                />
-                                <Switch
-                                  checkedChildren="冻结列头开"
-                                  unCheckedChildren="冻结列头关"
-                                  defaultChecked={
-                                    !!mergedOptions.frozen?.trailingColCount
-                                  }
-                                  onChange={(checked) => {
-                                    if (checked) {
-                                      updateOptions({
-                                        frozen: TableSheetFrozenOptions,
-                                      });
-                                    } else {
-                                      updateOptions({
-                                        frozen: { ...DEFAULT_FROZEN_COUNTS },
-                                      });
-                                    }
-                                  }}
-                                />
-                                <Switch
-                                  checkedChildren="显示序号"
-                                  unCheckedChildren="不显示序号"
-                                  checked={mergedOptions.seriesNumber?.enable}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      seriesNumber: {
-                                        enable: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                                <Switch
-                                  checkedChildren="自定义序号文本"
-                                  unCheckedChildren="默认序号文本"
-                                  checked={
-                                    mergedOptions.seriesNumber?.text ===
-                                    '自定义序号文本'
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      seriesNumber: {
-                                        text: checked
-                                          ? '自定义序号文本'
-                                          : getDefaultSeriesNumberText(),
-                                      },
-                                    });
-                                  }}
-                                  disabled={!mergedOptions.seriesNumber?.enable}
-                                />
-                                <Switch
-                                  checkedChildren="分页"
-                                  unCheckedChildren="不分页"
-                                  checked={showPagination}
-                                  onChange={setShowPagination}
-                                />
-                                <Switch
-                                  checkedChildren="汇总"
-                                  unCheckedChildren="无汇总"
-                                  checked={showTotals}
-                                  onChange={setShowTotals}
-                                />
-                                <Switch
-                                  checkedChildren="默认 headerActionIcons"
-                                  unCheckedChildren="自定义 headerActionIcons"
-                                  checked={
-                                    mergedOptions.showDefaultHeaderActionIcon
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      showDefaultHeaderActionIcon: checked,
-                                      headerActionIcons: checked
-                                        ? []
-                                        : headerActionIcons,
-                                    });
-                                  }}
-                                />
-                                <Switch
-                                  checkedChildren="打开链接跳转"
-                                  unCheckedChildren="无链接跳转"
-                                  checked={
-                                    !isEmpty(
-                                      mergedOptions.interaction?.linkFields,
-                                    )
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        linkFields: checked
-                                          ? ['province', 'city']
-                                          : [],
-                                      },
-                                    });
-                                  }}
-                                />
-                                <Tooltip title="将列头高度设为0">
-                                  <Switch
-                                    checkedChildren="隐藏列头和对应角头"
-                                    unCheckedChildren="显示列头和对应角头"
-                                    checked={
-                                      mergedOptions.style?.colCell?.height === 0
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        style: {
-                                          colCell: {
-                                            height: checked
-                                              ? 0
-                                              : s2Options?.style?.colCell
-                                                  ?.height ??
-                                                DEFAULT_STYLE.colCell?.height,
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="改变 dataConfig 配置">
-                                  <Switch
-                                    checkedChildren="隐藏列头但保留角头"
-                                    unCheckedChildren="显示列头"
-                                    checked={isEmpty(dataCfg.fields?.columns)}
-                                    onChange={(checked) => {
-                                      setDataCfg(
-                                        customMerge(dataCfg, {
-                                          fields: {
-                                            columns: checked
-                                              ? []
-                                              : pivotSheetDataCfg.fields
-                                                  .columns,
-                                          },
-                                        }),
-                                      );
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Switch
-                                  checkedChildren="字段标记开"
-                                  unCheckedChildren="字段标记关"
-                                  checked={!isEmpty(mergedOptions.conditions)}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      conditions: checked
-                                        ? s2ConditionsOptions
-                                        : null,
-                                    });
-                                  }}
-                                />
-                                <Switch
-                                  checkedChildren="表头吸顶"
-                                  unCheckedChildren="表头不吸顶"
-                                  checked={
-                                    !!mergedOptions.interaction?.stickyHeader
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        stickyHeader: checked
-                                          ? { enableInteraction: true }
-                                          : false,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  主题配置
-                                  <Divider type="vertical" />
-                                </span>
-                                <Tooltip title={`当前主题名: ${themeCfg.name}`}>
-                                  <Radio.Group
-                                    onChange={onThemeChange}
-                                    defaultValue="default"
-                                    value={themeCfg.name}
-                                  >
-                                    <Radio.Button value="default">
-                                      默认
-                                    </Radio.Button>
-                                    <Radio.Button value="gray">
-                                      简约灰
-                                    </Radio.Button>
-                                    <Radio.Button value="colorful">
-                                      多彩蓝
-                                    </Radio.Button>
-                                    <Radio.Button value="dark">
-                                      暗黑
-                                    </Radio.Button>
-                                  </Radio.Group>
-                                </Tooltip>
-                                <Popover
-                                  placement="bottomRight"
-                                  content={
-                                    <>
-                                      <ChromePicker
-                                        color={themeColor}
-                                        onChangeComplete={(color) => {
-                                          setThemeColor(color.hex);
-                                          const palette = getPalette(
-                                            themeCfg.name,
-                                          );
-                                          const newPalette = generatePalette({
-                                            ...palette,
-                                            brandColor: color.hex,
-                                          });
-
-                                          setThemeCfg({
-                                            name: themeCfg.name,
-                                            palette: newPalette,
-                                          });
-                                        }}
-                                      />
-                                    </>
-                                  }
-                                >
-                                  <Button>主题色调整</Button>
-                                </Popover>
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  Tooltip 配置
-                                  <Divider type="vertical" />
-                                </span>
-                                <Switch
-                                  checkedChildren="开启Tooltip"
-                                  unCheckedChildren="关闭Tooltip"
-                                  checked={mergedOptions.tooltip?.enable}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      tooltip: {
-                                        enable: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                                <Switch
-                                  checkedChildren="自定义Tooltip"
-                                  unCheckedChildren="默认Tooltip"
-                                  checked={showCustomTooltip}
-                                  onChange={setShowCustomTooltip}
-                                />
-                                <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
-                                  <Select
-                                    defaultValue={
-                                      mergedOptions.tooltip?.autoAdjustBoundary
-                                    }
-                                    onChange={onAutoAdjustBoundaryChange}
-                                    style={{ width: 230 }}
-                                    size="small"
-                                    allowClear
-                                  >
-                                    <Select.Option value="container">
-                                      container (表格区域)
-                                    </Select.Option>
-                                    <Select.Option value="body">
-                                      body (浏览器可视区域)
-                                    </Select.Option>
-                                    <Select.Option value="">关闭</Select.Option>
-                                  </Select>
-                                </Tooltip>
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  宽高配置
-                                  <Divider type="vertical" />
-                                </span>
-                                <Switch
-                                  checkedChildren="容器宽高自适应开"
-                                  unCheckedChildren="容器宽高自适应关"
-                                  defaultChecked={Boolean(adaptive)}
-                                  onChange={setAdaptive}
-                                />
-                                <Input
-                                  style={{ width: 150 }}
-                                  onChange={onSizeChange('width')}
-                                  defaultValue={mergedOptions.width}
-                                  suffix="px"
-                                  prefix="宽度"
-                                  size="small"
-                                />
-                                <Input
-                                  style={{ width: 150 }}
-                                  onChange={onSizeChange('height')}
-                                  defaultValue={mergedOptions.height}
-                                  suffix="px"
-                                  prefix="高度"
-                                  size="small"
-                                />
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    s2Ref.current?.changeSheetSize(400, 400);
-                                    s2Ref.current?.render(false);
-                                  }}
-                                >
-                                  改变表格大小 (s2.changeSheetSize)
-                                </Button>
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  折叠 / 展开
-                                  <Divider type="vertical" />
-                                </span>
-                                <Tooltip title="树状模式生效 (平铺模式 TODO)">
-                                  <Switch
-                                    checkedChildren="收起所有"
-                                    unCheckedChildren="展开所有"
-                                    disabled={
-                                      mergedOptions.hierarchyType !== 'tree'
-                                    }
-                                    checked={
-                                      mergedOptions.style?.rowCell?.collapseAll!
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        style: {
-                                          rowCell: {
-                                            collapseAll: checked,
-                                            collapseFields: null,
-                                            expandDepth: null,
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Switch
-                                  checkedChildren="折叠浙江省"
-                                  unCheckedChildren="展开浙江省"
-                                  disabled={
-                                    mergedOptions.hierarchyType !== 'tree'
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      style: {
-                                        rowCell: {
-                                          collapseAll: null,
-                                          expandDepth: null,
-                                          collapseFields: {
-                                            'root[&]浙江省': checked,
-                                          },
-                                        },
-                                      },
-                                    });
-                                  }}
-                                />
-                                <Tooltip
-                                  title={
-                                    <p>透视表树状模式默认行头展开层级配置</p>
-                                  }
-                                >
-                                  <Select
-                                    style={{ width: 180 }}
-                                    defaultValue={
-                                      mergedOptions?.style?.rowCell?.expandDepth
-                                    }
-                                    placeholder="默认行头展开层级"
-                                    size="small"
-                                    allowClear
-                                    onChange={(level) => {
-                                      updateOptions({
-                                        style: {
-                                          rowCell: {
-                                            collapseAll: false,
-                                            expandDepth: level,
-                                            collapseFields: null,
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  >
-                                    {pivotSheetDataCfg.fields.rows?.map(
-                                      (_, i) => (
-                                        <Select.Option value={i} key={i}>
-                                          第 {i + 1} 级
-                                        </Select.Option>
-                                      ),
-                                    )}
-                                  </Select>
-                                </Tooltip>
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  复制
-                                  <Divider type="vertical" />
-                                </span>
-                                <Tooltip title="单选/多选/刷选单元格后, 使用 Ctrl/Cmd + C 复制">
-                                  <Switch
-                                    checkedChildren="允许复制"
-                                    unCheckedChildren="禁用复制"
-                                    checked={
-                                      mergedOptions.interaction?.copy?.enable
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          copy: {
-                                            enable: checked,
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="复制包含其对应行列头的数据">
-                                  <Switch
-                                    checkedChildren="复制包含其对应行列头的数据"
-                                    unCheckedChildren="复制不包含其对应行列头的数据"
-                                    checked={
-                                      mergedOptions.interaction?.copy
-                                        ?.withHeader
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          copy: {
-                                            withHeader: checked,
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="对应 s2DataConfig.meta">
-                                  <Switch
-                                    checkedChildren="复制带格式后的数据"
-                                    unCheckedChildren="复制未格式化的数据"
-                                    checked={
-                                      mergedOptions.interaction?.copy
-                                        ?.withFormat
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          copy: {
-                                            withFormat: checked,
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                              </Space>
-                            </>
-                          ),
-                        },
-                        {
-                          key: 'interaction',
-                          label: '交互配置',
-                          children: (
-                            <>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  配置
-                                  <Divider type="vertical" />
-                                </span>
-                                <Tooltip title="高亮选中单元格">
-                                  <Switch
-                                    checkedChildren="选中聚光灯开"
-                                    unCheckedChildren="选中聚光灯关"
-                                    checked={
-                                      mergedOptions?.interaction
-                                        ?.selectedCellsSpotlight
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          selectedCellsSpotlight: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="悬停后高亮当前行列单元格 (含序号)">
-                                  <Switch
-                                    checkedChildren="hover 十字器开"
-                                    unCheckedChildren="hover 十字器关"
-                                    checked={Boolean(
-                                      mergedOptions?.interaction
-                                        ?.hoverHighlight,
-                                    )}
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          hoverHighlight: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="选中后高亮当前行列单元格 (含序号)">
-                                  <Switch
-                                    checkedChildren="选中后高亮当前行列单元格开"
-                                    unCheckedChildren="选中后高亮当前行列单元格关"
-                                    checked={Boolean(
-                                      mergedOptions?.interaction
-                                        ?.selectedCellHighlight,
-                                    )}
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          selectedCellHighlight: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="在数值单元格悬停 800ms,显示 tooltip">
-                                  <Switch
-                                    checkedChildren="hover 聚焦开"
-                                    unCheckedChildren="hover 聚焦关"
-                                    checked={
-                                      mergedOptions?.interaction
-                                        ?.hoverFocus as boolean
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          hoverFocus: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="开启后,可通过键盘方向键移动单元格, 如果有滚动条则自动滚动">
-                                  <Switch
-                                    checkedChildren="键盘方向键移动选中单元格开"
-                                    unCheckedChildren="键盘方向键移动选中单元关"
-                                    checked={Boolean(
-                                      mergedOptions?.interaction
-                                        ?.selectedCellMove,
-                                    )}
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          selectedCellMove: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="行头, 列头, 数值区域可单独配置">
-                                  <Switch
-                                    checkedChildren="刷选开启"
-                                    unCheckedChildren="刷选关闭"
-                                    checked={Boolean(
-                                      mergedOptions?.interaction
-                                        ?.brushSelection,
-                                    )}
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          brushSelection: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="按住 Ctrl/Command + click">
-                                  <Switch
-                                    checkedChildren="多选开启"
-                                    unCheckedChildren="多选关闭"
-                                    checked={Boolean(
-                                      mergedOptions?.interaction
-                                        ?.multiSelection,
-                                    )}
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          multiSelection: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="区间快捷多选 Shift + click">
-                                  <Switch
-                                    checkedChildren="区间快捷多选开启"
-                                    unCheckedChildren="区间快捷多选关闭"
-                                    checked={Boolean(
-                                      mergedOptions?.interaction
-                                        ?.rangeSelection,
-                                    )}
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          rangeSelection: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="滚动后手动触发一次 hover, 触发单元格高亮效果">
-                                  <Switch
-                                    checkedChildren="表格滚动后触发 hover 开启"
-                                    unCheckedChildren="表格滚动后触发 hover 关闭"
-                                    checked={Boolean(
-                                      mergedOptions?.interaction
-                                        ?.hoverAfterScroll,
-                                    )}
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          hoverAfterScroll: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
-                                  <Switch
-                                    checkedChildren="自动重置交互样式开"
-                                    unCheckedChildren="自动重置交互样式关"
-                                    defaultChecked={
-                                      mergedOptions?.interaction
-                                        ?.autoResetSheetStyle as boolean
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        interaction: {
-                                          autoResetSheetStyle: checked,
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip
-                                  title={
-                                    <>
-                                      <p>默认隐藏列 </p>
-                                      <p>明细表: 列头指定 field: number</p>
-                                      <p>
-                                        透视表: 列头指定id:
-                                        root[&]家具[&]沙发[&]number
-                                      </p>
-                                    </>
-                                  }
-                                >
-                                  <Select
-                                    style={{ width: 300 }}
-                                    defaultValue={
-                                      mergedOptions?.interaction
-                                        ?.hiddenColumnFields
-                                    }
-                                    mode="multiple"
-                                    placeholder="默认隐藏列"
-                                    onChange={(fields) => {
-                                      updateOptions({
-                                        interaction: {
-                                          hiddenColumnFields: fields,
-                                        },
-                                      });
-                                    }}
-                                  >
-                                    {columnOptions.map((column) => (
-                                      <Select.Option
-                                        value={column}
-                                        key={column as string}
-                                      >
-                                        {column as string}
-                                      </Select.Option>
-                                    ))}
-                                  </Select>
-                                </Tooltip>
-                                <Tooltip title="选中单元格后高亮联动, selectedCellHighlight 为 boolean 值时代表全开或全关">
-                                  <Select
-                                    style={{ width: 260 }}
-                                    placeholder="单元格选中高亮"
-                                    allowClear
-                                    mode="multiple"
-                                    onChange={(type) => {
-                                      let selectedCellHighlight:
-                                        | boolean
-                                        | InteractionCellHighlightOptions =
-                                        false;
-
-                                      selectedCellHighlight = {
-                                        rowHeader: false,
-                                        colHeader: false,
-                                        currentCol: false,
-                                        currentRow: false,
-                                      };
-                                      type.forEach((i: number) => {
-                                        // @ts-ignore
-                                        selectedCellHighlight[i] = true;
-                                      });
-
-                                      updateOptions({
-                                        interaction: {
-                                          selectedCellHighlight,
-                                        },
-                                      });
-                                    }}
-                                  >
-                                    <Select.Option value="rowHeader">
-                                      rowHeader: 高亮所在行头
-                                    </Select.Option>
-                                    <Select.Option value="colHeader">
-                                      colHeader: 高亮所在列头
-                                    </Select.Option>
-                                    <Select.Option value="currentRow">
-                                      currentRow: 高亮所在行
-                                    </Select.Option>
-                                    <Select.Option value="currentCol">
-                                      currentCol: 高亮所在列
-                                    </Select.Option>
-                                  </Select>
-                                </Tooltip>
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  滚动
-                                  <Divider type="vertical" />
-                                </span>
-                                <Popover
-                                  placement="bottomRight"
-                                  content={
-                                    <>
-                                      <div style={{ width: '600px' }}>
-                                        水平滚动速率 ：
-                                        <Slider
-                                          {...sliderOptions}
-                                          defaultValue={
-                                            mergedOptions.interaction!
-                                              .scrollSpeedRatio!.horizontal
-                                          }
-                                          onChange={onScrollSpeedRatioChange(
-                                            'horizontal',
-                                          )}
-                                        />
-                                        垂直滚动速率 ：
-                                        <Slider
-                                          {...sliderOptions}
-                                          defaultValue={
-                                            mergedOptions.interaction!
-                                              .scrollSpeedRatio!.vertical
-                                          }
-                                          onChange={onScrollSpeedRatioChange(
-                                            'vertical',
-                                          )}
-                                        />
-                                      </div>
-                                    </>
-                                  }
-                                >
-                                  <Button size="small">滚动速率调整</Button>
-                                </Popover>
-                                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
-                                  <Select
-                                    defaultValue={
-                                      mergedOptions.interaction!
-                                        .overscrollBehavior
-                                    }
-                                    onChange={onOverscrollBehaviorChange}
-                                    style={{ width: 150 }}
-                                    size="small"
-                                    allowClear
-                                  >
-                                    <Select.Option value="auto">
-                                      auto
-                                    </Select.Option>
-                                    <Select.Option value="contain">
-                                      contain
-                                    </Select.Option>
-                                    <Select.Option value="none">
-                                      none
-                                    </Select.Option>
-                                  </Select>
-                                </Tooltip>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current!);
-                                    s2Ref.current?.interaction.scrollToCellById(
-                                      'root[&]四川省[&]成都市',
-                                    );
-                                  }}
-                                >
-                                  滚动至 [成都市]
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current!);
-                                    s2Ref.current?.interaction.scrollToTop();
-                                  }}
-                                >
-                                  滚动到顶部
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current!);
-                                    s2Ref.current?.interaction.scrollToBottom();
-                                  }}
-                                >
-                                  滚动到底部
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current!);
-                                    s2Ref.current?.interaction.scrollToLeft();
-                                  }}
-                                >
-                                  滚动到左边
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current!);
-                                    s2Ref.current?.interaction.scrollToRight();
-                                  }}
-                                >
-                                  滚动到右边
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current);
-                                    s2Ref.current?.interaction.scrollTo({
-                                      rowHeaderOffsetX: {
-                                        value: 100,
-                                        animate: true,
-                                      },
-                                    });
-                                  }}
-                                >
-                                  滚动行头
-                                </Button>
-                                <Button
-                                  size="small"
-                                  danger
-                                  onClick={() => {
-                                    if (
-                                      scrollTimer.current ||
-                                      !s2Ref.current?.facet.vScrollBar
-                                    ) {
-                                      clearInterval(scrollTimer.current!);
-
-                                      return;
-                                    }
-
-                                    scrollTimer.current = setInterval(() => {
-                                      const { scrollY } =
-                                        s2Ref.current?.facet.getScrollOffset()!;
-
-                                      if (
-                                        s2Ref.current?.facet.isScrollToBottom(
-                                          scrollY,
-                                        )
-                                      ) {
-                                        console.log('滚动到底部');
-                                        s2Ref.current.interaction.scrollToTop({
-                                          animate: false,
-                                        });
-
-                                        return;
-                                      }
-
-                                      s2Ref.current!.interaction.scrollTo({
-                                        offsetY: {
-                                          value: scrollY + 50,
-                                          animate: true,
-                                        },
-                                      });
-                                    }, 500) as unknown as number;
-                                  }}
-                                >
-                                  {scrollTimer.current
-                                    ? '停止滚动'
-                                    : '循环滚动'}
-                                </Button>
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
-                                  高亮 / 选中
-                                  <Divider type="vertical" />
-                                </span>
-                                <Tooltip title="s2.interaction.selectAll()">
-                                  <Button
-                                    onClick={() => {
-                                      s2Ref.current?.interaction.selectAll();
-                                    }}
-                                  >
-                                    全选
-                                  </Button>
-                                </Tooltip>
-                                <Tooltip title="随机高亮: s2.interaction.highlightCell(cell)">
-                                  <Button
-                                    onClick={() => {
-                                      s2Ref.current?.interaction.highlightCell(
-                                        s2Ref.current.facet.getCells()[
-                                          random(
-                                            0,
-                                            s2Ref.current.facet.getCells()
-                                              .length - 1,
-                                          )
-                                        ],
-                                      );
-                                    }}
-                                  >
-                                    高亮单元格
-                                  </Button>
-                                </Tooltip>
-                                <Tooltip title="随机选中: s2.interaction.selectCell(cell)">
-                                  <Button
-                                    onClick={() => {
-                                      s2Ref.current?.interaction.selectCell(
-                                        s2Ref.current.facet.getCells()[
-                                          random(
-                                            0,
-                                            s2Ref.current.facet.getCells()
-                                              .length - 1,
-                                          )
-                                        ],
-                                      );
-                                    }}
-                                  >
-                                    选中单元格
-                                  </Button>
-                                </Tooltip>
-
-                                <Tooltip title="s2.interaction.reset()">
-                                  <Button
-                                    danger
-                                    onClick={() => {
-                                      s2Ref.current?.interaction.reset();
-                                    }}
-                                  >
-                                    重置
-                                  </Button>
-                                </Tooltip>
-                              </Space>
-                            </>
-                          ),
-                        },
-                        {
-                          key: 'resize',
-                          label: '宽高调整热区配置',
-                          children: (
-                            <ResizeConfig
-                              options={mergedOptions}
-                              setOptions={setOptions}
-                              setThemeCfg={setThemeCfg}
-                              onMaxLinesChange={(maxLines) => {
-                                setDataCfg(
-                                  maxLines > 1
-                                    ? pivotSheetMultiLineTextDataCfg
-                                    : pivotSheetDataCfg,
-                                );
-                              }}
-                            />
-                          ),
-                        },
-                      ]}
-                    />
-                    {render && (
-                      <React.StrictMode>
-                        <PlaygroundSheetHeader />
-                        <SheetComponent
-                          dataCfg={dataCfg as S2DataConfig}
-                          options={mergedOptions}
-                          sheetType={sheetType}
-                          adaptive={adaptive}
-                          ref={s2Ref}
-                          themeCfg={themeCfg}
-                          partDrillDown={partDrillDown}
-                          onAfterRender={logHandler('onAfterRender')}
-                          onRangeSort={logHandler('onRangeSort')}
-                          onRangeSorted={logHandler('onRangeSorted')}
-                          onMounted={(s2) => {
-                            onSheetMounted(s2);
-                            setColumnOptions(getColumnOptions(sheetType));
-                          }}
-                          onDestroy={onSheetDestroy}
-                          onColCellClick={onColCellClick}
-                          onRowCellClick={logHandler('onRowCellClick')}
-                          onCornerCellClick={logHandler(
-                            'onCornerCellClick',
-                            (cellInfo) => {
-                              if (!showCustomTooltip) {
-                                return;
-                              }
-
-                              s2Ref.current?.showTooltip({
-                                position: {
-                                  x: cellInfo.event.clientX,
-                                  y: cellInfo.event.clientY,
-                                },
-                                content: 'click',
-                              });
-                            },
-                          )}
-                          onDataCellClick={logHandler('onDataCellClick')}
-                          onLayoutResize={logHandler('onLayoutResize')}
-                          onCopied={logHandler('onCopied')}
-                          onColCellHidden={logHandler('onColCellHidden')}
-                          onColCellExpanded={logHandler('onColCellExpanded')}
-                          onColCellExpandIconHover={logHandler(
-                            'onColCellExpandIconHover',
-                          )}
-                          onSelected={logHandler('onSelected')}
-                          onCornerCellSelected={logHandler(
-                            'onCornerCellSelected',
-                          )}
-                          onRowCellSelected={logHandler('onRowCellSelected')}
-                          onColCellSelected={logHandler('onColCellSelected')}
-                          onDataCellSelected={logHandler('onDataCellSelected')}
-                          onDataCellSelectMove={logHandler(
-                            'onDataCellSelectMove',
-                          )}
-                          onScroll={logHandler('onScroll')}
-                          onRowCellScroll={logHandler('onRowCellScroll')}
-                          onLinkFieldJump={logHandler('onLinkFieldJump', () => {
-                            window.open(
-                              'https://s2.antv.antgroup.com/manual/advanced/cell-render/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
-                            );
-                          })}
-                          onDataCellBrushSelection={logHandler(
-                            'onDataCellBrushSelection',
-                          )}
-                          onColCellBrushSelection={logHandler(
-                            'onColCellBrushSelection',
-                          )}
-                          onRowCellBrushSelection={logHandler(
-                            'onRowCellBrushSelection',
-                          )}
-                          onRowCellCollapsed={logHandler('onRowCellCollapsed')}
-                          onRowCellAllCollapsed={logHandler(
-                            'onRowCellAllCollapsed',
-                          )}
-                          onContextMenu={logHandler('onContextMenu')}
-                          onDataCellContextMenu={logHandler(
-                            'onDataCellContextMenu',
-                          )}
-                          onDoubleClick={logHandler('onDoubleClick')}
-                        >
-                          {({ pagination }) =>
-                            showPagination && (
-                              <Pagination
-                                size="small"
-                                showSizeChanger
-                                {...pagination}
-                              />
-                            )
-                          }
-                        </SheetComponent>
-                        {mergedOptions.interaction?.stickyHeader && (
-                          <div style={{ height: '100vh' }} />
-                        )}
-                      </React.StrictMode>
-                    )}
-                  </>
-                ),
-              },
-              {
-                key: 'customTree',
-                label: '自定义目录树',
-                children: <CustomTree />,
-              },
-              {
-                key: 'customGrid',
-                label: '自定义行列头',
-                children: <CustomGrid />,
-              },
-              {
-                key: 'strategy',
-                label: '趋势分析表',
-                children: (
-                  <StrategySheet
-                    onRowCellClick={logHandler('onRowCellClick')}
-                    ref={s2Ref}
-                  />
-                ),
-              },
-              {
-                key: 'gridAnalysis',
-                label: '网格分析表',
-                children: <GridAnalysisSheet />,
-              },
-              {
-                key: 'editable',
-                label: '编辑表',
-                children: (
-                  <EditableSheet
-                    onDataCellEditEnd={logHandler('onDataCellEditEnd')}
-                  />
-                ),
-              },
-              {
-                key: 'plugins',
-                label: 'AntV/G 插件系统',
-                children: <PluginsSheet />,
-              },
-              {
-                key: 'pivotChart',
-                label: '绘制透视组合图',
-                children: <PivotChartSheet />,
-              },
-              {
-                key: 'chart',
-                label: '绘制 G2 图表',
-                children: <ChartSheet />,
-              },
-              {
-                key: 'bigData',
-                label: '100万数据',
-                children: <BigDataSheet />,
-              },
-              {
-                key: 'stickyHeader',
-                label: '表头吸顶',
-                children: <StickyHeaderSheet ref={s2Ref} />,
-              },
-            ]}
-          />
+      {/* 顶栏 */}
+      <Card style={{ marginBottom: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Title level={3} style={{ margin: 0, color: '#217346', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '28px' }}>📊</span> AntV S2 Excel 高级仿真 Playground
+            </Title>
+            <Text type="secondary">在此预览配色微调、ABC/123 标题和去除十字高亮的效果，并测试 Chat Excel 智能操控。</Text>
+          </div>
+          <Tag color="success" icon={<CheckCircleOutlined />}>S2 v2 Engine Running</Tag>
         </div>
-      </PlaygroundContext.Provider>
-    </PlaygroundSheetConfigProvider>
+      </Card>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '24px' }}>
+        
+        {/* 左侧控制与模拟器栏 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          
+          {/* 交互开关控制 */}
+          <Card title="🎛️ 仿真效果开关" style={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontWeight: 'bold' }}>Excel 配色调色板</div>
+                  <Text type="secondary" style={{ fontSize: '12px' }}>使用 Excel 主题网格和主色</Text>
+                </div>
+                <Switch checked={useExcelTheme} onChange={setUseExcelTheme} />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontWeight: 'bold' }}>ABC / 123 报表头</div>
+                  <Text type="secondary" style={{ fontSize: '12px' }}>顶部字母，左侧数字行号</Text>
+                </div>
+                <Switch checked={useExcelHeaders} onChange={setUseExcelHeaders} />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontWeight: 'bold' }}>禁止十字高亮</div>
+                  <Text type="secondary" style={{ fontSize: '12px' }}>仅高亮选中的单元格</Text>
+                </div>
+                <Switch checked={disableCrosshair} onChange={setDisableCrosshair} />
+              </div>
+            </div>
+          </Card>
+
+          {/* Chat Excel 智能面板 */}
+          <Card title="💬 Chat Excel 智能助手" style={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '340px' }}>
+              
+              {/* 聊天消息区 */}
+              <div style={{ flex: 1, overflowY: 'auto', padding: '8px', display: 'flex', flexDirection: 'column', border: '1px solid #e8e8e8', borderRadius: '6px', marginBottom: '12px', background: '#fafafa' }}>
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`excel-chat-bubble ${msg.sender === 'user' ? 'excel-chat-user' : 'excel-chat-assistant'}`}
+                  >
+                    {msg.sender === 'user' ? <Badge status="processing" style={{ marginRight: '6px' }} /> : null}
+                    {msg.text}
+                  </div>
+                ))}
+              </div>
+
+              {/* 快捷操作 */}
+              <div style={{ marginBottom: '10px' }}>
+                <div style={{ fontSize: '12px', color: '#888', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <BulbOutlined /> 常用快捷指令:
+                </div>
+                <Space size={[4, 6]} wrap>
+                  <Tag color="blue" style={{ cursor: 'pointer' }} onClick={() => handleCommand('筛选出 Fruit 商品')}>
+                    筛选 Fruit
+                  </Tag>
+                  <Tag color="blue" style={{ cursor: 'pointer' }} onClick={() => handleCommand('高亮总额大于 100 的格子')}>
+                    高亮 Total &gt; 100
+                  </Tag>
+                  <Tag color="blue" style={{ cursor: 'pointer' }} onClick={() => handleCommand('按数量降序排序')}>
+                    数量降序
+                  </Tag>
+                </Space>
+              </div>
+
+              {/* 输入框 */}
+              <Input.Search
+                placeholder="发送 Excel 指令..."
+                enterButton={<SendOutlined />}
+                value={chatQuery}
+                onChange={(e) => setChatQuery(e.target.value)}
+                onSearch={handleCommand}
+                style={{ width: '100%' }}
+              />
+            </div>
+          </Card>
+        </div>
+
+        {/* 右侧 S2 展示栏 */}
+        <Card 
+          title="⚡ Excel 仿真表格预览" 
+          extra={
+            <Button size="small" icon={<UndoOutlined />} onClick={() => handleCommand('重置')}>
+              重置数据
+            </Button>
+          }
+          style={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}
+        >
+          <div style={{ background: '#fff', padding: '16px', borderRadius: '4px', border: '1px dashed #e8e8e8' }}>
+            <SheetComponent
+              sheetType="table"
+              dataCfg={dataCfg}
+              options={options}
+              themeCfg={themeCfg}
+              onMounted={(instance) => {
+                (window as any).s2 = instance;
+              }}
+              ref={s2Ref}
+            />
+          </div>
+
+          <Divider style={{ margin: '16px 0' }} />
+          
+          <div style={{ background: '#fcfcfc', padding: '12px', borderRadius: '6px', border: '1px solid #eef0ef' }}>
+            <Title level={5} style={{ marginTop: 0 }}>💡 仿真特点说明：</Title>
+            <ul>
+              <li><strong>配色同步：</strong>表头背景为 Excel 极浅灰 (`#F3F2F1`)，网格线使用 `#D4D4D4`；选中和 Hover 单元格的外边框表现为经典的 Excel 绿色 (`#217346`)。</li>
+              <li><strong>ABC/123 双层表头：</strong>顶部显示特殊的 A, B, C 列坐标层，其下方为实际的业务语义表头（只有语义表头支持筛选/排序等交互），左侧显示标准的 1, 2, 3 数字行号。</li>
+              <li><strong>Excel 式选择框：</strong>框选多个单元格时，单元格之间不再有各自重叠的边框，而是连成一片、由单一的 Excel 绿色外边框包裹，且移除了默认的十字交叉选中背景色。</li>
+            </ul>
+          </div>
+        </Card>
+      </div>
+    </div>
   );
 }
 

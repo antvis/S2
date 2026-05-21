@@ -4,6 +4,7 @@ import type { CellType } from '../../common/constant/interaction';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
 import type { DeepRequired } from './type-utils';
+import type { SpreadSheet } from '../../sheet-type';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
@@ -375,6 +376,12 @@ export interface ThemeCfg {
 
   /** 主题名 */
   name?: ThemeName;
+
+  /** 自定义主题 */
+  getCustomTheme?: (
+    palette: SimplePalette,
+    spreadsheet?: SpreadSheet,
+  ) => S2Theme;
 }
 
 /** 子弹图状态颜色 */

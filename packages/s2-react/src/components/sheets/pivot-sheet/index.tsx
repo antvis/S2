@@ -63,7 +63,7 @@ export const PivotSheet: React.FC<SheetComponentProps> = React.memo((props) => {
       buildDrillDownOptions<SheetComponentOptions>(
         pivotOptions!,
         partDrillDown as PartDrillDown,
-        (params) => onDrillDownIconClick.current(params),
+        (params) => onDrillDownIconClick.current?.(params),
       ),
     [pivotOptions, partDrillDown, onDrillDownIconClick],
   );

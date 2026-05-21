@@ -8,7 +8,7 @@ import type {
   Text,
   TextStyleProps,
 } from '@antv/g';
-import { Group, RectStyleProps } from '@antv/g';
+import { Group, RectStyleProps, Path } from '@antv/g';
 import {
   each,
   get,
@@ -427,15 +427,78 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     });
   }
 
+  protected getSelectionPath(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    borderWidth = 1,
+  ): string {
+    const activeCells = this.spreadsheet.interaction.getActiveCells();
+    const halfSize = borderWidth / 2;
+    const px = x + halfSize;
+    const py = y + halfSize;
+    const pw = width - borderWidth;
+    const ph = height - borderWidth;
+
+    if (activeCells.length <= 1) {
+      return `M ${px} ${py} L ${px + pw} ${py} L ${px + pw} ${py + ph} L ${px} ${py + ph} Z`;
+    }
+
+    const sameTypeCells = activeCells.filter((c) => c.cellType === this.cellType);
+    if (sameTypeCells.length <= 1) {
+      return `M ${px} ${py} L ${px + pw} ${py} L ${px + pw} ${py + ph} L ${px} ${py + ph} Z`;
+    }
+
+    const meta = this.meta as any;
+    if (!meta || meta.rowIndex == null || meta.colIndex == null) {
+      return `M ${px} ${py} L ${px + pw} ${py} L ${px + pw} ${py + ph} L ${px} ${py + ph} Z`;
+    }
+    const { rowIndex, colIndex } = meta;
+
+    const isTop = !sameTypeCells.some(
+      (c) =>
+        (c.getMeta() as any).rowIndex === rowIndex - 1 &&
+        (c.getMeta() as any).colIndex === colIndex,
+    );
+    const isBottom = !sameTypeCells.some(
+      (c) =>
+        (c.getMeta() as any).rowIndex === rowIndex + 1 &&
+        (c.getMeta() as any).colIndex === colIndex,
+    );
+    const isLeft = !sameTypeCells.some(
+      (c) =>
+        (c.getMeta() as any).rowIndex === rowIndex &&
+        (c.getMeta() as any).colIndex === colIndex - 1,
+    );
+    const isRight = !sameTypeCells.some(
+      (c) =>
+        (c.getMeta() as any).rowIndex === rowIndex &&
+        (c.getMeta() as any).colIndex === colIndex + 1,
+    );
+
+    let path = '';
+    if (isTop) path += `M ${px} ${py} L ${px + pw} ${py} `;
+    if (isBottom) path += `M ${px} ${py + ph} L ${px + pw} ${py + ph} `;
+    if (isLeft) path += `M ${px} ${py} L ${px} ${py + ph} `;
+    if (isRight) path += `M ${px + pw} ${py} L ${px + pw} ${py + ph} `;
+
+    return path || 'M 0 0';
+  }
+
   /**
    * 绘制 hover 悬停，刷选的外框
    */
   protected drawInteractiveBorderShape() {
+    const { x, y, width, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
+    const defaultPath = `M ${x + 0.5} ${y + 0.5} L ${x + width - 0.5} ${y + 0.5} L ${x + width - 0.5} ${y + height - 0.5} L ${x + 0.5} ${y + height - 0.5} Z`;
+
     const style = {
-      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+      d: defaultPath,
+      fill: 'transparent',
       visibility: 'hidden',
       pointerEvents: 'none',
-    } as RectStyleProps;
+    } as any;
 
     const interactiveBorderShape = this.stateShapes.get(
       'interactiveBorderShape',
@@ -444,7 +507,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     if (interactiveBorderShape) {
       batchSetStyle(interactiveBorderShape, style);
     } else {
-      this.stateShapes.set('interactiveBorderShape', renderRect(this, style));
+      const pathShape = this.appendChild(
+        new Path({
+          style,
+        }),
+      );
+      this.stateShapes.set('interactiveBorderShape', pathShape);
     }
   }
 
@@ -669,16 +737,25 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           });
         }
 
-        // 根据 borderWidth 更新 borderShape 大小 https://github.com/antvis/S2/pull/705
+        // 根据 borderWidth/path 更新 borderShape 大小 https://github.com/antvis/S2/pull/705
         if (
           shapeName === 'interactiveBorderShape' &&
           styleKey === 'borderWidth'
         ) {
           if (isNumber(style)) {
-            const marginStyle = this.getInteractiveBorderShapeStyle(style);
+            const borderWidth = style;
+            const { x, y, width, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
+            const pathStr =
+              stateName === 'selected' || stateName === 'hoverFocus'
+                ? this.getSelectionPath(x, y, width, height, borderWidth)
+                : `M ${x + borderWidth / 2} ${y + borderWidth / 2} L ${
+                    x + width - borderWidth / 2
+                  } ${y + borderWidth / 2} L ${x + width - borderWidth / 2} ${
+                    y + height - borderWidth / 2
+                  } L ${x + borderWidth / 2} ${y + height - borderWidth / 2} Z`;
 
-            each(marginStyle, (currentStyle, currentStyleKey) => {
-              updateShapeAttr(shapes, currentStyleKey, currentStyle);
+            shapes.forEach((shape) => {
+              shape?.setAttribute('d', pathStr);
             });
           }
         }
