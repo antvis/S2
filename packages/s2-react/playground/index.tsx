@@ -7,8 +7,10 @@ import {
   CellType,
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+  S2Event,
   SERIES_NUMBER_FIELD,
   TableColCell,
+  TableCornerCell,
   TableDataCell,
   TableSeriesNumberCell,
 } from '@antv/s2';
@@ -29,8 +31,47 @@ const EXCEL_HEADER_SELECTED_BACKGROUND = '#C0DAC9';
 const EXCEL_HEADER_HOVER_BACKGROUND = '#A2C7AE';
 const EXCEL_ROW_COL_SELECTED_BACKGROUND = '#c6c6c6';
 const EXCEL_ROW_COL_SELECTION_BORDER_ID = 'excel-row-col-selection-border';
+const EXCEL_CORNER_DIAGONAL_ID = 'excel-corner-diagonal';
+const EXCEL_CORNER_UPPER_BACKGROUND_ID = 'excel-corner-upper-background';
+const EXCEL_CORNER_LOWER_BACKGROUND_ID = 'excel-corner-lower-background';
+const EXCEL_CORNER_UPPER_BACKGROUND = '#F8F8F8';
+const EXCEL_CORNER_LOWER_BACKGROUND = '#DFDFDF';
+const EXCEL_CORNER_LOWER_HOVER_BACKGROUND = '#9E9E9E';
+
+function setExcelCellCursor(shape?: unknown) {
+  (
+    shape as
+      | {
+          setAttribute: (name: 'cursor', value: 'cell') => void;
+        }
+      | undefined
+  )?.setAttribute('cursor', 'cell');
+}
+
+function setShapeFillOpacity(shape: unknown, fillOpacity: number) {
+  (
+    shape as
+      | {
+          setAttribute: (name: 'fillOpacity', value: number) => void;
+        }
+      | undefined
+  )?.setAttribute('fillOpacity', fillOpacity);
+}
 
 class ExcelDataCell extends TableDataCell {
+  protected drawBackgroundShape() {
+    super.drawBackgroundShape();
+    setExcelCellCursor(this.backgroundShape);
+  }
+
+  protected afterDrawText() {
+    super.afterDrawText();
+    setExcelCellCursor(this.textShape);
+    this.textShapes?.forEach((shape) => {
+      setExcelCellCursor(shape);
+    });
+  }
+
   private getRowColSelectionType() {
     const selectedCells = this.spreadsheet.interaction.getCells();
 
@@ -131,7 +172,7 @@ class ExcelDataCell extends TableDataCell {
     interactiveBorderShape?.setAttribute('stroke', 'transparent');
     interactiveBorderShape?.setAttribute('strokeOpacity', 0);
     interactiveBorderShape?.setAttribute('lineWidth', borderWidth);
-    interactiveBorderShape?.setAttribute('opacity', 0);
+    interactiveBorderShape?.setAttribute('opacity', 1);
 
     if (existedSelectionBorder) {
       existedSelectionBorder.setAttribute('d', selectionBorderPath);
@@ -191,6 +232,19 @@ class ExcelDataCell extends TableDataCell {
 }
 
 class ExcelSeriesNumberCell extends TableSeriesNumberCell {
+  protected drawBackgroundShape() {
+    super.drawBackgroundShape();
+    setExcelCellCursor(this.backgroundShape);
+  }
+
+  protected afterDrawText() {
+    super.afterDrawText();
+    setExcelCellCursor(this.textShape);
+    this.textShapes?.forEach((shape) => {
+      setExcelCellCursor(shape);
+    });
+  }
+
   private isDirectSeriesNumberSelection() {
     return this.spreadsheet.interaction.getCells().some((cell) => {
       return (
@@ -219,12 +273,21 @@ class ExcelSeriesNumberCell extends TableSeriesNumberCell {
     interactiveBgShape?.setAttribute('fillOpacity', isDirectSelection ? 1 : 0);
 
     interactiveBorderShape?.setAttribute('visibility', 'visible');
-    interactiveBorderShape?.setAttribute('d', [
-      ['M', borderX, y],
-      ['L', borderX, y + height],
-    ]);
+    interactiveBorderShape?.setAttribute(
+      'd',
+      isDirectSelection
+        ? 'M 0 0'
+        : [
+            ['M', borderX, y],
+            ['L', borderX, y + height],
+          ],
+    );
     interactiveBorderShape?.setAttribute('fill', 'transparent');
-    interactiveBorderShape?.setAttribute('stroke', EXCEL_ACTIVE_COLOR);
+    interactiveBorderShape?.setAttribute(
+      'stroke',
+      isDirectSelection ? 'transparent' : EXCEL_ACTIVE_COLOR,
+    );
+    interactiveBorderShape?.setAttribute('strokeOpacity', isDirectSelection ? 0 : 1);
     interactiveBorderShape?.setAttribute('lineWidth', borderWidth);
     interactiveBorderShape?.setAttribute('opacity', 1);
   }
@@ -283,7 +346,237 @@ class ExcelSeriesNumberCell extends TableSeriesNumberCell {
   }
 }
 
+class ExcelCornerCell extends TableCornerCell {
+  private getPathShapeConstructor() {
+    const interactiveBorderShape = this.getStateShapes().get(
+      'interactiveBorderShape',
+    );
+
+    if (!interactiveBorderShape) {
+      return;
+    }
+
+    return interactiveBorderShape.constructor as new (config: {
+      id: string;
+      style: Record<string, unknown>;
+    }) => NonNullable<typeof interactiveBorderShape>;
+  }
+
+  private drawCornerBackground() {
+    const PathShape = this.getPathShapeConstructor();
+
+    if (!PathShape) {
+      return;
+    }
+
+    const { x, y, width, height } = this.getBBoxByType();
+    const upperPath = `M ${x} ${y} L ${x + width} ${y} L ${x} ${y + height} Z`;
+    const lowerPath = `M ${x + width} ${y} L ${x + width} ${y + height} L ${x} ${y + height} Z`;
+    const upperBackground = this.getElementById(
+      EXCEL_CORNER_UPPER_BACKGROUND_ID,
+    );
+    const lowerBackground = this.getElementById(
+      EXCEL_CORNER_LOWER_BACKGROUND_ID,
+    );
+
+    if (upperBackground) {
+      upperBackground.setAttribute('d', upperPath);
+      upperBackground.setAttribute('fill', EXCEL_CORNER_UPPER_BACKGROUND);
+    } else {
+      this.appendChild(
+        new PathShape({
+          id: EXCEL_CORNER_UPPER_BACKGROUND_ID,
+          style: {
+            d: upperPath,
+            fill: EXCEL_CORNER_UPPER_BACKGROUND,
+            fillOpacity: 1,
+            stroke: 'transparent',
+            pointerEvents: 'none',
+          },
+        }),
+      );
+    }
+
+    if (lowerBackground) {
+      lowerBackground.setAttribute('d', lowerPath);
+      lowerBackground.setAttribute('fill', EXCEL_CORNER_LOWER_BACKGROUND);
+    } else {
+      this.appendChild(
+        new PathShape({
+          id: EXCEL_CORNER_LOWER_BACKGROUND_ID,
+          style: {
+            d: lowerPath,
+            fill: EXCEL_CORNER_LOWER_BACKGROUND,
+            fillOpacity: 1,
+            stroke: 'transparent',
+            pointerEvents: 'none',
+          },
+        }),
+      );
+    }
+  }
+
+  private setLowerBackground(fill: string) {
+    this.getElementById(EXCEL_CORNER_LOWER_BACKGROUND_ID)?.setAttribute(
+      'fill',
+      fill,
+    );
+  }
+
+  private drawDiagonalLine() {
+    const PathShape = this.getPathShapeConstructor();
+
+    if (!PathShape) {
+      return;
+    }
+
+    const { x, y, width, height } = this.getBBoxByType();
+    const diagonalPath = `M ${x + width} ${y} L ${x} ${y + height}`;
+    const existedDiagonalLine = this.getElementById(EXCEL_CORNER_DIAGONAL_ID);
+
+    if (existedDiagonalLine) {
+      existedDiagonalLine.setAttribute('d', diagonalPath);
+
+      return;
+    }
+
+    this.appendChild(
+      new PathShape({
+        id: EXCEL_CORNER_DIAGONAL_ID,
+        style: {
+          d: diagonalPath,
+          fill: 'transparent',
+          stroke: '#b4b4b4',
+          strokeOpacity: 1,
+          lineWidth: 1,
+          pointerEvents: 'none',
+        },
+      }),
+    );
+  }
+
+  protected drawBackgroundShape() {
+    super.drawBackgroundShape();
+    setShapeFillOpacity(this.backgroundShape, 0);
+    setExcelCellCursor(this.backgroundShape);
+  }
+
+  protected afterDrawText() {
+    super.afterDrawText();
+    setExcelCellCursor(this.textShape);
+    this.textShapes?.forEach((shape) => {
+      setExcelCellCursor(shape);
+    });
+    this.drawCornerBackground();
+    this.drawDiagonalLine();
+  }
+
+  public updateByState(
+    stateName: Parameters<TableCornerCell['updateByState']>[0],
+  ) {
+    const selectedCells = this.spreadsheet.interaction.getCells();
+    const isSeriesNumberSelection = selectedCells.every((cell) => {
+      return cell.type === CellType.ROW_CELL;
+    });
+
+    if (stateName === 'hover') {
+      this.hideInteractionShape();
+      this.setLowerBackground(EXCEL_CORNER_LOWER_HOVER_BACKGROUND);
+      this.spreadsheet.interaction.setInteractedCells(this);
+
+      return;
+    }
+
+    this.setLowerBackground(EXCEL_CORNER_LOWER_BACKGROUND);
+
+    if (stateName === 'selected' && isSeriesNumberSelection) {
+      this.hideInteractionShape();
+
+      return;
+    }
+
+    super.updateByState(stateName);
+  }
+
+  public hideInteractionShape() {
+    super.hideInteractionShape();
+    this.setLowerBackground(EXCEL_CORNER_LOWER_BACKGROUND);
+  }
+}
+
 class ExcelColCell extends TableColCell {
+  protected drawBackgroundShape() {
+    super.drawBackgroundShape();
+    setExcelCellCursor(this.backgroundShape);
+  }
+
+  protected afterDrawText() {
+    super.afterDrawText();
+    setExcelCellCursor(this.textShape);
+    this.textShapes?.forEach((shape) => {
+      setExcelCellCursor(shape);
+    });
+  }
+
+  private isDataCellSelection() {
+    const selectedCells = this.spreadsheet.interaction.getCells();
+
+    return (
+      selectedCells.length > 0 &&
+      selectedCells.every((cell) => cell.type === CellType.DATA_CELL)
+    );
+  }
+
+  private updateColHeaderSelectedByDataCellStyle() {
+    const interactiveBgShape = this.getStateShapes().get('interactiveBgShape');
+    const interactiveBorderShape = this.getStateShapes().get(
+      'interactiveBorderShape',
+    );
+    const { x, y, width, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
+    const borderWidth = 2;
+    const borderY = y + height - borderWidth / 2;
+
+    interactiveBgShape?.setAttribute('visibility', 'visible');
+    interactiveBgShape?.setAttribute('fill', 'transparent');
+    interactiveBgShape?.setAttribute('fillOpacity', 0);
+
+    interactiveBorderShape?.setAttribute('visibility', 'visible');
+    interactiveBorderShape?.setAttribute(
+      'd',
+      this.meta.isLeaf
+        ? [
+            ['M', x, borderY],
+            ['L', x + width, borderY],
+          ]
+        : 'M 0 0',
+    );
+    interactiveBorderShape?.setAttribute('fill', 'transparent');
+    interactiveBorderShape?.setAttribute(
+      'stroke',
+      this.meta.isLeaf ? EXCEL_ACTIVE_COLOR : 'transparent',
+    );
+    interactiveBorderShape?.setAttribute(
+      'strokeOpacity',
+      this.meta.isLeaf ? 1 : 0,
+    );
+    interactiveBorderShape?.setAttribute('lineWidth', borderWidth);
+    interactiveBorderShape?.setAttribute('opacity', 1);
+  }
+
+  public updateByState(
+    stateName: Parameters<TableColCell['updateByState']>[0],
+  ) {
+    if (stateName === 'selected' && this.isDataCellSelection()) {
+      this.hideInteractionShape();
+      this.updateColHeaderSelectedByDataCellStyle();
+      this.spreadsheet.interaction.setInteractedCells(this);
+
+      return;
+    }
+
+    super.updateByState(stateName);
+  }
+
   protected drawVerticalResizeArea() {
     if (this.meta.isLeaf || !this.meta.extra?.isCustomNode) {
       super.drawVerticalResizeArea();
@@ -563,8 +856,8 @@ function MainLayout() {
       ? {
           // 仅高亮行头/列头，去掉十字形选中高亮
           hoverHighlight: {
-            rowHeader: true,
-            colHeader: true,
+            rowHeader: false,
+            colHeader: false,
             currentRow: false,
             currentCol: false,
           },
@@ -584,6 +877,9 @@ function MainLayout() {
     return {
       width: 780,
       height: 400,
+      tooltip: {
+        enable: false,
+      },
       dataCell: useExcelTheme
         ? (viewMeta: ViewMeta, spreadsheet: SpreadSheet) => {
             if (viewMeta.valueField === SERIES_NUMBER_FIELD) {
@@ -596,6 +892,11 @@ function MainLayout() {
       colCell: useExcelTheme
         ? (...args) => {
             return new ExcelColCell(...args);
+          }
+        : undefined,
+      seriesNumberCell: useExcelTheme
+        ? (...args) => {
+            return new ExcelCornerCell(...args) as never;
           }
         : undefined,
       showSeriesNumber: false, // 禁用默认的序号行为以防冲突
@@ -767,6 +1068,13 @@ function MainLayout() {
                 }}
                 onMounted={(instance) => {
                   (window as any).s2 = instance;
+                  instance.on(S2Event.COL_CELL_CLICK, (event) => {
+                    const cell = instance.getCell(event.target);
+
+                    if (cell instanceof ExcelCornerCell) {
+                      instance.interaction.selectAll();
+                    }
+                  });
                 }}
                 onDataCellSelected={updateSelectedSeriesNumberCell}
                 ref={s2Ref}
