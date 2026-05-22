@@ -1,14 +1,337 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { reactRender } from '../src/utils/reactRender';
 import { SheetComponent } from '../src';
-import type { SheetComponentOptions } from '../src';
-import { SpreadSheet } from '@antv/s2';
-import type { S2DataConfig, SimplePalette } from '@antv/s2';
-import { Card, Input, Button, Space, Switch, Tag, Typography, Divider, Badge } from 'antd';
-import { SendOutlined, BulbOutlined, UndoOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import type { SheetComponentOptions, SheetComponentProps } from '../src';
+import {
+  CellClipBox,
+  CellType,
+  KEY_GROUP_COL_RESIZE_AREA,
+  KEY_GROUP_ROW_RESIZE_AREA,
+  SERIES_NUMBER_FIELD,
+  TableColCell,
+  TableDataCell,
+  TableSeriesNumberCell,
+} from '@antv/s2';
+import type {
+  S2DataConfig,
+  S2CellType,
+  SimplePalette,
+  SpreadSheet,
+  ViewMeta,
+} from '@antv/s2';
+import { Card, Button, Switch, Tag, Typography } from 'antd';
+import { UndoOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import './index.less';
 
 const { Text, Title } = Typography;
+const EXCEL_ACTIVE_COLOR = '#217346';
+const EXCEL_HEADER_SELECTED_BACKGROUND = '#C0DAC9';
+const EXCEL_HEADER_HOVER_BACKGROUND = '#A2C7AE';
+const EXCEL_ROW_COL_SELECTED_BACKGROUND = '#c6c6c6';
+const EXCEL_ROW_COL_SELECTION_BORDER_ID = 'excel-row-col-selection-border';
+
+class ExcelDataCell extends TableDataCell {
+  private getRowColSelectionType() {
+    const selectedCells = this.spreadsheet.interaction.getCells();
+
+    if (
+      selectedCells.length &&
+      selectedCells.every((cell) => cell.type === CellType.ROW_CELL)
+    ) {
+      return CellType.ROW_CELL;
+    }
+
+    if (
+      selectedCells.length &&
+      selectedCells.every((cell) => cell.type === CellType.COL_CELL)
+    ) {
+      return CellType.COL_CELL;
+    }
+  }
+
+  private isCellInRowColSelection(cell: S2CellType, selectionType: CellType) {
+    const meta = cell.getMeta();
+    const { cells = [], nodes = [] } = this.spreadsheet.interaction.getState();
+    const selectedItems = [...nodes, ...cells];
+
+    if (selectionType === CellType.ROW_CELL) {
+      return selectedItems.some((item) => item.rowIndex === meta.rowIndex);
+    }
+
+    if (this.spreadsheet.isTableMode() && nodes.length) {
+      const leafNodes = nodes[0]?.hierarchy?.getLeaves?.() ?? [];
+
+      return leafNodes.some((node, index) => {
+        return nodes.includes(node) && index === meta.colIndex;
+      });
+    }
+
+    return selectedItems.some((item) => item.colIndex === meta.colIndex);
+  }
+
+  private getSelectedDataCells(selectionType: CellType) {
+    return (
+      this.spreadsheet.facet?.getCells().filter((cell) => {
+        const meta = cell.getMeta();
+
+        return (
+          cell.cellType === CellType.DATA_CELL &&
+          meta.valueField !== SERIES_NUMBER_FIELD &&
+          this.isCellInRowColSelection(cell, selectionType)
+        );
+      }) ?? []
+    );
+  }
+
+  private hideRowColSelectionBorder() {
+    this.spreadsheet.facet?.foregroundGroup
+      ?.getElementById(EXCEL_ROW_COL_SELECTION_BORDER_ID)
+      ?.setAttribute('visibility', 'hidden');
+  }
+
+  private updateRowColSelectedStyle(selectionType: CellType) {
+    const selectedDataCells = this.getSelectedDataCells(selectionType);
+
+    if (!selectedDataCells.length) {
+      return false;
+    }
+
+    const selectedMetas = selectedDataCells.map((cell) => cell.getMeta());
+    const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { x: panelX, y: panelY } = this.spreadsheet.facet.panelBBox;
+    const minX = Math.min(...selectedMetas.map((meta) => meta.x));
+    const minY = Math.min(...selectedMetas.map((meta) => meta.y));
+    const maxX = Math.max(...selectedMetas.map((meta) => meta.x + meta.width));
+    const maxY = Math.max(
+      ...selectedMetas.map((meta) => meta.y + meta.height),
+    );
+    const borderWidth = 2;
+    const halfBorderWidth = borderWidth / 2;
+    const left = minX + panelX - scrollX + halfBorderWidth;
+    const right = maxX + panelX - scrollX - halfBorderWidth;
+    const top = minY + panelY - scrollY + halfBorderWidth;
+    const bottom = maxY + panelY - scrollY - halfBorderWidth;
+    const selectionBorderPath = `M ${left} ${top} L ${right} ${top} L ${right} ${bottom} L ${left} ${bottom} Z`;
+    const interactiveBgShape = this.getStateShapes().get('interactiveBgShape');
+    const interactiveBorderShape = this.getStateShapes().get(
+      'interactiveBorderShape',
+    );
+    const foregroundGroup = this.spreadsheet.facet?.foregroundGroup;
+    const existedSelectionBorder = foregroundGroup?.getElementById(
+      EXCEL_ROW_COL_SELECTION_BORDER_ID,
+    );
+
+    interactiveBgShape?.setAttribute('visibility', 'visible');
+    interactiveBgShape?.setAttribute('fill', EXCEL_ROW_COL_SELECTED_BACKGROUND);
+    interactiveBgShape?.setAttribute('fillOpacity', 1);
+
+    interactiveBorderShape?.setAttribute('visibility', 'visible');
+    interactiveBorderShape?.setAttribute('d', 'M 0 0');
+    interactiveBorderShape?.setAttribute('fill', 'transparent');
+    interactiveBorderShape?.setAttribute('stroke', 'transparent');
+    interactiveBorderShape?.setAttribute('strokeOpacity', 0);
+    interactiveBorderShape?.setAttribute('lineWidth', borderWidth);
+    interactiveBorderShape?.setAttribute('opacity', 0);
+
+    if (existedSelectionBorder) {
+      existedSelectionBorder.setAttribute('d', selectionBorderPath);
+      existedSelectionBorder.setAttribute('visibility', 'visible');
+    } else if (foregroundGroup && interactiveBorderShape) {
+      const BorderShape = interactiveBorderShape.constructor as new (config: {
+        id: string;
+        style: Record<string, unknown>;
+      }) => NonNullable<typeof interactiveBorderShape>;
+
+      foregroundGroup.appendChild(
+        new BorderShape({
+          id: EXCEL_ROW_COL_SELECTION_BORDER_ID,
+          style: {
+            d: selectionBorderPath,
+            fill: 'transparent',
+            stroke: EXCEL_ACTIVE_COLOR,
+            strokeOpacity: 1,
+            lineWidth: borderWidth,
+            pointerEvents: 'none',
+            zIndex: 10,
+          },
+        }),
+      );
+    }
+
+    return true;
+  }
+
+  public updateByState(
+    stateName: Parameters<TableDataCell['updateByState']>[0],
+  ) {
+    const rowColSelectionType = this.getRowColSelectionType();
+
+    if (stateName === 'selected' && rowColSelectionType) {
+      this.hideInteractionShape();
+
+      if (!this.updateRowColSelectedStyle(rowColSelectionType)) {
+        super.updateByState(stateName);
+
+        return;
+      }
+
+      this.spreadsheet.interaction.setInteractedCells(this);
+
+      return;
+    }
+
+    if (stateName === 'selected') {
+      this.hideRowColSelectionBorder();
+    }
+
+    super.updateByState(stateName);
+  }
+
+  public drawResizeArea() {}
+}
+
+class ExcelSeriesNumberCell extends TableSeriesNumberCell {
+  private isDirectSeriesNumberSelection() {
+    return this.spreadsheet.interaction.getCells().some((cell) => {
+      return (
+        cell.type === CellType.ROW_CELL &&
+        cell.rowIndex === this.meta.rowIndex &&
+        cell.colIndex === this.meta.colIndex
+      );
+    });
+  }
+
+  private updateSeriesNumberSelectedStyle() {
+    const interactiveBgShape = this.getStateShapes().get('interactiveBgShape');
+    const interactiveBorderShape = this.getStateShapes().get(
+      'interactiveBorderShape',
+    );
+    const { x, y, width, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
+    const borderWidth = 2;
+    const borderX = x + width - borderWidth / 2;
+    const isDirectSelection = this.isDirectSeriesNumberSelection();
+
+    interactiveBgShape?.setAttribute('visibility', 'visible');
+    interactiveBgShape?.setAttribute(
+      'fill',
+      isDirectSelection ? EXCEL_HEADER_SELECTED_BACKGROUND : 'transparent',
+    );
+    interactiveBgShape?.setAttribute('fillOpacity', isDirectSelection ? 1 : 0);
+
+    interactiveBorderShape?.setAttribute('visibility', 'visible');
+    interactiveBorderShape?.setAttribute('d', [
+      ['M', borderX, y],
+      ['L', borderX, y + height],
+    ]);
+    interactiveBorderShape?.setAttribute('fill', 'transparent');
+    interactiveBorderShape?.setAttribute('stroke', EXCEL_ACTIVE_COLOR);
+    interactiveBorderShape?.setAttribute('lineWidth', borderWidth);
+    interactiveBorderShape?.setAttribute('opacity', 1);
+  }
+
+  private updateSeriesNumberHoverStyle() {
+    const interactiveBgShape = this.getStateShapes().get('interactiveBgShape');
+
+    interactiveBgShape?.setAttribute('visibility', 'visible');
+    interactiveBgShape?.setAttribute('fill', EXCEL_HEADER_HOVER_BACKGROUND);
+    interactiveBgShape?.setAttribute('fillOpacity', 1);
+  }
+
+  public updateByState(
+    stateName: Parameters<TableSeriesNumberCell['updateByState']>[0],
+  ) {
+    if (stateName === 'hover') {
+      this.hideInteractionShape();
+      this.updateSeriesNumberHoverStyle();
+      this.spreadsheet.interaction.setInteractedCells(this);
+
+      return;
+    }
+
+    if (stateName !== 'selected') {
+      super.updateByState(stateName);
+
+      return;
+    }
+
+    this.hideInteractionShape();
+    this.updateSeriesNumberSelectedStyle();
+    this.spreadsheet.interaction.setInteractedCells(this);
+  }
+
+  public drawResizeArea() {
+    super.drawResizeArea();
+
+    const resizeArea =
+      this.spreadsheet.facet?.foregroundGroup?.getElementById(
+        KEY_GROUP_ROW_RESIZE_AREA,
+      );
+    const children = resizeArea?.children ?? [];
+    const resizeShape = children[children.length - 1];
+
+    if (!resizeShape) {
+      return;
+    }
+
+    const { x, width } = this.getBBoxByType();
+
+    (
+      resizeShape as unknown as {
+        attr: (style: { x: number; width: number }) => void;
+      }
+    ).attr({ x, width });
+  }
+}
+
+class ExcelColCell extends TableColCell {
+  protected drawVerticalResizeArea() {
+    if (this.meta.isLeaf || !this.meta.extra?.isCustomNode) {
+      super.drawVerticalResizeArea();
+
+      return;
+    }
+
+    const [leafNode] = this.meta.children ?? [];
+
+    if (!leafNode) {
+      return;
+    }
+
+    const originalIsLeaf = this.meta.isLeaf;
+
+    this.meta.isLeaf = true;
+    super.drawVerticalResizeArea();
+    this.meta.isLeaf = originalIsLeaf;
+
+    const resizeArea =
+      this.spreadsheet.facet?.foregroundGroup?.getElementById(
+        KEY_GROUP_COL_RESIZE_AREA,
+      );
+    const resizeShape = (resizeArea?.children ?? []).find((shape) => {
+      return (
+        (shape as unknown as { appendInfo?: { cell?: ExcelColCell } })
+          .appendInfo?.cell === this
+      );
+    });
+
+    if (!resizeShape) {
+      return;
+    }
+
+    const appendInfo = (
+      resizeShape as unknown as {
+        appendInfo?: { meta?: Record<string, unknown> };
+      }
+    ).appendInfo;
+
+    if (appendInfo) {
+      appendInfo.meta = {
+        ...this.meta,
+        field: leafNode.field,
+      };
+    }
+  }
+}
 
 // 2. 转换函数：0 -> A, 1 -> B, 25 -> Z, 26 -> AA
 function getExcelColumnLabel(index: number): string {
@@ -41,6 +364,7 @@ interface ChatMessage {
 
 function MainLayout() {
   const s2Ref = useRef<SpreadSheet | null>(null);
+  const sheetContainerRef = useRef<HTMLDivElement>(null);
 
   // 基础开关配置
   const [useExcelTheme, setUseExcelTheme] = useState(true);
@@ -52,8 +376,8 @@ function MainLayout() {
   const [highlightedCol, setHighlightedCol] = useState<string | null>(null);
 
   // Chat Excel 模拟器状态
-  const [chatQuery, setChatQuery] = useState('');
-  const [messages, setMessages] = useState<ChatMessage[]>([
+  const [, setChatQuery] = useState('');
+  const [, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
       sender: 'assistant',
@@ -178,11 +502,11 @@ function MainLayout() {
               verticalBorderColor: palette.basicColors[10],
               interactionState: {
                 hover: {
-                  backgroundColor: palette.basicColors[4], // Excel header hover gray (#D9D9D9)
+                  backgroundColor: EXCEL_HEADER_HOVER_BACKGROUND,
                   backgroundOpacity: 1,
                 },
                 selected: {
-                  backgroundColor: palette.basicColors[4], // Excel header selected gray (#D9D9D9)
+                  backgroundColor: EXCEL_HEADER_SELECTED_BACKGROUND,
                   backgroundOpacity: 1,
                 },
               },
@@ -192,6 +516,20 @@ function MainLayout() {
             },
             text: {
               fill: '#000000',
+            },
+          },
+          colCell: {
+            cell: {
+              interactionState: {
+                hover: {
+                  backgroundColor: EXCEL_HEADER_HOVER_BACKGROUND,
+                  backgroundOpacity: 1,
+                },
+                selected: {
+                  backgroundColor: EXCEL_HEADER_SELECTED_BACKGROUND,
+                  backgroundOpacity: 1,
+                },
+              },
             },
           },
           dataCell: {
@@ -246,6 +584,20 @@ function MainLayout() {
     return {
       width: 780,
       height: 400,
+      dataCell: useExcelTheme
+        ? (viewMeta: ViewMeta, spreadsheet: SpreadSheet) => {
+            if (viewMeta.valueField === SERIES_NUMBER_FIELD) {
+              return new ExcelSeriesNumberCell(viewMeta, spreadsheet);
+            }
+
+            return new ExcelDataCell(viewMeta, spreadsheet);
+          }
+        : undefined,
+      colCell: useExcelTheme
+        ? (...args) => {
+            return new ExcelColCell(...args);
+          }
+        : undefined,
       showSeriesNumber: false, // 禁用默认的序号行为以防冲突
       seriesNumber: {
         enable: useExcelHeaders, // 开启数字序号列
@@ -263,9 +615,47 @@ function MainLayout() {
       interaction: {
         ...interactionConfig,
         selectedCellsSpotlight: false, // 不启用选中变暗效果，保持 excel 式的聚焦
+        resize: useExcelTheme
+          ? {
+              // Excel 模式只允许通过列头调整列宽。
+              // 行高热区由自定义 dataCell 控制：只让 123 序号格绘制。
+              rowCellVertical: true,
+              // 不开放普通角头行头宽度调整；序号列宽度由列头上的序号节点承担。
+              cornerCellHorizontal: false,
+              // 列头叶子节点可调列宽，包含 seriesNumber 开启后的左侧序号列节点。
+              colCellHorizontal: true,
+              // 不允许调整列头高度。
+              colCellVertical: false,
+              rowResizeType: 'current',
+              colResizeType: 'current',
+            }
+          : true,
       },
     };
-  }, [useExcelHeaders, disableCrosshair]);
+  }, [useExcelHeaders, disableCrosshair, useExcelTheme]);
+
+  const updateSelectedSeriesNumberCell: SheetComponentProps['onDataCellSelected'] =
+    (cells) => {
+      const selectedDataCell = cells.find((cell) => {
+        return cell.getMeta().valueField !== SERIES_NUMBER_FIELD;
+      });
+
+      if (!selectedDataCell) {
+        return;
+      }
+
+      const selectedRowIndex = selectedDataCell.getMeta().rowIndex;
+      const seriesNumberCells = (
+        s2Ref.current?.facet as unknown as {
+          getSeriesNumberCells?: () => ExcelSeriesNumberCell[];
+        }
+      )?.getSeriesNumberCells?.();
+      const seriesNumberCell = seriesNumberCells?.find((cell) => {
+        return cell.getMeta().rowIndex === selectedRowIndex;
+      });
+
+      seriesNumberCell?.updateByState('selected');
+    };
 
   return (
     <div className="playground" style={{ padding: '24px', background: '#f5f7f6', minHeight: '100vh', fontFamily: 'sans-serif' }}>
@@ -344,53 +734,6 @@ function MainLayout() {
               </div>
             </div>
           </Card>
-
-          {/* Chat Excel 智能面板 */}
-          <Card title="💬 Chat Excel 智能助手" style={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', height: '340px' }}>
-              
-              {/* 聊天消息区 */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '8px', display: 'flex', flexDirection: 'column', border: '1px solid #e8e8e8', borderRadius: '6px', marginBottom: '12px', background: '#fafafa' }}>
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`excel-chat-bubble ${msg.sender === 'user' ? 'excel-chat-user' : 'excel-chat-assistant'}`}
-                  >
-                    {msg.sender === 'user' ? <Badge status="processing" style={{ marginRight: '6px' }} /> : null}
-                    {msg.text}
-                  </div>
-                ))}
-              </div>
-
-              {/* 快捷操作 */}
-              <div style={{ marginBottom: '10px' }}>
-                <div style={{ fontSize: '12px', color: '#888', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <BulbOutlined /> 常用快捷指令:
-                </div>
-                <Space size={[4, 6]} wrap>
-                  <Tag color="blue" style={{ cursor: 'pointer' }} onClick={() => handleCommand('筛选出 Fruit 商品')}>
-                    筛选 Fruit
-                  </Tag>
-                  <Tag color="blue" style={{ cursor: 'pointer' }} onClick={() => handleCommand('高亮总额大于 100 的格子')}>
-                    高亮 Total &gt; 100
-                  </Tag>
-                  <Tag color="blue" style={{ cursor: 'pointer' }} onClick={() => handleCommand('按数量降序排序')}>
-                    数量降序
-                  </Tag>
-                </Space>
-              </div>
-
-              {/* 输入框 */}
-              <Input.Search
-                placeholder="发送 Excel 指令..."
-                enterButton={<SendOutlined />}
-                value={chatQuery}
-                onChange={(e) => setChatQuery(e.target.value)}
-                onSearch={handleCommand}
-                style={{ width: '100%' }}
-              />
-            </div>
-          </Card>
         </div>
 
         {/* 右侧 S2 展示栏 */}
@@ -404,27 +747,31 @@ function MainLayout() {
           style={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}
         >
           <div style={{ background: '#fff', padding: '16px', borderRadius: '4px', border: '1px dashed #e8e8e8' }}>
-            <SheetComponent
-              sheetType="table"
-              dataCfg={dataCfg}
-              options={options}
-              themeCfg={themeCfg}
-              onMounted={(instance) => {
-                (window as any).s2 = instance;
+            <div
+              ref={sheetContainerRef}
+              style={{
+                width: '100%',
+                height: 'calc(100vh - 220px)',
+                minHeight: 400,
               }}
-              ref={s2Ref}
-            />
-          </div>
-
-          <Divider style={{ margin: '16px 0' }} />
-          
-          <div style={{ background: '#fcfcfc', padding: '12px', borderRadius: '6px', border: '1px solid #eef0ef' }}>
-            <Title level={5} style={{ marginTop: 0 }}>💡 仿真特点说明：</Title>
-            <ul>
-              <li><strong>配色同步：</strong>表头背景为 Excel 极浅灰 (`#F3F2F1`)，网格线使用 `#D4D4D4`；选中和 Hover 单元格的外边框表现为经典的 Excel 绿色 (`#217346`)。</li>
-              <li><strong>ABC/123 双层表头：</strong>顶部显示特殊的 A, B, C 列坐标层，其下方为实际的业务语义表头（只有语义表头支持筛选/排序等交互），左侧显示标准的 1, 2, 3 数字行号。</li>
-              <li><strong>Excel 式选择框：</strong>框选多个单元格时，单元格之间不再有各自重叠的边框，而是连成一片、由单一的 Excel 绿色外边框包裹，且移除了默认的十字交叉选中背景色。</li>
-            </ul>
+            >
+              <SheetComponent
+                sheetType="table"
+                dataCfg={dataCfg}
+                options={options}
+                themeCfg={themeCfg}
+                adaptive={{
+                  width: true,
+                  height: true,
+                  getContainer: () => sheetContainerRef.current!,
+                }}
+                onMounted={(instance) => {
+                  (window as any).s2 = instance;
+                }}
+                onDataCellSelected={updateSelectedSeriesNumberCell}
+                ref={s2Ref}
+              />
+            </div>
           </div>
         </Card>
       </div>
