@@ -1,7 +1,12 @@
-import React, { useState, useMemo, useRef } from 'react';
-import { reactRender } from '../src/utils/reactRender';
-import { SheetComponent } from '../src';
-import type { SheetComponentOptions, SheetComponentProps } from '../src';
+/* eslint-disable max-classes-per-file */
+import { CheckCircleOutlined, UndoOutlined } from '@ant-design/icons';
+import type {
+  S2CellType,
+  S2DataConfig,
+  SimplePalette,
+  SpreadSheet,
+  ViewMeta,
+} from '@antv/s2';
 import {
   CellClipBox,
   CellType,
@@ -15,15 +20,11 @@ import {
   TableDataCell,
   TableSeriesNumberCell,
 } from '@antv/s2';
-import type {
-  S2DataConfig,
-  S2CellType,
-  SimplePalette,
-  SpreadSheet,
-  ViewMeta,
-} from '@antv/s2';
-import { Card, Button, Switch, Tag, Typography } from 'antd';
-import { UndoOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { Button, Card, Switch, Tag, Typography } from 'antd';
+import React, { useMemo, useRef, useState } from 'react';
+import type { SheetComponentOptions, SheetComponentProps } from '../src';
+import { SheetComponent } from '../src';
+import { reactRender } from '../src/utils/reactRender';
 import './index.less';
 
 const { Text, Title } = Typography;
@@ -130,8 +131,7 @@ class ExcelDataCell extends TableDataCell {
     const selectedCells = this.spreadsheet.interaction.getCells([
       CellType.DATA_CELL,
     ]);
-    const currentStateName =
-      this.spreadsheet.interaction.getCurrentStateName();
+    const currentStateName = this.spreadsheet.interaction.getCurrentStateName();
     const isDataCellBrushSelectionState = [
       InteractionStateName.DATA_CELL_BRUSH_SELECTED,
       InteractionStateName.PREPARE_SELECT,
@@ -173,9 +173,7 @@ class ExcelDataCell extends TableDataCell {
     const minX = Math.min(...selectedMetas.map((meta) => meta.x));
     const minY = Math.min(...selectedMetas.map((meta) => meta.y));
     const maxX = Math.max(...selectedMetas.map((meta) => meta.x + meta.width));
-    const maxY = Math.max(
-      ...selectedMetas.map((meta) => meta.y + meta.height),
-    );
+    const maxY = Math.max(...selectedMetas.map((meta) => meta.y + meta.height));
     const borderWidth = 2;
     const halfBorderWidth = borderWidth / 2;
     const left = minX + panelX - scrollX + halfBorderWidth;
@@ -425,10 +423,9 @@ class ExcelSeriesNumberCell extends TableSeriesNumberCell {
   public drawResizeArea() {
     super.drawResizeArea();
 
-    const resizeArea =
-      this.spreadsheet.facet?.foregroundGroup?.getElementById(
-        KEY_GROUP_ROW_RESIZE_AREA,
-      );
+    const resizeArea = this.spreadsheet.facet?.foregroundGroup?.getElementById(
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
     const children = resizeArea?.children ?? [];
     const resizeShape = children[children.length - 1];
 
@@ -704,10 +701,9 @@ class ExcelColCell extends TableColCell {
     super.drawVerticalResizeArea();
     this.meta.isLeaf = originalIsLeaf;
 
-    const resizeArea =
-      this.spreadsheet.facet?.foregroundGroup?.getElementById(
-        KEY_GROUP_COL_RESIZE_AREA,
-      );
+    const resizeArea = this.spreadsheet.facet?.foregroundGroup?.getElementById(
+      KEY_GROUP_COL_RESIZE_AREA,
+    );
     const resizeShape = (resizeArea?.children ?? []).find((shape) => {
       return (
         (shape as unknown as { appendInfo?: { cell?: ExcelColCell } })
@@ -738,10 +734,12 @@ class ExcelColCell extends TableColCell {
 function getExcelColumnLabel(index: number): string {
   let label = '';
   let temp = index;
+
   while (temp >= 0) {
     label = String.fromCharCode((temp % 26) + 65) + label;
     temp = Math.floor(temp / 26) - 1;
   }
+
   return label;
 }
 
@@ -753,14 +751,86 @@ function getExcelSeriesNumberWidth(rowCount: number) {
 
 // 原始测试数据
 const RAW_DATA = [
-  { col0: 'Apples', col1: 50, col2: 1.2, col3: 'Fruit', col4: '2026-05-01', col5: 60, col6: 'In Stock', col7: 'Aisle 1' },
-  { col0: 'Bananas', col1: 120, col2: 0.8, col3: 'Fruit', col4: '2026-05-02', col5: 96, col6: 'In Stock', col7: 'Aisle 1' },
-  { col0: 'Carrots', col1: 80, col2: 1.5, col3: 'Vegetable', col4: '2026-05-03', col5: 120, col6: 'Low Stock', col7: 'Aisle 2' },
-  { col0: 'Dates', col1: 15, col2: 5.0, col3: 'Fruit', col4: '2026-05-04', col5: 75, col6: 'Out of Stock', col7: 'Aisle 3' },
-  { col0: 'Eggplant', col1: 40, col2: 2.0, col3: 'Vegetable', col4: '2026-05-05', col5: 80, col6: 'In Stock', col7: 'Aisle 2' },
-  { col0: 'Figs', col1: 30, col2: 4.5, col3: 'Fruit', col4: '2026-05-06', col5: 135, col6: 'In Stock', col7: 'Aisle 3' },
-  { col0: 'Grapes', col1: 150, col2: 2.5, col3: 'Fruit', col4: '2026-05-07', col5: 375, col6: 'In Stock', col7: 'Aisle 1' },
-  { col0: 'Honey', col1: 25, col2: 8.5, col3: 'Sweetener', col4: '2026-05-08', col5: 212.5, col6: 'In Stock', col7: 'Aisle 4' },
+  {
+    col0: 'Apples',
+    col1: 50,
+    col2: 1.2,
+    col3: 'Fruit',
+    col4: '2026-05-01',
+    col5: 60,
+    col6: 'In Stock',
+    col7: 'Aisle 1',
+  },
+  {
+    col0: 'Bananas',
+    col1: 120,
+    col2: 0.8,
+    col3: 'Fruit',
+    col4: '2026-05-02',
+    col5: 96,
+    col6: 'In Stock',
+    col7: 'Aisle 1',
+  },
+  {
+    col0: 'Carrots',
+    col1: 80,
+    col2: 1.5,
+    col3: 'Vegetable',
+    col4: '2026-05-03',
+    col5: 120,
+    col6: 'Low Stock',
+    col7: 'Aisle 2',
+  },
+  {
+    col0: 'Dates',
+    col1: 15,
+    col2: 5.0,
+    col3: 'Fruit',
+    col4: '2026-05-04',
+    col5: 75,
+    col6: 'Out of Stock',
+    col7: 'Aisle 3',
+  },
+  {
+    col0: 'Eggplant',
+    col1: 40,
+    col2: 2.0,
+    col3: 'Vegetable',
+    col4: '2026-05-05',
+    col5: 80,
+    col6: 'In Stock',
+    col7: 'Aisle 2',
+  },
+  {
+    col0: 'Figs',
+    col1: 30,
+    col2: 4.5,
+    col3: 'Fruit',
+    col4: '2026-05-06',
+    col5: 135,
+    col6: 'In Stock',
+    col7: 'Aisle 3',
+  },
+  {
+    col0: 'Grapes',
+    col1: 150,
+    col2: 2.5,
+    col3: 'Fruit',
+    col4: '2026-05-07',
+    col5: 375,
+    col6: 'In Stock',
+    col7: 'Aisle 1',
+  },
+  {
+    col0: 'Honey',
+    col1: 25,
+    col2: 8.5,
+    col3: 'Sweetener',
+    col4: '2026-05-08',
+    col5: 212.5,
+    col6: 'In Stock',
+    col7: 'Aisle 4',
+  },
 ];
 
 interface ChatMessage {
@@ -794,7 +864,9 @@ function MainLayout() {
 
   // 处理 Chat 命令
   const handleCommand = (queryText: string) => {
-    if (!queryText.trim()) return;
+    if (!queryText.trim()) {
+      return;
+    }
 
     // 1. 添加用户消息
     const userMsg: ChatMessage = {
@@ -802,6 +874,7 @@ function MainLayout() {
       sender: 'user',
       text: queryText,
     };
+
     setMessages((prev) => [...prev, userMsg]);
     setChatQuery('');
 
@@ -813,14 +886,29 @@ function MainLayout() {
       if (cleanQuery.includes('fruit') || cleanQuery.includes('水果')) {
         setData(RAW_DATA.filter((item) => item.col3 === 'Fruit'));
         replyText = '✨ 已为您筛选出分类 (Category) 为 "Fruit" 的所有数据！';
-      } else if (cleanQuery.includes('大于100') || cleanQuery.includes('> 100') || cleanQuery.includes('highlight') || cleanQuery.includes('高亮')) {
-        setHighlightedCol('col5'); // col5 是总额 (Total)
+      } else if (
+        cleanQuery.includes('大于100') ||
+        cleanQuery.includes('> 100') ||
+        cleanQuery.includes('highlight') ||
+        cleanQuery.includes('高亮')
+      ) {
+        // col5 是总额 (Total)
+        setHighlightedCol('col5');
         replyText = '✨ 已为您高亮标记总额 (Total) 大于 100 的单元格！';
-      } else if (cleanQuery.includes('排序') || cleanQuery.includes('sort') || cleanQuery.includes('降序')) {
+      } else if (
+        cleanQuery.includes('排序') ||
+        cleanQuery.includes('sort') ||
+        cleanQuery.includes('降序')
+      ) {
         const sorted = [...RAW_DATA].sort((a, b) => b.col1 - a.col1);
+
         setData(sorted);
         replyText = '✨ 已按数量 (Quantity) 列进行降序排列！';
-      } else if (cleanQuery.includes('重置') || cleanQuery.includes('reset') || cleanQuery.includes('恢复')) {
+      } else if (
+        cleanQuery.includes('重置') ||
+        cleanQuery.includes('reset') ||
+        cleanQuery.includes('恢复')
+      ) {
         setData(RAW_DATA);
         setHighlightedCol(null);
         replyText = '✨ 表格数据与高亮状态已恢复初始设置！';
@@ -876,9 +964,11 @@ function MainLayout() {
               mapping: (value: number) => {
                 if (value > 100) {
                   return {
-                    fill: '#E2EFDA', // Excel 浅绿色
+                    // Excel 浅绿色
+                    fill: '#E2EFDA',
                   };
                 }
+
                 return {};
               },
             },
@@ -900,13 +990,18 @@ function MainLayout() {
     return {
       name: (useExcelTheme ? 'excel' : 'default') as 'excel' | 'default',
       getCustomTheme: (palette: SimplePalette) => {
-        if (!useExcelTheme) return {};
+        if (!useExcelTheme) {
+          return {};
+        }
+
         return {
           rowCell: {
             seriesNumberWidth: getExcelSeriesNumberWidth(data.length),
             cell: {
-              backgroundColor: palette.basicColors[3], // Excel header gray (#E6E6E6)
-              horizontalBorderColor: palette.basicColors[10], // Gray header border (#B4B4B4)
+              // Excel header gray (#E6E6E6)
+              backgroundColor: palette.basicColors[3],
+              // Gray header border (#B4B4B4)
+              horizontalBorderColor: palette.basicColors[10],
               verticalBorderColor: palette.basicColors[10],
               interactionState: {
                 hover: {
@@ -944,9 +1039,11 @@ function MainLayout() {
             cell: {
               interactionState: {
                 selected: {
-                  backgroundColor: palette.basicColors[2], // Light gray background selection mask
+                  // Light gray background selection mask
+                  backgroundColor: palette.basicColors[2],
                   backgroundOpacity: 0.2,
-                  borderColor: (palette as any).brandColor, // Excel green border
+                  // Excel green border
+                  borderColor: (palette as any).brandColor,
                   borderWidth: 2,
                   borderOpacity: 1,
                 },
@@ -1014,23 +1111,29 @@ function MainLayout() {
             return new ExcelCornerCell(...args) as never;
           }
         : undefined,
-      showSeriesNumber: false, // 禁用默认的序号行为以防冲突
+      // 禁用默认的序号行为以防冲突
+      showSeriesNumber: false,
       seriesNumber: {
-        enable: useExcelHeaders, // 开启数字序号列
-        text: '', // 序号列顶部角头显示为空
+        // 开启数字序号列
+        enable: useExcelHeaders,
+        // 序号列顶部角头显示为空
+        text: '',
       },
       placeholder: {
         cell: (cell) => {
           const meta = cell?.['getMeta']?.();
+
           if (meta?.field === '$$series_number$$') {
             return ' ';
           }
+
           return '-';
         },
       },
       interaction: {
         ...interactionConfig,
-        selectedCellsSpotlight: false, // 不启用选中变暗效果，保持 excel 式的聚焦
+        // 不启用选中变暗效果，保持 excel 式的聚焦
+        selectedCellsSpotlight: false,
         resize: useExcelTheme
           ? {
               // Excel 模式只允许通过列头调整列宽。
@@ -1074,10 +1177,19 @@ function MainLayout() {
     };
 
   return (
-    <div className="playground" style={{ padding: '24px', background: '#f5f7f6', minHeight: '100vh', fontFamily: 'sans-serif' }}>
-      
+    <div
+      className="playground"
+      style={{
+        padding: '24px',
+        background: '#f5f7f6',
+        minHeight: '100vh',
+        fontFamily: 'sans-serif',
+      }}
+    >
       {/* 头部样式插入 */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .excel-chat-bubble {
           padding: 8px 12px;
           border-radius: 8px;
@@ -1102,67 +1214,152 @@ function MainLayout() {
           border-radius: 4px;
           overflow: hidden;
         }
-      `}} />
+      `,
+        }}
+      />
 
       {/* 顶栏 */}
-      <Card style={{ marginBottom: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Card
+        style={{
+          marginBottom: '20px',
+          borderRadius: '8px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <div>
-            <Title level={3} style={{ margin: 0, color: '#217346', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '28px' }}>📊</span> AntV S2 Excel 高级仿真 Playground
+            <Title
+              level={3}
+              style={{
+                margin: 0,
+                color: '#217346',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <span style={{ fontSize: '28px' }}>📊</span> AntV S2 Excel
+              高级仿真 Playground
             </Title>
-            <Text type="secondary">在此预览配色微调、ABC/123 标题和去除十字高亮的效果，并测试 Chat Excel 智能操控。</Text>
+            <Text type="secondary">
+              在此预览配色微调、ABC/123 标题和去除十字高亮的效果，并测试 Chat
+              Excel 智能操控。
+            </Text>
           </div>
-          <Tag color="success" icon={<CheckCircleOutlined />}>S2 v2 Engine Running</Tag>
+          <Tag color="success" icon={<CheckCircleOutlined />}>
+            S2 v2 Engine Running
+          </Tag>
         </div>
       </Card>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '24px' }}>
-        
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '320px 1fr',
+          gap: '24px',
+        }}
+      >
         {/* 左侧控制与模拟器栏 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          
           {/* 交互开关控制 */}
-          <Card title="🎛️ 仿真效果开关" style={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Card
+            title="🎛️ 仿真效果开关"
+            style={{
+              borderRadius: '8px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+            }}
+          >
+            <div
+              style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
                 <div>
                   <div style={{ fontWeight: 'bold' }}>Excel 配色调色板</div>
-                  <Text type="secondary" style={{ fontSize: '12px' }}>使用 Excel 主题网格和主色</Text>
+                  <Text type="secondary" style={{ fontSize: '12px' }}>
+                    使用 Excel 主题网格和主色
+                  </Text>
                 </div>
                 <Switch checked={useExcelTheme} onChange={setUseExcelTheme} />
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
                 <div>
                   <div style={{ fontWeight: 'bold' }}>ABC / 123 报表头</div>
-                  <Text type="secondary" style={{ fontSize: '12px' }}>顶部字母，左侧数字行号</Text>
+                  <Text type="secondary" style={{ fontSize: '12px' }}>
+                    顶部字母，左侧数字行号
+                  </Text>
                 </div>
-                <Switch checked={useExcelHeaders} onChange={setUseExcelHeaders} />
+                <Switch
+                  checked={useExcelHeaders}
+                  onChange={setUseExcelHeaders}
+                />
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
                 <div>
                   <div style={{ fontWeight: 'bold' }}>禁止十字高亮</div>
-                  <Text type="secondary" style={{ fontSize: '12px' }}>仅高亮选中的单元格</Text>
+                  <Text type="secondary" style={{ fontSize: '12px' }}>
+                    仅高亮选中的单元格
+                  </Text>
                 </div>
-                <Switch checked={disableCrosshair} onChange={setDisableCrosshair} />
+                <Switch
+                  checked={disableCrosshair}
+                  onChange={setDisableCrosshair}
+                />
               </div>
             </div>
           </Card>
         </div>
 
         {/* 右侧 S2 展示栏 */}
-        <Card 
-          title="⚡ Excel 仿真表格预览" 
+        <Card
+          title="⚡ Excel 仿真表格预览"
           extra={
-            <Button size="small" icon={<UndoOutlined />} onClick={() => handleCommand('重置')}>
+            <Button
+              size="small"
+              icon={<UndoOutlined />}
+              onClick={() => handleCommand('重置')}
+            >
               重置数据
             </Button>
           }
-          style={{ borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}
+          style={{
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+          }}
         >
-          <div style={{ background: '#fff', padding: '16px', borderRadius: '4px', border: '1px dashed #e8e8e8' }}>
+          <div
+            style={{
+              background: '#fff',
+              padding: '16px',
+              borderRadius: '4px',
+              border: '1px dashed #e8e8e8',
+            }}
+          >
             <div
               ref={sheetContainerRef}
               style={{

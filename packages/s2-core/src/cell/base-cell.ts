@@ -8,7 +8,7 @@ import type {
   Text,
   TextStyleProps,
 } from '@antv/g';
-import { Group, RectStyleProps, Path } from '@antv/g';
+import { Group, Path, RectStyleProps } from '@antv/g';
 import {
   each,
   get,
@@ -428,12 +428,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   protected getSelectionPath(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
+    bbox: { x: number; y: number; width: number; height: number },
     borderWidth = 1,
   ): string {
+    const { x, y, width, height } = bbox;
     const activeCells = this.spreadsheet.interaction.getActiveCells();
     const halfSize = borderWidth / 2;
     const px = x + halfSize;
@@ -445,15 +443,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return `M ${px} ${py} L ${px + pw} ${py} L ${px + pw} ${py + ph} L ${px} ${py + ph} Z`;
     }
 
-    const sameTypeCells = activeCells.filter((c) => c.cellType === this.cellType);
+    const sameTypeCells = activeCells.filter(
+      (c) => c.cellType === this.cellType,
+    );
+
     if (sameTypeCells.length <= 1) {
       return `M ${px} ${py} L ${px + pw} ${py} L ${px + pw} ${py + ph} L ${px} ${py + ph} Z`;
     }
 
     const meta = this.meta as any;
+
     if (!meta || meta.rowIndex == null || meta.colIndex == null) {
       return `M ${px} ${py} L ${px + pw} ${py} L ${px + pw} ${py + ph} L ${px} ${py + ph} Z`;
     }
+
     const { rowIndex, colIndex } = meta;
 
     const isTop = !sameTypeCells.some(
@@ -478,10 +481,22 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
 
     let path = '';
-    if (isTop) path += `M ${px} ${py} L ${px + pw} ${py} `;
-    if (isBottom) path += `M ${px} ${py + ph} L ${px + pw} ${py + ph} `;
-    if (isLeft) path += `M ${px} ${py} L ${px} ${py + ph} `;
-    if (isRight) path += `M ${px + pw} ${py} L ${px + pw} ${py + ph} `;
+
+    if (isTop) {
+      path += `M ${px} ${py} L ${px + pw} ${py} `;
+    }
+
+    if (isBottom) {
+      path += `M ${px} ${py + ph} L ${px + pw} ${py + ph} `;
+    }
+
+    if (isLeft) {
+      path += `M ${px} ${py} L ${px} ${py + ph} `;
+    }
+
+    if (isRight) {
+      path += `M ${px + pw} ${py} L ${px + pw} ${py + ph} `;
+    }
 
     return path || 'M 0 0';
   }
@@ -512,6 +527,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           style,
         }),
       );
+
       this.stateShapes.set('interactiveBorderShape', pathShape);
     }
   }
@@ -744,10 +760,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         ) {
           if (isNumber(style)) {
             const borderWidth = style;
-            const { x, y, width, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
+            const { x, y, width, height } = this.getBBoxByType(
+              CellClipBox.PADDING_BOX,
+            );
             const pathStr =
               stateName === 'selected' || stateName === 'hoverFocus'
-                ? this.getSelectionPath(x, y, width, height, borderWidth)
+                ? this.getSelectionPath({ x, y, width, height }, borderWidth)
                 : `M ${x + borderWidth / 2} ${y + borderWidth / 2} L ${
                     x + width - borderWidth / 2
                   } ${y + borderWidth / 2} L ${x + width - borderWidth / 2} ${
