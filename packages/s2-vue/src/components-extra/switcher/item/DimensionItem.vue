@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { isEmpty } from 'lodash';
 import { computed } from 'vue';
-import type { DimensionCommonProps, SwitcherItem } from '../interface';
+import { isEmpty } from 'lodash';
 import { getSwitcherClassName } from '../util';
+import type { SwitcherItem, DimensionCommonProps } from '../interface';
 import SingleItem from './SingleItem.vue';
 
 interface DimensionItemProps extends DimensionCommonProps {

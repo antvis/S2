@@ -1,8 +1,8 @@
 <script lang="ts">
 import {
+  type TooltipBaseOperatorMenuItem,
   TOOLTIP_PREFIX_CLS,
   getIcon,
-  type TooltipBaseOperatorMenuItem,
 } from '@antv/s2';
 import { computed, defineComponent } from 'vue';
 import type { GetInitProps } from '../../../../interface';

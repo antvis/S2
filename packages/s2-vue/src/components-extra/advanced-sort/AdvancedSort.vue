@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { DeleteOutlined, OrderedListOutlined } from '@ant-design/icons-vue';
+import { ref, watch } from 'vue';
+import {
+  Button,
+  Form,
+  Layout,
+  Modal,
+  Select,
+  Cascader,
+  Radio,
+  type FormInstance,
+} from 'ant-design-vue';
+import { OrderedListOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import {
   ADVANCED_SORT_PRE_CLS,
   EXTRA_FIELD,
@@ -9,16 +20,6 @@ import {
   i18n,
   type SortParam,
 } from '@antv/s2';
-import {
-  Button,
-  Cascader,
-  Form,
-  Layout,
-  Modal,
-  Radio,
-  Select,
-  type FormInstance,
-} from 'ant-design-vue';
 import {
   filter,
   find,
@@ -30,14 +31,13 @@ import {
   toUpper,
   uniq,
 } from 'lodash';
-import { ref, watch } from 'vue';
-import CustomSort from './CustomSort.vue';
 import type {
   AdvancedSortProps,
   Dimension,
   RuleItem,
   RuleValue,
 } from './interface';
+import CustomSort from './CustomSort.vue';
 
 const props = defineProps<AdvancedSortProps>();
 

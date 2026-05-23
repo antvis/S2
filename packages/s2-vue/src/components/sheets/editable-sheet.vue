@@ -1,9 +1,9 @@
 <script lang="ts">
-import type { S2CellType, S2Options, TargetCellInfo } from '@antv/s2';
+import { defineComponent, computed, toRefs, watch, ref, reactive } from 'vue';
+import type { CSSProperties } from 'vue';
 import { Input } from 'ant-design-vue';
 import { isNil, pick } from 'lodash';
-import type { CSSProperties } from 'vue';
-import { computed, defineComponent, reactive, ref, toRefs, watch } from 'vue';
+import type { TargetCellInfo, S2Options, S2CellType } from '@antv/s2';
 import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits } from '../../interface';
 import { initBaseSheetProps } from '../../utils/initPropAndEmits';

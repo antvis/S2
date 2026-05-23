@@ -4,12 +4,12 @@ import { computed, defineComponent } from 'vue';
 import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';
 import ChartSheet from './chart-sheet.vue';
-import EditableSheet from './editable-sheet.vue';
 import GridAnalysisSheet from './grid-analysis-sheet/index.vue';
 import PivotChartSheet from './pivot-chart-sheet.vue';
 import PivotSheet from './pivot-sheet.vue';
 import StrategySheet from './strategy-sheet/index.vue';
 import TableSheet from './table-sheet.vue';
+import EditableSheet from './editable-sheet.vue';
 
 export default defineComponent({
   name: 'Sheet',

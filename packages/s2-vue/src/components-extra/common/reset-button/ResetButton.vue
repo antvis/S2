@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ReloadOutlined } from '@ant-design/icons-vue';
 import { S2_PREFIX_CLS, i18n } from '@antv/s2';
+import { ReloadOutlined } from '@ant-design/icons-vue';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-reset-btn`;
 

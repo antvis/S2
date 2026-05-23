@@ -9,7 +9,7 @@ import {
   S2_PREFIX_CLS,
 } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
-import { computed, defineComponent, onUnmounted, ref, watch } from 'vue';
+import { defineComponent, onUnmounted, ref, watch, computed } from 'vue';
 import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 import DragCopyMask from './DragCopyMask.vue';
 

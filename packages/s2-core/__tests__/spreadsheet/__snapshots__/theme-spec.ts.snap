@@ -1764,6 +1764,594 @@ Object {
 }
 `;
 
+exports[`SpreadSheet Theme Tests Theme Default Value Tests should get excel theme 1`] = `
+Object {
+  "background": Object {
+    "color": "#FFFFFF",
+    "opacity": 1,
+  },
+  "colCell": Object {
+    "bolderText": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "center",
+      "textBaseline": "middle",
+    },
+    "cell": Object {
+      "backgroundColor": "#F3F2F1",
+      "backgroundColorOpacity": 1,
+      "borderDash": Array [],
+      "horizontalBorderColor": "#D4D4D4",
+      "horizontalBorderColorOpacity": 1,
+      "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#E2EFDA",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#E1DFDD",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#217346",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#FFFF00",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#E1DFDD",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
+      "padding": Object {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8,
+      },
+      "verticalBorderColor": "#D4D4D4",
+      "verticalBorderColorOpacity": 1,
+      "verticalBorderWidth": 1,
+    },
+    "icon": Object {
+      "fill": "#000000",
+      "margin": Object {
+        "bottom": 6,
+        "left": 4,
+        "right": 4,
+        "top": 6,
+      },
+      "size": 10,
+    },
+    "measureText": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "right",
+      "textBaseline": "middle",
+    },
+    "text": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "center",
+      "textBaseline": "middle",
+    },
+  },
+  "cornerCell": Object {
+    "bolderText": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "opacity": 1,
+      "textAlign": "right",
+      "textBaseline": "middle",
+    },
+    "cell": Object {
+      "backgroundColor": "#F3F2F1",
+      "backgroundColorOpacity": 1,
+      "borderDash": Array [],
+      "horizontalBorderColor": "#D4D4D4",
+      "horizontalBorderColorOpacity": 1,
+      "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#E2EFDA",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#E1DFDD",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#217346",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#FFFF00",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#E1DFDD",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
+      "padding": Object {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8,
+      },
+      "verticalBorderColor": "#D4D4D4",
+      "verticalBorderColorOpacity": 1,
+      "verticalBorderWidth": 1,
+    },
+    "icon": Object {
+      "fill": "#000000",
+      "margin": Object {
+        "left": 4,
+        "right": 4,
+      },
+      "size": 10,
+    },
+    "measureText": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "opacity": 1,
+      "textAlign": "left",
+      "textBaseline": "middle",
+    },
+    "text": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "opacity": 1,
+      "textAlign": "left",
+      "textBaseline": "middle",
+    },
+  },
+  "dataCell": Object {
+    "bolderText": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "right",
+      "textBaseline": "middle",
+    },
+    "cell": Object {
+      "backgroundColor": "#FFFFFF",
+      "backgroundColorOpacity": 1,
+      "crossBackgroundColor": "#FFFFFF",
+      "horizontalBorderColor": "#D4D4D4",
+      "horizontalBorderColorOpacity": 1,
+      "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#E2EFDA",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+        },
+        "hoverFocus": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+          "borderColor": "#217346",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#217346",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#FFFF00",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
+      "padding": Object {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8,
+      },
+      "verticalBorderColor": "#D4D4D4",
+      "verticalBorderColorOpacity": 1,
+      "verticalBorderWidth": 1,
+    },
+    "icon": Object {
+      "fill": "#000000",
+      "margin": Object {
+        "left": 4,
+        "right": 4,
+      },
+      "size": 10,
+    },
+    "miniChart": Object {
+      "bar": Object {
+        "fill": "#0563C1",
+        "intervalPadding": 4,
+        "opacity": 1,
+      },
+      "bullet": Object {
+        "backgroundColor": "#E9E9E9",
+        "comparativeMeasure": Object {
+          "fill": "#000000",
+          "height": 12,
+          "opacity": 0.25,
+          "width": 1,
+        },
+        "progressBar": Object {
+          "height": 10,
+          "innerHeight": 6,
+          "widthPercent": 0.6,
+        },
+        "rangeColors": Object {
+          "bad": "#FF0000",
+          "good": "#00B050",
+          "satisfactory": "#FFFF00",
+        },
+      },
+      "interval": Object {
+        "fill": "#217346",
+        "height": 12,
+      },
+      "line": Object {
+        "linkLine": Object {
+          "fill": "#0563C1",
+          "opacity": 0.6,
+          "size": 1.5,
+        },
+        "point": Object {
+          "fill": "#0563C1",
+          "opacity": 1,
+          "size": 2.2,
+        },
+      },
+    },
+    "text": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "right",
+      "textBaseline": "middle",
+    },
+  },
+  "empty": Object {
+    "description": Object {
+      "fill": "#217346",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "opacity": 1,
+    },
+    "icon": Object {
+      "fill": "",
+      "height": 41,
+      "margin": Object {
+        "bottom": 24,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      },
+      "width": 64,
+    },
+  },
+  "mergedCell": Object {
+    "bolderText": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "right",
+      "textBaseline": "middle",
+    },
+    "cell": Object {
+      "backgroundColor": "#FFFFFF",
+      "backgroundColorOpacity": 1,
+      "crossBackgroundColor": "#FFFFFF",
+      "horizontalBorderColor": "#D4D4D4",
+      "horizontalBorderColorOpacity": 1,
+      "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#E2EFDA",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+        },
+        "hoverFocus": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+          "borderColor": "#217346",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#217346",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#FFFF00",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
+      "padding": Object {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8,
+      },
+      "verticalBorderColor": "#D4D4D4",
+      "verticalBorderColorOpacity": 1,
+      "verticalBorderWidth": 1,
+    },
+    "icon": Object {
+      "fill": "#000000",
+      "margin": Object {
+        "left": 4,
+        "right": 4,
+      },
+      "size": 10,
+    },
+    "miniChart": Object {
+      "bar": Object {
+        "fill": "#0563C1",
+        "intervalPadding": 4,
+        "opacity": 1,
+      },
+      "bullet": Object {
+        "backgroundColor": "#E9E9E9",
+        "comparativeMeasure": Object {
+          "fill": "#000000",
+          "height": 12,
+          "opacity": 0.25,
+          "width": 1,
+        },
+        "progressBar": Object {
+          "height": 10,
+          "innerHeight": 6,
+          "widthPercent": 0.6,
+        },
+        "rangeColors": Object {
+          "bad": "#FF0000",
+          "good": "#00B050",
+          "satisfactory": "#FFFF00",
+        },
+      },
+      "interval": Object {
+        "fill": "#217346",
+        "height": 12,
+      },
+      "line": Object {
+        "linkLine": Object {
+          "fill": "#0563C1",
+          "opacity": 0.6,
+          "size": 1.5,
+        },
+        "point": Object {
+          "fill": "#0563C1",
+          "opacity": 1,
+          "size": 2.2,
+        },
+      },
+    },
+    "text": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "right",
+      "textBaseline": "middle",
+    },
+  },
+  "prepareSelectMask": Object {
+    "backgroundColor": "#217346",
+    "backgroundOpacity": 0.3,
+  },
+  "resizeArea": Object {
+    "background": "#217346",
+    "backgroundOpacity": 0,
+    "guideLineColor": "#217346",
+    "guideLineDash": Array [
+      3,
+      3,
+    ],
+    "guideLineDisableColor": "rgba(0,0,0,0.25)",
+    "interactionState": Object {
+      "hover": Object {
+        "backgroundColor": "#217346",
+        "backgroundOpacity": 1,
+      },
+    },
+    "size": 3,
+  },
+  "rowCell": Object {
+    "bolderText": Object {
+      "fill": "#217346",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": 700,
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "left",
+      "textBaseline": "middle",
+    },
+    "cell": Object {
+      "backgroundColor": "#FFFFFF",
+      "backgroundColorOpacity": 1,
+      "borderDash": Array [],
+      "horizontalBorderColor": "#D4D4D4",
+      "horizontalBorderColorOpacity": 1,
+      "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#E2EFDA",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#217346",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#FFFF00",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#F2F2F2",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
+      "padding": Object {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8,
+      },
+      "verticalBorderColor": "#D4D4D4",
+      "verticalBorderColorOpacity": 1,
+      "verticalBorderWidth": 1,
+    },
+    "icon": Object {
+      "fill": "#217346",
+      "margin": Object {
+        "left": 4,
+        "right": 4,
+      },
+      "size": 10,
+    },
+    "measureText": Object {
+      "fill": "#217346",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "left",
+      "textBaseline": "middle",
+    },
+    "seriesNumberWidth": 80,
+    "seriesText": Object {
+      "fill": "#217346",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "center",
+      "textBaseline": "middle",
+    },
+    "text": Object {
+      "fill": "#217346",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "linkTextFill": "#0563C1",
+      "opacity": 1,
+      "textAlign": "left",
+      "textBaseline": "middle",
+    },
+  },
+  "scrollBar": Object {
+    "hoverSize": 8,
+    "lineCap": "round",
+    "size": 6,
+    "thumbColor": "rgba(0,0,0,0.15)",
+    "thumbHorizontalMinSize": 32,
+    "thumbHoverColor": "rgba(0,0,0,0.25)",
+    "thumbVerticalMinSize": 32,
+    "trackColor": "rgba(0,0,0,0.01)",
+  },
+  "splitLine": Object {
+    "borderDash": Array [],
+    "horizontalBorderColor": "#217346",
+    "horizontalBorderColorOpacity": 0.2,
+    "horizontalBorderWidth": 2,
+    "shadowColors": Object {
+      "left": "rgba(0,0,0,0.1)",
+      "right": "rgba(0,0,0,0)",
+    },
+    "shadowWidth": 8,
+    "showShadow": true,
+    "verticalBorderColor": "#217346",
+    "verticalBorderColorOpacity": 0.25,
+    "verticalBorderWidth": 2,
+  },
+}
+`;
+
 exports[`SpreadSheet Theme Tests Theme Default Value Tests should get gray theme 1`] = `
 Object {
   "background": Object {

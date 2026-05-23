@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { HierarchyType, S2DataConfig, S2Options } from '@antv/s2';
 import { ref } from 'vue';
+import type { S2DataConfig, S2Options, HierarchyType } from '@antv/s2';
 import { SheetComponent } from '../../src';
 import { customTreeData, customTreeFields } from '../config';
 

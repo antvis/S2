@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { S2_PREFIX_CLS } from '@antv/s2';
-import type { RadioGroupProps as AntdRadioGroupProps } from 'ant-design-vue';
 import { RadioGroup as ARadioGroup } from 'ant-design-vue';
 import { computed } from 'vue';
+import type { RadioGroupProps as AntdRadioGroupProps } from 'ant-design-vue';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-radio-group`;
 

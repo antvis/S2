@@ -1,11 +1,11 @@
 <script lang="ts">
+import { size, reduce } from 'lodash';
 import {
-  TOOLTIP_PREFIX_CLS,
   i18n,
-  type TooltipSummaryOptions,
   type TooltipSummaryProps,
+  type TooltipSummaryOptions,
+  TOOLTIP_PREFIX_CLS,
 } from '@antv/s2';
-import { reduce, size } from 'lodash';
 import { computed, defineComponent } from 'vue';
 import type { GetInitProps } from '../../../interface';
 

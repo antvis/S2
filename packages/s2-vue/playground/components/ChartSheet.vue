@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { S2Options } from '@antv/s2';
 import { ChartDataCell } from '@antv/s2/extends';
-import { ref } from 'vue';
-import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 import { SheetComponent } from '../../src';
+import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 
 const options = ref<S2Options>({
   height: 900,

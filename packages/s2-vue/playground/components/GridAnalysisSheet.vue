@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { LayoutWidthType, isUpDataValue } from '@antv/s2';
-import { ref } from 'vue';
 import { SheetComponent } from '../../src';
 import { mockGridAnalysisDataCfg } from '../config';
 

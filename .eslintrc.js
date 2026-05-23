@@ -30,7 +30,7 @@ module.exports = {
       version: 26,
     },
     react: {
-      version: '18.3',
+      version: 'detect',
     },
   },
   rules: {

@@ -1,9 +1,9 @@
 <script lang="ts">
 import {
   TOOLTIP_PREFIX_CLS,
+  type TooltipOperatorMenuInfo,
   type S2CellType,
   type TooltipBaseOperatorMenuItem,
-  type TooltipOperatorMenuInfo,
 } from '@antv/s2';
 import { Menu } from 'ant-design-vue';
 import { isEmpty } from 'lodash';

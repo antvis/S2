@@ -394,11 +394,19 @@ describe('Render Chart Shape Tests', () => {
   });
 
   test('should render bar shape', () => {
+    const originalRectCount = cell
+      .getChildren()
+      .filter((shape) => shape.get('type') === 'rect').length;
+
     drawBar(getChartData(MiniChartType.Bar), cell);
 
-    expect(
-      cell.getChildren().filter((shape) => shape.get('type') === 'rect'),
-    ).toHaveLength(9);
+    const currentRectCount = cell
+      .getChildren()
+      .filter((shape) => shape.get('type') === 'rect').length;
+
+    expect(currentRectCount - originalRectCount).toBe(
+      getChartData(MiniChartType.Bar).data.length,
+    );
   });
 
   test('should render bullet shape', () => {

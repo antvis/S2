@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { S2_PREFIX_CLS, i18n, type S2Theme, type TextAlign } from '@antv/s2';
+import { S2_PREFIX_CLS, i18n, type TextAlign, type S2Theme } from '@antv/s2';
 import { h, ref, watch } from 'vue';
 import { RadioGroup, ResetGroup, TooltipWrapper } from '../common';
-import { CenterAlignIcon, LeftAlignIcon, RightAlignIcon } from './icons';
+import { LeftAlignIcon, CenterAlignIcon, RightAlignIcon } from './icons';
 import {
   generateCellTextAlignTheme,
   type TextAlignPanelOptions,

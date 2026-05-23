@@ -2,7 +2,7 @@
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { InputNumber } from 'ant-design-vue';
 import { debounce } from 'lodash';
-import { onBeforeUnmount, ref, watch } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-frozen-input-number`;
 

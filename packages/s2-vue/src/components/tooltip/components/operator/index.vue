@@ -1,16 +1,16 @@
 <script lang="ts">
 import {
-  TooltipOperatorProps as BaseTooltipOperatorProps,
-  TOOLTIP_PREFIX_CLS,
-  type TooltipBaseOperatorMenuItem,
   type TooltipOperatorMenuInfo,
+  type TooltipBaseOperatorMenuItem,
+  TOOLTIP_PREFIX_CLS,
+  TooltipOperatorProps as BaseTooltipOperatorProps,
 } from '@antv/s2';
-import { Dropdown, Menu, type MenuProps } from 'ant-design-vue';
-import type { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
+import { Menu, Dropdown, type MenuProps } from 'ant-design-vue';
 import { defineComponent } from 'vue';
+import type { MenuClickEventHandler } from 'ant-design-vue/es/menu/src/interface';
 import type { GetInitProps } from '../../../../interface';
-import TooltipOperatorMenu from './menu.vue';
 import TooltipOperatorTitle from './title.vue';
+import TooltipOperatorMenu from './menu.vue';
 
 export interface TooltipOperatorProps extends BaseTooltipOperatorProps {
   onClick?: MenuProps['onClick'];

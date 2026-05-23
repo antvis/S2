@@ -1,5 +1,5 @@
 <script lang="ts">
-import { TOOLTIP_PREFIX_CLS, i18n, type TooltipHeadInfo } from '@antv/s2';
+import { type TooltipHeadInfo, TOOLTIP_PREFIX_CLS, i18n } from '@antv/s2';
 import { computed, defineComponent } from 'vue';
 import type { GetInitProps } from '../../../interface';
 

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { S2_PREFIX_CLS, i18n, type S2Theme } from '@antv/s2';
 import { Popover } from 'ant-design-vue';
-import { computed, h, ref, watch } from 'vue';
+import { h, ref, watch, computed } from 'vue';
+import { RadioGroup, ResetGroup, TooltipWrapper } from '../common';
 import {
-  DEFAULT_THEME_COLOR_LIST,
   SheetThemeColorType,
   SheetThemeType,
+  DEFAULT_THEME_COLOR_LIST,
 } from '../../common-extra';
-import { RadioGroup, ResetGroup, TooltipWrapper } from '../common';
 import ColorBox from './ColorBox.vue';
 import {
   BasicThemeIcon,

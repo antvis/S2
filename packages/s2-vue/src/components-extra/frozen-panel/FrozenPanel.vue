@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { S2_PREFIX_CLS, i18n } from '@antv/s2';
-import type { CheckboxProps } from 'ant-design-vue';
 import { Checkbox } from 'ant-design-vue';
-import { isEmpty } from 'lodash';
-import { computed, ref } from 'vue';
-import { ResetGroup } from '../common';
-import FrozenInputNumber from './FrozenInputNumber.vue';
-import type { FrozenPanelOptions } from './interface';
+import type { CheckboxProps } from 'ant-design-vue';
 
 type CheckboxChangeEvent = Parameters<
   NonNullable<CheckboxProps['onChange']>
 >[0];
+import { isEmpty } from 'lodash';
+import { ref, computed } from 'vue';
+import { ResetGroup } from '../common';
+import FrozenInputNumber from './FrozenInputNumber.vue';
+import type { FrozenPanelOptions } from './interface';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-frozen-panel`;
 

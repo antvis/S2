@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { ref } from 'vue';
-import mockDataset from '../../__tests__/data/mock-dataset.json';
 import { SheetComponent } from '../../src';
+import mockDataset from '../../__tests__/data/mock-dataset.json';
 
 const { data, totalData, meta } = mockDataset;
 

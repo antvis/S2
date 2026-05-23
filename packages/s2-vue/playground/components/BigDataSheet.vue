@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { onMounted, ref } from 'vue';
 import { SheetComponent } from '../../src';
 
 function generateRawData(
