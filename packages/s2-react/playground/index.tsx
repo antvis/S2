@@ -5,6 +5,7 @@ import type { SheetComponentOptions, SheetComponentProps } from '../src';
 import {
   CellClipBox,
   CellType,
+  InteractionStateName,
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   S2Event,
@@ -37,6 +38,7 @@ const EXCEL_CORNER_LOWER_BACKGROUND_ID = 'excel-corner-lower-background';
 const EXCEL_CORNER_UPPER_BACKGROUND = '#F8F8F8';
 const EXCEL_CORNER_LOWER_BACKGROUND = '#DFDFDF';
 const EXCEL_CORNER_LOWER_HOVER_BACKGROUND = '#9E9E9E';
+const EXCEL_SERIES_NUMBER_MIN_WIDTH = 32;
 
 function setExcelCellCursor(shape?: unknown) {
   (
@@ -124,15 +126,43 @@ class ExcelDataCell extends TableDataCell {
     );
   }
 
+  private getBrushSelectedDataCells() {
+    const selectedCells = this.spreadsheet.interaction.getCells([
+      CellType.DATA_CELL,
+    ]);
+    const currentStateName =
+      this.spreadsheet.interaction.getCurrentStateName();
+    const isDataCellBrushSelectionState = [
+      InteractionStateName.DATA_CELL_BRUSH_SELECTED,
+      InteractionStateName.PREPARE_SELECT,
+    ].includes(currentStateName as InteractionStateName);
+
+    if (!isDataCellBrushSelectionState || !selectedCells.length) {
+      return [];
+    }
+
+    const selectedCellIds = new Set(selectedCells.map((cell) => cell.id));
+
+    return (
+      this.spreadsheet.facet?.getCells().filter((cell) => {
+        const meta = cell.getMeta();
+
+        return (
+          cell.cellType === CellType.DATA_CELL &&
+          meta.valueField !== SERIES_NUMBER_FIELD &&
+          selectedCellIds.has(meta.id)
+        );
+      }) ?? []
+    );
+  }
+
   private hideRowColSelectionBorder() {
     this.spreadsheet.facet?.foregroundGroup
       ?.getElementById(EXCEL_ROW_COL_SELECTION_BORDER_ID)
       ?.setAttribute('visibility', 'hidden');
   }
 
-  private updateRowColSelectedStyle(selectionType: CellType) {
-    const selectedDataCells = this.getSelectedDataCells(selectionType);
-
+  private updateSelectedDataCellsStyle(selectedDataCells: S2CellType[]) {
     if (!selectedDataCells.length) {
       return false;
     }
@@ -202,6 +232,16 @@ class ExcelDataCell extends TableDataCell {
     return true;
   }
 
+  private updateRowColSelectedStyle(selectionType: CellType) {
+    return this.updateSelectedDataCellsStyle(
+      this.getSelectedDataCells(selectionType),
+    );
+  }
+
+  private updateBrushSelectedStyle() {
+    return this.updateSelectedDataCellsStyle(this.getBrushSelectedDataCells());
+  }
+
   public updateByState(
     stateName: Parameters<TableDataCell['updateByState']>[0],
   ) {
@@ -221,11 +261,35 @@ class ExcelDataCell extends TableDataCell {
       return;
     }
 
+    if (
+      (stateName === InteractionStateName.SELECTED &&
+        this.spreadsheet.interaction.getCurrentStateName() ===
+          InteractionStateName.DATA_CELL_BRUSH_SELECTED) ||
+      stateName === InteractionStateName.PREPARE_SELECT
+    ) {
+      this.hideInteractionShape();
+
+      if (!this.updateBrushSelectedStyle()) {
+        super.updateByState(stateName);
+
+        return;
+      }
+
+      this.spreadsheet.interaction.setInteractedCells(this);
+
+      return;
+    }
+
     if (stateName === 'selected') {
       this.hideRowColSelectionBorder();
     }
 
     super.updateByState(stateName);
+  }
+
+  public hideInteractionShape() {
+    super.hideInteractionShape();
+    this.hideRowColSelectionBorder();
   }
 
   public drawResizeArea() {}
@@ -255,6 +319,37 @@ class ExcelSeriesNumberCell extends TableSeriesNumberCell {
     });
   }
 
+  private getFirstDataColIndex() {
+    const dataColIndexes =
+      this.spreadsheet.facet
+        ?.getCells()
+        .filter((cell) => {
+          const meta = cell.getMeta();
+
+          return (
+            cell.cellType === CellType.DATA_CELL &&
+            meta.valueField !== SERIES_NUMBER_FIELD
+          );
+        })
+        .map((cell) => cell.getMeta().colIndex) ?? [];
+
+    if (!dataColIndexes.length) {
+      return 0;
+    }
+
+    return Math.min(...dataColIndexes);
+  }
+
+  private isFirstColDataCellSelection() {
+    const firstDataColIndex = this.getFirstDataColIndex();
+
+    return this.spreadsheet.interaction.getCells().some((cell) => {
+      return (
+        cell.type === CellType.DATA_CELL && cell.colIndex === firstDataColIndex
+      );
+    });
+  }
+
   private updateSeriesNumberSelectedStyle() {
     const interactiveBgShape = this.getStateShapes().get('interactiveBgShape');
     const interactiveBorderShape = this.getStateShapes().get(
@@ -264,6 +359,8 @@ class ExcelSeriesNumberCell extends TableSeriesNumberCell {
     const borderWidth = 2;
     const borderX = x + width - borderWidth / 2;
     const isDirectSelection = this.isDirectSeriesNumberSelection();
+    const shouldDrawRightBorder =
+      !isDirectSelection && !this.isFirstColDataCellSelection();
 
     interactiveBgShape?.setAttribute('visibility', 'visible');
     interactiveBgShape?.setAttribute(
@@ -275,19 +372,22 @@ class ExcelSeriesNumberCell extends TableSeriesNumberCell {
     interactiveBorderShape?.setAttribute('visibility', 'visible');
     interactiveBorderShape?.setAttribute(
       'd',
-      isDirectSelection
-        ? 'M 0 0'
-        : [
+      shouldDrawRightBorder
+        ? [
             ['M', borderX, y],
             ['L', borderX, y + height],
-          ],
+          ]
+        : 'M 0 0',
     );
     interactiveBorderShape?.setAttribute('fill', 'transparent');
     interactiveBorderShape?.setAttribute(
       'stroke',
-      isDirectSelection ? 'transparent' : EXCEL_ACTIVE_COLOR,
+      shouldDrawRightBorder ? EXCEL_ACTIVE_COLOR : 'transparent',
     );
-    interactiveBorderShape?.setAttribute('strokeOpacity', isDirectSelection ? 0 : 1);
+    interactiveBorderShape?.setAttribute(
+      'strokeOpacity',
+      shouldDrawRightBorder ? 1 : 0,
+    );
     interactiveBorderShape?.setAttribute('lineWidth', borderWidth);
     interactiveBorderShape?.setAttribute('opacity', 1);
   }
@@ -527,6 +627,12 @@ class ExcelColCell extends TableColCell {
     );
   }
 
+  private isFirstRowDataCellSelection() {
+    return this.spreadsheet.interaction.getCells().some((cell) => {
+      return cell.type === CellType.DATA_CELL && cell.rowIndex === 0;
+    });
+  }
+
   private updateColHeaderSelectedByDataCellStyle() {
     const interactiveBgShape = this.getStateShapes().get('interactiveBgShape');
     const interactiveBorderShape = this.getStateShapes().get(
@@ -535,6 +641,8 @@ class ExcelColCell extends TableColCell {
     const { x, y, width, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
     const borderWidth = 2;
     const borderY = y + height - borderWidth / 2;
+    const shouldDrawBottomBorder =
+      this.meta.isLeaf && !this.isFirstRowDataCellSelection();
 
     interactiveBgShape?.setAttribute('visibility', 'visible');
     interactiveBgShape?.setAttribute('fill', 'transparent');
@@ -543,7 +651,7 @@ class ExcelColCell extends TableColCell {
     interactiveBorderShape?.setAttribute('visibility', 'visible');
     interactiveBorderShape?.setAttribute(
       'd',
-      this.meta.isLeaf
+      shouldDrawBottomBorder
         ? [
             ['M', x, borderY],
             ['L', x + width, borderY],
@@ -553,11 +661,11 @@ class ExcelColCell extends TableColCell {
     interactiveBorderShape?.setAttribute('fill', 'transparent');
     interactiveBorderShape?.setAttribute(
       'stroke',
-      this.meta.isLeaf ? EXCEL_ACTIVE_COLOR : 'transparent',
+      shouldDrawBottomBorder ? EXCEL_ACTIVE_COLOR : 'transparent',
     );
     interactiveBorderShape?.setAttribute(
       'strokeOpacity',
-      this.meta.isLeaf ? 1 : 0,
+      shouldDrawBottomBorder ? 1 : 0,
     );
     interactiveBorderShape?.setAttribute('lineWidth', borderWidth);
     interactiveBorderShape?.setAttribute('opacity', 1);
@@ -635,6 +743,12 @@ function getExcelColumnLabel(index: number): string {
     temp = Math.floor(temp / 26) - 1;
   }
   return label;
+}
+
+function getExcelSeriesNumberWidth(rowCount: number) {
+  const digitCount = String(Math.max(rowCount, 1)).length;
+
+  return Math.max(EXCEL_SERIES_NUMBER_MIN_WIDTH, digitCount * 8 + 20);
 }
 
 // 原始测试数据
@@ -789,6 +903,7 @@ function MainLayout() {
         if (!useExcelTheme) return {};
         return {
           rowCell: {
+            seriesNumberWidth: getExcelSeriesNumberWidth(data.length),
             cell: {
               backgroundColor: palette.basicColors[3], // Excel header gray (#E6E6E6)
               horizontalBorderColor: palette.basicColors[10], // Gray header border (#B4B4B4)
@@ -848,7 +963,7 @@ function MainLayout() {
         };
       },
     };
-  }, [useExcelTheme]);
+  }, [data.length, useExcelTheme]);
 
   // 生成 S2 的 options
   const options = useMemo<SheetComponentOptions>(() => {
