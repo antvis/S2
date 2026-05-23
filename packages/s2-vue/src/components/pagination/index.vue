@@ -1,7 +1,7 @@
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
 import { S2_PREFIX_CLS, i18n } from '@antv/s2';
 import { Pagination as AntDPagination } from 'ant-design-vue';
+import { computed, defineComponent } from 'vue';
 import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_PAGE_SIZE,

@@ -7,9 +7,9 @@ import TooltipDetail from './components/detail.vue';
 import TooltipHeadInfo from './components/head-info.vue';
 import TooltipInfos from './components/infos.vue';
 import TooltipInterpretation from './components/interpretation.vue';
+import { TooltipOperator } from './components/operator';
 import TooltipSimpleTips from './components/simple-tips.vue';
 import TooltipSummary from './components/summary.vue';
-import { TooltipOperator } from './components/operator';
 import type { TooltipRenderProps } from './interface';
 
 export default defineComponent({

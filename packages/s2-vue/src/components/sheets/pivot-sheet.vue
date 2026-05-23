@@ -1,10 +1,10 @@
 <script lang="ts">
 import {
-  type S2Options,
   buildDrillDownOptions,
   handleDrillDown,
   type ActionIconCallbackParams,
   type PartDrillDown,
+  type S2Options,
 } from '@antv/s2';
 import { isEmpty } from 'lodash';
 import { computed, createVNode, defineComponent, ref, toRefs } from 'vue';

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { customMerge, type ThemeCfg, type S2Options } from '@antv/s2';
+import { customMerge, type S2Options, type ThemeCfg } from '@antv/s2';
 import { computed, defineComponent, toRefs } from 'vue';
 import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits } from '../../interface';

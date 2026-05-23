@@ -1,29 +1,29 @@
 <script setup lang="ts">
 /* eslint-disable no-console */
 import {
+  type S2Options,
   type SpreadSheet,
   type ThemeCfg,
   type ThemeName,
-  type S2Options,
 } from '@antv/s2';
-import { Button, Space, Popover } from 'ant-design-vue';
-import { ref, shallowRef, computed } from 'vue';
+import { Button, Popover, Space } from 'ant-design-vue';
+import { computed, ref, shallowRef } from 'vue';
+import type {
+  FrozenPanelOptions,
+  TextAlignPanelOptions,
+  ThemePanelOptions,
+} from '../../src';
 import {
-  SheetComponent,
-  ThemePanel,
-  TextAlignPanel,
-  FrozenPanel,
-  Switcher,
   AdvancedSort,
   DrillDown,
+  FrozenPanel,
+  SheetComponent,
   StrategyExport,
+  Switcher,
+  TextAlignPanel,
+  ThemePanel,
 } from '../../src';
-import type {
-  ThemePanelOptions,
-  TextAlignPanelOptions,
-  FrozenPanelOptions,
-} from '../../src';
-import { pivotSheetDataCfg, defaultOptions } from '../config';
+import { defaultOptions, pivotSheetDataCfg } from '../config';
 
 const s2Ref = shallowRef<SpreadSheet>();
 const themeCfg = ref<ThemeCfg>({

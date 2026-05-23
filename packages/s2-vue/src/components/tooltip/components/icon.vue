@@ -1,6 +1,6 @@
 <script lang="ts">
 import { getIcon, TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import { defineComponent, computed, type PropType } from 'vue';
+import { computed, defineComponent, type PropType } from 'vue';
 
 export interface TooltipIconProps {
   icon?: string | unknown;

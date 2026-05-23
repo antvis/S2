@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ReloadOutlined } from '@ant-design/icons-vue';
 import { i18n } from '@antv/s2';
 import { Button } from 'ant-design-vue';
 import { isEqual } from 'lodash';
-import { ReloadOutlined } from '@ant-design/icons-vue';
+import { computed, ref } from 'vue';
+import { FieldType, SWITCHER_FIELDS } from './constant';
+import Dimension from './dimension/Dimension.vue';
+import type { SwitcherContentProps, SwitcherState } from './interface';
 import {
   checkItem,
   generateSwitchResult,
@@ -13,9 +16,6 @@ import {
   getSwitcherState,
   shouldCrossRows,
 } from './util';
-import { SWITCHER_FIELDS, FieldType } from './constant';
-import type { SwitcherContentProps, SwitcherState } from './interface';
-import Dimension from './dimension/Dimension.vue';
 
 const props = withDefaults(
   defineProps<Omit<SwitcherContentProps, 'onSubmit'>>(),

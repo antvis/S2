@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, h } from 'vue';
+import { SwapOutlined } from '@ant-design/icons-vue';
 import { i18n } from '@antv/s2';
 import { Button, Popover } from 'ant-design-vue';
-import { SwapOutlined } from '@ant-design/icons-vue';
-import { getSwitcherClassName } from './util';
-import type { SwitcherProps, SwitcherResult } from './interface';
+import { computed, h, ref } from 'vue';
 import SwitcherContent from './SwitcherContent.vue';
+import type { SwitcherProps, SwitcherResult } from './interface';
+import { getSwitcherClassName } from './util';
 
 const props = withDefaults(defineProps<SwitcherProps>(), {
   disabled: false,

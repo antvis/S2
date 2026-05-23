@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import {
   ResizeType,
   customMerge,
   type ResizeInteractionOptions,
+  type S2Options,
   type S2Theme,
   type ThemeCfg,
-  type S2Options,
 } from '@antv/s2';
+import { ref } from 'vue';
 
 // Define props
 const props = defineProps<{

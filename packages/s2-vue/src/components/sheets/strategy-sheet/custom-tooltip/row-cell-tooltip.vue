@@ -2,7 +2,7 @@
 import type { Node } from '@antv/s2';
 import { i18n, getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2';
 import { isFunction } from 'lodash';
-import { defineComponent, computed, type PropType } from 'vue';
+import { computed, defineComponent, type PropType } from 'vue';
 import type { CustomTooltipProps } from './interface';
 
 export default defineComponent({

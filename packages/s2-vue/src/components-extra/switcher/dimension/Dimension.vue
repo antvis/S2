@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, watch, onBeforeUnmount } from 'vue';
-import { Checkbox } from 'ant-design-vue';
 import { i18n } from '@antv/s2';
+import { Checkbox } from 'ant-design-vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 // Use sortablejs instead of vuedraggable to avoid ESM build issues (require is not defined) in Vite
-import Sortable from 'sortablejs';
 import type { CheckboxChangeEvent } from 'ant-design-vue/lib/checkbox/interface';
-import { getSwitcherClassName } from '../util';
-import DimensionItem from '../item/DimensionItem.vue';
-import type { SwitcherItem } from '../interface';
+import Sortable from 'sortablejs';
 import { FieldType } from '../constant';
+import type { SwitcherItem } from '../interface';
+import DimensionItem from '../item/DimensionItem.vue';
+import { getSwitcherClassName } from '../util';
 
 // Define Props
 interface DimensionProps {

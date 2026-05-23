@@ -1,15 +1,15 @@
 <script lang="ts">
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
-import { computed, defineComponent } from 'vue';
 import { isBoolean } from 'lodash';
-import S2Pagination from '../pagination/index.vue';
+import { computed, defineComponent } from 'vue';
 import { provideSpreadSheet } from '../../context/SpreadSheetContext';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
   initBaseSheetEmits,
   initBaseSheetProps,
 } from '../../utils/initPropAndEmits';
+import S2Pagination from '../pagination/index.vue';
 
 export default defineComponent({
   name: 'BaseSheet',

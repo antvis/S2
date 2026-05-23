@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import {
   Aggregation,
   customMerge,
@@ -7,6 +6,7 @@ import {
   type S2Options,
   type ThemeCfg,
 } from '@antv/s2';
+import { ref } from 'vue';
 import { SheetComponent } from '../../src';
 import ResizeConfig from './ResizeConfig.vue';
 

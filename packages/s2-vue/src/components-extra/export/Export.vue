@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import { MoreOutlined } from '@ant-design/icons-vue';
 import {
+  CSV_SEPARATOR,
   S2_PREFIX_CLS,
-  i18n,
+  TAB_SEPARATOR,
   asyncGetAllData,
   asyncGetAllPlainData,
   copyToClipboard,
   download,
-  CSV_SEPARATOR,
-  TAB_SEPARATOR,
+  i18n,
   type CopyAllDataParams,
   type Copyable,
 } from '@antv/s2';
 import { Button, Dropdown, Menu, type MenuProps } from 'ant-design-vue';
-import { MoreOutlined } from '@ant-design/icons-vue';
 import type { ExportProps } from './interface';
 
 const props = withDefaults(defineProps<ExportProps>(), {

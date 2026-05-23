@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { S2_PREFIX_CLS } from '@antv/s2';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
+import { S2_PREFIX_CLS } from '@antv/s2';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { computed, ref } from 'vue';
 import { ResetButton } from '../reset-button';

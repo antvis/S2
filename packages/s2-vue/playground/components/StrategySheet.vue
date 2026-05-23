@@ -1,6 +1,5 @@
 <script setup lang="ts">
 /* eslint-disable no-console */
-import { ref, computed } from 'vue';
 import {
   customMerge,
   isUpDataValue,
@@ -8,11 +7,12 @@ import {
   type S2Options,
 } from '@antv/s2';
 import { get, isNil } from 'lodash';
-import { SheetComponent } from '../../src';
+import { computed, ref } from 'vue';
 import {
-  StrategySheetDataConfig,
   StrategyOptions,
+  StrategySheetDataConfig,
 } from '../../__tests__/data/strategy-data';
+import { SheetComponent } from '../../src';
 
 const showConditions = ref(true);
 const isSingleColumn = ref(false);

@@ -1,14 +1,14 @@
 <script lang="ts">
-import type { ViewMeta, MultiData, SimpleData } from '@antv/s2';
+import type { MultiData, SimpleData, ViewMeta } from '@antv/s2';
 import {
-  i18n,
   getEmptyPlaceholder,
+  i18n,
   isUnchangedValue,
   isUpDataValue,
   getStrategySheetTooltipClsName as tooltipCls,
 } from '@antv/s2';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
-import { defineComponent, computed, type PropType } from 'vue';
+import { computed, defineComponent, type PropType } from 'vue';
 import type { CustomTooltipProps } from './interface';
 
 export default defineComponent({
