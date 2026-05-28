@@ -17,6 +17,12 @@ permissions:
 
 jobs:
   issue-response:
+    if: >-
+      ${{
+        github.event_name != 'issues' ||
+        github.event.action != 'edited' ||
+        github.event.issue.state == 'open'
+      }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
