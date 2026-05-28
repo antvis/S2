@@ -22,6 +22,15 @@ module.exports = async ({ github, core, context, issue }) => {
     const issueNumber = issue.number;
     const issueTitle = issue.title;
 
+    if (
+      context.eventName === "issues" &&
+      context.payload.action === "edited" &&
+      issue.state === "closed"
+    ) {
+      core.info(`跳过已关闭 issue #${issueNumber} 的编辑事件`);
+      return;
+    }
+
     core.info(`处理 issue #${issueNumber}: ${issueTitle}`);
 
     const { response, source } = await getAutomatedReply({
@@ -45,4 +54,3 @@ module.exports = async ({ github, core, context, issue }) => {
     core.error(error.stack);
   }
 };
-
