@@ -608,8 +608,8 @@ export class TableFacet extends FrozenFacet {
       return this.getCompactColNodeWidth(colNode);
     }
 
-    // 5. 默认自适应列宽
-    return round(adaptiveColWidth);
+    // 5. 默认自适应列宽 (adaptiveColWidth 已在 getAdaptiveColWidth 中 floor 处理, 无需再次取整)
+    return adaptiveColWidth;
   }
 
   public getViewCellHeights() {
