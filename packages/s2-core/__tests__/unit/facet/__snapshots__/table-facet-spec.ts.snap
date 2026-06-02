@@ -4,32 +4,32 @@ exports[`Table Mode Facet Test With Adaptive Layout should get correct col layou
 Array [
   Object {
     "height": 30,
-    "width": 119,
+    "width": 119.8,
     "x": 0,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 119,
-    "x": 119,
+    "width": 119.8,
+    "x": 119.8,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 119,
-    "x": 238,
+    "width": 119.8,
+    "x": 239.6,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 119,
-    "x": 357,
+    "width": 119.8,
+    "x": 359.4,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 119,
-    "x": 476,
+    "width": 119.8,
+    "x": 479.2,
     "y": 0,
   },
 ]
@@ -39,32 +39,32 @@ exports[`Table Mode Facet Test With Adaptive Layout should get correct col layou
 Array [
   Object {
     "height": 30,
-    "width": 103,
+    "width": 103.8,
     "x": 80,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 103,
-    "x": 183,
+    "width": 103.8,
+    "x": 183.8,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 103,
-    "x": 286,
+    "width": 103.8,
+    "x": 287.6,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 103,
-    "x": 389,
+    "width": 103.8,
+    "x": 391.40000000000003,
     "y": 0,
   },
   Object {
     "height": 30,
-    "width": 103,
-    "x": 492,
+    "width": 103.8,
+    "x": 495.20000000000005,
     "y": 0,
   },
 ]
@@ -115,7 +115,7 @@ Object {
       0,
       0,
     ],
-    "width": 199,
+    "width": 199.66,
     "x": 0,
   },
   "frozenRow": Object {
@@ -131,8 +131,8 @@ Object {
       2,
       2,
     ],
-    "width": 199,
-    "x": 398,
+    "width": 199.66,
+    "x": 399.32,
   },
   "frozenTrailingRow": Object {
     "height": 60,
@@ -187,7 +187,7 @@ Object {
       0,
       1,
     ],
-    "width": 238,
+    "width": 239.6,
     "x": 0,
   },
   "frozenRow": Object {
@@ -203,8 +203,8 @@ Object {
       3,
       4,
     ],
-    "width": 238,
-    "x": 357,
+    "width": 239.60000000000002,
+    "x": 359.4,
   },
   "frozenTrailingRow": Object {
     "height": 60,
