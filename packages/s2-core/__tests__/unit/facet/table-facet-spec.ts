@@ -393,7 +393,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-colCount)
         .reverse()
         .map((node) => Math.floor(node.x)),
-    ).toEqual([479, 359]);
+    ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
@@ -405,7 +405,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-trailingColCount!)
         .reverse()
         .map((node) => Math.floor(node.x)),
-    ).toEqual([479, 359]);
+    ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {

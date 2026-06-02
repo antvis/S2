@@ -483,8 +483,55 @@ export class TableFacet extends FrozenFacet {
     let currentCollIndex = 0;
 
     const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
+    const leaves = colsHierarchy.getLeaves();
 
-    colsHierarchy.getLeaves().forEach((currentNode) => {
+    // 计算自适应模式下的余数像素，补偿给最后一个使用自适应宽度的数据列，
+    // 使总宽精确填满可用宽度，避免因 floor 截断导致右侧出现空白间隙，
+    // 同时保持每列宽度为整数（避免 Canvas 小数坐标导致边框发虚）
+    const isAdaptive =
+      this.spreadsheet.getLayoutWidthType() !== LayoutWidthType.Compact;
+
+    // 找最后一个实际使用自适应宽度的数据列
+    // （排除：序号列、拖拽调整过、有自定义宽度的列）
+    let lastAdaptiveLeafIndex = -1;
+    let remainderPx = 0;
+
+    if (isAdaptive) {
+      const { colCell } = this.spreadsheet.options.style!;
+
+      for (let i = leaves.length - 1; i >= 0; i--) {
+        const leaf = leaves[i];
+
+        if (leaf.field !== SERIES_NUMBER_FIELD) {
+          const isDragged = isNumber(this.getColCellDraggedWidth(leaf));
+          const isCustom = isNumber(
+            this.getCellCustomSize(leaf, colCell?.width),
+          );
+
+          if (!isDragged && !isCustom) {
+            lastAdaptiveLeafIndex = i;
+            break;
+          }
+        }
+      }
+
+      if (lastAdaptiveLeafIndex >= 0) {
+        const { seriesNumber } = this.spreadsheet.options;
+        const seriesNumberWidth = this.getSeriesNumberWidth();
+        const dataColCount = leaves.length - (seriesNumber?.enable ? 1 : 0);
+        const canvasW =
+          this.getCanvasSize().width -
+          seriesNumberWidth -
+          Frame.getVerticalBorderWidth(this.spreadsheet);
+
+        remainderPx = Math.max(
+          0,
+          round(canvasW) - round(adaptiveColWidth) * Math.max(1, dataColCount),
+        );
+      }
+    }
+
+    leaves.forEach((currentNode, index) => {
       currentNode.colIndex = currentCollIndex;
       currentCollIndex += 1;
       currentNode.x = preLeafNode.x + preLeafNode.width;
@@ -492,6 +539,12 @@ export class TableFacet extends FrozenFacet {
         currentNode,
         adaptiveColWidth,
       );
+
+      // 最后一个自适应列补偿余数像素，消除因 floor 截断引起的右侧空白
+      if (index === lastAdaptiveLeafIndex) {
+        currentNode.width += remainderPx;
+      }
+
       layoutCoordinate(this.spreadsheet, null, currentNode);
       colsHierarchy.width += currentNode.width;
       preLeafNode = currentNode;
@@ -608,8 +661,8 @@ export class TableFacet extends FrozenFacet {
       return this.getCompactColNodeWidth(colNode);
     }
 
-    // 5. 默认自适应列宽 (adaptiveColWidth 已在 getAdaptiveColWidth 中 floor 处理, 无需再次取整)
-    return adaptiveColWidth;
+    // 5. 默认自适应列宽
+    return round(adaptiveColWidth);
   }
 
   public getViewCellHeights() {
