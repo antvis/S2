@@ -235,6 +235,19 @@ export class StickyHeaderController {
     ) => SpreadSheet;
 
     this.stickyS2 = new SheetClass(this.stickyContainer, dataCfg, options);
+    this.syncTheme();
+  }
+
+  /**
+   * 同步主表主题到吸顶实例
+   */
+  private syncTheme() {
+    if (!this.stickyS2) {
+      return;
+    }
+
+    this.stickyS2.setThemeCfg({ name: this.spreadsheet.themeName });
+    this.stickyS2.theme = this.spreadsheet.theme;
   }
 
   /**
@@ -503,6 +516,7 @@ export class StickyHeaderController {
 
         this.stickyS2.setDataCfg(dataCfg);
         this.stickyS2.setOptions(options);
+        this.syncTheme();
 
         // 调整画布大小到表头大小
         const mainConfig = spreadsheet.getCanvasConfig();
