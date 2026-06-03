@@ -55,7 +55,7 @@ import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
-import { isMobile, isWindows } from '../utils/is-mobile';
+import { isMobile } from '../utils/is-mobile';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -986,9 +986,11 @@ export abstract class BaseFacet {
     let { deltaX, deltaY, offsetX, offsetY } = event;
     const { shiftKey } = event;
 
-    // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
+    // 按住 shift 时，固定为水平方向滚动
+    // macOS 环境和部分云桌面环境，系统会自动将 shift+wheel 转换为横向滚动 (deltaX 有值, deltaY 为 0)，无需手动处理
+    // Windows 环境下系统不会自动转换 (deltaY 有值, deltaX 为 0)，需要手动将 deltaY 转为 deltaX
     // see https://github.com/antvis/S2/issues/2198
-    if (shiftKey && isWindows()) {
+    if (shiftKey && deltaY !== 0 && deltaX === 0) {
       offsetX = offsetX - deltaX + deltaY;
       deltaX = deltaY;
       offsetY -= deltaY;
