@@ -1,3 +1,12 @@
+# [@antv/s2-v2.7.2-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v2.7.1...@antv/s2-v2.7.2-alpha.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* 保持 round() 整数列宽，余数补给最后一个自适应列 ([18c566b](https://github.com/antvis/S2/commit/18c566b45f9f27f40971a9a40792074db64772b1))
+* 移除了 getColLeafNodesWidth 中对自适应列宽的 round() 调用 ([19dfb4e](https://github.com/antvis/S2/commit/19dfb4ebe7930fa5dc5fdd2c439654ccd137b3c1))
+* 表头吸顶主题同步 ([25e1774](https://github.com/antvis/S2/commit/25e1774fb8b859d6aeee8ddb4dd4ce3595fdf124))
+
 # [@antv/s2-v2.7.1](https://github.com/antvis/S2/compare/@antv/s2-v2.7.0...@antv/s2-v2.7.1) (2026-05-18)
 
 
