@@ -82,8 +82,12 @@ export function asyncDrawImage(options: {
 
     const img = new Image();
 
+    // crossOrigin 必须在 src 之前设置，否则浏览器会忽略该属性
+    if (crossOrigin) {
+      img.crossOrigin = crossOrigin;
+    }
+
     img.src = src;
-    img.crossOrigin = crossOrigin;
 
     // 设置超时
     const timeoutId = setTimeout(onerror, timeout);
