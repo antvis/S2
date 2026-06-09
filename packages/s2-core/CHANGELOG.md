@@ -1,3 +1,11 @@
+# [@antv/s2-v2.7.2-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v2.7.2-alpha.1...@antv/s2-v2.7.2-alpha.2) (2026-06-09)
+
+
+### Bug Fixes
+
+* crossOrigin 必须在 src 赋值之前设置 ([50137ca](https://github.com/antvis/S2/commit/50137ca741684f66755f730661d45fe68cd7b84a))
+* 图片降级重试 ([fc404a4](https://github.com/antvis/S2/commit/fc404a4b97cf00e2af4b6c4fe8fb770052fe86bc))
+
 # [@antv/s2-v2.7.2-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v2.7.1...@antv/s2-v2.7.2-alpha.1) (2026-06-03)
 
 
