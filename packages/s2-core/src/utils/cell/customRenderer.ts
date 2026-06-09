@@ -8,6 +8,7 @@ export function asyncDrawImage(options: {
   timeout?: number;
   mediaCache?: flruCache<HTMLElement | null>;
   crossOrigin?: string | null;
+  referrerPolicy?: ReferrerPolicy | null;
   cacheKeyPrefix?: string;
 }): Promise<HTMLImageElement> {
   const {
@@ -16,6 +17,7 @@ export function asyncDrawImage(options: {
     timeout = 10000,
     mediaCache,
     crossOrigin = 'Anonymous',
+    referrerPolicy,
     cacheKeyPrefix,
   } = options;
 
@@ -65,12 +67,15 @@ export function asyncDrawImage(options: {
     };
     const onerror = () => {
       if (crossOrigin) {
-        // 第二次加载不再使用跨域请求，但会因浏览器安全策略导致Canvas的toDataUrl失败（不推荐）
+        // 第二次加载：去掉 crossOrigin 并设置 referrerPolicy='no-referrer'
+        // 这样请求不携带 Origin 和 Referer，可绕过部分防盗链 CDN（如小红书）
+        // 代价：图片以 tainted 模式加载，canvas toDataURL 不可用
         asyncDrawImage({
           src,
           timeout,
           mediaCache,
           crossOrigin: null,
+          referrerPolicy: 'no-referrer',
           cacheKeyPrefix,
         })
           .then(cacheResolve)
@@ -82,9 +87,13 @@ export function asyncDrawImage(options: {
 
     const img = new Image();
 
-    // crossOrigin 必须在 src 之前设置，否则浏览器会忽略该属性
+    // crossOrigin 和 referrerPolicy 必须在 src 之前设置，否则浏览器会忽略
     if (crossOrigin) {
       img.crossOrigin = crossOrigin;
+    }
+
+    if (referrerPolicy) {
+      img.referrerPolicy = referrerPolicy;
     }
 
     img.src = src;
