@@ -1,3 +1,12 @@
+# [@antv/s2-v2.7.2](https://github.com/antvis/S2/compare/@antv/s2-v2.7.1...@antv/s2-v2.7.2) (2026-06-10)
+
+
+### Bug Fixes
+
+* maintain integer column widths and allocate remainder to the last auto-fit column ([#3349](https://github.com/antvis/S2/issues/3349)) ([c129e16](https://github.com/antvis/S2/commit/c129e16ca119418027875b025f9a90578b652bf2))
+* 图片降级重试 ([#3352](https://github.com/antvis/S2/issues/3352)) ([13de5d0](https://github.com/antvis/S2/commit/13de5d0b8c536ab0eb496c0d3ecdae9ac4df0dd8))
+* 表头吸顶主题同步 ([#3351](https://github.com/antvis/S2/issues/3351)) ([bb38d26](https://github.com/antvis/S2/commit/bb38d26544e1abe18e53b0f149d3f9764061607e))
+
 # [@antv/s2-v2.7.1](https://github.com/antvis/S2/compare/@antv/s2-v2.7.0...@antv/s2-v2.7.1) (2026-05-18)
 
 
