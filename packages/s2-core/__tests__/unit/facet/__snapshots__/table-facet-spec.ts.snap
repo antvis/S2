@@ -28,7 +28,7 @@ Array [
   },
   Object {
     "height": 30,
-    "width": 119,
+    "width": 123,
     "x": 476,
     "y": 0,
   },
@@ -63,7 +63,7 @@ Array [
   },
   Object {
     "height": 30,
-    "width": 103,
+    "width": 107,
     "x": 492,
     "y": 0,
   },
@@ -131,7 +131,7 @@ Object {
       2,
       2,
     ],
-    "width": 199,
+    "width": 201,
     "x": 398,
   },
   "frozenTrailingRow": Object {
@@ -203,7 +203,7 @@ Object {
       3,
       4,
     ],
-    "width": 238,
+    "width": 242,
     "x": 357,
   },
   "frozenTrailingRow": Object {

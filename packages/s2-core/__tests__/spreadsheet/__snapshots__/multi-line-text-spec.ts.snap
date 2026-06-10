@@ -18574,7 +18574,7 @@ Array [
       "number",
     ],
     "originalText": "number",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -19045,7 +19045,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -19058,7 +19058,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -19070,7 +19070,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -19081,7 +19081,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -19092,7 +19092,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -19103,7 +19103,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -19114,7 +19114,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -19125,7 +19125,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -19313,7 +19313,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -19784,7 +19784,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -19797,7 +19797,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -19809,7 +19809,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -19820,7 +19820,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -19831,7 +19831,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -19842,7 +19842,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -19853,7 +19853,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -19864,7 +19864,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -19975,7 +19975,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -20049,7 +20049,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -20210,7 +20210,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -20351,7 +20351,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -20364,7 +20364,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -20687,7 +20687,7 @@ Array [
       "数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -21649,7 +21649,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "236723672361111",
@@ -21660,7 +21660,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -21672,7 +21672,7 @@ Array [
       "977897789",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "236723672361111",
@@ -21683,7 +21683,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "3877",
@@ -21694,7 +21694,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "4342",
@@ -21705,7 +21705,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "5343",
@@ -21716,7 +21716,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "632",
@@ -21727,7 +21727,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "7234",
@@ -21738,7 +21738,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "834",
@@ -21749,7 +21749,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "945",
@@ -21760,7 +21760,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1304",
@@ -21771,7 +21771,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1145",
@@ -21782,7 +21782,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1432",
@@ -21793,7 +21793,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1343",
@@ -21804,7 +21804,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1354",
@@ -21815,7 +21815,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1523",
@@ -21826,7 +21826,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -22015,7 +22015,7 @@ Array [
       "数量数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -22489,7 +22489,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -22502,7 +22502,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -22514,7 +22514,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -22525,7 +22525,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -22536,7 +22536,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -22547,7 +22547,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -22558,7 +22558,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -22569,7 +22569,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -22734,21 +22734,19 @@ Array [
   },
   Object {
     "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "actualTextHeight": 128,
-    "actualTextWidth": 272,
+    "actualTextHeight": 96,
+    "actualTextWidth": 270,
     "height": 144,
     "multiLineActualTexts": Array [
-      "数量数",
-      "量数量",
-      "数量数",
-      "量数量",
-      "数量数",
-      "量数量",
-      "数量数",
-      "量",
+      "数量数量",
+      "数量数量",
+      "数量数量",
+      "数量数量",
+      "数量数量",
+      "数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -23112,7 +23110,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -23125,7 +23123,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -23137,7 +23135,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -23148,7 +23146,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -23159,7 +23157,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -23170,7 +23168,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -23405,7 +23403,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -24130,37 +24128,37 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": "23672367236...",
+    "actualText": "236723672361...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236...",
+      "236723672361...",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "77897789778...",
+    "actualText": "778977897789...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 30,
     "multiLineActualTexts": Array [
-      "77897789778...",
+      "778977897789...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "23672367236...",
+    "actualText": "236723672361...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 30,
     "multiLineActualTexts": Array [
-      "23672367236...",
+      "236723672361...",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -24171,7 +24169,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -24182,7 +24180,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -24193,7 +24191,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -24204,7 +24202,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -24215,7 +24213,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -24226,7 +24224,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -24237,7 +24235,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -24248,7 +24246,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1145",
@@ -24259,7 +24257,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1432",
@@ -24270,7 +24268,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -24478,7 +24476,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -25055,7 +25053,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -25068,7 +25066,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -25080,7 +25078,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -25091,7 +25089,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -25102,7 +25100,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -25113,7 +25111,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -25124,7 +25122,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -25135,7 +25133,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -25146,7 +25144,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -25157,7 +25155,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -25365,7 +25363,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -25942,7 +25940,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -25955,7 +25953,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -25967,7 +25965,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -25978,7 +25976,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -25989,7 +25987,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -26000,7 +25998,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -26011,7 +26009,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -26022,7 +26020,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -26033,7 +26031,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -26044,7 +26042,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -26257,7 +26255,7 @@ Array [
       "number",
     ],
     "originalText": "number",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -26880,7 +26878,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -26891,7 +26889,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -26902,7 +26900,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -26913,7 +26911,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -26924,7 +26922,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -26935,7 +26933,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -26946,7 +26944,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -26957,7 +26955,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1145",
@@ -26968,7 +26966,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1432",
@@ -26979,7 +26977,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1343",
@@ -26990,7 +26988,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -27165,7 +27163,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -27584,7 +27582,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -27597,7 +27595,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -27609,7 +27607,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -27620,7 +27618,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -27631,7 +27629,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -27642,7 +27640,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -27653,7 +27651,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -27840,7 +27838,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -28311,7 +28309,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -28324,7 +28322,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -28336,7 +28334,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -28347,7 +28345,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -28358,7 +28356,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -28369,7 +28367,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -28380,7 +28378,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -28391,7 +28389,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -28468,7 +28466,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -28761,7 +28759,7 @@ Array [
       "量数量数量数...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -29761,37 +29759,37 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": "23672367236...",
+    "actualText": "236723672361...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 20,
     "multiLineActualTexts": Array [
-      "23672367236...",
+      "236723672361...",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "77897789778...",
+    "actualText": "778977897789...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 20,
     "multiLineActualTexts": Array [
-      "77897789778...",
+      "778977897789...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "23672367236...",
+    "actualText": "236723672361...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 20,
     "multiLineActualTexts": Array [
-      "23672367236...",
+      "236723672361...",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -29802,7 +29800,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -29813,7 +29811,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -29824,7 +29822,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -29835,7 +29833,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -29846,7 +29844,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -29857,7 +29855,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -29868,7 +29866,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -29879,7 +29877,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1145",
@@ -29890,7 +29888,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1432",
@@ -29901,7 +29899,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1343",
@@ -29912,7 +29910,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1354",
@@ -29923,7 +29921,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1523",
@@ -29934,7 +29932,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1634",
@@ -29945,7 +29943,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1723",
@@ -29956,7 +29954,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -30095,7 +30093,7 @@ Array [
       "量数量数量数...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -30349,7 +30347,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -30362,7 +30360,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -30374,7 +30372,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -30385,7 +30383,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -30598,7 +30596,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -31226,19 +31224,19 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "778977897789778977897789...",
+    "actualText": "7789778977897789778977897...",
     "actualTextHeight": 30,
-    "actualTextWidth": 172,
+    "actualTextWidth": 178,
     "height": 46,
     "multiLineActualTexts": Array [
       "7789778977897",
-      "78977897789...",
+      "789778977897...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -31250,7 +31248,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -31261,7 +31259,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -31272,7 +31270,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -31283,7 +31281,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -31294,7 +31292,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -31305,7 +31303,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -31316,7 +31314,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -31327,7 +31325,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -31338,7 +31336,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -31623,7 +31621,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -32568,37 +32566,37 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": "23672367236...",
+    "actualText": "236723672361...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 20,
     "multiLineActualTexts": Array [
-      "23672367236...",
+      "236723672361...",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "77897789778...",
+    "actualText": "778977897789...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 20,
     "multiLineActualTexts": Array [
-      "77897789778...",
+      "778977897789...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "23672367236...",
+    "actualText": "236723672361...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 20,
     "multiLineActualTexts": Array [
-      "23672367236...",
+      "236723672361...",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -32609,7 +32607,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -32620,7 +32618,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -32631,7 +32629,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -32642,7 +32640,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -32653,7 +32651,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -32664,7 +32662,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -32675,7 +32673,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -32686,7 +32684,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1145",
@@ -32697,7 +32695,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1432",
@@ -32708,7 +32706,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1343",
@@ -32719,7 +32717,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1354",
@@ -32730,7 +32728,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1523",
@@ -32741,7 +32739,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1634",
@@ -32752,7 +32750,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -32949,7 +32947,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -33463,18 +33461,18 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "77897789778...",
+    "actualText": "778977897789...",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 91,
     "height": 20,
     "multiLineActualTexts": Array [
-      "77897789778...",
+      "778977897789...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -33486,7 +33484,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -33497,7 +33495,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -33508,7 +33506,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -33519,7 +33517,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -33530,7 +33528,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -33541,7 +33539,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -33552,7 +33550,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -33694,7 +33692,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -33948,7 +33946,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -33961,7 +33959,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -33973,7 +33971,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -33984,7 +33982,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -34148,7 +34146,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -34512,7 +34510,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -34525,7 +34523,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -34537,7 +34535,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -34548,7 +34546,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -34559,7 +34557,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -34570,7 +34568,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -34805,7 +34803,7 @@ Array [
       "数量数量数量数量数量数量数量数量数量数量数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -35538,7 +35536,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -35549,7 +35547,7 @@ Array [
       "7789778977897789778977897789",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -35560,7 +35558,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -35571,7 +35569,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -35582,7 +35580,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -35593,7 +35591,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -35604,7 +35602,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -35615,7 +35613,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -35626,7 +35624,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -35637,7 +35635,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -35648,7 +35646,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1145",
@@ -35659,7 +35657,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1432",
@@ -35670,7 +35668,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -35795,7 +35793,7 @@ Array [
       "cost",
     ],
     "originalText": "cost",
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -35978,7 +35976,7 @@ Array [
       "2",
     ],
     "originalText": 2,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "2",
@@ -35989,7 +35987,7 @@ Array [
       "2",
     ],
     "originalText": 2,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "2",
@@ -36000,7 +35998,7 @@ Array [
       "2",
     ],
     "originalText": 2,
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -36188,7 +36186,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -36662,7 +36660,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -36675,7 +36673,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -36687,7 +36685,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -36698,7 +36696,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -36709,7 +36707,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -36720,7 +36718,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -36731,7 +36729,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -36742,7 +36740,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -36919,7 +36917,7 @@ Array [
       "量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -37345,7 +37343,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -37357,7 +37355,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -37370,7 +37368,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -37382,7 +37380,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -37393,7 +37391,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -37404,7 +37402,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -37415,7 +37413,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -37708,15 +37706,15 @@ Array [
     "width": 143,
   },
   Object {
-    "actualText": "数量数量数量数量数...",
+    "actualText": "数量数量数量数量数量...",
     "actualTextHeight": 16,
-    "actualTextWidth": 119,
+    "actualTextWidth": 131,
     "height": 30,
     "multiLineActualTexts": Array [
-      "数量数量数量数量数...",
+      "数量数量数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -38783,7 +38781,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "236723672361111",
@@ -38794,18 +38792,18 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
-    "actualText": "77897789778977897...",
+    "actualText": "778977897789778977...",
     "actualTextHeight": 15,
-    "actualTextWidth": 124,
+    "actualTextWidth": 131,
     "height": 30,
     "multiLineActualTexts": Array [
-      "77897789778977897...",
+      "778977897789778977...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "236723672361111",
@@ -38816,7 +38814,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "3877",
@@ -38827,7 +38825,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "4342",
@@ -38838,7 +38836,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "5343",
@@ -38849,7 +38847,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "632",
@@ -38860,7 +38858,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "7234",
@@ -38871,7 +38869,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "834",
@@ -38882,7 +38880,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "945",
@@ -38893,7 +38891,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1304",
@@ -38904,7 +38902,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1145",
@@ -38915,7 +38913,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1432",
@@ -38926,7 +38924,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1343",
@@ -38937,7 +38935,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1354",
@@ -38948,7 +38946,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1523",
@@ -38959,7 +38957,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1634",
@@ -38970,7 +38968,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1723",
@@ -38981,7 +38979,7 @@ Array [
       "1723",
     ],
     "originalText": 1723,
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -39265,7 +39263,7 @@ Array [
       "数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -40222,7 +40220,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -40234,7 +40232,7 @@ Array [
       "977897789",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "236723672361111",
@@ -40245,7 +40243,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "3877",
@@ -40256,7 +40254,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "4342",
@@ -40267,7 +40265,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "5343",
@@ -40278,7 +40276,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "632",
@@ -40289,7 +40287,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "7234",
@@ -40300,7 +40298,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "834",
@@ -40311,7 +40309,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "945",
@@ -40322,7 +40320,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1304",
@@ -40333,7 +40331,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1145",
@@ -40344,7 +40342,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1432",
@@ -40355,7 +40353,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1343",
@@ -40366,7 +40364,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1354",
@@ -40377,7 +40375,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1523",
@@ -40388,7 +40386,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1634",
@@ -40399,7 +40397,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -40634,7 +40632,7 @@ Array [
       "数量数量@@@",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -41359,37 +41357,37 @@ Array [
     "width": 103,
   },
   Object {
-    "actualText": "2367236@@@",
+    "actualText": "23672367@@@",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 90,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236@@@",
+      "23672367@@@",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "7789778@@@",
+    "actualText": "77897789@@@",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 90,
     "height": 30,
     "multiLineActualTexts": Array [
-      "7789778@@@",
+      "77897789@@@",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "2367236@@@",
+    "actualText": "23672367@@@",
     "actualTextHeight": 15,
-    "actualTextWidth": 84,
+    "actualTextWidth": 90,
     "height": 30,
     "multiLineActualTexts": Array [
-      "2367236@@@",
+      "23672367@@@",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -41400,7 +41398,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -41411,7 +41409,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -41422,7 +41420,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -41433,7 +41431,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -41444,7 +41442,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -41455,7 +41453,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -41466,7 +41464,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -41477,7 +41475,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1145",
@@ -41488,7 +41486,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1432",
@@ -41499,7 +41497,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -41707,7 +41705,7 @@ Array [
       "数量数量数量...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -42284,7 +42282,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -42297,7 +42295,7 @@ Array [
       "89",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -42309,7 +42307,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -42320,7 +42318,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -42331,7 +42329,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -42342,7 +42340,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -42353,7 +42351,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -42364,7 +42362,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -42375,7 +42373,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -42386,7 +42384,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -42602,7 +42600,7 @@ Array [
       "量数量数量数...",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -43230,19 +43228,19 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
-    "actualText": "778977897789778977897789...",
+    "actualText": "7789778977897789778977897...",
     "actualTextHeight": 30,
-    "actualTextWidth": 172,
+    "actualTextWidth": 178,
     "height": 46,
     "multiLineActualTexts": Array [
       "7789778977897",
-      "78977897789...",
+      "789778977897...",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "236723672361111",
@@ -43254,7 +43252,7 @@ Array [
       "11",
     ],
     "originalText": 236723672361111,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "3877",
@@ -43265,7 +43263,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "4342",
@@ -43276,7 +43274,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "5343",
@@ -43287,7 +43285,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "632",
@@ -43298,7 +43296,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "7234",
@@ -43309,7 +43307,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "834",
@@ -43320,7 +43318,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "945",
@@ -43331,7 +43329,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 103,
+    "width": 107,
   },
   Object {
     "actualText": "1304",
@@ -43342,7 +43340,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 103,
+    "width": 107,
   },
 ]
 `;
@@ -43626,7 +43624,7 @@ Array [
       "数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -44587,7 +44585,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "7789778977897789778977897789",
@@ -44599,7 +44597,7 @@ Array [
       "977897789",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "236723672361111",
@@ -44610,7 +44608,7 @@ Array [
       "236723672361111",
     ],
     "originalText": 236723672361111,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "3877",
@@ -44621,7 +44619,7 @@ Array [
       "3877",
     ],
     "originalText": 3877,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "4342",
@@ -44632,7 +44630,7 @@ Array [
       "4342",
     ],
     "originalText": 4342,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "5343",
@@ -44643,7 +44641,7 @@ Array [
       "5343",
     ],
     "originalText": 5343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "632",
@@ -44654,7 +44652,7 @@ Array [
       "632",
     ],
     "originalText": 632,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "7234",
@@ -44665,7 +44663,7 @@ Array [
       "7234",
     ],
     "originalText": 7234,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "834",
@@ -44676,7 +44674,7 @@ Array [
       "834",
     ],
     "originalText": 834,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "945",
@@ -44687,7 +44685,7 @@ Array [
       "945",
     ],
     "originalText": 945,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1304",
@@ -44698,7 +44696,7 @@ Array [
       "1304",
     ],
     "originalText": 1304,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1145",
@@ -44709,7 +44707,7 @@ Array [
       "1145",
     ],
     "originalText": 1145,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1432",
@@ -44720,7 +44718,7 @@ Array [
       "1432",
     ],
     "originalText": 1432,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1343",
@@ -44731,7 +44729,7 @@ Array [
       "1343",
     ],
     "originalText": 1343,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1354",
@@ -44742,7 +44740,7 @@ Array [
       "1354",
     ],
     "originalText": 1354,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1523",
@@ -44753,7 +44751,7 @@ Array [
       "1523",
     ],
     "originalText": 1523,
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "1634",
@@ -44764,7 +44762,7 @@ Array [
       "1634",
     ],
     "originalText": 1634,
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -44903,7 +44901,7 @@ Array [
       "金额金额金额金额金额金额金额金额金额",
     ],
     "originalText": "金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额金额",
-    "width": 286,
+    "width": 290,
   },
   Object {
     "actualText": "价格",
@@ -44930,7 +44928,7 @@ Array [
       "数量数量数量数量数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 143,
+    "width": 147,
   },
 ]
 `;
@@ -45113,7 +45111,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "-",
@@ -45124,7 +45122,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 143,
+    "width": 147,
   },
   Object {
     "actualText": "-",
@@ -45135,7 +45133,7 @@ Array [
       "-",
     ],
     "originalText": "-",
-    "width": 143,
+    "width": 147,
   },
 ]
 `;

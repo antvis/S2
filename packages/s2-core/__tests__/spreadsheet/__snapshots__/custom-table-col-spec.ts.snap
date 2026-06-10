@@ -10,7 +10,7 @@ Array [
   },
   Object {
     "height": 30,
-    "width": 518,
+    "width": 519,
     "x": 80,
     "y": 0,
   },
@@ -22,7 +22,7 @@ Array [
   },
   Object {
     "height": 30,
-    "width": 518,
+    "width": 519,
     "x": 80,
     "y": 30,
   },
@@ -34,7 +34,7 @@ Array [
   },
   Object {
     "height": 30,
-    "width": 259,
+    "width": 260,
     "x": 339,
     "y": 60,
   },
@@ -234,7 +234,7 @@ Array [
     "description": undefined,
     "height": 30,
     "value": "金额",
-    "width": 238,
+    "width": 242,
   },
   Object {
     "description": "价格描述",
@@ -246,7 +246,7 @@ Array [
     "description": undefined,
     "height": 30,
     "value": "数量",
-    "width": 119,
+    "width": 123,
   },
 ]
 `;
@@ -287,7 +287,7 @@ Array [
     "description": "a-2 描述",
     "height": 90,
     "value": "自定义节点 a-2",
-    "width": 149,
+    "width": 152,
   },
 ]
 `;
