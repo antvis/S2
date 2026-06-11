@@ -694,7 +694,7 @@ describe('Scroll Tests', () => {
       ).toBeFalsy();
     });
 
-    test('should scroll horizontally when shift key is held on Windows', async () => {
+    test('should scroll horizontally when shift key is held and deltaY has value (Windows behavior)', async () => {
       s2.setOptions({
         frozenRowHeader: true,
         style: {
@@ -723,16 +723,11 @@ describe('Scroll Tests', () => {
 
       s2.on(S2Event.GLOBAL_SCROLL, onScroll);
 
+      // Windows 行为: shift+wheel 时系统不转换方向, deltaY 有值, deltaX 为 0
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: 0,
         deltaY: 20,
         shiftKey: true,
-      });
-
-      Object.defineProperty(window.navigator, 'userAgent', {
-        value: 'Windows',
-        configurable: true,
-        writable: true,
       });
 
       canvas.dispatchEvent(wheelEvent);
@@ -740,28 +735,82 @@ describe('Scroll Tests', () => {
       expect(onScroll).toHaveBeenCalled();
     });
 
-    test('should not scroll horizontally when shift key is held on macOS', async () => {
+    test('should scroll horizontally when shift key is held and system already converted to deltaX (cloud desktop / macOS behavior)', async () => {
+      s2.setOptions({
+        frozenRowHeader: true,
+        style: {
+          layoutWidthType: 'compact',
+          rowCfg: {
+            width: 200,
+          },
+        },
+      });
+
       const onScroll = jest.fn((...args) => {
         expect(args[0].rowHeaderScrollX).toBeGreaterThan(0);
         expect(args[0].scrollX).toBe(0);
         expect(args[0].scrollY).toBe(0);
       });
 
-      const wheelEvent = new WheelEvent('wheel', {
-        deltaX: 0,
-        deltaY: 20,
-        shiftKey: true,
-      });
+      s2.changeSheetSize(400, 300);
+      s2.render(false);
 
-      Object.defineProperty(window.navigator, 'userAgent', {
-        value: 'Mac OS',
-        configurable: true,
-        writable: true,
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheCornerArea')
+        .mockImplementationOnce(() => true);
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheViewport')
+        .mockImplementationOnce(() => true);
+
+      s2.on(S2Event.GLOBAL_SCROLL, onScroll);
+
+      // 云桌面/macOS 行为: 系统已将 shift+wheel 转换为横向滚动, deltaX 有值, deltaY 为 0
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: 100,
+        deltaY: 0,
+        shiftKey: true,
       });
 
       canvas.dispatchEvent(wheelEvent);
       await sleep(200);
-      expect(onScroll).not.toHaveBeenCalled();
+      expect(onScroll).toHaveBeenCalled();
+    });
+
+    test('should not convert deltaX when system already handled shift+wheel conversion', async () => {
+      s2.setOptions({
+        frozenRowHeader: true,
+        style: {
+          layoutWidthType: 'compact',
+          rowCfg: {
+            width: 200,
+          },
+        },
+      });
+
+      s2.changeSheetSize(400, 300);
+      s2.render(false);
+
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheCornerArea')
+        .mockImplementationOnce(() => true);
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheViewport')
+        .mockImplementationOnce(() => true);
+
+      // 云桌面环境: 系统已转换, deltaX=-100, deltaY=0
+      // 不应该将 deltaX 覆盖为 0
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: -100,
+        deltaY: 0,
+        shiftKey: true,
+      });
+
+      const onScroll = jest.fn();
+
+      s2.on(S2Event.GLOBAL_SCROLL, onScroll);
+      canvas.dispatchEvent(wheelEvent);
+      await sleep(200);
+      expect(onScroll).toHaveBeenCalled();
     });
 
     it('should not change init body overscrollBehavior style when render and destroyed', () => {
