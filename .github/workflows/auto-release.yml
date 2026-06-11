@@ -69,6 +69,12 @@ jobs:
           npm_config_legacy_peer_deps: true
         run: pnpm release
 
+      - name: Extract release version
+        id: version
+        run: |
+          TAG=$(echo "${{ github.event.head_commit.message }}" | grep -oP '@antv/s2-v[\d\.\-a-zA-Z]+' || echo "${{ github.ref_name }}")
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
       - name: Release success ding talk dev group notify
         uses: zcong1993/actions-ding@master
         with:
@@ -78,7 +84,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
+                "title": "🎉 ${{ steps.version.outputs.tag || 'AntV/S2 新版本' }} 发布啦 🎉",
                 "text": "📋 点击查看更新日志",
                 "messageUrl": "https://github.com/antvis/S2/releases",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
@@ -94,7 +100,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
+                "title": "🎉 ${{ steps.version.outputs.tag || 'AntV/S2 新版本' }} 发布啦 🎉",
                 "text": "📋 点击查看更新日志",
                 "messageUrl": "https://github.com/antvis/S2/releases",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
@@ -110,7 +116,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🎉 ${{ github.head_ref || github.ref_name || 'AntV/S2 新版本' }} 发布啦 🎉",
+                "title": "🎉 ${{ steps.version.outputs.tag || 'AntV/S2 新版本' }} 发布啦 🎉",
                 "text": "📋 点击查看更新日志",
                 "messageUrl": "https://github.com/antvis/S2/releases",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
