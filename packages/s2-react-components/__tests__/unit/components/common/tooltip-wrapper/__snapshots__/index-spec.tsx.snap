@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Tooltip Wrapper Component Tests should render correctly 1`] = `
-<DocumentFragment>
-  <span
-    class="antv-s2-tooltip-wrapper test"
-  />
-</DocumentFragment>
-`;

@@ -1,6 +1,0 @@
-# Ref: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#configuring-the-template-chooser
-blank_issues_enabled: false
-contact_links:
-  - name: 🤔 Question / 问题咨询
-    url: https://github.com/antvis/S2/discussions/new?category=q-a
-    about: Discuss S2 usage / 讨论 S2 使用问题
