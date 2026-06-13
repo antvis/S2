@@ -1,29 +1,20 @@
-# Dependency directories
-*node_modules/
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# IDE
 .vscode
 .idea
 .history
-.changelog
-*.log
-*.zip
-coverage
-yarn-error.log
 
-# Mac files
+# OS
 .DS_Store
 
-# site
-s2-site/dist
-s2-site/node_modules/
-s2-site/.cache/
+# Logs
+*.log
 
-# packages
-packages/s2-*/lib/
-packages/s2-*/esm/
-packages/s2-*/dist/
-packages/s2-*/temp/
-packages/s2-*/coverage/
-packages/s2-*/stats.html
-packages/**/*.css
-
-.swc
+# Coverage
+coverage/

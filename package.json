@@ -1,0 +1,16 @@
+{
+  "name": "s2-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "vite examples",
+    "test": "pnpm -r test",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

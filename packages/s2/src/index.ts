@@ -1,0 +1,11 @@
+export { createWorkbook } from './workbook';
+export type { Workbook, CreateWorkbookOptions } from './workbook';
+export { defineModule } from './module/define';
+export type { ModuleDefinition, ModuleLifecycle, ModuleQueryDef } from './module/types';
+export type { Operation, OperationMeta, OperationDefinition } from './operation/types';
+export type { CellState, RowState, ColumnState, SheetState, WorkbookState, Sparse, MergeRange } from './core/types';
+export { PivotModule } from './modules/pivot';
+export type { PivotConfig } from './modules/pivot';
+export { FormulaModule } from './modules/formula';
+export { mountCanvas } from './canvas/mount';
+export type { CanvasHandle } from './canvas/mount';
