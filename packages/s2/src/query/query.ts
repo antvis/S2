@@ -3,7 +3,7 @@ import type { CellState } from '../core/types';
 import type { ModuleQueryDef } from '../module/types';
 import { ChangeSet } from './changeset';
 
-type ModuleQueryEntry = { handler: (state: unknown, params: Record<string, unknown>) => unknown; getState: () => unknown };
+type ModuleQueryEntry = { handler: (state: unknown, params: Record<string, unknown>, model: WorkbookModel) => unknown; getState: () => unknown };
 
 export class QueryLayer {
   private readonly model: WorkbookModel;
@@ -15,14 +15,14 @@ export class QueryLayer {
     this.model = model;
   }
 
-  registerModuleQuery(name: string, handler: (state: unknown, params: Record<string, unknown>) => unknown, getState: () => unknown): void {
+  registerModuleQuery(name: string, handler: (state: unknown, params: Record<string, unknown>, model: WorkbookModel) => unknown, getState: () => unknown): void {
     this.moduleQueries.set(name, { handler, getState });
   }
 
   moduleQuery(name: string, params: Record<string, unknown> = {}): unknown {
     const entry = this.moduleQueries.get(name);
     if (!entry) throw new Error(`Unknown query: "${name}"`);
-    return entry.handler(entry.getState(), params);
+    return entry.handler(entry.getState(), params, this.model);
   }
 
   getCellDisplayValue(addr: { sheet: number; row: number; col: number }): string | number | boolean | null {

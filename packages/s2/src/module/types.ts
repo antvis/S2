@@ -8,7 +8,7 @@ export interface ModuleLifecycle {
 }
 
 export interface ModuleQueryDef {
-  [queryName: string]: (state: unknown, params: Record<string, unknown>) => unknown;
+  [queryName: string]: (state: unknown, params: Record<string, unknown>, model: WorkbookModel) => unknown;
 }
 
 export interface ModuleDefinition {
@@ -18,4 +18,6 @@ export interface ModuleDefinition {
   operations?: Record<string, OperationDefinition>;
   queries?: ModuleQueryDef;
   lifecycle?: ModuleLifecycle;
+  serialize?: (state: unknown) => unknown;
+  deserialize?: (data: unknown, state: unknown) => void;
 }

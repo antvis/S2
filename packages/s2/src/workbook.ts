@@ -7,7 +7,7 @@ import { QueryLayer } from './query/query';
 import { ModuleRegistry } from './module/registry';
 import type { ModuleDefinition } from './module/types';
 import { setCellValue, deleteCellValue, restoreCell } from './operation/operations/cell';
-import { createSheet, deleteSheet } from './operation/operations/sheet';
+import { createSheet, deleteSheet, renameSheet } from './operation/operations/sheet';
 import {
   insertRows, deleteRows, insertColumns, deleteColumns,
   setRowHeight, setColumnWidth, mergeCells, unmergeCells,
@@ -41,7 +41,19 @@ export interface Workbook {
 }
 
 export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
-  const model = new WorkbookModel(options?.snapshot ? structuredClone(options.snapshot) : undefined);
+  let snapshotData = options?.snapshot ? structuredClone(options.snapshot) : undefined;
+  let savedModuleState: Record<string, unknown> | undefined;
+
+  if (snapshotData) {
+    const raw = snapshotData as unknown as Record<string, unknown>;
+    if (raw.__moduleState) {
+      savedModuleState = raw.__moduleState as Record<string, unknown>;
+      delete raw.__moduleState;
+      snapshotData = raw as unknown as WorkbookState;
+    }
+  }
+
+  const model = new WorkbookModel(snapshotData);
   const operationRegistry = new OperationRegistry();
   const moduleRegistry = new ModuleRegistry();
   const queryLayer = new QueryLayer(model);
@@ -91,6 +103,10 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
 
   moduleRegistry.init();
 
+  if (savedModuleState) {
+    moduleRegistry.deserializeAll(savedModuleState);
+  }
+
   return {
     apply(operations: Operation[]) {
       engine.apply(operations);
@@ -135,7 +151,12 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       }
     },
     toJSON() {
-      return structuredClone(model.state);
+      const state = structuredClone(model.state) as unknown as Record<string, unknown>;
+      const moduleState = moduleRegistry.serializeAll();
+      if (Object.keys(moduleState).length > 0) {
+        state.__moduleState = moduleState;
+      }
+      return state as unknown as WorkbookState;
     },
     __getModel() {
       return model;
@@ -149,6 +170,7 @@ function registerCoreOperations(registry: OperationRegistry): void {
   registry.register('restoreCell', restoreCell);
   registry.register('createSheet', createSheet);
   registry.register('deleteSheet', deleteSheet);
+  registry.register('renameSheet', renameSheet);
   registry.register('insertRows', insertRows);
   registry.register('deleteRows', deleteRows);
   registry.register('insertColumns', insertColumns);

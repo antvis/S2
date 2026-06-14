@@ -270,7 +270,7 @@ export const FormulaModule: ModuleDefinition = {
   },
 
   queries: {
-    'formula.getDependents': (state: unknown, params: Record<string, unknown>) => {
+    'formula.getDependents': (state: unknown, params: Record<string, unknown>, _model: WorkbookModel) => {
       const formulaState = state as FormulaState;
       const { sheet, row, col } = params as { sheet: number; row: number; col: number };
       const key = cellKey(sheet, row, col);
@@ -282,7 +282,7 @@ export const FormulaModule: ModuleDefinition = {
       }
       return dependents;
     },
-    'formula.getFormula': (state: unknown, params: Record<string, unknown>) => {
+    'formula.getFormula': (state: unknown, params: Record<string, unknown>, _model: WorkbookModel) => {
       const formulaState = state as FormulaState;
       const { sheet, row, col } = params as { sheet: number; row: number; col: number };
       const key = cellKey(sheet, row, col);

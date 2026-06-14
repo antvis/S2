@@ -16,3 +16,11 @@ export interface WheelEventLike {
   deltaX: number;
   deltaY: number;
 }
+
+export interface KeyboardEventLike {
+  key: string;
+  shiftKey: boolean;
+  ctrlKey: boolean;
+  metaKey: boolean;
+  preventDefault(): void;
+}

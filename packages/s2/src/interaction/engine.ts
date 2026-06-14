@@ -2,6 +2,7 @@ import type { Workbook } from '../workbook';
 import type { LayoutPlan } from '../layout/types';
 import type { CanvasRuntime } from '../canvas/runtime';
 import type { PointerEventLike } from '../canvas/types';
+import type { KeyboardEventLike } from '../canvas/types';
 import type { Selection, InteractionState, HitResult } from './types';
 import { hitTest } from './hit-test';
 
@@ -31,6 +32,7 @@ export class InteractionEngine {
     this.onEditStart = options.onEditStart;
 
     this.runtime.onPointer((e) => this.handlePointer(e));
+    this.runtime.onKeyboard((e) => this.handleKeyDown(e));
   }
 
   getSelection(): Selection | null {
@@ -112,5 +114,72 @@ export class InteractionEngine {
     if (this.state === 'selecting') {
       this.state = 'idle';
     }
+  }
+
+  private handleKeyDown(e: KeyboardEventLike): void {
+    if (this.state === 'editing') return;
+
+    if (!this.selection) return;
+
+    const row = this.selection.endRow;
+    const col = this.selection.endCol;
+
+    switch (e.key) {
+      case 'ArrowUp': {
+        e.preventDefault();
+        const newRow = Math.max(0, row - 1);
+        this.moveSelection(newRow, col, e.shiftKey);
+        break;
+      }
+      case 'ArrowDown': {
+        e.preventDefault();
+        this.moveSelection(row + 1, col, e.shiftKey);
+        break;
+      }
+      case 'ArrowLeft': {
+        e.preventDefault();
+        const newCol = Math.max(0, col - 1);
+        this.moveSelection(row, newCol, e.shiftKey);
+        break;
+      }
+      case 'ArrowRight': {
+        e.preventDefault();
+        this.moveSelection(row, col + 1, e.shiftKey);
+        break;
+      }
+      case 'Tab': {
+        e.preventDefault();
+        if (e.shiftKey) {
+          this.moveSelection(row, Math.max(0, col - 1), false);
+        } else {
+          this.moveSelection(row, col + 1, false);
+        }
+        break;
+      }
+      case 'Enter': {
+        e.preventDefault();
+        this.moveSelection(row + 1, col, false);
+        break;
+      }
+    }
+  }
+
+  private moveSelection(row: number, col: number, extend: boolean): void {
+    if (extend && this.selection) {
+      this.selection = {
+        ...this.selection,
+        endRow: row,
+        endCol: col,
+      };
+    } else {
+      this.selection = {
+        sheet: 0,
+        startRow: row,
+        startCol: col,
+        endRow: row,
+        endCol: col,
+      };
+    }
+    this.onSelectionChange(this.selection);
   }
 }

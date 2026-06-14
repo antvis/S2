@@ -1,4 +1,4 @@
-import type { PointerEventLike, Rect, WheelEventLike } from './types';
+import type { KeyboardEventLike, PointerEventLike, Rect, WheelEventLike } from './types';
 
 export interface CanvasRuntime {
   getContext(): CanvasRenderingContext2D;
@@ -9,6 +9,7 @@ export interface CanvasRuntime {
   requestRepaint(paintFn: () => void): void;
   onWheel(handler: (e: WheelEventLike) => void): void;
   onPointer(handler: (e: PointerEventLike) => void): void;
+  onKeyboard(handler: (e: KeyboardEventLike) => void): void;
   resize(width: number, height: number): void;
   destroy(): void;
 }
@@ -37,6 +38,11 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
 
   const wheelHandlers: ((e: WheelEventLike) => void)[] = [];
   const pointerHandlers: ((e: PointerEventLike) => void)[] = [];
+  const keyboardHandlers: ((e: KeyboardEventLike) => void)[] = [];
+
+  // Make canvas focusable for keyboard events
+  canvas.tabIndex = 0;
+  canvas.style.outline = 'none';
 
   canvas.addEventListener('wheel', (e) => {
     e.preventDefault();
@@ -85,6 +91,19 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
     }
   });
 
+  canvas.addEventListener('keydown', (e) => {
+    const ev: KeyboardEventLike = {
+      key: e.key,
+      shiftKey: e.shiftKey,
+      ctrlKey: e.ctrlKey,
+      metaKey: e.metaKey,
+      preventDefault: () => e.preventDefault(),
+    };
+    for (let i = 0, len = keyboardHandlers.length; i < len; ++i) {
+      keyboardHandlers[i]!(ev);
+    }
+  });
+
   return {
     getContext() { return ctx; },
     getWidth() { return width; },
@@ -104,6 +123,7 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
     },
     onWheel(handler) { wheelHandlers.push(handler); },
     onPointer(handler) { pointerHandlers.push(handler); },
+    onKeyboard(handler) { keyboardHandlers.push(handler); },
     resize(w: number, h: number) {
       width = w;
       height = h;

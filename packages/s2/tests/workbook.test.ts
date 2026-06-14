@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createWorkbook, defineModule } from '../src/index';
+import { createWorkbook, defineModule, PivotModule } from '../src/index';
 
 describe('createWorkbook', () => {
   it('should create a workbook with default sheet', () => {
@@ -126,5 +126,95 @@ describe('createWorkbook', () => {
       range: { startRow: 0, endRow: 1, startCol: 0, endCol: 1 },
     });
     expect(result).toEqual([[1, 2], [3, 4]]);
+  });
+
+  it('should undo deleteSheet and restore all cell data', () => {
+    const workbook = createWorkbook();
+    workbook.apply([{ type: 'createSheet', payload: { name: 'Data' } }]);
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 1, row: 0, col: 0, value: 'X' } },
+      { type: 'setCellValue', payload: { sheet: 1, row: 1, col: 0, value: 'Y' } },
+    ]);
+    workbook.apply([{ type: 'deleteSheet', payload: { sheet: 1 } }]);
+    expect(workbook.toJSON().sheets).toHaveLength(1);
+
+    workbook.undo();
+    expect(workbook.toJSON().sheets).toHaveLength(2);
+    expect(workbook.query.getCellDisplayValue({ sheet: 1, row: 0, col: 0 })).toBe('X');
+    expect(workbook.query.getCellDisplayValue({ sheet: 1, row: 1, col: 0 })).toBe('Y');
+  });
+
+  it('should undo deleteRows and restore deleted cell data', () => {
+    const workbook = createWorkbook();
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 'A' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 1, col: 0, value: 'B' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 2, col: 0, value: 'C' } },
+    ]);
+
+    workbook.apply([{ type: 'deleteRows', payload: { sheet: 0, index: 1, count: 1 } }]);
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 0 })).toBe('A');
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 1, col: 0 })).toBe('C');
+
+    workbook.undo();
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 0 })).toBe('A');
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 1, col: 0 })).toBe('B');
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 2, col: 0 })).toBe('C');
+  });
+
+  it('should undo deleteColumns and restore deleted cell data', () => {
+    const workbook = createWorkbook();
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 'X' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 1, value: 'Y' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 2, value: 'Z' } },
+    ]);
+
+    workbook.apply([{ type: 'deleteColumns', payload: { sheet: 0, index: 1, count: 1 } }]);
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 0 })).toBe('X');
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 1 })).toBe('Z');
+
+    workbook.undo();
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 0 })).toBe('X');
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 1 })).toBe('Y');
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 2 })).toBe('Z');
+  });
+
+  it('should save and restore module state via toJSON/snapshot', () => {
+    const wb1 = createWorkbook({ modules: [PivotModule] });
+    wb1.registerDataSource('data', [
+      { a: '1', b: 10 },
+      { a: '2', b: 20 },
+    ]);
+    wb1.apply([{
+      type: 'pivot.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'data',
+        rows: ['a'],
+        columns: [],
+        values: ['b'],
+        valueAggregation: { b: 'SUM' },
+      },
+    }]);
+
+    const json = wb1.toJSON();
+
+    // Restore from snapshot
+    const wb2 = createWorkbook({ modules: [PivotModule], snapshot: json as any });
+    const config = wb2.query.moduleQuery('pivot.getConfig', { sheet: 0 });
+    expect(config).not.toBeNull();
+    expect((config as any).rows).toEqual(['a']);
+    expect((config as any).values).toEqual(['b']);
+  });
+
+  it('should preserve unrecognized module state in snapshot', () => {
+    const wb1 = createWorkbook();
+    const json = wb1.toJSON() as any;
+    json.__moduleState = { unknownModule: { data: 42 } };
+
+    // Loading into a workbook without that module — __moduleState is silently ignored
+    const wb2 = createWorkbook({ snapshot: json });
+    expect(wb2.toJSON().sheets).toHaveLength(1);
   });
 });

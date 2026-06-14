@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>S2 v3 — Freeze Panes</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; }
+    h2 { margin: 16px; font-size: 16px; color: #333; }
+    p { margin: 0 16px 8px; font-size: 13px; color: #666; }
+    #app { width: calc(100vw - 32px); height: calc(100vh - 100px); margin: 0 16px; background: #fff; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h2>S2 v3 — 冻结窗格 (Freeze Panes)</h2>
+  <p>前 1 行和前 2 列已冻结，滚动时保持不动。</p>
+  <div id="app"></div>
+  <script type="module">
+    import { createWorkbook, FreezeModule, mountCanvas } from '../packages/s2/src/index.ts';
+
+    const workbook = createWorkbook({ modules: [FreezeModule] });
+
+    // 表头（第 0 行）
+    const headers = ['ID', '姓名', '部门', '薪资', '入职日期', '城市', '级别', '评分'];
+    const ops = [];
+    for (let col = 0; col < headers.length; col++) {
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: 0, col, value: headers[col] } });
+    }
+
+    // 数据（100 行）
+    const departments = ['工程', '产品', '设计', '运营', '市场'];
+    const cities = ['杭州', '北京', '上海', '深圳', '广州'];
+    for (let row = 1; row <= 100; row++) {
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 0, value: row } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 1, value: `员工${row}` } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 2, value: departments[row % 5] } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 3, value: 10000 + row * 500 } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 4, value: `2024-${String((row % 12) + 1).padStart(2, '0')}-01` } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 5, value: cities[row % 5] } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 6, value: `P${(row % 8) + 1}` } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col: 7, value: Math.round(60 + Math.random() * 40) } });
+    }
+    workbook.apply(ops);
+
+    // 冻结第 1 行（表头）和前 2 列（ID + 姓名）
+    workbook.apply([{
+      type: 'freeze.set',
+      payload: { sheet: 0, frozenRows: 1, frozenCols: 2 },
+    }]);
+
+    mountCanvas(workbook, document.getElementById('app'));
+  </script>
+</body>
+</html>

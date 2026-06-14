@@ -1,68 +1,77 @@
 import type { LayoutPlan } from '../layout/types';
 import type { HitResult } from './types';
 
-const HEADER_WIDTH = 50;
-const HEADER_HEIGHT = 28;
-
 export function hitTest(x: number, y: number, plan: LayoutPlan): HitResult {
+  const { left: hw, top: hh } = plan.headerArea;
+
+  // Corner area
+  if (x < hw && y < hh) {
+    return { type: 'empty', row: -1, col: -1 };
+  }
+
   // Row header area
-  if (x < HEADER_WIDTH && y >= HEADER_HEIGHT) {
-    const row = findRowAtY(y, plan);
+  if (x < hw && y >= hh) {
+    const row = findRowAt(y, plan);
     if (row >= 0) return { type: 'rowHeader', row, col: -1 };
     return { type: 'empty', row: -1, col: -1 };
   }
 
   // Col header area
-  if (y < HEADER_HEIGHT && x >= HEADER_WIDTH) {
-    const col = findColAtX(x, plan);
+  if (y < hh && x >= hw) {
+    const col = findColAt(x, plan);
     if (col >= 0) return { type: 'colHeader', row: -1, col };
     return { type: 'empty', row: -1, col: -1 };
   }
 
-  // Cell area — use binary search on sorted cells by row/col position
-  if (x >= HEADER_WIDTH && y >= HEADER_HEIGHT) {
-    const row = findRowAtY(y, plan);
-    const col = findColAtX(x, plan);
-    if (row >= 0 && col >= 0) return { type: 'cell', row, col };
+  // Data cell area
+  if (x >= hw && y >= hh) {
+    const allCells = plan.frozenCells.length > 0
+      ? [...plan.frozenCells, ...plan.cells]
+      : plan.cells;
+    for (const c of allCells) {
+      if (x >= c.x && x < c.x + c.width && y >= c.y && y < c.y + c.height) {
+        return { type: 'cell', row: c.row, col: c.col };
+      }
+    }
   }
 
   return { type: 'empty', row: -1, col: -1 };
 }
 
-function findRowAtY(y: number, plan: LayoutPlan): number {
-  // Row headers are sorted by y position — binary search
-  const headers = plan.rowHeaders;
-  let lo = 0;
-  let hi = headers.length - 1;
-  while (lo <= hi) {
-    const mid = (lo + hi) >>> 1;
-    const h = headers[mid]!;
-    if (y < h.y) {
-      hi = mid - 1;
-    } else if (y >= h.y + h.height) {
-      lo = mid + 1;
-    } else {
-      return h.index;
+function findRowAt(y: number, plan: LayoutPlan): number {
+  if (plan.rowHeaders.length > 0) {
+    let lo = 0;
+    let hi = plan.rowHeaders.length - 1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >>> 1;
+      const h = plan.rowHeaders[mid]!;
+      if (y < h.y) hi = mid - 1;
+      else if (y >= h.y + h.height) lo = mid + 1;
+      else return h.index;
     }
+    return -1;
+  }
+  for (const c of plan.cells) {
+    if (y >= c.y && y < c.y + c.height) return c.row;
   }
   return -1;
 }
 
-function findColAtX(x: number, plan: LayoutPlan): number {
-  // Col headers are sorted by x position — binary search
-  const headers = plan.colHeaders;
-  let lo = 0;
-  let hi = headers.length - 1;
-  while (lo <= hi) {
-    const mid = (lo + hi) >>> 1;
-    const h = headers[mid]!;
-    if (x < h.x) {
-      hi = mid - 1;
-    } else if (x >= h.x + h.width) {
-      lo = mid + 1;
-    } else {
-      return h.index;
+function findColAt(x: number, plan: LayoutPlan): number {
+  if (plan.colHeaders.length > 0) {
+    let lo = 0;
+    let hi = plan.colHeaders.length - 1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >>> 1;
+      const h = plan.colHeaders[mid]!;
+      if (x < h.x) hi = mid - 1;
+      else if (x >= h.x + h.width) lo = mid + 1;
+      else return h.index;
     }
+    return -1;
+  }
+  for (const c of plan.cells) {
+    if (x >= c.x && x < c.x + c.width) return c.col;
   }
   return -1;
 }

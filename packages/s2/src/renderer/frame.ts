@@ -1,21 +1,32 @@
+import { DETAIL_HEADER_WIDTH, DETAIL_HEADER_HEIGHT } from '../layout/types';
 import type { CellBox, HeaderBox, LayoutPlan, Line } from '../layout/types';
 import type { QueryLayer } from '../query/query';
 import type { Selection } from '../interaction/types';
 
+const HEADER_WIDTH = DETAIL_HEADER_WIDTH;
+const HEADER_HEIGHT = DETAIL_HEADER_HEIGHT;
 const GRID_COLOR = '#e0e0e0';
-const HEADER_BG = '#f5f5f5';
-const HEADER_BORDER = '#d0d0d0';
+const HEADER_BG = '#e8f0fe';
+const HEADER_BORDER = '#c4d7f2';
 const FONT = '13px -apple-system, BlinkMacSystemFont, sans-serif';
-const HEADER_FONT = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+const HEADER_FONT = 'bold 12px -apple-system, BlinkMacSystemFont, sans-serif';
 const TEXT_COLOR = '#333';
 const HEADER_TEXT_COLOR = '#666';
+const CORNER_BG = '#dce6f5';
+const PIVOT_HEADER_BG_LEVELS = ['#d6e4f7', '#e0ebf9', '#e8f0fe', '#f0f5fd'];
+
+export interface RenderOptions {
+  showRowHeader?: boolean;
+  showColHeader?: boolean;
+}
 
 export function renderFrame(
   ctx: CanvasRenderingContext2D,
   plan: LayoutPlan,
   query: QueryLayer,
   sheetIndex: number,
-  selection?: Selection | null
+  selection?: Selection | null,
+  options?: RenderOptions
 ): void {
   const { viewport } = plan;
 
@@ -26,26 +37,249 @@ export function renderFrame(
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, viewport.viewWidth, viewport.viewHeight);
 
-  // Gridlines
+  const hasHierarchy = plan.hierarchyRowHeaders.length > 0 || plan.hierarchyColHeaders.length > 0;
+
+  if (hasHierarchy) {
+    renderHierarchyFrame(ctx, plan, query, sheetIndex, selection);
+  } else {
+    renderDetailFrame(ctx, plan, query, sheetIndex, selection, options);
+  }
+}
+
+// ─── Pivot table rendering ──────────────────────────────────────────────
+
+function renderHierarchyFrame(
+  ctx: CanvasRenderingContext2D,
+  plan: LayoutPlan,
+  query: QueryLayer,
+  sheetIndex: number,
+  selection?: Selection | null,
+): void {
+  const { viewport, headerArea } = plan;
+
+  // Clip data area to prevent overflow into headers
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(headerArea.left, headerArea.top, viewport.viewWidth - headerArea.left, viewport.viewHeight - headerArea.top);
+  ctx.clip();
+
   drawGridlines(ctx, plan.gridlines);
 
-  // Selection highlight (below text, above gridlines)
   if (selection) {
     drawSelection(ctx, plan.cells, selection);
   }
 
-  // Cells
   drawCells(ctx, plan.cells, query, sheetIndex);
 
-  // Headers
-  drawRowHeaders(ctx, plan.rowHeaders);
-  drawColHeaders(ctx, plan.colHeaders);
+  ctx.restore();
 
-  // Top-left corner
-  ctx.fillStyle = HEADER_BG;
-  ctx.fillRect(0, 0, 50, 28);
+  drawHierarchyRowHeaders(ctx, plan);
+  drawHierarchyColHeaders(ctx, plan);
+  drawCornerHeaders(ctx, plan);
+}
+
+function drawHierarchyRowHeaders(ctx: CanvasRenderingContext2D, plan: LayoutPlan): void {
+  ctx.font = HEADER_FONT;
+  ctx.textBaseline = 'middle';
+
+  for (let levelIdx = 0; levelIdx < plan.hierarchyRowHeaders.length; levelIdx++) {
+    const headers = plan.hierarchyRowHeaders[levelIdx]!;
+    const bg = PIVOT_HEADER_BG_LEVELS[Math.min(levelIdx, PIVOT_HEADER_BG_LEVELS.length - 1)]!;
+
+    for (const h of headers) {
+      // Background
+      ctx.fillStyle = bg;
+      ctx.fillRect(h.x, h.y, h.width, h.height);
+
+      // Border
+      ctx.strokeStyle = HEADER_BORDER;
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(h.x, h.y, h.width, h.height);
+
+      // Text — left-aligned with padding, vertically centered in the merged area
+      if (h.label) {
+        ctx.fillStyle = HEADER_TEXT_COLOR;
+        ctx.textAlign = 'left';
+
+        const maxTextWidth = h.width - 12;
+        let text = h.label;
+        const measured = ctx.measureText(text);
+        if (measured.width > maxTextWidth) {
+          // Truncate with ellipsis
+          while (text.length > 1 && ctx.measureText(text + '...').width > maxTextWidth) {
+            text = text.slice(0, -1);
+          }
+          text += '...';
+        }
+        ctx.fillText(text, h.x + 8, h.y + h.height / 2);
+      }
+    }
+  }
+
+  // Row header gridlines (vertical lines between levels + horizontal lines between rows)
   ctx.strokeStyle = HEADER_BORDER;
-  ctx.strokeRect(0, 0, 50, 28);
+  ctx.lineWidth = 0.5;
+  const rowHeaderWidth = plan.headerArea.left;
+  const colHeaderHeight = plan.headerArea.top;
+
+  // Right border of entire row header area
+  ctx.beginPath();
+  ctx.moveTo(rowHeaderWidth, colHeaderHeight);
+  ctx.lineTo(rowHeaderWidth, plan.viewport.viewHeight);
+  ctx.stroke();
+}
+
+function drawHierarchyColHeaders(ctx: CanvasRenderingContext2D, plan: LayoutPlan): void {
+  ctx.font = HEADER_FONT;
+  ctx.textBaseline = 'middle';
+
+  for (let levelIdx = 0; levelIdx < plan.hierarchyColHeaders.length; levelIdx++) {
+    const headers = plan.hierarchyColHeaders[levelIdx]!;
+    const bg = PIVOT_HEADER_BG_LEVELS[Math.min(levelIdx, PIVOT_HEADER_BG_LEVELS.length - 1)]!;
+
+    for (const h of headers) {
+      // Background
+      ctx.fillStyle = bg;
+      ctx.fillRect(h.x, h.y, h.width, h.height);
+
+      // Border
+      ctx.strokeStyle = HEADER_BORDER;
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(h.x, h.y, h.width, h.height);
+
+      // Text — centered in the merged area
+      if (h.label) {
+        ctx.fillStyle = HEADER_TEXT_COLOR;
+        ctx.textAlign = 'center';
+
+        const maxTextWidth = h.width - 8;
+        let text = h.label;
+        const measured = ctx.measureText(text);
+        if (measured.width > maxTextWidth) {
+          while (text.length > 1 && ctx.measureText(text + '...').width > maxTextWidth) {
+            text = text.slice(0, -1);
+          }
+          text += '...';
+        }
+        ctx.fillText(text, h.x + h.width / 2, h.y + h.height / 2);
+      }
+    }
+  }
+
+  // Bottom border of entire col header area
+  const colHeaderHeight = plan.headerArea.top;
+  ctx.strokeStyle = HEADER_BORDER;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(plan.headerArea.left, colHeaderHeight);
+  ctx.lineTo(plan.viewport.viewWidth, colHeaderHeight);
+  ctx.stroke();
+}
+
+function drawCornerHeaders(ctx: CanvasRenderingContext2D, plan: LayoutPlan): void {
+  if (plan.cornerHeaders.length === 0) return;
+
+  const rowHeaderWidth = plan.headerArea.left;
+  const colHeaderHeight = plan.headerArea.top;
+
+  // Corner background
+  ctx.fillStyle = CORNER_BG;
+  ctx.fillRect(0, 0, rowHeaderWidth, colHeaderHeight);
+
+  // Corner border
+  ctx.strokeStyle = HEADER_BORDER;
+  ctx.lineWidth = 0.5;
+  ctx.strokeRect(0, 0, rowHeaderWidth, colHeaderHeight);
+
+  // Corner header cells
+  ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#444';
+
+  for (const h of plan.cornerHeaders) {
+    // Cell border
+    ctx.strokeStyle = HEADER_BORDER;
+    ctx.strokeRect(h.x, h.y, h.width, h.height);
+
+    // Text
+    if (h.label) {
+      ctx.fillStyle = '#444';
+      ctx.textAlign = 'left';
+      ctx.fillText(h.label, h.x + 8, h.y + h.height / 2);
+    }
+  }
+}
+
+// ─── Detail table rendering (unchanged) ─────────────────────────────────
+
+function renderDetailFrame(
+  ctx: CanvasRenderingContext2D,
+  plan: LayoutPlan,
+  query: QueryLayer,
+  sheetIndex: number,
+  selection?: Selection | null,
+  options?: RenderOptions
+): void {
+  const { viewport } = plan;
+
+  // Gridlines (scrollable area)
+  drawGridlines(ctx, plan.gridlines);
+
+  // Selection highlight (below text, above gridlines)
+  if (selection) {
+    drawSelection(ctx, [...plan.cells, ...plan.frozenCells], selection);
+  }
+
+  // Cells (scrollable area)
+  drawCells(ctx, plan.cells, query, sheetIndex);
+
+  // Frozen cells (drawn on top so they overlay scrollable content)
+  if (plan.frozenCells.length > 0) {
+    // Frozen background
+    const { frozenRowHeight, frozenColWidth } = plan;
+    if (frozenRowHeight > 0) {
+      ctx.fillStyle = '#fafafa';
+      ctx.fillRect(HEADER_WIDTH, HEADER_HEIGHT, viewport.viewWidth - HEADER_WIDTH, frozenRowHeight);
+    }
+    if (frozenColWidth > 0) {
+      ctx.fillStyle = '#fafafa';
+      ctx.fillRect(HEADER_WIDTH, HEADER_HEIGHT, frozenColWidth, viewport.viewHeight - HEADER_HEIGHT);
+    }
+    drawGridlines(ctx, plan.frozenGridlines);
+    drawCells(ctx, plan.frozenCells, query, sheetIndex);
+
+    // Freeze border line
+    ctx.strokeStyle = '#bbb';
+    ctx.lineWidth = 1.5;
+    if (frozenRowHeight > 0) {
+      const y = HEADER_HEIGHT + frozenRowHeight;
+      ctx.beginPath();
+      ctx.moveTo(HEADER_WIDTH, y);
+      ctx.lineTo(viewport.viewWidth, y);
+      ctx.stroke();
+    }
+    if (frozenColWidth > 0) {
+      const x = HEADER_WIDTH + frozenColWidth;
+      ctx.beginPath();
+      ctx.moveTo(x, HEADER_HEIGHT);
+      ctx.lineTo(x, viewport.viewHeight);
+      ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+  }
+
+  // Headers
+  if (options?.showRowHeader !== false) {
+    drawRowHeaders(ctx, plan.rowHeaders);
+  }
+  if (options?.showColHeader !== false) {
+    drawColHeaders(ctx, plan.colHeaders);
+    // Top-left corner
+    ctx.fillStyle = HEADER_BG;
+    ctx.fillRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
+    ctx.strokeStyle = HEADER_BORDER;
+    ctx.strokeRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
+  }
 }
 
 function drawGridlines(ctx: CanvasRenderingContext2D, lines: Line[]): void {
@@ -67,14 +301,34 @@ function drawCells(
   sheetIndex: number
 ): void {
   ctx.font = FONT;
-  ctx.fillStyle = TEXT_COLOR;
   ctx.textBaseline = 'middle';
   for (let i = 0, len = cells.length; i < len; ++i) {
     const box = cells[i]!;
     const value = query.getCellDisplayValue({ sheet: sheetIndex, row: box.row, col: box.col });
+
+    // Conditional format background
+    let textColor = TEXT_COLOR;
+    try {
+      const cfStyle = query.moduleQuery('conditionalFormat.getCellStyle', {
+        sheet: sheetIndex, row: box.row, col: box.col,
+      }) as { backgroundColor?: string; color?: string } | null;
+      if (cfStyle) {
+        if (cfStyle.backgroundColor) {
+          ctx.fillStyle = cfStyle.backgroundColor;
+          ctx.fillRect(box.x, box.y, box.width, box.height);
+        }
+        if (cfStyle.color) {
+          textColor = cfStyle.color;
+        }
+      }
+    } catch {
+      // ConditionalFormatModule not registered — skip
+    }
+
     if (value === null) continue;
     const text = String(value);
     const isNumber = typeof value === 'number';
+    ctx.fillStyle = textColor;
     if (isNumber) {
       ctx.textAlign = 'right';
       ctx.fillText(text, box.x + box.width - 6, box.y + box.height / 2);
@@ -93,10 +347,10 @@ function drawRowHeaders(ctx: CanvasRenderingContext2D, headers: HeaderBox[]): vo
     const h = headers[i]!;
     ctx.fillStyle = HEADER_BG;
     ctx.fillRect(h.x, h.y, h.width, h.height);
-    ctx.strokeStyle = HEADER_BORDER;
-    ctx.strokeRect(h.x, h.y, h.width, h.height);
-    ctx.fillStyle = HEADER_TEXT_COLOR;
-    ctx.fillText(h.label, h.x + h.width / 2, h.y + h.height / 2);
+    if (h.label) {
+      ctx.fillStyle = HEADER_TEXT_COLOR;
+      ctx.fillText(h.label, h.x + h.width / 2, h.y + h.height / 2);
+    }
   }
 }
 
@@ -108,10 +362,10 @@ function drawColHeaders(ctx: CanvasRenderingContext2D, headers: HeaderBox[]): vo
     const h = headers[i]!;
     ctx.fillStyle = HEADER_BG;
     ctx.fillRect(h.x, h.y, h.width, h.height);
-    ctx.strokeStyle = HEADER_BORDER;
-    ctx.strokeRect(h.x, h.y, h.width, h.height);
-    ctx.fillStyle = HEADER_TEXT_COLOR;
-    ctx.fillText(h.label, h.x + h.width / 2, h.y + h.height / 2);
+    if (h.label) {
+      ctx.fillStyle = HEADER_TEXT_COLOR;
+      ctx.fillText(h.label, h.x + h.width / 2, h.y + h.height / 2);
+    }
   }
 }
 

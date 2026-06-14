@@ -66,6 +66,25 @@ export class ModuleRegistry {
     return mod?.state;
   }
 
+  serializeAll(): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
+    for (const mod of this.modules) {
+      if (mod.definition.serialize) {
+        result[mod.definition.name] = mod.definition.serialize(mod.state);
+      }
+    }
+    return result;
+  }
+
+  deserializeAll(data: Record<string, unknown>): void {
+    for (const mod of this.modules) {
+      const moduleData = data[mod.definition.name];
+      if (moduleData !== undefined && mod.definition.deserialize) {
+        mod.definition.deserialize(moduleData, mod.state);
+      }
+    }
+  }
+
   private checkDeps(definition: ModuleDefinition): void {
     if (!definition.deps) return;
     for (const dep of definition.deps) {
