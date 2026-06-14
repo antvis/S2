@@ -115,10 +115,22 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
     }
   }
 
+  // 找到第一个维度字段的索引（排除 EXTRA_FIELD）
+  // 当 customValueOrder=0 时，EXTRA_FIELD 在位置 0，此时第一个维度字段的索引为 1
+  const firstDimensionFieldIndex = fields.findIndex(
+    (field) => field !== EXTRA_FIELD,
+  );
+  // 判断当前字段是否为第一个维度字段
+  // 当 firstDimensionFieldIndex === -1 时（即所有字段都是 EXTRA_FIELD），回退到原有逻辑
+  // 但由于 addTotals 中也会检查 currentField !== EXTRA_FIELD，所以不会错误添加总计
+  const isFirstDimensionField =
+    index === firstDimensionFieldIndex ||
+    (index === 0 && firstDimensionFieldIndex === -1);
+
   addTotals({
     currentField,
     lastField: fields[index - 1],
-    isFirstField: index === 0,
+    isFirstField: isFirstDimensionField,
     fieldValues,
     spreadsheet,
   });

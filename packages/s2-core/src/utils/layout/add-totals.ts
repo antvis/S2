@@ -12,8 +12,9 @@ export const addTotals = (params: TotalParams) => {
   let action: 'unshift' | 'push' | undefined;
   let totalValue: TotalClass | undefined;
 
-  if (isFirstField) {
+  if (isFirstField && currentField !== EXTRA_FIELD) {
     // check to see if grand total is added
+    // 当 currentField 为 EXTRA_FIELD 时不添加总计，避免 customValueOrder=0 时总计被错误添加到度量值层级
     if (totalsConfig?.showGrandTotals) {
       action = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
       totalValue = new TotalClass({
