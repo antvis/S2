@@ -39,6 +39,14 @@ export class LayoutEngine {
     this.scrollY = Math.max(0, y);
   }
 
+  setTemporaryRowHeight(row: number, height: number): void {
+    this.rowSums.setSize(row, height);
+  }
+
+  setTemporaryColWidth(col: number, width: number): void {
+    this.colSums.setSize(col, width);
+  }
+
   getVisibleRange(viewWidth: number, viewHeight: number): VisibleRange {
     const startRow = this.rowSums.findIndexAtOffset(this.scrollY);
     const endRow = this.rowSums.findIndexAtOffset(this.scrollY + viewHeight);

@@ -1,35 +1,46 @@
 import type { Workbook } from '../workbook';
 import type { LayoutPlan } from '../layout/types';
+import type { LayoutEngine } from '../layout/engine';
 import type { CanvasRuntime } from '../canvas/runtime';
-import type { PointerEventLike } from '../canvas/types';
-import type { KeyboardEventLike } from '../canvas/types';
-import type { Selection, InteractionState, HitResult } from './types';
+import type { PointerEventLike, KeyboardEventLike } from '../canvas/types';
+import type { Selection, InteractionState, HitResult, HoverInfo, DragInfo } from './types';
 import { hitTest } from './hit-test';
 
 export interface InteractionEngineOptions {
   workbook: Workbook;
   runtime: CanvasRuntime;
+  layoutEngine: LayoutEngine;
   getLayoutPlan: () => LayoutPlan;
   onSelectionChange: (selection: Selection | null) => void;
+  onHoverChange?: (hover: HoverInfo | null) => void;
   onEditStart: (row: number, col: number) => void;
+  onRepaintRequest: () => void;
 }
 
 export class InteractionEngine {
   private state: InteractionState = 'idle';
   private selection: Selection | null = null;
+  private hover: HoverInfo | null = null;
+  private drag: DragInfo | null = null;
 
   private readonly workbook: Workbook;
   private readonly runtime: CanvasRuntime;
+  private readonly layoutEngine: LayoutEngine;
   private readonly getLayoutPlan: () => LayoutPlan;
   private readonly onSelectionChange: (selection: Selection | null) => void;
+  private readonly onHoverChange: ((hover: HoverInfo | null) => void) | null;
   private readonly onEditStart: (row: number, col: number) => void;
+  private readonly onRepaintRequest: () => void;
 
   constructor(options: InteractionEngineOptions) {
     this.workbook = options.workbook;
     this.runtime = options.runtime;
+    this.layoutEngine = options.layoutEngine;
     this.getLayoutPlan = options.getLayoutPlan;
     this.onSelectionChange = options.onSelectionChange;
+    this.onHoverChange = options.onHoverChange ?? null;
     this.onEditStart = options.onEditStart;
+    this.onRepaintRequest = options.onRepaintRequest;
 
     this.runtime.onPointer((e) => this.handlePointer(e));
     this.runtime.onKeyboard((e) => this.handleKeyDown(e));
@@ -37,6 +48,10 @@ export class InteractionEngine {
 
   getSelection(): Selection | null {
     return this.selection;
+  }
+
+  getHover(): HoverInfo | null {
+    return this.hover;
   }
 
   getState(): InteractionState {
@@ -50,11 +65,57 @@ export class InteractionEngine {
     if (e.type === 'dblclick') {
       this.handleDoubleClick(hit);
     } else if (e.type === 'down') {
-      this.handlePointerDown(hit);
-    } else if (e.type === 'move' && this.state === 'selecting') {
-      this.handlePointerMove(hit);
+      this.handlePointerDown(hit, e);
+    } else if (e.type === 'move') {
+      if (this.state === 'dragging') {
+        this.handleDragMove(e);
+      } else if (this.state === 'selecting') {
+        this.updateCursor(hit);
+        this.handlePointerMove(hit);
+      } else {
+        this.updateCursor(hit);
+        this.updateHover(hit);
+      }
     } else if (e.type === 'up') {
-      this.handlePointerUp();
+      this.handlePointerUp(e);
+    }
+  }
+
+  private updateCursor(hit: HitResult): void {
+    switch (hit.type) {
+      case 'cell':
+        this.runtime.setCursor('cell');
+        break;
+      case 'rowHeaderBorder':
+        this.runtime.setCursor('row-resize');
+        break;
+      case 'colHeaderBorder':
+        this.runtime.setCursor('col-resize');
+        break;
+      case 'rowHeader':
+      case 'colHeader':
+        this.runtime.setCursor('pointer');
+        break;
+      default:
+        this.runtime.setCursor('default');
+        break;
+    }
+  }
+
+  private updateHover(hit: HitResult): void {
+    if (hit.type === 'cell') {
+      const newHover: HoverInfo = { row: hit.row, col: hit.col };
+      if (!this.hover || this.hover.row !== newHover.row || this.hover.col !== newHover.col) {
+        this.hover = newHover;
+        this.state = 'hovering';
+        this.onHoverChange?.(this.hover);
+      }
+    } else {
+      if (this.hover !== null) {
+        this.hover = null;
+        this.state = 'idle';
+        this.onHoverChange?.(null);
+      }
     }
   }
 
@@ -65,7 +126,27 @@ export class InteractionEngine {
     }
   }
 
-  private handlePointerDown(hit: HitResult): void {
+  private handlePointerDown(hit: HitResult, e: PointerEventLike): void {
+    if (hit.type === 'rowHeaderBorder') {
+      const plan = this.getLayoutPlan();
+      const header = plan.rowHeaders.find((h) => h.index === hit.row);
+      if (header) {
+        this.state = 'dragging';
+        this.drag = { type: 'row', index: hit.row, startPos: e.y, startSize: header.height };
+      }
+      return;
+    }
+
+    if (hit.type === 'colHeaderBorder') {
+      const plan = this.getLayoutPlan();
+      const header = plan.colHeaders.find((h) => h.index === hit.col);
+      if (header) {
+        this.state = 'dragging';
+        this.drag = { type: 'col', index: hit.col, startPos: e.x, startSize: header.width };
+      }
+      return;
+    }
+
     if (hit.type === 'cell') {
       this.state = 'selecting';
       this.selection = {
@@ -110,7 +191,46 @@ export class InteractionEngine {
     }
   }
 
-  private handlePointerUp(): void {
+  private handleDragMove(e: PointerEventLike): void {
+    if (!this.drag) return;
+
+    const MIN_SIZE = 20;
+
+    if (this.drag.type === 'row') {
+      const delta = e.y - this.drag.startPos;
+      const newHeight = Math.max(MIN_SIZE, this.drag.startSize + delta);
+      this.layoutEngine.setTemporaryRowHeight(this.drag.index, newHeight);
+    } else {
+      const delta = e.x - this.drag.startPos;
+      const newWidth = Math.max(MIN_SIZE, this.drag.startSize + delta);
+      this.layoutEngine.setTemporaryColWidth(this.drag.index, newWidth);
+    }
+
+    this.onRepaintRequest();
+  }
+
+  private handlePointerUp(e: PointerEventLike): void {
+    if (this.state === 'dragging' && this.drag) {
+      const MIN_SIZE = 20;
+      if (this.drag.type === 'row') {
+        const delta = e.y - this.drag.startPos;
+        const newHeight = Math.max(MIN_SIZE, this.drag.startSize + delta);
+        this.workbook.apply([{
+          type: 'setRowHeight',
+          payload: { sheet: 0, row: this.drag.index, height: newHeight },
+        }]);
+      } else {
+        const delta = e.x - this.drag.startPos;
+        const newWidth = Math.max(MIN_SIZE, this.drag.startSize + delta);
+        this.workbook.apply([{
+          type: 'setColumnWidth',
+          payload: { sheet: 0, col: this.drag.index, width: newWidth },
+        }]);
+      }
+      this.drag = null;
+      this.state = 'idle';
+      return;
+    }
     if (this.state === 'selecting') {
       this.state = 'idle';
     }

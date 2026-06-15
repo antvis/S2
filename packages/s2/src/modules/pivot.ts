@@ -10,6 +10,9 @@ export interface PivotConfig {
   columns: string[];
   values: string[];
   valueAggregation: Record<string, 'SUM' | 'AVG' | 'COUNT' | 'MIN' | 'MAX'>;
+  drillFilters?: Record<string, string>;
+  showSubTotals?: boolean;
+  showGrandTotal?: boolean;
 }
 
 type PivotTreeNode = HierarchyTreeNode;
@@ -82,38 +85,74 @@ function getLeafPaths(tree: PivotTreeNode[], prefix: string[] = []): string[][] 
 }
 
 function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig): { layout: PivotLayout; values: number[][] } {
-  const rowTree = buildTree(data, config.rows);
-  const colTree = buildTree(data, config.columns);
+  let filteredData = data;
+  if (config.drillFilters) {
+    for (const [field, value] of Object.entries(config.drillFilters)) {
+      filteredData = filteredData.filter((r) => String(r[field] ?? '') === value);
+    }
+  }
+
+  const rowTree = buildTree(filteredData, config.rows);
+  const colTree = buildTree(filteredData, config.columns);
 
   const rowLeafPaths = getLeafPaths(rowTree);
   const colLeafPaths = config.columns.length > 0 ? getLeafPaths(colTree) : [[]];
 
-  const values: number[][] = [];
-
-  for (let ri = 0; ri < rowLeafPaths.length; ri++) {
+  function aggregateRow(records: Record<string, unknown>[]): number[] {
     const row: number[] = [];
-    const rowPath = rowLeafPaths[ri]!;
-
-    const rowRecords = data.filter((record) =>
-      config.rows.every((field, i) => String(record[field] ?? '') === rowPath[i])
-    );
-
     for (let ci = 0; ci < colLeafPaths.length; ci++) {
       const colPath = colLeafPaths[ci]!;
-
       const matchingRecords = colPath.length > 0
-        ? rowRecords.filter((record) =>
+        ? records.filter((record) =>
             config.columns.every((field, i) => String(record[field] ?? '') === colPath[i])
           )
-        : rowRecords;
-
+        : records;
       for (const vf of config.values) {
         const nums = matchingRecords.map((r) => Number(r[vf])).filter((n) => !isNaN(n));
         const aggFn = config.valueAggregation[vf] ?? 'SUM';
         row.push(aggregate(nums, aggFn));
       }
     }
-    values.push(row);
+    return row;
+  }
+
+  const values: number[][] = [];
+
+  for (const rowPath of rowLeafPaths) {
+    const rowRecords = filteredData.filter((record) =>
+      config.rows.every((field, i) => String(record[field] ?? '') === rowPath[i])
+    );
+    values.push(aggregateRow(rowRecords));
+  }
+
+  // Insert subtotals and grand total
+  if (config.showSubTotals && config.rows.length > 1) {
+    const finalValues: number[][] = [];
+    let leafIdx = 0;
+
+    function walkForSubtotals(nodes: PivotTreeNode[], depth: number): void {
+      for (const node of nodes) {
+        if (node.children.length > 0) {
+          walkForSubtotals(node.children, depth + 1);
+
+          // Subtotal row for this parent node
+          const parentField = config.rows[depth]!;
+          const parentRecords = filteredData.filter((r) => String(r[parentField] ?? '') === node.value);
+          finalValues.push(aggregateRow(parentRecords));
+        } else {
+          finalValues.push(values[leafIdx]!);
+          leafIdx++;
+        }
+      }
+    }
+
+    walkForSubtotals(rowTree, 0);
+    values.length = 0;
+    values.push(...finalValues);
+  }
+
+  if (config.showGrandTotal) {
+    values.push(aggregateRow(filteredData));
   }
 
   const layout: PivotLayout = {
@@ -122,7 +161,7 @@ function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig
     rowFields: config.rows,
     colFields: config.columns,
     valueFields: config.values,
-    rowLeafCount: rowLeafPaths.length,
+    rowLeafCount: values.length,
     colLeafCount: colLeafPaths.length * config.values.length,
   };
 
@@ -186,6 +225,45 @@ export const PivotModule: ModuleDefinition = {
           return [{ type: 'pivot.setConfig', payload: oldConfig as unknown as Record<string, unknown> }];
         }
         return [];
+      },
+    },
+    'pivot.drill': {
+      meta: { needReCalc: true, affectLayout: true, undoable: true },
+      execute(this: { state: PivotState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
+        const { sheet, dimension, value } = payload as { sheet: number; dimension: string; value: string };
+        const config = this.state.configs.get(sheet);
+        if (!config) return [];
+
+        const oldConfig: PivotConfig = {
+          ...config,
+          rows: [...config.rows],
+          columns: [...config.columns],
+          values: [...config.values],
+          valueAggregation: { ...config.valueAggregation },
+          drillFilters: config.drillFilters ? { ...config.drillFilters } : undefined,
+        };
+
+        const dimIndex = config.rows.indexOf(dimension);
+        if (dimIndex === -1) return [];
+
+        const newDrillFilters = { ...(config.drillFilters ?? {}), [dimension]: value };
+        const newRows = config.rows.slice(dimIndex + 1);
+
+        const newConfig: PivotConfig = {
+          ...config,
+          rows: newRows,
+          drillFilters: newDrillFilters,
+        };
+        this.state.configs.set(sheet, newConfig);
+
+        const data = model.dataSources.get(newConfig.dataSourceId) as Record<string, unknown>[] | undefined;
+        if (data && data.length > 0) {
+          const { layout, values } = computePivotLayout(data, newConfig);
+          this.state.layouts.set(sheet, layout);
+          materializeToModel(model, sheet, values);
+        }
+
+        return [{ type: 'pivot.setConfig', payload: oldConfig as unknown as Record<string, unknown> }];
       },
     },
   },

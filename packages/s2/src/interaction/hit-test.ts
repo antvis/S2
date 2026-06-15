@@ -1,6 +1,8 @@
 import type { LayoutPlan } from '../layout/types';
 import type { HitResult } from './types';
 
+const BORDER_THRESHOLD = 4;
+
 export function hitTest(x: number, y: number, plan: LayoutPlan): HitResult {
   const { left: hw, top: hh } = plan.headerArea;
 
@@ -9,15 +11,27 @@ export function hitTest(x: number, y: number, plan: LayoutPlan): HitResult {
     return { type: 'empty', row: -1, col: -1 };
   }
 
-  // Row header area
+  // Row header area — check border first (bottom edge of each header)
   if (x < hw && y >= hh) {
+    for (const h of plan.rowHeaders) {
+      const bottomEdge = h.y + h.height;
+      if (Math.abs(y - bottomEdge) <= BORDER_THRESHOLD && x < hw) {
+        return { type: 'rowHeaderBorder', row: h.index, col: -1 };
+      }
+    }
     const row = findRowAt(y, plan);
     if (row >= 0) return { type: 'rowHeader', row, col: -1 };
     return { type: 'empty', row: -1, col: -1 };
   }
 
-  // Col header area
+  // Col header area — check border first (right edge of each header)
   if (y < hh && x >= hw) {
+    for (const h of plan.colHeaders) {
+      const rightEdge = h.x + h.width;
+      if (Math.abs(x - rightEdge) <= BORDER_THRESHOLD && y < hh) {
+        return { type: 'colHeaderBorder', row: -1, col: h.index };
+      }
+    }
     const col = findColAt(x, plan);
     if (col >= 0) return { type: 'colHeader', row: -1, col };
     return { type: 'empty', row: -1, col: -1 };

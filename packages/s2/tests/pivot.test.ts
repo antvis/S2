@@ -201,6 +201,106 @@ describe('PivotModule', () => {
       }]);
     }).toThrow('Unknown operation');
   });
+
+  it('should drill down into a dimension value', () => {
+    const workbook = createPivotWorkbook();
+    workbook.apply([{
+      type: 'pivot.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'sales',
+        rows: ['province', 'city'],
+        columns: [],
+        values: ['price'],
+        valueAggregation: { price: 'SUM' },
+      },
+    }]);
+
+    workbook.apply([{
+      type: 'pivot.drill',
+      payload: { sheet: 0, dimension: 'province', value: '浙江' },
+    }]);
+
+    const layout = workbook.query.moduleQuery('pivot.getLayout', { sheet: 0 }) as { rowLeafCount: number; rowTree: { value: string }[] };
+    expect(layout.rowLeafCount).toBe(2);
+    expect(layout.rowTree[0]!.value).toBe('杭州');
+    expect(layout.rowTree[1]!.value).toBe('宁波');
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 0, col: 0 })).toBe(65);
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 1, col: 0 })).toBe(35);
+  });
+
+  it('should undo drill and restore original config', () => {
+    const workbook = createPivotWorkbook();
+    workbook.apply([{
+      type: 'pivot.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'sales',
+        rows: ['province', 'city'],
+        columns: [],
+        values: ['price'],
+        valueAggregation: { price: 'SUM' },
+      },
+    }]);
+
+    workbook.apply([{
+      type: 'pivot.drill',
+      payload: { sheet: 0, dimension: 'province', value: '浙江' },
+    }]);
+
+    workbook.undo();
+    const layout = workbook.query.moduleQuery('pivot.getLayout', { sheet: 0 }) as { rowLeafCount: number };
+    expect(layout.rowLeafCount).toBe(4);
+  });
+
+  it('should compute subtotals for each parent group', () => {
+    const workbook = createPivotWorkbook();
+    workbook.apply([{
+      type: 'pivot.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'sales',
+        rows: ['province', 'city'],
+        columns: [],
+        values: ['price'],
+        valueAggregation: { price: 'SUM' },
+        showSubTotals: true,
+      },
+    }]);
+
+    // Without subtotals: 4 rows (杭州=65, 宁波=35, 南京=60, 苏州=35)
+    // With subtotals: 杭州, 宁波, 浙江subtotal, 南京, 苏州, 江苏subtotal = 6 rows
+    const layout = workbook.query.moduleQuery('pivot.getLayout', { sheet: 0 }) as { rowLeafCount: number };
+    expect(layout.rowLeafCount).toBe(6);
+
+    // 浙江 subtotal (row 2): 65 + 35 = 100
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 2, col: 0 })).toBe(100);
+    // 江苏 subtotal (row 5): 60 + 35 = 95
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 5, col: 0 })).toBe(95);
+  });
+
+  it('should compute grand total', () => {
+    const workbook = createPivotWorkbook();
+    workbook.apply([{
+      type: 'pivot.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'sales',
+        rows: ['province'],
+        columns: [],
+        values: ['price'],
+        valueAggregation: { price: 'SUM' },
+        showGrandTotal: true,
+      },
+    }]);
+
+    // 2 rows + 1 grand total = 3 rows
+    const layout = workbook.query.moduleQuery('pivot.getLayout', { sheet: 0 }) as { rowLeafCount: number };
+    expect(layout.rowLeafCount).toBe(3);
+
+    // Grand total (last row): 100 + 95 = 195
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 2, col: 0 })).toBe(195);
+  });
 });
 
 describe('Pivot Layout Engine', () => {

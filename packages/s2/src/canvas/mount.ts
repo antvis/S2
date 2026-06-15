@@ -1,6 +1,7 @@
 import type { Workbook } from '../workbook';
 import type { LayoutPlan } from '../layout/types';
 import type { Selection } from '../interaction/types';
+import type { HoverInfo } from '../interaction/types';
 import type { Operation } from '../operation/types';
 import { LayoutEngine } from '../layout/engine';
 import { renderFrame } from '../renderer/frame';
@@ -28,7 +29,10 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
 
   let currentPlan: LayoutPlan = layout.computeLayoutPlan(runtime.getWidth(), runtime.getHeight());
   let currentSelection: Selection | null = null;
+  let currentHover: HoverInfo | null = null;
   let editorEl: HTMLInputElement | null = null;
+  let tooltipEl: HTMLDivElement | null = null;
+  let tooltipTimer: ReturnType<typeof setTimeout> | null = null;
 
   function getFreezeConfig() {
     try {
@@ -44,7 +48,9 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   function paint(): void {
     const freeze = getFreezeConfig();
     currentPlan = layout.computeLayoutPlan(runtime.getWidth(), runtime.getHeight(), freeze);
-    renderFrame(runtime.getContext(), currentPlan, workbook.query, 0, currentSelection, {
+    renderFrame(runtime.getContext(), currentPlan, workbook.query, 0, {
+      selection: currentSelection,
+      hover: currentHover,
       showRowHeader,
       showColHeader,
     });
@@ -125,13 +131,72 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     paint();
   }
 
+  function showTooltip(row: number, col: number): void {
+    const box = currentPlan.cells.find((c) => c.row === row && c.col === col)
+      ?? currentPlan.frozenCells.find((c) => c.row === row && c.col === col);
+    if (!box) return;
+
+    const value = workbook.query.getCellDisplayValue({ sheet: 0, row, col });
+    if (value === null) return;
+
+    hideTooltip();
+
+    tooltipEl = document.createElement('div');
+    tooltipEl.style.position = 'absolute';
+    tooltipEl.style.left = `${box.x + box.width / 2}px`;
+    tooltipEl.style.top = `${box.y - 4}px`;
+    tooltipEl.style.transform = 'translate(-50%, -100%)';
+    tooltipEl.style.padding = '4px 8px';
+    tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+    tooltipEl.style.color = '#fff';
+    tooltipEl.style.fontSize = '12px';
+    tooltipEl.style.fontFamily = '-apple-system, BlinkMacSystemFont, sans-serif';
+    tooltipEl.style.borderRadius = '4px';
+    tooltipEl.style.pointerEvents = 'none';
+    tooltipEl.style.zIndex = '20';
+    tooltipEl.style.whiteSpace = 'nowrap';
+    tooltipEl.textContent = String(value);
+
+    container.style.position = 'relative';
+    container.appendChild(tooltipEl);
+  }
+
+  function hideTooltip(): void {
+    if (tooltipTimer) {
+      clearTimeout(tooltipTimer);
+      tooltipTimer = null;
+    }
+    if (tooltipEl) {
+      tooltipEl.remove();
+      tooltipEl = null;
+    }
+  }
+
   // Interaction engine
   const interaction = new InteractionEngine({
     workbook,
     runtime,
+    layoutEngine: layout,
     getLayoutPlan: () => currentPlan,
     onSelectionChange(selection) {
       currentSelection = selection;
+      runtime.markDirty();
+      runtime.requestRepaint(paint);
+    },
+    onHoverChange(hover) {
+      currentHover = hover;
+      hideTooltip();
+
+      if (hover) {
+        tooltipTimer = setTimeout(() => {
+          showTooltip(hover.row, hover.col);
+        }, 500);
+      }
+
+      runtime.markDirty();
+      runtime.requestRepaint(paint);
+    },
+    onRepaintRequest() {
       runtime.markDirty();
       runtime.requestRepaint(paint);
     },
@@ -157,6 +222,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     if (editorEl) {
       cancelEditor();
     }
+    hideTooltip();
     layout.scroll(e.deltaX, e.deltaY);
     runtime.markDirty();
     runtime.requestRepaint(paint);
@@ -177,6 +243,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
       unsub();
       resizeObserver.disconnect();
       editorEl?.remove();
+      hideTooltip();
       runtime.destroy();
     },
   };

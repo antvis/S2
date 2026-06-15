@@ -1,7 +1,7 @@
 import { DETAIL_HEADER_WIDTH, DETAIL_HEADER_HEIGHT } from '../layout/types';
 import type { CellBox, HeaderBox, LayoutPlan, Line } from '../layout/types';
 import type { QueryLayer } from '../query/query';
-import type { Selection } from '../interaction/types';
+import type { Selection, HoverInfo } from '../interaction/types';
 
 const HEADER_WIDTH = DETAIL_HEADER_WIDTH;
 const HEADER_HEIGHT = DETAIL_HEADER_HEIGHT;
@@ -15,7 +15,9 @@ const HEADER_TEXT_COLOR = '#666';
 const CORNER_BG = '#dce6f5';
 const PIVOT_HEADER_BG_LEVELS = ['#d6e4f7', '#e0ebf9', '#e8f0fe', '#f0f5fd'];
 
-export interface RenderOptions {
+export interface RenderState {
+  selection?: Selection | null;
+  hover?: HoverInfo | null;
   showRowHeader?: boolean;
   showColHeader?: boolean;
 }
@@ -25,24 +27,20 @@ export function renderFrame(
   plan: LayoutPlan,
   query: QueryLayer,
   sheetIndex: number,
-  selection?: Selection | null,
-  options?: RenderOptions
+  state?: RenderState,
 ): void {
   const { viewport } = plan;
 
-  // Clear
   ctx.clearRect(0, 0, viewport.viewWidth, viewport.viewHeight);
-
-  // Background
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, viewport.viewWidth, viewport.viewHeight);
 
   const hasHierarchy = plan.hierarchyRowHeaders.length > 0 || plan.hierarchyColHeaders.length > 0;
 
   if (hasHierarchy) {
-    renderHierarchyFrame(ctx, plan, query, sheetIndex, selection);
+    renderHierarchyFrame(ctx, plan, query, sheetIndex, state?.selection, state?.hover);
   } else {
-    renderDetailFrame(ctx, plan, query, sheetIndex, selection, options);
+    renderDetailFrame(ctx, plan, query, sheetIndex, state?.selection, state?.hover, state);
   }
 }
 
@@ -54,6 +52,7 @@ function renderHierarchyFrame(
   query: QueryLayer,
   sheetIndex: number,
   selection?: Selection | null,
+  hover?: HoverInfo | null,
 ): void {
   const { viewport, headerArea } = plan;
 
@@ -64,6 +63,10 @@ function renderHierarchyFrame(
   ctx.clip();
 
   drawGridlines(ctx, plan.gridlines);
+
+  if (hover) {
+    drawHover(ctx, plan.cells, hover);
+  }
 
   if (selection) {
     drawSelection(ctx, plan.cells, selection);
@@ -218,12 +221,18 @@ function renderDetailFrame(
   query: QueryLayer,
   sheetIndex: number,
   selection?: Selection | null,
-  options?: RenderOptions
+  hover?: HoverInfo | null,
+  state?: RenderState
 ): void {
   const { viewport } = plan;
 
   // Gridlines (scrollable area)
   drawGridlines(ctx, plan.gridlines);
+
+  // Hover highlight (below selection)
+  if (hover) {
+    drawHover(ctx, [...plan.cells, ...plan.frozenCells], hover);
+  }
 
   // Selection highlight (below text, above gridlines)
   if (selection) {
@@ -269,10 +278,10 @@ function renderDetailFrame(
   }
 
   // Headers
-  if (options?.showRowHeader !== false) {
+  if (state?.showRowHeader !== false) {
     drawRowHeaders(ctx, plan.rowHeaders);
   }
-  if (options?.showColHeader !== false) {
+  if (state?.showColHeader !== false) {
     drawColHeaders(ctx, plan.colHeaders);
     // Top-left corner
     ctx.fillStyle = HEADER_BG;
@@ -375,7 +384,6 @@ function drawSelection(ctx: CanvasRenderingContext2D, cells: CellBox[], selectio
   const minCol = Math.min(selection.startCol, selection.endCol);
   const maxCol = Math.max(selection.startCol, selection.endCol);
 
-  // Find bounding box from visible cells
   let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
   for (let i = 0, len = cells.length; i < len; ++i) {
     const c = cells[i]!;
@@ -389,13 +397,22 @@ function drawSelection(ctx: CanvasRenderingContext2D, cells: CellBox[], selectio
 
   if (x1 === Infinity) return;
 
-  // Fill
   ctx.fillStyle = 'rgba(14, 101, 235, 0.08)';
   ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
 
-  // Border
   ctx.strokeStyle = '#0e65eb';
   ctx.lineWidth = 2;
   ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
   ctx.lineWidth = 1;
+}
+
+function drawHover(ctx: CanvasRenderingContext2D, cells: CellBox[], hover: HoverInfo): void {
+  for (let i = 0, len = cells.length; i < len; ++i) {
+    const c = cells[i]!;
+    if (c.row === hover.row && c.col === hover.col) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+      ctx.fillRect(c.x, c.y, c.width, c.height);
+      return;
+    }
+  }
 }

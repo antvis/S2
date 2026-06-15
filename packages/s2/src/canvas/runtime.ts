@@ -10,6 +10,7 @@ export interface CanvasRuntime {
   onWheel(handler: (e: WheelEventLike) => void): void;
   onPointer(handler: (e: PointerEventLike) => void): void;
   onKeyboard(handler: (e: KeyboardEventLike) => void): void;
+  setCursor(cursor: string): void;
   resize(width: number, height: number): void;
   destroy(): void;
 }
@@ -124,6 +125,7 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
     onWheel(handler) { wheelHandlers.push(handler); },
     onPointer(handler) { pointerHandlers.push(handler); },
     onKeyboard(handler) { keyboardHandlers.push(handler); },
+    setCursor(cursor: string) { canvas.style.cursor = cursor; },
     resize(w: number, h: number) {
       width = w;
       height = h;
