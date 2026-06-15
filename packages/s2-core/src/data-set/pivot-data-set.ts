@@ -44,6 +44,7 @@ import type {
   ViewMetaData,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import { resolveNillString } from '../utils';
 import { getAggregationAndCalcFuncByQuery } from '../utils/data-set-operate';
 import {
@@ -288,18 +289,21 @@ export class PivotDataSet extends BaseDataSet {
     sortedDimensionValues: string[],
   ) {
     const { rows, columns } = this.fields;
+    // 使用 getLeafColumnsWithKey 处理自定义列头（对象数组）的情况
+    const rowFields = getLeafColumnsWithKey(rows);
+    const colFields = getLeafColumnsWithKey(columns);
 
-    if (includes(rows, sortFieldId)) {
+    if (rowFields.includes(sortFieldId)) {
       this.rowPivotMeta = getSortedPivotMeta({
         pivotMeta: this.rowPivotMeta,
-        dimensions: rows as string[],
+        dimensions: rowFields,
         sortFieldId,
         sortedDimensionValues,
       });
-    } else if (includes(columns, sortFieldId)) {
+    } else if (colFields.includes(sortFieldId)) {
       this.colPivotMeta = getSortedPivotMeta({
         pivotMeta: this.colPivotMeta,
-        dimensions: columns as string[],
+        dimensions: colFields,
         sortFieldId,
         sortedDimensionValues,
       });

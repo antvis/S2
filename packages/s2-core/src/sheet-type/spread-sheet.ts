@@ -61,6 +61,7 @@ import { Store } from '../common/store';
 import type { BaseDataSet } from '../data-set';
 import type { BaseFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
@@ -739,10 +740,12 @@ export abstract class SpreadSheet extends EE {
   public getTotalsConfig(dimension: string): Total {
     const { totals } = this.options;
     const { rows } = this.dataSet.fields;
+    // 使用 getLeafColumnsWithKey 处理自定义列头（对象数组）的情况
+    const rowFields = getLeafColumnsWithKey(rows);
 
     const totalConfig = get(
       totals,
-      includes(rows, dimension) ? 'row' : 'col',
+      rowFields.includes(dimension) ? 'row' : 'col',
       {},
     ) as Total;
 

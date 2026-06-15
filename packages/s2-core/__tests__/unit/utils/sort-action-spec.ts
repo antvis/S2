@@ -439,6 +439,34 @@ describe('Sort By Func Tests', () => {
       '浙江[&]杭州',
     ]);
   });
+
+  // 测试自定义列头（对象数组）的场景
+  test('should handle custom column headers (object array) correctly', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
+    const result = sortByFunc({
+      originValues,
+      sortParam: {
+        sortFieldId: 'city',
+        sortFunc: () => ['绍兴', '绵阳', '杭州', '成都'],
+      },
+      dataSet: {
+        fields: {
+          rows: ['province', 'city'],
+          // 使用自定义列头（对象数组）
+          columns: [
+            {
+              field: 'type',
+              title: '类型',
+            },
+          ],
+        },
+      } as unknown as PivotDataSet,
+    });
+
+    // 应该正常返回排序结果，而不是因为自定义列头导致排序失效
+    expect(result).toEqual(['四川[&]绵阳', '四川[&]成都', '浙江[&]杭州']);
+  });
 });
 
 describe('GetSortByMeasureValues Tests', () => {
