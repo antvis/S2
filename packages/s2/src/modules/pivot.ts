@@ -48,7 +48,13 @@ function aggregate(values: number[], fn: AggFn): number {
   }
 }
 
-function buildTree(data: Record<string, unknown>[], fields: string[]): PivotTreeNode[] {
+interface TreeNodeWithData {
+  value: string;
+  children: TreeNodeWithData[];
+  records: Record<string, unknown>[];
+}
+
+function buildTreeWithData(data: Record<string, unknown>[], fields: string[]): TreeNodeWithData[] {
   if (fields.length === 0) return [];
   const field = fields[0]!;
   const rest = fields.slice(1);
@@ -60,14 +66,38 @@ function buildTree(data: Record<string, unknown>[], fields: string[]): PivotTree
     groups.get(val)!.push(record);
   }
 
-  const nodes: PivotTreeNode[] = [];
+  const nodes: TreeNodeWithData[] = [];
   for (const [value, records] of groups) {
     nodes.push({
       value,
-      children: buildTree(records, rest),
+      children: buildTreeWithData(records, rest),
+      records,
     });
   }
   return nodes;
+}
+
+function toHierarchyTree(nodes: TreeNodeWithData[]): PivotTreeNode[] {
+  return nodes.map((n) => ({
+    value: n.value,
+    children: toHierarchyTree(n.children),
+  }));
+}
+
+function getLeafGroups(nodes: TreeNodeWithData[]): Record<string, unknown>[][] {
+  const groups: Record<string, unknown>[][] = [];
+  for (const node of nodes) {
+    if (node.children.length === 0) {
+      groups.push(node.records);
+    } else {
+      groups.push(...getLeafGroups(node.children));
+    }
+  }
+  return groups;
+}
+
+function buildTree(data: Record<string, unknown>[], fields: string[]): PivotTreeNode[] {
+  return toHierarchyTree(buildTreeWithData(data, fields));
 }
 
 function getLeafPaths(tree: PivotTreeNode[], prefix: string[] = []): string[][] {
@@ -92,53 +122,65 @@ function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig
     }
   }
 
-  const rowTree = buildTree(filteredData, config.rows);
-  const colTree = buildTree(filteredData, config.columns);
+  const rowTreeData = buildTreeWithData(filteredData, config.rows);
+  const rowTree = toHierarchyTree(rowTreeData);
+  const rowLeafGroups = config.rows.length > 0 ? getLeafGroups(rowTreeData) : [filteredData];
 
-  const rowLeafPaths = getLeafPaths(rowTree);
-  const colLeafPaths = config.columns.length > 0 ? getLeafPaths(colTree) : [[]];
+  const colTreeData = buildTreeWithData(filteredData, config.columns);
+  const colTree = toHierarchyTree(colTreeData);
+  const colLeafGroups = config.columns.length > 0 ? getLeafGroups(colTreeData) : null;
 
-  function aggregateRow(records: Record<string, unknown>[]): number[] {
-    const row: number[] = [];
-    for (let ci = 0; ci < colLeafPaths.length; ci++) {
-      const colPath = colLeafPaths[ci]!;
-      const matchingRecords = colPath.length > 0
-        ? records.filter((record) =>
-            config.columns.every((field, i) => String(record[field] ?? '') === colPath[i])
-          )
-        : records;
-      for (const vf of config.values) {
-        const nums = matchingRecords.map((r) => Number(r[vf])).filter((n) => !isNaN(n));
-        const aggFn = config.valueAggregation[vf] ?? 'SUM';
-        row.push(aggregate(nums, aggFn));
+  // Build column index: for each record, map to its col leaf index
+  let colIndexMap: Map<Record<string, unknown>, number> | null = null;
+  let colLeafCount = 1;
+  if (colLeafGroups) {
+    colLeafCount = colLeafGroups.length;
+    colIndexMap = new Map();
+    for (let ci = 0; ci < colLeafGroups.length; ci++) {
+      for (const record of colLeafGroups[ci]!) {
+        colIndexMap.set(record, ci);
       }
     }
-    return row;
   }
 
+  const valuesPerCol = config.values.length;
+  const totalCols = colLeafCount * valuesPerCol;
   const values: number[][] = [];
 
-  for (const rowPath of rowLeafPaths) {
-    const rowRecords = filteredData.filter((record) =>
-      config.rows.every((field, i) => String(record[field] ?? '') === rowPath[i])
-    );
-    values.push(aggregateRow(rowRecords));
+  for (const rowRecords of rowLeafGroups) {
+    const row = new Array<number[]>(totalCols);
+    for (let i = 0; i < totalCols; i++) row[i] = [];
+
+    for (const record of rowRecords) {
+      const ci = colIndexMap ? (colIndexMap.get(record) ?? -1) : 0;
+      if (ci === -1) continue;
+
+      for (let vi = 0; vi < config.values.length; vi++) {
+        const num = Number(record[config.values[vi]!]);
+        if (!isNaN(num)) {
+          row[ci * valuesPerCol + vi]!.push(num);
+        }
+      }
+    }
+
+    const aggregated: number[] = [];
+    for (let i = 0; i < totalCols; i++) {
+      const aggFn = config.valueAggregation[config.values[i % valuesPerCol]!] ?? 'SUM';
+      aggregated.push(aggregate(row[i]!, aggFn));
+    }
+    values.push(aggregated);
   }
 
-  // Insert subtotals and grand total
+  // Subtotals
   if (config.showSubTotals && config.rows.length > 1) {
     const finalValues: number[][] = [];
     let leafIdx = 0;
 
-    function walkForSubtotals(nodes: PivotTreeNode[], depth: number): void {
+    function walkForSubtotals(nodes: TreeNodeWithData[], depth: number): void {
       for (const node of nodes) {
         if (node.children.length > 0) {
           walkForSubtotals(node.children, depth + 1);
-
-          // Subtotal row for this parent node
-          const parentField = config.rows[depth]!;
-          const parentRecords = filteredData.filter((r) => String(r[parentField] ?? '') === node.value);
-          finalValues.push(aggregateRow(parentRecords));
+          finalValues.push(aggregateRecordGroup(node.records, colIndexMap, colLeafCount, config));
         } else {
           finalValues.push(values[leafIdx]!);
           leafIdx++;
@@ -146,13 +188,13 @@ function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig
       }
     }
 
-    walkForSubtotals(rowTree, 0);
+    walkForSubtotals(rowTreeData, 0);
     values.length = 0;
     values.push(...finalValues);
   }
 
   if (config.showGrandTotal) {
-    values.push(aggregateRow(filteredData));
+    values.push(aggregateRecordGroup(filteredData, colIndexMap, colLeafCount, config));
   }
 
   const layout: PivotLayout = {
@@ -162,10 +204,40 @@ function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig
     colFields: config.columns,
     valueFields: config.values,
     rowLeafCount: values.length,
-    colLeafCount: colLeafPaths.length * config.values.length,
+    colLeafCount: colLeafCount * valuesPerCol,
   };
 
   return { layout, values };
+}
+
+function aggregateRecordGroup(
+  records: Record<string, unknown>[],
+  colIndexMap: Map<Record<string, unknown>, number> | null,
+  colLeafCount: number,
+  config: PivotConfig,
+): number[] {
+  const valuesPerCol = config.values.length;
+  const totalCols = colLeafCount * valuesPerCol;
+  const buckets = new Array<number[]>(totalCols);
+  for (let i = 0; i < totalCols; i++) buckets[i] = [];
+
+  for (const record of records) {
+    const ci = colIndexMap ? (colIndexMap.get(record) ?? -1) : 0;
+    if (ci === -1) continue;
+    for (let vi = 0; vi < config.values.length; vi++) {
+      const num = Number(record[config.values[vi]!]);
+      if (!isNaN(num)) {
+        buckets[ci * valuesPerCol + vi]!.push(num);
+      }
+    }
+  }
+
+  const result: number[] = [];
+  for (let i = 0; i < totalCols; i++) {
+    const aggFn = config.valueAggregation[config.values[i % valuesPerCol]!] ?? 'SUM';
+    result.push(aggregate(buckets[i]!, aggFn));
+  }
+  return result;
 }
 
 function materializeToModel(model: WorkbookModel, sheet: number, values: number[][]): void {

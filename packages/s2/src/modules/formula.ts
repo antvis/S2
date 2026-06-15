@@ -293,12 +293,17 @@ export const FormulaModule: ModuleDefinition = {
 
   lifecycle: {
     onOperationApplied(this: { state: FormulaState }, ops: Operation[], model: WorkbookModel) {
-      // When a cell value changes, recalculate formulas that depend on it
       let needRecalc = false;
       for (const op of ops) {
-        if (op.type === 'setCellValue' || op.type === 'restoreCell' || op.type === 'deleteCellValue') {
+        if (op.type === 'setCellValue' || op.type === 'edit.commit') {
+          const { sheet, row, col } = op.payload as { sheet: number; row: number; col: number };
+          const key = cellKey(sheet, row, col);
+          if (this.state.formulas.has(key)) {
+            this.state.formulas.delete(key);
+          }
           needRecalc = true;
-          break;
+        } else if (op.type === 'restoreCell' || op.type === 'deleteCellValue') {
+          needRecalc = true;
         }
       }
       if (needRecalc && this.state.formulas.size > 0) {

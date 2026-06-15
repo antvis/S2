@@ -237,8 +237,21 @@ export class InteractionEngine {
   }
 
   private handleKeyDown(e: KeyboardEventLike): void {
-    if (this.state === 'editing') return;
+    const mod = e.ctrlKey || e.metaKey;
+    const key = e.key.toLowerCase();
 
+    if (mod && key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      this.workbook.undo();
+      return;
+    }
+    if (mod && (key === 'y' || (e.shiftKey && key === 'z'))) {
+      e.preventDefault();
+      this.workbook.redo();
+      return;
+    }
+
+    if (this.state === 'editing') return;
     if (!this.selection) return;
 
     const row = this.selection.endRow;

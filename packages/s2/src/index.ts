@@ -1,7 +1,7 @@
 export { createWorkbook } from './workbook';
 export type { Workbook, CreateWorkbookOptions } from './workbook';
 export { defineModule } from './module/define';
-export type { ModuleDefinition, ModuleLifecycle, ModuleQueryDef } from './module/types';
+export type { ModuleDefinition, ModuleLifecycle, ModuleQueryDef, CellRendererFn, CellRenderContext } from './module/types';
 export type { Operation, OperationMeta, OperationDefinition } from './operation/types';
 export type { CellState, RowState, ColumnState, SheetState, WorkbookState, Sparse, MergeRange } from './core/types';
 export type { HierarchyTreeNode, HierarchyLayout } from './layout/types';

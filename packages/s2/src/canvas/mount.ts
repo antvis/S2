@@ -53,6 +53,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
       hover: currentHover,
       showRowHeader,
       showColHeader,
+      moduleRenderers: workbook.getModuleRenderers(),
     });
   }
 

@@ -2,6 +2,7 @@ import { DETAIL_HEADER_WIDTH, DETAIL_HEADER_HEIGHT } from '../layout/types';
 import type { CellBox, HeaderBox, LayoutPlan, Line } from '../layout/types';
 import type { QueryLayer } from '../query/query';
 import type { Selection, HoverInfo } from '../interaction/types';
+import type { CellRendererFn, CellRenderContext } from '../module/types';
 
 const HEADER_WIDTH = DETAIL_HEADER_WIDTH;
 const HEADER_HEIGHT = DETAIL_HEADER_HEIGHT;
@@ -20,6 +21,7 @@ export interface RenderState {
   hover?: HoverInfo | null;
   showRowHeader?: boolean;
   showColHeader?: boolean;
+  moduleRenderers?: readonly CellRendererFn[];
 }
 
 export function renderFrame(
@@ -38,9 +40,9 @@ export function renderFrame(
   const hasHierarchy = plan.hierarchyRowHeaders.length > 0 || plan.hierarchyColHeaders.length > 0;
 
   if (hasHierarchy) {
-    renderHierarchyFrame(ctx, plan, query, sheetIndex, state?.selection, state?.hover);
+    renderHierarchyFrame(ctx, plan, query, sheetIndex, state?.selection, state?.hover, state?.moduleRenderers);
   } else {
-    renderDetailFrame(ctx, plan, query, sheetIndex, state?.selection, state?.hover, state);
+    renderDetailFrame(ctx, plan, query, sheetIndex, state?.selection, state?.hover, state?.moduleRenderers, state);
   }
 }
 
@@ -53,6 +55,7 @@ function renderHierarchyFrame(
   sheetIndex: number,
   selection?: Selection | null,
   hover?: HoverInfo | null,
+  moduleRenderers?: readonly CellRendererFn[],
 ): void {
   const { viewport, headerArea } = plan;
 
@@ -72,7 +75,7 @@ function renderHierarchyFrame(
     drawSelection(ctx, plan.cells, selection);
   }
 
-  drawCells(ctx, plan.cells, query, sheetIndex);
+  drawCells(ctx, plan.cells, query, sheetIndex, moduleRenderers);
 
   ctx.restore();
 
@@ -222,6 +225,7 @@ function renderDetailFrame(
   sheetIndex: number,
   selection?: Selection | null,
   hover?: HoverInfo | null,
+  moduleRenderers?: readonly CellRendererFn[],
   state?: RenderState
 ): void {
   const { viewport } = plan;
@@ -240,7 +244,7 @@ function renderDetailFrame(
   }
 
   // Cells (scrollable area)
-  drawCells(ctx, plan.cells, query, sheetIndex);
+  drawCells(ctx, plan.cells, query, sheetIndex, moduleRenderers);
 
   // Frozen cells (drawn on top so they overlay scrollable content)
   if (plan.frozenCells.length > 0) {
@@ -255,7 +259,7 @@ function renderDetailFrame(
       ctx.fillRect(HEADER_WIDTH, HEADER_HEIGHT, frozenColWidth, viewport.viewHeight - HEADER_HEIGHT);
     }
     drawGridlines(ctx, plan.frozenGridlines);
-    drawCells(ctx, plan.frozenCells, query, sheetIndex);
+    drawCells(ctx, plan.frozenCells, query, sheetIndex, moduleRenderers);
 
     // Freeze border line
     ctx.strokeStyle = '#bbb';
@@ -307,7 +311,8 @@ function drawCells(
   ctx: CanvasRenderingContext2D,
   cells: CellBox[],
   query: QueryLayer,
-  sheetIndex: number
+  sheetIndex: number,
+  moduleRenderers?: readonly CellRendererFn[],
 ): void {
   ctx.font = FONT;
   ctx.textBaseline = 'middle';
@@ -315,7 +320,6 @@ function drawCells(
     const box = cells[i]!;
     const value = query.getCellDisplayValue({ sheet: sheetIndex, row: box.row, col: box.col });
 
-    // Conditional format background
     let textColor = TEXT_COLOR;
     try {
       const cfStyle = query.moduleQuery('conditionalFormat.getCellStyle', {
@@ -331,7 +335,19 @@ function drawCells(
         }
       }
     } catch {
-      // ConditionalFormatModule not registered — skip
+      // ConditionalFormatModule not registered
+    }
+
+    // Module renderers
+    if (moduleRenderers && moduleRenderers.length > 0) {
+      const renderCtx: CellRenderContext = {
+        sheet: sheetIndex, row: box.row, col: box.col,
+        x: box.x, y: box.y, width: box.width, height: box.height,
+      };
+      const queryProxy = { moduleQuery: (name: string, params: Record<string, unknown>) => query.moduleQuery(name, params) };
+      for (const renderer of moduleRenderers) {
+        renderer(ctx, renderCtx, queryProxy);
+      }
     }
 
     if (value === null) continue;

@@ -36,6 +36,9 @@ export interface Workbook {
   on(event: 'operationApplied', handler: EventHandler): () => void;
   registerDataSource(id: string, data: unknown[], options?: DataSourceOptions): void;
   toJSON(): WorkbookState;
+  exportCSV(sheet?: number): string;
+  exportTSV(sheet?: number): string;
+  getModuleRenderers(): readonly import('./module/types').CellRendererFn[];
   /** @internal — used by mountCanvas, not part of public API */
   __getModel(): WorkbookModel;
 }
@@ -113,12 +116,22 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     },
     undo() {
       const result = engine.undo();
-      if (result) queryLayer.invalidateAll();
+      if (result) {
+        queryLayer.invalidateAll();
+        for (const listener of listeners) {
+          listener([{ type: '__undo', payload: {} }]);
+        }
+      }
       return result;
     },
     redo() {
       const result = engine.redo();
-      if (result) queryLayer.invalidateAll();
+      if (result) {
+        queryLayer.invalidateAll();
+        for (const listener of listeners) {
+          listener([{ type: '__redo', payload: {} }]);
+        }
+      }
       return result;
     },
     canUndo() {
@@ -137,17 +150,13 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     },
     registerDataSource(id: string, data: unknown[], opts?: DataSourceOptions) {
       const stored = opts?.copy ? structuredClone(data) : Object.freeze(data);
-      const isUpdate = model.dataSources.has(id);
       model.dataSources.set(id, stored as unknown[]);
-      // Notify modules when data source is updated (triggers re-aggregation)
-      if (isUpdate) {
-        moduleRegistry.notifyOperationApplied([
-          { type: '__dataSourceUpdated', payload: { dataSourceId: id } },
-        ]);
-        queryLayer.invalidateAll();
-        for (const listener of listeners) {
-          listener([{ type: '__dataSourceUpdated', payload: { dataSourceId: id } }]);
-        }
+      moduleRegistry.notifyOperationApplied([
+        { type: '__dataSourceUpdated', payload: { dataSourceId: id } },
+      ]);
+      queryLayer.invalidateAll();
+      for (const listener of listeners) {
+        listener([{ type: '__dataSourceUpdated', payload: { dataSourceId: id } }]);
       }
     },
     toJSON() {
@@ -158,10 +167,52 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       }
       return state as unknown as WorkbookState;
     },
+    exportCSV(sheet = 0) {
+      return exportDelimited(model, queryLayer, sheet, ',');
+    },
+    exportTSV(sheet = 0) {
+      return exportDelimited(model, queryLayer, sheet, '\t');
+    },
+    getModuleRenderers() {
+      return moduleRegistry.getRenderers();
+    },
     __getModel() {
       return model;
     },
   };
+}
+
+function exportDelimited(model: WorkbookModel, query: QueryLayer, sheetIndex: number, delimiter: string): string {
+  const sheet = model.getSheet(sheetIndex);
+  if (!sheet) return '';
+
+  let maxRow = 0;
+  let maxCol = 0;
+  for (const [row, rowData] of sheet.cells) {
+    if (row > maxRow) maxRow = row;
+    for (const [col] of rowData) {
+      if (col > maxCol) maxCol = col;
+    }
+  }
+
+  const lines: string[] = [];
+  for (let r = 0; r <= maxRow; r++) {
+    const cells: string[] = [];
+    for (let c = 0; c <= maxCol; c++) {
+      const value = query.getCellDisplayValue({ sheet: sheetIndex, row: r, col: c });
+      if (value === null) {
+        cells.push('');
+      } else {
+        let text = String(value);
+        if (text.includes(delimiter) || text.includes('"') || text.includes('\n')) {
+          text = '"' + text.replace(/"/g, '""') + '"';
+        }
+        cells.push(text);
+      }
+    }
+    lines.push(cells.join(delimiter));
+  }
+  return lines.join('\n');
 }
 
 function registerCoreOperations(registry: OperationRegistry): void {

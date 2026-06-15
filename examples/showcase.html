@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>S2 v3 — Feature Showcase</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; }
+    h2 { margin: 16px; font-size: 16px; color: #333; }
+    #app { width: calc(100vw - 32px); height: calc(100vh - 120px); margin: 0 16px; background: #fff; border: 1px solid #e0e0e0; }
+    .toolbar {
+      display: flex; gap: 8px; padding: 8px 16px; flex-wrap: wrap; align-items: center;
+    }
+    .toolbar button {
+      padding: 4px 12px; border: 1px solid #d0d0d0; border-radius: 4px;
+      background: #fff; cursor: pointer; font-size: 13px;
+    }
+    .toolbar button:hover { background: #f0f0f0; }
+    .toolbar select, .toolbar input {
+      padding: 4px 8px; border: 1px solid #d0d0d0; border-radius: 4px; font-size: 13px;
+    }
+    .toolbar span { font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <h2>S2 v3 — 功能测试 (Feature Showcase)</h2>
+  <div class="toolbar">
+    <button id="btn-undo">↩ Undo</button>
+    <button id="btn-redo">↪ Redo</button>
+    <span>|</span>
+    <button id="btn-sort-asc">排序 ↑ (A列)</button>
+    <button id="btn-sort-desc">排序 ↓ (A列)</button>
+    <button id="btn-sort-clear">清除排序</button>
+    <span>|</span>
+    <button id="btn-filter">筛选 (B列 > 200)</button>
+    <button id="btn-filter-clear">清除筛选</button>
+    <span>|</span>
+    <button id="btn-freeze">冻结 (1行1列)</button>
+    <button id="btn-freeze-clear">解冻</button>
+    <span>|</span>
+    <button id="btn-cf">条件格式 (C列 > 300 标红)</button>
+    <button id="btn-cf-scale">色阶 (C列)</button>
+    <button id="btn-cf-clear">清除条件格式</button>
+    <span>|</span>
+    <button id="btn-copy">复制选区</button>
+    <button id="btn-paste">粘贴到 F1</button>
+    <span>|</span>
+    <button id="btn-export-csv">导出 CSV</button>
+  </div>
+  <div id="app"></div>
+
+  <script type="module">
+    import {
+      createWorkbook, mountCanvas,
+      EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule,
+    } from '../packages/s2/src/index.ts';
+
+    const workbook = createWorkbook({
+      modules: [EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule],
+    });
+
+    // 填充示例数据
+    const headers = ['Name', 'Sales', 'Revenue', 'Profit', 'Region'];
+    const data = [
+      ['Alice', 150, 450, 120, 'East'],
+      ['Bob', 280, 680, 210, 'West'],
+      ['Carol', 90, 220, 65, 'East'],
+      ['Dave', 340, 850, 310, 'North'],
+      ['Eve', 200, 500, 180, 'West'],
+      ['Frank', 120, 310, 95, 'South'],
+      ['Grace', 410, 1020, 400, 'East'],
+      ['Hank', 175, 430, 140, 'North'],
+      ['Ivy', 260, 640, 195, 'South'],
+      ['Jack', 320, 790, 280, 'West'],
+    ];
+
+    // 批量写入数据（一次 apply，一个 undo 入口）
+    const ops = [];
+    for (let c = 0; c < headers.length; c++) {
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: 0, col: c, value: headers[c] } });
+    }
+    for (let r = 0; r < data.length; r++) {
+      for (let c = 0; c < data[r].length; c++) {
+        ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: c, value: data[r][c] } });
+      }
+    }
+    workbook.apply(ops);
+
+    const handle = mountCanvas(workbook, document.getElementById('app'));
+    window.workbook = workbook;
+
+    // ─── Toolbar handlers ───
+
+    document.getElementById('btn-undo').onclick = () => workbook.undo();
+    document.getElementById('btn-redo').onclick = () => workbook.redo();
+
+    document.getElementById('btn-sort-asc').onclick = () => {
+      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: 0, order: 'asc' }] } }]);
+    };
+    document.getElementById('btn-sort-desc').onclick = () => {
+      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: 0, order: 'desc' }] } }]);
+    };
+    document.getElementById('btn-sort-clear').onclick = () => {
+      workbook.apply([{ type: 'sort.clear', payload: { sheet: 0 } }]);
+    };
+
+    document.getElementById('btn-filter').onclick = () => {
+      workbook.apply([{
+        type: 'filter.set',
+        payload: { sheet: 0, col: 1, condition: { type: 'greaterThan', value: 200 } },
+      }]);
+    };
+    document.getElementById('btn-filter-clear').onclick = () => {
+      workbook.apply([{ type: 'filter.clear', payload: { sheet: 0 } }]);
+    };
+
+    document.getElementById('btn-freeze').onclick = () => {
+      workbook.apply([{ type: 'freeze.set', payload: { sheet: 0, frozenRows: 1, frozenCols: 1 } }]);
+    };
+    document.getElementById('btn-freeze-clear').onclick = () => {
+      workbook.apply([{ type: 'freeze.clear', payload: { sheet: 0 } }]);
+    };
+
+    document.getElementById('btn-cf').onclick = () => {
+      workbook.apply([{
+        type: 'conditionalFormat.addRule',
+        payload: {
+          sheet: 0,
+          range: { startRow: 1, endRow: 10, startCol: 2, endCol: 2 },
+          rule: { type: 'greaterThan', value: 300 },
+          style: { backgroundColor: '#ff4d4f', color: '#fff' },
+        },
+      }]);
+    };
+    document.getElementById('btn-cf-scale').onclick = () => {
+      workbook.apply([{
+        type: 'conditionalFormat.addRule',
+        payload: {
+          sheet: 0,
+          range: { startRow: 1, endRow: 10, startCol: 2, endCol: 2 },
+          rule: { type: 'colorScale', min: '#ffffff', max: '#1890ff' },
+        },
+      }]);
+    };
+    document.getElementById('btn-cf-clear').onclick = () => {
+      workbook.apply([{ type: 'conditionalFormat.clearRules', payload: { sheet: 0 } }]);
+    };
+
+    document.getElementById('btn-copy').onclick = () => {
+      workbook.apply([{
+        type: 'edit.copy',
+        payload: { sheet: 0, range: { startRow: 0, endRow: 3, startCol: 0, endCol: 2 } },
+      }]);
+      console.log('Copied range A1:C4 to clipboard');
+    };
+    document.getElementById('btn-paste').onclick = () => {
+      workbook.apply([{ type: 'edit.paste', payload: { sheet: 0, row: 0, col: 5 } }]);
+      console.log('Pasted to F1');
+    };
+
+    document.getElementById('btn-export-csv').onclick = () => {
+      const csv = workbook.exportCSV();
+      console.log('CSV output:\n' + csv);
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'export.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+    console.log('功能测试说明:');
+    console.log('- 双击单元格编辑，Enter 提交，Esc 取消');
+    console.log('- 点击单元格选中，拖拽选区，方向键移动，Shift+方向键扩展');
+    console.log('- 鼠标移到列头/行头边缘可拖拽调整宽高');
+    console.log('- 鼠标悬停单元格 0.5s 后显示 tooltip');
+    console.log('- 工具栏按钮测试各 Module 功能');
+    console.log('- 所有操作支持 Undo/Redo');
+  </script>
+</body>
+</html>

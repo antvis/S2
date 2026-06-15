@@ -162,4 +162,26 @@ describe('FormulaModule', () => {
       ]);
     }).toThrow('Unknown operation');
   });
+
+  it('should clear formula when setCellValue overwrites a formula cell', () => {
+    const workbook = createFormulaWorkbook();
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 10 } },
+      { type: 'formula.setFormula', payload: { sheet: 0, row: 1, col: 0, formula: '=A1*2' } },
+    ]);
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 1, col: 0 })).toBe(20);
+
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 1, col: 0, value: 99 } },
+    ]);
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 1, col: 0 })).toBe(99);
+
+    const formula = workbook.query.moduleQuery('formula.getFormula', { sheet: 0, row: 1, col: 0 });
+    expect(formula).toBeNull();
+
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 50 } },
+    ]);
+    expect(workbook.query.getCellDisplayValue({ sheet: 0, row: 1, col: 0 })).toBe(99);
+  });
 });

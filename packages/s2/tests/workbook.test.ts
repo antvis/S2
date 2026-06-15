@@ -217,4 +217,33 @@ describe('createWorkbook', () => {
     const wb2 = createWorkbook({ snapshot: json });
     expect(wb2.toJSON().sheets).toHaveLength(1);
   });
+
+  it('should export CSV', () => {
+    const workbook = createWorkbook();
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 'Name' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 1, value: 'Age' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 1, col: 0, value: 'Alice' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 1, col: 1, value: 30 } },
+    ]);
+    expect(workbook.exportCSV()).toBe('Name,Age\nAlice,30');
+  });
+
+  it('should export TSV', () => {
+    const workbook = createWorkbook();
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 'A' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 1, value: 'B' } },
+    ]);
+    expect(workbook.exportTSV()).toBe('A\tB');
+  });
+
+  it('should escape CSV values with commas and quotes', () => {
+    const workbook = createWorkbook();
+    workbook.apply([
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 'hello, world' } },
+      { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 1, value: 'say "hi"' } },
+    ]);
+    expect(workbook.exportCSV()).toBe('"hello, world","say ""hi"""');
+  });
 });

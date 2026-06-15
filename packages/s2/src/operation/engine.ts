@@ -39,12 +39,15 @@ export class OperationEngine {
         allInverse.push(...inverse);
       }
     } catch (e) {
-      // Rollback by applying collected inverse ops in reverse order
       for (let i = allInverse.length - 1; i >= 0; i--) {
-        const invOp = allInverse[i]!;
-        const def = this.registry.get(invOp.type);
-        if (def) {
-          def.execute(this.model, invOp.payload);
+        try {
+          const invOp = allInverse[i]!;
+          const def = this.registry.get(invOp.type);
+          if (def) {
+            def.execute(this.model, invOp.payload);
+          }
+        } catch {
+          // Swallow rollback errors to preserve the original exception
         }
       }
       throw e;

@@ -1,4 +1,4 @@
-import type { ModuleDefinition } from './types';
+import type { ModuleDefinition, CellRendererFn } from './types';
 import type { WorkbookModel } from '../core/model';
 import type { OperationRegistry } from '../operation/registry';
 import type { QueryLayer } from '../query/query';
@@ -11,6 +11,7 @@ interface ModuleInstance {
 
 export class ModuleRegistry {
   private readonly modules: ModuleInstance[] = [];
+  private readonly renderers: CellRendererFn[] = [];
   private sorted = false;
 
   register(definition: ModuleDefinition, operationRegistry: OperationRegistry, queryLayer?: QueryLayer): void {
@@ -32,6 +33,12 @@ export class ModuleRegistry {
     if (definition.queries && queryLayer) {
       for (const [name, handler] of Object.entries(definition.queries)) {
         queryLayer.registerModuleQuery(name, handler, () => state);
+      }
+    }
+
+    if (definition.renderers) {
+      for (const renderer of Object.values(definition.renderers)) {
+        this.renderers.push(renderer);
       }
     }
 
@@ -64,6 +71,10 @@ export class ModuleRegistry {
   getModuleState(name: string): unknown {
     const mod = this.modules.find((m) => m.definition.name === name);
     return mod?.state;
+  }
+
+  getRenderers(): readonly CellRendererFn[] {
+    return this.renderers;
   }
 
   serializeAll(): Record<string, unknown> {

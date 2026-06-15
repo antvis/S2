@@ -494,6 +494,19 @@ export class LayoutEngine {
         this.colSums.setSize(col, state.width);
       }
     }
+
+    if (this.queryLayer) {
+      try {
+        const hiddenRows = this.queryLayer.moduleQuery('filter.getHiddenRows', { sheet: 0 }) as Set<number> | null;
+        if (hiddenRows) {
+          for (const row of hiddenRows) {
+            this.rowSums.setSize(row, 0);
+          }
+        }
+      } catch {
+        // FilterModule not registered
+      }
+    }
   }
 
   private estimateRowCount(): number {
