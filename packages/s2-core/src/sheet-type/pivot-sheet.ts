@@ -2,6 +2,8 @@ import { clone, isString, last } from 'lodash';
 import { DataCell } from '../cell';
 import { EXTRA_FIELD, S2Event } from '../common/constant';
 import type {
+  ColCellCollapsedParams,
+  ColCellStyle,
   RowCellCollapsedParams,
   RowCellStyle,
   SortMethod,
@@ -57,6 +59,10 @@ export class PivotSheet extends SpreadSheet {
     return this.options.hierarchyType === 'grid-tree';
   }
 
+  public isHierarchyGridTreeColType(): boolean {
+    return this.options.columnHierarchyType === 'grid-tree';
+  }
+
   /**
    * Scroll Freeze Row Header
    */
@@ -95,10 +101,17 @@ export class PivotSheet extends SpreadSheet {
   protected bindEvents() {
     this.off(S2Event.ROW_CELL_COLLAPSED__PRIVATE);
     this.off(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE);
+    this.off(S2Event.COL_CELL_COLLAPSED__PRIVATE);
+    this.off(S2Event.COL_CELL_ALL_COLLAPSED__PRIVATE);
     this.on(S2Event.ROW_CELL_COLLAPSED__PRIVATE, this.handleRowCellCollapsed);
     this.on(
       S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
       this.handleRowCellToggleCollapseAll,
+    );
+    this.on(S2Event.COL_CELL_COLLAPSED__PRIVATE, this.handleColCellCollapsed);
+    this.on(
+      S2Event.COL_CELL_ALL_COLLAPSED__PRIVATE,
+      this.handleColCellToggleCollapseAll,
     );
   }
 
@@ -143,6 +156,49 @@ export class PivotSheet extends SpreadSheet {
 
     await this.render(false);
     this.emit(S2Event.ROW_CELL_ALL_COLLAPSED, collapseAll);
+  }
+
+  protected async handleColCellCollapsed(data: ColCellCollapsedParams) {
+    const { isCollapsed, node } = data;
+    const { collapseFields: defaultCollapsedFields } =
+      this.options.style?.colCell ?? {};
+
+    const collapseFields: ColCellStyle['collapseFields'] = {
+      ...defaultCollapsedFields,
+      [node.id]: isCollapsed,
+    };
+
+    this.setOptions({
+      style: {
+        colCell: {
+          collapseFields,
+        },
+      },
+    });
+
+    await this.render(false);
+    this.emit(S2Event.COL_CELL_COLLAPSED, {
+      isCollapsed,
+      collapseFields,
+      node,
+    });
+  }
+
+  protected async handleColCellToggleCollapseAll(isCollapsed: boolean) {
+    const collapseAll = !isCollapsed;
+
+    this.setOptions({
+      style: {
+        colCell: {
+          collapseAll,
+          collapseFields: null,
+          expandDepth: null,
+        },
+      },
+    });
+
+    await this.render(false);
+    this.emit(S2Event.COL_CELL_ALL_COLLAPSED, collapseAll);
   }
 
   public async groupSortByMethod(sortMethod: SortMethod, meta: Node) {

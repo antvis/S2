@@ -207,6 +207,22 @@ const s2Options = {
 
 <Playground path='/basic/pivot/demo/grid-tree.ts' rid='pivot-grid-tree' height='300'></playground>
 
+#### 列头树状平铺模式 (Column Grid Tree)
+
+类似行头的树状平铺模式，在列头上每个维度层级有独立的行，同时支持展开折叠。
+
+```ts
+const s2Options = {
+  columnHierarchyType: 'grid-tree',
+  style: {
+    colCell: {
+      // 默认展开层级 (从 0 开始)
+      expandDepth: 0,
+    },
+  },
+}
+```
+
 ### 数据汇总
 
 支持 [小计/总计](/manual/basic/totals) 的透视能力。

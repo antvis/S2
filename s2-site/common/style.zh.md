@@ -42,6 +42,9 @@ order: 3
 | widthByField | 根据度量值设置宽度（拖拽或者预设宽度场景）, `field` 对应 `s2DataConfig.fields.columns` 中的 `field` 或 列头 id （优先级大于 `width`) [查看详情](/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
 | heightByField | 根据度量值设置高度（拖拽或者预设高度场景）, `field` 对应 `s2DataConfig.fields.columns` 中的 `field` 或 列头 id （优先级大于 `height`) [查看详情](/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
 | hideValue | 默认数值挂列头，会同时显示列头和数值，隐藏数值，使其更美观。（即 `s2DataConfig.fields.values` 且仅在单数值时有效，多数值时推荐使用 [隐藏列头](https://s2.antv.vision/manual/advanced/interaction/hide-columns#2-%E9%80%8F%E8%A7%86%E8%A1%A8)) | `boolean` | false |  |
+| collapseFields | grid-tree 模式下列头自定义折叠节点。<br> 支持 id (`'root[&] 家具'`) 和 维度 field (`'type'`) 两种格式，优先级大于 `collapseAll` 和 `expandDepth`, 设置为 `null` 时优先级最低。 | `Record<string, boolean>` |  | |
+| collapseAll | 在 grid-tree 模式下列头是否默认收起全部。 | `boolean` |   `false` | |
+| expandDepth | 在 grid-tree 模式下列头默认展开的层级（层级从 0 开始）,  设置为 `null` 时优先级最低 |  `number` |  | |
 
 ### RowCell
 

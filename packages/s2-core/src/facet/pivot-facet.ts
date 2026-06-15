@@ -163,6 +163,7 @@ export class PivotFacet extends FrozenFacet {
     const data = (dataSet as PivotDataSet).getCellData({
       query: dataQuery,
       rowNode: row,
+      colNode: col,
       isTotals,
       totalStatus,
     });

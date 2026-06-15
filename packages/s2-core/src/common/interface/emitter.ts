@@ -11,6 +11,7 @@ import type { InteractionName, S2Event } from '../../common/constant';
 import type {
   CellMeta,
   CellScrollPosition,
+  ColCellCollapsedParams,
   Data,
   FilterParam,
   HiddenColumnsInfo,
@@ -154,6 +155,10 @@ export interface EmitterType {
   ) => void;
   [S2Event.COL_CELL_RENDER]: (cell: ColCell) => void;
   [S2Event.COL_CELL_SELECTED]: CellSelectedHandler;
+  [S2Event.COL_CELL_COLLAPSED]: (data: ColCellCollapsedParams) => void;
+  [S2Event.COL_CELL_COLLAPSED__PRIVATE]: (data: ColCellCollapsedParams) => void;
+  [S2Event.COL_CELL_ALL_COLLAPSED]: (isCollapsed: boolean) => void;
+  [S2Event.COL_CELL_ALL_COLLAPSED__PRIVATE]: (isCollapsed: boolean) => void;
 
   /** ================ Corner Cell ================  */
   [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;

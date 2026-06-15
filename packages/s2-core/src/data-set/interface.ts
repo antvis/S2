@@ -63,6 +63,11 @@ export interface GetCellDataParams {
   rowNode?: Node;
 
   /**
+   * 列头节点，用于 column grid-tree 模式
+   */
+  colNode?: Node;
+
+  /**
    * 是否是行头
    */
   isRow?: boolean;

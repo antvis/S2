@@ -222,6 +222,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
   s2.isHierarchyGridTreeType = jest.fn();
+  s2.isHierarchyGridTreeColType = jest.fn().mockReturnValue(false);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as any;
   s2.getCanvasConfig = () => s2.container.getConfig();

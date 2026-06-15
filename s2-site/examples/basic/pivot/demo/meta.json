@@ -28,6 +28,14 @@
       },
       "new": true,
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TveZTrlRjlYAAAAAQiAAAAgAemJ7AQ/fmt.avif"
+    },
+    {
+      "filename": "col-grid-tree.ts",
+      "title": {
+        "zh": "列头树状平铺模式",
+        "en": "Column Grid Tree mode"
+      },
+      "new": true
     }
   ]
 }

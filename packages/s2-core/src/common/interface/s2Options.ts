@@ -374,6 +374,14 @@ export interface S2PivotSheetOptions {
   hierarchyType?: HierarchyType;
 
   /**
+   * 列头布局类型
+   * - grid: 平铺网格 (默认)
+   * - grid-tree: 树状平铺（平铺布局 + 展开折叠）
+   * @description 列头仅支持 grid 和 grid-tree 模式
+   */
+  columnHierarchyType?: 'grid' | 'grid-tree';
+
+  /**
    * 小计/总计配置
    * @see https://s2.antv.antgroup.com/manual/basic/totals
    */

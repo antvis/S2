@@ -10,6 +10,7 @@ import type {
   BuildHeaderResult,
   HeaderParams,
 } from '../layout/interface';
+import { buildColGridTreeHierarchy } from './build-col-grid-tree-hierarchy';
 import { buildGridHierarchy } from './build-gird-hierarchy';
 import { buildGridTreeHierarchy } from './build-grid-tree-hierarchy';
 import { buildCustomTreeHierarchy } from './build-row-custom-tree-hierarchy';
@@ -168,12 +169,48 @@ const handleTableHierarchy = (params: HeaderParams) => {
   buildTableHierarchy(params);
 };
 
+const handleGridTreeColHierarchy = (params: HeaderParams) => {
+  const {
+    isValueInCols,
+    moreThanOneValue,
+    rootNode,
+    hierarchy,
+    fields,
+    isCustomTreeFields,
+    spreadsheet,
+  } = params;
+
+  // grid-tree 模式使用专门的列头层级构建器
+  const addTotalMeasureInTotal = isValueInCols && moreThanOneValue;
+  const addMeasureInTotalQuery = isValueInCols && !moreThanOneValue;
+
+  if (isCustomTreeFields) {
+    handleCustomTreeHierarchy(params);
+  } else {
+    buildColGridTreeHierarchy({
+      spreadsheet,
+      addTotalMeasureInTotal,
+      addMeasureInTotalQuery,
+      parentNode: rootNode,
+      currentField: (fields as string[])[0],
+      fields: fields as string[],
+      hierarchy,
+    });
+  }
+};
+
 const handleColHeaderHierarchy = (params: HeaderParams) => {
   const { spreadsheet } = params;
   const isPivotMode = spreadsheet.isPivotMode();
 
   if (isPivotMode) {
-    handleGridRowColHierarchy(params);
+    if (spreadsheet.isHierarchyGridTreeColType()) {
+      // column grid-tree 模式：平铺布局 + 展开折叠
+      handleGridTreeColHierarchy(params);
+    } else {
+      // grid 模式：纯平铺布局
+      handleGridRowColHierarchy(params);
+    }
   } else {
     handleTableHierarchy(params);
   }
