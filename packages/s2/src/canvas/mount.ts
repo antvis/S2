@@ -19,6 +19,17 @@ export interface CanvasHandle {
   destroy(): void;
 }
 
+function writeClipboard(workbook: Workbook): void {
+  try {
+    const clipboard = workbook.query.moduleQuery('edit.getClipboard', {}) as { values: (string | number | boolean | null)[][] } | null;
+    if (!clipboard) return;
+    const tsv = clipboard.values.map((row) => row.map((v) => v ?? '').join('\t')).join('\n');
+    navigator.clipboard.writeText(tsv).catch(() => {});
+  } catch {
+    // EditModule not registered or clipboard API unavailable
+  }
+}
+
 export function mountCanvas(workbook: Workbook, container: HTMLElement, options?: MountCanvasOptions): CanvasHandle {
   if (options?.width) container.style.width = `${options.width}px`;
   if (options?.height) container.style.height = `${options.height}px`;
@@ -48,12 +59,30 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   function paint(): void {
     const freeze = getFreezeConfig();
     currentPlan = layout.computeLayoutPlan(runtime.getWidth(), runtime.getHeight(), freeze);
+
+    let fillDragPreview = null;
+    const fd = interaction.getFillDrag();
+    if (fd && fd.direction !== 'none') {
+      const src = fd.sourceRange;
+      const srcMinR = Math.min(src.startRow, src.endRow);
+      const srcMaxR = Math.max(src.startRow, src.endRow);
+      const srcMinC = Math.min(src.startCol, src.endCol);
+      const srcMaxC = Math.max(src.startCol, src.endCol);
+      fillDragPreview = {
+        startRow: Math.min(srcMinR, fd.currentRow),
+        startCol: Math.min(srcMinC, fd.currentCol),
+        endRow: Math.max(srcMaxR, fd.currentRow),
+        endCol: Math.max(srcMaxC, fd.currentCol),
+      };
+    }
+
     renderFrame(runtime.getContext(), currentPlan, workbook.query, 0, {
       selection: currentSelection,
       hover: currentHover,
       showRowHeader,
       showColHeader,
       moduleRenderers: workbook.getModuleRenderers(),
+      fillDragPreview,
     });
   }
 
@@ -181,6 +210,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     getLayoutPlan: () => currentPlan,
     onSelectionChange(selection) {
       currentSelection = selection;
+      workbook.apply([{ type: 'setSelection', payload: { selection } }]);
       runtime.markDirty();
       runtime.requestRepaint(paint);
     },
@@ -213,10 +243,39 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   paint();
 
   // Repaint on data change
-  const unsub = workbook.on('operationApplied', () => {
+  const unsub = workbook.on('operationApplied', (ops) => {
+    for (const op of ops) {
+      if (op.type === 'edit.copy') {
+        writeClipboard(workbook);
+      }
+    }
     runtime.markDirty();
     runtime.requestRepaint(paint);
   });
+
+  // Listen for browser paste events to support cross-app paste
+  const pasteHandler = (e: ClipboardEvent) => {
+    if (editorEl) return;
+    const text = e.clipboardData?.getData('text/plain');
+    if (!text || !currentSelection) return;
+    e.preventDefault();
+
+    const rows = text.split('\n').filter((r) => r.length > 0).map((r) => r.split('\t'));
+    const startRow = Math.min(currentSelection.startRow, currentSelection.endRow);
+    const startCol = Math.min(currentSelection.startCol, currentSelection.endCol);
+    const ops: { type: string; payload: Record<string, unknown> }[] = [];
+    for (let r = 0; r < rows.length; r++) {
+      const rowData = rows[r]!;
+      for (let c = 0; c < rowData.length; c++) {
+        const raw = rowData[c]!;
+        const parsed = Number(raw);
+        const value = raw === '' ? null : isNaN(parsed) ? raw : parsed;
+        ops.push({ type: 'setCellValue', payload: { sheet: 0, row: startRow + r, col: startCol + c, value } });
+      }
+    }
+    if (ops.length > 0) workbook.apply(ops);
+  };
+  container.addEventListener('paste', pasteHandler);
 
   // Scroll
   runtime.onWheel((e) => {
@@ -242,6 +301,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   return {
     destroy() {
       unsub();
+      container.removeEventListener('paste', pasteHandler);
       resizeObserver.disconnect();
       editorEl?.remove();
       hideTooltip();

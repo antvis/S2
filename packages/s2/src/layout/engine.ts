@@ -18,6 +18,8 @@ export class LayoutEngine {
   private colSums: PrefixSumArray;
   private scrollX = 0;
   private scrollY = 0;
+  private temporaryRowHeights = new Map<number, number>();
+  private temporaryColWidths = new Map<number, number>();
 
   constructor(model: WorkbookModel, queryLayer?: QueryLayer) {
     this.model = model;
@@ -40,11 +42,16 @@ export class LayoutEngine {
   }
 
   setTemporaryRowHeight(row: number, height: number): void {
-    this.rowSums.setSize(row, height);
+    this.temporaryRowHeights.set(row, height);
   }
 
   setTemporaryColWidth(col: number, width: number): void {
-    this.colSums.setSize(col, width);
+    this.temporaryColWidths.set(col, width);
+  }
+
+  clearTemporary(): void {
+    this.temporaryRowHeights.clear();
+    this.temporaryColWidths.clear();
   }
 
   getVisibleRange(viewWidth: number, viewHeight: number): VisibleRange {
@@ -80,6 +87,15 @@ export class LayoutEngine {
     if (!this.queryLayer) return null;
     try {
       return this.queryLayer.moduleQuery('pivot.getLayout', { sheet: 0 }) as HierarchyLayout | null;
+    } catch {
+      return null;
+    }
+  }
+
+  private getHiddenRows(): Set<number> | null {
+    if (!this.queryLayer) return null;
+    try {
+      return this.queryLayer.moduleQuery('filter.getHiddenRows', { sheet: 0 }) as Set<number> | null;
     } catch {
       return null;
     }
@@ -332,13 +348,29 @@ export class LayoutEngine {
 
   private computeDetailLayoutPlan(viewWidth: number, viewHeight: number, freeze?: FreezeConfig | null): LayoutPlan {
     const rowOrder = this.getRowOrder();
+    const hiddenDataRows = this.getHiddenRows();
     const mapRow = (visualRow: number): number => {
       if (!rowOrder) return visualRow;
-      if (visualRow === 0) return 0; // row 0 is header, not sorted
+      if (visualRow === 0) return 0;
       const sortedIdx = visualRow - 1;
       if (sortedIdx >= 0 && sortedIdx < rowOrder.length) return rowOrder[sortedIdx]!;
       return visualRow;
     };
+    const isRowHidden = (visualRow: number): boolean => {
+      if (this.rowSums.getSize(visualRow) === 0) return true;
+      if (!hiddenDataRows) return false;
+      return hiddenDataRows.has(mapRow(visualRow));
+    };
+
+    // Apply filter to PrefixSumArray so hidden rows don't consume layout space
+    if (hiddenDataRows && hiddenDataRows.size > 0) {
+      const rowCount = this.rowSums.getCount();
+      for (let vr = 0; vr < rowCount; vr++) {
+        if (isRowHidden(vr)) {
+          this.rowSums.setSize(vr, 0);
+        }
+      }
+    }
 
     const frozenRows = freeze?.frozenRows ?? 0;
     const frozenCols = freeze?.frozenCols ?? 0;
@@ -389,6 +421,7 @@ export class LayoutEngine {
 
     // --- Scrollable rows × frozen cols (left strip, scrolls vertically) ---
     for (let row = Math.max(scrollStartRow, frozenRows); row <= scrollEndRow; row++) {
+      if (isRowHidden(row)) continue;
       const y = this.rowSums.getOffset(row) - this.scrollY + HEADER_HEIGHT + frozenRowHeight;
       const height = this.rowSums.getSize(row);
       for (let col = 0; col < frozenCols; col++) {
@@ -400,6 +433,7 @@ export class LayoutEngine {
 
     // --- Scrollable area ---
     for (let row = Math.max(scrollStartRow, frozenRows); row <= scrollEndRow; row++) {
+      if (isRowHidden(row)) continue;
       const y = this.rowSums.getOffset(row) - this.scrollY + HEADER_HEIGHT + frozenRowHeight;
       const height = this.rowSums.getSize(row);
       for (let col = Math.max(scrollStartCol, frozenCols); col <= scrollEndCol; col++) {
@@ -440,6 +474,7 @@ export class LayoutEngine {
       rowHeaders.push({ index: row, x: 0, y, width: HEADER_WIDTH, height, label: String(row + 1) });
     }
     for (let row = Math.max(scrollStartRow, frozenRows); row <= scrollEndRow; row++) {
+      if (isRowHidden(row)) continue;
       const y = this.rowSums.getOffset(row) - this.scrollY + HEADER_HEIGHT + frozenRowHeight;
       const height = this.rowSums.getSize(row);
       rowHeaders.push({ index: row, x: 0, y, width: HEADER_WIDTH, height, label: String(row + 1) });
@@ -482,8 +517,8 @@ export class LayoutEngine {
     if (!sheet) return;
     const rowCount = this.estimateRowCount();
     const colCount = this.estimateColCount();
-    this.rowSums.setCount(rowCount);
-    this.colSums.setCount(colCount);
+    this.rowSums = new PrefixSumArray(rowCount, DEFAULT_ROW_HEIGHT);
+    this.colSums = new PrefixSumArray(colCount, DEFAULT_COL_WIDTH);
     for (const [row, state] of sheet.rows) {
       if (state.height !== undefined) {
         this.rowSums.setSize(row, state.height);
@@ -495,17 +530,11 @@ export class LayoutEngine {
       }
     }
 
-    if (this.queryLayer) {
-      try {
-        const hiddenRows = this.queryLayer.moduleQuery('filter.getHiddenRows', { sheet: 0 }) as Set<number> | null;
-        if (hiddenRows) {
-          for (const row of hiddenRows) {
-            this.rowSums.setSize(row, 0);
-          }
-        }
-      } catch {
-        // FilterModule not registered
-      }
+    for (const [row, height] of this.temporaryRowHeights) {
+      this.rowSums.setSize(row, height);
+    }
+    for (const [col, width] of this.temporaryColWidths) {
+      this.colSums.setSize(col, width);
     }
   }
 

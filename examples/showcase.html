@@ -4,62 +4,249 @@
   <meta charset="utf-8">
   <title>S2 v3 — Feature Showcase</title>
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; }
-    h2 { margin: 16px; font-size: 16px; color: #333; }
-    #app { width: calc(100vw - 32px); height: calc(100vh - 120px); margin: 0 16px; background: #fff; border: 1px solid #e0e0e0; }
-    .toolbar {
-      display: flex; gap: 8px; padding: 8px 16px; flex-wrap: wrap; align-items: center;
+    :root {
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --border: #DBEAFE;
+      --primary: #1E40AF;
+      --primary-light: #3B82F6;
+      --accent: #D97706;
+      --text: #1E3A8A;
+      --text-muted: #64748B;
+      --muted: #E9EEF6;
+      --destructive: #DC2626;
+      --success: #22C55E;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --radius: 6px;
     }
-    .toolbar button {
-      padding: 4px 12px; border: 1px solid #d0d0d0; border-radius: 4px;
-      background: #fff; cursor: pointer; font-size: 13px;
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 13px; }
+
+    .header {
+      padding: 12px 16px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px;
     }
-    .toolbar button:hover { background: #f0f0f0; }
-    .toolbar select, .toolbar input {
-      padding: 4px 8px; border: 1px solid #d0d0d0; border-radius: 4px; font-size: 13px;
+    .header h1 { font-size: 15px; font-weight: 600; white-space: nowrap; }
+    .header .tag { font-size: 11px; color: var(--primary); background: var(--muted); padding: 2px 8px; border-radius: 10px; }
+
+    .toolbar-area {
+      padding: 8px 16px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 6px;
     }
-    .toolbar span { font-size: 12px; color: #666; }
+    .toolbar-row {
+      display: flex; gap: 4px; align-items: center; flex-wrap: wrap;
+    }
+    .toolbar-group {
+      display: flex; gap: 2px; align-items: center;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2px;
+      background: var(--bg);
+    }
+    .toolbar-group .label {
+      font-size: 10px; color: var(--text-muted); padding: 0 6px;
+      text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
+      white-space: nowrap;
+    }
+    .sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+
+    button {
+      padding: 4px 10px; border: none; border-radius: 4px;
+      background: transparent; cursor: pointer; font-size: 12px;
+      color: var(--text); font-family: var(--font); white-space: nowrap;
+      transition: background 0.1s;
+    }
+    button:hover { background: var(--muted); }
+    button.active { background: var(--primary); color: #fff; }
+    button.danger { color: var(--destructive); }
+    button.danger:hover { background: #FEE2E2; }
+
+    select, input[type="number"], input[type="text"] {
+      padding: 3px 6px; border: 1px solid var(--border); border-radius: 4px;
+      font-size: 12px; font-family: var(--font); background: #fff;
+      color: var(--text); width: auto;
+    }
+    input[type="number"] { width: 50px; }
+
+    .main { display: flex; height: calc(100vh - 120px); }
+    .canvas-area { flex: 1; border: 1px solid var(--border); margin: 8px; background: var(--card); border-radius: var(--radius); overflow: hidden; }
+
+    .status-bar {
+      padding: 4px 16px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--text-muted);
+      display: flex; gap: 16px;
+    }
+    .status-bar kbd {
+      background: var(--muted); padding: 1px 4px; border-radius: 3px;
+      font-size: 10px; font-family: var(--font);
+    }
   </style>
 </head>
 <body>
-  <h2>S2 v3 — 功能测试 (Feature Showcase)</h2>
-  <div class="toolbar">
-    <button id="btn-undo">↩ Undo</button>
-    <button id="btn-redo">↪ Redo</button>
-    <span>|</span>
-    <button id="btn-sort-asc">排序 ↑ (A列)</button>
-    <button id="btn-sort-desc">排序 ↓ (A列)</button>
-    <button id="btn-sort-clear">清除排序</button>
-    <span>|</span>
-    <button id="btn-filter">筛选 (B列 > 200)</button>
-    <button id="btn-filter-clear">清除筛选</button>
-    <span>|</span>
-    <button id="btn-freeze">冻结 (1行1列)</button>
-    <button id="btn-freeze-clear">解冻</button>
-    <span>|</span>
-    <button id="btn-cf">条件格式 (C列 > 300 标红)</button>
-    <button id="btn-cf-scale">色阶 (C列)</button>
-    <button id="btn-cf-clear">清除条件格式</button>
-    <span>|</span>
-    <button id="btn-copy">复制选区</button>
-    <button id="btn-paste">粘贴到 F1</button>
-    <span>|</span>
-    <button id="btn-export-csv">导出 CSV</button>
+  <div class="header">
+    <h1>S2 v3 — Feature Showcase</h1>
+    <span class="tag">All Modules Loaded</span>
   </div>
-  <div id="app"></div>
+
+  <div class="toolbar-area">
+    <div class="toolbar-row">
+      <!-- History -->
+      <div class="toolbar-group">
+        <span class="label">History</span>
+        <button id="btn-undo" title="Ctrl/Cmd+Z">↩ Undo</button>
+        <button id="btn-redo" title="Ctrl/Cmd+Y">↪ Redo</button>
+      </div>
+
+      <!-- Sort -->
+      <div class="toolbar-group">
+        <span class="label">Sort</span>
+        <button id="btn-sort-asc">↑ Asc</button>
+        <button id="btn-sort-desc">↓ Desc</button>
+        <button id="btn-sort-clear" class="danger">✕</button>
+      </div>
+
+      <!-- Filter -->
+      <div class="toolbar-group">
+        <span class="label">Filter</span>
+        <select id="sel-filter-col"></select>
+        <select id="sel-filter-type">
+          <option value="greaterThan">&gt;</option>
+          <option value="lessThan">&lt;</option>
+          <option value="between">Between</option>
+          <option value="contains">Contains</option>
+          <option value="include">Include</option>
+        </select>
+        <input id="inp-filter-val" type="text" placeholder="value" style="width:60px">
+        <button id="btn-filter">Apply</button>
+        <button id="btn-filter-clear" class="danger">✕</button>
+      </div>
+
+      <!-- Freeze -->
+      <div class="toolbar-group">
+        <span class="label">Freeze</span>
+        <input id="inp-freeze-rows" type="number" value="1" min="0" max="10" title="Rows">
+        <input id="inp-freeze-cols" type="number" value="1" min="0" max="10" title="Cols">
+        <button id="btn-freeze">Set</button>
+        <button id="btn-freeze-clear" class="danger">✕</button>
+      </div>
+    </div>
+
+    <div class="toolbar-row">
+      <!-- Conditional Format -->
+      <div class="toolbar-group">
+        <span class="label">Cond. Format</span>
+        <button id="btn-cf-red">&gt;300 Red</button>
+        <button id="btn-cf-scale">Color Scale</button>
+        <button id="btn-cf-clear" class="danger">✕</button>
+      </div>
+
+      <!-- Row/Col Ops -->
+      <div class="toolbar-group">
+        <span class="label">Row/Col</span>
+        <button id="btn-insert-row">+ Row</button>
+        <button id="btn-delete-row">- Row</button>
+        <button id="btn-insert-col">+ Col</button>
+        <button id="btn-delete-col">- Col</button>
+        <button id="btn-hide-row">Hide</button>
+        <button id="btn-show-row">Show</button>
+      </div>
+
+      <!-- Merge -->
+      <div class="toolbar-group">
+        <span class="label">Merge</span>
+        <button id="btn-merge">Merge</button>
+        <button id="btn-unmerge">Unmerge</button>
+      </div>
+
+      <!-- Style -->
+      <div class="toolbar-group">
+        <span class="label">Style</span>
+        <button id="btn-style-bold">B</button>
+        <button id="btn-style-color">Color</button>
+      </div>
+
+      <!-- Formula -->
+      <div class="toolbar-group">
+        <span class="label">Formula</span>
+        <button id="btn-formula-sum">SUM demo</button>
+        <button id="btn-formula-chain">Chain demo</button>
+      </div>
+
+      <!-- Custom Renderer -->
+      <div class="toolbar-group">
+        <span class="label">Renderer</span>
+        <button id="btn-bar-toggle" class="active">Data Bars</button>
+      </div>
+
+      <!-- Export / Snapshot -->
+      <div class="toolbar-group">
+        <span class="label">IO</span>
+        <button id="btn-export-csv">CSV</button>
+        <button id="btn-snapshot-save">Save</button>
+        <button id="btn-snapshot-load">Load</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="canvas-area" id="app"></div>
+  </div>
+
+  <div class="status-bar">
+    <span>Double-click to edit</span>
+    <span><kbd>⌘C</kbd> Copy <kbd>⌘V</kbd> Paste</span>
+    <span><kbd>⌘Z</kbd> Undo <kbd>⌘⇧Z</kbd> Redo</span>
+    <span><kbd>↑↓←→</kbd> Navigate <kbd>Shift+↑↓←→</kbd> Extend selection</span>
+    <span><kbd>Tab</kbd> Next <kbd>Enter</kbd> Down</span>
+    <span>Drag header edges to resize</span>
+    <span id="status-info"></span>
+  </div>
 
   <script type="module">
     import {
-      createWorkbook, mountCanvas,
-      EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule,
+      createWorkbook, mountCanvas, defineModule,
+      EditModule, SortModule, FilterModule, FreezeModule,
+      ConditionalFormatModule, FormulaModule,
     } from '../packages/s2/src/index.ts';
 
+    // Custom renderer demo: draw a small bar chart in cells with numeric values
+    let barRendererEnabled = false;
+    const BarRendererModule = defineModule({
+      name: 'barRenderer',
+      state: () => ({}),
+      operations: {},
+      queries: {},
+      renderers: {
+        'barRenderer.bar': (ctx, box, query) => {
+          if (!barRendererEnabled) return;
+          const val = query.moduleQuery('barRenderer.getValue', { sheet: box.sheet, row: box.row, col: box.col });
+          if (typeof val !== 'number' || val <= 0) return;
+          const maxVal = 1100;
+          const barWidth = Math.min((val / maxVal) * (box.width - 12), box.width - 12);
+          ctx.fillStyle = 'rgba(24, 144, 255, 0.15)';
+          ctx.fillRect(box.x + 4, box.y + box.height - 6, barWidth, 3);
+        },
+      },
+    });
+    // Add a query so the renderer can read cell values
+    BarRendererModule.queries = {
+      'barRenderer.getValue': (_state, params, model) => {
+        const { sheet, row, col } = params;
+        const cell = model.getCell(sheet, row, col);
+        return cell?.computedValue ?? cell?.value ?? null;
+      },
+    };
+
     const workbook = createWorkbook({
-      modules: [EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule],
+      modules: [EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule, FormulaModule, BarRendererModule],
     });
 
-    // 填充示例数据
     const headers = ['Name', 'Sales', 'Revenue', 'Profit', 'Region'];
     const data = [
       ['Alice', 150, 450, 120, 'East'],
@@ -74,7 +261,6 @@
       ['Jack', 320, 790, 280, 'West'],
     ];
 
-    // 批量写入数据（一次 apply，一个 undo 入口）
     const ops = [];
     for (let c = 0; c < headers.length; c++) {
       ops.push({ type: 'setCellValue', payload: { sheet: 0, row: 0, col: c, value: headers[c] } });
@@ -86,58 +272,109 @@
     }
     workbook.apply(ops);
 
-    const handle = mountCanvas(workbook, document.getElementById('app'));
+    mountCanvas(workbook, document.getElementById('app'));
     window.workbook = workbook;
 
-    // ─── Toolbar handlers ───
+    const statusInfo = document.getElementById('status-info');
+    workbook.on('operationApplied', () => {
+      statusInfo.textContent = `Undo: ${workbook.canUndo() ? '✓' : '–'}  Redo: ${workbook.canRedo() ? '✓' : '–'}`;
+    });
 
+    // Populate filter column dropdown
+    const selCol = document.getElementById('sel-filter-col');
+    headers.forEach((h, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${String.fromCharCode(65 + i)} (${h})`;
+      selCol.appendChild(opt);
+    });
+
+    // ─── History ───
     document.getElementById('btn-undo').onclick = () => workbook.undo();
     document.getElementById('btn-redo').onclick = () => workbook.redo();
 
+    // ─── Helper: get normalized selection bounds ───
+    function getSelBounds() {
+      const sel = workbook.getSelection();
+      if (!sel) return null;
+      return {
+        minR: Math.min(sel.startRow, sel.endRow),
+        maxR: Math.max(sel.startRow, sel.endRow),
+        minC: Math.min(sel.startCol, sel.endCol),
+        maxC: Math.max(sel.startCol, sel.endCol),
+        sheet: sel.sheet,
+      };
+    }
+
+    // ─── Sort (by selected column) ───
     document.getElementById('btn-sort-asc').onclick = () => {
-      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: 0, order: 'asc' }] } }]);
+      const b = getSelBounds();
+      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: b?.minC ?? 0, order: 'asc' }] } }]);
     };
     document.getElementById('btn-sort-desc').onclick = () => {
-      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: 0, order: 'desc' }] } }]);
+      const b = getSelBounds();
+      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: b?.minC ?? 0, order: 'desc' }] } }]);
     };
     document.getElementById('btn-sort-clear').onclick = () => {
       workbook.apply([{ type: 'sort.clear', payload: { sheet: 0 } }]);
     };
 
+    // ─── Filter ───
     document.getElementById('btn-filter').onclick = () => {
-      workbook.apply([{
-        type: 'filter.set',
-        payload: { sheet: 0, col: 1, condition: { type: 'greaterThan', value: 200 } },
-      }]);
+      const col = Number(selCol.value);
+      const type = document.getElementById('sel-filter-type').value;
+      const raw = document.getElementById('inp-filter-val').value;
+      let condition;
+      if (type === 'greaterThan' || type === 'lessThan') {
+        condition = { type, value: Number(raw) };
+      } else if (type === 'between') {
+        const [min, max] = raw.split(',').map(Number);
+        condition = { type, min, max };
+      } else if (type === 'contains') {
+        condition = { type, text: raw };
+      } else if (type === 'include') {
+        condition = { type, values: raw.split(',').map(s => { const n = Number(s.trim()); return isNaN(n) ? s.trim() : n; }) };
+      }
+      if (condition) {
+        workbook.apply([{ type: 'filter.set', payload: { sheet: 0, col, condition } }]);
+      }
     };
     document.getElementById('btn-filter-clear').onclick = () => {
       workbook.apply([{ type: 'filter.clear', payload: { sheet: 0 } }]);
     };
 
+    // ─── Freeze ───
     document.getElementById('btn-freeze').onclick = () => {
-      workbook.apply([{ type: 'freeze.set', payload: { sheet: 0, frozenRows: 1, frozenCols: 1 } }]);
+      const frozenRows = Number(document.getElementById('inp-freeze-rows').value);
+      const frozenCols = Number(document.getElementById('inp-freeze-cols').value);
+      workbook.apply([{ type: 'freeze.set', payload: { sheet: 0, frozenRows, frozenCols } }]);
     };
     document.getElementById('btn-freeze-clear').onclick = () => {
       workbook.apply([{ type: 'freeze.clear', payload: { sheet: 0 } }]);
     };
 
-    document.getElementById('btn-cf').onclick = () => {
+    // ─── Conditional Format (applies to selection) ───
+    document.getElementById('btn-cf-red').onclick = () => {
+      const b = getSelBounds();
+      if (!b) return;
       workbook.apply([{
         type: 'conditionalFormat.addRule',
         payload: {
           sheet: 0,
-          range: { startRow: 1, endRow: 10, startCol: 2, endCol: 2 },
+          range: { startRow: b.minR, endRow: b.maxR, startCol: b.minC, endCol: b.maxC },
           rule: { type: 'greaterThan', value: 300 },
           style: { backgroundColor: '#ff4d4f', color: '#fff' },
         },
       }]);
     };
     document.getElementById('btn-cf-scale').onclick = () => {
+      const b = getSelBounds();
+      if (!b) return;
       workbook.apply([{
         type: 'conditionalFormat.addRule',
         payload: {
           sheet: 0,
-          range: { startRow: 1, endRow: 10, startCol: 2, endCol: 2 },
+          range: { startRow: b.minR, endRow: b.maxR, startCol: b.minC, endCol: b.maxC },
           rule: { type: 'colorScale', min: '#ffffff', max: '#1890ff' },
         },
       }]);
@@ -146,37 +383,120 @@
       workbook.apply([{ type: 'conditionalFormat.clearRules', payload: { sheet: 0 } }]);
     };
 
-    document.getElementById('btn-copy').onclick = () => {
-      workbook.apply([{
-        type: 'edit.copy',
-        payload: { sheet: 0, range: { startRow: 0, endRow: 3, startCol: 0, endCol: 2 } },
-      }]);
-      console.log('Copied range A1:C4 to clipboard');
+    // ─── Row/Col operations (based on selection) ───
+    document.getElementById('btn-insert-row').onclick = () => {
+      const b = getSelBounds();
+      workbook.apply([{ type: 'insertRows', payload: { sheet: 0, index: b?.minR ?? 0, count: 1 } }]);
     };
-    document.getElementById('btn-paste').onclick = () => {
-      workbook.apply([{ type: 'edit.paste', payload: { sheet: 0, row: 0, col: 5 } }]);
-      console.log('Pasted to F1');
+    document.getElementById('btn-delete-row').onclick = () => {
+      const b = getSelBounds();
+      workbook.apply([{ type: 'deleteRows', payload: { sheet: 0, index: b?.minR ?? 0, count: 1 } }]);
+    };
+    document.getElementById('btn-insert-col').onclick = () => {
+      const b = getSelBounds();
+      workbook.apply([{ type: 'insertColumns', payload: { sheet: 0, index: b?.minC ?? 0, count: 1 } }]);
+    };
+    document.getElementById('btn-delete-col').onclick = () => {
+      const b = getSelBounds();
+      workbook.apply([{ type: 'deleteColumns', payload: { sheet: 0, index: b?.minC ?? 0, count: 1 } }]);
+    };
+    document.getElementById('btn-hide-row').onclick = () => {
+      const b = getSelBounds();
+      if (!b) return;
+      const rows = [];
+      for (let r = b.minR; r <= b.maxR; r++) rows.push(r);
+      workbook.apply([{ type: 'hideRows', payload: { sheet: 0, rows } }]);
+    };
+    document.getElementById('btn-show-row').onclick = () => {
+      const b = getSelBounds();
+      if (!b) return;
+      const rows = [];
+      for (let r = b.minR; r <= b.maxR; r++) rows.push({ row: r, height: 28 });
+      workbook.apply([{ type: 'showRows', payload: { sheet: 0, rows } }]);
     };
 
+    // ─── Merge (based on selection) ───
+    document.getElementById('btn-merge').onclick = () => {
+      const b = getSelBounds();
+      if (!b || (b.minR === b.maxR && b.minC === b.maxC)) return;
+      workbook.apply([{ type: 'mergeCells', payload: { sheet: 0, startRow: b.minR, endRow: b.maxR, startCol: b.minC, endCol: b.maxC } }]);
+    };
+    document.getElementById('btn-unmerge').onclick = () => {
+      const b = getSelBounds();
+      if (!b) return;
+      workbook.apply([{ type: 'unmergeCells', payload: { sheet: 0, startRow: b.minR, endRow: b.maxR, startCol: b.minC, endCol: b.maxC } }]);
+    };
+
+    // ─── Style (applies to current selection) ───
+    function applyStyleToSelection(style) {
+      const sel = workbook.getSelection();
+      if (!sel) return;
+      const ops = [];
+      const minR = Math.min(sel.startRow, sel.endRow);
+      const maxR = Math.max(sel.startRow, sel.endRow);
+      const minC = Math.min(sel.startCol, sel.endCol);
+      const maxC = Math.max(sel.startCol, sel.endCol);
+      for (let r = minR; r <= maxR; r++) {
+        for (let c = minC; c <= maxC; c++) {
+          ops.push({ type: 'setCellStyle', payload: { sheet: 0, row: r, col: c, style } });
+        }
+      }
+      if (ops.length > 0) workbook.apply(ops);
+    }
+    document.getElementById('btn-style-bold').onclick = () => applyStyleToSelection({ bold: true });
+    document.getElementById('btn-style-color').onclick = () => applyStyleToSelection({ color: '#1E40AF' });
+
+    // ─── Formula ───
+    document.getElementById('btn-formula-sum').onclick = () => {
+      workbook.apply([
+        { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 6, value: 'SUM(B)' } },
+        { type: 'formula.setFormula', payload: { sheet: 0, row: 1, col: 6, formula: '=B2+B3+B4+B5+B6' } },
+      ]);
+    };
+    document.getElementById('btn-formula-chain').onclick = () => {
+      workbook.apply([
+        { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 7, value: 'Chain' } },
+        { type: 'setCellValue', payload: { sheet: 0, row: 1, col: 7, value: 10 } },
+        { type: 'formula.setFormula', payload: { sheet: 0, row: 2, col: 7, formula: '=H2*2' } },
+        { type: 'formula.setFormula', payload: { sheet: 0, row: 3, col: 7, formula: '=H3+5' } },
+      ]);
+    };
+
+    // ─── Export / Snapshot ───
     document.getElementById('btn-export-csv').onclick = () => {
       const csv = workbook.exportCSV();
-      console.log('CSV output:\n' + csv);
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
-      a.download = 'export.csv';
-      a.click();
+      a.href = url; a.download = 'export.csv'; a.click();
       URL.revokeObjectURL(url);
     };
 
-    console.log('功能测试说明:');
-    console.log('- 双击单元格编辑，Enter 提交，Esc 取消');
-    console.log('- 点击单元格选中，拖拽选区，方向键移动，Shift+方向键扩展');
-    console.log('- 鼠标移到列头/行头边缘可拖拽调整宽高');
-    console.log('- 鼠标悬停单元格 0.5s 后显示 tooltip');
-    console.log('- 工具栏按钮测试各 Module 功能');
-    console.log('- 所有操作支持 Undo/Redo');
+    // ─── Bar Renderer Toggle ───
+    const btnBarToggle = document.getElementById('btn-bar-toggle');
+    btnBarToggle.classList.remove('active');
+    btnBarToggle.onclick = () => {
+      barRendererEnabled = !barRendererEnabled;
+      btnBarToggle.classList.toggle('active', barRendererEnabled);
+      workbook.apply([]);
+    };
+
+    let savedSnapshot = null;
+    document.getElementById('btn-snapshot-save').onclick = () => {
+      savedSnapshot = workbook.toJSON();
+      statusInfo.textContent = 'Snapshot saved';
+    };
+    document.getElementById('btn-snapshot-load').onclick = () => {
+      if (!savedSnapshot) { statusInfo.textContent = 'No snapshot'; return; }
+      document.getElementById('app').innerHTML = '';
+      const wb2 = createWorkbook({
+        snapshot: savedSnapshot,
+        modules: [EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule, FormulaModule],
+      });
+      mountCanvas(wb2, document.getElementById('app'));
+      window.workbook = wb2;
+      statusInfo.textContent = 'Snapshot loaded';
+    };
   </script>
 </body>
 </html>

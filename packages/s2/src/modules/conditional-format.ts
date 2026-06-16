@@ -147,11 +147,13 @@ export const ConditionalFormatModule: ModuleDefinition = {
       const cell = model.getCell(sheet, row, col);
       const value = cell?.computedValue ?? cell?.value ?? null;
 
-      for (const entry of rules) {
+      for (let i = rules.length - 1; i >= 0; i--) {
+        const entry = rules[i]!;
         const { range, rule, style } = entry;
         if (row < range.startRow || row > range.endRow || col < range.startCol || col > range.endCol) continue;
 
         if (rule.type === 'colorScale') {
+          if (value === null || value === undefined) continue;
           const num = Number(value);
           if (isNaN(num)) continue;
 
@@ -160,7 +162,9 @@ export const ConditionalFormatModule: ModuleDefinition = {
           for (let r = range.startRow; r <= range.endRow; r++) {
             for (let c = range.startCol; c <= range.endCol; c++) {
               const cv = model.getCell(sheet, r, c);
-              const v = Number(cv?.computedValue ?? cv?.value);
+              const raw = cv?.computedValue ?? cv?.value;
+              if (raw === null || raw === undefined) continue;
+              const v = Number(raw);
               if (!isNaN(v)) {
                 if (v < min) min = v;
                 if (v > max) max = v;

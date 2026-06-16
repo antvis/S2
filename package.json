@@ -2,7 +2,7 @@
   "name": "s2-monorepo",
   "private": true,
   "scripts": {
-    "dev": "vite examples",
+    "dev": "vite examples --port 3000",
     "test": "pnpm -r test",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck"

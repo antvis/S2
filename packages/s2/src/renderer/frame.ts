@@ -1,5 +1,6 @@
 import { DETAIL_HEADER_WIDTH, DETAIL_HEADER_HEIGHT } from '../layout/types';
 import type { CellBox, HeaderBox, LayoutPlan, Line } from '../layout/types';
+import type { MergeRange } from '../core/types';
 import type { QueryLayer } from '../query/query';
 import type { Selection, HoverInfo } from '../interaction/types';
 import type { CellRendererFn, CellRenderContext } from '../module/types';
@@ -16,12 +17,20 @@ const HEADER_TEXT_COLOR = '#666';
 const CORNER_BG = '#dce6f5';
 const PIVOT_HEADER_BG_LEVELS = ['#d6e4f7', '#e0ebf9', '#e8f0fe', '#f0f5fd'];
 
+export interface FillDragPreview {
+  startRow: number;
+  startCol: number;
+  endRow: number;
+  endCol: number;
+}
+
 export interface RenderState {
   selection?: Selection | null;
   hover?: HoverInfo | null;
   showRowHeader?: boolean;
   showColHeader?: boolean;
   moduleRenderers?: readonly CellRendererFn[];
+  fillDragPreview?: FillDragPreview | null;
 }
 
 export function renderFrame(
@@ -281,6 +290,11 @@ function renderDetailFrame(
     ctx.lineWidth = 1;
   }
 
+  // Fill drag preview
+  if (state?.fillDragPreview) {
+    drawFillDragPreview(ctx, [...plan.cells, ...plan.frozenCells], state.fillDragPreview);
+  }
+
   // Headers
   if (state?.showRowHeader !== false) {
     drawRowHeaders(ctx, plan.rowHeaders);
@@ -314,10 +328,46 @@ function drawCells(
   sheetIndex: number,
   moduleRenderers?: readonly CellRendererFn[],
 ): void {
+  const merges = query.getMerges(sheetIndex);
+  const coveredCells = new Set<string>();
+  const mergeMap = new Map<string, MergeRange>();
+  for (const m of merges) {
+    for (let r = m.startRow; r <= m.endRow; r++) {
+      for (let c = m.startCol; c <= m.endCol; c++) {
+        if (r === m.startRow && c === m.startCol) {
+          mergeMap.set(`${r}:${c}`, m);
+        } else {
+          coveredCells.add(`${r}:${c}`);
+        }
+      }
+    }
+  }
+
   ctx.font = FONT;
   ctx.textBaseline = 'middle';
   for (let i = 0, len = cells.length; i < len; ++i) {
     const box = cells[i]!;
+    const key = `${box.row}:${box.col}`;
+
+    if (coveredCells.has(key)) continue;
+
+    let drawWidth = box.width;
+    let drawHeight = box.height;
+    const merge = mergeMap.get(key);
+    if (merge) {
+      // Expand to cover merged area by finding the bottom-right cell
+      for (const c2 of cells) {
+        if (c2.row === merge.endRow && c2.col === merge.endCol) {
+          drawWidth = (c2.x + c2.width) - box.x;
+          drawHeight = (c2.y + c2.height) - box.y;
+          break;
+        }
+      }
+      // Clear merged area background
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(box.x, box.y, drawWidth, drawHeight);
+    }
+
     const value = query.getCellDisplayValue({ sheet: sheetIndex, row: box.row, col: box.col });
 
     let textColor = TEXT_COLOR;
@@ -328,7 +378,7 @@ function drawCells(
       if (cfStyle) {
         if (cfStyle.backgroundColor) {
           ctx.fillStyle = cfStyle.backgroundColor;
-          ctx.fillRect(box.x, box.y, box.width, box.height);
+          ctx.fillRect(box.x, box.y, drawWidth, drawHeight);
         }
         if (cfStyle.color) {
           textColor = cfStyle.color;
@@ -338,11 +388,22 @@ function drawCells(
       // ConditionalFormatModule not registered
     }
 
+    // Cell style (setCellStyle)
+    const cellRaw = query.getCellRawValue({ sheet: sheetIndex, row: box.row, col: box.col });
+    const cellStyle = cellRaw?.style as { bold?: boolean; color?: string; backgroundColor?: string } | undefined;
+    if (cellStyle?.backgroundColor) {
+      ctx.fillStyle = cellStyle.backgroundColor;
+      ctx.fillRect(box.x, box.y, drawWidth, drawHeight);
+    }
+    if (cellStyle?.color) {
+      textColor = cellStyle.color;
+    }
+
     // Module renderers
     if (moduleRenderers && moduleRenderers.length > 0) {
       const renderCtx: CellRenderContext = {
         sheet: sheetIndex, row: box.row, col: box.col,
-        x: box.x, y: box.y, width: box.width, height: box.height,
+        x: box.x, y: box.y, width: drawWidth, height: drawHeight,
       };
       const queryProxy = { moduleQuery: (name: string, params: Record<string, unknown>) => query.moduleQuery(name, params) };
       for (const renderer of moduleRenderers) {
@@ -353,14 +414,16 @@ function drawCells(
     if (value === null) continue;
     const text = String(value);
     const isNumber = typeof value === 'number';
+    ctx.font = cellStyle?.bold ? `bold ${FONT}` : FONT;
     ctx.fillStyle = textColor;
     if (isNumber) {
       ctx.textAlign = 'right';
-      ctx.fillText(text, box.x + box.width - 6, box.y + box.height / 2);
+      ctx.fillText(text, box.x + drawWidth - 6, box.y + drawHeight / 2);
     } else {
       ctx.textAlign = 'left';
-      ctx.fillText(text, box.x + 6, box.y + box.height / 2);
+      ctx.fillText(text, box.x + 6, box.y + drawHeight / 2);
     }
+    if (cellStyle?.bold) ctx.font = FONT;
   }
 }
 
@@ -420,6 +483,14 @@ function drawSelection(ctx: CanvasRenderingContext2D, cells: CellBox[], selectio
   ctx.lineWidth = 2;
   ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
   ctx.lineWidth = 1;
+
+  // Fill handle (solid square at bottom-right corner, Excel-style)
+  const handleSize = 8;
+  ctx.fillStyle = '#0e65eb';
+  ctx.fillRect(x2 - handleSize / 2, y2 - handleSize / 2, handleSize, handleSize);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x2 - handleSize / 2, y2 - handleSize / 2, handleSize, handleSize);
 }
 
 function drawHover(ctx: CanvasRenderingContext2D, cells: CellBox[], hover: HoverInfo): void {
@@ -431,4 +502,34 @@ function drawHover(ctx: CanvasRenderingContext2D, cells: CellBox[], hover: Hover
       return;
     }
   }
+}
+
+function drawFillDragPreview(ctx: CanvasRenderingContext2D, cells: CellBox[], preview: FillDragPreview): void {
+  const minRow = Math.min(preview.startRow, preview.endRow);
+  const maxRow = Math.max(preview.startRow, preview.endRow);
+  const minCol = Math.min(preview.startCol, preview.endCol);
+  const maxCol = Math.max(preview.startCol, preview.endCol);
+
+  let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
+  for (let i = 0, len = cells.length; i < len; ++i) {
+    const c = cells[i]!;
+    if (c.row >= minRow && c.row <= maxRow && c.col >= minCol && c.col <= maxCol) {
+      if (c.x < x1) x1 = c.x;
+      if (c.y < y1) y1 = c.y;
+      if (c.x + c.width > x2) x2 = c.x + c.width;
+      if (c.y + c.height > y2) y2 = c.y + c.height;
+    }
+  }
+
+  if (x1 === Infinity) return;
+
+  ctx.fillStyle = 'rgba(14, 101, 235, 0.05)';
+  ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+
+  ctx.setLineDash([4, 3]);
+  ctx.strokeStyle = '#0e65eb';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+  ctx.setLineDash([]);
+  ctx.lineWidth = 1;
 }

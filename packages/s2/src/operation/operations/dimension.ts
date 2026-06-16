@@ -122,7 +122,7 @@ export const setRowHeight: OperationDefinition = {
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, row, height } = payload as { sheet: number; row: number; height: number };
     const old = model.getRow(sheet, row);
-    const oldHeight = old?.height ?? 25;
+    const oldHeight = old?.height ?? 28;
     model.setRow(sheet, row, { ...old, height });
     return [{ type: 'setRowHeight', payload: { sheet, row, height: oldHeight } }];
   },
@@ -136,6 +136,62 @@ export const setColumnWidth: OperationDefinition = {
     const oldWidth = old?.width ?? 100;
     model.setColumn(sheet, col, { ...old, width });
     return [{ type: 'setColumnWidth', payload: { sheet, col, width: oldWidth } }];
+  },
+};
+
+export const hideRows: OperationDefinition = {
+  meta: { affectLayout: true, undoable: true },
+  execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
+    const { sheet, rows } = payload as { sheet: number; rows: number[] };
+    const oldHeights: { row: number; height: number }[] = [];
+    for (const row of rows) {
+      const old = model.getRow(sheet, row);
+      oldHeights.push({ row, height: old?.height ?? 28 });
+      model.setRow(sheet, row, { ...old, height: 0 });
+    }
+    return [{ type: 'showRows', payload: { sheet, rows: oldHeights } }];
+  },
+};
+
+export const showRows: OperationDefinition = {
+  meta: { affectLayout: true, undoable: true },
+  execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
+    const { sheet, rows } = payload as { sheet: number; rows: { row: number; height: number }[] };
+    const hideList: number[] = [];
+    for (const { row, height } of rows) {
+      hideList.push(row);
+      const old = model.getRow(sheet, row);
+      model.setRow(sheet, row, { ...old, height });
+    }
+    return [{ type: 'hideRows', payload: { sheet, rows: hideList } }];
+  },
+};
+
+export const hideColumns: OperationDefinition = {
+  meta: { affectLayout: true, undoable: true },
+  execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
+    const { sheet, cols } = payload as { sheet: number; cols: number[] };
+    const oldWidths: { col: number; width: number }[] = [];
+    for (const col of cols) {
+      const old = model.getColumn(sheet, col);
+      oldWidths.push({ col, width: old?.width ?? 100 });
+      model.setColumn(sheet, col, { ...old, width: 0 });
+    }
+    return [{ type: 'showColumns', payload: { sheet, cols: oldWidths } }];
+  },
+};
+
+export const showColumns: OperationDefinition = {
+  meta: { affectLayout: true, undoable: true },
+  execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
+    const { sheet, cols } = payload as { sheet: number; cols: { col: number; width: number }[] };
+    const hideList: number[] = [];
+    for (const { col, width } of cols) {
+      hideList.push(col);
+      const old = model.getColumn(sheet, col);
+      model.setColumn(sheet, col, { ...old, width });
+    }
+    return [{ type: 'hideColumns', payload: { sheet, cols: hideList } }];
   },
 };
 

@@ -40,6 +40,10 @@ export class QueryLayer {
     return this.model.getCell(addr.sheet, addr.row, addr.col);
   }
 
+  getMerges(sheet: number): import('../core/types').MergeRange[] {
+    return this.model.getSheet(sheet)?.merges ?? [];
+  }
+
   queryRange(params: { sheet: number; range: { startRow: number; endRow: number; startCol: number; endCol: number } }): (string | number | boolean | null)[][] {
     const { sheet, range } = params;
     const result: (string | number | boolean | null)[][] = [];

@@ -28,7 +28,7 @@ export const EditModule: ModuleDefinition = {
       },
     },
     'edit.commit': {
-      meta: { affectLayout: false, undoable: true },
+      meta: { affectLayout: false, undoable: true, needReCalc: true },
       execute(this: { state: EditState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, row, col, value } = payload as { sheet: number; row: number; col: number; value: string | number | boolean | null };
         this.state.editing = null;
@@ -80,7 +80,7 @@ export const EditModule: ModuleDefinition = {
       },
     },
     'edit.paste': {
-      meta: { affectLayout: false, undoable: true },
+      meta: { affectLayout: true, undoable: true },
       execute(this: { state: EditState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, row, col } = payload as { sheet: number; row: number; col: number };
         if (!this.state.clipboard) return [];

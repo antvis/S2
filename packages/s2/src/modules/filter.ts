@@ -165,6 +165,11 @@ export const FilterModule: ModuleDefinition = {
       const { sheet, row } = params as { sheet: number; row: number };
       return filterState.hiddenRows.get(sheet)?.has(row) ?? false;
     },
+    'filter.getHiddenRows': (state: unknown, params: Record<string, unknown>, _model: WorkbookModel) => {
+      const filterState = state as FilterState;
+      const { sheet } = params as { sheet: number };
+      return filterState.hiddenRows.get(sheet) ?? null;
+    },
     'filter.getRules': (state: unknown, params: Record<string, unknown>, _model: WorkbookModel) => {
       const filterState = state as FilterState;
       const { sheet } = params as { sheet: number };

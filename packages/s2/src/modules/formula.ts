@@ -16,6 +16,7 @@ interface FormulaEntry {
 
 interface FormulaState {
   formulas: Map<string, FormulaEntry>;
+  dependents: Map<string, Set<string>>; // cellKey → formula keys that depend on it
 }
 
 function cellKey(sheet: number, row: number, col: number): string {
@@ -168,9 +169,13 @@ function colLabelToIndex(label: string): number {
 }
 
 function recalculate(state: FormulaState, model: WorkbookModel): void {
-  // Topological sort based on dependencies
-  const sorted = topologicalSort(state.formulas);
+  // Rebuild dependents index
+  state.dependents.clear();
+  for (const [key, entry] of state.formulas) {
+    addDependents(state, key, entry.dependencies);
+  }
 
+  const sorted = topologicalSort(state.formulas);
   const getValue = (ref: CellRef): number => {
     const cell = model.getCell(ref.sheet, ref.row, ref.col);
     if (!cell) return 0;
@@ -178,7 +183,6 @@ function recalculate(state: FormulaState, model: WorkbookModel): void {
     if (cell.value !== undefined && cell.value !== null) return Number(cell.value);
     return 0;
   };
-
   for (const entry of sorted) {
     const parsed = parseFormula(entry.formula, entry.ref.sheet);
     const result = parsed.evaluate(getValue);
@@ -188,6 +192,62 @@ function recalculate(state: FormulaState, model: WorkbookModel): void {
       formula: entry.formula,
       computedValue: result,
     });
+  }
+}
+
+function recalcDirty(state: FormulaState, model: WorkbookModel, dirtyCells: Set<string>): void {
+  if (dirtyCells.size === 0) return;
+  const affected = new Set<string>();
+  const queue = [...dirtyCells];
+  while (queue.length > 0) {
+    const key = queue.pop()!;
+    const deps = state.dependents.get(key);
+    if (!deps) continue;
+    for (const fk of deps) {
+      if (!affected.has(fk)) {
+        affected.add(fk);
+        queue.push(fk);
+      }
+    }
+  }
+  if (affected.size === 0) return;
+
+  const entries = [...affected].map((k) => state.formulas.get(k)).filter(Boolean) as FormulaEntry[];
+  const subMap = new Map<string, FormulaEntry>();
+  for (const e of entries) subMap.set(cellKey(e.ref.sheet, e.ref.row, e.ref.col), e);
+  const sorted = topologicalSort(subMap);
+
+  const getValue = (ref: CellRef): number => {
+    const cell = model.getCell(ref.sheet, ref.row, ref.col);
+    if (!cell) return 0;
+    if (cell.computedValue !== undefined && cell.computedValue !== null) return Number(cell.computedValue);
+    if (cell.value !== undefined && cell.value !== null) return Number(cell.value);
+    return 0;
+  };
+  for (const entry of sorted) {
+    const parsed = parseFormula(entry.formula, entry.ref.sheet);
+    const result = parsed.evaluate(getValue);
+    const cell = model.getCell(entry.ref.sheet, entry.ref.row, entry.ref.col);
+    model.setCell(entry.ref.sheet, entry.ref.row, entry.ref.col, {
+      ...cell,
+      formula: entry.formula,
+      computedValue: result,
+    });
+  }
+}
+
+function addDependents(state: FormulaState, formulaKey: string, deps: CellRef[]): void {
+  for (const dep of deps) {
+    const depKey = cellKey(dep.sheet, dep.row, dep.col);
+    if (!state.dependents.has(depKey)) state.dependents.set(depKey, new Set());
+    state.dependents.get(depKey)!.add(formulaKey);
+  }
+}
+
+function removeDependents(state: FormulaState, formulaKey: string, deps: CellRef[]): void {
+  for (const dep of deps) {
+    const depKey = cellKey(dep.sheet, dep.row, dep.col);
+    state.dependents.get(depKey)?.delete(formulaKey);
   }
 }
 
@@ -217,7 +277,7 @@ function topologicalSort(formulas: Map<string, FormulaEntry>): FormulaEntry[] {
 export const FormulaModule: ModuleDefinition = {
   name: 'formula',
 
-  state: (): FormulaState => ({ formulas: new Map() }),
+  state: (): FormulaState => ({ formulas: new Map(), dependents: new Map() }),
 
   operations: {
     'formula.setFormula': {
@@ -228,13 +288,15 @@ export const FormulaModule: ModuleDefinition = {
         const oldCell = model.getCell(sheet, row, col);
         const oldFormula = this.state.formulas.get(key);
 
-        // Parse and register
         const parsed = parseFormula(formula, sheet);
+        const oldEntry = this.state.formulas.get(key);
+        if (oldEntry) removeDependents(this.state, key, oldEntry.dependencies);
         this.state.formulas.set(key, {
           ref: { sheet, row, col },
           formula,
           dependencies: parsed.dependencies,
         });
+        addDependents(this.state, key, parsed.dependencies);
 
         // Set formula on cell and compute
         model.setCell(sheet, row, col, { formula, computedValue: null });
@@ -253,6 +315,7 @@ export const FormulaModule: ModuleDefinition = {
         const { sheet, row, col, oldCell } = payload as { sheet: number; row: number; col: number; oldCell?: Record<string, unknown> };
         const key = cellKey(sheet, row, col);
         const existing = this.state.formulas.get(key);
+        if (existing) removeDependents(this.state, key, existing.dependencies);
         this.state.formulas.delete(key);
 
         if (oldCell) {
@@ -293,21 +356,29 @@ export const FormulaModule: ModuleDefinition = {
 
   lifecycle: {
     onOperationApplied(this: { state: FormulaState }, ops: Operation[], model: WorkbookModel) {
-      let needRecalc = false;
+      const dirtyCells = new Set<string>();
+      let fullRecalc = false;
       for (const op of ops) {
         if (op.type === 'setCellValue' || op.type === 'edit.commit') {
           const { sheet, row, col } = op.payload as { sheet: number; row: number; col: number };
           const key = cellKey(sheet, row, col);
           if (this.state.formulas.has(key)) {
+            const entry = this.state.formulas.get(key)!;
+            removeDependents(this.state, key, entry.dependencies);
             this.state.formulas.delete(key);
           }
-          needRecalc = true;
+          dirtyCells.add(key);
         } else if (op.type === 'restoreCell' || op.type === 'deleteCellValue') {
-          needRecalc = true;
+          fullRecalc = true;
+        } else if (op.type === '__undo' || op.type === '__redo') {
+          fullRecalc = true;
         }
       }
-      if (needRecalc && this.state.formulas.size > 0) {
+      if (this.state.formulas.size === 0) return;
+      if (fullRecalc) {
         recalculate(this.state, model);
+      } else if (dirtyCells.size > 0) {
+        recalcDirty(this.state, model, dirtyCells);
       }
     },
   },

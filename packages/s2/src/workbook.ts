@@ -11,6 +11,7 @@ import { createSheet, deleteSheet, renameSheet } from './operation/operations/sh
 import {
   insertRows, deleteRows, insertColumns, deleteColumns,
   setRowHeight, setColumnWidth, mergeCells, unmergeCells,
+  hideRows, showRows, hideColumns, showColumns,
 } from './operation/operations/dimension';
 import { setCellStyle } from './operation/operations/style';
 import { setSelection } from './operation/operations/selection';
@@ -38,6 +39,8 @@ export interface Workbook {
   toJSON(): WorkbookState;
   exportCSV(sheet?: number): string;
   exportTSV(sheet?: number): string;
+  importCSV(csv: string, sheet?: number): void;
+  getSelection(): { sheet: number; startRow: number; startCol: number; endRow: number; endCol: number } | null;
   getModuleRenderers(): readonly import('./module/types').CellRendererFn[];
   /** @internal — used by mountCanvas, not part of public API */
   __getModel(): WorkbookModel;
@@ -61,6 +64,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
   const moduleRegistry = new ModuleRegistry();
   const queryLayer = new QueryLayer(model);
   const listeners: EventHandler[] = [];
+  let currentSelection: { sheet: number; startRow: number; startCol: number; endRow: number; endCol: number } | null = null;
 
   // dataSources live on model so Modules can access them via execute(model, payload)
 
@@ -68,7 +72,13 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     model,
     registry: operationRegistry,
     onApplied(ops, _inverseOps) {
-      // Check if any operation has needReCalc or affectLayout — if so, full invalidation
+      for (const op of ops) {
+        if (op.type === 'setSelection') {
+          const p = op.payload as Record<string, unknown>;
+          currentSelection = p.selection ? p.selection as typeof currentSelection : null;
+        }
+      }
+
       let fullInvalidate = false;
       for (const op of ops) {
         const def = operationRegistry.get(op.type);
@@ -118,6 +128,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       const result = engine.undo();
       if (result) {
         queryLayer.invalidateAll();
+        moduleRegistry.notifyOperationApplied([{ type: '__undo', payload: {} }], model);
         for (const listener of listeners) {
           listener([{ type: '__undo', payload: {} }]);
         }
@@ -128,6 +139,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       const result = engine.redo();
       if (result) {
         queryLayer.invalidateAll();
+        moduleRegistry.notifyOperationApplied([{ type: '__redo', payload: {} }], model);
         for (const listener of listeners) {
           listener([{ type: '__redo', payload: {} }]);
         }
@@ -153,7 +165,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       model.dataSources.set(id, stored as unknown[]);
       moduleRegistry.notifyOperationApplied([
         { type: '__dataSourceUpdated', payload: { dataSourceId: id } },
-      ]);
+      ], model);
       queryLayer.invalidateAll();
       for (const listener of listeners) {
         listener([{ type: '__dataSourceUpdated', payload: { dataSourceId: id } }]);
@@ -172,6 +184,24 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     },
     exportTSV(sheet = 0) {
       return exportDelimited(model, queryLayer, sheet, '\t');
+    },
+    importCSV(csv: string, sheet = 0) {
+      const rows = parseCSV(csv);
+      const ops: Operation[] = [];
+      for (let r = 0; r < rows.length; r++) {
+        for (let c = 0; c < rows[r]!.length; c++) {
+          const raw = rows[r]![c]!;
+          const num = Number(raw);
+          const value = raw === '' ? null : isNaN(num) ? raw : num;
+          if (value !== null) {
+            ops.push({ type: 'setCellValue', payload: { sheet, row: r, col: c, value } });
+          }
+        }
+      }
+      if (ops.length > 0) engine.apply(ops);
+    },
+    getSelection() {
+      return currentSelection;
     },
     getModuleRenderers() {
       return moduleRegistry.getRenderers();
@@ -215,6 +245,50 @@ function exportDelimited(model: WorkbookModel, query: QueryLayer, sheetIndex: nu
   return lines.join('\n');
 }
 
+function parseCSV(csv: string): string[][] {
+  const rows: string[][] = [];
+  let i = 0;
+  const len = csv.length;
+
+  while (i < len) {
+    const row: string[] = [];
+    while (i < len) {
+      if (csv[i] === '"') {
+        i++;
+        let val = '';
+        while (i < len) {
+          if (csv[i] === '"') {
+            if (i + 1 < len && csv[i + 1] === '"') {
+              val += '"';
+              i += 2;
+            } else {
+              i++;
+              break;
+            }
+          } else {
+            val += csv[i]!;
+            i++;
+          }
+        }
+        row.push(val);
+      } else {
+        let val = '';
+        while (i < len && csv[i] !== ',' && csv[i] !== '\n' && csv[i] !== '\r') {
+          val += csv[i]!;
+          i++;
+        }
+        row.push(val);
+      }
+      if (i < len && csv[i] === ',') { i++; continue; }
+      break;
+    }
+    rows.push(row);
+    if (i < len && csv[i] === '\r') i++;
+    if (i < len && csv[i] === '\n') i++;
+  }
+  return rows;
+}
+
 function registerCoreOperations(registry: OperationRegistry): void {
   registry.register('setCellValue', setCellValue);
   registry.register('deleteCellValue', deleteCellValue);
@@ -230,6 +304,10 @@ function registerCoreOperations(registry: OperationRegistry): void {
   registry.register('setColumnWidth', setColumnWidth);
   registry.register('mergeCells', mergeCells);
   registry.register('unmergeCells', unmergeCells);
+  registry.register('hideRows', hideRows);
+  registry.register('showRows', showRows);
+  registry.register('hideColumns', hideColumns);
+  registry.register('showColumns', showColumns);
   registry.register('setCellStyle', setCellStyle);
   registry.register('setSelection', setSelection);
 }

@@ -3,8 +3,22 @@ import type { LayoutPlan } from '../layout/types';
 import type { LayoutEngine } from '../layout/engine';
 import type { CanvasRuntime } from '../canvas/runtime';
 import type { PointerEventLike, KeyboardEventLike } from '../canvas/types';
-import type { Selection, InteractionState, HitResult, HoverInfo, DragInfo } from './types';
+import type { Selection, InteractionState, HitResult, HoverInfo, DragInfo, FillDragInfo } from './types';
 import { hitTest } from './hit-test';
+
+function detectSeries(values: (number | string | boolean | null)[]): ((index: number) => number) | null {
+  if (values.length < 2) return null;
+  const nums: number[] = [];
+  for (const v of values) {
+    if (typeof v !== 'number') return null;
+    nums.push(v);
+  }
+  const step = nums[1]! - nums[0]!;
+  for (let i = 2; i < nums.length; i++) {
+    if (nums[i]! - nums[i - 1]! !== step) return null;
+  }
+  return (idx: number) => nums[0]! + step * idx;
+}
 
 export interface InteractionEngineOptions {
   workbook: Workbook;
@@ -22,6 +36,7 @@ export class InteractionEngine {
   private selection: Selection | null = null;
   private hover: HoverInfo | null = null;
   private drag: DragInfo | null = null;
+  private fillDrag: FillDragInfo | null = null;
 
   private readonly workbook: Workbook;
   private readonly runtime: CanvasRuntime;
@@ -70,10 +85,10 @@ export class InteractionEngine {
       if (this.state === 'dragging') {
         this.handleDragMove(e);
       } else if (this.state === 'selecting') {
-        this.updateCursor(hit);
+        this.updateCursor(hit, e);
         this.handlePointerMove(hit);
       } else {
-        this.updateCursor(hit);
+        this.updateCursor(hit, e);
         this.updateHover(hit);
       }
     } else if (e.type === 'up') {
@@ -81,7 +96,15 @@ export class InteractionEngine {
     }
   }
 
-  private updateCursor(hit: HitResult): void {
+  getFillDrag(): FillDragInfo | null {
+    return this.fillDrag;
+  }
+
+  private updateCursor(hit: HitResult, e: PointerEventLike): void {
+    if (hit.type === 'cell' && this.isNearFillHandle(e)) {
+      this.runtime.setCursor('crosshair');
+      return;
+    }
     switch (hit.type) {
       case 'cell':
         this.runtime.setCursor('cell');
@@ -100,6 +123,20 @@ export class InteractionEngine {
         this.runtime.setCursor('default');
         break;
     }
+  }
+
+  private isNearFillHandle(e: PointerEventLike): boolean {
+    if (!this.selection) return false;
+    const sel = this.selection;
+    const maxRow = Math.max(sel.startRow, sel.endRow);
+    const maxCol = Math.max(sel.startCol, sel.endCol);
+    const plan = this.getLayoutPlan();
+    const box = plan.cells.find((c) => c.row === maxRow && c.col === maxCol)
+      ?? plan.frozenCells.find((c) => c.row === maxRow && c.col === maxCol);
+    if (!box) return false;
+    const handleX = box.x + box.width;
+    const handleY = box.y + box.height;
+    return Math.abs(e.x - handleX) < 6 && Math.abs(e.y - handleY) < 6;
   }
 
   private updateHover(hit: HitResult): void {
@@ -144,6 +181,15 @@ export class InteractionEngine {
         this.state = 'dragging';
         this.drag = { type: 'col', index: hit.col, startPos: e.x, startSize: header.width };
       }
+      return;
+    }
+
+    if (this.selection && this.isNearFillHandle(e)) {
+      const sel = this.selection;
+      const maxRow = Math.max(sel.startRow, sel.endRow);
+      const maxCol = Math.max(sel.startCol, sel.endCol);
+      this.state = 'dragging';
+      this.fillDrag = { sourceRange: { ...sel }, startX: e.x, startY: e.y, direction: 'none', currentRow: maxRow, currentCol: maxCol };
       return;
     }
 
@@ -192,6 +238,34 @@ export class InteractionEngine {
   }
 
   private handleDragMove(e: PointerEventLike): void {
+    if (this.fillDrag) {
+      const fd = this.fillDrag;
+      if (fd.direction === 'none') {
+        const dx = Math.abs(e.x - fd.startX);
+        const dy = Math.abs(e.y - fd.startY);
+        if (dx > 4 || dy > 4) {
+          fd.direction = dx > dy ? 'col' : 'row';
+        } else {
+          return;
+        }
+      }
+      const plan = this.getLayoutPlan();
+      const hit = hitTest(e.x, e.y, plan);
+      if (hit.type === 'cell') {
+        const sMaxR = Math.max(fd.sourceRange.startRow, fd.sourceRange.endRow);
+        const sMaxC = Math.max(fd.sourceRange.startCol, fd.sourceRange.endCol);
+        if (fd.direction === 'row') {
+          fd.currentRow = hit.row;
+          fd.currentCol = sMaxC;
+        } else {
+          fd.currentRow = sMaxR;
+          fd.currentCol = hit.col;
+        }
+        this.onRepaintRequest();
+      }
+      return;
+    }
+
     if (!this.drag) return;
 
     const MIN_SIZE = 20;
@@ -210,6 +284,13 @@ export class InteractionEngine {
   }
 
   private handlePointerUp(e: PointerEventLike): void {
+    if (this.state === 'dragging' && this.fillDrag) {
+      this.applyFill(this.fillDrag);
+      this.fillDrag = null;
+      this.state = 'idle';
+      return;
+    }
+
     if (this.state === 'dragging' && this.drag) {
       const MIN_SIZE = 20;
       if (this.drag.type === 'row') {
@@ -229,6 +310,7 @@ export class InteractionEngine {
       }
       this.drag = null;
       this.state = 'idle';
+      this.layoutEngine.clearTemporary();
       return;
     }
     if (this.state === 'selecting') {
@@ -252,6 +334,38 @@ export class InteractionEngine {
     }
 
     if (this.state === 'editing') return;
+
+    if (mod && key === 'c' && this.selection) {
+      e.preventDefault();
+      const sel = this.selection;
+      const minRow = Math.min(sel.startRow, sel.endRow);
+      const maxRow = Math.max(sel.startRow, sel.endRow);
+      const minCol = Math.min(sel.startCol, sel.endCol);
+      const maxCol = Math.max(sel.startCol, sel.endCol);
+      try {
+        this.workbook.apply([{
+          type: 'edit.copy',
+          payload: { sheet: 0, range: { startRow: minRow, endRow: maxRow, startCol: minCol, endCol: maxCol } },
+        }]);
+      } catch {
+        // EditModule not registered
+      }
+      return;
+    }
+
+    if (mod && key === 'v' && this.selection) {
+      e.preventDefault();
+      try {
+        this.workbook.apply([{
+          type: 'edit.paste',
+          payload: { sheet: 0, row: Math.min(this.selection.startRow, this.selection.endRow), col: Math.min(this.selection.startCol, this.selection.endCol) },
+        }]);
+      } catch {
+        // EditModule not registered
+      }
+      return;
+    }
+
     if (!this.selection) return;
 
     const row = this.selection.endRow;
@@ -314,5 +428,77 @@ export class InteractionEngine {
       };
     }
     this.onSelectionChange(this.selection);
+  }
+
+  private applyFill(fill: FillDragInfo): void {
+    const src = fill.sourceRange;
+    const srcMinR = Math.min(src.startRow, src.endRow);
+    const srcMaxR = Math.max(src.startRow, src.endRow);
+    const srcMinC = Math.min(src.startCol, src.endCol);
+    const srcMaxC = Math.max(src.startCol, src.endCol);
+    const srcRows = srcMaxR - srcMinR + 1;
+    const srcCols = srcMaxC - srcMinC + 1;
+
+    const ops: { type: string; payload: Record<string, unknown> }[] = [];
+
+    if (fill.currentRow > srcMaxR) {
+      // Fill downward
+      for (let c = srcMinC; c <= srcMaxC; c++) {
+        const colValues = this.getSourceColumn(srcMinR, srcMaxR, c);
+        const series = detectSeries(colValues);
+        for (let r = srcMaxR + 1; r <= fill.currentRow; r++) {
+          const idx = r - srcMinR;
+          const value = series ? series(idx) : colValues[idx % srcRows];
+          if (value !== null) ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r, col: c, value } });
+        }
+      }
+    } else if (fill.currentRow < srcMinR) {
+      // Fill upward
+      for (let c = srcMinC; c <= srcMaxC; c++) {
+        const colValues = this.getSourceColumn(srcMinR, srcMaxR, c);
+        const series = detectSeries(colValues);
+        for (let r = srcMinR - 1; r >= fill.currentRow; r--) {
+          const idx = r - srcMinR; // negative
+          const value = series ? series(idx) : colValues[((idx % srcRows) + srcRows) % srcRows];
+          if (value !== null) ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r, col: c, value } });
+        }
+      }
+    } else if (fill.currentCol > srcMaxC) {
+      // Fill rightward
+      for (let r = srcMinR; r <= srcMaxR; r++) {
+        const rowValues = this.getSourceRow(r, srcMinC, srcMaxC);
+        const series = detectSeries(rowValues);
+        for (let c = srcMaxC + 1; c <= fill.currentCol; c++) {
+          const idx = c - srcMinC;
+          const value = series ? series(idx) : rowValues[idx % srcCols];
+          if (value !== null) ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r, col: c, value } });
+        }
+      }
+    } else if (fill.currentCol < srcMinC) {
+      // Fill leftward
+      for (let r = srcMinR; r <= srcMaxR; r++) {
+        const rowValues = this.getSourceRow(r, srcMinC, srcMaxC);
+        const series = detectSeries(rowValues);
+        for (let c = srcMinC - 1; c >= fill.currentCol; c--) {
+          const idx = c - srcMinC;
+          const value = series ? series(idx) : rowValues[((idx % srcCols) + srcCols) % srcCols];
+          if (value !== null) ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r, col: c, value } });
+        }
+      }
+    }
+
+    if (ops.length > 0) this.workbook.apply(ops);
+  }
+
+  private getSourceColumn(minR: number, maxR: number, col: number): (number | string | boolean | null)[] {
+    const values: (number | string | boolean | null)[] = [];
+    for (let r = minR; r <= maxR; r++) values.push(this.workbook.query.getCellDisplayValue({ sheet: 0, row: r, col }));
+    return values;
+  }
+
+  private getSourceRow(row: number, minC: number, maxC: number): (number | string | boolean | null)[] {
+    const values: (number | string | boolean | null)[] = [];
+    for (let c = minC; c <= maxC; c++) values.push(this.workbook.query.getCellDisplayValue({ sheet: 0, row, col: c }));
+    return values;
   }
 }

@@ -20,8 +20,17 @@ export interface HoverInfo {
 }
 
 export interface DragInfo {
-  type: 'row' | 'col';
+  type: 'row' | 'col' | 'fill';
   index: number;
   startPos: number;
   startSize: number;
+}
+
+export interface FillDragInfo {
+  sourceRange: Selection;
+  startX: number;
+  startY: number;
+  direction: 'none' | 'row' | 'col';
+  currentRow: number;
+  currentCol: number;
 }

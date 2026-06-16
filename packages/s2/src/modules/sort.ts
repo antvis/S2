@@ -68,9 +68,14 @@ export const SortModule: ModuleDefinition = {
         const oldConfig = this.state.configs.get(sheet);
         const oldSortBy = oldConfig ? [...oldConfig.sortBy] : [];
 
-        const config: SortConfig = { sheet, sortBy };
-        this.state.configs.set(sheet, config);
-        this.state.rowOrder.set(sheet, computeRowOrder(model, config));
+        if (sortBy.length === 0) {
+          this.state.configs.delete(sheet);
+          this.state.rowOrder.delete(sheet);
+        } else {
+          const config: SortConfig = { sheet, sortBy };
+          this.state.configs.set(sheet, config);
+          this.state.rowOrder.set(sheet, computeRowOrder(model, config));
+        }
 
         return [{ type: 'sort.set', payload: { sheet, sortBy: oldSortBy } }];
       },
