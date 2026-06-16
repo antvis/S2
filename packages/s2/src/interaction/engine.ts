@@ -27,7 +27,8 @@ export interface InteractionEngineOptions {
   getLayoutPlan: () => LayoutPlan;
   onSelectionChange: (selection: Selection | null) => void;
   onHoverChange?: (hover: HoverInfo | null) => void;
-  onEditStart: (row: number, col: number) => void;
+  onEditStart: (row: number, col: number, initialValue?: string) => void;
+  readOnly?: boolean;
   onRepaintRequest: () => void;
 }
 
@@ -44,7 +45,8 @@ export class InteractionEngine {
   private readonly getLayoutPlan: () => LayoutPlan;
   private readonly onSelectionChange: (selection: Selection | null) => void;
   private readonly onHoverChange: ((hover: HoverInfo | null) => void) | null;
-  private readonly onEditStart: (row: number, col: number) => void;
+  private readonly onEditStart: (row: number, col: number, initialValue?: string) => void;
+  private readonly readOnly: boolean;
   private readonly onRepaintRequest: () => void;
 
   constructor(options: InteractionEngineOptions) {
@@ -56,6 +58,7 @@ export class InteractionEngine {
     this.onHoverChange = options.onHoverChange ?? null;
     this.onEditStart = options.onEditStart;
     this.onRepaintRequest = options.onRepaintRequest;
+    this.readOnly = options.readOnly ?? false;
 
     this.runtime.onPointer((e) => this.handlePointer(e));
     this.runtime.onKeyboard((e) => this.handleKeyDown(e));
@@ -157,6 +160,7 @@ export class InteractionEngine {
   }
 
   private handleDoubleClick(hit: HitResult): void {
+    if (this.readOnly) return;
     if (hit.type === 'cell') {
       this.state = 'editing';
       this.onEditStart(hit.row, hit.col);
@@ -354,6 +358,7 @@ export class InteractionEngine {
     }
 
     if (mod && key === 'v' && this.selection) {
+      if (this.readOnly) return;
       e.preventDefault();
       try {
         this.workbook.apply([{
@@ -367,6 +372,30 @@ export class InteractionEngine {
     }
 
     if (!this.selection) return;
+
+    if (e.key === 'F2' && !this.readOnly) {
+      e.preventDefault();
+      this.state = 'editing';
+      this.onEditStart(this.selection.endRow, this.selection.endCol);
+      return;
+    }
+
+    if ((e.key === 'Delete' || e.key === 'Backspace') && !this.readOnly) {
+      e.preventDefault();
+      const sel = this.selection;
+      const minRow = Math.min(sel.startRow, sel.endRow);
+      const maxRow = Math.max(sel.startRow, sel.endRow);
+      const minCol = Math.min(sel.startCol, sel.endCol);
+      const maxCol = Math.max(sel.startCol, sel.endCol);
+      const ops: { type: string; payload: Record<string, unknown> }[] = [];
+      for (let r = minRow; r <= maxRow; r++) {
+        for (let c = minCol; c <= maxCol; c++) {
+          ops.push({ type: 'deleteCellValue', payload: { sheet: 0, row: r, col: c } });
+        }
+      }
+      if (ops.length > 0) this.workbook.apply(ops);
+      return;
+    }
 
     const row = this.selection.endRow;
     const col = this.selection.endCol;
@@ -408,6 +437,12 @@ export class InteractionEngine {
         this.moveSelection(row + 1, col, false);
         break;
       }
+    }
+
+    if (!this.readOnly && !mod && !e.altKey && e.key.length === 1) {
+      e.preventDefault();
+      this.state = 'editing';
+      this.onEditStart(this.selection.endRow, this.selection.endCol, e.key);
     }
   }
 

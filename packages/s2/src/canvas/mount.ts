@@ -13,6 +13,7 @@ export interface MountCanvasOptions {
   height?: number;
   showRowHeader?: boolean;
   showColHeader?: boolean;
+  readOnly?: boolean;
 }
 
 export interface CanvasHandle {
@@ -95,7 +96,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     }
   }
 
-  function showEditor(row: number, col: number): void {
+  function showEditor(row: number, col: number, initialValue?: string): void {
     const box = currentPlan.cells.find((c) => c.row === row && c.col === col)
       ?? currentPlan.frozenCells.find((c) => c.row === row && c.col === col);
     if (!box) return;
@@ -114,13 +115,19 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     editorEl.style.boxSizing = 'border-box';
     editorEl.style.zIndex = '10';
 
-    const currentValue = workbook.query.getCellDisplayValue({ sheet: 0, row, col });
-    editorEl.value = currentValue !== null ? String(currentValue) : '';
+    if (initialValue !== undefined) {
+      editorEl.value = initialValue;
+    } else {
+      const currentValue = workbook.query.getCellDisplayValue({ sheet: 0, row, col });
+      editorEl.value = currentValue !== null ? String(currentValue) : '';
+    }
 
     container.style.position = 'relative';
     container.appendChild(editorEl);
     editorEl.focus();
-    editorEl.select();
+    if (initialValue === undefined) {
+      editorEl.select();
+    }
 
     editorEl.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
@@ -208,6 +215,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     runtime,
     layoutEngine: layout,
     getLayoutPlan: () => currentPlan,
+    readOnly: options?.readOnly,
     onSelectionChange(selection) {
       currentSelection = selection;
       workbook.apply([{ type: 'setSelection', payload: { selection } }]);
@@ -231,11 +239,11 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
       runtime.markDirty();
       runtime.requestRepaint(paint);
     },
-    onEditStart(row, col) {
+    onEditStart(row, col, initialValue) {
       if (hasEditModule()) {
         workbook.apply([{ type: 'edit.start', payload: { sheet: 0, row, col } }]);
       }
-      showEditor(row, col);
+      showEditor(row, col, initialValue);
     },
   });
 

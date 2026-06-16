@@ -98,6 +98,7 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
       shiftKey: e.shiftKey,
       ctrlKey: e.ctrlKey,
       metaKey: e.metaKey,
+      altKey: e.altKey,
       preventDefault: () => e.preventDefault(),
     };
     for (let i = 0, len = keyboardHandlers.length; i < len; ++i) {

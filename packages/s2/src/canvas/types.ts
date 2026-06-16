@@ -22,5 +22,6 @@ export interface KeyboardEventLike {
   shiftKey: boolean;
   ctrlKey: boolean;
   metaKey: boolean;
+  altKey: boolean;
   preventDefault(): void;
 }
