@@ -18,7 +18,11 @@ export const FreezeModule: ModuleDefinition = {
 
   operations: {
     'freeze.set': {
-      meta: { affectLayout: true, undoable: true },
+      meta: {
+        affectLayout: true, undoable: true,
+        description: 'Freeze rows and/or columns',
+        inputSchema: { type: 'object', properties: { sheet: { type: 'number' }, frozenRows: { type: 'number' }, frozenCols: { type: 'number' } }, required: ['sheet', 'frozenRows', 'frozenCols'] },
+      },
       execute(this: { state: FreezeState }, _model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, frozenRows, frozenCols } = payload as { sheet: number; frozenRows: number; frozenCols: number };
         const oldConfig = this.state.configs.get(sheet);
@@ -32,7 +36,11 @@ export const FreezeModule: ModuleDefinition = {
       },
     },
     'freeze.clear': {
-      meta: { affectLayout: true, undoable: true },
+      meta: {
+        affectLayout: true, undoable: true,
+        description: 'Clear frozen rows/columns',
+        inputSchema: { type: 'object', properties: { sheet: { type: 'number' } }, required: ['sheet'] },
+      },
       execute(this: { state: FreezeState }, _model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet } = payload as { sheet: number };
         const oldConfig = this.state.configs.get(sheet);

@@ -11,6 +11,11 @@
       "types": "./src/index.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./mcp": {
+      "types": "./src/mcp/index.ts",
+      "import": "./dist/mcp/index.js",
+      "require": "./dist/mcp/index.cjs"
     }
   },
   "files": ["dist"],
@@ -20,8 +25,17 @@
     "test": "vitest run"
   },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
     "typescript": "^5.8.0",
     "vitest": "^3.2.0"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/sdk": {
+      "optional": true
+    }
   },
   "sideEffects": false,
   "license": "MIT"

@@ -1,8 +1,14 @@
+export interface CellStyle {
+  bold?: boolean;
+  color?: string;
+  backgroundColor?: string;
+}
+
 export interface CellState {
   value?: string | number | boolean | null;
   formula?: string;
   computedValue?: string | number | boolean | null;
-  style?: string; // style reference id
+  style?: CellStyle;
 }
 
 export interface RowState {

@@ -17,4 +17,8 @@ export class OperationRegistry {
   has(type: string): boolean {
     return this.handlers.has(type);
   }
+
+  list(): Map<string, OperationDefinition> {
+    return new Map(this.handlers);
+  }
 }

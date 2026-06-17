@@ -23,7 +23,9 @@ packages/s2/src/
 ├── operation/      # OperationEngine, OperationRegistry, 内置 operations
 ├── query/          # QueryLayer, ChangeSet 缓存失效
 ├── module/         # ModuleRegistry, ModuleDefinition 类型
-├── modules/        # 内置 Module (pivot, formula, filter, sort, freeze, edit, conditional-format)
+├── modules/        # 内置 Module (pivot, formula, filter, sort, freeze, edit, conditional-format, agent)
+├── mcp/            # MCP Server adapter (@antv/s2/mcp subpath export)
+├── facade/         # Facade API (createPivotTable / createTable 链式调用)
 ├── layout/         # LayoutEngine, PrefixSumArray, LayoutPlan 类型, HierarchyLayout
 ├── canvas/         # CanvasRuntime, mountCanvas
 ├── renderer/       # renderFrame (detail + hierarchy 两条路径)
@@ -38,10 +40,6 @@ packages/s2/src/
 - `CellRendererFn` / `CellRenderContext` → `module/types.ts`
 - `RenderState` → `renderer/frame.ts`
 - 布局常量 `DETAIL_HEADER_WIDTH` 等 → `layout/types.ts`（统一来源）
-
-## 设计文档（Source of Truth）
-
-设计文档存放在本地 `/Users/huiyu/Documents/2026/S2-3.0/` 目录（s2-v3-rfc.md、s2-v3-architecture.md、s2-v3-layer-design.md）。实现必须符合这些文档，有冲突时以 RFC 为准。
 
 ## 代码规范
 
@@ -61,14 +59,6 @@ npx tsc --noEmit        # 类型检查
 ```
 
 测试文件在 `packages/s2/tests/`。每个 Module 有独立测试文件。
-
-## 已知限制（当前阶段）
-
-- Formula 是全量重算，不是增量
-- sheetIdCounter 是模块级全局变量
-- 没有协同（OT/CRDT）
-- AgentModule 未实现
-- Facade API（createPivotTable 链式调用）未实现
 
 ## npm registry
 

@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import {
   createWorkbook,
+  mountCanvas,
   type Workbook,
   type ModuleDefinition,
   type Operation,
@@ -16,6 +17,11 @@ export interface S2SheetProps {
     values: string[];
     valueAggregation?: Record<string, 'SUM' | 'AVG' | 'COUNT' | 'MIN' | 'MAX'>;
   };
+  width?: number;
+  height?: number;
+  showRowHeader?: boolean;
+  showColHeader?: boolean;
+  readOnly?: boolean;
   onWorkbookCreated?: (workbook: Workbook) => void;
   onOperationApplied?: (ops: Operation[]) => void;
   style?: React.CSSProperties;
@@ -28,6 +34,11 @@ export function S2Sheet(props: S2SheetProps) {
     data,
     dataSourceId = 'default',
     pivotConfig,
+    width,
+    height,
+    showRowHeader,
+    showColHeader,
+    readOnly,
     onWorkbookCreated,
     onOperationApplied,
     style,
@@ -37,7 +48,6 @@ export function S2Sheet(props: S2SheetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const workbookRef = useRef<Workbook | null>(null);
 
-  // Recreate workbook when modules change
   const modulesKey = modules?.map((m) => m.name).join(',') ?? '';
   const workbook = useMemo(() => {
     const wb = createWorkbook({ modules });
@@ -55,7 +65,15 @@ export function S2Sheet(props: S2SheetProps) {
     }
   }, [workbook, onOperationApplied]);
 
-  // Register data source and apply pivot config when data/config changes
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const handle = mountCanvas(workbook, container, {
+      width, height, showRowHeader, showColHeader, readOnly,
+    });
+    return () => handle.destroy();
+  }, [workbook, width, height, showRowHeader, showColHeader, readOnly]);
+
   const prevDataRef = useRef<Record<string, unknown>[] | undefined>(undefined);
   const prevPivotRef = useRef<typeof pivotConfig>(undefined);
 
@@ -91,7 +109,7 @@ export function S2Sheet(props: S2SheetProps) {
   return (
     <div
       ref={containerRef}
-      style={{ width: '100%', height: '100%', ...style }}
+      style={{ width: width ?? '100%', height: height ?? '100%', ...style }}
       className={className}
     />
   );

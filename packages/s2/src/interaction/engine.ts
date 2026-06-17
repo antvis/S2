@@ -400,16 +400,22 @@ export class InteractionEngine {
     const row = this.selection.endRow;
     const col = this.selection.endCol;
 
+    const visualNav = (modelR: number, dir: 1 | -1): number => {
+      const vr = this.layoutEngine.modelToVisualRow(modelR);
+      const nextVr = vr + dir;
+      if (nextVr < 0) return modelR;
+      return this.layoutEngine.visualToModelRow(nextVr);
+    };
+
     switch (e.key) {
       case 'ArrowUp': {
         e.preventDefault();
-        const newRow = Math.max(0, row - 1);
-        this.moveSelection(newRow, col, e.shiftKey);
+        this.moveSelection(visualNav(row, -1), col, e.shiftKey);
         break;
       }
       case 'ArrowDown': {
         e.preventDefault();
-        this.moveSelection(row + 1, col, e.shiftKey);
+        this.moveSelection(visualNav(row, 1), col, e.shiftKey);
         break;
       }
       case 'ArrowLeft': {
@@ -434,7 +440,7 @@ export class InteractionEngine {
       }
       case 'Enter': {
         e.preventDefault();
-        this.moveSelection(row + 1, col, false);
+        this.moveSelection(visualNav(row, 1), col, false);
         break;
       }
     }

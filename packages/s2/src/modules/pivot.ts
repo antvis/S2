@@ -261,7 +261,15 @@ export const PivotModule: ModuleDefinition = {
 
   operations: {
     'pivot.setConfig': {
-      meta: { needReCalc: true, affectLayout: true, undoable: true },
+      meta: {
+        needReCalc: true, affectLayout: true, undoable: true,
+        description: 'Configure pivot table (rows, columns, values, aggregation)',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, dataSourceId: { type: 'string' }, rows: { type: 'array', items: { type: 'string' } }, columns: { type: 'array', items: { type: 'string' } }, values: { type: 'array', items: { type: 'string' } }, valueAggregation: { type: 'object' }, showSubTotals: { type: 'boolean' }, showGrandTotal: { type: 'boolean' } },
+          required: ['sheet', 'dataSourceId', 'rows', 'columns', 'values', 'valueAggregation'],
+        },
+      },
       execute(this: { state: PivotState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const config = payload as unknown as PivotConfig;
         const oldConfig = this.state.configs.get(config.sheet);
@@ -282,7 +290,11 @@ export const PivotModule: ModuleDefinition = {
       },
     },
     'pivot.clearConfig': {
-      meta: { needReCalc: true, affectLayout: true, undoable: true },
+      meta: {
+        needReCalc: true, affectLayout: true, undoable: true,
+        description: 'Clear pivot table configuration',
+        inputSchema: { type: 'object', properties: { sheet: { type: 'number' } }, required: ['sheet'] },
+      },
       execute(this: { state: PivotState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet } = payload as { sheet: number };
         const oldConfig = this.state.configs.get(sheet);
@@ -300,7 +312,15 @@ export const PivotModule: ModuleDefinition = {
       },
     },
     'pivot.drill': {
-      meta: { needReCalc: true, affectLayout: true, undoable: true },
+      meta: {
+        needReCalc: true, affectLayout: true, undoable: true,
+        description: 'Drill down on a pivot dimension value',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, dimension: { type: 'string' }, value: { type: 'string' } },
+          required: ['sheet', 'dimension', 'value'],
+        },
+      },
       execute(this: { state: PivotState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, dimension, value } = payload as { sheet: number; dimension: string; value: string };
         const config = this.state.configs.get(sheet);
@@ -319,6 +339,19 @@ export const PivotModule: ModuleDefinition = {
         if (dimIndex === -1) return [];
 
         const newDrillFilters = { ...(config.drillFilters ?? {}), [dimension]: value };
+
+        const data = model.dataSources.get(config.dataSourceId) as Record<string, unknown>[] | undefined;
+        if (dimIndex > 0 && data && data.length > 0) {
+          const parentDims = config.rows.slice(0, dimIndex);
+          const baseData = config.drillFilters
+            ? data.filter((r) => Object.entries(config.drillFilters!).every(([k, v]) => String(r[k] ?? '') === v))
+            : data;
+          const matching = baseData.filter((r) => String(r[dimension] ?? '') === value);
+          for (const dim of parentDims) {
+            const vals = new Set(matching.map((r) => String(r[dim] ?? '')));
+            if (vals.size === 1) newDrillFilters[dim] = [...vals][0]!;
+          }
+        }
         const newRows = config.rows.slice(dimIndex + 1);
 
         const newConfig: PivotConfig = {
@@ -328,7 +361,6 @@ export const PivotModule: ModuleDefinition = {
         };
         this.state.configs.set(sheet, newConfig);
 
-        const data = model.dataSources.get(newConfig.dataSourceId) as Record<string, unknown>[] | undefined;
         if (data && data.length > 0) {
           const { layout, values } = computePivotLayout(data, newConfig);
           this.state.layouts.set(sheet, layout);

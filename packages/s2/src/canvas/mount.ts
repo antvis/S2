@@ -219,6 +219,9 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     onSelectionChange(selection) {
       currentSelection = selection;
       workbook.apply([{ type: 'setSelection', payload: { selection } }]);
+      if (selection) {
+        layout.ensureCellVisible(selection.endRow, selection.endCol, runtime.getWidth(), runtime.getHeight());
+      }
       runtime.markDirty();
       runtime.requestRepaint(paint);
     },

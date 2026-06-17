@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "s2-spreadsheet": {
+      "command": "/tmp/s2-mcp-server/node_modules/.bin/tsx",
+      "args": ["/tmp/s2-mcp-server/server.ts"],
+      "cwd": "/tmp/s2-mcp-server"
+    }
+  }
+}

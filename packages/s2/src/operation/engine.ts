@@ -2,6 +2,12 @@ import type { WorkbookModel } from '../core/model';
 import type { Operation } from './types';
 import type { OperationRegistry } from './registry';
 
+export interface AuditEntry {
+  timestamp: number;
+  operations: Operation[];
+  source: 'human' | 'agent' | 'unknown';
+}
+
 export interface OperationEngineOptions {
   model: WorkbookModel;
   registry: OperationRegistry;
@@ -18,6 +24,8 @@ export class OperationEngine {
   private readonly registry: OperationRegistry;
   private readonly undoStack: HistoryEntry[] = [];
   private readonly redoStack: HistoryEntry[] = [];
+  private readonly auditLog: AuditEntry[] = [];
+  private readonly maxAuditEntries = 1000;
   private readonly onApplied?: (ops: Operation[], inverseOps: Operation[]) => void;
 
   constructor(options: OperationEngineOptions) {
@@ -65,6 +73,15 @@ export class OperationEngine {
     }
 
     this.onApplied?.(operations, allInverse);
+
+    const source = operations[0]?.source ?? 'unknown';
+    this.auditLog.push({ timestamp: Date.now(), operations, source });
+    if (this.auditLog.length > this.maxAuditEntries) this.auditLog.shift();
+  }
+
+  getAuditLog(limit?: number): AuditEntry[] {
+    if (limit === undefined) return [...this.auditLog];
+    return this.auditLog.slice(-limit);
   }
 
   undo(): boolean {
@@ -101,5 +118,9 @@ export class OperationEngine {
 
   canRedo(): boolean {
     return this.redoStack.length > 0;
+  }
+
+  getUndoStackSize(): number {
+    return this.undoStack.length;
   }
 }

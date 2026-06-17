@@ -281,7 +281,15 @@ export const FormulaModule: ModuleDefinition = {
 
   operations: {
     'formula.setFormula': {
-      meta: { needReCalc: true, affectLayout: false, undoable: true },
+      meta: {
+        needReCalc: true, affectLayout: false, undoable: true,
+        description: 'Set a formula on a cell (e.g. =SUM(A1:A10))',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, row: { type: 'number' }, col: { type: 'number' }, formula: { type: 'string' } },
+          required: ['sheet', 'row', 'col', 'formula'],
+        },
+      },
       execute(this: { state: FormulaState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, row, col, formula } = payload as { sheet: number; row: number; col: number; formula: string };
         const key = cellKey(sheet, row, col);
@@ -352,6 +360,19 @@ export const FormulaModule: ModuleDefinition = {
       const entry = formulaState.formulas.get(key);
       return entry?.formula ?? null;
     },
+    'formula.traceFormula': (state: unknown, params: Record<string, unknown>, model: WorkbookModel) => {
+      const formulaState = state as FormulaState;
+      const { sheet, row, col } = params as { sheet: number; row: number; col: number };
+      const key = cellKey(sheet, row, col);
+      const entry = formulaState.formulas.get(key);
+      if (!entry) return null;
+      const cell = model.getCell(sheet, row, col);
+      return {
+        formula: entry.formula,
+        dependencies: entry.dependencies,
+        result: cell?.computedValue ?? null,
+      };
+    },
   },
 
   lifecycle: {
@@ -368,7 +389,16 @@ export const FormulaModule: ModuleDefinition = {
             this.state.formulas.delete(key);
           }
           dirtyCells.add(key);
-        } else if (op.type === 'restoreCell' || op.type === 'deleteCellValue') {
+        } else if (op.type === 'deleteCellValue') {
+          const { sheet, row, col } = op.payload as { sheet: number; row: number; col: number };
+          const key = cellKey(sheet, row, col);
+          if (this.state.formulas.has(key)) {
+            const entry = this.state.formulas.get(key)!;
+            removeDependents(this.state, key, entry.dependencies);
+            this.state.formulas.delete(key);
+          }
+          dirtyCells.add(key);
+        } else if (op.type === 'restoreCell') {
           fullRecalc = true;
         } else if (op.type === '__undo' || op.type === '__redo') {
           fullRecalc = true;

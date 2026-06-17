@@ -1,6 +1,6 @@
 import { DETAIL_HEADER_WIDTH, DETAIL_HEADER_HEIGHT } from '../layout/types';
 import type { CellBox, HeaderBox, LayoutPlan, Line } from '../layout/types';
-import type { MergeRange } from '../core/types';
+import type { MergeRange, CellStyle } from '../core/types';
 import type { QueryLayer } from '../query/query';
 import type { Selection, HoverInfo } from '../interaction/types';
 import type { CellRendererFn, CellRenderContext } from '../module/types';
@@ -390,7 +390,7 @@ function drawCells(
 
     // Cell style (setCellStyle)
     const cellRaw = query.getCellRawValue({ sheet: sheetIndex, row: box.row, col: box.col });
-    const cellStyle = cellRaw?.style as { bold?: boolean; color?: string; backgroundColor?: string } | undefined;
+    const cellStyle = cellRaw?.style;
     if (cellStyle?.backgroundColor) {
       ctx.fillStyle = cellStyle.backgroundColor;
       ctx.fillRect(box.x, box.y, drawWidth, drawHeight);

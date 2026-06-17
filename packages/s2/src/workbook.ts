@@ -15,6 +15,15 @@ import {
 } from './operation/operations/dimension';
 import { setCellStyle } from './operation/operations/style';
 import { setSelection } from './operation/operations/selection';
+import type { AgentContext, MCPToolSchema, FormulaTrace, AuditEntry } from './modules/agent';
+
+export interface AgentAPI {
+  getContext(sheet?: number): AgentContext;
+  getMCPTools(): MCPToolSchema[];
+  callTool(name: string, params: Record<string, unknown>): { success: boolean; undoable: boolean };
+  traceFormula(params: { sheet: number; row: number; col: number }): FormulaTrace | null;
+  getAuditLog(limit?: number): AuditEntry[];
+}
 
 export interface CreateWorkbookOptions {
   modules?: ModuleDefinition[];
@@ -42,6 +51,7 @@ export interface Workbook {
   importCSV(csv: string, sheet?: number): void;
   getSelection(): { sheet: number; startRow: number; startCol: number; endRow: number; endCol: number } | null;
   getModuleRenderers(): readonly import('./module/types').CellRendererFn[];
+  agent?: AgentAPI;
   /** @internal — used by mountCanvas, not part of public API */
   __getModel(): WorkbookModel;
 }
@@ -112,6 +122,13 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     for (const mod of options.modules) {
       moduleRegistry.register(mod, operationRegistry, queryLayer);
     }
+  }
+
+  const agentState = moduleRegistry.getModuleState('agent') as { _operationRegistry: unknown; _engine: unknown; _queryLayer: unknown } | null;
+  if (agentState) {
+    agentState._operationRegistry = operationRegistry;
+    agentState._engine = engine;
+    agentState._queryLayer = queryLayer;
   }
 
   moduleRegistry.init();
@@ -188,6 +205,14 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     importCSV(csv: string, sheet = 0) {
       const rows = parseCSV(csv);
       const ops: Operation[] = [];
+      const sheetState = model.getSheet(sheet);
+      if (sheetState) {
+        for (const [row, rowData] of sheetState.cells) {
+          for (const [col] of rowData) {
+            ops.push({ type: 'deleteCellValue', payload: { sheet, row, col } });
+          }
+        }
+      }
       for (let r = 0; r < rows.length; r++) {
         for (let c = 0; c < rows[r]!.length; c++) {
           const raw = rows[r]![c]!;
@@ -209,7 +234,36 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     __getModel() {
       return model;
     },
+    ...(hasAgent() ? { agent: buildAgentAPI() } : {}),
   };
+
+  function hasAgent(): boolean {
+    return !!(options?.modules?.some((m) => m.name === 'agent'));
+  }
+
+  function buildAgentAPI(): AgentAPI {
+    return {
+      getContext(sheet?: number) {
+        return queryLayer.moduleQuery('agent.getContext', sheet !== undefined ? { sheet } : {}) as AgentContext;
+      },
+      getMCPTools() {
+        return queryLayer.moduleQuery('agent.getMCPTools', {}) as MCPToolSchema[];
+      },
+      callTool(name: string, params: Record<string, unknown>) {
+        const sizeBefore = engine.getUndoStackSize();
+        engine.apply([{ type: name, payload: params, source: 'agent' }]);
+        return { success: true, undoable: engine.getUndoStackSize() > sizeBefore };
+      },
+      traceFormula(params: { sheet: number; row: number; col: number }) {
+        try {
+          return queryLayer.moduleQuery('agent.traceFormula', params) as FormulaTrace | null;
+        } catch { return null; }
+      },
+      getAuditLog(limit?: number) {
+        return queryLayer.moduleQuery('agent.getAuditLog', { limit }) as AuditEntry[];
+      },
+    };
+  }
 }
 
 function exportDelimited(model: WorkbookModel, query: QueryLayer, sheetIndex: number, delimiter: string): string {

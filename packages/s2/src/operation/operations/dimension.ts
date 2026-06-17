@@ -14,7 +14,15 @@ interface ColSnapshot {
 }
 
 export const insertRows: OperationDefinition = {
-  meta: { indexChanged: true, affectLayout: true, undoable: true },
+  meta: {
+    indexChanged: true, affectLayout: true, undoable: true,
+    description: 'Insert rows at the given index',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, index: { type: 'number' }, count: { type: 'number' } },
+      required: ['sheet', 'index', 'count'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, index, count, restoreData } = payload as {
       sheet: number; index: number; count: number;
@@ -41,7 +49,15 @@ export const insertRows: OperationDefinition = {
 };
 
 export const deleteRows: OperationDefinition = {
-  meta: { indexChanged: true, affectLayout: true, undoable: true },
+  meta: {
+    indexChanged: true, affectLayout: true, undoable: true,
+    description: 'Delete rows starting at the given index',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, index: { type: 'number' }, count: { type: 'number' } },
+      required: ['sheet', 'index', 'count'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, index, count } = payload as { sheet: number; index: number; count: number };
     const sheetState = model.getSheet(sheet);
@@ -67,7 +83,15 @@ export const deleteRows: OperationDefinition = {
 };
 
 export const insertColumns: OperationDefinition = {
-  meta: { indexChanged: true, affectLayout: true, undoable: true },
+  meta: {
+    indexChanged: true, affectLayout: true, undoable: true,
+    description: 'Insert columns at the given index',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, index: { type: 'number' }, count: { type: 'number' } },
+      required: ['sheet', 'index', 'count'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, index, count, restoreData } = payload as {
       sheet: number; index: number; count: number;
@@ -94,7 +118,15 @@ export const insertColumns: OperationDefinition = {
 };
 
 export const deleteColumns: OperationDefinition = {
-  meta: { indexChanged: true, affectLayout: true, undoable: true },
+  meta: {
+    indexChanged: true, affectLayout: true, undoable: true,
+    description: 'Delete columns starting at the given index',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, index: { type: 'number' }, count: { type: 'number' } },
+      required: ['sheet', 'index', 'count'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, index, count } = payload as { sheet: number; index: number; count: number };
     const sheetState = model.getSheet(sheet);
@@ -118,7 +150,15 @@ export const deleteColumns: OperationDefinition = {
 };
 
 export const setRowHeight: OperationDefinition = {
-  meta: { affectLayout: true, undoable: true },
+  meta: {
+    affectLayout: true, undoable: true,
+    description: 'Set the height of a row',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, row: { type: 'number' }, height: { type: 'number' } },
+      required: ['sheet', 'row', 'height'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, row, height } = payload as { sheet: number; row: number; height: number };
     const old = model.getRow(sheet, row);
@@ -129,7 +169,15 @@ export const setRowHeight: OperationDefinition = {
 };
 
 export const setColumnWidth: OperationDefinition = {
-  meta: { affectLayout: true, undoable: true },
+  meta: {
+    affectLayout: true, undoable: true,
+    description: 'Set the width of a column',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, col: { type: 'number' }, width: { type: 'number' } },
+      required: ['sheet', 'col', 'width'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, col, width } = payload as { sheet: number; col: number; width: number };
     const old = model.getColumn(sheet, col);
@@ -140,7 +188,15 @@ export const setColumnWidth: OperationDefinition = {
 };
 
 export const hideRows: OperationDefinition = {
-  meta: { affectLayout: true, undoable: true },
+  meta: {
+    affectLayout: true, undoable: true,
+    description: 'Hide rows by setting their height to 0',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, rows: { type: 'array', items: { type: 'number' } } },
+      required: ['sheet', 'rows'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, rows } = payload as { sheet: number; rows: number[] };
     const oldHeights: { row: number; height: number }[] = [];
@@ -168,7 +224,15 @@ export const showRows: OperationDefinition = {
 };
 
 export const hideColumns: OperationDefinition = {
-  meta: { affectLayout: true, undoable: true },
+  meta: {
+    affectLayout: true, undoable: true,
+    description: 'Hide columns by setting their width to 0',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, cols: { type: 'array', items: { type: 'number' } } },
+      required: ['sheet', 'cols'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, cols } = payload as { sheet: number; cols: number[] };
     const oldWidths: { col: number; width: number }[] = [];
@@ -196,7 +260,15 @@ export const showColumns: OperationDefinition = {
 };
 
 export const mergeCells: OperationDefinition = {
-  meta: { affectLayout: true, undoable: true },
+  meta: {
+    affectLayout: true, undoable: true,
+    description: 'Merge a range of cells',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, startRow: { type: 'number' }, endRow: { type: 'number' }, startCol: { type: 'number' }, endCol: { type: 'number' } },
+      required: ['sheet', 'startRow', 'endRow', 'startCol', 'endCol'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, startRow, endRow, startCol, endCol } = payload as {
       sheet: number; startRow: number; endRow: number; startCol: number; endCol: number;
@@ -207,7 +279,15 @@ export const mergeCells: OperationDefinition = {
 };
 
 export const unmergeCells: OperationDefinition = {
-  meta: { affectLayout: true, undoable: true },
+  meta: {
+    affectLayout: true, undoable: true,
+    description: 'Unmerge cells starting at the given position',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, startRow: { type: 'number' }, startCol: { type: 'number' } },
+      required: ['sheet', 'startRow', 'startCol'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, startRow, startCol } = payload as { sheet: number; startRow: number; startCol: number };
     const removed = model.removeMerge(sheet, startRow, startCol);

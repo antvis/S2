@@ -2,19 +2,24 @@ import type { WorkbookModel } from '../../core/model';
 import type { Operation, OperationDefinition } from '../types';
 
 export const setCellValue: OperationDefinition = {
-  meta: { needReCalc: true, affectLayout: false, undoable: true },
+  meta: {
+    needReCalc: true, affectLayout: false, undoable: true,
+    description: 'Set the value of a cell',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, row: { type: 'number' }, col: { type: 'number' }, value: {} },
+      required: ['sheet', 'row', 'col', 'value'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, row, col, value } = payload as { sheet: number; row: number; col: number; value: unknown };
     const old = model.getCell(sheet, row, col);
-    // setCellValue clears formula/computedValue — cell becomes pure value
     model.setCell(sheet, row, col, { value: value as string | number | boolean | null });
-    // Inverse restores the full old cell state
     if (!old) {
       if (value === null) return [];
       return [{ type: 'deleteCellValue', payload: { sheet, row, col } }];
     }
     if (old.formula) {
-      // Old cell had formula — inverse needs to restore it
       return [{ type: 'restoreCell', payload: { sheet, row, col, cell: old } }];
     }
     const oldValue = old.value ?? null;
@@ -24,7 +29,15 @@ export const setCellValue: OperationDefinition = {
 };
 
 export const deleteCellValue: OperationDefinition = {
-  meta: { needReCalc: true, affectLayout: false, undoable: true },
+  meta: {
+    needReCalc: true, affectLayout: false, undoable: true,
+    description: 'Delete the value of a cell',
+    inputSchema: {
+      type: 'object',
+      properties: { sheet: { type: 'number' }, row: { type: 'number' }, col: { type: 'number' } },
+      required: ['sheet', 'row', 'col'],
+    },
+  },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, row, col } = payload as { sheet: number; row: number; col: number };
     const old = model.deleteCell(sheet, row, col);
@@ -33,7 +46,6 @@ export const deleteCellValue: OperationDefinition = {
   },
 };
 
-// Internal operation for undo — restores a full CellState
 export const restoreCell: OperationDefinition = {
   meta: { needReCalc: true, affectLayout: false, undoable: true },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {

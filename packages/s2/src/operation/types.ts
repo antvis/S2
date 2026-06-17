@@ -1,6 +1,7 @@
 export interface Operation {
   type: string;
   payload: Record<string, unknown>;
+  source?: 'human' | 'agent';
 }
 
 export interface OperationMeta {
@@ -9,6 +10,7 @@ export interface OperationMeta {
   affectLayout?: boolean;
   undoable?: boolean;
   description?: string;
+  inputSchema?: Record<string, unknown>;
 }
 
 import type { WorkbookModel } from '../core/model';

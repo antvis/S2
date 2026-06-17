@@ -62,7 +62,15 @@ export const SortModule: ModuleDefinition = {
 
   operations: {
     'sort.set': {
-      meta: { affectLayout: true, undoable: true },
+      meta: {
+        affectLayout: true, undoable: true,
+        description: 'Set sort criteria for a sheet',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, sortBy: { type: 'array', items: { type: 'object', properties: { col: { type: 'number' }, order: { enum: ['asc', 'desc'] } }, required: ['col', 'order'] } } },
+          required: ['sheet', 'sortBy'],
+        },
+      },
       execute(this: { state: SortState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, sortBy } = payload as { sheet: number; sortBy: SortCriterion[] };
         const oldConfig = this.state.configs.get(sheet);
@@ -81,7 +89,11 @@ export const SortModule: ModuleDefinition = {
       },
     },
     'sort.clear': {
-      meta: { affectLayout: true, undoable: true },
+      meta: {
+        affectLayout: true, undoable: true,
+        description: 'Clear sort on a sheet',
+        inputSchema: { type: 'object', properties: { sheet: { type: 'number' } }, required: ['sheet'] },
+      },
       execute(this: { state: SortState }, _model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet } = payload as { sheet: number };
         const oldConfig = this.state.configs.get(sheet);
@@ -114,14 +126,16 @@ export const SortModule: ModuleDefinition = {
 
   lifecycle: {
     onOperationApplied(this: { state: SortState }, ops: Operation[], model: WorkbookModel) {
+      const dirtySheets = new Set<number>();
       for (const op of ops) {
         if (op.type === 'setCellValue' || op.type === 'restoreCell') {
-          const { sheet } = op.payload as { sheet: number };
-          const config = this.state.configs.get(sheet);
-          if (config) {
-            this.state.rowOrder.set(sheet, computeRowOrder(model, config));
-          }
-          break;
+          dirtySheets.add((op.payload as { sheet: number }).sheet);
+        }
+      }
+      for (const sheet of dirtySheets) {
+        const config = this.state.configs.get(sheet);
+        if (config) {
+          this.state.rowOrder.set(sheet, computeRowOrder(model, config));
         }
       }
     },

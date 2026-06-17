@@ -41,6 +41,32 @@ export class LayoutEngine {
     this.scrollY = Math.max(0, y);
   }
 
+  ensureCellVisible(modelRow: number, col: number, viewWidth: number, viewHeight: number): boolean {
+    const visualRow = this.modelToVisualRow(modelRow);
+    const cellY = this.rowSums.getOffset(visualRow);
+    const cellH = this.rowSums.getSize(visualRow);
+    const cellX = this.colSums.getOffset(col);
+    const cellW = this.colSums.getSize(col);
+    const contentTop = HEADER_HEIGHT;
+    const contentLeft = HEADER_WIDTH;
+    let changed = false;
+    if (cellY < this.scrollY) {
+      this.scrollY = cellY;
+      changed = true;
+    } else if (cellY + cellH > this.scrollY + viewHeight - contentTop) {
+      this.scrollY = cellY + cellH - (viewHeight - contentTop);
+      changed = true;
+    }
+    if (cellX < this.scrollX) {
+      this.scrollX = cellX;
+      changed = true;
+    } else if (cellX + cellW > this.scrollX + viewWidth - contentLeft) {
+      this.scrollX = cellX + cellW - (viewWidth - contentLeft);
+      changed = true;
+    }
+    return changed;
+  }
+
   setTemporaryRowHeight(row: number, height: number): void {
     this.temporaryRowHeights.set(row, height);
   }
@@ -60,6 +86,22 @@ export class LayoutEngine {
     const startCol = this.colSums.findIndexAtOffset(this.scrollX);
     const endCol = this.colSums.findIndexAtOffset(this.scrollX + viewWidth);
     return { startRow, endRow, startCol, endCol };
+  }
+
+  modelToVisualRow(modelRow: number): number {
+    const order = this.getRowOrder();
+    if (!order || modelRow === 0) return modelRow;
+    const idx = order.indexOf(modelRow);
+    if (idx >= 0) return idx + 1;
+    return modelRow;
+  }
+
+  visualToModelRow(visualRow: number): number {
+    const order = this.getRowOrder();
+    if (!order || visualRow === 0) return visualRow;
+    const sortedIdx = visualRow - 1;
+    if (sortedIdx >= 0 && sortedIdx < order.length) return order[sortedIdx]!;
+    return visualRow;
   }
 
   computeLayoutPlan(viewWidth: number, viewHeight: number, freeze?: FreezeConfig | null): LayoutPlan {

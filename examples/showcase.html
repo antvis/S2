@@ -491,7 +491,7 @@
       document.getElementById('app').innerHTML = '';
       const wb2 = createWorkbook({
         snapshot: savedSnapshot,
-        modules: [EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule, FormulaModule],
+        modules: [EditModule, SortModule, FilterModule, FreezeModule, ConditionalFormatModule, FormulaModule, BarRendererModule],
       });
       mountCanvas(wb2, document.getElementById('app'));
       window.workbook = wb2;

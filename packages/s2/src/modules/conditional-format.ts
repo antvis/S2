@@ -58,7 +58,15 @@ export const ConditionalFormatModule: ModuleDefinition = {
 
   operations: {
     'conditionalFormat.addRule': {
-      meta: { affectLayout: false, undoable: true },
+      meta: {
+        affectLayout: false, undoable: true,
+        description: 'Add a conditional formatting rule',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, range: { type: 'object' }, rule: { type: 'object' }, style: { type: 'object' } },
+          required: ['sheet', 'range', 'rule', 'style'],
+        },
+      },
       execute(this: { state: ConditionalFormatState }, _model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, range, rule, style } = payload as {
           sheet: number;
@@ -80,7 +88,11 @@ export const ConditionalFormatModule: ModuleDefinition = {
     },
 
     'conditionalFormat.removeRule': {
-      meta: { affectLayout: false, undoable: true },
+      meta: {
+        affectLayout: false, undoable: true,
+        description: 'Remove a conditional formatting rule by ID',
+        inputSchema: { type: 'object', properties: { sheet: { type: 'number' }, ruleId: { type: 'string' } }, required: ['sheet', 'ruleId'] },
+      },
       execute(this: { state: ConditionalFormatState }, _model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, ruleId } = payload as { sheet: number; ruleId: string };
         const rules = this.state.rules.get(sheet);

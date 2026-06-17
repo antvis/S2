@@ -79,7 +79,15 @@ export const FilterModule: ModuleDefinition = {
 
   operations: {
     'filter.set': {
-      meta: { affectLayout: true, undoable: true },
+      meta: {
+        affectLayout: true, undoable: true,
+        description: 'Set a filter rule on a column',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, col: { type: 'number' }, condition: { type: 'object' } },
+          required: ['sheet', 'col', 'condition'],
+        },
+      },
       execute(this: { state: FilterState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, col, condition } = payload as { sheet: number; col: number; condition: FilterCondition };
         const oldRules = this.state.filters.get(sheet);
@@ -105,7 +113,15 @@ export const FilterModule: ModuleDefinition = {
       },
     },
     'filter.clear': {
-      meta: { affectLayout: true, undoable: true },
+      meta: {
+        affectLayout: true, undoable: true,
+        description: 'Clear filter rules on a sheet (optionally for a specific column)',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, col: { type: 'number' } },
+          required: ['sheet'],
+        },
+      },
       execute(this: { state: FilterState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
         const { sheet, col } = payload as { sheet: number; col?: number };
         const oldRules = this.state.filters.get(sheet);
@@ -180,13 +196,15 @@ export const FilterModule: ModuleDefinition = {
   lifecycle: {
     onOperationApplied(this: { state: FilterState }, ops: Operation[], model: WorkbookModel) {
       // Recompute hidden rows when cell values change
+      const dirtySheets = new Set<number>();
       for (const op of ops) {
         if (op.type === 'setCellValue' || op.type === 'restoreCell') {
-          const { sheet } = op.payload as { sheet: number };
-          if (this.state.filters.has(sheet)) {
-            recomputeHiddenRows(this.state, model, sheet);
-          }
-          break;
+          dirtySheets.add((op.payload as { sheet: number }).sheet);
+        }
+      }
+      for (const sheet of dirtySheets) {
+        if (this.state.filters.has(sheet)) {
+          recomputeHiddenRows(this.state, model, sheet);
         }
       }
     },
