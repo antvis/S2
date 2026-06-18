@@ -125,6 +125,11 @@ export const SortModule: ModuleDefinition = {
   },
 
   lifecycle: {
+    onInit(this: { state: SortState }, model: WorkbookModel) {
+      for (const [sheet, config] of this.state.configs) {
+        this.state.rowOrder.set(sheet, computeRowOrder(model, config));
+      }
+    },
     onOperationApplied(this: { state: SortState }, ops: Operation[], model: WorkbookModel) {
       const dirtySheets = new Set<number>();
       for (const op of ops) {
@@ -139,5 +144,18 @@ export const SortModule: ModuleDefinition = {
         }
       }
     },
+  },
+
+  serialize(state: unknown) {
+    const s = state as SortState;
+    return Object.fromEntries([...s.configs.entries()]);
+  },
+
+  deserialize(data: unknown, state: unknown) {
+    const s = state as SortState;
+    const d = data as Record<string, SortConfig>;
+    for (const [k, v] of Object.entries(d)) {
+      s.configs.set(Number(k), v);
+    }
   },
 };

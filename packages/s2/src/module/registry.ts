@@ -45,11 +45,11 @@ export class ModuleRegistry {
     this.sorted = false;
   }
 
-  init(): void {
+  init(model: WorkbookModel): void {
     this.ensureSorted();
     for (const mod of this.modules) {
       const ctx = { state: mod.state };
-      mod.definition.lifecycle?.onInit?.call(ctx);
+      mod.definition.lifecycle?.onInit?.call(ctx, model);
     }
   }
 

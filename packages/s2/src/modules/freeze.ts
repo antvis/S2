@@ -64,4 +64,17 @@ export const FreezeModule: ModuleDefinition = {
   },
 
   lifecycle: {},
+
+  serialize(state: unknown) {
+    const s = state as FreezeState;
+    return Object.fromEntries([...s.configs.entries()]);
+  },
+
+  deserialize(data: unknown, state: unknown) {
+    const s = state as FreezeState;
+    const d = data as Record<string, FreezeConfig>;
+    for (const [k, v] of Object.entries(d)) {
+      s.configs.set(Number(k), v);
+    }
+  },
 };

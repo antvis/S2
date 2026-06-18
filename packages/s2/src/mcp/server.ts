@@ -38,6 +38,7 @@ export function createS2MCPServer(workbook: Workbook): S2MCPServer {
       { name: 'registerDataSource', description: 'Register a data source for pivot tables', inputSchema: { type: 'object', properties: { id: { type: 'string' }, data: { type: 'array' } }, required: ['id', 'data'] } },
       { name: 'undo', description: 'Undo the last operation', inputSchema: { type: 'object', properties: {} } },
       { name: 'redo', description: 'Redo the last undone operation', inputSchema: { type: 'object', properties: {} } },
+      { name: 'getConditionalFormatRules', description: 'Get conditional formatting rules for a sheet', inputSchema: { type: 'object', properties: { sheet: { type: 'number' } }, required: ['sheet'] } },
     );
 
     return tools;
@@ -73,6 +74,12 @@ export function createS2MCPServer(workbook: Workbook): S2MCPServer {
           return { content: [{ type: 'text' as const, text: JSON.stringify({ undone: workbook.undo() }) }] };
         case 'redo':
           return { content: [{ type: 'text' as const, text: JSON.stringify({ redone: workbook.redo() }) }] };
+        case 'getConditionalFormatRules': {
+          try {
+            const rules = workbook.query.moduleQuery('conditionalFormat.getRules', { sheet: args.sheet as number });
+            return { content: [{ type: 'text' as const, text: JSON.stringify(rules) }] };
+          } catch { return { content: [{ type: 'text' as const, text: '[]' }] }; }
+        }
         default: {
           const opName = name.replace(/-/g, '.');
           const result = agent.callTool(opName, args);

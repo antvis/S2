@@ -13,6 +13,7 @@ export const setCellValue: OperationDefinition = {
   },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, row, col, value } = payload as { sheet: number; row: number; col: number; value: unknown };
+    if (!model.getSheet(sheet)) return [];
     const old = model.getCell(sheet, row, col);
     model.setCell(sheet, row, col, { value: value as string | number | boolean | null });
     if (!old) {
@@ -40,6 +41,7 @@ export const deleteCellValue: OperationDefinition = {
   },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, row, col } = payload as { sheet: number; row: number; col: number };
+    if (!model.getSheet(sheet)) return [];
     const old = model.deleteCell(sheet, row, col);
     if (!old) return [];
     return [{ type: 'restoreCell', payload: { sheet, row, col, cell: old } }];
@@ -50,6 +52,7 @@ export const restoreCell: OperationDefinition = {
   meta: { needReCalc: true, affectLayout: false, undoable: true },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
     const { sheet, row, col, cell } = payload as { sheet: number; row: number; col: number; cell: Record<string, unknown> };
+    if (!model.getSheet(sheet)) return [];
     const old = model.getCell(sheet, row, col);
     model.setCell(sheet, row, col, cell as Parameters<WorkbookModel['setCell']>[3]);
     if (!old) {

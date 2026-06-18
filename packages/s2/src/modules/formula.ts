@@ -168,7 +168,33 @@ function colLabelToIndex(label: string): number {
   return result - 1;
 }
 
+function syncFormulasFromModel(state: FormulaState, model: WorkbookModel): void {
+  const modelKeys = new Set<string>();
+  for (let si = 0; si < model.getSheetCount(); si++) {
+    const sheet = model.getSheet(si);
+    if (!sheet) continue;
+    for (const [row, rowData] of sheet.cells) {
+      for (const [col, cell] of rowData) {
+        if (cell?.formula) {
+          const key = cellKey(si, row, col);
+          modelKeys.add(key);
+          if (!state.formulas.has(key)) {
+            const parsed = parseFormula(cell.formula, si);
+            state.formulas.set(key, { ref: { sheet: si, row, col }, formula: cell.formula, dependencies: parsed.dependencies });
+          }
+        }
+      }
+    }
+  }
+  for (const key of state.formulas.keys()) {
+    if (!modelKeys.has(key)) state.formulas.delete(key);
+  }
+}
+
 function recalculate(state: FormulaState, model: WorkbookModel): void {
+  // Rebuild formulas from model — handles undo/redo restoring formula cells
+  syncFormulasFromModel(state, model);
+
   // Rebuild dependents index
   state.dependents.clear();
   for (const [key, entry] of state.formulas) {
@@ -179,9 +205,10 @@ function recalculate(state: FormulaState, model: WorkbookModel): void {
   const getValue = (ref: CellRef): number => {
     const cell = model.getCell(ref.sheet, ref.row, ref.col);
     if (!cell) return 0;
-    if (cell.computedValue !== undefined && cell.computedValue !== null) return Number(cell.computedValue);
-    if (cell.value !== undefined && cell.value !== null) return Number(cell.value);
-    return 0;
+    const raw = cell.computedValue !== undefined && cell.computedValue !== null ? cell.computedValue : cell.value;
+    if (raw === undefined || raw === null) return 0;
+    const n = Number(raw);
+    return isNaN(n) ? 0 : n;
   };
   for (const entry of sorted) {
     const parsed = parseFormula(entry.formula, entry.ref.sheet);
@@ -220,9 +247,10 @@ function recalcDirty(state: FormulaState, model: WorkbookModel, dirtyCells: Set<
   const getValue = (ref: CellRef): number => {
     const cell = model.getCell(ref.sheet, ref.row, ref.col);
     if (!cell) return 0;
-    if (cell.computedValue !== undefined && cell.computedValue !== null) return Number(cell.computedValue);
-    if (cell.value !== undefined && cell.value !== null) return Number(cell.value);
-    return 0;
+    const raw = cell.computedValue !== undefined && cell.computedValue !== null ? cell.computedValue : cell.value;
+    if (raw === undefined || raw === null) return 0;
+    const n = Number(raw);
+    return isNaN(n) ? 0 : n;
   };
   for (const entry of sorted) {
     const parsed = parseFormula(entry.formula, entry.ref.sheet);
@@ -376,6 +404,12 @@ export const FormulaModule: ModuleDefinition = {
   },
 
   lifecycle: {
+    onInit(this: { state: FormulaState }, model: WorkbookModel) {
+      syncFormulasFromModel(this.state, model);
+      if (this.state.formulas.size > 0) {
+        recalculate(this.state, model);
+      }
+    },
     onOperationApplied(this: { state: FormulaState }, ops: Operation[], model: WorkbookModel) {
       const dirtyCells = new Set<string>();
       let fullRecalc = false;
@@ -399,12 +433,26 @@ export const FormulaModule: ModuleDefinition = {
           }
           dirtyCells.add(key);
         } else if (op.type === 'restoreCell') {
+          const { sheet, row, col } = op.payload as { sheet: number; row: number; col: number };
+          const cell = model.getCell(sheet, row, col);
+          if (cell?.formula) {
+            const key = cellKey(sheet, row, col);
+            const parsed = parseFormula(cell.formula, sheet);
+            const oldEntry = this.state.formulas.get(key);
+            if (oldEntry) removeDependents(this.state, key, oldEntry.dependencies);
+            this.state.formulas.set(key, { ref: { sheet, row, col }, formula: cell.formula, dependencies: parsed.dependencies });
+            addDependents(this.state, key, parsed.dependencies);
+          }
           fullRecalc = true;
         } else if (op.type === '__undo' || op.type === '__redo') {
           fullRecalc = true;
+        } else if (op.type === 'deleteRows' || op.type === 'insertRows' || op.type === 'deleteColumns' || op.type === 'insertColumns') {
+          fullRecalc = true;
+        } else if (op.type === 'edit.paste') {
+          fullRecalc = true;
         }
       }
-      if (this.state.formulas.size === 0) return;
+      if (this.state.formulas.size === 0 && !fullRecalc) return;
       if (fullRecalc) {
         recalculate(this.state, model);
       } else if (dirtyCells.size > 0) {

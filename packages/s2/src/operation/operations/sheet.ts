@@ -12,10 +12,15 @@ export const createSheet: OperationDefinition = {
     },
   },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
-    const { name, snapshot } = payload as { name?: string; snapshot?: SheetState };
+    const { name, snapshot, atIndex } = payload as { name?: string; snapshot?: SheetState; atIndex?: number };
     if (snapshot) {
-      model.state.sheets.push(structuredClone(snapshot));
-      return [{ type: 'deleteSheet', payload: { sheet: model.state.sheets.length - 1 } }];
+      if (atIndex !== undefined && atIndex < model.state.sheets.length) {
+        model.state.sheets.splice(atIndex, 0, structuredClone(snapshot));
+      } else {
+        model.state.sheets.push(structuredClone(snapshot));
+      }
+      const idx = atIndex ?? model.state.sheets.length - 1;
+      return [{ type: 'deleteSheet', payload: { sheet: idx } }];
     }
     const index = model.addSheet(name);
     return [{ type: 'deleteSheet', payload: { sheet: index } }];
@@ -36,7 +41,7 @@ export const deleteSheet: OperationDefinition = {
     const { sheet } = payload as { sheet: number };
     const removed = model.removeSheet(sheet);
     if (!removed) return [];
-    return [{ type: 'createSheet', payload: { snapshot: structuredClone(removed) } }];
+    return [{ type: 'createSheet', payload: { snapshot: structuredClone(removed), atIndex: sheet } }];
   },
 };
 

@@ -2,7 +2,7 @@ import type { Operation, OperationDefinition } from '../operation/types';
 import type { WorkbookModel } from '../core/model';
 
 export interface ModuleLifecycle {
-  onInit?: () => void;
+  onInit?: (model: WorkbookModel) => void;
   onDestroy?: () => void;
   onOperationApplied?: (ops: Operation[], model: WorkbookModel) => void;
 }

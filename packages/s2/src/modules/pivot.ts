@@ -271,7 +271,8 @@ export const PivotModule: ModuleDefinition = {
         },
       },
       execute(this: { state: PivotState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
-        const config = payload as unknown as PivotConfig;
+        const { __restoreCells, __restoreMerges, ...rest } = payload;
+        const config = rest as unknown as PivotConfig;
         const oldConfig = this.state.configs.get(config.sheet);
         this.state.configs.set(config.sheet, config);
 
@@ -281,6 +282,32 @@ export const PivotModule: ModuleDefinition = {
           const { layout, values } = computePivotLayout(data, config);
           this.state.layouts.set(config.sheet, layout);
           materializeToModel(model, config.sheet, values);
+        }
+
+        // Restore non-pivot cells from snapshot (undo of clearConfig)
+        if (__restoreCells) {
+          const sheetState = model.getSheet(config.sheet);
+          if (sheetState) {
+            const snap = __restoreCells as Record<string, Record<string, unknown>>;
+            for (const [rStr, rowData] of Object.entries(snap)) {
+              const r = Number(rStr);
+              for (const [cStr, cell] of Object.entries(rowData as Record<string, unknown>)) {
+                const c = Number(cStr);
+                if (!model.getCell(config.sheet, r, c)) {
+                  model.setCell(config.sheet, r, c, cell as Parameters<WorkbookModel['setCell']>[3]);
+                }
+              }
+            }
+            if (__restoreMerges) {
+              const currentMerges = sheetState.merges;
+              const restored = __restoreMerges as typeof currentMerges;
+              for (const m of restored) {
+                if (!currentMerges.some((cm: any) => cm.startRow === m.startRow && cm.startCol === m.startCol)) {
+                  currentMerges.push(m);
+                }
+              }
+            }
+          }
         }
 
         if (oldConfig) {
@@ -301,12 +328,16 @@ export const PivotModule: ModuleDefinition = {
         this.state.configs.delete(sheet);
         this.state.layouts.delete(sheet);
         const sheetState = model.getSheet(sheet);
+        let cellsSnapshot: unknown = undefined;
+        let mergesSnapshot: unknown = undefined;
         if (sheetState) {
+          cellsSnapshot = structuredClone(Object.fromEntries([...sheetState.cells.entries()].map(([r, row]) => [r, Object.fromEntries(row.entries())])));
+          mergesSnapshot = structuredClone(sheetState.merges);
           sheetState.cells.clear();
           sheetState.merges = [];
         }
         if (oldConfig) {
-          return [{ type: 'pivot.setConfig', payload: oldConfig as unknown as Record<string, unknown> }];
+          return [{ type: 'pivot.setConfig', payload: { ...(oldConfig as unknown as Record<string, unknown>), __restoreCells: cellsSnapshot, __restoreMerges: mergesSnapshot } }];
         }
         return [];
       },
@@ -361,13 +392,19 @@ export const PivotModule: ModuleDefinition = {
         };
         this.state.configs.set(sheet, newConfig);
 
+        const sheetState = model.getSheet(sheet);
+        let cellsSnapshot: unknown = undefined;
+        if (sheetState) {
+          cellsSnapshot = structuredClone(Object.fromEntries([...sheetState.cells.entries()].map(([r, row]) => [r, Object.fromEntries(row.entries())])));
+        }
+
         if (data && data.length > 0) {
           const { layout, values } = computePivotLayout(data, newConfig);
           this.state.layouts.set(sheet, layout);
           materializeToModel(model, sheet, values);
         }
 
-        return [{ type: 'pivot.setConfig', payload: oldConfig as unknown as Record<string, unknown> }];
+        return [{ type: 'pivot.setConfig', payload: { ...(oldConfig as unknown as Record<string, unknown>), __restoreCells: cellsSnapshot } }];
       },
     },
   },

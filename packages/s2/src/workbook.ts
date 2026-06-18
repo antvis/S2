@@ -131,7 +131,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     agentState._queryLayer = queryLayer;
   }
 
-  moduleRegistry.init();
+  moduleRegistry.init(model);
 
   if (savedModuleState) {
     moduleRegistry.deserializeAll(savedModuleState);

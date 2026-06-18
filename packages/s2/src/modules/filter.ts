@@ -194,6 +194,11 @@ export const FilterModule: ModuleDefinition = {
   },
 
   lifecycle: {
+    onInit(this: { state: FilterState }, model: WorkbookModel) {
+      for (const sheet of this.state.filters.keys()) {
+        recomputeHiddenRows(this.state, model, sheet);
+      }
+    },
     onOperationApplied(this: { state: FilterState }, ops: Operation[], model: WorkbookModel) {
       // Recompute hidden rows when cell values change
       const dirtySheets = new Set<number>();
@@ -208,5 +213,18 @@ export const FilterModule: ModuleDefinition = {
         }
       }
     },
+  },
+
+  serialize(state: unknown) {
+    const s = state as FilterState;
+    return Object.fromEntries([...s.filters.entries()]);
+  },
+
+  deserialize(data: unknown, state: unknown) {
+    const s = state as FilterState;
+    const d = data as Record<string, FilterRule[]>;
+    for (const [k, v] of Object.entries(d)) {
+      s.filters.set(Number(k), v);
+    }
   },
 };
