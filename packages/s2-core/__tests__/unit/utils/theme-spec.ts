@@ -6,5 +6,6 @@ describe('Theme Utils Tests', () => {
     expect(getPalette('default')).toMatchSnapshot();
     expect(getPalette('colorful')).toMatchSnapshot();
     expect(getPalette('gray')).toMatchSnapshot();
+    expect(getPalette('excel')).toMatchSnapshot();
   });
 });

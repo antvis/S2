@@ -1,6 +1,7 @@
 import type { LineStyleProps, TextStyleProps } from '@antv/g';
 import type { Omit } from 'lodash';
 import type { CellType } from '../../common/constant/interaction';
+import type { SpreadSheet } from '../../sheet-type';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
 import type { DeepRequired } from './type-utils';
@@ -375,6 +376,12 @@ export interface ThemeCfg {
 
   /** 主题名 */
   name?: ThemeName;
+
+  /** 自定义主题 */
+  getCustomTheme?: (
+    palette: SimplePalette,
+    spreadsheet?: SpreadSheet,
+  ) => S2Theme;
 }
 
 /** 子弹图状态颜色 */

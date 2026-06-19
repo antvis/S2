@@ -35,6 +35,14 @@
         "en": "Dark"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*eRu9R7b1pGwAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "excel.ts",
+      "title": {
+        "zh": "Excel 风格",
+        "en": "Excel Style"
+      },
+      "screenshot": "https://github.com/user-attachments/assets/84de7b77-7b6a-4df9-835d-197a593a23eb"
     }
   ]
 }

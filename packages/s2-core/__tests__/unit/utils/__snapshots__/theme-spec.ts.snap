@@ -311,3 +311,36 @@ Object {
   },
 }
 `;
+
+exports[`Theme Utils Tests should get correctly palette 5`] = `
+Object {
+  "basicColorRelations": Array [],
+  "basicColors": Array [
+    "#000000",
+    "#FFFFFF",
+    "#F2F2F2",
+    "#F3F2F1",
+    "#E1DFDD",
+    "#217346",
+    "#0563C1",
+    "#217346",
+    "#FFFFFF",
+    "#D4D4D4",
+    "#D4D4D4",
+    "#217346",
+    "#217346",
+    "#000000",
+    "#217346",
+  ],
+  "brandColor": "#217346",
+  "others": Object {
+    "highlight": "#E2EFDA",
+    "results": "#FFFF00",
+  },
+  "semanticColors": Object {
+    "green": "#00B050",
+    "red": "#FF0000",
+    "yellow": "#FFFF00",
+  },
+}
+`;
