@@ -43,10 +43,27 @@ export function renderFrame(
   const { viewport } = plan;
 
   ctx.clearRect(0, 0, viewport.viewWidth, viewport.viewHeight);
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, viewport.viewWidth, viewport.viewHeight);
 
   const hasHierarchy = plan.hierarchyRowHeaders.length > 0 || plan.hierarchyColHeaders.length > 0;
+
+  if (hasHierarchy && plan.dataBounds) {
+    const { left, top } = plan.headerArea;
+    const { right, bottom } = plan.dataBounds;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, right, top);
+    ctx.fillRect(0, top, left, bottom - top);
+    ctx.fillRect(left, top, right - left, bottom - top);
+  } else if (!hasHierarchy && plan.dataBounds) {
+    const { left, top } = plan.headerArea;
+    const { right, bottom } = plan.dataBounds;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, Math.max(right, left), top);
+    if (left > 0) ctx.fillRect(0, top, left, bottom - top);
+    ctx.fillRect(left, top, right - left, bottom - top);
+  } else {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, viewport.viewWidth, viewport.viewHeight);
+  }
 
   if (hasHierarchy) {
     renderHierarchyFrame(ctx, plan, query, sheetIndex, state?.selection, state?.hover, state?.moduleRenderers);
@@ -71,17 +88,15 @@ function renderHierarchyFrame(
   // Clip data area to prevent overflow into headers
   ctx.save();
   ctx.beginPath();
-  ctx.rect(headerArea.left, headerArea.top, viewport.viewWidth - headerArea.left, viewport.viewHeight - headerArea.top);
+  const clipRight = plan.dataBounds ? plan.dataBounds.right : viewport.viewWidth;
+  const clipBottom = plan.dataBounds ? plan.dataBounds.bottom : viewport.viewHeight;
+  ctx.rect(headerArea.left, headerArea.top, clipRight - headerArea.left, clipBottom - headerArea.top);
   ctx.clip();
 
   drawGridlines(ctx, plan.gridlines);
 
   if (hover) {
     drawHover(ctx, plan.cells, hover);
-  }
-
-  if (selection) {
-    drawSelection(ctx, plan.cells, selection);
   }
 
   drawCells(ctx, plan.cells, query, sheetIndex, moduleRenderers);
@@ -91,11 +106,20 @@ function renderHierarchyFrame(
   drawHierarchyRowHeaders(ctx, plan);
   drawHierarchyColHeaders(ctx, plan);
   drawCornerHeaders(ctx, plan);
+
+  if (selection) {
+    drawSelection(ctx, plan.cells, selection);
+  }
 }
 
 function drawHierarchyRowHeaders(ctx: CanvasRenderingContext2D, plan: LayoutPlan): void {
   ctx.font = HEADER_FONT;
   ctx.textBaseline = 'middle';
+
+  const isTreeMode = plan.hierarchyRowHeaders.length === 1 &&
+    plan.hierarchyRowHeaders[0]?.some(h => h.nodeId !== undefined);
+  const INDENT = 20;
+  const ICON_SIZE = 5;
 
   for (let levelIdx = 0; levelIdx < plan.hierarchyRowHeaders.length; levelIdx++) {
     const headers = plan.hierarchyRowHeaders[levelIdx]!;
@@ -111,22 +135,52 @@ function drawHierarchyRowHeaders(ctx: CanvasRenderingContext2D, plan: LayoutPlan
       ctx.lineWidth = 0.5;
       ctx.strokeRect(h.x, h.y, h.width, h.height);
 
-      // Text — left-aligned with padding, vertically centered in the merged area
+      const indent = isTreeMode ? (h.level ?? 0) * INDENT : 0;
+      let textStartX = h.x + 8 + indent;
+
+      // Expand/collapse icon — box with +/-
+      if (h.hasChildren) {
+        const iconIndent = isTreeMode ? indent : 0;
+        const BOX_SIZE = 10;
+        const bx = h.x + iconIndent + 6;
+        const by = h.y + (h.height - BOX_SIZE) / 2;
+
+        ctx.strokeStyle = '#aaa';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(bx + 0.5, by + 0.5, BOX_SIZE, BOX_SIZE);
+
+        ctx.strokeStyle = '#666';
+        const cx = bx + BOX_SIZE / 2 + 0.5;
+        const cy = by + BOX_SIZE / 2 + 0.5;
+        const arm = 3;
+
+        ctx.beginPath();
+        ctx.moveTo(cx - arm, cy);
+        ctx.lineTo(cx + arm, cy);
+        if (h.isCollapsed) {
+          ctx.moveTo(cx, cy - arm);
+          ctx.lineTo(cx, cy + arm);
+        }
+        ctx.stroke();
+
+        textStartX = bx + BOX_SIZE + 6;
+      }
+
+      // Text
       if (h.label) {
         ctx.fillStyle = HEADER_TEXT_COLOR;
         ctx.textAlign = 'left';
 
-        const maxTextWidth = h.width - 12;
+        const maxTextWidth = h.x + h.width - textStartX - 4;
         let text = h.label;
         const measured = ctx.measureText(text);
         if (measured.width > maxTextWidth) {
-          // Truncate with ellipsis
           while (text.length > 1 && ctx.measureText(text + '...').width > maxTextWidth) {
             text = text.slice(0, -1);
           }
           text += '...';
         }
-        ctx.fillText(text, h.x + 8, h.y + h.height / 2);
+        ctx.fillText(text, textStartX, h.y + h.height / 2);
       }
     }
   }
@@ -140,7 +194,7 @@ function drawHierarchyRowHeaders(ctx: CanvasRenderingContext2D, plan: LayoutPlan
   // Right border of entire row header area
   ctx.beginPath();
   ctx.moveTo(rowHeaderWidth, colHeaderHeight);
-  ctx.lineTo(rowHeaderWidth, plan.viewport.viewHeight);
+  ctx.lineTo(rowHeaderWidth, plan.dataBounds ? plan.dataBounds.bottom : plan.viewport.viewHeight);
   ctx.stroke();
 }
 
@@ -187,7 +241,7 @@ function drawHierarchyColHeaders(ctx: CanvasRenderingContext2D, plan: LayoutPlan
   ctx.lineWidth = 0.5;
   ctx.beginPath();
   ctx.moveTo(plan.headerArea.left, colHeaderHeight);
-  ctx.lineTo(plan.viewport.viewWidth, colHeaderHeight);
+  ctx.lineTo(plan.dataBounds ? plan.dataBounds.right : plan.viewport.viewWidth, colHeaderHeight);
   ctx.stroke();
 }
 
@@ -296,16 +350,17 @@ function renderDetailFrame(
   }
 
   // Headers
-  if (state?.showRowHeader !== false) {
+  if (state?.showRowHeader !== false && plan.headerArea.left > 0) {
     drawRowHeaders(ctx, plan.rowHeaders);
   }
   if (state?.showColHeader !== false) {
     drawColHeaders(ctx, plan.colHeaders);
-    // Top-left corner
-    ctx.fillStyle = HEADER_BG;
-    ctx.fillRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
-    ctx.strokeStyle = HEADER_BORDER;
-    ctx.strokeRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
+    if (plan.headerArea.left > 0) {
+      ctx.fillStyle = HEADER_BG;
+      ctx.fillRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
+      ctx.strokeStyle = HEADER_BORDER;
+      ctx.strokeRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
+    }
   }
 }
 
@@ -371,21 +426,17 @@ function drawCells(
     const value = query.getCellDisplayValue({ sheet: sheetIndex, row: box.row, col: box.col });
 
     let textColor = TEXT_COLOR;
-    try {
-      const cfStyle = query.moduleQuery('conditionalFormat.getCellStyle', {
-        sheet: sheetIndex, row: box.row, col: box.col,
-      }) as { backgroundColor?: string; color?: string } | null;
-      if (cfStyle) {
-        if (cfStyle.backgroundColor) {
-          ctx.fillStyle = cfStyle.backgroundColor;
-          ctx.fillRect(box.x, box.y, drawWidth, drawHeight);
-        }
-        if (cfStyle.color) {
-          textColor = cfStyle.color;
-        }
+    const cfStyle = query.tryModuleQuery('conditionalFormat.getCellStyle', {
+      sheet: sheetIndex, row: box.row, col: box.col,
+    }) as { backgroundColor?: string; color?: string } | null;
+    if (cfStyle) {
+      if (cfStyle.backgroundColor) {
+        ctx.fillStyle = cfStyle.backgroundColor;
+        ctx.fillRect(box.x, box.y, drawWidth, drawHeight);
       }
-    } catch {
-      // ConditionalFormatModule not registered
+      if (cfStyle.color) {
+        textColor = cfStyle.color;
+      }
     }
 
     // Cell style (setCellStyle)
@@ -481,7 +532,7 @@ function drawSelection(ctx: CanvasRenderingContext2D, cells: CellBox[], selectio
 
   ctx.strokeStyle = '#0e65eb';
   ctx.lineWidth = 2;
-  ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+  ctx.strokeRect(x1 + 1, y1 + 1, x2 - x1 - 2, y2 - y1 - 2);
   ctx.lineWidth = 1;
 
   // Fill handle (solid square at bottom-right corner, Excel-style)

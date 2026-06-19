@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>多级表头</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    #container { width: 900px; height: 500px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>多级表头 — ListTableModule</h3>
+  <p>columns 嵌套子 columns，形成多级列头。"销售数据"横跨"营收"和"成本"两列。</p>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, ListTableModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const DATA = [
+      { name: '张三', revenue: 1000, cost: 500, dept: '工程部', level: '高级' },
+      { name: '李四', revenue: 2000, cost: 800, dept: '产品部', level: '中级' },
+      { name: '王五', revenue: 1500, cost: 600, dept: '设计部', level: '初级' },
+      { name: '赵六', revenue: 3000, cost: 1200, dept: '运营部', level: '高级' },
+      { name: '孙七', revenue: 800, cost: 300, dept: '市场部', level: '中级' },
+    ];
+
+    const workbook = createWorkbook({ modules: [ListTableModule] });
+    workbook.registerDataSource('multi', DATA);
+
+    workbook.apply([{
+      type: 'list.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'multi',
+        columns: [
+          { field: 'name', title: '姓名' },
+          {
+            title: '销售数据',
+            columns: [
+              { field: 'revenue', title: '营收' },
+              { field: 'cost', title: '成本' },
+            ],
+          },
+          {
+            title: '人员信息',
+            columns: [
+              { field: 'dept', title: '部门' },
+              { field: 'level', title: '级别' },
+            ],
+          },
+        ],
+      },
+    }]);
+
+    mountCanvas(workbook, document.getElementById('container'));
+  </script>
+</body>
+</html>

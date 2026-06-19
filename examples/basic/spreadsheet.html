@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>电子表格</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 12px; color: #333; font-size: 14px; }
+    #container { width: 800px; height: 500px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>电子表格 — 基础数据填充</h3>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const workbook = createWorkbook();
+
+    const ops = [];
+    for (let row = 0; row < 200; row++) {
+      for (let col = 0; col < 10; col++) {
+        ops.push({ type: 'setCellValue', payload: { sheet: 0, row, col, value: `R${row}C${col}` } });
+      }
+    }
+    workbook.apply(ops);
+
+    mountCanvas(workbook, document.getElementById('container'));
+  </script>
+</body>
+</html>

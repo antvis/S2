@@ -151,8 +151,8 @@ export class WorkbookFacade {
 
   addSheet(name?: string): SheetFacade {
     this.workbook.apply([{ type: 'createSheet', payload: { name } }]);
-    const sheets = this.workbook.__getModel().getSheets();
-    return new SheetFacade(this.workbook, sheets.length - 1);
+    const count = this.workbook.__getModel().getSheetCount();
+    return new SheetFacade(this.workbook, count - 1);
   }
 
   undo(): this {

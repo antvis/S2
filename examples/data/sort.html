@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>排序</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    .toolbar { margin-bottom: 12px; display: flex; gap: 8px; }
+    .toolbar button { padding: 4px 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; }
+    #container { width: 800px; height: 500px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>排序 — 按列升序/降序</h3>
+  <p>点击按钮对评分列排序</p>
+  <div class="toolbar">
+    <button id="btn-asc">评分升序</button>
+    <button id="btn-desc">评分降序</button>
+    <button id="btn-clear">清除排序</button>
+  </div>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, SortModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const workbook = createWorkbook({ modules: [SortModule] });
+
+    const headers = ['姓名', '部门', '评分'];
+    const ops = [];
+    for (let c = 0; c < headers.length; c++) {
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: 0, col: c, value: headers[c] } });
+    }
+    const names = ['张三', '李四', '王五', '赵六', '孙七', '周八', '吴九', '郑十'];
+    const depts = ['工程', '产品', '设计', '运营'];
+    for (let r = 0; r < 20; r++) {
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 0, value: names[r % names.length] } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 1, value: depts[r % depts.length] } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 2, value: Math.round(50 + Math.random() * 50) } });
+    }
+    workbook.apply(ops);
+
+    document.getElementById('btn-asc').onclick = () =>
+      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: 2, order: 'asc' }] } }]);
+    document.getElementById('btn-desc').onclick = () =>
+      workbook.apply([{ type: 'sort.set', payload: { sheet: 0, sortBy: [{ col: 2, order: 'desc' }] } }]);
+    document.getElementById('btn-clear').onclick = () =>
+      workbook.apply([{ type: 'sort.clear', payload: { sheet: 0 } }]);
+
+    mountCanvas(workbook, document.getElementById('container'));
+  </script>
+</body>
+</html>

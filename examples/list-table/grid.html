@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>平铺分组</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    #container { width: 800px; height: 500px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>平铺分组 — 多字段分列行头</h3>
+  <p>使用 gridFields: ['province', 'city'] 将省份和城市作为左侧合并行头，右侧展示数据列</p>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, ListTableModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const DATA = [
+      { province: '浙江', city: '杭州', name: '张三', salary: 25000 },
+      { province: '浙江', city: '杭州', name: '李四', salary: 18000 },
+      { province: '浙江', city: '宁波', name: '王五', salary: 22000 },
+      { province: '江苏', city: '南京', name: '赵六', salary: 30000 },
+      { province: '江苏', city: '南京', name: '钱七', salary: 28000 },
+      { province: '江苏', city: '苏州', name: '孙八', salary: 26000 },
+      { province: '广东', city: '广州', name: '周九', salary: 24000 },
+      { province: '广东', city: '深圳', name: '吴十', salary: 35000 },
+      { province: '广东', city: '深圳', name: '郑十一', salary: 32000 },
+    ];
+
+    const workbook = createWorkbook({ modules: [ListTableModule] });
+    workbook.registerDataSource('people', DATA);
+
+    workbook.apply([{
+      type: 'list.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'people',
+        columns: [
+          { field: 'province', title: '省份' },
+          { field: 'city', title: '城市' },
+          { field: 'name', title: '姓名' },
+          { field: 'salary', title: '薪资' },
+        ],
+        gridFields: ['province', 'city'],
+      },
+    }]);
+
+    mountCanvas(workbook, document.getElementById('container'));
+  </script>
+</body>
+</html>

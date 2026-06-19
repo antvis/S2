@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>选区</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    #container { width: 800px; height: 500px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>选区 — 单选 / 框选 / 键盘扩展</h3>
+  <p>点击选中单元格，拖拽框选区域，Shift+方向键扩展选区</p>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, EditModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const workbook = createWorkbook({ modules: [EditModule] });
+
+    const ops = [];
+    const headers = ['姓名', '年龄', '城市', '部门', '评分'];
+    for (let c = 0; c < headers.length; c++) {
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: 0, col: c, value: headers[c] } });
+    }
+    const names = ['张三', '李四', '王五', '赵六', '孙七', '周八', '吴九', '郑十'];
+    const cities = ['杭州', '北京', '上海', '深圳'];
+    const depts = ['工程', '产品', '设计', '运营'];
+    for (let r = 0; r < 50; r++) {
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 0, value: names[r % names.length] } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 1, value: 22 + (r % 20) } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 2, value: cities[r % cities.length] } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 3, value: depts[r % depts.length] } });
+      ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r + 1, col: 4, value: Math.round(60 + Math.random() * 40) } });
+    }
+    workbook.apply(ops);
+
+    mountCanvas(workbook, document.getElementById('container'));
+  </script>
+</body>
+</html>

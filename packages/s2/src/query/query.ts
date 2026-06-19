@@ -25,6 +25,12 @@ export class QueryLayer {
     return entry.handler(entry.getState(), params, this.model);
   }
 
+  tryModuleQuery(name: string, params: Record<string, unknown> = {}): unknown | undefined {
+    const entry = this.moduleQueries.get(name);
+    if (!entry) return undefined;
+    return entry.handler(entry.getState(), params, this.model);
+  }
+
   getCellDisplayValue(addr: { sheet: number; row: number; col: number }): string | number | boolean | null {
     const key = `display:${addr.sheet}:${addr.row}:${addr.col}`;
     if (!this.changeSet.isCellDirty(addr.sheet, addr.row, addr.col) && this.cache.has(key)) {

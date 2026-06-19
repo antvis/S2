@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>转置明细表</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    #container { width: 800px; height: 400px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>转置明细表 — ListTableModule (transpose)</h3>
+  <p>字段名作为行头显示在左侧，每条数据记录作为一列</p>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, ListTableModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const DATA = [
+      { name: '张三', department: '工程部', title: '高级工程师', salary: 35000, city: '杭州' },
+      { name: '李四', department: '工程部', title: '工程师', salary: 25000, city: '杭州' },
+      { name: '王五', department: '产品部', title: '产品经理', salary: 30000, city: '北京' },
+      { name: '赵六', department: '产品部', title: '产品助理', salary: 18000, city: '北京' },
+      { name: '孙七', department: '设计部', title: '设计总监', salary: 40000, city: '上海' },
+    ];
+
+    const workbook = createWorkbook({ modules: [ListTableModule] });
+    workbook.registerDataSource('staff', DATA);
+
+    workbook.apply([{
+      type: 'list.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'staff',
+        columns: [
+          { field: 'name', title: '姓名' },
+          { field: 'department', title: '部门' },
+          { field: 'title', title: '职位' },
+          { field: 'salary', title: '薪资' },
+          { field: 'city', title: '城市' },
+        ],
+        transpose: true,
+      },
+    }]);
+
+    mountCanvas(workbook, document.getElementById('container'));
+  </script>
+</body>
+</html>

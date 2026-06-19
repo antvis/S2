@@ -21,14 +21,10 @@ export interface CanvasHandle {
 }
 
 function writeClipboard(workbook: Workbook): void {
-  try {
-    const clipboard = workbook.query.moduleQuery('edit.getClipboard', {}) as { values: (string | number | boolean | null)[][] } | null;
-    if (!clipboard) return;
-    const tsv = clipboard.values.map((row) => row.map((v) => v ?? '').join('\t')).join('\n');
-    navigator.clipboard.writeText(tsv).catch(() => {});
-  } catch {
-    // EditModule not registered or clipboard API unavailable
-  }
+  const clipboard = workbook.query.tryModuleQuery('edit.getClipboard', {}) as { values: (string | number | boolean | null)[][] } | null;
+  if (!clipboard) return;
+  const tsv = clipboard.values.map((row) => row.map((v) => v ?? '').join('\t')).join('\n');
+  navigator.clipboard.writeText(tsv).catch(() => {});
 }
 
 export function mountCanvas(workbook: Workbook, container: HTMLElement, options?: MountCanvasOptions): CanvasHandle {
@@ -38,8 +34,21 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   const runtime = createCanvasRuntime(container);
   const workbookModel = workbook.__getModel();
   const layout = new LayoutEngine(workbookModel, workbook.query);
+  const autoFit = !!(options?.width && options?.height);
 
-  let currentPlan: LayoutPlan = layout.computeLayoutPlan(runtime.getWidth(), runtime.getHeight());
+  const initialWidth = runtime.getWidth();
+  const initialHeight = runtime.getHeight();
+
+  if (!autoFit) {
+    const probe = layout.computeLayoutPlan(initialWidth, initialHeight, undefined, false);
+    const fitW = Math.min(probe.totalWidth, initialWidth);
+    const fitH = Math.min(probe.totalHeight, initialHeight);
+    container.style.width = `${fitW}px`;
+    container.style.height = `${fitH}px`;
+    runtime.resize(fitW, fitH);
+  }
+
+  let currentPlan: LayoutPlan = layout.computeLayoutPlan(runtime.getWidth(), runtime.getHeight(), undefined, autoFit);
   let currentSelection: Selection | null = null;
   let currentHover: HoverInfo | null = null;
   let editorEl: HTMLInputElement | null = null;
@@ -47,11 +56,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   let tooltipTimer: ReturnType<typeof setTimeout> | null = null;
 
   function getFreezeConfig() {
-    try {
-      return workbook.query.moduleQuery('freeze.getConfig', { sheet: 0 }) as { frozenRows: number; frozenCols: number } | null;
-    } catch {
-      return null;
-    }
+    return (workbook.query.tryModuleQuery('freeze.getConfig', { sheet: 0 }) ?? null) as { frozenRows: number; frozenCols: number } | null;
   }
 
   const showRowHeader = options?.showRowHeader !== false;
@@ -59,7 +64,19 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
 
   function paint(): void {
     const freeze = getFreezeConfig();
-    currentPlan = layout.computeLayoutPlan(runtime.getWidth(), runtime.getHeight(), freeze);
+
+    if (!autoFit) {
+      const probe = layout.computeLayoutPlan(initialWidth, initialHeight, freeze, false);
+      const fitW = Math.min(probe.totalWidth, initialWidth);
+      const fitH = Math.min(probe.totalHeight, initialHeight);
+      if (Math.abs(fitW - runtime.getWidth()) > 1 || Math.abs(fitH - runtime.getHeight()) > 1) {
+        container.style.width = `${fitW}px`;
+        container.style.height = `${fitH}px`;
+        runtime.resize(fitW, fitH);
+      }
+    }
+
+    currentPlan = layout.computeLayoutPlan(runtime.getWidth(), runtime.getHeight(), freeze, autoFit);
 
     let fillDragPreview = null;
     const fd = interaction.getFillDrag();
@@ -88,12 +105,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   }
 
   function hasEditModule(): boolean {
-    try {
-      workbook.query.moduleQuery('edit.getEditing', {});
-      return true;
-    } catch {
-      return false;
-    }
+    return workbook.query.tryModuleQuery('edit.getEditing', {}) !== undefined;
   }
 
   function showEditor(row: number, col: number, initialValue?: string): void {

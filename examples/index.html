@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S2 v3 Examples</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; }
+    .header { height: 48px; background: #1a1a2e; color: #fff; display: flex; align-items: center; padding: 0 16px; flex-shrink: 0; }
+    .header h1 { font-size: 15px; font-weight: 600; }
+    .header .tag { font-size: 11px; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+    .main { display: flex; flex: 1; overflow: hidden; }
+    .sidebar { width: 220px; background: #f7f8fa; border-right: 1px solid #e5e6eb; overflow-y: auto; flex-shrink: 0; padding: 8px 0; }
+    .sidebar .group-title {
+      font-size: 12px; font-weight: 600; color: #86909c; padding: 12px 16px 4px;
+      cursor: pointer; user-select: none; display: flex; align-items: center; gap: 4px;
+    }
+    .sidebar .group-title::before { content: '▾'; font-size: 10px; transition: transform 0.15s; }
+    .sidebar .group-title.collapsed::before { transform: rotate(-90deg); }
+    .sidebar .group-items { overflow: hidden; }
+    .sidebar .group-items.hidden { display: none; }
+    .sidebar .item {
+      display: block; padding: 6px 16px 6px 28px; font-size: 13px; color: #4e5969;
+      cursor: pointer; text-decoration: none; border-radius: 0;
+      transition: background 0.1s;
+    }
+    .sidebar .item:hover { background: #e8f3ff; color: #165dff; }
+    .sidebar .item.active { background: #e8f3ff; color: #165dff; font-weight: 500; }
+    .content { flex: 1; display: flex; flex-direction: column; }
+    .content iframe { flex: 1; border: none; width: 100%; }
+    .breadcrumb { height: 32px; background: #fff; border-bottom: 1px solid #e5e6eb; display: flex; align-items: center; padding: 0 16px; font-size: 12px; color: #86909c; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>S2 v3</h1>
+    <span class="tag">Examples</span>
+  </div>
+  <div class="main">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="content">
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <iframe id="preview" src="about:blank"></iframe>
+    </div>
+  </div>
+
+  <script type="module">
+    import { menus } from './menu.ts';
+
+    const sidebar = document.getElementById('sidebar');
+    const preview = document.getElementById('preview');
+    const breadcrumb = document.getElementById('breadcrumb');
+    let activeEl = null;
+
+    function load(path, name, label, groupTitle) {
+      const src = `./${path}/${name}.html`;
+      preview.src = src;
+      breadcrumb.textContent = `${groupTitle} / ${label}`;
+      if (activeEl) activeEl.classList.remove('active');
+      const el = document.querySelector(`[data-path="${path}/${name}"]`);
+      if (el) { el.classList.add('active'); activeEl = el; }
+      location.hash = `${path}/${name}`;
+    }
+
+    for (const group of menus) {
+      const title = document.createElement('div');
+      title.className = 'group-title';
+      title.textContent = group.title;
+      sidebar.appendChild(title);
+
+      const items = document.createElement('div');
+      items.className = 'group-items';
+
+      title.addEventListener('click', () => {
+        title.classList.toggle('collapsed');
+        items.classList.toggle('hidden');
+      });
+
+      for (const child of group.children) {
+        const a = document.createElement('a');
+        a.className = 'item';
+        a.textContent = child.label;
+        a.dataset.path = `${child.path}/${child.name}`;
+        a.addEventListener('click', () => load(child.path, child.name, child.label, group.title));
+        items.appendChild(a);
+      }
+      sidebar.appendChild(items);
+    }
+
+    // Load from hash or default
+    const hash = location.hash.slice(1);
+    if (hash) {
+      const [path, name] = hash.split('/');
+      for (const g of menus) {
+        const c = g.children.find(c => c.path === path && c.name === name);
+        if (c) { load(c.path, c.name, c.label, g.title); break; }
+      }
+    } else {
+      const first = menus[0].children[0];
+      load(first.path, first.name, first.label, menus[0].title);
+    }
+  </script>
+</body>
+</html>

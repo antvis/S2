@@ -19,6 +19,16 @@ export function hitTest(x: number, y: number, plan: LayoutPlan): HitResult {
         return { type: 'rowHeaderBorder', row: h.index, col: -1 };
       }
     }
+    // Check hierarchy row headers (pivot mode)
+    if (plan.rowHeaders.length === 0) {
+      for (const level of plan.hierarchyRowHeaders) {
+        for (const h of level) {
+          if (y >= h.y && y < h.y + h.height && x >= h.x && x < h.x + h.width) {
+            return { type: 'rowHeader', row: h.index, col: -1, nodeId: h.nodeId, hasChildren: h.hasChildren, isCollapsed: h.isCollapsed };
+          }
+        }
+      }
+    }
     const row = findRowAt(y, plan);
     if (row >= 0) return { type: 'rowHeader', row, col: -1 };
     return { type: 'empty', row: -1, col: -1 };

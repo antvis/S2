@@ -13,6 +13,8 @@ export interface PivotConfig {
   drillFilters?: Record<string, string>;
   showSubTotals?: boolean;
   showGrandTotal?: boolean;
+  hierarchyType?: 'grid' | 'tree' | 'grid-tree';
+  expandDepth?: number;
 }
 
 type PivotTreeNode = HierarchyTreeNode;
@@ -50,6 +52,7 @@ function aggregate(values: number[], fn: AggFn): number {
 
 interface TreeNodeWithData {
   value: string;
+  field?: string;
   children: TreeNodeWithData[];
   records: Record<string, unknown>[];
 }
@@ -70,6 +73,7 @@ function buildTreeWithData(data: Record<string, unknown>[], fields: string[]): T
   for (const [value, records] of groups) {
     nodes.push({
       value,
+      field,
       children: buildTreeWithData(records, rest),
       records,
     });
@@ -80,17 +84,21 @@ function buildTreeWithData(data: Record<string, unknown>[], fields: string[]): T
 function toHierarchyTree(nodes: TreeNodeWithData[]): PivotTreeNode[] {
   return nodes.map((n) => ({
     value: n.value,
+    field: n.field,
     children: toHierarchyTree(n.children),
   }));
 }
 
-function getLeafGroups(nodes: TreeNodeWithData[]): Record<string, unknown>[][] {
+function getLeafGroups(nodes: TreeNodeWithData[], collapseMap?: Set<string>, parentId?: string): Record<string, unknown>[][] {
   const groups: Record<string, unknown>[][] = [];
   for (const node of nodes) {
-    if (node.children.length === 0) {
+    const nodeId = parentId
+      ? `${parentId}/${node.field ?? ''}:${node.value}`
+      : `${node.field ?? ''}:${node.value}`;
+    if (node.children.length === 0 || collapseMap?.has(nodeId)) {
       groups.push(node.records);
     } else {
-      groups.push(...getLeafGroups(node.children));
+      groups.push(...getLeafGroups(node.children, collapseMap, nodeId));
     }
   }
   return groups;
@@ -100,12 +108,28 @@ function buildTree(data: Record<string, unknown>[], fields: string[]): PivotTree
   return toHierarchyTree(buildTreeWithData(data, fields));
 }
 
+// Tree 模式：DFS 前序遍历，为每个可见节点（包括父节点）生成一行数据
+function getAllNodeGroups(nodes: TreeNodeWithData[], collapseMap?: Set<string>, parentId?: string): Record<string, unknown>[][] {
+  const groups: Record<string, unknown>[][] = [];
+  for (const node of nodes) {
+    const nodeId = parentId
+      ? `${parentId}/${node.field ?? ''}:${node.value}`
+      : `${node.field ?? ''}:${node.value}`;
+    // 每个节点都产生一行（父节点用自身 records 聚合）
+    groups.push(node.records);
+    if (node.children.length > 0 && !collapseMap?.has(nodeId)) {
+      groups.push(...getAllNodeGroups(node.children, collapseMap, nodeId));
+    }
+  }
+  return groups;
+}
+
 function getLeafPaths(tree: PivotTreeNode[], prefix: string[] = []): string[][] {
   if (tree.length === 0) return [prefix];
   const paths: string[][] = [];
   for (const node of tree) {
     const newPrefix = [...prefix, node.value];
-    if (node.children.length === 0) {
+    if (node.children.length === 0 || node.isCollapsed) {
       paths.push(newPrefix);
     } else {
       paths.push(...getLeafPaths(node.children, newPrefix));
@@ -114,7 +138,46 @@ function getLeafPaths(tree: PivotTreeNode[], prefix: string[] = []): string[][] 
   return paths;
 }
 
-function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig): { layout: PivotLayout; values: number[][] } {
+function generateNodeId(node: HierarchyTreeNode, parentId: string = ''): string {
+  return parentId
+    ? `${parentId}/${node.field ?? ''}:${node.value}`
+    : `${node.field ?? ''}:${node.value}`;
+}
+
+function findNodeById(tree: HierarchyTreeNode[], nodeId: string, parentId: string = ''): HierarchyTreeNode | null {
+  for (const node of tree) {
+    const id = generateNodeId(node, parentId);
+    if (id === nodeId) return node;
+    const found = findNodeById(node.children, nodeId, id);
+    if (found) return found;
+  }
+  return null;
+}
+
+function collectCollapsedIds(tree: HierarchyTreeNode[], parentId: string = ''): Set<string> {
+  const ids = new Set<string>();
+  for (const node of tree) {
+    const id = generateNodeId(node, parentId);
+    if (node.isCollapsed) ids.add(id);
+    collectCollapsedIds(node.children, id).forEach(i => ids.add(i));
+  }
+  return ids;
+}
+
+function applyExpandDepth(tree: HierarchyTreeNode[], maxDepth: number, currentDepth: number = 0): void {
+  for (const node of tree) {
+    if (node.children.length > 0 && currentDepth >= maxDepth) {
+      node.isCollapsed = true;
+    }
+    applyExpandDepth(node.children, maxDepth, currentDepth + 1);
+  }
+}
+
+function computePivotLayout(
+  data: Record<string, unknown>[],
+  config: PivotConfig,
+  existingRowTree?: HierarchyTreeNode[],
+): { layout: PivotLayout; values: number[][] } {
   let filteredData = data;
   if (config.drillFilters) {
     for (const [field, value] of Object.entries(config.drillFilters)) {
@@ -123,8 +186,13 @@ function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig
   }
 
   const rowTreeData = buildTreeWithData(filteredData, config.rows);
-  const rowTree = toHierarchyTree(rowTreeData);
-  const rowLeafGroups = config.rows.length > 0 ? getLeafGroups(rowTreeData) : [filteredData];
+  const rowTree = existingRowTree ?? toHierarchyTree(rowTreeData);
+  const collapseMap = existingRowTree ? collectCollapsedIds(rowTree) : undefined;
+  const isTree = (config.hierarchyType ?? 'grid') === 'tree';
+  const rowLeafGroups = config.rows.length > 0
+    ? (isTree ? getAllNodeGroups(rowTreeData, collapseMap) : getLeafGroups(rowTreeData, collapseMap))
+    : [filteredData];
+
 
   const colTreeData = buildTreeWithData(filteredData, config.columns);
   const colTree = toHierarchyTree(colTreeData);
@@ -205,6 +273,7 @@ function computePivotLayout(data: Record<string, unknown>[], config: PivotConfig
     valueFields: config.values,
     rowLeafCount: values.length,
     colLeafCount: colLeafCount * valuesPerCol,
+    hierarchyType: config.hierarchyType ?? 'grid',
   };
 
   return { layout, values };
@@ -280,8 +349,15 @@ export const PivotModule: ModuleDefinition = {
         const data = model.dataSources.get(config.dataSourceId) as Record<string, unknown>[] | undefined;
         if (data && data.length > 0) {
           const { layout, values } = computePivotLayout(data, config);
-          this.state.layouts.set(config.sheet, layout);
-          materializeToModel(model, config.sheet, values);
+          if ((config.hierarchyType === 'tree' || config.hierarchyType === 'grid-tree') && config.expandDepth !== undefined) {
+            applyExpandDepth(layout.rowTree, config.expandDepth);
+            const recomputed = computePivotLayout(data, config, layout.rowTree);
+            this.state.layouts.set(config.sheet, recomputed.layout);
+            materializeToModel(model, config.sheet, recomputed.values);
+          } else {
+            this.state.layouts.set(config.sheet, layout);
+            materializeToModel(model, config.sheet, values);
+          }
         }
 
         // Restore non-pivot cells from snapshot (undo of clearConfig)
@@ -407,6 +483,39 @@ export const PivotModule: ModuleDefinition = {
         return [{ type: 'pivot.setConfig', payload: { ...(oldConfig as unknown as Record<string, unknown>), __restoreCells: cellsSnapshot } }];
       },
     },
+    'pivot.toggleCollapse': {
+      meta: {
+        needReCalc: true, affectLayout: true, undoable: true,
+        description: 'Toggle collapse state of a pivot tree node',
+        inputSchema: {
+          type: 'object',
+          properties: { sheet: { type: 'number' }, nodeId: { type: 'string' } },
+          required: ['sheet', 'nodeId'],
+        },
+      },
+      execute(this: { state: PivotState }, model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
+        const { sheet, nodeId } = payload as { sheet: number; nodeId: string };
+        const config = this.state.configs.get(sheet);
+        if (!config || (config.hierarchyType !== 'tree' && config.hierarchyType !== 'grid-tree')) return [];
+
+        const layout = this.state.layouts.get(sheet);
+        if (!layout) return [];
+
+        const node = findNodeById(layout.rowTree, nodeId);
+        if (!node || node.children.length === 0) return [];
+
+        node.isCollapsed = !node.isCollapsed;
+
+        const data = model.dataSources.get(config.dataSourceId) as Record<string, unknown>[] | undefined;
+        if (data && data.length > 0) {
+          const { layout: newLayout, values } = computePivotLayout(data, config, layout.rowTree);
+          this.state.layouts.set(sheet, newLayout);
+          materializeToModel(model, sheet, values);
+        }
+
+        return [{ type: 'pivot.toggleCollapse', payload: { sheet, nodeId } }];
+      },
+    },
   },
 
   queries: {
@@ -461,7 +570,9 @@ export const PivotModule: ModuleDefinition = {
             if (config.dataSourceId === dataSourceId) {
               const data = model.dataSources.get(dataSourceId) as Record<string, unknown>[] | undefined;
               if (data && data.length > 0) {
-                const { layout, values } = computePivotLayout(data, config);
+                const existingLayout = this.state.layouts.get(sheet);
+                const existingRowTree = (existingLayout?.hierarchyType === 'tree' || existingLayout?.hierarchyType === 'grid-tree') ? existingLayout.rowTree : undefined;
+                const { layout, values } = computePivotLayout(data, config, existingRowTree);
                 this.state.layouts.set(sheet, layout);
                 materializeToModel(model, sheet, values);
               }

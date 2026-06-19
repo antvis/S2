@@ -41,6 +41,9 @@ export interface HeaderBox {
   level?: number;
   /** Total number of hierarchy levels */
   depth?: number;
+  nodeId?: string;
+  hasChildren?: boolean;
+  isCollapsed?: boolean;
 }
 
 export interface Line {
@@ -59,6 +62,9 @@ export interface FreezeConfig {
 export interface HierarchyTreeNode {
   value: string;
   children: HierarchyTreeNode[];
+  field?: string;
+  isCollapsed?: boolean;
+  nodeId?: string;
 }
 
 /** Layout descriptor produced by a module that provides hierarchical headers */
@@ -70,6 +76,7 @@ export interface HierarchyLayout {
   valueFields: string[];
   rowLeafCount: number;
   colLeafCount: number;
+  hierarchyType?: 'grid' | 'tree' | 'grid-tree' | 'list' | 'list-transpose';
 }
 
 export interface LayoutPlan {
@@ -93,4 +100,6 @@ export interface LayoutPlan {
   hierarchyColHeaders: HeaderBox[][];
   /** Corner headers (dimension names in the top-left area). Empty for detail tables. */
   cornerHeaders: HeaderBox[];
+  /** Actual data content bounds (right/bottom edges). null = extends to viewport. */
+  dataBounds: { right: number; bottom: number } | null;
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>编辑</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    #container { width: 800px; height: 500px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>编辑 — 双击编辑单元格</h3>
+  <p>双击单元格进入编辑模式，Enter 确认，Esc 取消。支持 Cmd+Z 撤销。</p>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, EditModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const workbook = createWorkbook({ modules: [EditModule] });
+
+    const ops = [];
+    for (let r = 0; r < 20; r++) {
+      for (let c = 0; c < 6; c++) {
+        ops.push({ type: 'setCellValue', payload: { sheet: 0, row: r, col: c, value: `编辑我 ${r},${c}` } });
+      }
+    }
+    workbook.apply(ops);
+
+    mountCanvas(workbook, document.getElementById('container'));
+    window.workbook = workbook;
+  </script>
+</body>
+</html>

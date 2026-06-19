@@ -2,44 +2,37 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>S2 v3 — Formula Example</title>
+  <title>基础公式</title>
   <style>
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; }
-    h2 { margin: 16px; font-size: 16px; color: #333; }
-    p { margin: 0 16px 8px; font-size: 13px; color: #666; }
-    #app { width: calc(100vw - 32px); height: calc(100vh - 100px); margin: 0 16px; background: #fff; border: 1px solid #e0e0e0; }
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    #container { width: 800px; height: 500px; border: 1px solid #e0e0e0; }
   </style>
 </head>
 <body>
-  <h2>S2 v3 — 公式 (Formula)</h2>
-  <p>双击单元格编辑，修改 A1~A5 的值后 SUM/AVG/MIN/MAX 会自动重算。</p>
-  <div id="app"></div>
+  <h3>基础公式 — SUM / AVG / MIN / MAX</h3>
+  <p>双击单元格编辑，修改 A2~A6 的值后公式自动重算</p>
+  <div id="container"></div>
   <script type="module">
-    import { createWorkbook, FormulaModule, mountCanvas } from '../packages/s2/src/index.ts';
+    import { createWorkbook, FormulaModule, mountCanvas } from '../../packages/s2/src/index.ts';
 
     const workbook = createWorkbook({ modules: [FormulaModule] });
 
     workbook.apply([
-      // 表头
       { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: '数据' } },
       { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 1, value: '公式' } },
       { type: 'setCellValue', payload: { sheet: 0, row: 0, col: 2, value: '结果' } },
-
-      // 数据列 A2:A6
       { type: 'setCellValue', payload: { sheet: 0, row: 1, col: 0, value: 10 } },
       { type: 'setCellValue', payload: { sheet: 0, row: 2, col: 0, value: 20 } },
       { type: 'setCellValue', payload: { sheet: 0, row: 3, col: 0, value: 30 } },
       { type: 'setCellValue', payload: { sheet: 0, row: 4, col: 0, value: 40 } },
       { type: 'setCellValue', payload: { sheet: 0, row: 5, col: 0, value: 50 } },
-
-      // 公式标签
       { type: 'setCellValue', payload: { sheet: 0, row: 1, col: 1, value: '=SUM(A2:A6)' } },
       { type: 'setCellValue', payload: { sheet: 0, row: 2, col: 1, value: '=AVG(A2:A6)' } },
       { type: 'setCellValue', payload: { sheet: 0, row: 3, col: 1, value: '=MIN(A2:A6)' } },
       { type: 'setCellValue', payload: { sheet: 0, row: 4, col: 1, value: '=MAX(A2:A6)' } },
       { type: 'setCellValue', payload: { sheet: 0, row: 5, col: 1, value: '=A2*2+A3' } },
-
-      // 公式
       { type: 'formula.setFormula', payload: { sheet: 0, row: 1, col: 2, formula: '=SUM(A2:A6)' } },
       { type: 'formula.setFormula', payload: { sheet: 0, row: 2, col: 2, formula: '=AVG(A2:A6)' } },
       { type: 'formula.setFormula', payload: { sheet: 0, row: 3, col: 2, formula: '=MIN(A2:A6)' } },
@@ -47,12 +40,8 @@
       { type: 'formula.setFormula', payload: { sheet: 0, row: 5, col: 2, formula: '=A2*2+A3' } },
     ]);
 
-    mountCanvas(workbook, document.getElementById('app'));
-
-    // 暴露到全局方便调试
+    mountCanvas(workbook, document.getElementById('container'));
     window.workbook = workbook;
-    console.log('双击 A2~A6 修改数值，C 列公式会自动重算');
-    console.log('也可以在控制台执行: workbook.apply([{type:"setCellValue", payload:{sheet:0, row:1, col:0, value:999}}])');
   </script>
 </body>
 </html>

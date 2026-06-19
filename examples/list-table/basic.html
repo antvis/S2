@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>基础明细表</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    #container { width: 800px; height: 500px; border: 1px solid #e0e0e0; }
+  </style>
+</head>
+<body>
+  <h3>基础明细表 — ListTableModule</h3>
+  <p>使用 ListTableModule 配置字段名表头，展示部门人员列表</p>
+  <div id="container"></div>
+  <script type="module">
+    import { createWorkbook, ListTableModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const DATA = [
+      { name: '张三', department: '工程部', title: '高级工程师', salary: 35000, city: '杭州' },
+      { name: '李四', department: '工程部', title: '工程师', salary: 25000, city: '杭州' },
+      { name: '王五', department: '产品部', title: '产品经理', salary: 30000, city: '北京' },
+      { name: '赵六', department: '产品部', title: '产品助理', salary: 18000, city: '北京' },
+      { name: '孙七', department: '设计部', title: '设计总监', salary: 40000, city: '上海' },
+      { name: '周八', department: '设计部', title: 'UI 设计师', salary: 22000, city: '上海' },
+      { name: '吴九', department: '运营部', title: '运营主管', salary: 28000, city: '深圳' },
+      { name: '郑十', department: '运营部', title: '运营专员', salary: 15000, city: '深圳' },
+      { name: '陈一', department: '市场部', title: '市场总监', salary: 38000, city: '广州' },
+      { name: '林二', department: '市场部', title: '市场专员', salary: 16000, city: '广州' },
+    ];
+
+    const workbook = createWorkbook({ modules: [ListTableModule] });
+    workbook.registerDataSource('staff', DATA);
+
+    workbook.apply([{
+      type: 'list.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'staff',
+        columns: [
+          { field: 'name', title: '姓名' },
+          { field: 'department', title: '部门' },
+          { field: 'title', title: '职位' },
+          { field: 'salary', title: '薪资' },
+          { field: 'city', title: '城市' },
+        ],
+      },
+    }]);
+
+    mountCanvas(workbook, document.getElementById('container'));
+  </script>
+</body>
+</html>

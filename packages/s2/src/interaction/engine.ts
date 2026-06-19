@@ -208,6 +208,16 @@ export class InteractionEngine {
       };
       this.onSelectionChange(this.selection);
     } else if (hit.type === 'rowHeader') {
+      // Tree mode: toggle collapse if clicking on a node with children
+      if (hit.nodeId && hit.hasChildren && this.workbook) {
+        const listConfig = this.workbook.query.tryModuleQuery('list.getConfig', { sheet: 0 });
+        if (listConfig) {
+          this.workbook.apply([{ type: 'list.toggleCollapse', payload: { sheet: 0, nodeId: hit.nodeId } }]);
+        } else {
+          this.workbook.apply([{ type: 'pivot.toggleCollapse', payload: { sheet: 0, nodeId: hit.nodeId } }]);
+        }
+        return;
+      }
       this.state = 'idle';
       this.selection = {
         sheet: 0,

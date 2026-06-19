@@ -104,13 +104,13 @@ export class LayoutEngine {
     return visualRow;
   }
 
-  computeLayoutPlan(viewWidth: number, viewHeight: number, freeze?: FreezeConfig | null): LayoutPlan {
+  computeLayoutPlan(viewWidth: number, viewHeight: number, freeze?: FreezeConfig | null, autoFit?: boolean): LayoutPlan {
     this.syncDimensions();
 
     const pivotLayout = this.getHierarchyLayout();
 
     if (pivotLayout) {
-      return this.computeHierarchyLayoutPlan(viewWidth, viewHeight, pivotLayout, freeze);
+      return this.computeHierarchyLayoutPlan(viewWidth, viewHeight, pivotLayout, freeze, autoFit);
     }
 
     return this.computeDetailLayoutPlan(viewWidth, viewHeight, freeze);
@@ -118,44 +118,77 @@ export class LayoutEngine {
 
   private getRowOrder(): number[] | null {
     if (!this.queryLayer) return null;
-    try {
-      return this.queryLayer.moduleQuery('sort.getRowOrder', { sheet: 0 }) as number[] | null;
-    } catch {
-      return null;
-    }
+    return (this.queryLayer.tryModuleQuery('sort.getRowOrder', { sheet: 0 }) ?? null) as number[] | null;
   }
 
   private getHierarchyLayout(): HierarchyLayout | null {
     if (!this.queryLayer) return null;
-    try {
-      return this.queryLayer.moduleQuery('pivot.getLayout', { sheet: 0 }) as HierarchyLayout | null;
-    } catch {
-      return null;
-    }
+    return (this.queryLayer.tryModuleQuery('pivot.getLayout', { sheet: 0 })
+      ?? this.queryLayer.tryModuleQuery('list.getLayout', { sheet: 0 })
+      ?? null) as HierarchyLayout | null;
   }
 
   private getHiddenRows(): Set<number> | null {
     if (!this.queryLayer) return null;
-    try {
-      return this.queryLayer.moduleQuery('filter.getHiddenRows', { sheet: 0 }) as Set<number> | null;
-    } catch {
-      return null;
-    }
+    return (this.queryLayer.tryModuleQuery('filter.getHiddenRows', { sheet: 0 }) ?? null) as Set<number> | null;
   }
 
   // ─── Pivot table layout ───────────────────────────────────────────────
 
   private computeHierarchyLayoutPlan(
-    viewWidth: number, viewHeight: number, pivot: HierarchyLayout, freeze?: FreezeConfig | null,
+    viewWidth: number, viewHeight: number, pivot: HierarchyLayout, freeze?: FreezeConfig | null, autoFit?: boolean,
   ): LayoutPlan {
+    if (pivot.hierarchyType === 'tree') {
+      return this.computeTreeModeLayoutPlan(viewWidth, viewHeight, pivot, freeze, autoFit);
+    }
+    if (pivot.hierarchyType === 'grid-tree') {
+      return this.computeGridTreeModeLayoutPlan(viewWidth, viewHeight, pivot, freeze, autoFit);
+    }
+    if (pivot.hierarchyType === 'list') {
+      return this.computeListLayoutPlan(viewWidth, viewHeight, pivot, freeze, autoFit);
+    }
+    if (pivot.hierarchyType === 'list-transpose') {
+      return this.computeListTransposeLayoutPlan(viewWidth, viewHeight, pivot, freeze, autoFit);
+    }
+
     const rowDepth = pivot.rowFields.length;
     const colDepth = pivot.colFields.length;
     const hasValues = pivot.valueFields.length > 0;
 
     const rowHeaderWidth = rowDepth * PIVOT_LEVEL_WIDTH;
-    // colFields levels + 1 value field label row (if values exist)
     const colHeaderLevels = colDepth + (hasValues ? 1 : 0);
-    const colHeaderHeight = colHeaderLevels * PIVOT_LEVEL_HEIGHT;
+
+    // Auto-fit: set counts then stretch columns/rows to fill the canvas
+    this.rowSums.setCount(Math.max(pivot.rowLeafCount, 1));
+    this.colSums.setCount(Math.max(pivot.colLeafCount, 1));
+
+    const dataAreaWidth = viewWidth - rowHeaderWidth;
+
+    let fitColWidth = DEFAULT_COL_WIDTH;
+    let fitRowHeight = PIVOT_LEVEL_HEIGHT;
+
+    if (autoFit) {
+      // Column auto-fit — distribute remainder to last column
+      if (pivot.colLeafCount > 0) {
+        fitColWidth = Math.max(Math.floor(dataAreaWidth / pivot.colLeafCount), DEFAULT_COL_WIDTH);
+        for (let c = 0; c < pivot.colLeafCount; c++) {
+          this.colSums.setSize(c, fitColWidth);
+        }
+        const colRemainder = dataAreaWidth - fitColWidth * pivot.colLeafCount;
+        if (colRemainder > 0) {
+          this.colSums.setSize(pivot.colLeafCount - 1, fitColWidth + colRemainder);
+        }
+      }
+    }
+
+    const colHeaderHeight = colHeaderLevels * fitRowHeight;
+
+    // Clamp scroll to content bounds before building any positioned elements
+    const dataAreaHeight = viewHeight - colHeaderHeight;
+    const maxScrollX = Math.max(0, this.colSums.getTotalSize() - dataAreaWidth);
+    const maxScrollY = Math.max(0, this.rowSums.getTotalSize() - dataAreaHeight);
+    this.scrollX = Math.min(this.scrollX, maxScrollX);
+    this.scrollY = Math.min(this.scrollY, maxScrollY);
 
     // Build row headers
     const pivotRowHeaders: HeaderBox[][] = [];
@@ -165,13 +198,13 @@ export class LayoutEngine {
     let rowLeafIndex = 0;
     this.flattenRowTree(pivot.rowTree, 0, rowDepth, pivotRowHeaders, rowHeaderWidth, colHeaderHeight, () => rowLeafIndex, (v) => { rowLeafIndex = v; });
 
-    // Build col headers
+    // Build col headers — use colSums for positioning
     const pivotColHeaders: HeaderBox[][] = [];
     for (let l = 0; l < colDepth; l++) {
       pivotColHeaders.push([]);
     }
     let colLeafIndex = 0;
-    this.flattenColTree(pivot.colTree, 0, colDepth, pivotColHeaders, rowHeaderWidth, pivot.valueFields.length, () => colLeafIndex, (v) => { colLeafIndex = v; });
+    this.flattenColTree(pivot.colTree, 0, colDepth, pivotColHeaders, rowHeaderWidth, pivot.valueFields.length, () => colLeafIndex, (v) => { colLeafIndex = v; }, fitRowHeight);
 
     // Value field label row (bottom row of col headers)
     if (hasValues && colDepth > 0) {
@@ -182,10 +215,10 @@ export class LayoutEngine {
           const idx = ci * pivot.valueFields.length + vi;
           valueRow.push({
             index: idx,
-            x: rowHeaderWidth + idx * DEFAULT_COL_WIDTH - this.scrollX,
-            y: colDepth * PIVOT_LEVEL_HEIGHT,
-            width: DEFAULT_COL_WIDTH,
-            height: PIVOT_LEVEL_HEIGHT,
+            x: rowHeaderWidth + this.colSums.getOffset(idx) - this.scrollX,
+            y: colDepth * fitRowHeight,
+            width: this.colSums.getSize(idx),
+            height: fitRowHeight,
             label: pivot.valueFields[vi]!,
             level: colDepth,
             depth: colDepth + 1,
@@ -195,15 +228,14 @@ export class LayoutEngine {
       }
       pivotColHeaders.push(valueRow);
     } else if (hasValues && colDepth === 0) {
-      // No column dimensions, but have value fields — each value field is a col header
       const valueRow: HeaderBox[] = [];
       for (let vi = 0; vi < pivot.valueFields.length; vi++) {
         valueRow.push({
           index: vi,
-          x: rowHeaderWidth + vi * DEFAULT_COL_WIDTH - this.scrollX,
+          x: rowHeaderWidth + this.colSums.getOffset(vi) - this.scrollX,
           y: 0,
-          width: DEFAULT_COL_WIDTH,
-          height: PIVOT_LEVEL_HEIGHT,
+          width: this.colSums.getSize(vi),
+          height: fitRowHeight,
           label: pivot.valueFields[vi]!,
           level: 0,
           depth: 1,
@@ -213,45 +245,35 @@ export class LayoutEngine {
       pivotColHeaders.push(valueRow);
     }
 
-    // Corner headers: row dimension names along bottom row, col dimension names along right column
+    // Corner headers
     const cornerHeaders: HeaderBox[] = [];
-    // Row field names — one per level, on the bottom row of the corner area
     for (let l = 0; l < rowDepth; l++) {
       cornerHeaders.push({
         index: l,
         x: l * PIVOT_LEVEL_WIDTH,
-        y: colHeaderHeight - PIVOT_LEVEL_HEIGHT,
+        y: colHeaderHeight - fitRowHeight,
         width: PIVOT_LEVEL_WIDTH,
-        height: PIVOT_LEVEL_HEIGHT,
+        height: fitRowHeight,
         label: pivot.rowFields[l]!,
         level: l,
         depth: rowDepth,
       });
     }
-    // Col field names — one per level, in the rightmost column of the corner area
     for (let l = 0; l < colDepth; l++) {
       cornerHeaders.push({
         index: rowDepth + l,
         x: (rowDepth - 1) * PIVOT_LEVEL_WIDTH,
-        y: l * PIVOT_LEVEL_HEIGHT,
+        y: l * fitRowHeight,
         width: PIVOT_LEVEL_WIDTH,
-        height: PIVOT_LEVEL_HEIGHT,
+        height: fitRowHeight,
         label: pivot.colFields[l]!,
         level: l,
         depth: colDepth,
       });
     }
 
-    // Data cells — adjust prefix sums to pivot's leaf counts
-    this.rowSums.setCount(Math.max(pivot.rowLeafCount, 1));
-    this.colSums.setCount(Math.max(pivot.colLeafCount, 1));
-
     const cells: CellBox[] = [];
     const gridlines: Line[] = [];
-
-    // Scrollable data area
-    const dataAreaWidth = viewWidth - rowHeaderWidth;
-    const dataAreaHeight = viewHeight - colHeaderHeight;
 
     const scrollStartRow = this.rowSums.findIndexAtOffset(this.scrollY);
     const scrollEndRow = Math.min(
@@ -274,14 +296,22 @@ export class LayoutEngine {
       }
     }
 
-    // Gridlines for data area
+    // Gridlines for data area — clamp to actual data bounds
+    const dataRight = Math.min(
+      this.colSums.getOffset(pivot.colLeafCount) - this.scrollX + rowHeaderWidth,
+      viewWidth,
+    );
+    const dataBottom = Math.min(
+      this.rowSums.getOffset(pivot.rowLeafCount) - this.scrollY + colHeaderHeight,
+      viewHeight,
+    );
     for (let row = scrollStartRow; row <= scrollEndRow + 1; row++) {
       const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
-      gridlines.push({ x1: rowHeaderWidth, y1: y, x2: viewWidth, y2: y });
+      gridlines.push({ x1: rowHeaderWidth, y1: y, x2: dataRight, y2: y });
     }
     for (let col = scrollStartCol; col <= scrollEndCol + 1; col++) {
       const x = this.colSums.getOffset(col) - this.scrollX + rowHeaderWidth;
-      gridlines.push({ x1: x, y1: colHeaderHeight, x2: x, y2: viewHeight });
+      gridlines.push({ x1: x, y1: colHeaderHeight, x2: x, y2: dataBottom });
     }
 
     // Filter headers to visible viewport
@@ -309,7 +339,702 @@ export class LayoutEngine {
       hierarchyRowHeaders: visibleRowHeaders,
       hierarchyColHeaders: visibleColHeaders,
       cornerHeaders,
+      dataBounds: { right: dataRight, bottom: dataBottom },
     };
+  }
+
+  // ─── List table layout ────────────────────────────────────────────────
+
+  private computeListLayoutPlan(
+    viewWidth: number, viewHeight: number,
+    list: HierarchyLayout,
+    freeze?: FreezeConfig | null, autoFit?: boolean,
+  ): LayoutPlan {
+    const colCount = list.colLeafCount;
+    const rowCount = list.rowLeafCount;
+    const hasMultiLevelHeaders = list.colTree.length > 0;
+    const headerDepth = hasMultiLevelHeaders ? this.getColTreeDepth(list.colTree) : 1;
+    const colHeaderHeight = headerDepth * DEFAULT_ROW_HEIGHT;
+
+    this.rowSums.setCount(Math.max(rowCount, 1));
+    this.colSums.setCount(Math.max(colCount, 1));
+
+    if (autoFit && colCount > 0) {
+      const fitColWidth = Math.max(Math.floor(viewWidth / colCount), DEFAULT_COL_WIDTH);
+      for (let c = 0; c < colCount; c++) {
+        this.colSums.setSize(c, fitColWidth);
+      }
+      const remainder = viewWidth - fitColWidth * colCount;
+      if (remainder > 0) {
+        this.colSums.setSize(colCount - 1, fitColWidth + remainder);
+      }
+    }
+
+    const dataAreaHeight = viewHeight - colHeaderHeight;
+    const maxScrollX = Math.max(0, this.colSums.getTotalSize() - viewWidth);
+    const maxScrollY = Math.max(0, this.rowSums.getTotalSize() - dataAreaHeight);
+    this.scrollX = Math.min(this.scrollX, maxScrollX);
+    this.scrollY = Math.min(this.scrollY, maxScrollY);
+
+    const scrollStartRow = this.rowSums.findIndexAtOffset(this.scrollY);
+    const scrollEndRow = Math.min(
+      this.rowSums.findIndexAtOffset(this.scrollY + dataAreaHeight),
+      rowCount - 1,
+    );
+    const scrollStartCol = this.colSums.findIndexAtOffset(this.scrollX);
+    const scrollEndCol = Math.min(
+      this.colSums.findIndexAtOffset(this.scrollX + viewWidth),
+      colCount - 1,
+    );
+
+    const cells: CellBox[] = [];
+    for (let row = scrollStartRow; row <= scrollEndRow; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      const height = this.rowSums.getSize(row);
+      for (let col = scrollStartCol; col <= scrollEndCol; col++) {
+        const x = this.colSums.getOffset(col) - this.scrollX;
+        const width = this.colSums.getSize(col);
+        cells.push({ row, col, x, y, width, height });
+      }
+    }
+
+    const colHeaders: HeaderBox[] = [];
+    let hierarchyColHeaders: HeaderBox[][] = [];
+
+    if (hasMultiLevelHeaders) {
+      for (let l = 0; l < headerDepth; l++) {
+        hierarchyColHeaders.push([]);
+      }
+      let colLeafIndex = 0;
+      this.flattenListColTree(list.colTree, 0, headerDepth, hierarchyColHeaders, 0, () => colLeafIndex, (v) => { colLeafIndex = v; }, DEFAULT_ROW_HEIGHT);
+      hierarchyColHeaders = hierarchyColHeaders.map(level =>
+        level.filter(h => h.x + h.width > 0 && h.x < viewWidth)
+      );
+    } else {
+      for (let col = scrollStartCol; col <= scrollEndCol; col++) {
+        const x = this.colSums.getOffset(col) - this.scrollX;
+        const width = this.colSums.getSize(col);
+        colHeaders.push({
+          index: col,
+          x,
+          y: 0,
+          width,
+          height: colHeaderHeight,
+          label: list.valueFields[col] ?? '',
+          level: 0,
+          depth: 1,
+          span: 1,
+        });
+      }
+    }
+
+    const gridlines: Line[] = [];
+    const dataRight = Math.min(
+      this.colSums.getOffset(colCount) - this.scrollX,
+      viewWidth,
+    );
+    const dataBottom = Math.min(
+      this.rowSums.getOffset(rowCount) - this.scrollY + colHeaderHeight,
+      viewHeight,
+    );
+
+    for (let row = scrollStartRow; row <= scrollEndRow + 1; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      if (y > dataBottom) break;
+      gridlines.push({ x1: 0, y1: y, x2: dataRight, y2: y });
+    }
+    for (let col = scrollStartCol; col <= scrollEndCol + 1; col++) {
+      const x = this.colSums.getOffset(col) - this.scrollX;
+      if (x > dataRight) break;
+      gridlines.push({ x1: x, y1: colHeaderHeight, x2: x, y2: dataBottom });
+    }
+    gridlines.push({ x1: 0, y1: colHeaderHeight, x2: dataRight, y2: colHeaderHeight });
+
+    return {
+      cells,
+      frozenCells: [],
+      rowHeaders: [],
+      colHeaders: hasMultiLevelHeaders ? [] : colHeaders,
+      gridlines,
+      frozenGridlines: [],
+      viewport: { scrollX: this.scrollX, scrollY: this.scrollY, viewWidth, viewHeight },
+      totalWidth: this.colSums.getTotalSize(),
+      totalHeight: this.rowSums.getTotalSize() + colHeaderHeight,
+      freeze: freeze ?? null,
+      frozenRowHeight: 0,
+      frozenColWidth: 0,
+      headerArea: { left: 0, top: colHeaderHeight },
+      hierarchyRowHeaders: [],
+      hierarchyColHeaders,
+      cornerHeaders: [],
+      dataBounds: { right: dataRight, bottom: dataBottom },
+    };
+  }
+
+  // ─── List table transpose layout ─────────────────────────────────────
+
+  private static readonly LIST_TRANSPOSE_ROW_HEADER_WIDTH = 120;
+
+  private computeListTransposeLayoutPlan(
+    viewWidth: number, viewHeight: number,
+    list: HierarchyLayout,
+    freeze?: FreezeConfig | null, autoFit?: boolean,
+  ): LayoutPlan {
+    const ROW_HEADER_WIDTH = LayoutEngine.LIST_TRANSPOSE_ROW_HEADER_WIDTH;
+    const rowCount = list.rowLeafCount;   // = columns.length (fields)
+    const colCount = list.colLeafCount;   // = data.length (records)
+    const colHeaderHeight = 0;
+
+    this.rowSums.setCount(Math.max(rowCount, 1));
+    this.colSums.setCount(Math.max(colCount, 1));
+
+    const dataAreaWidth = viewWidth - ROW_HEADER_WIDTH;
+
+    if (autoFit && colCount > 0) {
+      const fitColWidth = Math.max(Math.floor(dataAreaWidth / colCount), DEFAULT_COL_WIDTH);
+      for (let c = 0; c < colCount; c++) {
+        this.colSums.setSize(c, fitColWidth);
+      }
+      const remainder = dataAreaWidth - fitColWidth * colCount;
+      if (remainder > 0) {
+        this.colSums.setSize(colCount - 1, fitColWidth + remainder);
+      }
+    }
+
+    const dataAreaHeight = viewHeight - colHeaderHeight;
+    const maxScrollX = Math.max(0, this.colSums.getTotalSize() - dataAreaWidth);
+    const maxScrollY = Math.max(0, this.rowSums.getTotalSize() - dataAreaHeight);
+    this.scrollX = Math.min(this.scrollX, maxScrollX);
+    this.scrollY = Math.min(this.scrollY, maxScrollY);
+
+    const scrollStartRow = this.rowSums.findIndexAtOffset(this.scrollY);
+    const scrollEndRow = Math.min(
+      this.rowSums.findIndexAtOffset(this.scrollY + dataAreaHeight),
+      rowCount - 1,
+    );
+    const scrollStartCol = this.colSums.findIndexAtOffset(this.scrollX);
+    const scrollEndCol = Math.min(
+      this.colSums.findIndexAtOffset(this.scrollX + dataAreaWidth),
+      colCount - 1,
+    );
+
+    const cells: CellBox[] = [];
+    for (let row = scrollStartRow; row <= scrollEndRow; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      const height = this.rowSums.getSize(row);
+      for (let col = scrollStartCol; col <= scrollEndCol; col++) {
+        const x = this.colSums.getOffset(col) - this.scrollX + ROW_HEADER_WIDTH;
+        const width = this.colSums.getSize(col);
+        cells.push({ row, col, x, y, width, height });
+      }
+    }
+
+    // Row headers: field names on the left
+    const rowHeaders: HeaderBox[] = [];
+    for (let row = scrollStartRow; row <= scrollEndRow; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      const height = this.rowSums.getSize(row);
+      rowHeaders.push({
+        index: row,
+        x: 0,
+        y,
+        width: ROW_HEADER_WIDTH,
+        height,
+        label: list.rowFields[row] ?? '',
+        level: 0,
+        depth: 1,
+        span: 1,
+      });
+    }
+
+    const colHeaders: HeaderBox[] = [];
+
+    const gridlines: Line[] = [];
+    const dataRight = Math.min(
+      this.colSums.getOffset(colCount) - this.scrollX + ROW_HEADER_WIDTH,
+      viewWidth,
+    );
+    const dataBottom = Math.min(
+      this.rowSums.getOffset(rowCount) - this.scrollY + colHeaderHeight,
+      viewHeight,
+    );
+
+    for (let row = scrollStartRow; row <= scrollEndRow + 1; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      if (y > dataBottom) break;
+      gridlines.push({ x1: ROW_HEADER_WIDTH, y1: y, x2: dataRight, y2: y });
+    }
+    for (let col = scrollStartCol; col <= scrollEndCol + 1; col++) {
+      const x = this.colSums.getOffset(col) - this.scrollX + ROW_HEADER_WIDTH;
+      if (x > dataRight) break;
+      gridlines.push({ x1: x, y1: colHeaderHeight, x2: x, y2: dataBottom });
+    }
+    gridlines.push({ x1: ROW_HEADER_WIDTH, y1: colHeaderHeight, x2: dataRight, y2: colHeaderHeight });
+
+    const cornerHeaders: HeaderBox[] = [];
+
+    return {
+      cells,
+      frozenCells: [],
+      rowHeaders: [],
+      colHeaders,
+      gridlines,
+      frozenGridlines: [],
+      viewport: { scrollX: this.scrollX, scrollY: this.scrollY, viewWidth, viewHeight },
+      totalWidth: this.colSums.getTotalSize() + ROW_HEADER_WIDTH,
+      totalHeight: this.rowSums.getTotalSize() + colHeaderHeight,
+      freeze: freeze ?? null,
+      frozenRowHeight: 0,
+      frozenColWidth: 0,
+      headerArea: { left: ROW_HEADER_WIDTH, top: colHeaderHeight },
+      hierarchyRowHeaders: [rowHeaders],
+      hierarchyColHeaders: [],
+      cornerHeaders,
+      dataBounds: { right: dataRight, bottom: dataBottom },
+    };
+  }
+
+  // ─── Grid-tree mode layout ─────────────────────────────────────────
+
+  private computeGridTreeModeLayoutPlan(
+    viewWidth: number, viewHeight: number, pivot: HierarchyLayout, freeze?: FreezeConfig | null, autoFit?: boolean,
+  ): LayoutPlan {
+    const rowDepth = pivot.rowFields.length;
+    const colDepth = pivot.colFields.length;
+    const hasValues = pivot.valueFields.length > 0;
+
+    const rowHeaderWidth = rowDepth * PIVOT_LEVEL_WIDTH;
+    const colHeaderLevels = colDepth + (hasValues ? 1 : 0);
+
+    this.rowSums.setCount(Math.max(pivot.rowLeafCount, 1));
+    this.colSums.setCount(Math.max(pivot.colLeafCount, 1));
+
+    const dataAreaWidth = viewWidth - rowHeaderWidth;
+
+    let fitColWidth = DEFAULT_COL_WIDTH;
+    let fitRowHeight = PIVOT_LEVEL_HEIGHT;
+
+    if (autoFit) {
+      if (pivot.colLeafCount > 0) {
+        fitColWidth = Math.max(Math.floor(dataAreaWidth / pivot.colLeafCount), DEFAULT_COL_WIDTH);
+        for (let c = 0; c < pivot.colLeafCount; c++) {
+          this.colSums.setSize(c, fitColWidth);
+        }
+        const colRemainder = dataAreaWidth - fitColWidth * pivot.colLeafCount;
+        if (colRemainder > 0) {
+          this.colSums.setSize(pivot.colLeafCount - 1, fitColWidth + colRemainder);
+        }
+      }
+    }
+
+    const colHeaderHeight = colHeaderLevels * fitRowHeight;
+
+    const dataAreaHeight = viewHeight - colHeaderHeight;
+    const maxScrollX = Math.max(0, this.colSums.getTotalSize() - dataAreaWidth);
+    const maxScrollY = Math.max(0, this.rowSums.getTotalSize() - dataAreaHeight);
+    this.scrollX = Math.min(this.scrollX, maxScrollX);
+    this.scrollY = Math.min(this.scrollY, maxScrollY);
+
+    // Build row headers with collapse support
+    const pivotRowHeaders: HeaderBox[][] = [];
+    for (let l = 0; l < rowDepth; l++) {
+      pivotRowHeaders.push([]);
+    }
+    let rowLeafIndex = 0;
+    this.flattenRowTreeForGridTree(pivot.rowTree, 0, rowDepth, pivotRowHeaders, rowHeaderWidth, colHeaderHeight, () => rowLeafIndex, (v) => { rowLeafIndex = v; });
+
+    // Col headers — reuse grid mode logic
+    const pivotColHeaders: HeaderBox[][] = [];
+    for (let l = 0; l < colDepth; l++) {
+      pivotColHeaders.push([]);
+    }
+    let colLeafIndex = 0;
+    this.flattenColTree(pivot.colTree, 0, colDepth, pivotColHeaders, rowHeaderWidth, pivot.valueFields.length, () => colLeafIndex, (v) => { colLeafIndex = v; }, fitRowHeight);
+
+    if (hasValues && colDepth > 0) {
+      const valueRow: HeaderBox[] = [];
+      const colLeafPaths = this.getColLeafCount(pivot.colTree);
+      for (let ci = 0; ci < colLeafPaths; ci++) {
+        for (let vi = 0; vi < pivot.valueFields.length; vi++) {
+          const idx = ci * pivot.valueFields.length + vi;
+          valueRow.push({
+            index: idx,
+            x: rowHeaderWidth + this.colSums.getOffset(idx) - this.scrollX,
+            y: colDepth * fitRowHeight,
+            width: this.colSums.getSize(idx),
+            height: fitRowHeight,
+            label: pivot.valueFields[vi]!,
+            level: colDepth, depth: colDepth + 1, span: 1,
+          });
+        }
+      }
+      pivotColHeaders.push(valueRow);
+    } else if (hasValues && colDepth === 0) {
+      const valueRow: HeaderBox[] = [];
+      for (let vi = 0; vi < pivot.valueFields.length; vi++) {
+        valueRow.push({
+          index: vi,
+          x: rowHeaderWidth + this.colSums.getOffset(vi) - this.scrollX,
+          y: 0,
+          width: this.colSums.getSize(vi),
+          height: fitRowHeight,
+          label: pivot.valueFields[vi]!,
+          level: 0, depth: 1, span: 1,
+        });
+      }
+      pivotColHeaders.push(valueRow);
+    }
+
+    // Corner headers
+    const cornerHeaders: HeaderBox[] = [];
+    for (let l = 0; l < rowDepth; l++) {
+      cornerHeaders.push({
+        index: l,
+        x: l * PIVOT_LEVEL_WIDTH,
+        y: colHeaderHeight - fitRowHeight,
+        width: PIVOT_LEVEL_WIDTH,
+        height: fitRowHeight,
+        label: pivot.rowFields[l]!,
+        level: l,
+        depth: rowDepth,
+      });
+    }
+    for (let l = 0; l < colDepth; l++) {
+      cornerHeaders.push({
+        index: rowDepth + l,
+        x: (rowDepth - 1) * PIVOT_LEVEL_WIDTH,
+        y: l * fitRowHeight,
+        width: PIVOT_LEVEL_WIDTH,
+        height: fitRowHeight,
+        label: pivot.colFields[l]!,
+        level: l,
+        depth: colDepth,
+      });
+    }
+
+    const cells: CellBox[] = [];
+    const gridlines: Line[] = [];
+
+    const scrollStartRow = this.rowSums.findIndexAtOffset(this.scrollY);
+    const scrollEndRow = Math.min(
+      this.rowSums.findIndexAtOffset(this.scrollY + dataAreaHeight),
+      pivot.rowLeafCount - 1,
+    );
+    const scrollStartCol = this.colSums.findIndexAtOffset(this.scrollX);
+    const scrollEndCol = Math.min(
+      this.colSums.findIndexAtOffset(this.scrollX + dataAreaWidth),
+      pivot.colLeafCount - 1,
+    );
+
+    for (let row = scrollStartRow; row <= scrollEndRow; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      const height = this.rowSums.getSize(row);
+      for (let col = scrollStartCol; col <= scrollEndCol; col++) {
+        const x = this.colSums.getOffset(col) - this.scrollX + rowHeaderWidth;
+        const width = this.colSums.getSize(col);
+        cells.push({ row, col, x, y, width, height });
+      }
+    }
+
+    const dataRight = Math.min(
+      this.colSums.getOffset(pivot.colLeafCount) - this.scrollX + rowHeaderWidth,
+      viewWidth,
+    );
+    const dataBottom = Math.min(
+      this.rowSums.getOffset(pivot.rowLeafCount) - this.scrollY + colHeaderHeight,
+      viewHeight,
+    );
+    for (let row = scrollStartRow; row <= scrollEndRow + 1; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      gridlines.push({ x1: rowHeaderWidth, y1: y, x2: dataRight, y2: y });
+    }
+    for (let col = scrollStartCol; col <= scrollEndCol + 1; col++) {
+      const x = this.colSums.getOffset(col) - this.scrollX + rowHeaderWidth;
+      gridlines.push({ x1: x, y1: colHeaderHeight, x2: x, y2: dataBottom });
+    }
+
+    const visibleRowHeaders = pivotRowHeaders.map((level) =>
+      level.filter((h) => h.y + h.height > colHeaderHeight && h.y < viewHeight)
+    );
+    const visibleColHeaders = pivotColHeaders.map((level) =>
+      level.filter((h) => h.x + h.width > rowHeaderWidth && h.x < viewWidth)
+    );
+
+    return {
+      cells,
+      frozenCells: [],
+      rowHeaders: [],
+      colHeaders: [],
+      gridlines,
+      frozenGridlines: [],
+      viewport: { scrollX: this.scrollX, scrollY: this.scrollY, viewWidth, viewHeight },
+      totalWidth: this.colSums.getTotalSize() + rowHeaderWidth,
+      totalHeight: this.rowSums.getTotalSize() + colHeaderHeight,
+      freeze: freeze ?? null,
+      frozenRowHeight: 0,
+      frozenColWidth: 0,
+      headerArea: { left: rowHeaderWidth, top: colHeaderHeight },
+      hierarchyRowHeaders: visibleRowHeaders,
+      hierarchyColHeaders: visibleColHeaders,
+      cornerHeaders,
+      dataBounds: { right: dataRight, bottom: dataBottom },
+    };
+  }
+
+  private flattenRowTreeForGridTree(
+    nodes: HierarchyTreeNode[], level: number, depth: number,
+    result: HeaderBox[][], rowHeaderWidth: number, colHeaderHeight: number,
+    getLeafIndex: () => number, setLeafIndex: (v: number) => void,
+    parentId: string = '',
+  ): void {
+    for (const node of nodes) {
+      const nodeId = node.nodeId ?? (parentId
+        ? `${parentId}/${node.field ?? ''}:${node.value}`
+        : `${node.field ?? ''}:${node.value}`);
+      const startLeaf = getLeafIndex();
+      const hasChildren = node.children.length > 0 || (node.isCollapsed ?? false);
+      const isCollapsed = node.isCollapsed ?? false;
+
+      if (isCollapsed || node.children.length === 0) {
+        // Leaf or collapsed: occupy 1 row
+        setLeafIndex(startLeaf + 1);
+        const y = colHeaderHeight + this.rowSums.getOffset(startLeaf) - this.scrollY;
+        const height = this.rowSums.getSize(startLeaf);
+        // Collapsed node spans from its level column to the rightmost level column
+        const width = isCollapsed && hasChildren
+          ? rowHeaderWidth - level * PIVOT_LEVEL_WIDTH
+          : PIVOT_LEVEL_WIDTH;
+        result[level]!.push({
+          index: startLeaf,
+          x: level * PIVOT_LEVEL_WIDTH,
+          y,
+          width,
+          height,
+          label: node.value,
+          span: 1,
+          level,
+          depth,
+          nodeId,
+          hasChildren,
+          isCollapsed,
+        });
+      } else {
+        // Expanded parent: recurse children first to compute span
+        this.flattenRowTreeForGridTree(node.children, level + 1, depth, result, rowHeaderWidth, colHeaderHeight, getLeafIndex, setLeafIndex, nodeId);
+        const endLeaf = getLeafIndex();
+        const span = endLeaf - startLeaf;
+        const y = colHeaderHeight + this.rowSums.getOffset(startLeaf) - this.scrollY;
+        const height = this.rowSums.getOffset(endLeaf) - this.rowSums.getOffset(startLeaf);
+        result[level]!.push({
+          index: startLeaf,
+          x: level * PIVOT_LEVEL_WIDTH,
+          y,
+          width: PIVOT_LEVEL_WIDTH,
+          height,
+          label: node.value,
+          span,
+          level,
+          depth,
+          nodeId,
+          hasChildren: true,
+          isCollapsed: false,
+        });
+      }
+    }
+  }
+
+  // ─── Tree mode layout ──────────────────────────────────────────────
+
+  private static readonly TREE_COL_WIDTH = 200;
+  private static readonly TREE_INDENT = 20;
+
+  private computeTreeModeLayoutPlan(
+    viewWidth: number, viewHeight: number, pivot: HierarchyLayout, freeze?: FreezeConfig | null, autoFit?: boolean,
+  ): LayoutPlan {
+    const TREE_COL_WIDTH = LayoutEngine.TREE_COL_WIDTH;
+    const colDepth = pivot.colFields.length;
+    const hasValues = pivot.valueFields.length > 0;
+    const colHeaderLevels = colDepth + (hasValues ? 1 : 0);
+
+    this.rowSums.setCount(Math.max(pivot.rowLeafCount, 1));
+    this.colSums.setCount(Math.max(pivot.colLeafCount, 1));
+
+    const dataAreaWidth = viewWidth - TREE_COL_WIDTH;
+    let fitColWidth = DEFAULT_COL_WIDTH;
+    let fitRowHeight = PIVOT_LEVEL_HEIGHT;
+
+    if (autoFit) {
+      if (pivot.colLeafCount > 0) {
+        fitColWidth = Math.max(Math.floor(dataAreaWidth / pivot.colLeafCount), DEFAULT_COL_WIDTH);
+        for (let c = 0; c < pivot.colLeafCount; c++) {
+          this.colSums.setSize(c, fitColWidth);
+        }
+        const colRemainder = dataAreaWidth - fitColWidth * pivot.colLeafCount;
+        if (colRemainder > 0) {
+          this.colSums.setSize(pivot.colLeafCount - 1, fitColWidth + colRemainder);
+        }
+      }
+    }
+
+    const colHeaderHeight = colHeaderLevels * fitRowHeight;
+    const dataAreaHeight = viewHeight - colHeaderHeight;
+    const maxScrollX = Math.max(0, this.colSums.getTotalSize() - dataAreaWidth);
+    const maxScrollY = Math.max(0, this.rowSums.getTotalSize() - dataAreaHeight);
+    this.scrollX = Math.min(this.scrollX, maxScrollX);
+    this.scrollY = Math.min(this.scrollY, maxScrollY);
+
+    // Build tree row headers — single level, with nodeId/collapse info
+    const treeRowHeaders: HeaderBox[] = [];
+    let treeLeafIdx = 0;
+    this.flattenTreeRowHeaders(
+      pivot.rowTree, 0, '', treeRowHeaders,
+      TREE_COL_WIDTH, colHeaderHeight,
+      () => treeLeafIdx, (v) => { treeLeafIdx = v; },
+    );
+
+    // Col headers — reuse grid mode logic
+    const pivotColHeaders: HeaderBox[][] = [];
+    for (let l = 0; l < colDepth; l++) {
+      pivotColHeaders.push([]);
+    }
+    let colLeafIndex = 0;
+    this.flattenColTree(pivot.colTree, 0, colDepth, pivotColHeaders, TREE_COL_WIDTH, pivot.valueFields.length, () => colLeafIndex, (v) => { colLeafIndex = v; }, fitRowHeight);
+
+    if (hasValues && colDepth > 0) {
+      const valueRow: HeaderBox[] = [];
+      const colLeafPaths = this.getColLeafCount(pivot.colTree);
+      for (let ci = 0; ci < colLeafPaths; ci++) {
+        for (let vi = 0; vi < pivot.valueFields.length; vi++) {
+          const idx = ci * pivot.valueFields.length + vi;
+          valueRow.push({
+            index: idx,
+            x: TREE_COL_WIDTH + this.colSums.getOffset(idx) - this.scrollX,
+            y: colDepth * fitRowHeight,
+            width: this.colSums.getSize(idx),
+            height: fitRowHeight,
+            label: pivot.valueFields[vi]!,
+            level: colDepth, depth: colDepth + 1, span: 1,
+          });
+        }
+      }
+      pivotColHeaders.push(valueRow);
+    } else if (hasValues && colDepth === 0) {
+      const valueRow: HeaderBox[] = [];
+      for (let vi = 0; vi < pivot.valueFields.length; vi++) {
+        valueRow.push({
+          index: vi,
+          x: TREE_COL_WIDTH + this.colSums.getOffset(vi) - this.scrollX,
+          y: 0,
+          width: this.colSums.getSize(vi),
+          height: fitRowHeight,
+          label: pivot.valueFields[vi]!,
+          level: 0, depth: 1, span: 1,
+        });
+      }
+      pivotColHeaders.push(valueRow);
+    }
+
+    // Corner: single cell with combined dimension label
+    const cornerHeaders: HeaderBox[] = [{
+      index: 0,
+      x: 0,
+      y: colHeaderHeight - fitRowHeight,
+      width: TREE_COL_WIDTH,
+      height: fitRowHeight,
+      label: pivot.rowFields.join(' / '),
+      level: 0, depth: 1,
+    }];
+
+    // Data cells
+    const cells: CellBox[] = [];
+    const gridlines: Line[] = [];
+
+    const scrollStartRow = this.rowSums.findIndexAtOffset(this.scrollY);
+    const scrollEndRow = Math.min(this.rowSums.findIndexAtOffset(this.scrollY + dataAreaHeight), pivot.rowLeafCount - 1);
+    const scrollStartCol = this.colSums.findIndexAtOffset(this.scrollX);
+    const scrollEndCol = Math.min(this.colSums.findIndexAtOffset(this.scrollX + dataAreaWidth), pivot.colLeafCount - 1);
+
+    for (let row = scrollStartRow; row <= scrollEndRow; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      const height = this.rowSums.getSize(row);
+      for (let col = scrollStartCol; col <= scrollEndCol; col++) {
+        const x = this.colSums.getOffset(col) - this.scrollX + TREE_COL_WIDTH;
+        const width = this.colSums.getSize(col);
+        cells.push({ row, col, x, y, width, height });
+      }
+    }
+
+    const dataRight = Math.min(this.colSums.getOffset(pivot.colLeafCount) - this.scrollX + TREE_COL_WIDTH, viewWidth);
+    const dataBottom = Math.min(this.rowSums.getOffset(pivot.rowLeafCount) - this.scrollY + colHeaderHeight, viewHeight);
+    for (let row = scrollStartRow; row <= scrollEndRow + 1; row++) {
+      const y = this.rowSums.getOffset(row) - this.scrollY + colHeaderHeight;
+      gridlines.push({ x1: TREE_COL_WIDTH, y1: y, x2: dataRight, y2: y });
+    }
+    for (let col = scrollStartCol; col <= scrollEndCol + 1; col++) {
+      const x = this.colSums.getOffset(col) - this.scrollX + TREE_COL_WIDTH;
+      gridlines.push({ x1: x, y1: colHeaderHeight, x2: x, y2: dataBottom });
+    }
+
+    const visibleTreeHeaders = treeRowHeaders.filter((h) => h.y + h.height > colHeaderHeight && h.y < viewHeight);
+    const visibleColHeaders = pivotColHeaders.map((level) => level.filter((h) => h.x + h.width > TREE_COL_WIDTH && h.x < viewWidth));
+
+    return {
+      cells,
+      frozenCells: [],
+      rowHeaders: [],
+      colHeaders: [],
+      gridlines,
+      frozenGridlines: [],
+      viewport: { scrollX: this.scrollX, scrollY: this.scrollY, viewWidth, viewHeight },
+      totalWidth: this.colSums.getTotalSize() + TREE_COL_WIDTH,
+      totalHeight: this.rowSums.getTotalSize() + colHeaderHeight,
+      freeze: freeze ?? null,
+      frozenRowHeight: 0,
+      frozenColWidth: 0,
+      headerArea: { left: TREE_COL_WIDTH, top: colHeaderHeight },
+      hierarchyRowHeaders: [visibleTreeHeaders],
+      hierarchyColHeaders: visibleColHeaders,
+      cornerHeaders,
+      dataBounds: { right: dataRight, bottom: dataBottom },
+    };
+  }
+
+  private flattenTreeRowHeaders(
+    nodes: HierarchyTreeNode[], depth: number, parentId: string,
+    result: HeaderBox[],
+    treeColWidth: number, colHeaderHeight: number,
+    getLeafIndex: () => number, setLeafIndex: (v: number) => void,
+  ): void {
+    for (const node of nodes) {
+      const nodeId = node.nodeId
+        ?? (parentId
+          ? `${parentId}/${node.field ?? ''}:${node.value}`
+          : `${node.field ?? ''}:${node.value}`);
+      const leafIdx = getLeafIndex();
+      const y = colHeaderHeight + this.rowSums.getOffset(leafIdx) - this.scrollY;
+      const height = this.rowSums.getSize(leafIdx);
+
+      result.push({
+        index: leafIdx,
+        x: 0,
+        y,
+        width: treeColWidth,
+        height,
+        label: node.value,
+        level: depth,
+        depth: -1,
+        span: 1,
+        nodeId,
+        hasChildren: node.children.length > 0 || (node.isCollapsed ?? false),
+        isCollapsed: node.isCollapsed ?? false,
+      });
+
+      setLeafIndex(leafIdx + 1);
+
+      if (!node.isCollapsed && node.children.length > 0) {
+        this.flattenTreeRowHeaders(node.children, depth + 1, nodeId, result, treeColWidth, colHeaderHeight, getLeafIndex, setLeafIndex);
+      }
+    }
   }
 
   private flattenRowTree(
@@ -326,8 +1051,8 @@ export class LayoutEngine {
       }
       const endLeaf = getLeafIndex();
       const span = endLeaf - startLeaf;
-      const y = colHeaderHeight + startLeaf * DEFAULT_ROW_HEIGHT - this.scrollY;
-      const height = span * DEFAULT_ROW_HEIGHT;
+      const y = colHeaderHeight + this.rowSums.getOffset(startLeaf) - this.scrollY;
+      const height = this.rowSums.getOffset(endLeaf) - this.rowSums.getOffset(startLeaf);
       result[level]!.push({
         index: startLeaf,
         x: level * PIVOT_LEVEL_WIDTH,
@@ -346,26 +1071,29 @@ export class LayoutEngine {
     nodes: HierarchyTreeNode[], level: number, depth: number,
     result: HeaderBox[][], rowHeaderWidth: number, valueFieldCount: number,
     getLeafIndex: () => number, setLeafIndex: (v: number) => void,
+    levelHeight: number,
   ): void {
     const valuesPerLeaf = Math.max(valueFieldCount, 1);
     for (const node of nodes) {
       const startLeaf = getLeafIndex();
       if (node.children.length > 0) {
-        this.flattenColTree(node.children, level + 1, depth, result, rowHeaderWidth, valueFieldCount, getLeafIndex, setLeafIndex);
+        this.flattenColTree(node.children, level + 1, depth, result, rowHeaderWidth, valueFieldCount, getLeafIndex, setLeafIndex, levelHeight);
       } else {
         setLeafIndex(startLeaf + 1);
       }
       const endLeaf = getLeafIndex();
       const leafSpan = endLeaf - startLeaf;
       const colSpan = leafSpan * valuesPerLeaf;
-      const x = rowHeaderWidth + startLeaf * valuesPerLeaf * DEFAULT_COL_WIDTH - this.scrollX;
-      const width = colSpan * DEFAULT_COL_WIDTH;
+      const startColIdx = startLeaf * valuesPerLeaf;
+      const endColIdx = startColIdx + colSpan;
+      const x = rowHeaderWidth + this.colSums.getOffset(startColIdx) - this.scrollX;
+      const width = this.colSums.getOffset(endColIdx) - this.colSums.getOffset(startColIdx);
       result[level]!.push({
         index: startLeaf,
         x,
-        y: level * PIVOT_LEVEL_HEIGHT,
+        y: level * levelHeight,
         width,
-        height: PIVOT_LEVEL_HEIGHT,
+        height: levelHeight,
         label: node.value,
         span: colSpan,
         level,
@@ -384,6 +1112,50 @@ export class LayoutEngine {
       }
     }
     return count;
+  }
+
+  private getColTreeDepth(nodes: HierarchyTreeNode[]): number {
+    let max = 1;
+    for (const node of nodes) {
+      if (node.children.length > 0) {
+        max = Math.max(max, 1 + this.getColTreeDepth(node.children));
+      }
+    }
+    return max;
+  }
+
+  private flattenListColTree(
+    nodes: HierarchyTreeNode[], level: number, depth: number,
+    result: HeaderBox[][], rowHeaderWidth: number,
+    getLeafIndex: () => number, setLeafIndex: (v: number) => void,
+    levelHeight: number,
+  ): void {
+    for (const node of nodes) {
+      const startLeaf = getLeafIndex();
+      if (node.children.length > 0) {
+        this.flattenListColTree(node.children, level + 1, depth, result, rowHeaderWidth, getLeafIndex, setLeafIndex, levelHeight);
+      } else {
+        setLeafIndex(startLeaf + 1);
+      }
+      const endLeaf = getLeafIndex();
+      const span = endLeaf - startLeaf;
+      const x = rowHeaderWidth + this.colSums.getOffset(startLeaf) - this.scrollX;
+      const endX = rowHeaderWidth + this.colSums.getOffset(endLeaf) - this.scrollX;
+      const width = endX - x;
+      const isLeaf = node.children.length === 0;
+      const cellHeight = isLeaf ? (depth - level) * levelHeight : levelHeight;
+      result[level]!.push({
+        index: startLeaf,
+        x,
+        y: level * levelHeight,
+        width,
+        height: cellHeight,
+        label: node.value,
+        span,
+        level,
+        depth,
+      });
+    }
   }
 
   // ─── Detail table layout (unchanged) ──────────────────────────────────
@@ -551,6 +1323,7 @@ export class LayoutEngine {
       hierarchyRowHeaders: [],
       hierarchyColHeaders: [],
       cornerHeaders: [],
+      dataBounds: null,
     };
   }
 

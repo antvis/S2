@@ -12,6 +12,9 @@ export interface HitResult {
   type: 'cell' | 'rowHeader' | 'colHeader' | 'rowHeaderBorder' | 'colHeaderBorder' | 'empty';
   row: number;
   col: number;
+  nodeId?: string;
+  hasChildren?: boolean;
+  isCollapsed?: boolean;
 }
 
 export interface HoverInfo {

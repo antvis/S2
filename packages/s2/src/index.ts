@@ -16,6 +16,8 @@ export { EditModule } from './modules/edit';
 export { ConditionalFormatModule } from './modules/conditional-format';
 export { AgentModule } from './modules/agent';
 export type { AgentContext, MCPToolSchema, FormulaTrace } from './modules/agent';
+export { ListTableModule } from './modules/list-table';
+export type { ListColumnDef, ListTableConfig } from './modules/list-table';
 
 import { PivotModule } from './modules/pivot';
 import { FormulaModule } from './modules/formula';
@@ -25,6 +27,7 @@ import { FreezeModule } from './modules/freeze';
 import { EditModule } from './modules/edit';
 import { ConditionalFormatModule } from './modules/conditional-format';
 import { AgentModule } from './modules/agent';
+import { ListTableModule } from './modules/list-table';
 import type { ModuleDefinition } from './module/types';
 
 export const allModules: ModuleDefinition[] = [
@@ -36,6 +39,7 @@ export const allModules: ModuleDefinition[] = [
   EditModule,
   ConditionalFormatModule,
   AgentModule,
+  ListTableModule,
 ];
 export { mountCanvas } from './canvas/mount';
 export type { CanvasHandle } from './canvas/mount';

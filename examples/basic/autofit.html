@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AutoFit 验证</title>
+  <style>
+    body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    h3 { margin: 0 0 4px; color: #333; font-size: 14px; }
+    p { margin: 0 0 12px; color: #666; font-size: 13px; }
+    .toolbar { margin-bottom: 12px; display: flex; gap: 8px; }
+    .toolbar button { padding: 4px 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; }
+    #container { width: 800px; height: 400px; border: 1px solid #e0e0e0; }
+    #info { margin-top: 8px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <h3>AutoFit 验证 — 固定容器中行高不随行数变化</h3>
+  <p>透视表在固定 800x400 容器中，折叠/展开后行高保持不变</p>
+  <div class="toolbar">
+    <button id="btn-toggle">折叠/展开 浙江</button>
+  </div>
+  <div id="container"></div>
+  <div id="info"></div>
+  <script type="module">
+    import { createWorkbook, PivotModule, mountCanvas } from '../../packages/s2/src/index.ts';
+
+    const DATA = [
+      { province: '浙江', city: '杭州', type: '纸张', price: 20 },
+      { province: '浙江', city: '杭州', type: '笔', price: 15 },
+      { province: '浙江', city: '宁波', type: '纸张', price: 25 },
+      { province: '浙江', city: '宁波', type: '笔', price: 10 },
+      { province: '浙江', city: '温州', type: '纸张', price: 18 },
+      { province: '浙江', city: '温州', type: '笔', price: 8 },
+      { province: '江苏', city: '南京', type: '纸张', price: 40 },
+      { province: '江苏', city: '南京', type: '笔', price: 20 },
+      { province: '江苏', city: '苏州', type: '纸张', price: 35 },
+      { province: '江苏', city: '苏州', type: '笔', price: 18 },
+      { province: '广东', city: '广州', type: '纸张', price: 22 },
+      { province: '广东', city: '广州', type: '笔', price: 12 },
+      { province: '广东', city: '深圳', type: '纸张', price: 28 },
+      { province: '广东', city: '深圳', type: '笔', price: 16 },
+    ];
+
+    const workbook = createWorkbook({ modules: [PivotModule] });
+    workbook.registerDataSource('sales', DATA);
+
+    workbook.apply([{
+      type: 'pivot.setConfig',
+      payload: {
+        sheet: 0,
+        dataSourceId: 'sales',
+        rows: ['province', 'city'],
+        columns: ['type'],
+        values: ['price'],
+        valueAggregation: { price: 'SUM' },
+        hierarchyType: 'tree',
+      },
+    }]);
+
+    mountCanvas(workbook, document.getElementById('container'));
+
+    let collapsed = false;
+    document.getElementById('btn-toggle').onclick = () => {
+      collapsed = !collapsed;
+      document.getElementById('info').textContent =
+        collapsed ? '浙江已折叠 — 观察行高是否保持不变' : '浙江已展开';
+      workbook.apply([{
+        type: 'pivot.toggleCollapse',
+        payload: { sheet: 0, nodeId: '浙江' },
+      }]);
+    };
+
+    window.workbook = workbook;
+  </script>
+</body>
+</html>
