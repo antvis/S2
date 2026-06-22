@@ -3,8 +3,21 @@ import type { LayoutPlan } from '../layout/types';
 import type { LayoutEngine } from '../layout/engine';
 import type { CanvasRuntime } from '../canvas/runtime';
 import type { PointerEventLike, KeyboardEventLike } from '../canvas/types';
+import type { CanvasEventMap, CellTarget, PointerEventPayload } from '../canvas/events';
+import type { TypedEmitter } from '../common/emitter';
 import type { Selection, InteractionState, HitResult, HoverInfo, DragInfo, FillDragInfo } from './types';
 import { hitTest } from './hit-test';
+
+function targetFromHit(hit: HitResult): CellTarget | null {
+  if (hit.type === 'cell') return { sheet: 0, row: hit.row, col: hit.col, cellType: 'dataCell' };
+  if (hit.type === 'rowHeader') return { sheet: 0, row: hit.row, col: hit.col, cellType: 'rowHeader' };
+  if (hit.type === 'colHeader') return { sheet: 0, row: hit.row, col: hit.col, cellType: 'colHeader' };
+  return null;
+}
+
+function pointerPayload(target: CellTarget, e: PointerEventLike): PointerEventPayload {
+  return { target, x: e.x, y: e.y, button: e.button };
+}
 
 function detectSeries(values: (number | string | boolean | null)[]): ((index: number) => number) | null {
   if (values.length < 2) return null;
@@ -30,6 +43,7 @@ export interface InteractionEngineOptions {
   onEditStart: (row: number, col: number, initialValue?: string) => void;
   readOnly?: boolean;
   onRepaintRequest: () => void;
+  canvasEmitter?: TypedEmitter<CanvasEventMap>;
 }
 
 export class InteractionEngine {
@@ -48,6 +62,7 @@ export class InteractionEngine {
   private readonly onEditStart: (row: number, col: number, initialValue?: string) => void;
   private readonly readOnly: boolean;
   private readonly onRepaintRequest: () => void;
+  private readonly canvasEmitter: TypedEmitter<CanvasEventMap> | null;
 
   constructor(options: InteractionEngineOptions) {
     this.workbook = options.workbook;
@@ -59,9 +74,17 @@ export class InteractionEngine {
     this.onEditStart = options.onEditStart;
     this.onRepaintRequest = options.onRepaintRequest;
     this.readOnly = options.readOnly ?? false;
+    this.canvasEmitter = options.canvasEmitter ?? null;
 
     this.runtime.onPointer((e) => this.handlePointer(e));
     this.runtime.onKeyboard((e) => this.handleKeyDown(e));
+  }
+
+  private emitMouse(event: 'mouseDown' | 'mouseUp' | 'mouseMove' | 'click' | 'doubleClick', hit: HitResult, e: PointerEventLike): void {
+    if (!this.canvasEmitter) return;
+    const target = targetFromHit(hit);
+    if (!target) return;
+    this.canvasEmitter.emit(event, pointerPayload(target, e));
   }
 
   getSelection(): Selection | null {
@@ -81,10 +104,15 @@ export class InteractionEngine {
     const hit = hitTest(e.x, e.y, plan);
 
     if (e.type === 'dblclick') {
+      this.emitMouse('doubleClick', hit, e);
       this.handleDoubleClick(hit);
     } else if (e.type === 'down') {
+      this.emitMouse('mouseDown', hit, e);
+      // click 仅在 button === 0 emit,与 v2 主键 CLICK 语义一致
+      if (e.button === 0) this.emitMouse('click', hit, e);
       this.handlePointerDown(hit, e);
     } else if (e.type === 'move') {
+      this.emitMouse('mouseMove', hit, e);
       if (this.state === 'dragging') {
         this.handleDragMove(e);
       } else if (this.state === 'selecting') {
@@ -92,9 +120,10 @@ export class InteractionEngine {
         this.handlePointerMove(hit);
       } else {
         this.updateCursor(hit, e);
-        this.updateHover(hit);
+        this.updateHover(hit, e);
       }
     } else if (e.type === 'up') {
+      this.emitMouse('mouseUp', hit, e);
       this.handlePointerUp(e);
     }
   }
@@ -142,13 +171,19 @@ export class InteractionEngine {
     return Math.abs(e.x - handleX) < 6 && Math.abs(e.y - handleY) < 6;
   }
 
-  private updateHover(hit: HitResult): void {
+  private updateHover(hit: HitResult, e: PointerEventLike): void {
     if (hit.type === 'cell') {
       const newHover: HoverInfo = { row: hit.row, col: hit.col };
       if (!this.hover || this.hover.row !== newHover.row || this.hover.col !== newHover.col) {
         this.hover = newHover;
         this.state = 'hovering';
         this.onHoverChange?.(this.hover);
+        if (this.canvasEmitter) {
+          this.canvasEmitter.emit('hover', pointerPayload(
+            { sheet: 0, row: hit.row, col: hit.col, cellType: 'dataCell' },
+            e,
+          ));
+        }
       }
     } else {
       if (this.hover !== null) {
@@ -174,6 +209,7 @@ export class InteractionEngine {
       if (header) {
         this.state = 'dragging';
         this.drag = { type: 'row', index: hit.row, startPos: e.y, startSize: header.height };
+        this.canvasEmitter?.emit('resizeStart', { type: 'row', index: hit.row });
       }
       return;
     }
@@ -184,6 +220,7 @@ export class InteractionEngine {
       if (header) {
         this.state = 'dragging';
         this.drag = { type: 'col', index: hit.col, startPos: e.x, startSize: header.width };
+        this.canvasEmitter?.emit('resizeStart', { type: 'col', index: hit.col });
       }
       return;
     }
@@ -292,10 +329,12 @@ export class InteractionEngine {
       const delta = e.y - this.drag.startPos;
       const newHeight = Math.max(MIN_SIZE, this.drag.startSize + delta);
       this.layoutEngine.setTemporaryRowHeight(this.drag.index, newHeight);
+      this.canvasEmitter?.emit('resize', { type: 'row', index: this.drag.index, size: newHeight });
     } else {
       const delta = e.x - this.drag.startPos;
       const newWidth = Math.max(MIN_SIZE, this.drag.startSize + delta);
       this.layoutEngine.setTemporaryColWidth(this.drag.index, newWidth);
+      this.canvasEmitter?.emit('resize', { type: 'col', index: this.drag.index, size: newWidth });
     }
 
     this.onRepaintRequest();
@@ -318,6 +357,7 @@ export class InteractionEngine {
           type: 'setRowHeight',
           payload: { sheet: 0, row: this.drag.index, height: newHeight },
         }]);
+        this.canvasEmitter?.emit('resizeEnd', { type: 'row', index: this.drag.index, size: newHeight });
       } else {
         const delta = e.x - this.drag.startPos;
         const newWidth = Math.max(MIN_SIZE, this.drag.startSize + delta);
@@ -325,6 +365,7 @@ export class InteractionEngine {
           type: 'setColumnWidth',
           payload: { sheet: 0, col: this.drag.index, width: newWidth },
         }]);
+        this.canvasEmitter?.emit('resizeEnd', { type: 'col', index: this.drag.index, size: newWidth });
       }
       this.drag = null;
       this.state = 'idle';
@@ -333,10 +374,25 @@ export class InteractionEngine {
     }
     if (this.state === 'selecting') {
       this.state = 'idle';
+      // 框选结束:如果 selection 跨多个 cell,emit brushSelection
+      if (this.selection && this.canvasEmitter) {
+        const sel = this.selection;
+        if (sel.startRow !== sel.endRow || sel.startCol !== sel.endCol) {
+          this.canvasEmitter.emit('brushSelection', { sheet: sel.sheet, selection: { ...sel } });
+        }
+      }
     }
   }
 
   private handleKeyDown(e: KeyboardEventLike): void {
+    this.canvasEmitter?.emit('keyDown', {
+      key: e.key,
+      ctrlKey: e.ctrlKey,
+      shiftKey: e.shiftKey,
+      metaKey: e.metaKey,
+      altKey: e.altKey,
+    });
+
     const mod = e.ctrlKey || e.metaKey;
     const key = e.key.toLowerCase();
 

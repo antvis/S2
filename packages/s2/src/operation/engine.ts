@@ -88,14 +88,17 @@ export class OperationEngine {
     const entry = this.undoStack.pop();
     if (!entry) return false;
 
+    const executed: Operation[] = [];
     for (let i = entry.inverseOps.length - 1; i >= 0; i--) {
       const op = entry.inverseOps[i]!;
       const def = this.registry.get(op.type);
       if (!def) throw new Error(`Unknown operation: "${op.type}"`);
       def.execute(this.model, op.payload);
+      executed.push(op);
     }
 
     this.redoStack.push(entry);
+    this.onApplied?.(executed, []);
     return true;
   }
 
@@ -110,6 +113,7 @@ export class OperationEngine {
     }
 
     this.undoStack.push(entry);
+    this.onApplied?.(entry.operations, entry.inverseOps);
     return true;
   }
 

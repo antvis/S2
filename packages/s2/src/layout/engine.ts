@@ -41,6 +41,10 @@ export class LayoutEngine {
     this.scrollY = Math.max(0, y);
   }
 
+  getScrollOffset(): { x: number; y: number } {
+    return { x: this.scrollX, y: this.scrollY };
+  }
+
   ensureCellVisible(modelRow: number, col: number, viewWidth: number, viewHeight: number): boolean {
     const visualRow = this.modelToVisualRow(modelRow);
     const cellY = this.rowSums.getOffset(visualRow);

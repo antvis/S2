@@ -6,12 +6,39 @@
   <style>
     body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
     h3 { margin: 0 0 12px; color: #333; font-size: 14px; }
-    #container { width: 800px; height: 500px;  }
+    #layout { display: flex; gap: 16px; align-items: flex-start; }
+    #container { width: 800px; height: 500px; }
+    #log-panel {
+      width: 360px; height: 500px; border: 1px solid #e0e0e0; border-radius: 4px;
+      display: flex; flex-direction: column; font-size: 12px;
+    }
+    #log-header {
+      padding: 8px 12px; border-bottom: 1px solid #e0e0e0; display: flex;
+      justify-content: space-between; align-items: center; background: #fafafa;
+    }
+    #log-header button { font-size: 11px; cursor: pointer; border: 1px solid #d0d0d0; background: #fff; padding: 2px 8px; border-radius: 3px; }
+    #log { flex: 1; overflow-y: auto; padding: 6px 8px; font-family: ui-monospace, Menlo, monospace; line-height: 1.6; }
+    .log-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .log-core { color: #0e65eb; }
+    .log-canvas { color: #2e7d32; }
+    .log-time { color: #999; margin-right: 6px; }
   </style>
 </head>
 <body>
-  <h3>基础透视表 — Grid 模式</h3>
-  <div id="container"></div>
+  <h3>基础透视表 — Grid 模式(右侧为事件日志)</h3>
+  <div id="layout">
+    <div id="container"></div>
+    <div id="log-panel">
+      <div id="log-header">
+        <span>事件日志 <span style="color:#999;font-weight:normal">(蓝=Core, 绿=Canvas)</span></span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label style="cursor:pointer;font-size:11px;"><input type="checkbox" id="filter-hover" checked> 过滤 Hover</label>
+          <button id="clear-log">清空</button>
+        </div>
+      </div>
+      <div id="log"></div>
+    </div>
+  </div>
   <script type="module">
     import { createWorkbook, PivotModule, mountCanvas } from '../../packages/s2/src/index.ts';
 
@@ -45,7 +72,77 @@
       },
     }]);
 
-    mountCanvas(workbook, document.getElementById('container'));
+    const runtime = mountCanvas(workbook, document.getElementById('container'));
+
+    // ─── 事件日志面板 ──────────────────────────────────────────────
+    const logEl = document.getElementById('log');
+    const MAX_LOG = 200;
+    let scrollThrottle = 0;
+
+    function log(layer, name, detail) {
+      const line = document.createElement('div');
+      line.className = `log-line log-${layer}`;
+      const t = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+      const ms = String(Date.now() % 1000).padStart(3, '0');
+      line.title = detail;
+      line.textContent = `${t}.${ms} [${name}] ${detail}`;
+      logEl.appendChild(line);
+      while (logEl.childElementCount > MAX_LOG) logEl.firstChild.remove();
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    document.getElementById('clear-log').onclick = () => { logEl.innerHTML = ''; };
+
+    const fmt = (obj) => {
+      try { return JSON.stringify(obj); } catch { return String(obj); }
+    };
+
+    // ─── Core 层事件(Headless 可用,由 Operation 驱动)──────────────
+    workbook.on('operationApplied', (ops) => {
+      const types = ops.map((op) => op.type).join(',');
+      log('core', 'operationApplied', types);
+    });
+    workbook.on('selectionChanged', (p) => log('core', 'selectionChanged', fmt(p.selection)));
+    workbook.on('sorted', (p) => log('core', 'sorted', fmt(p.sortBy)));
+    workbook.on('filtered', (p) => log('core', 'filtered', fmt(p)));
+    workbook.on('collapse', (p) => log('core', 'collapse', `${p.nodeId} collapsed=${p.isCollapsed}`));
+    workbook.on('editStart', (p) => log('core', 'editStart', fmt(p)));
+    workbook.on('editEnd', (p) => log('core', 'editEnd', fmt(p)));
+    workbook.on('editCancel', (p) => log('core', 'editCancel', fmt(p)));
+    workbook.on('copied', (p) => log('core', 'copied', fmt(p.range)));
+    workbook.on('pasted', (p) => log('core', 'pasted', fmt(p)));
+
+    // ─── Canvas 层事件(仅 UI 环境,由交互/渲染驱动)────────────────
+    runtime.on('click', (p) => log('canvas', 'click', `${p.target.cellType} (${p.target.row},${p.target.col})`));
+    runtime.on('doubleClick', (p) => log('canvas', 'doubleClick', `${p.target.cellType} (${p.target.row},${p.target.col})`));
+    runtime.on('mouseDown', (p) => log('canvas', 'mouseDown', `btn=${p.button} (${p.target.row},${p.target.col})`));
+    runtime.on('mouseUp', (p) => log('canvas', 'mouseUp', `btn=${p.button} (${p.target.row},${p.target.col})`));
+    runtime.on('brushSelection', (p) => log('canvas', 'brushSelection', fmt(p.selection)));
+    runtime.on('scroll', (p) => {
+      const now = Date.now();
+      if (now - scrollThrottle < 120) return;
+      scrollThrottle = now;
+      log('canvas', 'scroll', `x=${p.scrollX} y=${p.scrollY}`);
+    });
+    runtime.on('keyDown', (p) => log('canvas', 'keyDown', `${p.key}${p.ctrlKey ? '+ctrl' : ''}${p.shiftKey ? '+shift' : ''}`));
+    runtime.on('resizeStart', (p) => log('canvas', 'resizeStart', `${p.type}#${p.index}`));
+    runtime.on('resize', (p) => log('canvas', 'resize', `${p.type}#${p.index}=${p.size}`));
+    runtime.on('resizeEnd', (p) => log('canvas', 'resizeEnd', `${p.type}#${p.index}=${p.size}`));
+
+    // Hover 可勾选过滤,默认过滤(避免刷屏)
+    const filterHover = document.getElementById('filter-hover');
+    let hoverOff = null;
+    const hoverHandler = (p) => log('canvas', 'hover', `(${p.target.row},${p.target.col})`);
+    if (!filterHover.checked) hoverOff = runtime.on('hover', hoverHandler);
+    filterHover.addEventListener('change', () => {
+      if (filterHover.checked) {
+        if (hoverOff) { hoverOff(); hoverOff = null; }
+      } else {
+        hoverOff = runtime.on('hover', hoverHandler);
+      }
+    });
+
+    log('core', 'ready', 'demo loaded');
   </script>
 </body>
 </html>

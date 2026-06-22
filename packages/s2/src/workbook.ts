@@ -16,6 +16,9 @@ import {
 import { setCellStyle } from './operation/operations/style';
 import { setSelection } from './operation/operations/selection';
 import type { AgentContext, MCPToolSchema, FormulaTrace, AuditEntry } from './modules/agent';
+import { TypedEmitter } from './common/emitter';
+import type { CoreEventMap } from './core/events';
+import type { Selection } from './interaction/types';
 
 export interface AgentAPI {
   getContext(sheet?: number): AgentContext;
@@ -34,8 +37,6 @@ export interface DataSourceOptions {
   copy?: boolean;
 }
 
-type EventHandler = (ops: Operation[]) => void;
-
 export interface Workbook {
   apply(operations: Operation[]): void;
   undo(): boolean;
@@ -43,7 +44,7 @@ export interface Workbook {
   canUndo(): boolean;
   canRedo(): boolean;
   query: QueryLayer;
-  on(event: 'operationApplied', handler: EventHandler): () => void;
+  on<K extends keyof CoreEventMap>(event: K, handler: (payload: CoreEventMap[K]) => void): () => void;
   registerDataSource(id: string, data: unknown[], options?: DataSourceOptions): void;
   toJSON(): WorkbookState;
   exportCSV(sheet?: number): string;
@@ -73,7 +74,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
   const operationRegistry = new OperationRegistry();
   const moduleRegistry = new ModuleRegistry();
   const queryLayer = new QueryLayer(model);
-  const listeners: EventHandler[] = [];
+  const emitter = new TypedEmitter<CoreEventMap>();
   let currentSelection: { sheet: number; startRow: number; startCol: number; endRow: number; endCol: number } | null = null;
 
   // dataSources live on model so Modules can access them via execute(model, payload)
@@ -110,9 +111,8 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       }
 
       moduleRegistry.notifyOperationApplied(ops, model);
-      for (const listener of listeners) {
-        listener(ops);
-      }
+      dispatchCoreEvents(ops);
+      emitter.emit('operationApplied', ops);
     },
   });
 
@@ -137,31 +137,95 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     moduleRegistry.deserializeAll(savedModuleState);
   }
 
+  function dispatchCoreEvents(ops: Operation[]): void {
+    for (const op of ops) {
+      const payload = op.payload as Record<string, unknown>;
+      const sheet = (payload.sheet as number | undefined) ?? 0;
+
+      switch (op.type) {
+        case 'setSelection':
+          emitter.emit('selectionChanged', {
+            sheet,
+            selection: (payload.selection as Selection | null | undefined) ?? null,
+          });
+          break;
+
+        case 'sort.set':
+          emitter.emit('sorted', {
+            sheet,
+            sortBy: (payload.sortBy as { col: number; order: 'asc' | 'desc' }[] | undefined) ?? [],
+          });
+          break;
+
+        case 'sort.clear':
+          emitter.emit('sorted', { sheet, sortBy: [] });
+          break;
+
+        case 'filter.set':
+        case 'filter.clear':
+          emitter.emit('filtered', { sheet });
+          break;
+
+        case 'list.toggleCollapse':
+        case 'pivot.toggleCollapse': {
+          const nodeId = (payload.nodeId as string | undefined) ?? '';
+          // isCollapsed 当前 op 不会回传新状态;消费方如需精确状态可 query
+          emitter.emit('collapse', { sheet, nodeId, isCollapsed: true });
+          break;
+        }
+
+        case 'edit.start':
+          emitter.emit('editStart', {
+            sheet,
+            row: (payload.row as number | undefined) ?? 0,
+            col: (payload.col as number | undefined) ?? 0,
+          });
+          break;
+
+        case 'edit.commit':
+          emitter.emit('editEnd', {
+            sheet,
+            row: (payload.row as number | undefined) ?? 0,
+            col: (payload.col as number | undefined) ?? 0,
+            value: payload.value,
+          });
+          break;
+
+        case 'edit.cancel':
+          emitter.emit('editCancel', {
+            sheet,
+            row: (payload.row as number | undefined) ?? 0,
+            col: (payload.col as number | undefined) ?? 0,
+          });
+          break;
+
+        case 'edit.copy':
+          emitter.emit('copied', {
+            sheet,
+            range: payload.range as { startRow: number; endRow: number; startCol: number; endCol: number },
+          });
+          break;
+
+        case 'edit.paste':
+          emitter.emit('pasted', {
+            sheet,
+            row: (payload.row as number | undefined) ?? 0,
+            col: (payload.col as number | undefined) ?? 0,
+          });
+          break;
+      }
+    }
+  }
+
   return {
     apply(operations: Operation[]) {
       engine.apply(operations);
     },
     undo() {
-      const result = engine.undo();
-      if (result) {
-        queryLayer.invalidateAll();
-        moduleRegistry.notifyOperationApplied([{ type: '__undo', payload: {} }], model);
-        for (const listener of listeners) {
-          listener([{ type: '__undo', payload: {} }]);
-        }
-      }
-      return result;
+      return engine.undo();
     },
     redo() {
-      const result = engine.redo();
-      if (result) {
-        queryLayer.invalidateAll();
-        moduleRegistry.notifyOperationApplied([{ type: '__redo', payload: {} }], model);
-        for (const listener of listeners) {
-          listener([{ type: '__redo', payload: {} }]);
-        }
-      }
-      return result;
+      return engine.redo();
     },
     canUndo() {
       return engine.canUndo();
@@ -170,23 +234,16 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       return engine.canRedo();
     },
     query: queryLayer,
-    on(event: 'operationApplied', handler: EventHandler) {
-      listeners.push(handler);
-      return () => {
-        const idx = listeners.indexOf(handler);
-        if (idx !== -1) listeners.splice(idx, 1);
-      };
+    on<K extends keyof CoreEventMap>(event: K, handler: (payload: CoreEventMap[K]) => void) {
+      return emitter.on(event, handler);
     },
     registerDataSource(id: string, data: unknown[], opts?: DataSourceOptions) {
       const stored = opts?.copy ? structuredClone(data) : Object.freeze(data);
       model.dataSources.set(id, stored as unknown[]);
-      moduleRegistry.notifyOperationApplied([
-        { type: '__dataSourceUpdated', payload: { dataSourceId: id } },
-      ], model);
+      const op: Operation = { type: '__dataSourceUpdated', payload: { dataSourceId: id } };
+      moduleRegistry.notifyOperationApplied([op], model);
       queryLayer.invalidateAll();
-      for (const listener of listeners) {
-        listener([{ type: '__dataSourceUpdated', payload: { dataSourceId: id } }]);
-      }
+      emitter.emit('operationApplied', [op]);
     },
     toJSON() {
       const state = structuredClone(model.state) as unknown as Record<string, unknown>;

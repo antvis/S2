@@ -7,6 +7,8 @@ import { LayoutEngine } from '../layout/engine';
 import { renderFrame } from '../renderer/frame';
 import { createCanvasRuntime } from './runtime';
 import { InteractionEngine } from '../interaction/engine';
+import { TypedEmitter } from '../common/emitter';
+import type { CanvasEventMap } from './events';
 
 export interface MountCanvasOptions {
   width?: number;
@@ -17,6 +19,7 @@ export interface MountCanvasOptions {
 }
 
 export interface CanvasHandle {
+  on<K extends keyof CanvasEventMap>(event: K, handler: (payload: CanvasEventMap[K]) => void): () => void;
   destroy(): void;
 }
 
@@ -35,6 +38,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   const workbookModel = workbook.__getModel();
   const layout = new LayoutEngine(workbookModel, workbook.query);
   const autoFit = !!(options?.width && options?.height);
+  const canvasEmitter = new TypedEmitter<CanvasEventMap>();
 
   const initialWidth = runtime.getWidth();
   const initialHeight = runtime.getHeight();
@@ -63,6 +67,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   const showColHeader = options?.showColHeader !== false;
 
   function paint(): void {
+    canvasEmitter.emit('beforeRender', {});
     const freeze = getFreezeConfig();
 
     if (!autoFit) {
@@ -102,6 +107,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
       moduleRenderers: workbook.getModuleRenderers(),
       fillDragPreview,
     });
+    canvasEmitter.emit('afterRender', {});
   }
 
   function hasEditModule(): boolean {
@@ -228,6 +234,7 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     layoutEngine: layout,
     getLayoutPlan: () => currentPlan,
     readOnly: options?.readOnly,
+    canvasEmitter,
     onSelectionChange(selection) {
       currentSelection = selection;
       workbook.apply([{ type: 'setSelection', payload: { selection } }]);
@@ -307,6 +314,8 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     }
     hideTooltip();
     layout.scroll(e.deltaX, e.deltaY);
+    const offset = layout.getScrollOffset();
+    canvasEmitter.emit('scroll', { scrollX: offset.x, scrollY: offset.y });
     runtime.markDirty();
     runtime.requestRepaint(paint);
   });
@@ -322,12 +331,16 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
   resizeObserver.observe(container);
 
   return {
+    on<K extends keyof CanvasEventMap>(event: K, handler: (payload: CanvasEventMap[K]) => void) {
+      return canvasEmitter.on(event, handler);
+    },
     destroy() {
       unsub();
       container.removeEventListener('paste', pasteHandler);
       resizeObserver.disconnect();
       editorEl?.remove();
       hideTooltip();
+      canvasEmitter.removeAllListeners();
       runtime.destroy();
     },
   };

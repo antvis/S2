@@ -43,5 +43,9 @@ export const allModules: ModuleDefinition[] = [
 ];
 export { mountCanvas } from './canvas/mount';
 export type { CanvasHandle } from './canvas/mount';
+export type { CoreEventMap } from './core/events';
+export type { CanvasEventMap, CellTarget, PointerEventPayload, KeyEventPayload } from './canvas/events';
+export { TypedEmitter } from './common/emitter';
+export type { EventHandler } from './common/emitter';
 export { createPivotTable, createTable, WorkbookFacade, SheetFacade, CellFacade, RangeFacade, parseRange, parseCellAddress } from './facade/index';
 export type { PivotTableConfig, TableConfig } from './facade/index';
