@@ -1,9 +1,16 @@
 import type { WorkbookModel } from '../core/model';
+import type { CellState } from '../core/types';
 import type { ModuleDefinition } from '../module/types';
 import type { Operation } from '../operation/types';
 
+// 复制粘贴搬完整 cell(value + style),Excel 语义:格式跟着数据走
+interface ClipboardCell {
+  value: string | number | boolean | null;
+  style: CellState['style'];
+}
+
 interface ClipboardData {
-  values: (string | number | boolean | null)[][];
+  cells: ClipboardCell[][];
   rows: number;
   cols: number;
 }
@@ -60,18 +67,21 @@ export const EditModule: ModuleDefinition = {
           range: { startRow: number; endRow: number; startCol: number; endCol: number };
         };
 
-        const values: (string | number | boolean | null)[][] = [];
+        const cells: ClipboardCell[][] = [];
         for (let r = range.startRow; r <= range.endRow; r++) {
-          const row: (string | number | boolean | null)[] = [];
+          const row: ClipboardCell[] = [];
           for (let c = range.startCol; c <= range.endCol; c++) {
             const cell = model.getCell(sheet, r, c);
-            row.push(cell?.computedValue ?? cell?.value ?? null);
+            row.push({
+              value: cell?.computedValue ?? cell?.value ?? null,
+              style: cell?.style,
+            });
           }
-          values.push(row);
+          cells.push(row);
         }
 
         this.state.clipboard = {
-          values,
+          cells,
           rows: range.endRow - range.startRow + 1,
           cols: range.endCol - range.startCol + 1,
         };
@@ -85,27 +95,28 @@ export const EditModule: ModuleDefinition = {
         const { sheet, row, col } = payload as { sheet: number; row: number; col: number };
         if (!this.state.clipboard) return [];
 
-        const { values } = this.state.clipboard;
+        const { cells } = this.state.clipboard;
         const inverseOps: Operation[] = [];
 
-        for (let r = 0; r < values.length; r++) {
-          const rowData = values[r]!;
+        for (let r = 0; r < cells.length; r++) {
+          const rowData = cells[r]!;
           for (let c = 0; c < rowData.length; c++) {
             const targetRow = row + r;
             const targetCol = col + c;
             const old = model.getCell(sheet, targetRow, targetCol);
-            const oldValue = old?.value ?? null;
+            const src = rowData[c]!;
 
-            const newValue = rowData[c];
-            if (newValue === null) {
-              model.setCell(sheet, targetRow, targetCol, {});
+            // 写入源 cell 快照(含 style);源 value 为 null 时清空目标
+            if (src.value === null) {
+              model.setCell(sheet, targetRow, targetCol, src.style ? { style: src.style } : {});
             } else {
-              model.setCell(sheet, targetRow, targetCol, { value: newValue });
+              model.setCell(sheet, targetRow, targetCol, { value: src.value, style: src.style });
             }
 
+            // inverse 用 restoreCell 还原目标的完整旧 cell(value+style),保证 undo 恢复格式
             inverseOps.push({
-              type: 'setCellValue',
-              payload: { sheet, row: targetRow, col: targetCol, value: oldValue },
+              type: 'restoreCell',
+              payload: { sheet, row: targetRow, col: targetCol, cell: old ?? {} },
             });
           }
         }

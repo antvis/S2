@@ -182,7 +182,7 @@ describe('Cross-layer integration: Edit copy/paste', () => {
     }]);
 
     const clipboard = workbook.query.moduleQuery('edit.getClipboard', {}) as {
-      values: (string | number | boolean | null)[][];
+      cells: { value: string | number | boolean | null; style: unknown }[][];
       rows: number;
       cols: number;
     } | null;
@@ -190,8 +190,8 @@ describe('Cross-layer integration: Edit copy/paste', () => {
     expect(clipboard).not.toBeNull();
     expect(clipboard!.rows).toBe(2);
     expect(clipboard!.cols).toBe(2);
-    expect(clipboard!.values[0]).toEqual(['Name', 'Sales']);
-    expect(clipboard!.values[1]).toEqual(['Alice', 150]);
+    expect(clipboard!.cells[0]!.map((c) => c.value)).toEqual(['Name', 'Sales']);
+    expect(clipboard!.cells[1]!.map((c) => c.value)).toEqual(['Alice', 150]);
   });
 
   it('edit.paste writes clipboard data to target location', () => {

@@ -18,7 +18,9 @@
       "require": "./dist/mcp/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
@@ -38,5 +40,8 @@
     }
   },
   "sideEffects": false,
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "numfmt": "^3.2.6"
+  }
 }

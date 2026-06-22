@@ -26,6 +26,6 @@ export type CoreEventMap = {
   'copied': { sheet: number; range: { startRow: number; endRow: number; startCol: number; endCol: number } };
   'pasted': { sheet: number; row: number; col: number };
 
-  // 生命周期 — TODO: workbook.destroy() 方法尚未提供,当前不会被触发
+  // 生命周期 — workbook.destroy() 触发
   'destroy': Record<string, never>;
 };

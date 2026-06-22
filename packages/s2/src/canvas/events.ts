@@ -32,8 +32,8 @@ export type CanvasEventMap = {
   'mouseUp': PointerEventPayload;
   'mouseMove': PointerEventPayload;
 
-  // TODO: contextMenu — runtime 当前没监听 right-click,需要扩展 runtime
-  // 'contextMenu': PointerEventPayload;
+  // 右键菜单(button=2)
+  'contextMenu': PointerEventPayload;
 
   // 框选(拖拽 selection 形成 range)
   'brushSelection': { sheet: number; selection: Selection };

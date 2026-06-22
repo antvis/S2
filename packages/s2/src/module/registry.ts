@@ -45,11 +45,11 @@ export class ModuleRegistry {
     this.sorted = false;
   }
 
-  init(model: WorkbookModel): void {
+  init(model: WorkbookModel, queryLayer: QueryLayer): void {
     this.ensureSorted();
     for (const mod of this.modules) {
       const ctx = { state: mod.state };
-      mod.definition.lifecycle?.onInit?.call(ctx, model);
+      mod.definition.lifecycle?.onInit?.call(ctx, model, queryLayer);
     }
   }
 

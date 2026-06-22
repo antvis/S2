@@ -8,7 +8,7 @@ export interface Rect {
 export interface PointerEventLike {
   x: number;
   y: number;
-  type: 'down' | 'move' | 'up' | 'dblclick';
+  type: 'down' | 'move' | 'up' | 'dblclick' | 'contextmenu';
   button: number;
 }
 

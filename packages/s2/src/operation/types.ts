@@ -8,6 +8,7 @@ export interface OperationMeta {
   needReCalc?: boolean;
   indexChanged?: boolean;
   affectLayout?: boolean;
+  affectDisplayValue?: boolean;
   undoable?: boolean;
   description?: string;
   inputSchema?: Record<string, unknown>;

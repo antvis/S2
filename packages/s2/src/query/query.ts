@@ -5,11 +5,15 @@ import { ChangeSet } from './changeset';
 
 type ModuleQueryEntry = { handler: (state: unknown, params: Record<string, unknown>, model: WorkbookModel) => unknown; getState: () => unknown };
 
+export type CellFormatter = (value: number, pattern: string, locale: string) => string;
+
 export class QueryLayer {
   private readonly model: WorkbookModel;
   private readonly cache = new Map<string, unknown>();
   private readonly changeSet = new ChangeSet();
   private readonly moduleQueries = new Map<string, ModuleQueryEntry>();
+  private formatter: CellFormatter | null = null;
+  private locale = 'en';
 
   constructor(model: WorkbookModel) {
     this.model = model;
@@ -29,6 +33,16 @@ export class QueryLayer {
     const entry = this.moduleQueries.get(name);
     if (!entry) return undefined;
     return entry.handler(entry.getState(), params, this.model);
+  }
+
+  setFormatter(fn: CellFormatter | null): void {
+    this.formatter = fn;
+    this.invalidateAll();
+  }
+
+  setLocale(locale: string): void {
+    this.locale = locale;
+    this.invalidateAll();
   }
 
   getCellDisplayValue(addr: { sheet: number; row: number; col: number }): string | number | boolean | null {
@@ -79,7 +93,14 @@ export class QueryLayer {
 
   private resolveDisplayValue(cell: CellState | undefined): string | number | boolean | null {
     if (!cell) return null;
-    if (cell.computedValue !== undefined) return cell.computedValue;
-    return cell.value ?? null;
+    const raw = cell.computedValue !== undefined ? cell.computedValue : (cell.value ?? null);
+    const pattern = cell.style?.numFmt;
+    // 条件收窄:仅当注册了 formatter、有 pattern、是有限数值且不超大数字时,格式化为 string
+    if (this.formatter && pattern && typeof raw === 'number' && isFinite(raw) && Math.abs(raw) <= MAX_FORMATTABLE) {
+      return this.formatter(raw, pattern, this.locale);
+    }
+    return raw;
   }
 }
+
+const MAX_FORMATTABLE = 1e15;

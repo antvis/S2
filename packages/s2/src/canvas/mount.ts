@@ -24,9 +24,9 @@ export interface CanvasHandle {
 }
 
 function writeClipboard(workbook: Workbook): void {
-  const clipboard = workbook.query.tryModuleQuery('edit.getClipboard', {}) as { values: (string | number | boolean | null)[][] } | null;
+  const clipboard = workbook.query.tryModuleQuery('edit.getClipboard', {}) as { cells: { value: string | number | boolean | null }[][] } | null;
   if (!clipboard) return;
-  const tsv = clipboard.values.map((row) => row.map((v) => v ?? '').join('\t')).join('\n');
+  const tsv = clipboard.cells.map((row) => row.map((c) => c.value ?? '').join('\t')).join('\n');
   navigator.clipboard.writeText(tsv).catch(() => {});
 }
 
@@ -136,8 +136,14 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     if (initialValue !== undefined) {
       editorEl.value = initialValue;
     } else {
-      const currentValue = workbook.query.getCellDisplayValue({ sheet: 0, row, col });
-      editorEl.value = currentValue !== null ? String(currentValue) : '';
+      // 编辑框初值:有 pattern 走 format.getEditValue(percent 乘100、date 显示格式串),无则 raw
+      const cell = workbook.query.getCellRawValue({ sheet: 0, row, col });
+      const raw = cell?.computedValue !== undefined ? cell.computedValue : (cell?.value ?? null);
+      const pattern = cell?.style?.numFmt;
+      const editValue = pattern
+        ? (workbook.query.tryModuleQuery('format.getEditValue', { value: raw, pattern }) as string | undefined)
+        : undefined;
+      editorEl.value = editValue !== undefined ? editValue : (raw === null ? '' : String(raw));
     }
 
     container.style.position = 'relative';
@@ -164,8 +170,16 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
     editorEl.remove();
     editorEl = null;
 
-    const parsed = Number(newValue);
-    const value = newValue === '' ? null : isNaN(parsed) ? newValue : parsed;
+    // 有 pattern 时走 format.parseEditValue(percent 除100、date 解析回 serial),否则原逻辑
+    const pattern = workbook.query.getCellRawValue({ sheet: 0, row, col })?.style?.numFmt;
+    let value: string | number | boolean | null;
+    if (pattern) {
+      const parsed = workbook.query.tryModuleQuery('format.parseEditValue', { input: newValue, pattern }) as { value: string | number | boolean | null } | undefined;
+      value = parsed ? parsed.value : (newValue === '' ? null : newValue);
+    } else {
+      const parsed = Number(newValue);
+      value = newValue === '' ? null : isNaN(parsed) ? newValue : parsed;
+    }
 
     if (hasEditModule()) {
       workbook.apply([{ type: 'edit.commit', payload: { sheet: 0, row, col, value } }]);
@@ -239,7 +253,14 @@ export function mountCanvas(workbook: Workbook, container: HTMLElement, options?
       currentSelection = selection;
       workbook.apply([{ type: 'setSelection', payload: { selection } }]);
       if (selection) {
-        layout.ensureCellVisible(selection.endRow, selection.endCol, runtime.getWidth(), runtime.getHeight());
+        // 整行/整列选中时跳过滚动跟随(interaction 用 999 作虚拟行列号),
+        // 否则 ensureCellVisible 会按虚拟坐标强行滚到最后
+        const FULL = 999;
+        const isFullRow = selection.endCol >= FULL;
+        const isFullCol = selection.endRow >= FULL;
+        if (!isFullRow && !isFullCol) {
+          layout.ensureCellVisible(selection.endRow, selection.endCol, runtime.getWidth(), runtime.getHeight());
+        }
       }
       runtime.markDirty();
       runtime.requestRepaint(paint);

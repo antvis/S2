@@ -206,3 +206,32 @@ describe('TypedEmitter foundation', () => {
     expect(b).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('Core events — destroy', () => {
+  it('destroy fires the "destroy" event', () => {
+    const wb = createWorkbook();
+    const handler = vi.fn();
+    wb.on('destroy', handler);
+    wb.destroy();
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('destroy removes all listeners — subsequent apply does not fire', () => {
+    const wb = createWorkbook();
+    const op = vi.fn();
+    wb.on('operationApplied', op);
+    wb.destroy();
+    wb.apply([{ type: 'setCellValue', payload: { sheet: 0, row: 0, col: 0, value: 1 } }]);
+    expect(op).not.toHaveBeenCalled();
+  });
+
+  it('destroy is idempotent — calling twice does not throw', () => {
+    const wb = createWorkbook();
+    const handler = vi.fn();
+    wb.on('destroy', handler);
+    wb.destroy();
+    wb.destroy();
+    // 第一次 destroy 后 listeners 已清空,第二次不再触发 handler
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+});

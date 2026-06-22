@@ -1,5 +1,16 @@
+import { dateToSerial } from 'numfmt';
 import type { WorkbookModel } from '../../core/model';
+import type { CellStyle } from '../../core/types';
 import type { Operation, OperationDefinition } from '../types';
+
+const DATE_PATTERN = 'yyyy-mm-dd';
+
+function coerceValue(value: unknown, autoFormat?: boolean): { value: string | number | boolean | null; style?: CellStyle } {
+  if (autoFormat && value instanceof Date) {
+    return { value: dateToSerial(value), style: { numFmt: DATE_PATTERN } };
+  }
+  return { value: value as string | number | boolean | null };
+}
 
 export const setCellValue: OperationDefinition = {
   meta: {
@@ -7,15 +18,23 @@ export const setCellValue: OperationDefinition = {
     description: 'Set the value of a cell',
     inputSchema: {
       type: 'object',
-      properties: { sheet: { type: 'number' }, row: { type: 'number' }, col: { type: 'number' }, value: {} },
+      properties: { sheet: { type: 'number' }, row: { type: 'number' }, col: { type: 'number' }, value: {}, autoFormat: { type: 'boolean' } },
       required: ['sheet', 'row', 'col', 'value'],
     },
   },
   execute(model: WorkbookModel, payload: Record<string, unknown>): Operation[] {
-    const { sheet, row, col, value } = payload as { sheet: number; row: number; col: number; value: unknown };
+    const { sheet, row, col, value, autoFormat } = payload as { sheet: number; row: number; col: number; value: unknown; autoFormat?: boolean };
     if (!model.getSheet(sheet)) return [];
     const old = model.getCell(sheet, row, col);
-    model.setCell(sheet, row, col, { value: value as string | number | boolean | null });
+    const { value: coerced, style: autoStyle } = coerceValue(value, autoFormat);
+    if (autoStyle) {
+      model.setCell(sheet, row, col, { ...(old ?? {}), value: coerced, style: { ...old?.style, ...autoStyle } });
+    } else {
+      // 保留 style,但清掉 formula——setCellValue 与 formula 互斥(RFC 设计决策)。
+      // 整体替换会丢 numFmt 等格式,故显式列出保留字段
+      const { formula: _drop, computedValue: _drop2, ...rest } = old ?? {};
+      model.setCell(sheet, row, col, { ...rest, value: coerced });
+    }
     if (!old) {
       if (value === null) return [];
       return [{ type: 'deleteCellValue', payload: { sheet, row, col } }];

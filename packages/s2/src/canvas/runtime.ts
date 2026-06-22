@@ -92,6 +92,15 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
     }
   });
 
+  canvas.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const ev: PointerEventLike = { x: e.clientX - rect.left, y: e.clientY - rect.top, type: 'contextmenu', button: 2 };
+    for (let i = 0, len = pointerHandlers.length; i < len; ++i) {
+      pointerHandlers[i]!(ev);
+    }
+  });
+
   canvas.addEventListener('keydown', (e) => {
     const ev: KeyboardEventLike = {
       key: e.key,

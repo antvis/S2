@@ -2,6 +2,7 @@ export interface CellStyle {
   bold?: boolean;
   color?: string;
   backgroundColor?: string;
+  numFmt?: string;
 }
 
 export interface CellState {

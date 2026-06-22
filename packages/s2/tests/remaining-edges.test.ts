@@ -88,7 +88,7 @@ describe('remaining edge cases', () => {
       }]);
       const clipboard = wb.query.moduleQuery('edit.getClipboard', {}) as any;
       expect(clipboard).not.toBe(null);
-      expect(clipboard.values).toEqual([['A', 'B'], [1, 2]]);
+      expect(clipboard.cells.map((row: any[]) => row.map((c: any) => c.value))).toEqual([['A', 'B'], [1, 2]]);
     });
   });
 

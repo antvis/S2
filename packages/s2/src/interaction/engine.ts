@@ -103,6 +103,14 @@ export class InteractionEngine {
     const plan = this.getLayoutPlan();
     const hit = hitTest(e.x, e.y, plan);
 
+    if (e.type === 'contextmenu') {
+      const target = targetFromHit(hit);
+      if (target) {
+        this.canvasEmitter?.emit('contextMenu', pointerPayload(target, e));
+      }
+      return;
+    }
+
     if (e.type === 'dblclick') {
       this.emitMouse('doubleClick', hit, e);
       this.handleDoubleClick(hit);
@@ -603,13 +611,21 @@ export class InteractionEngine {
 
   private getSourceColumn(minR: number, maxR: number, col: number): (number | string | boolean | null)[] {
     const values: (number | string | boolean | null)[] = [];
-    for (let r = minR; r <= maxR; r++) values.push(this.workbook.query.getCellDisplayValue({ sheet: 0, row: r, col }));
+    for (let r = minR; r <= maxR; r++) {
+      const cell = this.workbook.query.getCellRawValue({ sheet: 0, row: r, col });
+      const v = cell?.computedValue !== undefined ? cell.computedValue : (cell?.value ?? null);
+      values.push(v as number | string | boolean | null);
+    }
     return values;
   }
 
   private getSourceRow(row: number, minC: number, maxC: number): (number | string | boolean | null)[] {
     const values: (number | string | boolean | null)[] = [];
-    for (let c = minC; c <= maxC; c++) values.push(this.workbook.query.getCellDisplayValue({ sheet: 0, row, col: c }));
+    for (let c = minC; c <= maxC; c++) {
+      const cell = this.workbook.query.getCellRawValue({ sheet: 0, row, col: c });
+      const v = cell?.computedValue !== undefined ? cell.computedValue : (cell?.value ?? null);
+      values.push(v as number | string | boolean | null);
+    }
     return values;
   }
 }

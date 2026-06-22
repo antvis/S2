@@ -1,8 +1,9 @@
 import type { Operation, OperationDefinition } from '../operation/types';
 import type { WorkbookModel } from '../core/model';
+import type { QueryLayer } from '../query/query';
 
 export interface ModuleLifecycle {
-  onInit?: (model: WorkbookModel) => void;
+  onInit?: (model: WorkbookModel, queryLayer: QueryLayer) => void;
   onDestroy?: () => void;
   onOperationApplied?: (ops: Operation[], model: WorkbookModel) => void;
 }

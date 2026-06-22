@@ -31,6 +31,7 @@ export interface AgentAPI {
 export interface CreateWorkbookOptions {
   modules?: ModuleDefinition[];
   snapshot?: WorkbookState;
+  locale?: string;
 }
 
 export interface DataSourceOptions {
@@ -45,6 +46,7 @@ export interface Workbook {
   canRedo(): boolean;
   query: QueryLayer;
   on<K extends keyof CoreEventMap>(event: K, handler: (payload: CoreEventMap[K]) => void): () => void;
+  destroy(): void;
   registerDataSource(id: string, data: unknown[], options?: DataSourceOptions): void;
   toJSON(): WorkbookState;
   exportCSV(sheet?: number): string;
@@ -74,6 +76,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
   const operationRegistry = new OperationRegistry();
   const moduleRegistry = new ModuleRegistry();
   const queryLayer = new QueryLayer(model);
+  if (options?.locale) queryLayer.setLocale(options.locale);
   const emitter = new TypedEmitter<CoreEventMap>();
   let currentSelection: { sheet: number; startRow: number; startCol: number; endRow: number; endCol: number } | null = null;
 
@@ -93,7 +96,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
       let fullInvalidate = false;
       for (const op of ops) {
         const def = operationRegistry.get(op.type);
-        if (def?.meta.needReCalc || def?.meta.affectLayout || def?.meta.indexChanged) {
+        if (def?.meta.needReCalc || def?.meta.affectLayout || def?.meta.indexChanged || def?.meta.affectDisplayValue) {
           fullInvalidate = true;
           break;
         }
@@ -131,7 +134,7 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     agentState._queryLayer = queryLayer;
   }
 
-  moduleRegistry.init(model);
+  moduleRegistry.init(model, queryLayer);
 
   if (savedModuleState) {
     moduleRegistry.deserializeAll(savedModuleState);
@@ -237,6 +240,10 @@ export function createWorkbook(options?: CreateWorkbookOptions): Workbook {
     on<K extends keyof CoreEventMap>(event: K, handler: (payload: CoreEventMap[K]) => void) {
       return emitter.on(event, handler);
     },
+    destroy() {
+      emitter.emit('destroy', {} as CoreEventMap['destroy']);
+      emitter.removeAllListeners();
+    },
     registerDataSource(id: string, data: unknown[], opts?: DataSourceOptions) {
       const stored = opts?.copy ? structuredClone(data) : Object.freeze(data);
       model.dataSources.set(id, stored as unknown[]);
@@ -340,8 +347,9 @@ function exportDelimited(model: WorkbookModel, query: QueryLayer, sheetIndex: nu
   for (let r = 0; r <= maxRow; r++) {
     const cells: string[] = [];
     for (let c = 0; c <= maxCol; c++) {
-      const value = query.getCellDisplayValue({ sheet: sheetIndex, row: r, col: c });
-      if (value === null) {
+      const cell = query.getCellRawValue({ sheet: sheetIndex, row: r, col: c });
+      const value = cell?.computedValue !== undefined ? cell.computedValue : (cell?.value ?? null);
+      if (value === null || value === undefined) {
         cells.push('');
       } else {
         let text = String(value);

@@ -45,11 +45,12 @@ export const menus = [
     ],
   },
   {
-    title: '排序/过滤',
+    title: '数据处理',
     children: [
       { path: 'data', name: 'sort', label: '排序' },
       { path: 'data', name: 'filter', label: '过滤' },
       { path: 'data', name: 'conditional-format', label: '条件格式' },
+      { path: 'data', name: 'format', label: '数据格式化' },
     ],
   },
 ];
