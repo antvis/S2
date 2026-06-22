@@ -189,12 +189,16 @@ export class InteractionEngine {
     }
 
     if (this.selection && this.isNearFillHandle(e)) {
-      const sel = this.selection;
-      const maxRow = Math.max(sel.startRow, sel.endRow);
-      const maxCol = Math.max(sel.startCol, sel.endCol);
-      this.state = 'dragging';
-      this.fillDrag = { sourceRange: { ...sel }, startX: e.x, startY: e.y, direction: 'none', currentRow: maxRow, currentCol: maxCol };
-      return;
+      const plan = this.getLayoutPlan();
+      const isOwned = plan.hierarchyRowHeaders.length > 0 || plan.hierarchyColHeaders.length > 0 || !!plan.dataBounds;
+      if (!isOwned) {
+        const sel = this.selection;
+        const maxRow = Math.max(sel.startRow, sel.endRow);
+        const maxCol = Math.max(sel.startCol, sel.endCol);
+        this.state = 'dragging';
+        this.fillDrag = { sourceRange: { ...sel }, startX: e.x, startY: e.y, direction: 'none', currentRow: maxRow, currentCol: maxCol };
+        return;
+      }
     }
 
     if (hit.type === 'cell') {

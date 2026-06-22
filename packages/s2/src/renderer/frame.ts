@@ -108,7 +108,7 @@ function renderHierarchyFrame(
   drawCornerHeaders(ctx, plan);
 
   if (selection) {
-    drawSelection(ctx, plan.cells, selection);
+    drawSelection(ctx, plan.cells, selection, false);
   }
 }
 
@@ -303,7 +303,7 @@ function renderDetailFrame(
 
   // Selection highlight (below text, above gridlines)
   if (selection) {
-    drawSelection(ctx, [...plan.cells, ...plan.frozenCells], selection);
+    drawSelection(ctx, [...plan.cells, ...plan.frozenCells], selection, !plan.dataBounds);
   }
 
   // Cells (scrollable area)
@@ -508,7 +508,7 @@ function drawColHeaders(ctx: CanvasRenderingContext2D, headers: HeaderBox[]): vo
   }
 }
 
-function drawSelection(ctx: CanvasRenderingContext2D, cells: CellBox[], selection: Selection): void {
+function drawSelection(ctx: CanvasRenderingContext2D, cells: CellBox[], selection: Selection, showFillHandle = true): void {
   const minRow = Math.min(selection.startRow, selection.endRow);
   const maxRow = Math.max(selection.startRow, selection.endRow);
   const minCol = Math.min(selection.startCol, selection.endCol);
@@ -535,13 +535,14 @@ function drawSelection(ctx: CanvasRenderingContext2D, cells: CellBox[], selectio
   ctx.strokeRect(x1 + 1, y1 + 1, x2 - x1 - 2, y2 - y1 - 2);
   ctx.lineWidth = 1;
 
-  // Fill handle (solid square at bottom-right corner, Excel-style)
-  const handleSize = 8;
-  ctx.fillStyle = '#0e65eb';
-  ctx.fillRect(x2 - handleSize / 2, y2 - handleSize / 2, handleSize, handleSize);
-  ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(x2 - handleSize / 2, y2 - handleSize / 2, handleSize, handleSize);
+  if (showFillHandle) {
+    const handleSize = 8;
+    ctx.fillStyle = '#0e65eb';
+    ctx.fillRect(x2 - handleSize / 2, y2 - handleSize / 2, handleSize, handleSize);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x2 - handleSize / 2, y2 - handleSize / 2, handleSize, handleSize);
+  }
 }
 
 function drawHover(ctx: CanvasRenderingContext2D, cells: CellBox[], hover: HoverInfo): void {

@@ -602,32 +602,55 @@ export class LayoutEngine {
     const rowDepth = pivot.rowFields.length;
     const colDepth = pivot.colFields.length;
     const hasValues = pivot.valueFields.length > 0;
-
-    const rowHeaderWidth = rowDepth * PIVOT_LEVEL_WIDTH;
     const colHeaderLevels = colDepth + (hasValues ? 1 : 0);
+    const fitRowHeight = PIVOT_LEVEL_HEIGHT;
+    const colHeaderHeight = colHeaderLevels * fitRowHeight;
 
     this.rowSums.setCount(Math.max(pivot.rowLeafCount, 1));
     this.colSums.setCount(Math.max(pivot.colLeafCount, 1));
 
-    const dataAreaWidth = viewWidth - rowHeaderWidth;
+    // Phase 1: build row headers with full rowDepth to determine visible levels
+    const fullRowHeaderWidth = rowDepth * PIVOT_LEVEL_WIDTH;
+    const pivotRowHeaders: HeaderBox[][] = [];
+    for (let l = 0; l < rowDepth; l++) {
+      pivotRowHeaders.push([]);
+    }
+    let rowLeafIndex = 0;
+    this.flattenRowTreeForGridTree(pivot.rowTree, 0, rowDepth, pivotRowHeaders, fullRowHeaderWidth, colHeaderHeight, () => rowLeafIndex, (v) => { rowLeafIndex = v; });
 
-    let fitColWidth = DEFAULT_COL_WIDTH;
-    let fitRowHeight = PIVOT_LEVEL_HEIGHT;
+    // Phase 2: compute effective row header width based on visible levels
+    const visibleRowDepth = pivotRowHeaders.filter(level => level.length > 0).length;
+    const rowHeaderWidth = visibleRowDepth * PIVOT_LEVEL_WIDTH;
 
-    if (autoFit) {
-      if (pivot.colLeafCount > 0) {
-        fitColWidth = Math.max(Math.floor(dataAreaWidth / pivot.colLeafCount), DEFAULT_COL_WIDTH);
-        for (let c = 0; c < pivot.colLeafCount; c++) {
-          this.colSums.setSize(c, fitColWidth);
+    // If collapsed levels shrunk the header, shift row header x coords to pack left
+    if (visibleRowDepth < rowDepth) {
+      let targetLevel = 0;
+      for (let l = 0; l < rowDepth; l++) {
+        for (const h of pivotRowHeaders[l]!) {
+          h.x = targetLevel * PIVOT_LEVEL_WIDTH;
+          // Collapsed nodes that span remaining levels: clamp width to effective header width
+          if (h.isCollapsed && h.width > PIVOT_LEVEL_WIDTH) {
+            h.width = rowHeaderWidth - targetLevel * PIVOT_LEVEL_WIDTH;
+          }
         }
-        const colRemainder = dataAreaWidth - fitColWidth * pivot.colLeafCount;
-        if (colRemainder > 0) {
-          this.colSums.setSize(pivot.colLeafCount - 1, fitColWidth + colRemainder);
-        }
+        if (pivotRowHeaders[l]!.length > 0) targetLevel++;
       }
     }
 
-    const colHeaderHeight = colHeaderLevels * fitRowHeight;
+    // Phase 3: layout columns and data using effective rowHeaderWidth
+    const dataAreaWidth = viewWidth - rowHeaderWidth;
+    let fitColWidth = DEFAULT_COL_WIDTH;
+
+    if (autoFit && pivot.colLeafCount > 0) {
+      fitColWidth = Math.max(Math.floor(dataAreaWidth / pivot.colLeafCount), DEFAULT_COL_WIDTH);
+      for (let c = 0; c < pivot.colLeafCount; c++) {
+        this.colSums.setSize(c, fitColWidth);
+      }
+      const colRemainder = dataAreaWidth - fitColWidth * pivot.colLeafCount;
+      if (colRemainder > 0) {
+        this.colSums.setSize(pivot.colLeafCount - 1, fitColWidth + colRemainder);
+      }
+    }
 
     const dataAreaHeight = viewHeight - colHeaderHeight;
     const maxScrollX = Math.max(0, this.colSums.getTotalSize() - dataAreaWidth);
@@ -635,15 +658,7 @@ export class LayoutEngine {
     this.scrollX = Math.min(this.scrollX, maxScrollX);
     this.scrollY = Math.min(this.scrollY, maxScrollY);
 
-    // Build row headers with collapse support
-    const pivotRowHeaders: HeaderBox[][] = [];
-    for (let l = 0; l < rowDepth; l++) {
-      pivotRowHeaders.push([]);
-    }
-    let rowLeafIndex = 0;
-    this.flattenRowTreeForGridTree(pivot.rowTree, 0, rowDepth, pivotRowHeaders, rowHeaderWidth, colHeaderHeight, () => rowLeafIndex, (v) => { rowLeafIndex = v; });
-
-    // Col headers — reuse grid mode logic
+    // Col headers
     const pivotColHeaders: HeaderBox[][] = [];
     for (let l = 0; l < colDepth; l++) {
       pivotColHeaders.push([]);
@@ -685,24 +700,27 @@ export class LayoutEngine {
       pivotColHeaders.push(valueRow);
     }
 
-    // Corner headers
+    // Corner headers — only for visible row levels
     const cornerHeaders: HeaderBox[] = [];
+    let cornerIdx = 0;
     for (let l = 0; l < rowDepth; l++) {
+      if (pivotRowHeaders[l]!.length === 0) continue;
       cornerHeaders.push({
-        index: l,
-        x: l * PIVOT_LEVEL_WIDTH,
+        index: cornerIdx,
+        x: cornerIdx * PIVOT_LEVEL_WIDTH,
         y: colHeaderHeight - fitRowHeight,
         width: PIVOT_LEVEL_WIDTH,
         height: fitRowHeight,
         label: pivot.rowFields[l]!,
-        level: l,
-        depth: rowDepth,
+        level: cornerIdx,
+        depth: visibleRowDepth,
       });
+      cornerIdx++;
     }
     for (let l = 0; l < colDepth; l++) {
       cornerHeaders.push({
-        index: rowDepth + l,
-        x: (rowDepth - 1) * PIVOT_LEVEL_WIDTH,
+        index: cornerIdx + l,
+        x: (visibleRowDepth - 1) * PIVOT_LEVEL_WIDTH,
         y: l * fitRowHeight,
         width: PIVOT_LEVEL_WIDTH,
         height: fitRowHeight,
@@ -712,6 +730,7 @@ export class LayoutEngine {
       });
     }
 
+    // Data cells
     const cells: CellBox[] = [];
     const gridlines: Line[] = [];
 
@@ -934,16 +953,29 @@ export class LayoutEngine {
       pivotColHeaders.push(valueRow);
     }
 
-    // Corner: single cell with combined dimension label
-    const cornerHeaders: HeaderBox[] = [{
-      index: 0,
+    // Corner: colField labels on upper rows, rowFields combined on the bottom row
+    const cornerHeaders: HeaderBox[] = [];
+    for (let l = 0; l < colDepth; l++) {
+      cornerHeaders.push({
+        index: l,
+        x: 0,
+        y: l * fitRowHeight,
+        width: TREE_COL_WIDTH,
+        height: fitRowHeight,
+        label: pivot.colFields[l]!,
+        level: l,
+        depth: colDepth,
+      });
+    }
+    cornerHeaders.push({
+      index: colDepth,
       x: 0,
       y: colHeaderHeight - fitRowHeight,
       width: TREE_COL_WIDTH,
       height: fitRowHeight,
       label: pivot.rowFields.join(' / '),
       level: 0, depth: 1,
-    }];
+    });
 
     // Data cells
     const cells: CellBox[] = [];
