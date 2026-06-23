@@ -16,7 +16,7 @@ export interface CanvasRuntime {
 }
 
 export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
-  const dpr = window.devicePixelRatio || 1;
+  let dpr = window.devicePixelRatio || 1;
   const canvas = document.createElement('canvas');
   canvas.style.display = 'block';
   canvas.style.width = '100%';
@@ -28,14 +28,28 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
   let height = container.clientHeight;
   let rafId: number | null = null;
   let dirty = true;
+  let repaintFn: (() => void) | null = null;
 
   function applySize(): void {
+    dpr = window.devicePixelRatio || 1;
     canvas.width = width * dpr;
     canvas.height = height * dpr;
     ctx.scale(dpr, dpr);
   }
 
   applySize();
+
+  // DPR 变化监听(切换显示器、拖拽窗口跨屏)
+  let dprMedia = window.matchMedia(`(resolution: ${dpr}dppx)`);
+  function onDprChange(): void {
+    dprMedia.removeEventListener('change', onDprChange);
+    applySize();
+    dirty = true;
+    if (repaintFn) repaintFn();
+    dprMedia = window.matchMedia(`(resolution: ${dpr}dppx)`);
+    dprMedia.addEventListener('change', onDprChange);
+  }
+  dprMedia.addEventListener('change', onDprChange);
 
   const wheelHandlers: ((e: WheelEventLike) => void)[] = [];
   const pointerHandlers: ((e: PointerEventLike) => void)[] = [];
@@ -122,6 +136,7 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
     getDPR() { return dpr; },
     markDirty(_region?: Rect) { dirty = true; },
     requestRepaint(paintFn: () => void) {
+      repaintFn = paintFn;
       if (rafId !== null) return;
       rafId = requestAnimationFrame(() => {
         rafId = null;
@@ -144,6 +159,7 @@ export function createCanvasRuntime(container: HTMLElement): CanvasRuntime {
     },
     destroy() {
       if (rafId !== null) cancelAnimationFrame(rafId);
+      dprMedia.removeEventListener('change', onDprChange);
       canvas.remove();
     },
   };
