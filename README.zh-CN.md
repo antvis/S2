@@ -146,7 +146,7 @@ S2 非常需要你的共建，请阅读 [贡献指南](https://s2.antv.antgroup.
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=antvis/S2&type=date&legend=top-left)](https://www.star-history.com/#antvis/S2&type=date&legend=top-left)
+[![Star History Chart](https://star-history.dera.page/svg?repos=antvis/S2&type=date&legend=top-left)](https://star-history.dera.page/#antvis/S2&type=date&legend=top-left)
 
 ## 📄 License
 
