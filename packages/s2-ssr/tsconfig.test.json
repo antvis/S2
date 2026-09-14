@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "paths": {}
-  },
-  "include": ["src/**/*", "__tests__/**/*"]
-}
