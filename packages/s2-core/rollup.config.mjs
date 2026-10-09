@@ -31,10 +31,6 @@ const output = {
 
 const plugins = [
   peerDepsExternal(),
-  replace({
-    'process.env.NODE_ENV': JSON.stringify('production'),
-    preventAssignment: true,
-  }),
   commonjs(),
   resolve(),
   typescript({
@@ -48,6 +44,15 @@ const plugins = [
         useDefineForClassFields: false,
       },
     },
+  }),
+  replace({
+    // 类型检查后再替换，避免将测试环境判断变成不相交的字面量类型比较。
+    // 方括号访问以非单词字符结尾，同时避免匹配其它标识符或对象成员。
+    delimiters: ['(?<![\\w$.])', '(?![\\w$.])'],
+    'process.env.NODE_ENV': JSON.stringify('production'),
+    "process.env['NODE_ENV']": JSON.stringify('production'),
+    'process.env["NODE_ENV"]': JSON.stringify('production'),
+    preventAssignment: true,
   }),
   postcss({
     exclude: ['**/styles/theme/*.less'],

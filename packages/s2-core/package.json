@@ -64,6 +64,7 @@
     "start": "pnpm test:live",
     "sync-event": "node ./scripts/sync-event.mjs",
     "test": "jest --passWithNoTests --detectOpenHandles",
+    "test:build": "cross-env FORMAT=umd node --test rollup.config.test.mjs",
     "test:ci": "pnpm test test:ci-coverage --verbose --detectOpenHandles --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --verbose --detectOpenHandles --maxWorkers=3",
     "test:coverage": "pnpm test -- --coverage",
