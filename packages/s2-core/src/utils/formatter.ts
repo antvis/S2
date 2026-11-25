@@ -36,21 +36,12 @@ export const auto = (
   let n = v;
   // 语义化
   const [texts, powers] = formatter;
+  // 已经用到的单位个数，0 表示没有单位
+  let unit = 0;
 
-  let loop = 0;
-  let power;
-  let running = true;
-
-  while (running) {
-    power = powers[loop] as number;
-
-    if (n >= power && loop < texts.length) {
-      n /= power;
-    } else {
-      running = false;
-    }
-
-    loop += 1;
+  while (unit < texts.length && n >= powers[unit]) {
+    n /= powers[unit];
+    unit += 1;
   }
 
   /*
@@ -59,11 +50,17 @@ export const auto = (
    */
   n = parseFloat(n.toFixed(fixed));
 
+  // 四舍五入后可能进位到下一个单位，例如 9999.999 => 10000 => 1万
+  if (unit < texts.length && n >= powers[unit]) {
+    n = parseFloat((n / powers[unit]).toFixed(fixed));
+    unit += 1;
+  }
+
   // 千分位
   const output = n >= 1000 ? n.toLocaleString('en') : `${n}`;
 
   // 加上最后的单位
-  return loop === 0 ? output : `${output} ${texts[loop - 1]}`;
+  return unit === 0 ? output : `${output} ${texts[unit - 1]}`;
 };
 
 /*
